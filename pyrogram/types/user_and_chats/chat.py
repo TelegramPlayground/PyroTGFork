@@ -994,7 +994,7 @@ class Chat(Object):
                 If the text of the message shall be displayed in notification.
 
             mute_until (``int``, *optional*):
-                Unix date until which all notifications shall be switched off.
+                When notifications shall be switched off. Unix time.
                 Default to forever.
 
         Returns:
@@ -1034,7 +1034,7 @@ class Chat(Object):
                 If the text of the message shall be displayed in notification.
 
             mute_until (``int``, *optional*):
-                Unix date until which all notifications shall be switched off.
+                When notifications shall be switched off. Unix time.
                 Default to forever.
 
         Returns:
