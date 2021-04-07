@@ -83,7 +83,9 @@ class Scaffold:
         self.takeout = None
         self.sleep_threshold = None
 
-        self.executor = None
+        self.handler_executor = None
+        self.filter_executor = None
+        self.progress_executor = None
 
         self.storage = None
 

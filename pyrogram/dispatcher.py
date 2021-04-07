@@ -217,7 +217,7 @@ class Dispatcher:
                                     await handler.callback(self.client, *args)
                                 else:
                                     await self.loop.run_in_executor(
-                                        self.client.executor,
+                                        self.client.handler_executor,
                                         handler.callback,
                                         self.client,
                                         *args

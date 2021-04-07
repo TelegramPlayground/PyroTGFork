@@ -47,7 +47,7 @@ class InvertFilter(Filter):
             x = await self.base(client, update)
         else:
             x = await client.loop.run_in_executor(
-                client.executor,
+                client.filter_executor,
                 self.base,
                 client, update
             )
@@ -65,7 +65,7 @@ class AndFilter(Filter):
             x = await self.base(client, update)
         else:
             x = await client.loop.run_in_executor(
-                client.executor,
+                client.filter_executor,
                 self.base,
                 client, update
             )
@@ -78,7 +78,7 @@ class AndFilter(Filter):
             y = await self.other(client, update)
         else:
             y = await client.loop.run_in_executor(
-                client.executor,
+                client.filter_executor,
                 self.other,
                 client, update
             )
@@ -96,7 +96,7 @@ class OrFilter(Filter):
             x = await self.base(client, update)
         else:
             x = await client.loop.run_in_executor(
-                client.executor,
+                client.filter_executor,
                 self.base,
                 client, update
             )
@@ -109,7 +109,7 @@ class OrFilter(Filter):
             y = await self.other(client, update)
         else:
             y = await client.loop.run_in_executor(
-                client.executor,
+                client.filter_executor,
                 self.other,
                 client, update
             )

@@ -229,7 +229,9 @@ class Client(Methods, Scaffold):
         self.sleep_threshold = sleep_threshold
         self.hide_password = hide_password
 
-        self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
+        self.handler_executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
+        self.filter_executor = ThreadPoolExecutor(2, thread_name_prefix="Filter")
+        self.progress_executor = ThreadPoolExecutor(2, thread_name_prefix="Progress")
 
         if isinstance(session_name, str):
             if session_name == ":memory:" or len(session_name) >= MemoryStorage.SESSION_STRING_SIZE:
@@ -934,7 +936,7 @@ class Client(Methods, Scaffold):
                             if inspect.iscoroutinefunction(progress):
                                 await func()
                             else:
-                                await self.loop.run_in_executor(self.executor, func)
+                                await self.loop.run_in_executor(self.progress_executor, func)
 
                         r = await session.send(
                             raw.functions.upload.GetFile(
@@ -1024,7 +1026,7 @@ class Client(Methods, Scaffold):
                                 if inspect.iscoroutinefunction(progress):
                                     await func()
                                 else:
-                                    await self.loop.run_in_executor(self.executor, func)
+                                    await self.loop.run_in_executor(self.progress_executor, func)
 
                             if len(chunk) < limit:
                                 break

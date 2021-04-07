@@ -35,7 +35,7 @@ class Handler:
                 return await self.filters(client, update)
             else:
                 return await client.loop.run_in_executor(
-                    client.executor,
+                    client.handler_executor,
                     self.filters,
                     client, update
                 )
