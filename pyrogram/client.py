@@ -229,9 +229,9 @@ class Client(Methods, Scaffold):
         self.sleep_threshold = sleep_threshold
         self.hide_password = hide_password
 
-        self.handler_executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
-        self.filter_executor = ThreadPoolExecutor(2, thread_name_prefix="Filter")
-        self.progress_executor = ThreadPoolExecutor(2, thread_name_prefix="Progress")
+        self.handler_executor = ThreadPoolExecutor(32, thread_name_prefix="Handler")
+        self.filter_executor = ThreadPoolExecutor(32, thread_name_prefix="Filter")
+        self.progress_executor = ThreadPoolExecutor(32, thread_name_prefix="Progress")
 
         if isinstance(session_name, str):
             if session_name == ":memory:" or len(session_name) >= MemoryStorage.SESSION_STRING_SIZE:
