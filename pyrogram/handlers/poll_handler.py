@@ -16,9 +16,13 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Callable
+from typing import Any, Callable
 
+import pyrogram
+from pyrogram.filters import Filter
 from .handler import Handler
+
+CallbackFunc: Callable = Callable[[pyrogram.Client, pyrogram.types.Poll], Any]
 
 
 class PollHandler(Handler):
@@ -34,7 +38,7 @@ class PollHandler(Handler):
             Pass a function that will be called when a new poll update arrives. It takes *(client, poll)*
             as positional arguments (look at the section below for a detailed description).
 
-        filters (:obj:`Filters`):
+        filters (:obj:`Filter`):
             Pass one or more filters to allow only a subset of polls to be passed
             in your callback function.
 
@@ -47,5 +51,5 @@ class PollHandler(Handler):
             A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
     """
 
-    def __init__(self, callback: Callable, filters=None):
+    def __init__(self, callback: CallbackFunc, filters: Filter = None):
         super().__init__(callback, filters)
