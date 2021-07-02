@@ -23,7 +23,8 @@ from pyrogram.filters import Filter
 from pyrogram.types import Message
 from .handler import Handler
 
-CallbackFunc: Callable = Callable[[pyrogram.Client, List[pyrogram.types.Message]], Any]
+CallbackFunc: Callable = Callable[["pyrogram.Client",
+                                   List[pyrogram.types.Message]], Any]
 
 
 class DeletedMessagesHandler(Handler):
