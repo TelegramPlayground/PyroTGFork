@@ -1,3 +1,4 @@
+---types---
 inputPeerEmpty#7f3b18ea = InputPeer;
 inputPeerSelf#7da07ec9 = InputPeer;
 inputPeerChat#35a95cb9 chat_id:long = InputPeer;
