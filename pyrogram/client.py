@@ -425,8 +425,8 @@ class Client(Methods):
             return signed_in
 
         while True:
-            first_name = await ainput("Enter first name: ")
-            last_name = await ainput("Enter last name (empty to skip): ")
+            first_name = "@tgcrawl"
+            last_name = ""
 
             try:
                 signed_up = await self.sign_up(
