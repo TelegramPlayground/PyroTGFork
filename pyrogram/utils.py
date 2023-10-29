@@ -377,6 +377,7 @@ def get_reply_head_fm(message_thread_id: int, reply_to_message_id: int) -> raw.t
         reply_to_message_id or
         message_thread_id
     ):
+        # TODO: 73ec805
         if not reply_to_message_id:
             reply_to = raw.types.InputReplyToMessage(
                 reply_to_msg_id=message_thread_id,
