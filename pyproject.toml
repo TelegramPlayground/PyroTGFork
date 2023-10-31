@@ -36,6 +36,9 @@ keywords = ["telegram chat messenger mtproto api client library python"]
 [tool.hatch.version]
 path = "pyrogram/__init__.py"
 
+# Used to call hatch_build.py
+[tool.hatch.build.hooks.custom]
+
 [project.urls]
 Tracker = "https://github.com/TelegramPlayGround/Pyrogram/issues"
 Community = "https://t.me/Pyrogram"
@@ -61,7 +64,11 @@ allow-direct-references = true
 
 [tool.hatch.build]
 include = ["pyrogram/py.typed"]
-exclude = ["compiler*", "tests*"]
+exclude = ["tests", "requirements.lock", "requirements-dev.lock", ".github", ".gitignore"]
 
 [tool.hatch.build.targets.wheel]
+ignore-vcs = true
 packages = ["pyrogram"]
+
+[tool.hatch.build.targets.sdist]
+include = ["pyrogram"]
