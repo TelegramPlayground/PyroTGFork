@@ -53,8 +53,6 @@ class SaveFile:
             :obj:`functions <pyrogram.api.functions>` (i.e: a Telegram API method you wish to use which is not
             available yet in the Client class as an easy-to-use method).
 
-        .. include:: /_includes/usable-by/users-bots.rst
-
         Parameters:
             path (``str`` | ``BinaryIO``):
                 The path of the file you want to upload that exists on your local machine or a binary file-like object
@@ -94,135 +92,134 @@ class SaveFile:
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        async with self.save_file_semaphore:
-            if path is None:
-                return None
+        if path is None:
+            return None
 
-            async def worker(session):
-                while True:
-                    data = await queue.get()
+        async def worker(session):
+            while True:
+                data = await queue.get()
 
-                    if data is None:
-                        return
+                if data is None:
+                    return
 
-                    try:
-                        await session.invoke(data)
-                    except Exception as e:
-                        log.exception(e)
+                try:
+                    await session.invoke(data)
+                except Exception as e:
+                    log.error(e)
 
-            part_size = 512 * 1024
+        part_size = 512 * 1024
 
-            if isinstance(path, (str, PurePath)):
-                fp = open(path, "rb")
-            elif isinstance(path, io.IOBase):
-                fp = path
-            else:
-                raise ValueError("Invalid file. Expected a file path as string or a binary (not text) file pointer")
+        if isinstance(path, (str, PurePath)):
+            fp = open(path, "rb")
+        elif isinstance(path, io.IOBase):
+            fp = path
+        else:
+            raise ValueError("Invalid file. Expected a file path as string or a binary (not text) file pointer")
 
-            file_name = getattr(fp, "name", "file.jpg")
+        file_name = getattr(fp, "name", "file.jpg")
 
-            fp.seek(0, os.SEEK_END)
-            file_size = fp.tell()
-            fp.seek(0)
+        fp.seek(0, os.SEEK_END)
+        file_size = fp.tell()
+        fp.seek(0)
 
-            if file_size == 0:
-                raise ValueError("File size equals to 0 B")
+        if file_size == 0:
+            raise ValueError("File size equals to 0 B")
 
-            file_size_limit_mib = 4000 if self.me.is_premium else 2000
+        if file_size > 2000 * 1024 * 1024:
+            raise ValueError("Telegram doesn't support uploading files bigger than 2000 MiB")
 
-            if file_size > file_size_limit_mib * 1024 * 1024:
-                raise ValueError(f"Can't upload files bigger than {file_size_limit_mib} MiB")
+        file_total_parts = int(math.ceil(file_size / part_size))
+        is_big = file_size > 10 * 1024 * 1024
+        pool_size = 3 if is_big else 1
+        workers_count = 4 if is_big else 1
+        is_missing_part = file_id is not None
+        file_id = file_id or self.rnd_id()
+        md5_sum = md5() if not is_big and not is_missing_part else None
+        pool = [
+            Session(
+                self, await self.storage.dc_id(), await self.storage.auth_key(),
+                await self.storage.test_mode(), is_media=True
+            ) for _ in range(pool_size)
+        ]
+        workers = [self.loop.create_task(worker(session)) for session in pool for _ in range(workers_count)]
+        queue = asyncio.Queue(16)
 
-            file_total_parts = int(math.ceil(file_size / part_size))
-            is_big = file_size > 10 * 1024 * 1024
-            workers_count = 4 if is_big else 1
-            is_missing_part = file_id is not None
-            file_id = file_id or self.rnd_id()
-            md5_sum = md5() if not is_big and not is_missing_part else None
-            dc_id = await self.storage.dc_id()
-
-            session = self.media_sessions.get(dc_id)
-            if not session:
-                session = self.media_sessions[dc_id] = Session(
-                    self, dc_id, await self.storage.auth_key(),
-                    await self.storage.test_mode(), is_media=True
-                )
+        try:
+            for session in pool:
                 await session.start()
 
-            workers = [self.loop.create_task(worker(session)) for _ in range(workers_count)]
-            queue = asyncio.Queue(1)
+            fp.seek(part_size * file_part)
 
-            try:
-                fp.seek(part_size * file_part)
+            while True:
+                chunk = fp.read(part_size)
 
-                while True:
-                    chunk = fp.read(part_size)
-
-                    if not chunk:
-                        if not is_big and not is_missing_part:
-                            md5_sum = "".join([hex(i)[2:].zfill(2) for i in md5_sum.digest()])
-                        break
-
-                    if is_big:
-                        rpc = raw.functions.upload.SaveBigFilePart(
-                            file_id=file_id,
-                            file_part=file_part,
-                            file_total_parts=file_total_parts,
-                            bytes=chunk
-                        )
-                    else:
-                        rpc = raw.functions.upload.SaveFilePart(
-                            file_id=file_id,
-                            file_part=file_part,
-                            bytes=chunk
-                        )
-
-                    await queue.put(rpc)
-
-                    if is_missing_part:
-                        return
-
+                if not chunk:
                     if not is_big and not is_missing_part:
-                        md5_sum.update(chunk)
+                        md5_sum = "".join([hex(i)[2:].zfill(2) for i in md5_sum.digest()])
+                    break
 
-                    file_part += 1
-
-                    if progress:
-                        func = functools.partial(
-                            progress,
-                            min(file_part * part_size, file_size),
-                            file_size,
-                            *progress_args
-                        )
-
-                        if inspect.iscoroutinefunction(progress):
-                            await func()
-                        else:
-                            await self.loop.run_in_executor(self.executor, func)
-            except StopTransmission:
-                raise
-            except Exception as e:
-                log.exception(e)
-            else:
                 if is_big:
-                    return raw.types.InputFileBig(
-                        id=file_id,
-                        parts=file_total_parts,
-                        name=file_name,
-
+                    rpc = raw.functions.upload.SaveBigFilePart(
+                        file_id=file_id,
+                        file_part=file_part,
+                        file_total_parts=file_total_parts,
+                        bytes=chunk
                     )
                 else:
-                    return raw.types.InputFile(
-                        id=file_id,
-                        parts=file_total_parts,
-                        name=file_name,
-                        md5_checksum=md5_sum
+                    rpc = raw.functions.upload.SaveFilePart(
+                        file_id=file_id,
+                        file_part=file_part,
+                        bytes=chunk
                     )
-            finally:
-                for _ in workers:
-                    await queue.put(None)
 
-                await asyncio.gather(*workers)
+                await queue.put(rpc)
 
-                if isinstance(path, (str, PurePath)):
-                    fp.close()
+                if is_missing_part:
+                    return
+
+                if not is_big and not is_missing_part:
+                    md5_sum.update(chunk)
+
+                file_part += 1
+
+                if progress:
+                    func = functools.partial(
+                        progress,
+                        min(file_part * part_size, file_size),
+                        file_size,
+                        *progress_args
+                    )
+
+                    if inspect.iscoroutinefunction(progress):
+                        await func()
+                    else:
+                        await self.loop.run_in_executor(self.executor, func)
+        except StopTransmission:
+            raise
+        except Exception as e:
+            log.error(e, exc_info=True)
+        else:
+            if is_big:
+                return raw.types.InputFileBig(
+                    id=file_id,
+                    parts=file_total_parts,
+                    name=file_name,
+
+                )
+            else:
+                return raw.types.InputFile(
+                    id=file_id,
+                    parts=file_total_parts,
+                    name=file_name,
+                    md5_checksum=md5_sum
+                )
+        finally:
+            for _ in workers:
+                await queue.put(None)
+
+            await asyncio.gather(*workers)
+
+            for session in pool:
+                await session.stop()
+            if isinstance(path, (str, PurePath)):
+                fp.close()
