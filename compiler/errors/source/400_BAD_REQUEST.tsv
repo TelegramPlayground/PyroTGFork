@@ -256,6 +256,7 @@ QUIZ_CORRECT_ANSWERS_EMPTY	The correct answers of the quiz are empty
 QUIZ_CORRECT_ANSWERS_TOO_MUCH	The quiz contains too many correct answers
 QUIZ_CORRECT_ANSWER_INVALID	The correct answers of the quiz are invalid
 QUIZ_MULTIPLE_INVALID	A quiz can't have multiple answers
+QUOTE_TEXT_INVALID	The quote_text is invalid
 RANDOM_ID_EMPTY	The random ID is empty
 RANDOM_ID_INVALID	The provided random ID is invalid
 RANDOM_LENGTH_INVALID	The random length is invalid
@@ -267,6 +268,7 @@ REPLY_MARKUP_BUY_EMPTY	Reply markup for buy button empty
 REPLY_MARKUP_GAME_EMPTY	The provided reply markup for the game is empty
 REPLY_MARKUP_INVALID	The provided reply markup is invalid
 REPLY_MARKUP_TOO_LONG	The reply markup is too long
+REPLY_MESSAGE_ID_INVALID	One of the reply_to message id is invalid
 RESULTS_TOO_MUCH	The result contains too many items
 RESULT_ID_DUPLICATE	The result contains items with duplicated identifiers
 RESULT_ID_EMPTY	Result ID empty
