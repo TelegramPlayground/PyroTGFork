@@ -20,7 +20,7 @@ from .auto_name import AutoName
 
 
 class ProfileColor(AutoName):
-    """Profile color enumeration used in :obj:`~pyrogram.method.UpdateColor`."""
+    """Profile color enumeration used in :meth:`~pyrogram.method.UpdateColor`."""
 
     RED = 0
     ORANGE = 1
