@@ -50,7 +50,7 @@ class UpdateColor:
         Example:
             .. code-block:: python
 
-                await app.update_color(chat_id, 1)
+                await app.update_color(chat_id, enums.ProfileColor.RED)
         """
 
         peer = await self.resolve_peer(chat_id)
@@ -58,7 +58,7 @@ class UpdateColor:
         if isinstance(peer, raw.types.InputPeerSelf):
             await self.invoke(
                 raw.functions.account.UpdateColor(
-                    color=color,
+                    color=color.value,
                     background_emoji_id=background_emoji_id
                 )
             )
@@ -69,7 +69,7 @@ class UpdateColor:
             r = await self.invoke(
                 raw.functions.channels.UpdateColor(
                     channel=peer,
-                    color=color,
+                    color=color.value,
                     background_emoji_id=background_emoji_id
                 )
             )
