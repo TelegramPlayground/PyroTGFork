@@ -43,7 +43,7 @@ class KeyboardButton(Object):
         request_poll (:obj:`~pyrogram.types.RequestPollInfo`, *optional*):
             If specified, the poll be sent when the button is pressed.
 
-        request_peer (:obj:`~pyrogram.types.RequestPeerTypeBroadcastInfo` | :obj:`~pyrogram.types.RequestPeerTypeChatInfo` | :obj:`~pyrogram.types.RequestPeerTypeUserInfo`, *optional*):
+        request_peer (:obj:`~pyrogram.types.RequestPeerTypeChannelInfo` | :obj:`~pyrogram.types.RequestPeerTypeChatInfo` | :obj:`~pyrogram.types.RequestPeerTypeUserInfo`, *optional*):
             If specified, the requested peer will be sent when the button is pressed.
 
         web_app (:obj:`~pyrogram.types.WebAppInfo`, *optional*):
@@ -59,7 +59,7 @@ class KeyboardButton(Object):
         request_contact: bool = None,
         request_location: bool = None,
         request_poll: "types.RequestPollInfo" = None,
-        request_peer: Union["types.RequestPeerTypeBroadcastInfo", "types.RequestPeerTypeChatInfo", "types.RequestPeerTypeUserInfo"] = None,
+        request_peer: Union["types.RequestPeerTypeChannelInfo", "types.RequestPeerTypeChatInfo", "types.RequestPeerTypeUserInfo"] = None,
         web_app: "types.WebAppInfo" = None,
     ):
         super().__init__()
@@ -115,9 +115,43 @@ class KeyboardButton(Object):
         elif self.request_location:
             return raw.types.KeyboardButtonRequestGeoLocation(text=self.text)
         elif self.request_poll:
-            return raw.types.KeyboardButtonRequestPoll(text=self.text, quiz=self.quiz)
+            return raw.types.KeyboardButtonRequestPoll(
+                text=self.text,
+                quiz=self.request_poll.is_quiz
+            )
         elif self.request_peer:
-            return raw.types.KeyboardButtonRequestPeer(text=self.text, button_id=self.button_id, peer_type=self.peer_type)
+            if isinstance(self.request_peer, types.RequestChannelInfo):
+                return raw.types.KeyboardButtonRequestPeer(
+                    text=self.text,
+                    button_id=self.request_peer.button_id,
+                    peer_type=raw.types.RequestPeerTypeBroadcast(
+                        creator=self.request_peer.is_creator,
+                        has_username=self.request_peer.has_username,
+                    )
+                )
+
+            if isinstance(self.request_peer, types.RequestChatInfo):
+                return raw.types.KeyboardButtonRequestPeer(
+                    text=self.text,
+                    button_id=self.request_peer.button_id,
+                    peer_type=raw.types.RequestPeerTypeChat(
+                        creator=self.request_peer.is_creator,
+                        bot_participant=self.request_peer.is_bot_participant,
+                        has_username=self.request_peer.has_username,
+                        forum=self.request_peer.has_forum,
+                    )
+                )
+
+            if isinstance(self.request_peer, types.RequestUserInfo):
+                return raw.types.KeyboardButtonRequestPeer(
+                    text=self.text,
+                    button_id=self.request_peer.button_id,
+                    peer_type=raw.types.RequestPeerTypeUser(
+                        bot=self.request_peer.is_bot,
+                        premium=self.request_peer.is_premium
+                    )
+                )
+
         elif self.web_app:
             return raw.types.KeyboardButtonSimpleWebView(text=self.text, url=self.web_app.url)
         else:

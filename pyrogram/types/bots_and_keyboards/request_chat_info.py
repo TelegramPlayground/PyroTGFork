@@ -19,10 +19,13 @@
 from ..object import Object
 
 
-class RequestPeerTypeChatInfo(Object):
+class RequestChatInfo(Object):
     """Contains information about a chat peer type.
 
     Parameters:
+        button_id (``int``):
+            Identifier of button.
+
         is_creator (``bool``):
             If True, returns the list of chats where this user is a chat creator.
 
@@ -38,6 +41,7 @@ class RequestPeerTypeChatInfo(Object):
 
     def __init__(
         self, *,
+        button_id: int,
         is_creator: bool = None,
         is_bot_participant: bool = None,
         has_username: bool = None,
@@ -46,6 +50,7 @@ class RequestPeerTypeChatInfo(Object):
     ):
         super().__init__()
 
+        self.button_id = button_id
         self.is_creator = is_creator
         self.is_bot_participant = is_bot_participant
         self.has_username = has_username

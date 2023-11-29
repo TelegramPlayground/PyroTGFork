@@ -19,12 +19,15 @@
 from ..object import Object
 
 
-class RequestPeerTypeBroadcastInfo(Object):
-    """Contains information about a broadcast peer type.
+class RequestChannelInfo(Object):
+    """Contains information about a channel peer type.
 
     Parameters:
+        button_id (``int``):
+            Identifier of button.
+
         is_creator (``bool``):
-            If True, returns the list of chats where this user is a broadcast creator.
+            If True, returns the list of chats where this user is a channel creator.
 
         has_username (``bool``):
             If True, returns the list of chats where chat has username.
@@ -32,10 +35,12 @@ class RequestPeerTypeBroadcastInfo(Object):
 
     def __init__(
         self, *,
+        button_id: int,
         is_creator: bool = None,
         has_username: bool = None,
     ):
         super().__init__()
 
+        self.button_id = button_id
         self.is_creator = is_creator
         self.has_username = has_username

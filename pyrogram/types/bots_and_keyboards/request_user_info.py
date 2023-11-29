@@ -19,23 +19,28 @@
 from ..object import Object
 
 
-class RequestPeerTypeUserInfo(Object):
+class RequestUserInfo(Object):
     """Contains information about a user peer type.
 
     Parameters:
-        is_bot (``bool``):
+        button_id (``int``):
+            Identifier of button.
+
+        is_bot (``bool``, *optional*):
             If True, returns the list of users where user is a bot.
 
-        is_premium (``bool``):
+        is_premium (``bool``, *optional*):
             If True, returns the list of users where user has premium.
     """
 
     def __init__(
         self, *,
+        button_id: int,
         is_bot: bool = None,
         is_premium: bool = None,
     ):
         super().__init__()
 
+        self.button_id = button_id
         self.is_bot = is_bot
         self.is_premium = is_premium

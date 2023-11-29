@@ -352,7 +352,7 @@ class Message(Object, Update):
         gift_code (:obj:`~pyrogram.types.GiftCode`, *optional*):
             Service message: gift code information.
 
-        requested_chat (:obj:`~pyrogram.types.Chat`, *optional*):
+        requested_chat_id (``int``, *optional*):
             Service message: requested chat information.
 
         reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
@@ -457,7 +457,7 @@ class Message(Object, Update):
         video_chat_members_invited: "types.VideoChatMembersInvited" = None,
         web_app_data: "types.WebAppData" = None,
         gift_code: "types.GiftCode" = None,
-        requested_chat: "types.Chat" = None,
+        requested_chat_id: int = None,
         giveaway_launched: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -555,7 +555,7 @@ class Message(Object, Update):
         self.video_chat_members_invited = video_chat_members_invited
         self.web_app_data = web_app_data
         self.gift_code = gift_code
-        self.requested_chat = requested_chat
+        self.requested_chat_id = requested_chat_id
         self.giveaway_launched = giveaway_launched
         self.reactions = reactions
 
@@ -619,7 +619,7 @@ class Message(Object, Update):
             web_app_data = None
             gift_code = None
             giveaway_launched = None
-            requested_chat = None
+            requested_chat_id = None
 
             service_type = None
 
@@ -699,15 +699,7 @@ class Message(Object, Update):
                 gift_code = types.GiftCode._parse(client, action, chats)
                 service_type = enums.MessageServiceType.GIFT_CODE
             elif isinstance(action, raw.types.MessageActionRequestedPeer):
-                chat_id = utils.get_raw_peer_id(message.action.peer)
-
-                if isinstance(message.peer_id, raw.types.PeerUser):
-                    requested_chat = types.Chat._parse_user_chat(client, users[chat_id])
-
-                if isinstance(message.peer_id, raw.types.PeerChat):
-                    requested_chat = types.Chat._parse_chat_chat(client, chats[chat_id])
-
-                requested_chat = types.Chat._parse_channel_chat(client, chats[chat_id])
+                requested_chat_id = utils.get_peer_id(action.peer)
                 service_type = enums.MessageServiceType.REQUESTED_CHAT
 
             from_user = types.User._parse(client, users.get(user_id, None))
@@ -744,7 +736,7 @@ class Message(Object, Update):
                 web_app_data=web_app_data,
                 giveaway_launched=giveaway_launched,
                 gift_code=gift_code,
-                requested_chat=requested_chat,
+                requested_chat_id=requested_chat_id,
                 client=client
                 # TODO: supergroup_chat_created
             )

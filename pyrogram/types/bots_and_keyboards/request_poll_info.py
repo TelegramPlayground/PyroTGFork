@@ -20,7 +20,7 @@ from ..object import Object
 
 
 class RequestPollInfo(Object):
-    """Contains information about a user peer type.
+    """Contains information about a poll type.
 
     Parameters:
         is_quiz (``bool``):
