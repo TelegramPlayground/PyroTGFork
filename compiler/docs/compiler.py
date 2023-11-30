@@ -426,6 +426,7 @@ def pyrogram_api():
             Restriction
             EmojiStatus
             Folder
+            ChatColor
         """,
         messages_media="""
         Messages & Media

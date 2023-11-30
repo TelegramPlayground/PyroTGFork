@@ -19,8 +19,8 @@
 from .auto_name import AutoName
 
 
-class ProfileColor(AutoName):
-    """Profile color enumeration used in :meth:`~pyrogram.method.UpdateColor` and :obj:`~pyrogram.types.ChatColor`."""
+class ReplyColor(AutoName):
+    """Reply color enumeration used in :meth:`~pyrogram.method.UpdateColor` and :obj:`~pyrogram.types.ChatColor`."""
 
     RED = 0
     ORANGE = 1
@@ -29,13 +29,19 @@ class ProfileColor(AutoName):
     CYAN = 4
     BLUE = 5
     PINK = 6
-    GRAY = 7
 
-    RED_LIGHT_RED = 8
-    ORANGE_LIGHT_ORANGE = 9
-    VIOLET_LIGHT_VIOLET = 10
-    GREEN_LIGHT_GREEN = 11
-    CYAN_LIGHT_CYAN = 12
-    BLUE_LIGHT_BLUE = 13
-    PINK_LIGHT_PINK = 14
-    GRAY_LIGHT_GRAY = 15
+    RED_DARK_RED = 7
+    ORANGE_DARK_ORANGE = 8
+    VIOLET_DARK_VIOLET = 9
+    GREEN_DARK_GREEN = 10
+    CYAN_DARK_CYAN = 11
+    BLUE_DARK_BLUE = 12
+    PINK_DARK_PINK = 13
+
+    BLUE_WHITE_RED = 14
+    ORANGE_WHITE_GREEN = 15
+    GREEN_WHITE_RED = 16
+    BLUE_WHITE_GREEN = 17
+    BLUE_WHITE_PINK = 18
+    VIOLET_WHITE_ORANGE = 19
+    BLUE_WHITE_ORANGE = 20

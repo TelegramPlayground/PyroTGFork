@@ -39,11 +39,23 @@ class Story(Object, Update):
         sender_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             Sender of the story, sent on behalf of a chat.
 
+        date (:py:obj:`~datetime.datetime`, *optional*):
+            Date the story was sent.
+
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
             Conversation the story belongs to.
 
-        date (:py:obj:`~datetime.datetime`, *optional*):
-            Date the story was sent.
+        forward_from (:obj:`~pyrogram.types.User`, *optional*):
+            For forwarded stories, sender of the original story.
+
+        forward_sender_name (``str``, *optional*):
+            For stories forwarded from users who have hidden their accounts, name of the user.
+
+        forward_from_chat (:obj:`~pyrogram.types.Chat`, *optional*):
+            For stories forwarded from channels, information about the original channel.
+
+        forward_from_story_id (``int``, *optional*):
+            For stories forwarded from channels, identifier of the original story in the channel.
 
         expire_date (:py:obj:`~datetime.datetime`, *optional*):
             Date the story will be expired.
@@ -108,8 +120,12 @@ class Story(Object, Update):
         id: int,
         from_user: "types.User" = None,
         sender_chat: "types.Chat" = None,
-        chat: "types.Chat" = None,
         date: datetime = None,
+        chat: "types.Chat" = None,
+        forward_from: "types.User" = None,
+        forward_sender_name: str = None,
+        forward_from_chat: "types.Chat" = None,
+        forward_from_story_id: int = None,
         expire_date: datetime = None,
         media: "enums.MessageMediaType",
         has_protected_content: bool = None,
@@ -133,8 +149,12 @@ class Story(Object, Update):
         self.id = id
         self.from_user = from_user
         self.sender_chat = sender_chat
-        self.chat = chat
         self.date = date
+        self.chat = chat
+        self.forward_from = forward_from
+        self.forward_sender_name = forward_sender_name
+        self.forward_from_chat = forward_from_chat
+        self.forward_from_story_id = forward_from_story_id
         self.expire_date = expire_date
         self.media = media
         self.has_protected_content = has_protected_content
@@ -156,37 +176,17 @@ class Story(Object, Update):
     @staticmethod
     async def _parse(
         client: "pyrogram.Client",
-        stories: raw.base.StoryItem,
+        story: raw.types.StoryItem,
         users: dict,
         chats: dict,
         peer: Union["raw.types.PeerChannel", "raw.types.PeerUser"]
     ) -> "Story":
-        if isinstance(stories, raw.types.StoryItemSkipped):
-            return await types.StorySkipped._parse(client, stories, users, chats, peer)
-        if isinstance(stories, raw.types.StoryItemDeleted):
-            return await types.StoryDeleted._parse(client, stories, users, chats, peer)
+        if isinstance(story, raw.types.StoryItemSkipped):
+            return await types.StorySkipped._parse(client, story, users, chats, peer)
+        if isinstance(story, raw.types.StoryItemDeleted):
+            return await types.StoryDeleted._parse(client, story, users, chats, peer)
 
-        entities = [e for e in (types.MessageEntity._parse(client, entity, {}) for entity in stories.entities) if e]
-
-        photo = None
-        video = None
-        from_user = None
-        sender_chat = None
-        chat = None
-        privacy = None
-        allowed_users = None
-        disallowed_users = None
-        media_type = None
-
-        if isinstance(stories.media, raw.types.MessageMediaPhoto):
-            photo = types.Photo._parse(client, stories.media.photo, stories.media.ttl_seconds)
-            media_type = enums.MessageMediaType.PHOTO
-        else:
-            doc = stories.media.document
-            attributes = {type(i): i for i in doc.attributes}
-            video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
-            video = types.Video._parse(client, doc, video_attributes, None)
-            media_type = enums.MessageMediaType.VIDEO
+        entities = [e for e in (types.MessageEntity._parse(client, entity, {}) for entity in story.entities) if e]
 
         if isinstance(peer, raw.types.InputPeerSelf):
             r = await client.invoke(raw.functions.users.GetUsers(id=[raw.types.InputPeerSelf()]))
@@ -216,6 +216,43 @@ class Story(Object, Update):
             else:
                 users.update({i.id: i for i in r})
 
+        forward_from = None
+        forward_sender_name = None
+        forward_from_chat = None
+        forward_from_story_id = None
+
+        forward_header = story.fwd_from  # type: raw.types.StoryFwdHeader
+
+        if forward_header and forward_header.from_id:
+            raw_peer_id = utils.get_raw_peer_id(forward_header.from_id)
+            peer_id = utils.get_peer_id(forward_header.from_id)
+
+            if peer_id > 0:
+                forward_from = types.User._parse(client, users[raw_peer_id])
+            else:
+                forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
+                forward_from_story_id = forward_header.story_id
+
+        photo = None
+        video = None
+        from_user = None
+        sender_chat = None
+        chat = None
+        privacy = None
+        allowed_users = None
+        disallowed_users = None
+        media_type = None
+
+        if isinstance(story.media, raw.types.MessageMediaPhoto):
+            photo = types.Photo._parse(client, story.media.photo, story.media.ttl_seconds)
+            media_type = enums.MessageMediaType.PHOTO
+        else:
+            doc = story.media.document
+            attributes = {type(i): i for i in doc.attributes}
+            video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
+            video = types.Video._parse(client, doc, video_attributes, None)
+            media_type = enums.MessageMediaType.VIDEO
+
         from_user = types.User._parse(client, users.get(peer_id, None))
         sender_chat = types.Chat._parse_channel_chat(client, chats[peer_id]) if not from_user else None
         chat = sender_chat if not from_user else types.Chat._parse_user_chat(client, users.get(peer_id, None))
@@ -227,7 +264,7 @@ class Story(Object, Update):
             raw.types.PrivacyValueDisallowAll: enums.StoriesPrivacyRules.SELECTED_USERS,
         }
 
-        for priv in stories.privacy:
+        for priv in story.privacy:
             privacy = privacy_map.get(type(priv), None)
 
             if isinstance(priv, raw.types.PrivacyValueAllowUsers):
@@ -240,25 +277,29 @@ class Story(Object, Update):
                 disallowed_users = types.List(types.Chat._parse_chat_chat(client, chats.get(chat_id, None)) for chat_id in priv.chats)
 
         return Story(
-            id=stories.id,
+            id=story.id,
             from_user=from_user,
             sender_chat=sender_chat,
+            date=utils.timestamp_to_datetime(story.date),
             chat=chat,
-            date=utils.timestamp_to_datetime(stories.date),
-            expire_date=utils.timestamp_to_datetime(stories.expire_date),
+            forward_from=forward_from,
+            forward_sender_name=forward_sender_name,
+            forward_from_chat=forward_from_chat,
+            forward_from_story_id=forward_from_story_id,
+            expire_date=utils.timestamp_to_datetime(story.expire_date),
             media=media_type,
-            has_protected_content=stories.noforwards,
+            has_protected_content=story.noforwards,
             photo=photo,
             video=video,
-            edited=stories.edited,
-            pinned=stories.pinned,
-            public=stories.public,
-            close_friends=stories.close_friends,
-            contacts=stories.contacts,
-            selected_contacts=stories.selected_contacts,
-            caption=stories.caption,
+            edited=story.edited,
+            pinned=story.pinned,
+            public=story.public,
+            close_friends=story.close_friends,
+            contacts=story.contacts,
+            selected_contacts=story.selected_contacts,
+            caption=story.caption,
             caption_entities=entities or None,
-            views=types.StoryViews._parse(client, stories.views) if stories.views else None,
+            views=types.StoryViews._parse(client, story.views) if story.views else None,
             privacy=privacy,
             allowed_users=allowed_users,
             disallowed_users=disallowed_users,

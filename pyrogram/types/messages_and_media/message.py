@@ -145,7 +145,7 @@ class Message(Object, Update):
         edit_date (:py:obj:`~datetime.datetime`, *optional*):
             Date the message was last edited.
 
-        media_group_id (``str``, *optional*):
+        media_group_id (``int``, *optional*):
             The unique identifier of a media message group this message belongs to.
 
         author_signature (``str``, *optional*):
@@ -399,7 +399,7 @@ class Message(Object, Update):
         media: "enums.MessageMediaType" = None,
         invert_media: bool = None,
         edit_date: datetime = None,
-        media_group_id: str = None,
+        media_group_id: int = None,
         author_signature: str = None,
         has_protected_content: bool = None,
         has_media_spoiler: bool = None,

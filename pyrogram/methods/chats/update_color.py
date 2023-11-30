@@ -27,7 +27,7 @@ class UpdateColor:
     async def update_color(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        color: "enums.ProfileColor",
+        color: Union["enums.ReplyColor", "enums.ProfileColor"],
         background_emoji_id: int = None
     ) -> "types.Chat":
         """Update color
@@ -38,7 +38,7 @@ class UpdateColor:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
 
-            color (:obj:`~pyrogram.enums.ProfileColor`):
+            color (:obj:`~pyrogram.enums.ReplyColor` | :obj:`~pyrogram.enums.ProfileColor`):
                 Color type.
 
             background_emoji_id (``int``, *optional*):
@@ -58,6 +58,7 @@ class UpdateColor:
         if isinstance(peer, raw.types.InputPeerSelf):
             await self.invoke(
                 raw.functions.account.UpdateColor(
+                    for_profile=isinstance(color, enums.ProfileColor),
                     color=color.value,
                     background_emoji_id=background_emoji_id
                 )

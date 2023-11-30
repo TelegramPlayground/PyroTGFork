@@ -327,6 +327,7 @@ def get_reply_to(
     reply_to_peer: Optional[raw.base.InputPeer] = None,
     quote_text: Optional[str] = None,
     quote_entities: Optional[List[raw.base.MessageEntity]] = None,
+    quote_offset: Optional[int] = None,
     reply_to_story_id: Optional[int] = None
 ) -> Optional[Union[raw.types.InputReplyToMessage, raw.types.InputReplyToStory]]:
     """Get InputReply for reply_to argument"""
@@ -340,6 +341,7 @@ def get_reply_to(
             reply_to_peer_id=reply_to_peer,
             quote_text=quote_text,
             quote_entities=quote_entities,
+            quote_offset=quote_offset,
         )
 
     return None
