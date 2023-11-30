@@ -49,8 +49,6 @@ class EditStory:
 
         .. include:: /_includes/usable-by/users.rst
 
-        Note: You must pass one of following paramater *animation*, *photo*, *video*
-
         Parameters:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
@@ -60,7 +58,6 @@ class EditStory:
             media (``str`` | ``BinaryIO``, *optional*):
                 Video or photo to send.
                 Pass a file_id as string to send a animation that exists on the Telegram servers,
-                pass an HTTP URL as a string for Telegram to get a animation from the Internet,
                 pass a file path as string to upload a new animation that exists on your local machine, or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
@@ -158,16 +155,6 @@ class EditStory:
                     else:
                         media = raw.types.InputMediaUploadedPhoto(
                             file=file,
-                        )
-                elif re.match("^https?://", media):
-                    mime_type = self.guess_mime_type(media)
-                    if mime_type == "video/mp4":
-                        media = raw.types.InputMediaDocumentExternal(
-                            url=media,
-                        )
-                    else:
-                        media = raw.types.InputMediaPhotoExternal(
-                            url=media,
                         )
                 else:
                     media = utils.get_input_media_from_file_id(media)
