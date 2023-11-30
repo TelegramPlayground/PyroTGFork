@@ -258,10 +258,14 @@ def start(format: bool = False):
 
             args = ARGS_RE.findall(line)
 
-            # Fix arg name being "self" (reserved python keyword)
+            # Fix arg name(reserved python keyword)
             for i, item in enumerate(args):
+                # being "self"
                 if item[0] == "self":
                     args[i] = ("is_self", item[1])
+                # being "from"
+                if item[0] == "from":
+                    args[i] = ("from_", item[1])
 
             combinator = Combinator(
                 section=section,
