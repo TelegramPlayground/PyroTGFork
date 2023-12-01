@@ -268,42 +268,29 @@ MAX_USER_ID_OLD = 2147483647
 MAX_USER_ID = 999999999999
 
 
-def get_raw_peer_id(peer: raw.base.Peer) -> Optional[int]:
+def get_raw_peer_id(peer: Union[raw.base.Peer, raw.base.InputPeer]) -> Optional[int]:
     """Get the raw peer id from a Peer object"""
-    if isinstance(peer, raw.types.PeerUser):
+    if isinstance(peer, (raw.types.PeerUser, raw.types.InputPeerUser)):
         return peer.user_id
 
-    if isinstance(peer, raw.types.PeerChat):
+    if isinstance(peer, (raw.types.PeerChat, raw.types.InputPeerChat)):
         return peer.chat_id
 
-    if isinstance(peer, raw.types.PeerChannel):
-        return peer.channel_id
-
-    return None
-
-def get_input_peer_id(peer: raw.base.InputPeer) -> Optional[int]:
-    """Get the raw peer id from a InputPeer object"""
-    if isinstance(peer, raw.types.InputPeerUser):
-        return peer.user_id
-
-    if isinstance(peer, raw.types.InputPeerChat):
-        return peer.chat_id
-
-    if isinstance(peer, raw.types.InputPeerChannel):
+    if isinstance(peer, (raw.types.PeerChannel, raw.types.InputPeerChannel)):
         return peer.channel_id
 
     return None
 
 
-def get_peer_id(peer: raw.base.Peer) -> int:
+def get_peer_id(peer: Union[raw.base.Peer, raw.base.InputPeer]) -> int:
     """Get the non-raw peer id from a Peer object"""
-    if isinstance(peer, raw.types.PeerUser):
+    if isinstance(peer, (raw.types.PeerUser, raw.types.InputPeerUser)):
         return peer.user_id
 
-    if isinstance(peer, raw.types.PeerChat):
+    if isinstance(peer, (raw.types.PeerChat, raw.types.InputPeerChat)):
         return -peer.chat_id
 
-    if isinstance(peer, raw.types.PeerChannel):
+    if isinstance(peer, (raw.types.PeerChannel, raw.types.InputPeerChannel)):
         return MAX_CHANNEL_ID - peer.channel_id
 
     raise ValueError(f"Peer type invalid: {peer}")
@@ -320,6 +307,7 @@ def get_peer_type(peer_id: int) -> str:
         return "user"
 
     raise ValueError(f"Peer id invalid: {peer_id}")
+
 
 def get_reply_to(
     reply_to_message_id: Optional[int] = None,
@@ -345,6 +333,7 @@ def get_reply_to(
         )
 
     return None
+
 
 def get_channel_id(peer_id: int) -> int:
     return MAX_CHANNEL_ID - peer_id

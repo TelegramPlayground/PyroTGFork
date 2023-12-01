@@ -83,8 +83,6 @@ class StorySkipped(Object, Update):
             r = await client.invoke(raw.functions.users.GetUsers(id=[raw.types.InputPeerSelf()]))
             peer_id = r[0].id
             users.update({i.id: i for i in r})
-        elif isinstance(peer, (raw.types.InputPeerUser, raw.types.InputPeerChannel)):
-            peer_id = utils.get_input_peer_id(peer)
         else:
             peer_id = utils.get_raw_peer_id(peer)
 
