@@ -344,9 +344,9 @@ class Chat(Object):
 
     @staticmethod
     def _parse_dialog(client, peer, users: dict, chats: dict):
-        if isinstance(peer, raw.types.PeerUser):
+        if isinstance(peer, (raw.types.PeerUser, raw.types.InputPeerUser)):
             return Chat._parse_user_chat(client, users[peer.user_id])
-        elif isinstance(peer, raw.types.PeerChat):
+        elif isinstance(peer, (raw.types.PeerChat, raw.types.InputPeerChat)):
             return Chat._parse_chat_chat(client, chats[peer.chat_id])
         else:
             return Chat._parse_channel_chat(client, chats[peer.channel_id])

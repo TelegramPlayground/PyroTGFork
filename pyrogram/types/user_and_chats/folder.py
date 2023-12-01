@@ -21,8 +21,8 @@ from typing import List, Union
 import pyrogram
 from pyrogram import raw
 from pyrogram import types
+from pyrogram import utils
 from ..object import Object
-from ... import utils
 
 
 class Folder(Object):
@@ -35,14 +35,14 @@ class Folder(Object):
         title (``str``):
             The folder title.
 
-        pinned_peers (List of :obj:`~pyrogram.types.Chat`):
-            A list of pinned chats in folder.
-
-        included_peers (List of :obj:`~pyrogram.types.Chat`):
+        included_chats (List of :obj:`~pyrogram.types.Chat`, *optional*):
             A list of included chats in folder.
 
-        excluded_peers (List of :obj:`~pyrogram.types.Chat`, *optional*):
+        excluded_chats (List of :obj:`~pyrogram.types.Chat`, *optional*):
             A list of excluded chats in folder.
+
+        pinned_chats (List of :obj:`~pyrogram.types.Chat`, *optional*):
+            A list of pinned chats in folder.
 
         contacts (``bool``, *optional*):
             True, if the folder includes contacts.
@@ -53,8 +53,8 @@ class Folder(Object):
         groups (``bool``, *optional*):
             True, if the folder includes groups.
 
-        broadcasts (``bool``, *optional*):
-            True, if the folder includes broadcasts.
+        channels (``bool``, *optional*):
+            True, if the folder includes channels.
 
         bots (``bool``, *optional*):
             True, if the folder includes bots.
@@ -78,13 +78,13 @@ class Folder(Object):
         client: "pyrogram.Client" = None,
         id: int,
         title: str,
-        pinned_peers: List["types.Chat"] = None,
-        included_peers: List["types.Chat"] = None,
-        excluded_peers: List["types.Chat"] = None,
+        included_chats: List["types.Chat"] = None,
+        excluded_chats: List["types.Chat"] = None,
+        pinned_chats: List["types.Chat"] = None,
         contacts: bool = None,
         non_contacts: bool = None,
         groups: bool = None,
-        broadcasts: bool = None,
+        channels: bool = None,
         bots: bool = None,
         exclude_muted: bool = None,
         exclude_read: bool = None,
@@ -96,13 +96,13 @@ class Folder(Object):
 
         self.id = id
         self.title = title
-        self.pinned_peers = pinned_peers
-        self.included_peers = included_peers
-        self.excluded_peers = excluded_peers
+        self.included_chats = included_chats
+        self.excluded_chats = excluded_chats
+        self.pinned_chats = pinned_chats
         self.contacts = contacts
         self.non_contacts = non_contacts
         self.groups = groups
-        self.broadcasts = broadcasts
+        self.channels = channels
         self.bots = bots
         self.exclude_muted = exclude_muted
         self.exclude_read = exclude_read
@@ -110,21 +110,32 @@ class Folder(Object):
         self.emoji = emoji
         self.has_my_invites = has_my_invites
 
-
     @staticmethod
-    def _parse(client, folder: "raw.types.DialogFilter", peers) -> "Folder":
-        # TODO: Change types.Chat._parse to types.Dialog._parse
+    def _parse(client, folder: "raw.types.DialogFilter", users, chats) -> "Folder":
+        included_chats = []
+        excluded_chats = []
+        pinned_chats = []
+
+        for peer in folder.include_peers:
+            included_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
+
+        if getattr(folder, "exclude_peers", None):
+            for peer in folder.exclude_peers:
+                excluded_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
+
+        for peer in folder.pinned_peers:
+            pinned_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
 
         return Folder(
             id=folder.id,
             title=folder.title,
-            pinned_peers=types.List(types.Chat._parse_chat(client, peers.get(utils.get_input_peer_id(i), None)) for i in folder.pinned_peers) or None,
-            included_peers=types.List(types.Chat._parse_chat(client, peers.get(utils.get_input_peer_id(i), None)) for i in folder.include_peers) or None,
-            excluded_peers=types.List(types.Chat._parse_chat(client, peers.get(utils.get_input_peer_id(i), None)) for i in folder.exclude_peers) or None if getattr(folder, "exclude_peers", None) else None,
+            included_chats=types.List(included_chats) or None,
+            excluded_chats=types.List(excluded_chats) or None,
+            pinned_chats=types.List(pinned_chats) or None,
             contacts=getattr(folder, "contacts", None),
             non_contacts=getattr(folder, "non_contacts", None),
             groups=getattr(folder, "groups", None),
-            broadcasts=getattr(folder, "broadcasts", None),
+            channels=getattr(folder, "broadcasts", None),
             bots=getattr(folder, "bots", None),
             exclude_muted=getattr(folder, "exclude_muted", None),
             exclude_read=getattr(folder, "exclude_read", None),
@@ -154,63 +165,110 @@ class Folder(Object):
 
         return await self._client.delete_folder(self.id)
 
-    async def update_peers(self, pinned_peers: List[Union[int, str]], included_peers: List[Union[int, str]], excluded_peers: List[Union[int, str]]):
+    async def update(
+        self,
+        included_chats: List[Union[int, str]] = None,
+        excluded_chats: List[Union[int, str]] = None,
+        pinned_chats: List[Union[int, str]] = None,
+        title: str = None,
+        contacts: bool = None,
+        non_contacts: bool = None,
+        groups: bool = None,
+        channels: bool = None,
+        bots: bool = None,
+        exclude_muted: bool = None,
+        exclude_read: bool = None,
+        exclude_archived: bool = None,
+        emoji: str = None
+    ):
         """Bound method *update_peers* of :obj:`~pyrogram.types.Folder`.
 
         Use as a shortcut for:
 
         .. code-block:: python
 
-            await client.update_folder(123456789, ...)
+            await client.update_folder(
+                folder_id,
+                title="New folder",
+                included_chats=["me"]
+            )
 
         Example:
             .. code-block:: python
 
-               await folder.update_peers(...)
+               await folder.update(included_chats=["me"])
+
+        Parameters:
+            included_chats (``int`` | ``str`` | List of ``int`` or ``str``, *optional*):
+                Users or chats that should added in the folder
+                You can pass an ID (int), username (str) or phone number (str).
+                Multiple users can be added by passing a list of IDs, usernames or phone numbers.
+
+            excluded_chats (``int`` | ``str`` | List of ``int`` or ``str``, *optional*):
+                Users or chats that should excluded from the folder
+                You can pass an ID (int), username (str) or phone number (str).
+                Multiple users can be added by passing a list of IDs, usernames or phone numbers.
+
+            pinned_chats (``int`` | ``str`` | List of ``int`` or ``str``, *optional*):
+                Users or chats that should pinned in the folder
+                You can pass an ID (int), username (str) or phone number (str).
+                Multiple users can be added by passing a list of IDs, usernames or phone numbers.
+
+            title (``str``, *optional*):
+                A folder title was changed to this value.
+
+            contacts (``bool``, *optional*):
+                Pass True if folder should contain contacts.
+
+            non_contacts (``bool``, *optional*):
+                Pass True if folder should contain non contacts.
+
+            groups (``bool``, *optional*):
+                Pass True if folder should contain groups.
+
+            channels (``bool``, *optional*):
+                Pass True if folder should contain channels.
+
+            bots (``bool``, *optional*):
+                Pass True if folder should contain bots.
+
+            exclude_muted (``bool``, *optional*):
+                Pass True if folder should exclude muted users.
+
+            exclude_archived (``bool``, *optional*):
+                Pass True if folder should exclude archived users.
+
+            emoji (``str``, *optional*):
+                Folder emoji.
+                Pass None to leave the folder icon as default.
 
         Returns:
             True on success.
         """
+        if not included_chats:
+            included_chats = [i.id for i in self.included_chats or []]
+
+        if not included_chats:
+            excluded_chats = [i.id for i in self.excluded_chats or []]
+
+        if not included_chats:
+            pinned_chats = [i.id for i in self.pinned_chats or []]
 
         return await self._client.update_folder(
             folder_id=self.id,
-            title=self.title,
-            pinned_peers=pinned_peers,
-            included_peers=included_peers,
-            excluded_peers=excluded_peers,
-            contacts=self.contacts,
-            non_contacts=self.non_contacts,
-            groups=self.groups,
-            broadcasts=self.broadcasts,
-            bots=self.bots,
-            exclude_muted=self.exclude_muted,
-            exclude_read=self.exclude_read,
-            exclude_archived=self.exclude_archived,
-            emoji=self.emoji
-        )
-
-    async def pin_chat(self, chat_id: Union[int, str]):
-        """Bound method *pin_chat* of :obj:`~pyrogram.types.Folder`.
-
-        Use as a shortcut for:
-
-        .. code-block:: python
-
-            await client.update_folder(123456789, ...)
-
-        Example:
-            .. code-block:: python
-
-               await folder.pin_chat(chat_id)
-
-        Returns:
-            True on success.
-        """
-
-        return await self.update_peers(
-            pinned_peers=[i.id for i in self.pinned_peers] if self.pinned_peers else [] + [chat_id],
-            included_peers=[i.id for i in self.included_peers] if self.included_peers else [] + [chat_id],
-            excluded_peers=[i.id for i in self.excluded_peers] if self.excluded_peers else [],
+            title=title or self.title,
+            included_chats=included_chats,
+            excluded_chats=excluded_chats,
+            pinned_chats=pinned_chats,
+            contacts=contacts or self.contacts,
+            non_contacts=non_contacts or self.non_contacts,
+            groups=groups or self.groups,
+            channels=channels or self.channels,
+            bots=bots or self.bots,
+            exclude_muted=exclude_muted or self.exclude_muted,
+            exclude_read=exclude_read or self.exclude_read,
+            exclude_archived=exclude_archived or self.exclude_archived,
+            emoji=emoji or self.emoji
         )
 
     async def include_chat(self, chat_id: Union[int, str]):
@@ -220,21 +278,31 @@ class Folder(Object):
 
         .. code-block:: python
 
-            await client.update_folder(123456789, ...)
+            await client.update_folder(
+                folder_id=123456789,
+                included_chats=[chat_id],
+                excluded_chats=[...],
+                pinned_chats=[...]
+            )
 
         Example:
             .. code-block:: python
 
                await folder.include_chat(chat_id)
 
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier for the target chat or username of the target user/channel/supergroup
+                (in the format @username).
+
         Returns:
             True on success.
         """
 
-        return await self.update_peers(
-            pinned_peers=[i.id for i in self.pinned_peers] if self.pinned_peers else [],
-            included_peers=[i.id for i in self.included_peers] if self.included_peers else [] + [chat_id],
-            excluded_peers=[i.id for i in self.excluded_peers] if self.excluded_peers else [],
+        return await self.update(
+            included_chats=[i.id for i in self.included_chats or []] + [chat_id],
+            excluded_chats=[i.id for i in self.excluded_chats or []],
+            pinned_chats=[i.id for i in self.pinned_chats or []]
         )
 
     async def exclude_chat(self, chat_id: Union[int, str]):
@@ -244,21 +312,103 @@ class Folder(Object):
 
         .. code-block:: python
 
-            await client.update_folder(123456789, ...)
+            await client.update_folder(
+                folder_id=123456789,
+                included_chats=[...],
+                excluded_chats=[chat_id],
+                pinned_chats=[...]
+            )
 
         Example:
             .. code-block:: python
 
                await folder.exclude_chat(chat_id)
 
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier for the target chat or username of the target user/channel/supergroup
+                (in the format @username).
+
         Returns:
             True on success.
         """
 
-        return await self.update_peers(
-            pinned_peers=[i.id for i in self.pinned_peers] if self.pinned_peers else [],
-            included_peers=[i.id for i in self.included_peers] if self.included_peers else [],
-            excluded_peers=[i.id for i in self.excluded_peers] if self.excluded_peers else [] + [chat_id],
+        return await self.update(
+            included_chats=[i.id for i in self.included_chats or []],
+            excluded_chats=[i.id for i in self.excluded_chats or []] + [chat_id],
+            pinned_chats=[i.id for i in self.pinned_chats or []],
+        )
+
+    async def pin_chat(self, chat_id: Union[int, str]):
+        """Bound method *pin_chat* of :obj:`~pyrogram.types.Folder`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.update_folder(
+                folder_id=123456789,
+                included_chats=[chat_id],
+                excluded_chats=[chat_id],
+                pinned_chats=[...]
+            )
+
+        Example:
+            .. code-block:: python
+
+               await folder.pin_chat(chat_id)
+
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier for the target chat or username of the target user/channel/supergroup
+                (in the format @username).
+
+        Returns:
+            True on success.
+        """
+
+        return await self.update(
+            included_chats=[i.id for i in self.included_chats or []] + [chat_id],
+            excluded_chats=[i.id for i in self.excluded_chats or []],
+            pinned_chats=[i.id for i in self.pinned_chats or []] + [chat_id]
+        )
+
+    async def remove_chat(self, chat_id: Union[int, str]):
+        """Bound method *remove_chat* of :obj:`~pyrogram.types.Folder`.
+
+        Remove chat from included, excluded and pinned chats.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.update_folder(
+                folder_id=123456789,
+                included_chats=[...],
+                excluded_chats=[...],
+                pinned_chats=[...]
+            )
+
+        Example:
+            .. code-block:: python
+
+               await folder.remove_chat(chat_id)
+
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier for the target chat or username of the target user/channel/supergroup
+                (in the format @username).
+
+        Returns:
+            True on success.
+        """
+        peer = await self._client.resolve_peer(chat_id)
+        peer_id = utils.get_peer_id(peer)
+
+        return await self.update(
+            included_chats=[i.id for i in self.included_chats or [] if peer_id != i.id],
+            excluded_chats=[i.id for i in self.excluded_chats or [] if peer_id != i.id],
+            pinned_chats=[i.id for i in self.pinned_chats or [] if peer_id != i.id]
         )
 
     async def export_link(self):
@@ -268,12 +418,12 @@ class Folder(Object):
 
         .. code-block:: python
 
-            await client.export_link(123456789)
+            await client.export_folder_link(123456789)
 
         Example:
             .. code-block:: python
 
-               await folder.export_folder_link(chat_id)
+               await folder.export_link()
 
         Returns:
             ``str``: On success, a link to the folder as string is returned.

@@ -248,7 +248,6 @@ def pyrogram_api():
             toggle_forum_topics
             delete_folder
             export_folder_link
-            get_folder
             get_folders
             update_folder
         """,
@@ -684,10 +683,11 @@ def pyrogram_api():
         folder="""
         Folder
             Folder.delete
-            Folder.update_peers
-            Folder.pin_chat
+            Folder.update
             Folder.include_chat
             Folder.exclude_chat
+            Folder.pin_chat
+            Folder.remove_chat
             Folder.export_link
         """
     )
