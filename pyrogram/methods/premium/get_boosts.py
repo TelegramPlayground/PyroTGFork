@@ -29,7 +29,7 @@ class GetBoosts:
     ) -> bool:
         """Get your boosts list
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Returns:
             List of :obj:`~pyrogram.types.MyBoost`: On success.

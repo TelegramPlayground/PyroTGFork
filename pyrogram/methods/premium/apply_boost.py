@@ -30,7 +30,7 @@ class ApplyBoost:
     ) -> bool:
         """Apply boost
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):

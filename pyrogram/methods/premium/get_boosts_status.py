@@ -30,7 +30,7 @@ class GetBoostsStatus:
     ) -> bool:
         """Get boosts status of channel
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
