@@ -48,7 +48,15 @@ class ChatColor(Object):
         if not color:
             return None
 
+        chat_color = getattr(color, "color", None)
+
+        if not chat_color is None:
+            if for_profile:
+                chat_color = enums.ProfileColor(color.color)
+            else:
+                chat_color = enums.ReplyColor(color.color)
+
         return ChatColor(
-            color=enums.ProfileColor(color.color) if for_profile else enums.ReplyColor(color.color) if color else None,
+            color=chat_color,
             background_emoji_id=getattr(color, "background_emoji_id", None)
         )
