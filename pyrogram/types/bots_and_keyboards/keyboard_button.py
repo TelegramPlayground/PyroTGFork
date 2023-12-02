@@ -91,14 +91,13 @@ class KeyboardButton(Object):
         if isinstance(b, raw.types.KeyboardButtonRequestPoll):
             return KeyboardButton(
                 text=b.text,
-                quiz=b.quiz
+                request_poll=types.RequestPollInfo(is_quiz=b.quiz)
             )
 
         if isinstance(b, raw.types.KeyboardButtonRequestPeer):
             return KeyboardButton(
                 text=b.text,
-                button_id=b.button_id,
-                peer_type=b.peer_type
+                request_peer=b.peer_type
             )
 
         if isinstance(b, raw.types.KeyboardButtonSimpleWebView):
