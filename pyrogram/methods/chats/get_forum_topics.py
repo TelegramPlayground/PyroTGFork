@@ -16,11 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, Optional, AsyncGenerator
+from typing import Union, AsyncGenerator
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import types, raw, utils
 
 
 class GetForumTopics:
@@ -39,26 +38,66 @@ class GetForumTopics:
 
             limit (``int``, *optional*):
                 Limits the number of topics to be retrieved.
+                By default, no limit is applied and all topics are returned.
 
         Returns:
-            ``Generator``: On success, a generator yielding :obj:`~pyrogram.types.ForumTopic` objects is returned.
+            ``Generator``: A generator yielding :obj:`~pyrogram.types.ForumTopic` objects.
 
         Example:
             .. code-block:: python
 
-                # get all forum topics
+                # Iterate through all topics
                 async for topic in app.get_forum_topics(chat_id):
                     print(topic)
         """
-        r = await self.invoke(
-            raw.functions.channels.GetForumTopics(
-                channel=await self.resolve_peer(chat_id),
-                offset_date=0,
-                offset_id=0,
-                offset_topic=0,
-                limit=limit
-            )
-        )
+        current = 0
+        total = limit or (1 << 31) - 1
+        limit = min(100, total)
 
-        for topic in r.topics:
-            yield types.ForumTopic._parse(topic)
+        offset_date = 0
+        offset_id = 0
+        offset_topic = 0
+
+        while True:
+            r = await self.invoke(
+                raw.functions.channels.GetForumTopics(
+                    channel=await self.resolve_peer(chat_id),
+                    offset_date=offset_date,
+                    offset_id=offset_id,
+                    offset_topic=offset_topic,
+                    limit=limit
+                )
+            )
+
+            users = {i.id: i for i in r.users}
+            chats = {i.id: i for i in r.chats}
+
+            messages = {}
+
+            for message in r.messages:
+                if isinstance(message, raw.types.MessageEmpty):
+                    continue
+
+                messages[message.id] = await types.Message._parse(self, message, users, chats)
+
+            topics = []
+
+            for topic in r.topics:
+                topics.append(types.ForumTopic._parse(self, topic, messages, users, chats))
+
+            if not topics:
+                return
+
+            last = topics[-1]
+
+            offset_id = last.top_message.id
+            offset_date = utils.datetime_to_timestamp(last.top_message.date)
+            offset_topic = last.id
+
+            for topic in topics:
+                yield topic
+
+                current += 1
+
+                if current >= total:
+                    return

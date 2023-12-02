@@ -1025,12 +1025,14 @@ class Message(Object, Update):
                             parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
                         else:
                             thread_id = message.reply_to.reply_to_msg_id
+
                         parsed_message.message_thread_id = thread_id
+
                         if topics:
-                            parsed_message.topic = types.ForumTopic._parse(topics[thread_id])
+                            parsed_message.topic = types.ForumTopic._parse(client, topics[thread_id], users=users, chats=chats)
                         else:
                             try:
-                                msg = await client.get_messages(parsed_message.chat.id,message.id)
+                                msg = await client.get_messages(parsed_message.chat.id, message.id, replies=0)
                                 if msg.topic:
                                     parsed_message.topic = msg.topic
                             except Exception:
@@ -1051,6 +1053,7 @@ class Message(Object, Update):
                                 if media is None or web_page is not None
                                 else None
                             )
+
                         parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
                         parsed_message.reply_to_top_message_id = message.reply_to.reply_to_top_id
                 else:
