@@ -250,6 +250,7 @@ def pyrogram_api():
             export_folder_link
             get_folders
             update_folder
+            get_similar_channels
         """,
         users="""
         Users
