@@ -109,6 +109,14 @@ class Story(Object, Update):
 
         disallowed_users (List of ``int`` | ``str``, *optional*):
             List of user_ids whos denied to view the story.
+
+        skipped (``bool``, *optional*):
+            The story is skipped.
+            A story can be skipped in case it was skipped.
+
+        deleted (``bool``, *optional*):
+            The story is deleted.
+            A story can be deleted in case it was deleted or you tried to retrieve a story that doesn't exist yet.
     """
 
     # TODO: Add Media Areas
@@ -143,6 +151,8 @@ class Story(Object, Update):
         privacy: "enums.StoryPrivacyRules" = None,
         allowed_users: List[Union[int, str]] = None,
         disallowed_users: List[Union[int, str]] = None,
+        skipped: bool = None,
+        deleted: bool = None
     ):
         super().__init__(client)
 
@@ -172,6 +182,8 @@ class Story(Object, Update):
         self.privacy = privacy
         self.allowed_users = allowed_users
         self.disallowed_users = disallowed_users
+        self.skipped = skipped
+        self.deleted = deleted
 
     @staticmethod
     async def _parse(
@@ -181,13 +193,6 @@ class Story(Object, Update):
         chats: dict,
         peer: Union["raw.types.PeerChannel", "raw.types.PeerUser"]
     ) -> "Story":
-        if isinstance(story, raw.types.StoryItemSkipped):
-            return await types.StorySkipped._parse(client, story, users, chats, peer)
-        if isinstance(story, raw.types.StoryItemDeleted):
-            return await types.StoryDeleted._parse(client, story, users, chats, peer)
-
-        entities = [e for e in (types.MessageEntity._parse(client, entity, {}) for entity in story.entities) if e]
-
         if isinstance(peer, raw.types.InputPeerSelf):
             r = await client.invoke(raw.functions.users.GetUsers(id=[raw.types.InputPeerSelf()]))
             peer_id = r[0].id
@@ -216,6 +221,25 @@ class Story(Object, Update):
             else:
                 users.update({i.id: i for i in r})
 
+        photo = None
+        video = None
+        from_user = None
+        sender_chat = None
+        chat = None
+        privacy = None
+        allowed_users = None
+        disallowed_users = None
+        media_type = None
+
+        from_user = types.User._parse(client, users.get(peer_id, None))
+        sender_chat = types.Chat._parse_channel_chat(client, chats[peer_id]) if not from_user else None
+        chat = sender_chat if not from_user else types.Chat._parse_user_chat(client, users.get(peer_id, None))
+
+        if isinstance(story, raw.types.StoryItemDeleted):
+            return Story(client=client, id=story.id, deleted=True, from_user=from_user, sender_chat=sender_chat, chat=chat)
+        if isinstance(story, raw.types.StoryItemSkipped):
+            return Story(client=client, id=story.id, skipped=True, from_user=from_user, sender_chat=sender_chat, chat=chat)
+
         forward_from = None
         forward_sender_name = None
         forward_from_chat = None
@@ -233,16 +257,6 @@ class Story(Object, Update):
                 forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
                 forward_from_story_id = forward_header.story_id
 
-        photo = None
-        video = None
-        from_user = None
-        sender_chat = None
-        chat = None
-        privacy = None
-        allowed_users = None
-        disallowed_users = None
-        media_type = None
-
         if isinstance(story.media, raw.types.MessageMediaPhoto):
             photo = types.Photo._parse(client, story.media.photo, story.media.ttl_seconds)
             media_type = enums.MessageMediaType.PHOTO
@@ -252,10 +266,6 @@ class Story(Object, Update):
             video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
             video = types.Video._parse(client, doc, video_attributes, None)
             media_type = enums.MessageMediaType.VIDEO
-
-        from_user = types.User._parse(client, users.get(peer_id, None))
-        sender_chat = types.Chat._parse_channel_chat(client, chats[peer_id]) if not from_user else None
-        chat = sender_chat if not from_user else types.Chat._parse_user_chat(client, users.get(peer_id, None))
 
         privacy_map = {
             raw.types.PrivacyValueAllowAll: enums.StoriesPrivacyRules.PUBLIC,
@@ -275,6 +285,8 @@ class Story(Object, Update):
                 disallowed_users = types.List(types.User._parse(client, users.get(user_id, None)) for user_id in priv.users)
             elif isinstance(priv, raw.types.PrivacyValueDisallowChatParticipants):
                 disallowed_users = types.List(types.Chat._parse_chat_chat(client, chats.get(chat_id, None)) for chat_id in priv.chats)
+
+        entities = [e for e in (types.MessageEntity._parse(client, entity, {}) for entity in story.entities) if e]
 
         return Story(
             id=story.id,

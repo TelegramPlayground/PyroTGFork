@@ -459,8 +459,6 @@ def pyrogram_api():
             ChatReactions
             MessageStory
             Story
-            StoryDeleted
-            StorySkipped
             StoryViews
             MyBoost
             BoostsStatus
