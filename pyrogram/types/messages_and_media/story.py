@@ -98,8 +98,11 @@ class Story(Object, Update):
         caption_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the caption.
 
-        views (:obj:`~pyrogram.types.StoryViews`, *optional*):
+        views (``int``, *optional*):
             Stories views.
+
+        forwards (``int``, *optional*):
+            Stories forwards.
 
         privacy (:obj:`~pyrogram.enums.StoryPrivacyRules`, *optional*):
             Story privacy.
@@ -109,6 +112,9 @@ class Story(Object, Update):
 
         disallowed_users (List of ``int`` | ``str``, *optional*):
             List of user_ids whos denied to view the story.
+
+        reactions (List of :obj:`~pyrogram.types.Reaction`):
+            List of the reactions to this story.
 
         skipped (``bool``, *optional*):
             The story is skipped.
@@ -147,10 +153,12 @@ class Story(Object, Update):
         selected_contacts: bool = None,
         caption: str = None,
         caption_entities: List["types.MessageEntity"] = None,
-        views: "types.StoryViews" = None,
+        views: int = None,
+        forwards: int = None,
         privacy: "enums.StoryPrivacyRules" = None,
         allowed_users: List[Union[int, str]] = None,
         disallowed_users: List[Union[int, str]] = None,
+        reactions: List["types.Reaction"] = None,
         skipped: bool = None,
         deleted: bool = None
     ):
@@ -179,9 +187,11 @@ class Story(Object, Update):
         self.caption = caption
         self.caption_entities = caption_entities
         self.views = views
+        self.forwards = forwards
         self.privacy = privacy
         self.allowed_users = allowed_users
         self.disallowed_users = disallowed_users
+        self.reactions = reactions
         self.skipped = skipped
         self.deleted = deleted
 
@@ -230,6 +240,9 @@ class Story(Object, Update):
         allowed_users = None
         disallowed_users = None
         media_type = None
+        views = None
+        forwards = None
+        reactions = None
 
         from_user = types.User._parse(client, users.get(peer_id, None))
         sender_chat = types.Chat._parse_channel_chat(client, chats[peer_id]) if not from_user else None
@@ -258,6 +271,14 @@ class Story(Object, Update):
             else:
                 forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
                 forward_from_story_id = forward_header.story_id
+
+        if story.views:
+            views=getattr(story.views, "views_count", None)
+            forwards=getattr(story.views, "forwards_count", None)
+            reactions=[
+                types.Reaction._parse_count(client, reaction)
+                for reaction in getattr(story.views, "reactions", [])
+            ] or None
 
         if isinstance(story.media, raw.types.MessageMediaPhoto):
             photo = types.Photo._parse(client, story.media.photo, story.media.ttl_seconds)
@@ -313,10 +334,12 @@ class Story(Object, Update):
             selected_contacts=story.selected_contacts,
             caption=story.caption,
             caption_entities=entities or None,
-            views=types.StoryViews._parse(client, story.views) if story.views else None,
+            views=views,
+            forwards=forwards,
             privacy=privacy,
             allowed_users=allowed_users,
             disallowed_users=disallowed_users,
+            reactions=reactions,
             client=client
         )
 
