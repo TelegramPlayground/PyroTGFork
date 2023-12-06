@@ -51,7 +51,6 @@ from .voice import Voice
 from .web_app_data import WebAppData
 from .web_page import WebPage
 from .message_reactions import MessageReactions
-from .message_story import MessageStory
 from .my_boost import MyBoost
 
 __all__ = [
@@ -60,5 +59,5 @@ __all__ = [
     "GeneralTopicUnhidden", "Game", "GiftCode", "Giveaway", "Location", "Message", "MessageEntity",
     "Photo", "Thumbnail", "StrippedThumbnail", "Story", "StoryViews", "Poll", "PollOption",
     "Sticker", "Venue", "Video", "VideoNote", "Voice", "WebPage", "Dice", "Reaction",
-    "WebAppData", "MessageReactions", "MessageStory", "MyBoost"
+    "WebAppData", "MessageReactions", "MyBoost"
 ]

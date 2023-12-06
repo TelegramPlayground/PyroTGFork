@@ -201,7 +201,7 @@ class Message(Object, Update):
         giveaway (:obj:`~pyrogram.types.Giveaway`, *optional*):
             Message is a giveaway, information about the giveaway.
 
-        story (:obj:`~pyrogram.types.MessageStory`, *optional*):
+        story (:obj:`~pyrogram.types.Story`, *optional*):
             Message is a story, information about the story.
 
         video (:obj:`~pyrogram.types.Video`, *optional*):
@@ -415,7 +415,7 @@ class Message(Object, Update):
         animation: "types.Animation" = None,
         game: "types.Game" = None,
         giveaway: "types.Giveaway" = None,
-        story: "types.MessageStory" = None,
+        story: "types.Story" = None,
         video: "types.Video" = None,
         voice: "types.Voice" = None,
         video_note: "types.VideoNote" = None,
@@ -867,7 +867,13 @@ class Message(Object, Update):
                     giveaway = types.Giveaway._parse(client, media, chats)
                     media_type = enums.MessageMediaType.GIVEAWAY
                 elif isinstance(media, raw.types.MessageMediaStory):
-                    story = types.MessageStory._parse(client, media, users, chats)
+                    if not media.story:
+                        story = await client.get_stories(utils.get_peer_id(media.peer), media.id)
+                        if not story:
+                            story = await types.Story._parse(client, media, users, chats, media.peer)
+                    else:
+                        story = await types.Story._parse(client, media.story, users, chats, media.peer)
+
                     media_type = enums.MessageMediaType.STORY
                 elif isinstance(media, raw.types.MessageMediaDocument):
                     doc = media.document

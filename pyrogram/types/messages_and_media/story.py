@@ -135,7 +135,7 @@ class Story(Object, Update):
         forward_from_chat: "types.Chat" = None,
         forward_from_story_id: int = None,
         expire_date: datetime = None,
-        media: "enums.MessageMediaType",
+        media: "enums.MessageMediaType" = None,
         has_protected_content: bool = None,
         photo: "types.Photo" = None,
         video: "types.Video" = None,
@@ -239,6 +239,8 @@ class Story(Object, Update):
             return Story(client=client, id=story.id, deleted=True, from_user=from_user, sender_chat=sender_chat, chat=chat)
         if isinstance(story, raw.types.StoryItemSkipped):
             return Story(client=client, id=story.id, skipped=True, from_user=from_user, sender_chat=sender_chat, chat=chat)
+        if isinstance(story, raw.types.MessageMediaStory):
+            return Story(client=client, id=story.id, from_user=from_user, sender_chat=sender_chat, chat=chat)
 
         forward_from = None
         forward_sender_name = None
