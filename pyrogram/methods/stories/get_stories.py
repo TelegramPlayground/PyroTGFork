@@ -83,4 +83,4 @@ class GetStories:
                 )
             )
 
-        return types.List(stories) if is_iterable else stories[0]
+        return types.List(stories) if is_iterable else stories[0] if stories else None
