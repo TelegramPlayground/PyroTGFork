@@ -263,7 +263,7 @@ class Chat(Object):
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             dc_id=getattr(getattr(user, "photo", None), "dc_id", None),
             reply_color=types.ChatColor._parse(getattr(user, "color", None)),
-            profile_color=types.ChatColor._parse(getattr(user, "profile_color", None), for_profile=True),
+            profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
             client=client
         )
 

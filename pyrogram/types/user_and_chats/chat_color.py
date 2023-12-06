@@ -44,19 +44,21 @@ class ChatColor(Object):
         self.background_emoji_id = background_emoji_id
 
     @staticmethod
-    def _parse(color: "raw.types.PeerColor" = None, for_profile: bool = None) -> Optional["ChatColor"]:
+    def _parse(color: "raw.types.PeerColor" = None) -> Optional["ChatColor"]:
         if not color:
             return None
 
-        chat_color = getattr(color, "color", None)
+        return ChatColor(
+            color=enums.ReplyColor(color.color) if getattr(color, "color", None) else None,
+            background_emoji_id=getattr(color, "background_emoji_id", None)
+        )
 
-        if not chat_color is None:
-            if for_profile:
-                chat_color = enums.ProfileColor(color.color)
-            else:
-                chat_color = enums.ReplyColor(color.color)
+    @staticmethod
+    def _parse_profile_color(color: "raw.types.PeerColor" = None) -> Optional["ChatColor"]:
+        if not color:
+            return None
 
         return ChatColor(
-            color=chat_color,
+            color=enums.ProfileColor(color.color) if getattr(color, "color", None) else None,
             background_emoji_id=getattr(color, "background_emoji_id", None)
         )
