@@ -131,8 +131,11 @@ class SendStory:
         Example:
             .. code-block:: python
 
-                # Send new story
-                await app.send_story(media=file_id, caption='Hello guys.')
+                # Post story to your profile
+                await app.send_story("me", "story.png", caption='My new story!')
+
+                # Post story to channel
+                await app.send_story(123456, "story.png", caption='My new story!')
 
         Raises:
             ValueError: In case of invalid arguments.
@@ -217,7 +220,7 @@ class SendStory:
                         peer = await self.resolve_peer(user)
                         if isinstance(peer, raw.types.InputPeerUser):
                             _allowed_users.append(peer)
-                        elif isinstance(peer, raw.types.InputPeerChat):
+                        elif isinstance(peer, (raw.types.InputPeerChat, raw.types.InputPeerChannel)):
                             _allowed_chats.append(peer)
 
                     if _allowed_users:

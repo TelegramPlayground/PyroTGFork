@@ -20,7 +20,6 @@ from typing import Union
 
 import pyrogram
 from pyrogram import raw
-from pyrogram import types
 
 
 class ExportStoryLink:
@@ -28,10 +27,10 @@ class ExportStoryLink:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         story_id: int,
-    ) -> "types.ExportedStoryLink":
+    ) -> str:
         """Export a story link.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):

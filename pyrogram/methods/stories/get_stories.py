@@ -29,9 +29,9 @@ class GetStories:
         chat_id: Union[int, str],
         story_ids: Union[int, Iterable[int]],
     ) -> "types.Stories":
-        """Get stories by id.
+        """Get one or more stories from a chat by using stories identifiers.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
@@ -39,7 +39,7 @@ class GetStories:
                 For your personal story you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            story_ids (List of ``int`` ``32-bit``):
+            story_ids (``int`` | Iterable of ``int``, *optional*):
                 Pass a single story identifier or an iterable of story ids (as integers) to get the content of the
                 story themselves.
 
@@ -51,7 +51,7 @@ class GetStories:
             .. code-block:: python
 
                 # Get stories by id
-                stories = await app.get_stories_by_id(chat_id, [1, 2, 3])
+                stories = await app.get_stories(chat_id, [1, 2, 3])
 
                 for story in stories:
                     print(story)

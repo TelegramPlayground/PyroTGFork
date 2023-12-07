@@ -16,19 +16,19 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import AsyncGenerator, Union, Optional
+from typing import AsyncGenerator, Union
 
 import pyrogram
 from pyrogram import raw
 from pyrogram import types
 
 
-class GetPeerStories:
-    async def get_peer_stories(
+class GetChatStories:
+    async def get_chat_stories(
         self: "pyrogram.Client",
         chat_id: Union[int, str]
     ) -> AsyncGenerator["types.Story", None]:
-        """Get all active stories from an user by using user identifiers.
+        """Get all non expired stories from a chat by using chat identifier.
 
         .. include:: /_includes/usable-by/users.rst
 
@@ -44,8 +44,8 @@ class GetPeerStories:
         Example:
             .. code-block:: python
 
-                # Get all active story from spesific user
-                async for story in app.get_peer_stories(chat_id):
+                # Get all non expired stories from spesific chat
+                async for story in app.get_chat_stories(chat_id):
                     print(story)
 
         Raises:

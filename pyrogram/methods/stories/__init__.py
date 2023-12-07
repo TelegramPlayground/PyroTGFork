@@ -23,7 +23,7 @@ from .edit_story import EditStory
 from .export_story_link import ExportStoryLink
 from .forward_story import ForwardStory
 from .get_all_stories import GetAllStories
-from .get_peer_stories import GetPeerStories
+from .get_chat_stories import GetChatStories
 from .get_pinned_stories import GetPinnedStories
 from .get_stories import GetStories
 from .get_stories_archive import GetStoriesArchive
@@ -41,7 +41,7 @@ class Stories(
     ExportStoryLink,
     ForwardStory,
     GetAllStories,
-    GetPeerStories,
+    GetChatStories,
     GetPinnedStories,
     GetStories,
     GetStoriesArchive,

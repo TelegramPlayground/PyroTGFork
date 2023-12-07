@@ -36,7 +36,7 @@ class ForwardStory:
     ) -> Optional["types.Message"]:
         """Send story.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
@@ -53,7 +53,7 @@ class ForwardStory:
                 Unique identifier of story.
 
             disable_notification (``bool``, *optional*):
-                Sends the message silently.
+                Sends the message with story silently.
                 Users will receive a notification with no sound.
 
             message_thread_id (``int``, *optional*):
@@ -64,13 +64,13 @@ class ForwardStory:
                 Date when the message will be automatically sent.
 
         Returns:
-            :obj:`~pyrogram.types.Message`: On success, the sent stoty message is returned.
+            :obj:`~pyrogram.types.Message`: On success, the sent story message is returned.
 
         Example:
             .. code-block:: python
 
                 # Send your story to chat_id
-                await app.forward_story(chat_id, "me", 1)
+                await app.forward_story(to_chat, from_chat, 123)
         """
         r = await self.invoke(
             raw.functions.messages.SendMedia(

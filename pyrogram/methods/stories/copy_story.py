@@ -17,11 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from datetime import datetime
 from typing import Union, List, Optional
 
 import pyrogram
-from pyrogram import types, enums, utils
+from pyrogram import types, enums
 
 log = logging.getLogger(__name__)
 
@@ -43,7 +42,7 @@ class CopyStory:
     ) -> "types.Story":
         """Copy story.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
@@ -71,13 +70,13 @@ class CopyStory:
                 Story privacy.
                 Defaults to :obj:`~pyrogram.enums.StoriesPrivacyRules.PUBLIC`
 
-            allowed_users (List of ``int``, *optional*):
+            allowed_users (List of ``int`` | ``str``, *optional*):
                 List of user_id or chat_id of chat users who are allowed to view stories.
                 Note: chat_id available only with :obj:`~pyrogram.enums.StoriesPrivacyRules.SELECTED_USERS`.
                 Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.CLOSE_FRIENDS`
                 and :obj:`~pyrogram.enums.StoriesPrivacyRules.SELECTED_USERS` only
 
-            disallowed_users (List of ``int``, *optional*):
+            disallowed_users (List of ``int`` | ``str``, *optional*):
                 List of user_id whos disallow to view the stories.
                 Note: Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.PUBLIC`
                 and :obj:`~pyrogram.enums.StoriesPrivacyRules.CONTACTS` only

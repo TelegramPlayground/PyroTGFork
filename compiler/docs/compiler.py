@@ -347,20 +347,22 @@ def pyrogram_api():
         """,
         stories="""
         Stories
+            can_send_story
+            copy_story
             delete_stories
             edit_story
             export_story_link
+            forward_story
             get_all_stories
+            get_chat_stories
+            get_pinned_stories
             get_stories_archive
+            get_stories
+            hide_stories
             increment_story_views
+            pin_stories
             read_stories
             send_story
-            pin_stories
-            hide_stories
-            can_send_story
-            get_pinned_stories
-            copy_story
-            forward_story
         """,
         premium="""
         Premium

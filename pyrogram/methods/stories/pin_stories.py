@@ -30,16 +30,16 @@ class PinStories:
         stories_ids: Union[int, Iterable[int]],
         pinned: bool = False,
     ) -> List[int]:
-        """Toggle stories pinned.
+        """Pin one or more stories in a chat by using stories identifiers.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
 
-            stories_ids (List of ``int`` ``32-bit``):
+            stories_ids (``int`` | Iterable of ``int``, *optional*):
                 List of unique identifiers of the target stories.
 
             pinned (``bool``):

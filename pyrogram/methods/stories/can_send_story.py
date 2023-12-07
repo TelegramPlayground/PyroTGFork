@@ -16,11 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, Iterable
+from typing import Union
 
 import pyrogram
 from pyrogram import raw
-from pyrogram import types
 
 
 class CanSendStory:
@@ -30,7 +29,7 @@ class CanSendStory:
     ) -> bool:
         """Can send story
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
