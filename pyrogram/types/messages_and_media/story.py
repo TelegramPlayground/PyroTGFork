@@ -1479,15 +1479,9 @@ class Story(Object, Update):
         """
         return await self._client.delete_stories(chat_id=self.chat.id, story_ids=self.id)
 
-    async def edit(
+    async def edit_media(
         self,
         media: Union[str, BinaryIO] = None,
-        privacy: "enums.StoriesPrivacyRules" = None,
-        allowed_users: List[Union[int, str]] = None,
-        disallowed_users: List[Union[int, str]] = None,
-        caption: str = None,
-        parse_mode: "enums.ParseMode" = None,
-        caption_entities: List["types.MessageEntity"] = None
     ) -> "types.Story":
         """Bound method *edit* of :obj:`~pyrogram.types.Story`.
 
@@ -1503,12 +1497,9 @@ class Story(Object, Update):
         Example:
             .. code-block:: python
 
-                await story.edit_caption("hello")
+                await story.edit_media("new_video.mp4")
 
         Parameters:
-            story_id (``int``):
-                Unique identifier (int) of the target story.
-
             media (``str`` | ``BinaryIO``, *optional*):
                 New story media.
                 Pass a file_id as string to send a photo that exists on the Telegram servers,
@@ -1516,46 +1507,16 @@ class Story(Object, Update):
                 pass a file path as string to upload a new photo that exists on your local machine, or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
-            privacy (:obj:`~pyrogram.enums.StoriesPrivacyRules`, *optional*):
-                Story privacy.
-
-            allowed_users (List of ``int``, *optional*):
-                List of user_id or chat_id of chat users who are allowed to view stories.
-                Note: chat_id available only with :obj:`~pyrogram.enums.StoriesPrivacyRules.SELECTED_USERS`.
-                Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.CLOSE_FRIENDS`
-                and :obj:`~pyrogram.enums.StoriesPrivacyRules.SELECTED_USERS` only
-
-            disallowed_users (List of ``int``, *optional*):
-                List of user_id whos disallow to view the stories.
-                Note: Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.PUBLIC`
-                and :obj:`~pyrogram.enums.StoriesPrivacyRules.CONTACTS` only
-
-            caption (``str``, *optional*):
-                Story caption, 0-1024 characters.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
-
         Returns:
             On success, the edited :obj:`~pyrogram.types.Story` is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        return await self._client.edit_story(
+        return await self._client.edit_story_media(
             chat_id=self.chat.id,
             story_id=self.id,
-            media=media,
-            privacy=privacy,
-            allowed_users=allowed_users,
-            disallowed_users=disallowed_users,
-            caption=caption,
-            parse_mode=parse_mode,
-            caption_entities=caption_entities
+            media=media
         )
 
     async def edit_caption(
@@ -1570,7 +1531,7 @@ class Story(Object, Update):
 
         .. code-block:: python
 
-            await client.edit_story(
+            await client.edit_story_caption(
                 story_id=story.id,
                 caption="hello"
             )
@@ -1597,7 +1558,7 @@ class Story(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        return await self._client.edit_story(
+        return await self._client.edit_story_caption(
             chat_id=self.chat.id,
             story_id=self.id,
             caption=caption,
@@ -1617,7 +1578,7 @@ class Story(Object, Update):
 
         .. code-block:: python
 
-            await client.edit_story(
+            await client.edit_story_privacy(
                 story_id=story.id,
                 privacy=enums.StoriesPrivacyRules.PUBLIC
             )
@@ -1631,13 +1592,13 @@ class Story(Object, Update):
             privacy (:obj:`~pyrogram.enums.StoriesPrivacyRules`, *optional*):
                 Story privacy.
 
-            allowed_users (List of ``int``, *optional*):
+            allowed_users (List of ``int`` | ``str``, *optional*):
                 List of user_id or chat_id of chat users who are allowed to view stories.
                 Note: chat_id available only with :obj:`~pyrogram.enums.StoriesPrivacyRules.SELECTED_USERS`.
                 Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.CLOSE_FRIENDS`
                 and :obj:`~pyrogram.enums.StoriesPrivacyRules.SELECTED_USERS` only
 
-            disallowed_users (List of ``int``, *optional*):
+            disallowed_users (List of ``int`` | ``str``, *optional*):
                 List of user_id whos disallow to view the stories.
                 Note: Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.PUBLIC`
                 and :obj:`~pyrogram.enums.StoriesPrivacyRules.CONTACTS` only
@@ -1648,7 +1609,7 @@ class Story(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        return await self._client.edit_story(
+        return await self._client.edit_story_privacy(
             chat_id=self.chat.id,
             story_id=self.id,
             privacy=privacy,

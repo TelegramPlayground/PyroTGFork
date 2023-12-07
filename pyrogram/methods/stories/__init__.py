@@ -19,7 +19,9 @@
 from .can_send_story import CanSendStory
 from .copy_story import CopyStory
 from .delete_stories import DeleteStories
-from .edit_story import EditStory
+from .edit_story_caption import EditStoryCaption
+from .edit_story_media import EditStoryMedia
+from .edit_story_privacy import EditStoryPrivacy
 from .export_story_link import ExportStoryLink
 from .forward_story import ForwardStory
 from .get_all_stories import GetAllStories
@@ -37,7 +39,9 @@ class Stories(
     CanSendStory,
     CopyStory,
     DeleteStories,
-    EditStory,
+    EditStoryCaption,
+    EditStoryMedia,
+    EditStoryPrivacy,
     ExportStoryLink,
     ForwardStory,
     GetAllStories,

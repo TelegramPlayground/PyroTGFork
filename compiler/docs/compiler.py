@@ -350,7 +350,9 @@ def pyrogram_api():
             can_send_story
             copy_story
             delete_stories
-            edit_story
+            edit_story_caption
+            edit_story_media
+            edit_story_privacy
             export_story_link
             forward_story
             get_all_stories
@@ -671,7 +673,7 @@ def pyrogram_api():
             Story.reply_video_note
             Story.reply_voice
             Story.delete
-            Story.edit
+            Story.edit_media
             Story.edit_caption
             Story.edit_privacy
             Story.export_link
