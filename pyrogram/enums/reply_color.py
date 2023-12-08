@@ -84,3 +84,11 @@ class ReplyColor(AutoName):
 
     BLUE_WHITE_ORANGE = 20
     "Blue color with white and orange stripes."
+
+    DYNAMIC = 21
+    """Secret color that cannot be set.
+
+    For now:
+    Red - If you use Telegram desktop.
+    Blue - If you are using Telegram android/ios.
+    """
