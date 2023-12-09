@@ -262,14 +262,14 @@ class Story(Object, Update):
 
         forward_header = story.fwd_from  # type: raw.types.StoryFwdHeader
 
-        if forward_header and forward_header.from_id:
-            raw_peer_id = utils.get_raw_peer_id(forward_header.from_id)
-            peer_id = utils.get_peer_id(forward_header.from_id)
+        if forward_header:
+            fwd_raw_peer_id = utils.get_raw_peer_id(forward_header.from_peer)
+            fwd_peer_id = utils.get_peer_id(forward_header.from_peer)
 
-            if peer_id > 0:
-                forward_from = types.User._parse(client, users[raw_peer_id])
+            if fwd_peer_id > 0:
+                forward_from = types.User._parse(client, users[fwd_raw_peer_id])
             else:
-                forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
+                forward_from_chat = types.Chat._parse_channel_chat(client, chats[fwd_raw_peer_id])
                 forward_from_story_id = forward_header.story_id
 
         if story.views:
