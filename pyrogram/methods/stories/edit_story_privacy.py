@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 from typing import List, Union
 
 import pyrogram
@@ -47,13 +46,13 @@ class EditStoryPrivacy:
             privacy (:obj:`~pyrogram.enums.StoriesPrivacyRules`, *optional*):
                 Story privacy.
 
-            allowed_users (List of ``int``, *optional*):
+            allowed_users (List of ``int`` | ``str``, *optional*):
                 List of user_id or chat_id of chat users who are allowed to view stories.
                 Note: chat_id available only with :obj:`~pyrogram.enums.StoriesPrivacyRules.SELECTED_USERS`.
                 Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.CLOSE_FRIENDS`
                 and :obj:`~pyrogram.enums.StoriesPrivacyRules.SELECTED_USERS` only
 
-            disallowed_users (List of ``int``, *optional*):
+            disallowed_users (List of ``int`` | ``str``, *optional*):
                 List of user_id whos disallow to view the stories.
                 Note: Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.PUBLIC`
                 and :obj:`~pyrogram.enums.StoriesPrivacyRules.CONTACTS` only
@@ -68,9 +67,12 @@ class EditStoryPrivacy:
                 await app.edit_story_privacy(chat_id, story_id, enums.StoriesPrivacyRules.PUBLIC)
 
                 # Edit the privacy of the story to allow selected users to view the story
-                await app.edit_story_privacy(chat_id, story_id, enums.StoriesPrivacyRules.SELECTED_USERS,
-                    allowed_users=[123, 456])
-
+                await app.edit_story_privacy(
+                    chat_id,
+                    story_id,
+                    enums.StoriesPrivacyRules.SELECTED_USERS,
+                    allowed_users=[123, 456]
+                )
         """
         privacy_rules = []
 
