@@ -462,7 +462,6 @@ def pyrogram_api():
             MessageReactions
             ChatReactions
             Story
-            StoryViews
             MyBoost
             BoostsStatus
             Giveaway
