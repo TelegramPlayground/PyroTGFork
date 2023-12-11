@@ -25,7 +25,7 @@ import pyrogram
 from pyrogram import raw, enums
 from pyrogram import types
 from pyrogram import utils
-from pyrogram.errors import MessageIdsEmpty, PeerIdInvalid, ChannelPrivate
+from pyrogram.errors import MessageIdsEmpty, PeerIdInvalid, ChannelPrivate, BotMethodInvalid
 from pyrogram.parser import utils as parser_utils, Parser
 from ..object import Object
 from ..update import Update
@@ -868,7 +868,11 @@ class Message(Object, Update):
                     media_type = enums.MessageMediaType.GIVEAWAY
                 elif isinstance(media, raw.types.MessageMediaStory):
                     if not media.story:
-                        story = await client.get_stories(utils.get_peer_id(media.peer), media.id)
+                        try:
+                            story = await client.get_stories(utils.get_peer_id(media.peer), media.id)
+                        except BotMethodInvalid:
+                            pass
+
                         if not story:
                             story = await types.Story._parse(client, media, users, chats, media.peer)
                     else:
@@ -1098,7 +1102,7 @@ class Message(Object, Update):
                                 parsed_message.reply_to_story_user_id,
                                 parsed_message.reply_to_story_id
                             )
-                        except Exception:
+                        except BotMethodInvalid:
                             pass
                         else:
                             parsed_message.reply_to_story = reply_to_story
