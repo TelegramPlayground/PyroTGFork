@@ -39,15 +39,15 @@ class SendReaction:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
 
-            message_id (``int``):
+            message_id (``int``, *optional*):
                 Identifier of the message.
 
-            story_id (``int``):
+            story_id (``int``, *optional*):
                 Identifier of the story.
 
             emoji (``int`` | ``str``, *optional*):
                 Reaction emoji.
-                Pass "" as emoji (default) to retract the reaction.
+                Pass None as emoji (default) to retract the reaction.
 
             big (``bool``, *optional*):
                 Pass True to show a bigger and longer reaction.
@@ -60,10 +60,16 @@ class SendReaction:
             .. code-block:: python
 
                 # Send a reaction
-                await app.send_reaction(chat_id, message_id, "🔥")
+                await app.send_reaction(chat_id, message_id=message_id, emoji="🔥")
+
+                # Send a reaction with premium emoji
+                await app.send_reaction(chat_id, message_id=message_id, emoji=5319161050128459957)
+
+                # Send a reaction to story
+                await app.send_reaction(chat_id, story_id=story_id, emoji="❤️")
 
                 # Retract a reaction
-                await app.send_reaction(chat_id, message_id)
+                await app.send_reaction(chat_id, message_id=message_id)
         """
         if isinstance(emoji, int):
             emoji = [raw.types.ReactionCustomEmoji(document_id=emoji)]
@@ -74,7 +80,7 @@ class SendReaction:
             rpc = raw.functions.stories.SendReaction(
                 peer=await self.resolve_peer(chat_id),
                 story_id=story_id,
-                reaction=emoji[0],
+                reaction=emoji[0] if emoji else None,
             )
         else:
             rpc = raw.functions.messages.SendReaction(
