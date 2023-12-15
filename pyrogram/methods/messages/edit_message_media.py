@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from datetime import datetime
 import io
 import os
 import re
@@ -35,6 +36,7 @@ class EditMessageMedia:
         message_id: int,
         media: "types.InputMedia",
         invert_media: bool = None,
+        schedule_date: datetime = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         file_name: str = None
     ) -> "types.Message":
@@ -59,6 +61,9 @@ class EditMessageMedia:
 
             invert_media (``bool``, *optional*):
                 Invert media.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
@@ -277,6 +282,7 @@ class EditMessageMedia:
                 id=message_id,
                 invert_media=invert_media,
                 media=media,
+                schedule_date=utils.datetime_to_timestamp(schedule_date),
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 message=message,
                 entities=entities
