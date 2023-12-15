@@ -515,6 +515,17 @@ channel = create(channel_filter)
 
 # endregion
 
+# region forum_filter
+async def forum_filter(_, __, m: Message):
+    return bool(m.chat and m.chat.is_forum)
+
+
+forum = create(forum_filter)
+"""Filter messages sent in forums."""
+
+
+# endregion
+
 # region new_chat_members_filter
 async def new_chat_members_filter(_, __, m: Message):
     return bool(m.new_chat_members)
