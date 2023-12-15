@@ -26,37 +26,45 @@ from pyrogram import types
 class StartBot:
     async def start_bot(
         self: "pyrogram.Client",
-        bot: Union[int, str],
-        start_param: str = ""
+        chat_id: Union[int, str],
+        param: str = ""
     ) -> bool:
         """Start bot
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            bot (``int`` | ``str``):
+            chat_id (``int`` | ``str``):
                 Unique identifier of the bot you want to be started. You can specify
                 a @username (str) or a bot ID (int).
 
-            start_param (``str``):
-                Text of the param (up to 64 characters).
+            param (``str``):
+                Text of the deep linking parameter (up to 64 characters).
                 Defaults to "" (empty string).
 
         Returns:
-            ``bool`` - On success, True is returned.
+            :obj:`~pyrogram.types.Message`: On success, the sent message is returned.
 
         Example:
             .. code-block:: python
 
                 # Start bot
                 await app.start_bot("pyrogrambot")
+
+                # Start bot with param
+                await app.start_bot("pyrogrambot", "ref123456")
         """
+        if not param:
+            return await self.send_message(chat_id, "/start")
+
+        peer = await self.resolve_peer(chat_id)
+
         r = await self.invoke(
             raw.functions.messages.StartBot(
-                bot=await self.resolve_peer(bot),
-                peer=raw.types.InputPeerSelf(),
+                bot=peer,
+                peer=peer,
                 random_id=self.rnd_id(),
-                start_param=start_param
+                start_param=param
             )
         )
 
