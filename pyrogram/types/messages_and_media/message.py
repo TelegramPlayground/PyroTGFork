@@ -785,12 +785,11 @@ class Message(Object, Update):
 
             client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
 
-            if message.reply_to:
-                if message.reply_to.forum_topic:
-                    if message.reply_to.reply_to_top_id:
-                        parsed_message.message_thread_id = message.reply_to.reply_to_top_id
-                    else:
-                        parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
+            if message.reply_to and message.reply_to.forum_topic:
+                if message.reply_to.reply_to_top_id:
+                    parsed_message.message_thread_id = message.reply_to.reply_to_top_id
+                else:
+                    parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
 
             return parsed_message
 
@@ -867,16 +866,13 @@ class Message(Object, Update):
                     giveaway = types.Giveaway._parse(client, media, chats)
                     media_type = enums.MessageMediaType.GIVEAWAY
                 elif isinstance(media, raw.types.MessageMediaStory):
-                    if not media.story:
+                    if media.story:
+                        story = await types.Story._parse(client, media.story, users, chats, media.peer)
+                    else:
                         try:
                             story = await client.get_stories(utils.get_peer_id(media.peer), media.id)
                         except BotMethodInvalid:
-                            pass
-
-                        if not story:
                             story = await types.Story._parse(client, media, users, chats, media.peer)
-                    else:
-                        story = await types.Story._parse(client, media.story, users, chats, media.peer)
 
                     media_type = enums.MessageMediaType.STORY
                 elif isinstance(media, raw.types.MessageMediaDocument):
@@ -1040,13 +1036,6 @@ class Message(Object, Update):
 
                         if topics:
                             parsed_message.topic = types.ForumTopic._parse(client, topics[thread_id], users=users, chats=chats)
-                        else:
-                            try:
-                                msg = await client.get_messages(parsed_message.chat.id, message.id, replies=0)
-                                if msg.topic:
-                                    parsed_message.topic = msg.topic
-                            except Exception:
-                                pass
                     else:
                         if message.reply_to.quote:
                             quote_entities = [types.MessageEntity._parse(client, entity, users) for entity in message.reply_to.quote_entities]
@@ -1106,6 +1095,15 @@ class Message(Object, Update):
                             pass
                         else:
                             parsed_message.reply_to_story = reply_to_story
+
+            if parsed_message.topic is None and parsed_message.chat.is_forum:
+                try:
+                    parsed_message.topic = await client.get_forum_topics_by_id(
+                        chat_id=parsed_message.chat.id,
+                        topic_ids=parsed_message.message_thread_id or 1
+                    )
+                except BotMethodInvalid:
+                    pass
 
             if not parsed_message.poll:  # Do not cache poll messages
                 client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
