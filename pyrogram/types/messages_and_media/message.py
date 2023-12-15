@@ -145,6 +145,10 @@ class Message(Object, Update):
         edit_date (:py:obj:`~datetime.datetime`, *optional*):
             Date the message was last edited.
 
+        edit_hidden (``bool``, *optional*):
+            The message shown as not modified.
+            A message can be not modified in case it has received a reaction.
+
         media_group_id (``int``, *optional*):
             The unique identifier of a media message group this message belongs to.
 
@@ -399,6 +403,7 @@ class Message(Object, Update):
         media: "enums.MessageMediaType" = None,
         invert_media: bool = None,
         edit_date: datetime = None,
+        edit_hidden: bool = None,
         media_group_id: int = None,
         author_signature: str = None,
         has_protected_content: bool = None,
@@ -496,6 +501,7 @@ class Message(Object, Update):
         self.media = media
         self.invert_media = invert_media
         self.edit_date = edit_date
+        self.edit_hidden = edit_hidden
         self.media_group_id = media_group_id
         self.author_signature = author_signature
         self.has_protected_content = has_protected_content
@@ -993,6 +999,7 @@ class Message(Object, Update):
                 media=media_type,
                 invert_media=getattr(message, "invert_media", None),
                 edit_date=utils.timestamp_to_datetime(message.edit_date),
+                edit_hidden=message.edit_hide,
                 media_group_id=message.grouped_id,
                 photo=photo,
                 location=location,
