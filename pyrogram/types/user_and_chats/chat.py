@@ -299,7 +299,7 @@ class Chat(Object):
         return Chat(
             id=peer_id,
             type=enums.ChatType.SUPERGROUP if getattr(channel, "megagroup", None) else enums.ChatType.CHANNEL,
-            is_forum=getattr(channel, "forum", None),
+            is_forum=getattr(channel, "forum", None) if getattr(channel, "megagroup", None) else None,
             is_verified=getattr(channel, "verified", None),
             is_restricted=getattr(channel, "restricted", None),
             is_creator=getattr(channel, "creator", None),
