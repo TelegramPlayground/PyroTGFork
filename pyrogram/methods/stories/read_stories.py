@@ -38,7 +38,8 @@ class ReadStories:
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
             max_id (``int``, *optional*):
-                Maximum identifier of the target story to read.
+                The id of the last story you want to mark as read; all the stories before this one will be marked as
+                read as well. Defaults to 0 (mark every unread message as read).
 
         Returns:
             List of ``int``: On success, a list of read stories is returned.
@@ -46,13 +47,16 @@ class ReadStories:
         Example:
             .. code-block:: python
 
-                # Read stories
+                # Read all stories
                 await app.read_stories(chat_id)
+
+                # Mark stories as read only up to the given story id
+                await app.read_stories(chat_id, 123)
         """
         r = await self.invoke(
             raw.functions.stories.ReadStories(
                 peer=await self.resolve_peer(chat_id),
-                max_id=max_id
+                max_id=max_id or (1 << 31) - 1
             )
         )
 
