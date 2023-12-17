@@ -267,6 +267,7 @@ def pyrogram_api():
             get_common_chats
             get_default_emoji_statuses
             set_emoji_status
+            update_status
         """,
         invite_links="""
         Invite Links
