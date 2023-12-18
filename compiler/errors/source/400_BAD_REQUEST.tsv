@@ -70,6 +70,7 @@ CHAT_TOO_BIG	The chat is too big for this action
 CODE_EMPTY	The provided code is empty
 CODE_HASH_INVALID	The provided code hash invalid
 CODE_INVALID	The provided code is invalid (i.e. from email)
+COLOR_INVALID	The provided color is invalid (use help.getPeerProfileColors or help.getPeerColors to obtain the valid colors)
 CONNECTION_API_ID_INVALID	The provided API id is invalid
 CONNECTION_APP_VERSION_EMPTY	App version is empty
 CONNECTION_DEVICE_MODEL_EMPTY	The device model is empty
