@@ -39,7 +39,8 @@ class UpdateColor:
 
             color (:obj:`~pyrogram.enums.ReplyColor` | :obj:`~pyrogram.enums.ProfileColor`):
                 Color type.
-                Profile color can only be set for the user.
+                Pass :obj:`~pyrogram.enums.ReplyColor` to set reply color or
+                :obj:`~pyrogram.enums.ProfileColor` to set profile color.
 
             background_emoji_id (``int``, *optional*):
                 Unique identifier of the custom emoji.
@@ -66,6 +67,7 @@ class UpdateColor:
             r = await self.invoke(
                 raw.functions.channels.UpdateColor(
                     channel=peer,
+                    for_profile=isinstance(color, enums.ProfileColor),
                     color=color.value,
                     background_emoji_id=background_emoji_id
                 )

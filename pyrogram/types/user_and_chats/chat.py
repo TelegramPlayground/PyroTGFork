@@ -154,6 +154,9 @@ class Chat(Object):
             Available reactions in the chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
 
+        level (``int``, *optional*)
+            Channel boosts level.
+
         reply_color (:obj:`~pyrogram.types.ChatColor`, *optional*)
             Chat reply color.
 
@@ -200,6 +203,7 @@ class Chat(Object):
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
         available_reactions: Optional["types.ChatReactions"] = None,
+        level: int = None,
         reply_color: "types.ChatColor" = None,
         profile_color: "types.ChatColor" = None
     ):
@@ -240,6 +244,7 @@ class Chat(Object):
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
+        self.level = level
         self.reply_color = reply_color
         self.profile_color = profile_color
 
@@ -318,7 +323,9 @@ class Chat(Object):
             members_count=getattr(channel, "participants_count", None),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
+            level=getattr(channel, "level", None),
             reply_color=types.ChatColor._parse(getattr(channel, "color", None)),
+            profile_color=types.ChatColor._parse(getattr(channel, "profile_color", None)),
             client=client
         )
 
