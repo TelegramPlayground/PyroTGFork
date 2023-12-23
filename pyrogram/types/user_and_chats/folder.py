@@ -117,14 +117,23 @@ class Folder(Object):
         pinned_chats = []
 
         for peer in folder.include_peers:
-            included_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
+            try:
+                included_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
+            except KeyError:
+                pass
 
         if getattr(folder, "exclude_peers", None):
             for peer in folder.exclude_peers:
-                excluded_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
+                try:
+                    excluded_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
+                except KeyError:
+                    pass
 
         for peer in folder.pinned_peers:
-            pinned_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
+            try:
+                pinned_chats.append(types.Chat._parse_dialog(client, peer, users, chats))
+            except KeyError:
+                pass
 
         return Folder(
             id=folder.id,
