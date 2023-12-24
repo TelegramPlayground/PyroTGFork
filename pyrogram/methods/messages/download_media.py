@@ -120,11 +120,18 @@ class DownloadMedia:
                 file_bytes = bytes(file.getbuffer())
         """
         available_media = ("audio", "document", "photo", "sticker", "animation", "video", "voice", "video_note",
-                           "new_chat_photo")
+                           "new_chat_photo", "story")
 
         if isinstance(message, types.Message):
             for kind in available_media:
                 media = getattr(message, kind, None)
+
+                if kind == "story":
+                    for kind in available_media:
+                        media = getattr(message.story, kind, None)
+
+                        if media is not None:
+                            break
 
                 if media is not None:
                     break
