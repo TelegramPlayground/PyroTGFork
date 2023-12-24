@@ -350,6 +350,28 @@ gift_code = create(gift_code_filter)
 
 # endregion
 
+# region requested_chats_filter
+async def requested_chats_filter(_, __, m: Message):
+    return bool(m.requested_chats)
+
+
+requested_chats = create(requested_chats_filter)
+"""Filter service messages for request chats."""
+
+
+# endregion
+
+# region story_filter
+async def story_filter(_, __, m: Message):
+    return bool(m.story)
+
+
+story = create(story_filter)
+"""Filter messages that contain :obj:`~pyrogram.types.Story` objects."""
+
+
+# endregion
+
 # region video_filter
 async def video_filter(_, __, m: Message):
     return bool(m.video)
