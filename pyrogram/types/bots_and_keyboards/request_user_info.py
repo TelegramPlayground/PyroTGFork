@@ -31,6 +31,9 @@ class RequestUserInfo(Object):
 
         is_premium (``bool``, *optional*):
             If True, returns the list of users where user has premium.
+
+        max_quantity(``int``, *optional*):
+            Max quantity of peers.
     """
 
     def __init__(
@@ -38,9 +41,11 @@ class RequestUserInfo(Object):
         button_id: int,
         is_bot: bool = None,
         is_premium: bool = None,
+        max_quantity: int = None,
     ):
         super().__init__()
 
         self.button_id = button_id
         self.is_bot = is_bot
         self.is_premium = is_premium
+        self.max_quantity = max_quantity

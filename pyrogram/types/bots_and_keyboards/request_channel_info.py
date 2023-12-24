@@ -26,11 +26,14 @@ class RequestChannelInfo(Object):
         button_id (``int``):
             Identifier of button.
 
-        is_creator (``bool``):
+        is_creator (``bool``, *optional*):
             If True, returns the list of chats where this user is a channel creator.
 
-        has_username (``bool``):
+        has_username (``bool``, *optional*):
             If True, returns the list of chats where chat has username.
+
+        max_quantity(``int``, *optional*):
+            Max quantity of peers.
     """
 
     def __init__(
@@ -38,9 +41,11 @@ class RequestChannelInfo(Object):
         button_id: int,
         is_creator: bool = None,
         has_username: bool = None,
+        max_quantity: int = None,
     ):
         super().__init__()
 
         self.button_id = button_id
         self.is_creator = is_creator
         self.has_username = has_username
+        self.max_quantity = max_quantity

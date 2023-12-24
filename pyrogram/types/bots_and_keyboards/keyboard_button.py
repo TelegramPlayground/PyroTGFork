@@ -59,7 +59,7 @@ class KeyboardButton(Object):
         request_contact: bool = None,
         request_location: bool = None,
         request_poll: "types.RequestPollInfo" = None,
-        request_peer: Union["types.RequestPeerTypeChannelInfo", "types.RequestPeerTypeChatInfo", "types.RequestPeerTypeUserInfo"] = None,
+        request_peer: Union["types.RequestChannelInfo", "types.RequestChatInfo", "types.RequestUserInfo"] = None,
         web_app: "types.WebAppInfo" = None,
     ):
         super().__init__()
@@ -95,10 +95,40 @@ class KeyboardButton(Object):
             )
 
         if isinstance(b, raw.types.KeyboardButtonRequestPeer):
-            return KeyboardButton(
-                text=b.text,
-                request_peer=b.peer_type
-            )
+            if isinstance(b.peer_type, raw.types.RequestPeerTypeBroadcast):
+                return KeyboardButton(
+                    text=b.text,
+                    request_peer=types.RequestChannelInfo(
+                        button_id=b.button_id,
+                        is_creator=getattr(b.peer_type, "creator", None),
+                        has_username=getattr(b.peer_type, "has_username", None),
+                        max_quantity=getattr(b, "max_quantity", None)
+                    )
+                )
+
+            if isinstance(b.peer_type, raw.types.RequestPeerTypeChat):
+                return KeyboardButton(
+                    text=b.text,
+                    request_peer=types.RequestChatInfo(
+                        button_id=b.button_id,
+                        is_creator=getattr(b.peer_type, "creator", None),
+                        is_bot_participant=getattr(b.peer_type, "bot_participant", None),
+                        has_username=getattr(b.peer_type, "has_username", None),
+                        has_forum=getattr(b.peer_type, "forum", None),
+                        max_quantity=getattr(b, "max_quantity", None)
+                    )
+                )
+
+            if isinstance(b.peer_type, raw.types.RequestPeerTypeUser):
+                return KeyboardButton(
+                    text=b.text,
+                    request_peer=types.RequestUserInfo(
+                        button_id=b.button_id,
+                        is_bot=getattr(b.peer_type, "bot", None),
+                        is_premium=getattr(b.peer_type, "premium", None),
+                        max_quantity=getattr(b, "max_quantity", None)
+                    )
+                )
 
         if isinstance(b, raw.types.KeyboardButtonSimpleWebView):
             return KeyboardButton(
@@ -126,7 +156,8 @@ class KeyboardButton(Object):
                     peer_type=raw.types.RequestPeerTypeBroadcast(
                         creator=self.request_peer.is_creator,
                         has_username=self.request_peer.has_username,
-                    )
+                    ),
+                    max_quantity=self.request_peer.max_quantity
                 )
 
             if isinstance(self.request_peer, types.RequestChatInfo):
@@ -138,7 +169,8 @@ class KeyboardButton(Object):
                         bot_participant=self.request_peer.is_bot_participant,
                         has_username=self.request_peer.has_username,
                         forum=self.request_peer.has_forum,
-                    )
+                    ),
+                    max_quantity=self.request_peer.max_quantity
                 )
 
             if isinstance(self.request_peer, types.RequestUserInfo):
@@ -148,7 +180,8 @@ class KeyboardButton(Object):
                     peer_type=raw.types.RequestPeerTypeUser(
                         bot=self.request_peer.is_bot,
                         premium=self.request_peer.is_premium
-                    )
+                    ),
+                    max_quantity=self.request_peer.max_quantity
                 )
 
         elif self.web_app:

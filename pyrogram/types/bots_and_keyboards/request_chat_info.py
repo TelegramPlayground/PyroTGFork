@@ -26,17 +26,20 @@ class RequestChatInfo(Object):
         button_id (``int``):
             Identifier of button.
 
-        is_creator (``bool``):
+        is_creator (``bool``, *optional*):
             If True, returns the list of chats where this user is a chat creator.
 
-        is_bot_participant (``bool``):
+        is_bot_participant (``bool``, *optional*):
             If True, returns the list of chats where this bot is participant.
 
-        has_username (``bool``):
+        has_username (``bool``, *optional*):
             If True, returns the list of chats where chat has username.
 
-        has_forum (``bool``):
+        has_forum (``bool``, *optional*):
            If True, returns the list of chats where forum topcis is enabled.
+
+        max_quantity(``int``, *optional*):
+            Max quantity of peers.
     """
 
     def __init__(
@@ -46,6 +49,7 @@ class RequestChatInfo(Object):
         is_bot_participant: bool = None,
         has_username: bool = None,
         has_forum: bool = None,
+        max_quantity: int = None,
 
     ):
         super().__init__()
@@ -55,3 +59,4 @@ class RequestChatInfo(Object):
         self.is_bot_participant = is_bot_participant
         self.has_username = has_username
         self.has_forum = has_forum
+        self.max_quantity = max_quantity
