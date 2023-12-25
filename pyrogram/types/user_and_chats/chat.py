@@ -64,13 +64,13 @@ class Chat(Object):
         is_deactivated (``bool``, *optional*):
             True, if this chat has been flagged for deactivated.
 
-        is_support (``bool``):
+        is_support (``bool``, *optional*):
             True, if this chat is part of the Telegram support team. Users and bots only.
 
-        is_stories_hidden (``bool``):
+        is_stories_hidden (``bool``, *optional*):
             True, if this chat has hidden stories.
 
-        is_stories_unavailable (``bool``):
+        is_stories_unavailable (``bool``, *optional*):
             True, if this chat stories is unavailable.
 
         title (``str``, *optional*):

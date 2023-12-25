@@ -100,13 +100,13 @@ class User(Object, Update):
         is_premium (``bool``, *optional*):
             True, if this user is a premium user.
 
-        is_close_friend (``bool``):
+        is_close_friend (``bool``, *optional*):
             True, if this user is a close friend.
 
-        is_stories_hidden (``bool``):
+        is_stories_hidden (``bool``, *optional*):
             True, if this user has hidden stories.
 
-        is_stories_unavailable (``bool``):
+        is_stories_unavailable (``bool``, *optional*):
             True, if this chat stories is unavailable.
 
         first_name (``str``, *optional*):

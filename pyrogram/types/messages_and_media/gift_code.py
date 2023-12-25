@@ -40,6 +40,9 @@ class GiftCode(Object):
             Identifier of gift code.
             You can combine it with `t.me/giftcode/{slug}`
             to get link for this gift.
+
+        mention (``str``, *property*):
+            Generate a link to this gift code.
     """
 
     def __init__(
