@@ -164,6 +164,7 @@ INVITE_HASH_EXPIRED	The chat invite link is no longer valid
 INVITE_HASH_INVALID	The invite link hash is invalid
 INVITE_REQUEST_SENT	The request to join this chat or channel has been successfully sent
 INVITE_REVOKED_MISSING	The action required a chat invite link to be revoked first
+INVITE_SLUG_EMPTY	The invite slug is empty
 LANG_PACK_INVALID	The provided language pack is invalid
 LASTNAME_INVALID	The last name is invalid
 LIMIT_INVALID	The limit parameter is invalid
