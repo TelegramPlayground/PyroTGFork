@@ -105,6 +105,7 @@ async def parse_messages(
 
     if replies:
         messages_with_replies = {
+            # TODO: fix this logic someday
             i.id: i.reply_to.reply_to_msg_id
             for i in messages.messages
             if not isinstance(i, raw.types.MessageEmpty) and i.reply_to

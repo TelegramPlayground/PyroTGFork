@@ -175,6 +175,7 @@ class User(Object, Update):
         phone_number: str = None,
         photo: "types.ChatPhoto" = None,
         restrictions: List["types.Restriction"] = None
+        _raw: "raw.base.User" = None
     ):
         super().__init__(client)
 
@@ -202,6 +203,7 @@ class User(Object, Update):
         self.phone_number = phone_number
         self.photo = photo
         self.restrictions = restrictions
+        self._raw = _raw
 
     @property
     def mention(self):
@@ -239,7 +241,8 @@ class User(Object, Update):
             phone_number=user.phone,
             photo=types.ChatPhoto._parse(client, user.photo, user.id, user.access_hash),
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
-            client=client
+            client=client,
+            _raw=user
         )
 
     @staticmethod

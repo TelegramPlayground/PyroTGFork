@@ -163,6 +163,11 @@ class Chat(Object):
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
         available_reactions: Optional["types.ChatReactions"] = None
+        _raw: Union[
+            "raw.types.Channel",
+            "raw.types.Chat",
+            "raw.types.User"
+        ] = None
     ):
         super().__init__(client)
 
@@ -194,6 +199,7 @@ class Chat(Object):
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
+        self._raw = _raw
 
     @staticmethod
     def _parse_user_chat(client, user: raw.types.User) -> "Chat":
@@ -213,7 +219,8 @@ class Chat(Object):
             photo=types.ChatPhoto._parse(client, user.photo, peer_id, user.access_hash),
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             dc_id=getattr(getattr(user, "photo", None), "dc_id", None),
-            client=client
+            client=client,
+            _raw=user
         )
 
     @staticmethod
@@ -230,7 +237,8 @@ class Chat(Object):
             members_count=getattr(chat, "participants_count", None),
             dc_id=getattr(getattr(chat, "photo", None), "dc_id", None),
             has_protected_content=getattr(chat, "noforwards", None),
-            client=client
+            client=client,
+            _raw=chat
         )
 
     @staticmethod
@@ -255,7 +263,8 @@ class Chat(Object):
             members_count=getattr(channel, "participants_count", None),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
-            client=client
+            client=client,
+            _raw=channel
         )
 
     @staticmethod
