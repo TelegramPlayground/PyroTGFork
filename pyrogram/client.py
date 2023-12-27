@@ -263,7 +263,7 @@ class Client(Methods):
         elif self.in_memory:
             self.storage = MemoryStorage(self.name)
         else:
-            self.storage = FileStorage(self.name, self.workdir)
+            self.storage = FileStorage(self.name, self.WORKDIR)
 
         self.dispatcher = Dispatcher(self)
 
