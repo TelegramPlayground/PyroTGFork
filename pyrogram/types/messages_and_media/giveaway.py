@@ -45,14 +45,13 @@ class Giveaway(Object):
             Prize description.
 
         only_new_subscribers (``bool``, *optional*):
-            True if the giveaway is for new subscribers only.
+            True, if this giveaway is for new subscribers only.
 
         only_for_countries (List of ``str`` , *optional*):
             Countries for which the giveaway is available in iso2 format.
 
         winners_are_visible (``bool``, *optional*):
-            True if the winners is visible.
-
+            True, if this giveaway winners is visible.
     """
 
     def __init__(

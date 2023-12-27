@@ -420,6 +420,7 @@ class Message(Object, Update):
         animation: "types.Animation" = None,
         game: "types.Game" = None,
         giveaway: "types.Giveaway" = None,
+        giveaway_result: "types.GiveawayResult" = None,
         story: "types.Story" = None,
         video: "types.Video" = None,
         voice: "types.Voice" = None,
@@ -518,6 +519,7 @@ class Message(Object, Update):
         self.animation = animation
         self.game = game
         self.giveaway = giveaway
+        self.giveaway_result = giveaway_result
         self.story = story
         self.video = video
         self.voice = voice
@@ -842,6 +844,7 @@ class Message(Object, Update):
             venue = None
             game = None
             giveaway = None
+            giveaway_result = None
             story = None
             audio = None
             voice = None
@@ -878,6 +881,9 @@ class Message(Object, Update):
                 elif isinstance(media, raw.types.MessageMediaGiveaway):
                     giveaway = types.Giveaway._parse(client, media, chats)
                     media_type = enums.MessageMediaType.GIVEAWAY
+                elif isinstance(media, raw.types.MessageMediaGiveawayResults):
+                    giveaway_result = await types.GiveawayResult._parse(client, media, users, chats)
+                    media_type = enums.MessageMediaType.GIVEAWAY_RESULT
                 elif isinstance(media, raw.types.MessageMediaStory):
                     if media.story:
                         story = await types.Story._parse(client, media.story, users, chats, media.peer)
@@ -1017,6 +1023,7 @@ class Message(Object, Update):
                 animation=animation,
                 game=game,
                 giveaway=giveaway,
+                giveaway_result=giveaway_result,
                 story=story,
                 video=video,
                 video_note=video_note,

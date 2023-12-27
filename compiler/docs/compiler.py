@@ -466,6 +466,7 @@ def pyrogram_api():
             MyBoost
             BoostsStatus
             Giveaway
+            GiveawayResult
             GiftCode
         """,
         bot_keyboards="""

@@ -32,6 +32,7 @@ from .general_forum_topic_unhidden import GeneralTopicUnhidden
 from .game import Game
 from .gift_code import GiftCode
 from .giveaway import Giveaway
+from .giveaway_result import GiveawayResult
 from .location import Location
 from .message import Message
 from .message_entity import MessageEntity
@@ -55,8 +56,8 @@ from .my_boost import MyBoost
 __all__ = [
     "Animation", "Audio", "BoostsStatus", "Contact", "Document", "ForumTopic", "ForumTopicCreated",
     "ForumTopicClosed", "ForumTopicReopened", "ForumTopicEdited", "GeneralTopicHidden",
-    "GeneralTopicUnhidden", "Game", "GiftCode", "Giveaway", "Location", "Message", "MessageEntity",
-    "Photo", "Thumbnail", "StrippedThumbnail", "Story", "Poll", "PollOption", "Sticker", "Venue",
-    "Video", "VideoNote", "Voice", "WebPage", "Dice", "Reaction", "WebAppData", "MessageReactions",
-    "MyBoost"
+    "GeneralTopicUnhidden", "Game", "GiftCode", "Giveaway", "GiveawayResult", "Location",
+    "Message", "MessageEntity", "Photo", "Thumbnail", "StrippedThumbnail", "Story", "Poll",
+    "PollOption", "Sticker", "Venue", "Video", "VideoNote", "Voice", "WebPage", "Dice", "Reaction",
+    "WebAppData", "MessageReactions", "MyBoost"
 ]

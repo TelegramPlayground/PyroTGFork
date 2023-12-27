@@ -339,6 +339,17 @@ giveaway = create(giveaway_filter)
 
 # endregion
 
+# region giveaway_result_filter
+async def giveaway_result_filter(_, __, m: Message):
+    return bool(m.giveaway_result)
+
+
+giveaway_result = create(giveaway_result_filter)
+"""Filter messages that contain :obj:`~pyrogram.types.GiveawayResult` objects."""
+
+
+# endregion
+
 # region gift_code_filter
 async def gift_code_filter(_, __, m: Message):
     return bool(m.gift_code)
@@ -357,17 +368,6 @@ async def requested_chats_filter(_, __, m: Message):
 
 requested_chats = create(requested_chats_filter)
 """Filter service messages for request chats."""
-
-
-# endregion
-
-# region story_filter
-async def story_filter(_, __, m: Message):
-    return bool(m.story)
-
-
-story = create(story_filter)
-"""Filter messages that contain :obj:`~pyrogram.types.Story` objects."""
 
 
 # endregion
@@ -544,6 +544,17 @@ async def forum_filter(_, __, m: Message):
 
 forum = create(forum_filter)
 """Filter messages sent in forums."""
+
+
+# endregion
+
+# region story_filter
+async def story_filter(_, __, m: Message):
+    return bool(m.story)
+
+
+story = create(story_filter)
+"""Filter messages that contain :obj:`~pyrogram.types.Story` objects."""
 
 
 # endregion
