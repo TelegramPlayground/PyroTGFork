@@ -34,6 +34,7 @@ class RequestUserInfo(Object):
 
         max_quantity(``int``, *optional*):
             Max quantity of peers.
+            Defaults to None (One peer only).
     """
 
     def __init__(
@@ -48,4 +49,4 @@ class RequestUserInfo(Object):
         self.button_id = button_id
         self.is_bot = is_bot
         self.is_premium = is_premium
-        self.max_quantity = max_quantity
+        self.max_quantity = max_quantity or 1

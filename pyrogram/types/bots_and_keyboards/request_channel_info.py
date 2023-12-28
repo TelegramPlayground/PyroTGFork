@@ -36,6 +36,7 @@ class RequestChannelInfo(Object):
 
         max_quantity(``int``, *optional*):
             Max quantity of peers.
+            Defaults to None (One peer only).
 
         user_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
             Privileged actions that an user administrator is able to take.
@@ -58,6 +59,6 @@ class RequestChannelInfo(Object):
         self.button_id = button_id
         self.is_creator = is_creator
         self.has_username = has_username
-        self.max_quantity = max_quantity
+        self.max_quantity = max_quantity or 1
         self.user_privileges = user_privileges
         self.bot_privileges = bot_privileges
