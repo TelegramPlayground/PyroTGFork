@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from pyrogram import types
+
 from ..object import Object
 
 
@@ -36,10 +38,16 @@ class RequestChatInfo(Object):
             If True, returns the list of chats where chat has username.
 
         has_forum (``bool``, *optional*):
-           If True, returns the list of chats where forum topcis is enabled.
+            If True, returns the list of chats where forum topcis is enabled.
 
         max_quantity(``int``, *optional*):
             Max quantity of peers.
+
+        user_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
+            Privileged actions that an user administrator is able to take.
+
+        bot_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
+            Privileged actions that an bot administrator is able to take.
     """
 
     def __init__(
@@ -50,7 +58,8 @@ class RequestChatInfo(Object):
         has_username: bool = None,
         has_forum: bool = None,
         max_quantity: int = None,
-
+        user_privileges: "types.ChatPrivileges" = None,
+        bot_privileges: "types.ChatPrivileges" = None
     ):
         super().__init__()
 
@@ -60,3 +69,5 @@ class RequestChatInfo(Object):
         self.has_username = has_username
         self.has_forum = has_forum
         self.max_quantity = max_quantity
+        self.user_privileges = user_privileges
+        self.bot_privileges = bot_privileges

@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from pyrogram import types
+
 from ..object import Object
 
 
@@ -34,6 +36,12 @@ class RequestChannelInfo(Object):
 
         max_quantity(``int``, *optional*):
             Max quantity of peers.
+
+        user_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
+            Privileged actions that an user administrator is able to take.
+
+        bot_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
+            Privileged actions that an bot administrator is able to take.
     """
 
     def __init__(
@@ -42,6 +50,8 @@ class RequestChannelInfo(Object):
         is_creator: bool = None,
         has_username: bool = None,
         max_quantity: int = None,
+        user_privileges: "types.ChatPrivileges" = None,
+        bot_privileges: "types.ChatPrivileges" = None
     ):
         super().__init__()
 
@@ -49,3 +59,5 @@ class RequestChannelInfo(Object):
         self.is_creator = is_creator
         self.has_username = has_username
         self.max_quantity = max_quantity
+        self.user_privileges = user_privileges
+        self.bot_privileges = bot_privileges
