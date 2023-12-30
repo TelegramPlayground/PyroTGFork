@@ -29,20 +29,22 @@ class RequestChatInfo(Object):
             Identifier of button.
 
         is_creator (``bool``, *optional*):
-            If True, returns the list of chats where this user is a chat creator.
+            If True, returns the list of chats owned by the user.
 
         is_bot_participant (``bool``, *optional*):
-            If True, returns the list of chats where this bot is participant.
+            If True, returns the list of chats with the bot as a member.
 
         has_username (``bool``, *optional*):
-            If True, returns the list of chats where chat has username.
+            If True, returns the list of chats with a username.
+            If False, returns the list of chats without a username.
+            If not specified, no additional restrictions are applied.
+            Defaults to None.
 
         has_forum (``bool``, *optional*):
-            If True, returns the list of chats where forum topcis is enabled.
-
-        max_quantity(``int``, *optional*):
-            Max quantity of peers.
-            Defaults to None (One peer only).
+            If True, returns the list of chats with a forum topics enabled.
+            If False, returns the list of chats without a forum topics.
+            If not specified, no additional restrictions are applied.
+            Defaults to None.
 
         user_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
             Privileged actions that an user administrator is able to take.
@@ -58,7 +60,6 @@ class RequestChatInfo(Object):
         is_bot_participant: bool = None,
         has_username: bool = None,
         has_forum: bool = None,
-        max_quantity: int = None,
         user_privileges: "types.ChatPrivileges" = None,
         bot_privileges: "types.ChatPrivileges" = None
     ):
@@ -69,6 +70,5 @@ class RequestChatInfo(Object):
         self.is_bot_participant = is_bot_participant
         self.has_username = has_username
         self.has_forum = has_forum
-        self.max_quantity = max_quantity or 1
         self.user_privileges = user_privileges
         self.bot_privileges = bot_privileges

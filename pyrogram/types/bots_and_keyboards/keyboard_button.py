@@ -105,7 +105,6 @@ class KeyboardButton(Object):
                         button_id=b.button_id,
                         is_creator=getattr(b.peer_type, "creator", None),
                         has_username=getattr(b.peer_type, "has_username", None),
-                        max_quantity=getattr(b, "max_quantity", None),
                         user_privileges=types.ChatPrivileges._parse(user_privileges) if user_privileges else None,
                         bot_privileges=types.ChatPrivileges._parse(bot_privileges) if bot_privileges else None
                     )
@@ -123,7 +122,6 @@ class KeyboardButton(Object):
                         is_bot_participant=getattr(b.peer_type, "bot_participant", None),
                         has_username=getattr(b.peer_type, "has_username", None),
                         has_forum=getattr(b.peer_type, "forum", None),
-                        max_quantity=getattr(b, "max_quantity", None),
                         user_privileges=types.ChatPrivileges._parse(user_privileges) if user_privileges else None,
                         bot_privileges=types.ChatPrivileges._parse(bot_privileges) if bot_privileges else None
                     )
@@ -206,7 +204,6 @@ class KeyboardButton(Object):
                         user_admin_rights=user_admin_rights,
                         bot_admin_rights=bot_admin_rights
                     ),
-                    max_quantity=self.request_peer.max_quantity
                 )
 
             if isinstance(self.request_peer, types.RequestChatInfo):
@@ -258,7 +255,6 @@ class KeyboardButton(Object):
                         user_admin_rights=user_admin_rights,
                         bot_admin_rights=bot_admin_rights
                     ),
-                    max_quantity=self.request_peer.max_quantity
                 )
 
             if isinstance(self.request_peer, types.RequestUserInfo):

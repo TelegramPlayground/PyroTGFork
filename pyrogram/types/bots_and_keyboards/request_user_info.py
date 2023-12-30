@@ -27,13 +27,19 @@ class RequestUserInfo(Object):
             Identifier of button.
 
         is_bot (``bool``, *optional*):
-            If True, returns the list of users where user is a bot.
+            If True, returns bots.
+            If False to returns regular users.
+            If not specified, no additional restrictions are applied.
+            Defaults to None.
 
         is_premium (``bool``, *optional*):
-            If True, returns the list of users where user has premium.
+            If True, returns premium users.
+            If False to request non-premium users.
+            If not specified, no additional restrictions are applied.
+            Defaults to None.
 
         max_quantity(``int``, *optional*):
-            Max quantity of peers.
+            The maximum number of users to be selected; 1-10. Defaults to 1.
             Defaults to None (One peer only).
     """
 

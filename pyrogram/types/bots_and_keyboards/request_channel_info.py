@@ -29,14 +29,13 @@ class RequestChannelInfo(Object):
             Identifier of button.
 
         is_creator (``bool``, *optional*):
-            If True, returns the list of chats where this user is a channel creator.
+            If True, returns the list of chats owned by the user.
 
         has_username (``bool``, *optional*):
-            If True, returns the list of chats where chat has username.
-
-        max_quantity(``int``, *optional*):
-            Max quantity of peers.
-            Defaults to None (One peer only).
+            If True, returns the list of chats with a username.
+            If False, returns the list of chats without a username.
+            If not specified, no additional restrictions are applied.
+            Defaults to None.
 
         user_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
             Privileged actions that an user administrator is able to take.
@@ -50,7 +49,6 @@ class RequestChannelInfo(Object):
         button_id: int,
         is_creator: bool = None,
         has_username: bool = None,
-        max_quantity: int = None,
         user_privileges: "types.ChatPrivileges" = None,
         bot_privileges: "types.ChatPrivileges" = None
     ):
@@ -59,6 +57,5 @@ class RequestChannelInfo(Object):
         self.button_id = button_id
         self.is_creator = is_creator
         self.has_username = has_username
-        self.max_quantity = max_quantity or 1
         self.user_privileges = user_privileges
         self.bot_privileges = bot_privileges

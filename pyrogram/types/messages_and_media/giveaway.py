@@ -48,7 +48,10 @@ class Giveaway(Object):
             True, if this giveaway is for new subscribers only.
 
         only_for_countries (List of ``str`` , *optional*):
-            Countries for which the giveaway is available in iso2 format.
+            A list of two-letter ISO 3166-1 alpha-2 country codes indicating the countries
+            from which eligible users for the giveaway must come.
+            If None, then all users can participate in the giveaway.
+            Users with a phone number that was bought on Fragment can always participate in giveaways.
 
         winners_are_visible (``bool``, *optional*):
             True, if this giveaway winners is visible.
