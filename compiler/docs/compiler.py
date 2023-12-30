@@ -674,6 +674,7 @@ def pyrogram_api():
             Story.reply_video_note
             Story.reply_voice
             Story.delete
+            Story.download
             Story.edit_media
             Story.edit_caption
             Story.edit_privacy
