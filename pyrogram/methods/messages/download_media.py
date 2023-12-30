@@ -31,7 +31,7 @@ DEFAULT_DOWNLOAD_DIR = "downloads/"
 class DownloadMedia:
     async def download_media(
         self: "pyrogram.Client",
-        message: Union["types.Message", str],
+        message: Union["types.Message", "types.Story", str],
         file_name: str = DEFAULT_DOWNLOAD_DIR,
         in_memory: bool = False,
         block: bool = True,
@@ -43,8 +43,8 @@ class DownloadMedia:
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
-            message (:obj:`~pyrogram.types.Message` | ``str``):
-                Pass a Message containing the media, the media itself (message.audio, message.video, ...) or a file id
+            message (:obj:`~pyrogram.types.Message` | :obj:`~pyrogram.types.Story` | ``str``):
+                Pass a Message or Story containing the media, the media itself (message.audio, message.video, ...) or a file id
                 as string.
 
             file_name (``str``, *optional*):
@@ -120,18 +120,13 @@ class DownloadMedia:
                 file_bytes = bytes(file.getbuffer())
         """
         available_media = ("audio", "document", "photo", "sticker", "animation", "video", "voice", "video_note",
-                           "new_chat_photo", "story")
+                           "new_chat_photo")
 
-        if isinstance(message, types.Message):
+        if isinstance(message, (types.Message, types.Story)):
+            story = getattr(message, "story", None)
+
             for kind in available_media:
-                media = getattr(message, kind, None)
-
-                if kind == "story":
-                    for kind in available_media:
-                        media = getattr(message.story, kind, None)
-
-                        if media is not None:
-                            break
+                media = getattr(story or message, kind, None)
 
                 if media is not None:
                     break
