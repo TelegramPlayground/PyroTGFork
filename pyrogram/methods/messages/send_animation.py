@@ -50,6 +50,7 @@ class SendAnimation:
         message_thread_id: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        ttl_seconds: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -116,6 +117,12 @@ class SendAnimation:
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
+            ttl_seconds (``int``, *optional*):
+                Self-Destruct Timer.
+                If you set a timer, the animation will self-destruct in *ttl_seconds*
+                seconds after it was viewed.
+
+
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.
 
@@ -176,6 +183,9 @@ class SendAnimation:
                     print(f"{current * 100 / total:.1f}%")
 
                 await app.send_animation("me", "animation.gif", progress=progress)
+
+                # Send self-destructing animation message
+                await app.send_animation("me", "animation.gif", ttl_seconds=10)
         """
         file = None
 
@@ -198,7 +208,8 @@ class SendAnimation:
                             ),
                             raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(animation)),
                             raw.types.DocumentAttributeAnimated()
-                        ]
+                        ],
+                        ttl_seconds=ttl_seconds
                     )
                 elif re.match("^https?://", animation):
                     media = raw.types.InputMediaDocumentExternal(
@@ -224,7 +235,8 @@ class SendAnimation:
                         ),
                         raw.types.DocumentAttributeFilename(file_name=file_name or animation.name),
                         raw.types.DocumentAttributeAnimated()
-                    ]
+                    ],
+                    ttl_seconds=ttl_seconds
                 )
 
             reply_to = utils.get_reply_head_fm(message_thread_id, reply_to_message_id)
