@@ -166,7 +166,9 @@ class Chat(Object):
         _raw: Union[
             "raw.types.Channel",
             "raw.types.Chat",
-            "raw.types.User"
+            "raw.types.User",
+            "raw.types.messages.ChatFull",
+            "raw.types.users.UserFull"
         ] = None
     ):
         super().__init__(client)
@@ -355,6 +357,8 @@ class Chat(Object):
                 parsed_chat.invite_link = full_chat.exported_invite.link
 
             parsed_chat.available_reactions = types.ChatReactions._parse(client, full_chat.available_reactions)
+
+        parsed_chat._raw = chat_full
 
         return parsed_chat
 
