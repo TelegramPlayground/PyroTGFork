@@ -10,9 +10,13 @@ Get Pyrogram Real Fast
     :class: tip
 
     If you need a cloud server to host your applications, try Hetzner Cloud. You can sign up with
-    `this link <https://hetzner.cloud/?ref=9CyT92gZEINU>`_ to get €20 in cloud credits.
+    `this link <https://hetzner.cloud/?ref=sKhf0eiXDgUT>`_ to get €20 in cloud credits.
 
-1. Install Pyrogram with ``pip3 install -U https://github.com/pyrogrammod/pyrogrammod/archive/main.zip``.
+0. Create a Virtual Environment with ``python3 -m venv venv``.
+
+0. Activate the Virtual Environment with ``source ./venv/bin/activate``.
+
+1. Install Pyrogram with ``pip uninstall -y pyrogram && pip install https://github.com/TelegramPlayGround/pyrogram/archive/unknown_errors.zip``.
 
 2. Get your own Telegram API key from https://my.telegram.org/apps.
 

@@ -3356,7 +3356,8 @@ class Message(Object, Update):
     async def react(
         self,
         reaction: List["types.ReactionType"] = [],
-        is_big: bool = False
+        is_big: bool = False,
+        add_to_recent: bool = True
     ) -> "types.MessageReactions":
         """Bound method *react* of :obj:`~pyrogram.types.Message`.
 
@@ -3389,7 +3390,7 @@ class Message(Object, Update):
                 Defaults to False.
 
         Returns:
-            :obj: `~pyrogram.types.MessageReactions`: On success, True is returned.
+            On success, List of :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
@@ -3399,7 +3400,8 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id,
             reaction=reaction,
-            is_big=is_big
+            is_big=is_big,
+            add_to_recent=add_to_recent
         )
 
     async def retract_vote(

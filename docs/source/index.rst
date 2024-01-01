@@ -1,4 +1,4 @@
-Welcome to PyrogramMod
+Welcome to Pyrogram-Mod
 ===================
 
 .. raw:: html
@@ -6,7 +6,7 @@ Welcome to PyrogramMod
     <div align="center">
         <a href="/">
             <div class="pyrogram-logo-index"><img src="_static/pyrogram.png" alt="Pyrogram"></div>
-            <div class="pyrogram-text pyrogram-text-index">Pyrogram Mod</div>
+            <div class="pyrogram-text pyrogram-text-index">Pyrogram-Mod</div>
         </a>
     </div>
 
@@ -14,11 +14,11 @@ Welcome to PyrogramMod
         <b>Telegram MTProto API Framework for Python</b>
 
         <br>
-        <a href="https://pyrogrammod.github.io">
+        <a href="https://TelegramPlayGround.github.io/pyrogram/">
             Homepage
         </a>
         •
-        <a href="https://github.com/pyrogram/pyrogram">
+        <a href="https://github.com/TelegramPlayGround/pyrogram">
             Development
         </a>
         •

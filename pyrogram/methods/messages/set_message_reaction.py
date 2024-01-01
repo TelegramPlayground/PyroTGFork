@@ -29,7 +29,8 @@ class SetMessageReaction:
         chat_id: Union[int, str],
         message_id: int = None,
         reaction: List["types.ReactionType"] = [],
-        is_big: bool = False
+        is_big: bool = False,
+        add_to_recent: bool = True
     ) -> "types.MessageReactions":
         """Use this method to change the chosen reactions on a message.
         Service messages can't be reacted to.
@@ -54,8 +55,12 @@ class SetMessageReaction:
                 Pass True to set the reaction with a big animation.
                 Defaults to False.
 
+            add_to_recent (``bool``, *optional*):
+                Pass True if the reaction should appear in the recently used reactions.
+                This option is applicable only for users.
+                Defaults to True.
         Returns:
-            :obj: `~pyrogram.types.MessageReactions`: On success, True is returned.
+            On success, List of :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Example:
             .. code-block:: python
@@ -78,7 +83,8 @@ class SetMessageReaction:
                         r.write(self)
                         for r in reaction
                     ] if reaction else [raw.types.ReactionEmpty()],
-                    big=is_big
+                    big=is_big,
+                    add_to_recent=add_to_recent
                 )
             )
             for i in r.updates:
