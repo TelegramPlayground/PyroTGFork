@@ -84,3 +84,59 @@ class Reaction(Object):
         reaction.chosen_order = reaction_count.chosen_order
 
         return reaction
+
+
+class ReactionType(Object):
+    def __init__(
+        self,
+        *,
+        type: str = None,
+        emoji: str = None,
+        custom_emoji_id: str = None
+    ):
+        super().__init__()
+        self.type = type
+        self.emoji = emoji
+        self.custom_emoji_id = custom_emoji_id
+
+
+    def write(self, client: "pyrogram.Client"):
+        raise NotImplementedError
+
+
+class ReactionTypeEmoji(ReactionType):
+    """The reaction is based on an emoji.
+    """
+
+    def __init__(
+        self,
+        *,
+        emoji: str = None
+    ):
+        super().__init__(
+            type="emoji",
+            emoji=emoji
+        )
+
+    def write(self, client: "pyrogram.Client") -> "raw.base.Reaction":
+        return raw.types.ReactionEmoji(
+            emoticon=self.emoji
+        )
+        
+
+class ReactionTypeCustomEmoji(ReactionType):
+
+    def __init__(
+        self,
+        *,
+        custom_emoji_id: str = None
+    ):
+        super().__init__(
+            type="custom_emoji",
+            custom_emoji_id=custom_emoji_id
+        )
+    
+    def write(self, client: "pyrogram.Client") -> "raw.base.Reaction":
+        return raw.types.ReactionCustomEmoji(
+            document_id=self.custom_emoji_id
+        )

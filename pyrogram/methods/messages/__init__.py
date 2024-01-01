@@ -55,7 +55,7 @@ from .send_media_group import SendMediaGroup
 from .send_message import SendMessage
 from .send_photo import SendPhoto
 from .send_poll import SendPoll
-from .send_reaction import SendReaction
+from .set_message_reaction import SetMessageReaction
 from .send_sticker import SendSticker
 from .send_venue import SendVenue
 from .send_video import SendVideo
@@ -110,7 +110,7 @@ class Messages(
     SearchMessagesCount,
     SearchGlobalCount,
     GetDiscussionMessage,
-    SendReaction,
+    SetMessageReaction,
     GetDiscussionReplies,
     GetDiscussionRepliesCount,
     StreamMedia,
