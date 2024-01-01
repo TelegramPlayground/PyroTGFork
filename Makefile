@@ -56,6 +56,7 @@ build:
 	make clean-api
 	$(PYTHON) setup.py sdist
 	$(PYTHON) setup.py bdist_wheel
+	$(PYTHON) setup.py install
 
 tag:
 	git tag $(TAG)

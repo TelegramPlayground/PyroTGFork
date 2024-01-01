@@ -164,7 +164,7 @@ def pyrogram_api():
             send_venue
             send_contact
             send_cached_media
-            send_reaction
+            set_message_reaction
             edit_message_text
             edit_message_caption
             edit_message_media
@@ -411,6 +411,9 @@ def pyrogram_api():
             PollOption
             Dice
             Reaction
+            ReactionType
+            ReactionTypeEmoji
+            ReactionTypeCustomEmoji
             VideoChatScheduled
             VideoChatStarted
             VideoChatEnded

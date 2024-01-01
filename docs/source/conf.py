@@ -20,14 +20,15 @@ import os
 import sys
 
 from pyrogram import __version__
+from pyrogram.raw.all import layer
 
 sys.path.insert(0, os.path.abspath("../.."))
 
-project = "Pyrogram-Mod"
+project = "Pyrogram"
 copyright = f"2017-present, Dan"
 author = "Dan"
 
-version = ".".join(__version__.split(".")[:-1])
+version = ".".join(__version__.split(".")[:-1]) + " [" + str(layer) + "]"
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -79,7 +80,7 @@ html_theme_options = {
         {
             # Telegram channel logo
             "name": "Telegram Channel",
-            "url": "https://t.me/PyrogramModNews/",
+            "url": "https://t.me/Pyrogram/",
             "html": (
                 '<svg stroke="currentColor" fill="currentColor" stroke-width="0" '
                 'viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">'
@@ -97,7 +98,7 @@ html_theme_options = {
         },
         {  # Github logo
             "name": "GitHub",
-            "url": "https://github.com/pyrogrammod/pyrogrammod/",
+            "url": "https://github.com/TelegramPlayGround/pyrogram/",
             "html": (
                 '<svg stroke="currentColor" fill="currentColor" stroke-width="0" '
                 'viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 '
