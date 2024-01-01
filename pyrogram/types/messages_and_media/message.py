@@ -3373,7 +3373,11 @@ class Message(Object, Update):
         Example:
             .. code-block:: python
 
-                await message.react(emoji="🔥")
+                # Send a reaction
+                await message.react([ReactionTypeEmoji(emoji="👍")])
+
+                # Retract a reaction
+                await message.react()
 
         Parameters:
             reaction (List of :obj:`~pyrogram.types.ReactionType` *optional*):
