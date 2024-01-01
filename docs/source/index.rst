@@ -1,4 +1,4 @@
-Welcome to Pyrogram
+Welcome to PyrogramMod
 ===================
 
 .. raw:: html
@@ -6,7 +6,7 @@ Welcome to Pyrogram
     <div align="center">
         <a href="/">
             <div class="pyrogram-logo-index"><img src="_static/pyrogram.png" alt="Pyrogram"></div>
-            <div class="pyrogram-text pyrogram-text-index">Pyrogram</div>
+            <div class="pyrogram-text pyrogram-text-index">Pyrogram Mod</div>
         </a>
     </div>
 
@@ -14,16 +14,12 @@ Welcome to Pyrogram
         <b>Telegram MTProto API Framework for Python</b>
 
         <br>
-        <a href="https://pyrogram.org">
+        <a href="https://pyrogrammod.github.io">
             Homepage
         </a>
         •
         <a href="https://github.com/pyrogram/pyrogram">
             Development
-        </a>
-        •
-        <a href="https://docs.pyrogram.org/releases">
-            Releases
         </a>
         •
         <a href="https://t.me/pyrogram">
@@ -85,7 +81,7 @@ API Reference
 .. hlist::
     :columns: 1
 
-    - :doc:`Pyrogram Client <api/client>`: Reference details about the Client class.
+    - :doc:`Pyrogram Mod Client <api/client>`: Reference details about the Client class.
     - :doc:`Available Methods <api/methods/index>`: List of available high-level methods.
     - :doc:`Available Types <api/types/index>`: List of available high-level types.
     - :doc:`Enumerations <api/enums/index>`: List of available enumerations.
@@ -99,7 +95,6 @@ Meta
 
     - :doc:`Pyrogram FAQ <faq/index>`: Answers to common Pyrogram questions.
     - :doc:`Support Pyrogram <support>`: Ways to show your appreciation.
-    - :doc:`Release Notes <releases/index>`: Release notes for Pyrogram releases.
 
 .. toctree::
     :hidden:
@@ -161,7 +156,6 @@ Meta
 
     faq/index
     support
-    releases/index
 
 .. toctree::
     :hidden:

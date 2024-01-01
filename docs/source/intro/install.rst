@@ -4,10 +4,6 @@ Install Guide
 Being a modern Python framework, Pyrogram requires an up to date version of Python to be installed in your system.
 We recommend using the latest versions of both Python 3 and pip.
 
-.. contents:: Contents
-    :backlinks: none
-    :depth: 1
-    :local:
 
 -----
 
@@ -18,13 +14,13 @@ Install Pyrogram
 
     .. code-block:: text
 
-        $ pip3 install -U pyrogram
+        $ pip3 install -U https://github.com/pyrogrammod/pyrogrammod/archive/main.zip
 
 -   or, with :doc:`TgCrypto <../topics/speedups>` as extra requirement (recommended):
 
     .. code-block:: text
 
-        $ pip3 install -U pyrogram tgcrypto
+        $ pip3 install -U https://github.com/pyrogrammod/pyrogrammod/archive/main.zip tgcrypto
 
 Bleeding Edge
 -------------
@@ -33,7 +29,7 @@ You can install the development version from the git ``master`` branch using thi
 
 .. code-block:: text
 
-    $ pip3 install -U https://github.com/pyrogram/pyrogram/archive/master.zip
+    $ pip3 install -U https://github.com/pyrogrammod/pyrogrammod/archive/main.zip
 
 Verifying
 ---------

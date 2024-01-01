@@ -17,10 +17,6 @@ Pyrogram uses a custom Markdown dialect for text formatting which adds some uniq
 texts easier in both Markdown and HTML. You can send sophisticated text messages and media captions using a
 variety of decorations that can also be nested in order to combine multiple styles together.
 
-.. contents:: Contents
-    :backlinks: none
-    :depth: 1
-    :local:
 
 -----
 
@@ -35,7 +31,7 @@ list of the basic styles currently supported by Pyrogram.
 - :strike:`strike`
 - :underline:`underline`
 - spoiler
-- `text URL <https://pyrogram.org>`_
+- `text URL <https://pyrogrammod.github.io>`_
 - `user text mention <tg://user?id=123456789>`_
 - ``inline fixed-width code``
 - .. code-block:: text
@@ -62,7 +58,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
 
     ||spoiler||
 
-    [text URL](https://pyrogram.org/)
+    [text URL](https://pyrogrammod.github.io/)
 
     [text user mention](tg://user?id=123456789)
 
@@ -88,7 +84,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
             "--underline--, "
             "~~strike~~, "
             "||spoiler||, "
-            "[URL](https://pyrogram.org), "
+            "[URL](https://pyrogrammod.github.io), "
             "`code`, "
             "```"
             "for i in range(10):\n"
@@ -116,7 +112,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
 
     <spoiler>spoiler</spoiler>
 
-    <a href="https://pyrogram.org/">text URL</a>
+    <a href="https://pyrogrammod.github.io/">text URL</a>
 
     <a href="tg://user?id=123456789">inline mention</a>
 
@@ -144,7 +140,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
             "<u>underline</u>, "
             "<s>strike</s>, "
             "<spoiler>spoiler</spoiler>, "
-            "<a href=\"https://pyrogram.org/\">URL</a>, "
+            "<a href=\"https://pyrogrammod.github.io/\">URL</a>, "
             "<code>code</code>\n\n"
             "<pre>"
             "for i in range(10):\n"
