@@ -49,6 +49,7 @@ class SendVoice:
         quote_offset: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        ttl_seconds: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -120,6 +121,11 @@ class SendVoice:
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
+            ttl_seconds (``int``, *optional*):
+                Self-Destruct Timer.
+                If you set a timer, the voice note will self-destruct in *ttl_seconds*
+                seconds after it was listened.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -161,6 +167,9 @@ class SendVoice:
 
                 # Set voice note duration
                 await app.send_voice("me", "voice.ogg", duration=20)
+
+                # Send self-destructing voice note
+                await app.send_voice("me", "voice.ogg", ttl_seconds=(1 << 31) - 1)
         """
         file = None
 
@@ -176,7 +185,8 @@ class SendVoice:
                                 voice=True,
                                 duration=duration
                             )
-                        ]
+                        ],
+                        ttl_seconds=ttl_seconds
                     )
                 elif re.match("^https?://", voice):
                     media = raw.types.InputMediaDocumentExternal(
@@ -194,7 +204,8 @@ class SendVoice:
                             voice=True,
                             duration=duration
                         )
-                    ]
+                    ],
+                    ttl_seconds=ttl_seconds
                 )
 
             quote_text, quote_entities = (await utils.parse_text_entities(self, quote_text, parse_mode, quote_entities)).values()
