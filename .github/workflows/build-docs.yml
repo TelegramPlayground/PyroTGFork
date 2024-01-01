@@ -1,0 +1,30 @@
+name: Build DOCs
+on: [workflow_dispatch, push]
+jobs:
+  build:
+    name: build-doc
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+          make
+          rm -rf .github compiler Pyrogram* pyrogram* tests .gitignore COPYING*
+          rm -f MANIFEST* Makefile NOTICE README.md *requirements.txt
+          rm -f setup.py tox.ini
+          mv docs/build/html/* .
+          rm -rf docs venv 
+          touch .nojekyll
+          git checkout --orphan gh-pages
+          git config user.email "14043624+delivrance@users.noreply.github.com"
+          git config user.name "GitHub Action <Dan>"
+          git add . -A
+          git commit -m "DocGen: Update documentation"
+          git push origin gh-pages --force
