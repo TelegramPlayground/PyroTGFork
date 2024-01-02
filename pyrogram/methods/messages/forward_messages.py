@@ -30,9 +30,12 @@ class ForwardMessages:
         chat_id: Union[int, str],
         from_chat_id: Union[int, str],
         message_ids: Union[int, Iterable[int]],
+        message_thread_id: int = None,
         disable_notification: bool = None,
-        schedule_date: datetime = None,
-        protect_content: bool = None
+        protect_content: bool = None,
+        drop_author: bool = None,
+        drop_media_captions: bool = None,
+        schedule_date: datetime = None
     ) -> Union["types.Message", List["types.Message"]]:
         """Forward messages of any kind.
 
@@ -52,16 +55,22 @@ class ForwardMessages:
             message_ids (``int`` | Iterable of ``int``):
                 An iterable of message identifiers in the chat specified in *from_chat_id* or a single message id.
 
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
-
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
+            drop_author (``bool``, *optional*)
+
+            drop_media_captions (``bool``, *optional*)
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
         Returns:
             :obj:`~pyrogram.types.Message` | List of :obj:`~pyrogram.types.Message`: In case *message_ids* was not
             a list, a single message is returned, otherwise a list of messages is returned.
@@ -85,9 +94,15 @@ class ForwardMessages:
                 from_peer=await self.resolve_peer(from_chat_id),
                 id=message_ids,
                 silent=disable_notification or None,
+                # TODO
+                # TODO
+                drop_author=drop_author,
+                drop_media_captions=drop_media_captions,
+                noforwards=protect_content,
                 random_id=[self.rnd_id() for _ in message_ids],
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
-                noforwards=protect_content
+                top_msg_id=message_thread_id
+                # TODO
             )
         )
 
