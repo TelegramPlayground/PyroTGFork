@@ -385,6 +385,7 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         reactions: List["types.Reaction"] = None,
+        link_preview_options: "types.LinkPreviewOptions" = None,
         _raw = None
     ):
         super().__init__(client)
@@ -458,6 +459,7 @@ class Message(Object, Update):
         self.video_chat_members_invited = video_chat_members_invited
         self.web_app_data = web_app_data
         self.reactions = reactions
+        self.link_preview_options = link_preview_options
         self._raw = _raw
 
     @staticmethod
@@ -851,6 +853,11 @@ class Message(Object, Update):
                         parsed_message.reply_to_message = reply_to_message
                     except MessageIdsEmpty:
                         pass
+
+            link_preview_options = types.LinkPreviewOptions._parse(
+                client, message
+            )
+            parsed_message.link_preview_options = link_preview_options
 
             if not parsed_message.poll:  # Do not cache poll messages
                 client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message

@@ -21,6 +21,7 @@ import base64
 import functools
 import hashlib
 import os
+import re
 import struct
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -375,7 +376,10 @@ def datetime_to_timestamp(dt: Optional[datetime]) -> Optional[int]:
     return int(dt.timestamp()) if dt else None
 
 
-def get_reply_head_fm(message_thread_id: int, reply_to_message_id: int) -> raw.types.InputReplyToMessage:
+def get_reply_head_fm(
+    message_thread_id: int,
+    reply_to_message_id: int
+) -> raw.types.InputReplyToMessage:
     reply_to = None
     if (
         reply_to_message_id or
@@ -397,3 +401,29 @@ def get_reply_head_fm(message_thread_id: int, reply_to_message_id: int) -> raw.t
                 top_msg_id=message_thread_id
             )
     return reply_to
+
+
+def get_first_url(message: "raw.types.Message") -> str:
+    text = message.message
+    entities = message.entities
+
+    # duplicate code copied from parser.
+    text = re.sub(r"^\s*(<[\w<>=\s\"]*>)\s*", r"\1", text)
+    text = re.sub(r"\s*(</[\w</>]*>)\s*$", r"\1", text)
+    SMP_RE = re.compile(r"[\U00010000-\U0010FFFF]")
+    text_ = SMP_RE.sub(
+        lambda match:  # Split SMP in two surrogates
+        "".join(
+            chr(i) for i in struct.unpack(
+                "<HH", match.group().encode("utf-16le")
+            )
+        ),
+        text
+    )
+    for entity in entities:
+        if isinstance(entity, raw.types.MessageEntityTextUrl):
+            return entity.url
+        elif isinstance(entity, raw.types.MessageEntityUrl):
+            return text_[entity.offset:entity.offset+entity.length+1]
+    # TODO: duplicate code copied from parser.
+    text = text_.encode("utf-16", "surrogatepass").decode("utf-16")
