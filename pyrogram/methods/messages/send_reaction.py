@@ -33,7 +33,7 @@ class SendReaction:
     ) -> bool:
         """Send a reaction to a message or story.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
