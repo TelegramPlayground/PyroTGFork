@@ -907,16 +907,7 @@ class Message(Object, Update):
 
     async def reply_text(
         self,
-        text: str,
-        quote: bool = None,
-        parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None,
-        disable_web_page_preview: bool = None,
-        disable_notification: bool = None,
-        reply_to_message_id: int = None,
-        schedule_date: datetime = None,
-        protect_content: bool = None,
-        reply_markup=None
+        **kwargs
     ) -> "Message":
         """Bound method *reply_text* of :obj:`~pyrogram.types.Message`.
 
@@ -941,11 +932,6 @@ class Message(Object, Update):
             text (``str``):
                 Text of the message to be sent.
 
-            quote (``bool``, *optional*):
-                If ``True``, the message will be sent as a reply to this message.
-                If *reply_to_message_id* is passed, this parameter will be ignored.
-                Defaults to ``True`` in group chats and ``False`` in private chats.
-
             parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.
                 You can combine both syntaxes together.
@@ -953,8 +939,8 @@ class Message(Object, Update):
             entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
-            disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message.
+            link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+                Link preview generation options for the message
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -962,6 +948,9 @@ class Message(Object, Update):
 
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -979,23 +968,18 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
+        quote = kwargs.pop("quote")
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
+        reply_to_message_id = kwargs.pop("reply_to_message_id")
         if reply_to_message_id is None and quote:
             reply_to_message_id = self.id
 
         return await self._client.send_message(
             chat_id=self.chat.id,
-            text=text,
-            parse_mode=parse_mode,
-            entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
-            disable_notification=disable_notification,
             reply_to_message_id=reply_to_message_id,
-            schedule_date=schedule_date,
-            protect_content=protect_content,
-            reply_markup=reply_markup
+            **kwargs
         )
 
     reply = reply_text
@@ -2770,11 +2754,7 @@ class Message(Object, Update):
 
     async def edit_text(
         self,
-        text: str,
-        parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None,
-        disable_web_page_preview: bool = None,
-        reply_markup: "types.InlineKeyboardMarkup" = None
+        **kwargs
     ) -> "Message":
         """Bound method *edit_text* of :obj:`~pyrogram.types.Message`.
 
@@ -2806,8 +2786,8 @@ class Message(Object, Update):
             entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
-            disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message.
+            link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+                Link preview generation options for the message
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
@@ -2821,11 +2801,7 @@ class Message(Object, Update):
         return await self._client.edit_message_text(
             chat_id=self.chat.id,
             message_id=self.id,
-            text=text,
-            parse_mode=parse_mode,
-            entities=entities,
-            disable_web_page_preview=disable_web_page_preview,
-            reply_markup=reply_markup
+            **kwargs
         )
 
     edit = edit_text
@@ -3105,7 +3081,7 @@ class Message(Object, Update):
                 text=self.text,
                 entities=self.entities,
                 parse_mode=enums.ParseMode.DISABLED,
-                disable_web_page_preview=not self.web_page,
+                link_preview_options=self.link_preview_options,
                 disable_notification=disable_notification,
                 reply_to_message_id=reply_to_message_id,
                 schedule_date=schedule_date,

@@ -166,10 +166,7 @@ class CallbackQuery(Object, Update):
 
     async def edit_message_text(
         self,
-        text: str,
-        parse_mode: Optional["enums.ParseMode"] = None,
-        disable_web_page_preview: bool = None,
-        reply_markup: "types.InlineKeyboardMarkup" = None
+        **kwargs
     ) -> Union["types.Message", bool]:
         """Edit the text of messages attached to callback queries.
 
@@ -183,8 +180,11 @@ class CallbackQuery(Object, Update):
                 By default, texts are parsed using both Markdown and HTML styles.
                 You can combine both syntaxes together.
 
-            disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message.
+            entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in message text, which can be specified instead of *parse_mode*.
+
+            link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+                Link preview generation options for the message
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
@@ -200,18 +200,12 @@ class CallbackQuery(Object, Update):
             return await self._client.edit_message_text(
                 chat_id=self.message.chat.id,
                 message_id=self.message.id,
-                text=text,
-                parse_mode=parse_mode,
-                disable_web_page_preview=disable_web_page_preview,
-                reply_markup=reply_markup
+                **kwargs
             )
         else:
             return await self._client.edit_inline_text(
                 inline_message_id=self.inline_message_id,
-                text=text,
-                parse_mode=parse_mode,
-                disable_web_page_preview=disable_web_page_preview,
-                reply_markup=reply_markup
+                **kwargs
             )
 
     async def edit_message_caption(
