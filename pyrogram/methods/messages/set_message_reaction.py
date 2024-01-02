@@ -60,7 +60,7 @@ class SetMessageReaction:
                 This option is applicable only for users.
                 Defaults to True.
         Returns:
-            On success, List of :obj:`~pyrogram.types.MessageReactions`: is returned.
+            On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Example:
             .. code-block:: python

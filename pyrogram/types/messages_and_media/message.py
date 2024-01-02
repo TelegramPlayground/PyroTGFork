@@ -3390,7 +3390,7 @@ class Message(Object, Update):
                 Defaults to False.
 
         Returns:
-            On success, List of :obj:`~pyrogram.types.MessageReactions`: is returned.
+            On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
