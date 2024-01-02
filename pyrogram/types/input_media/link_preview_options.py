@@ -18,6 +18,7 @@
 
 from pyrogram import raw, utils
 from ..object import Object
+from typing import Optional
 
 
 class LinkPreviewOptions(Object):
@@ -72,7 +73,7 @@ class LinkPreviewOptions(Object):
     def _parse(
         client,
         message: "raw.types.Message"
-    ) -> "LinkPreviewOptions":
+    ) -> Optional["LinkPreviewOptions"]:
         webpage = message.media
         if (
             webpage and
@@ -94,7 +95,9 @@ class LinkPreviewOptions(Object):
             )
         else:
             url = utils.get_first_url(message)
-            return LinkPreviewOptions(
-                is_disabled=True,
-                url=url
-            )
+            if url:
+                return LinkPreviewOptions(
+                    is_disabled=True
+                )
+            else:
+                return None

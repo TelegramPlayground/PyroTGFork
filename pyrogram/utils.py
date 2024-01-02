@@ -403,10 +403,18 @@ def get_reply_head_fm(
     return reply_to
 
 
+def is_plain_domain(url):
+    # https://github.com/tdlib/td/blob/d963044/td/telegram/MessageEntity.cpp#L1778
+    return (
+        url.find('/') >= len(url) and
+        url.find('?') >= len(url) and
+        url.find('#') >= len(url)
+    )
+
+
 def get_first_url(message: "raw.types.Message") -> str:
     text = message.message
     entities = message.entities
-
     # duplicate code copied from parser.
     text = re.sub(r"^\s*(<[\w<>=\s\"]*>)\s*", r"\1", text)
     text = re.sub(r"\s*(</[\w</>]*>)\s*$", r"\1", text)
@@ -420,10 +428,30 @@ def get_first_url(message: "raw.types.Message") -> str:
         ),
         text
     )
+    url = None
     for entity in entities:
         if isinstance(entity, raw.types.MessageEntityTextUrl):
-            return entity.url
+            url = entity.url
+            if len(url) <= 4:
+                url = None
+                continue
+            else:
+                break
         elif isinstance(entity, raw.types.MessageEntityUrl):
-            return text_[entity.offset:entity.offset+entity.length+1]
-    # TODO: duplicate code copied from parser.
+            url = text_[entity.offset:entity.offset+entity.length+1]
+            if len(url) <= 4:
+                url = None
+                continue
+            else:
+                break
     text = text_.encode("utf-16", "surrogatepass").decode("utf-16")
+    if url:
+        if (
+            url.startswith((
+                "ton:", "tg:", "ftp:"
+            )) or
+            is_plain_domain(url)
+        ):
+            return None
+        return url
+    return None
