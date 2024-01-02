@@ -31,7 +31,7 @@ class SendMessage:
         text: str,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
-        disable_web_page_preview: bool = None,
+        link_preview_options: "types.LinkPreviewOptions" = None,
         disable_notification: bool = None,
         reply_to_message_id: int = None,
         message_thread_id: int = None,
@@ -64,8 +64,8 @@ class SendMessage:
             entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
-            disable_web_page_preview (``bool``, *optional*):
-                Disables link previews for links in this message.
+            link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+                Link preview generation options for the message
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -97,8 +97,12 @@ class SendMessage:
                 await app.send_message("me", "Message sent with **Pyrogram**!")
 
                 # Disable web page previews
-                await app.send_message("me", "https://docs.pyrogram.org",
-                    disable_web_page_preview=True)
+                await app.send_message(
+                    "me", "https://docs.pyrogram.org",
+                    link_preview_options=types.LinkPreviewOption(
+                        is_disabled=True
+                    )
+                )
 
                 # Reply to a message using its id
                 await app.send_message("me", "this is a reply", reply_to_message_id=123)
@@ -132,15 +136,20 @@ class SendMessage:
         r = await self.invoke(
             raw.functions.messages.SendMessage(
                 peer=await self.resolve_peer(chat_id),
-                no_webpage=disable_web_page_preview or None,
+                no_webpage=link_preview_options.is_disabled if link_preview_options else None,
                 silent=disable_notification or None,
+                # TODO
+                # TODO
+                noforwards=protect_content,
+                # TODO
+                invert_media=link_preview_options.show_above_text if link_preview_options else None,
                 reply_to=reply_to,
-                random_id=self.rnd_id(),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
+                # TODO
+                random_id=self.rnd_id(),
                 message=message,
                 entities=entities,
-                noforwards=protect_content
             )
         )
 

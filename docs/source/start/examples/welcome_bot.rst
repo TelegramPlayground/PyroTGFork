@@ -23,8 +23,6 @@ to make it only work for specific messages in a specific chat.
         new_members = [u.mention for u in message.new_chat_members]
         # Build the welcome message by using an emoji and the list we built above
         text = MESSAGE.format(emoji.SPARKLES, ", ".join(new_members))
-        # Send the welcome message, without the web page preview
-        await message.reply_text(text, disable_web_page_preview=True)
 
 
     app.run()  # Automatically start() and idle()
