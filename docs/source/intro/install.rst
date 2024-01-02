@@ -10,26 +10,20 @@ We recommend using the latest versions of both Python 3 and pip.
 Install Pyrogram
 ----------------
 
--   The easiest way to install and upgrade Pyrogram to its latest stable version is by using **pip**:
+Bleeding Edge
+-------------
+
+You can install the development version from the git appropriate branch using this command:
 
     .. code-block:: text
 
-        $ pip3 install -U https://github.com/pyrogrammod/pyrogrammod/archive/main.zip
+        $ pip uninstall -y pyrogram && pip install https://github.com/TelegramPlayGround/pyrogram/archive/unknown_errors.zip
 
 -   or, with :doc:`TgCrypto <../topics/speedups>` as extra requirement (recommended):
 
     .. code-block:: text
 
-        $ pip3 install -U https://github.com/pyrogrammod/pyrogrammod/archive/main.zip tgcrypto
-
-Bleeding Edge
--------------
-
-You can install the development version from the git ``master`` branch using this command:
-
-.. code-block:: text
-
-    $ pip3 install -U https://github.com/pyrogrammod/pyrogrammod/archive/main.zip
+        $ pip install tgcrypto
 
 Verifying
 ---------
@@ -39,8 +33,8 @@ If no error shows up you are good to go.
 
 .. parsed-literal::
 
-    >>> import pyrogram
-    >>> pyrogram.__version__
-    'x.y.z'
+    >>> from pyrogram.raw.all import layer
+    >>> layer
+    '158'
 
 .. _`Github repo`: http://github.com/pyrogram/pyrogram

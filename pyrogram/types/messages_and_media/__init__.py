@@ -28,7 +28,13 @@ from .message_entity import MessageEntity
 from .photo import Photo
 from .poll import Poll
 from .poll_option import PollOption
-from .reaction import Reaction, ReactionType, ReactionTypeEmoji, ReactionTypeCustomEmoji
+from .reaction import (
+    Reaction,
+    ReactionType,
+    ReactionTypeEmoji,
+    ReactionTypeCustomEmoji,
+    ReactionCount
+)
 from .sticker import Sticker
 from .stripped_thumbnail import StrippedThumbnail
 from .thumbnail import Thumbnail
@@ -39,10 +45,37 @@ from .voice import Voice
 from .web_app_data import WebAppData
 from .web_page import WebPage
 from .message_reactions import MessageReactions
+from .message_reaction_updated import MessageReactionUpdated
+from .message_reaction_count_updated import MessageReactionCountUpdated
 
 __all__ = [
-    "Animation", "Audio", "Contact", "Document", "Game", "Location", "Message", "MessageEntity", "Photo", "Thumbnail",
-    "StrippedThumbnail", "Poll", "PollOption", "Sticker", "Venue", "Video", "VideoNote", "Voice", "WebPage", "Dice",
-    "Reaction", "WebAppData", "MessageReactions",
-    "ReactionType", "ReactionTypeEmoji", "ReactionTypeCustomEmoji"
+    "Animation",
+    "Audio",
+    "Contact",
+    "Document",
+    "Game",
+    "Location",
+    "Message",
+    "MessageEntity",
+    "Photo",
+    "Thumbnail",
+    "StrippedThumbnail",
+    "Poll",
+    "PollOption",
+    "Sticker",
+    "Venue",
+    "Video",
+    "VideoNote",
+    "Voice",
+    "WebPage",
+    "Dice",
+    "WebAppData",
+    "Reaction",
+    "MessageReactions",
+    "ReactionCount",
+    "ReactionType",
+    "ReactionTypeEmoji",
+    "ReactionTypeCustomEmoji",
+    "MessageReactionUpdated",
+    "MessageReactionCountUpdated"
 ]

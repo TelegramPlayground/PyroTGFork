@@ -33,13 +33,24 @@ Index
 
     - :class:`MessageHandler`
     - :class:`EditedMessageHandler`
-    - :class:`DeletedMessagesHandler`
-    - :class:`CallbackQueryHandler`
+
+    - :class:`MessageReactionUpdatedHandler`
+    - :class:`MessageReactionCountUpdatedHandler`
     - :class:`InlineQueryHandler`
     - :class:`ChosenInlineResultHandler`
-    - :class:`ChatMemberUpdatedHandler`
-    - :class:`UserStatusHandler`
+    - :class:`CallbackQueryHandler`
+
+
     - :class:`PollHandler`
+
+
+    - :class:`ChatMemberUpdatedHandler`
+    - :class:`ChatJoinRequestHandler`
+
+
+    - :class:`DeletedMessagesHandler`
+    - :class:`UserStatusHandler`
+
     - :class:`DisconnectHandler`
     - :class:`RawUpdateHandler`
 
@@ -51,12 +62,22 @@ Details
 .. Handlers
 .. autoclass:: MessageHandler()
 .. autoclass:: EditedMessageHandler()
-.. autoclass:: DeletedMessagesHandler()
-.. autoclass:: CallbackQueryHandler()
+
+.. autoclass:: MessageReactionUpdatedHandler()
+.. autoclass:: MessageReactionCountUpdatedHandler()
 .. autoclass:: InlineQueryHandler()
 .. autoclass:: ChosenInlineResultHandler()
-.. autoclass:: ChatMemberUpdatedHandler()
-.. autoclass:: UserStatusHandler()
+.. autoclass:: CallbackQueryHandler()
+
+
 .. autoclass:: PollHandler()
+
+
+.. autoclass:: ChatMemberUpdatedHandler()
+.. autoclass:: ChatJoinRequestHandler()
+
+
+.. autoclass:: DeletedMessagesHandler()
+.. autoclass:: UserStatusHandler()
 .. autoclass:: DisconnectHandler()
 .. autoclass:: RawUpdateHandler()
