@@ -968,11 +968,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        quote = kwargs.pop("quote")
+        quote = None
+        if "quote" in kwargs:
+            quote = kwargs.pop("quote")
         if quote is None:
             quote = self.chat.type != enums.ChatType.PRIVATE
 
-        reply_to_message_id = kwargs.pop("reply_to_message_id")
+        reply_to_message_id = None
+        if "reply_to_message_id" in kwargs:
+            reply_to_message_id = kwargs.pop("reply_to_message_id")
         if reply_to_message_id is None and quote:
             reply_to_message_id = self.id
 
