@@ -60,7 +60,8 @@ class EditMessageMedia:
                 One of the InputMedia objects describing an animation, audio, document, photo or video.
 
             invert_media (``bool``, *optional*):
-                Invert media.
+                If True, link preview will be shown above the message text.
+                Otherwise, the link preview will be shown below the message text.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.

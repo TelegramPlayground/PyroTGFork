@@ -112,7 +112,8 @@ class SendCachedMedia:
                 True, if the message media is covered by a spoiler animation.
 
             invert_media (``bool``, *optional*):
-                Invert media.
+                If True, link preview will be shown above the message text.
+                Otherwise, the link preview will be shown below the message text.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,

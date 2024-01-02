@@ -82,7 +82,8 @@ class SendMessage:
                 For supergroups only.
 
             invert_media (``bool``, *optional*):
-                Invert media.
+                If True, link preview will be shown above the message text.
+                Otherwise, the link preview will be shown below the message text.
 
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.

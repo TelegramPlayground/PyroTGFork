@@ -81,10 +81,12 @@ class WebPage(Object):
             Whether the webpage preview is large.
 
         force_large_media (``bool``, *optional*):
-            Request the client to enlarge the webpage preview.
+            If True, media in the link preview will be larger.
+            Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
 
         force_small_media (``bool``, *optional*):
-            Request the client to shrink the webpage preview.
+            If True, media in the link preview will be smaller.
+            Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
 
         manual (``bool``, *optional*):
             Whether the webpage preview was changed by the user.

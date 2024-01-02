@@ -106,7 +106,8 @@ class SendMediaGroup:
                 Protects the contents of the sent message from forwarding and saving.
 
             invert_media (``bool``, *optional*):
-                Invert media.
+                If True, link preview will be shown above the message text.
+                Otherwise, the link preview will be shown below the message text.
 
         Returns:
             List of :obj:`~pyrogram.types.Message`: On success, a list of the sent messages is returned.

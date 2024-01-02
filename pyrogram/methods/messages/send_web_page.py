@@ -75,13 +75,16 @@ class SendWebPage:
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
             force_large_media (``bool``, *optional*):
-                Make web page preview image larger.
+                If True, media in the link preview will be larger.
+                Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
 
             force_small_media (``bool``, *optional*):
-                Make web page preview image smaller.
+                If True, media in the link preview will be smaller.
+                Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
 
             invert_media (``bool``, *optional*):
-                Invert media.
+                If True, link preview will be shown above the message text.
+                Otherwise, the link preview will be shown below the message text.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
