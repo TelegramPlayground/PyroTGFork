@@ -1,5 +1,8 @@
 name: Build DOCs
-on: [workflow_dispatch, push]
+on:
+  push:
+    branches:
+      - 'unknown_errors'
 jobs:
   build:
     name: build-doc
