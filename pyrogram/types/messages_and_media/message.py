@@ -1179,6 +1179,7 @@ class Message(Object, Update):
         disable_web_page_preview: bool = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
+        invert_media: bool = None,
         reply_to_message_id: int = None,
         quote_text: str = None,
         quote_entities: List["types.MessageEntity"] = None,
@@ -1232,6 +1233,9 @@ class Message(Object, Update):
                 Unique identifier of a message thread to which the message belongs.
                 For supergroups only.
 
+            invert_media (``bool``, *optional*):
+                Invert media.
+
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.
 
@@ -1274,6 +1278,7 @@ class Message(Object, Update):
             disable_web_page_preview=disable_web_page_preview,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
+            invert_media=invert_media,
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             quote_entities=quote_entities,
