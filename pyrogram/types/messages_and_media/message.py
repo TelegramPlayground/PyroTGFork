@@ -939,7 +939,14 @@ class Message(Object, Update):
                             media_type = enums.MessageMediaType.DOCUMENT
                 elif isinstance(media, raw.types.MessageMediaWebPage):
                     if isinstance(media.webpage, raw.types.WebPage):
-                        web_page = types.WebPage._parse(client, media.webpage, media.force_large_media, media.force_small_media, media.manual)
+                        web_page = types.WebPage._parse(
+                            client,
+                            media.webpage,
+                            getattr(media, "force_large_media", None),
+                            getattr(media, "force_small_media", None),
+                            getattr(media, "manual", None),
+                            getattr(media, "safe", None)
+                        )
                         media_type = enums.MessageMediaType.WEB_PAGE
                     else:
                         media = None

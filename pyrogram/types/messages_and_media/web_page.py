@@ -81,15 +81,16 @@ class WebPage(Object):
             Whether the webpage preview is large.
 
         force_large_media (``bool``, *optional*):
-            If True, media in the link preview will be larger.
-            Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
+            Whether the webpage preview is forced large.
 
         force_small_media (``bool``, *optional*):
-            If True, media in the link preview will be smaller.
-            Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
+            Whether the webpage preview is forced small.
 
         manual (``bool``, *optional*):
             Whether the webpage preview was changed by the user.
+
+        safe (``bool``, *optional*):
+            Whether the webpage preview is safe.
 
         duration (``int``, *optional*):
             Unknown at the time of writing.
@@ -122,6 +123,7 @@ class WebPage(Object):
         force_large_media: bool = None,
         force_small_media: bool = None,
         manual: bool = None,
+        safe: bool = None,
         duration: int = None,
         author: str = None
     ):
@@ -147,6 +149,7 @@ class WebPage(Object):
         self.force_large_media = force_large_media
         self.force_small_media = force_small_media
         self.manual = manual
+        self.safe = safe
         self.duration = duration
         self.author = author
 
@@ -156,7 +159,8 @@ class WebPage(Object):
         webpage: "raw.types.WebPage",
         force_large_media: bool = None,
         force_small_media: bool = None,
-        manual: bool = None
+        manual: bool = None,
+        safe: bool = None
     ) -> "WebPage":
         audio = None
         document = None
@@ -214,6 +218,7 @@ class WebPage(Object):
             force_large_media=force_large_media,
             force_small_media=force_small_media,
             manual=manual,
+            safe=safe,
             duration=webpage.duration,
             author=webpage.author
         )
