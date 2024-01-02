@@ -3163,19 +3163,16 @@ class Message(Object, Update):
             else:
                 raise ValueError("Unknown media type")
 
-            if self.sticker or self.video_note:  # Sticker and VideoNote should have no caption
-                return await send_media(file_id=file_id)
-            else:
-                if caption is None:
-                    caption = self.caption or ""
-                    caption_entities = self.caption_entities
+            if caption is None:
+                caption = self.caption or ""
+                caption_entities = self.caption_entities
 
-                return await send_media(
-                    file_id=file_id,
-                    caption=caption,
-                    parse_mode=parse_mode,
-                    caption_entities=caption_entities
-                )
+            return await send_media(
+                file_id=file_id,
+                caption=caption,
+                parse_mode=parse_mode,
+                caption_entities=caption_entities
+            )
         else:
             raise ValueError("Can't copy this message")
 
