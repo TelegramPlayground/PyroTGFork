@@ -129,29 +129,50 @@ class SendMessage:
                         ]))
         """
 
+        reply_to = utils.get_reply_head_fm(message_thread_id, reply_to_message_id)
         message, entities = (await utils.parse_text_entities(self, text, parse_mode, entities)).values()
 
-        reply_to = utils.get_reply_head_fm(message_thread_id, reply_to_message_id)
-
-        r = await self.invoke(
-            raw.functions.messages.SendMessage(
-                peer=await self.resolve_peer(chat_id),
-                no_webpage=link_preview_options.is_disabled if link_preview_options else None,
-                silent=disable_notification or None,
-                # TODO
-                # TODO
-                noforwards=protect_content,
-                # TODO
-                invert_media=link_preview_options.show_above_text if link_preview_options else None,
-                reply_to=reply_to,
-                schedule_date=utils.datetime_to_timestamp(schedule_date),
-                reply_markup=await reply_markup.write(self) if reply_markup else None,
-                # TODO
-                random_id=self.rnd_id(),
-                message=message,
-                entities=entities,
+        if message:
+            r = await self.invoke(
+                raw.functions.messages.SendMessage(
+                    peer=await self.resolve_peer(chat_id),
+                    no_webpage=link_preview_options.is_disabled if link_preview_options else None,
+                    silent=disable_notification or None,
+                    # TODO
+                    # TODO
+                    noforwards=protect_content,
+                    # TODO
+                    invert_media=link_preview_options.show_above_text if link_preview_options else None,
+                    reply_to=reply_to,
+                    schedule_date=utils.datetime_to_timestamp(schedule_date),
+                    reply_markup=await reply_markup.write(self) if reply_markup else None,
+                    # TODO
+                    random_id=self.rnd_id(),
+                    message=message,
+                    entities=entities,
+                )
             )
-        )
+        else:
+
+            r = await self.invoke(
+                raw.functions.messages.SendMedia(
+                    peer=await self.resolve_peer(chat_id),
+                    silent=disable_notification or None,
+                    reply_to=reply_to,
+                    random_id=self.rnd_id(),
+                    schedule_date=utils.datetime_to_timestamp(schedule_date),
+                    reply_markup=await reply_markup.write(self) if reply_markup else None,
+                    message=message,
+                    media=raw.types.InputMediaWebPage(
+                        url=link_preview_options.url,
+                        force_large_media=link_preview_options.prefer_large_media,
+                        force_small_media=link_preview_options.prefer_small_media
+                    ),
+                    invert_media=link_preview_options.show_above_text,
+                    entities=entities,
+                    noforwards=protect_content
+                )
+            )
 
         if isinstance(r, raw.types.UpdateShortSentMessage):
             peer = await self.resolve_peer(chat_id)
