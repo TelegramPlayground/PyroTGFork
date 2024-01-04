@@ -204,6 +204,7 @@ class KeyboardButton(Object):
                         user_admin_rights=user_admin_rights,
                         bot_admin_rights=bot_admin_rights
                     ),
+                    max_quantity=1
                 )
 
             if isinstance(self.request_peer, types.RequestChatInfo):
@@ -255,6 +256,7 @@ class KeyboardButton(Object):
                         user_admin_rights=user_admin_rights,
                         bot_admin_rights=bot_admin_rights
                     ),
+                    max_quantity=1
                 )
 
             if isinstance(self.request_peer, types.RequestUserInfo):
