@@ -57,7 +57,7 @@ class EditStoryPrivacy:
                 Note: Works with :obj:`~pyrogram.enums.StoriesPrivacyRules.PUBLIC`
                 and :obj:`~pyrogram.enums.StoriesPrivacyRules.CONTACTS` only
 
-         Returns:
+        Returns:
             :obj:`~pyrogram.types.Story`: On success, the edited story is returned.
 
         Example:

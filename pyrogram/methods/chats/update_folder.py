@@ -97,8 +97,8 @@ class UpdateFolder:
         Example:
             .. code-block:: python
 
-                # Delete folder
-                app.update_folder(folder_id, title="New folder", included_chats=["me"])
+                # Create or update folder
+                app.update_folder(folder_id, title="New folder", included_chats="me")
         """
         if not isinstance(included_chats, list):
             included_chats = [included_chats]

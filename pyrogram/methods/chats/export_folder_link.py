@@ -29,6 +29,10 @@ class ExportFolderLink:
 
         .. include:: /_includes/usable-by/users.rst
 
+        Parameters:
+            folder_id (``int``):
+                Unique identifier (int) of the target folder.
+
         Returns:
             ``str``: On success, a link to the folder as string is returned.
 
@@ -36,7 +40,7 @@ class ExportFolderLink:
             .. code-block:: python
 
                 # Export folder link
-                app.export_folder_link(123456789)
+                app.export_folder_link(folder_id)
         """
         folder = await self.get_folders(folder_id)
 
