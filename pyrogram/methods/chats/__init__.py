@@ -47,7 +47,9 @@ from .get_forum_topics_by_id import GetForumTopicsByID
 from .get_nearby_chats import GetNearbyChats
 from .get_send_as_chats import GetSendAsChats
 from .join_chat import JoinChat
+from .join_folder import JoinFolder
 from .leave_chat import LeaveChat
+from .leave_folder import LeaveFolder
 from .mark_chat_unread import MarkChatUnread
 from .pin_chat_message import PinChatMessage
 from .promote_chat_member import PromoteChatMember
@@ -75,7 +77,9 @@ from .update_folder import UpdateFolder
 class Chats(
     GetChat,
     LeaveChat,
+    LeaveFolder,
     JoinChat,
+    JoinFolder,
     BanChatMember,
     UnbanChatMember,
     RestrictChatMember,

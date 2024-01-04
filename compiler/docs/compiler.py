@@ -252,6 +252,8 @@ def pyrogram_api():
             get_folders
             update_folder
             get_similar_channels
+            join_folder
+            leave_folder
         """,
         users="""
         Users
