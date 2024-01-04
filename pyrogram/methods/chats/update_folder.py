@@ -26,10 +26,10 @@ class UpdateFolder:
     async def update_folder(
         self: "pyrogram.Client",
         folder_id: int,
+        title: str,
         included_chats: Union[Union[int, str], List[Union[int, str]]] = None,
         excluded_chats: Union[Union[int, str], List[Union[int, str]]] = None,
         pinned_chats: Union[Union[int, str], List[Union[int, str]]] = None,
-        title: str = None,
         contacts: bool = None,
         non_contacts: bool = None,
         groups: bool = None,
@@ -48,6 +48,9 @@ class UpdateFolder:
             folder_id (``int``):
                 Unique folder identifier.
 
+            title (``str``):
+                Folder title.
+
             included_chats (``int`` | ``str`` | List of ``int`` or ``str``, *optional*):
                 Users or chats that should added in the folder
                 You can pass an ID (int), username (str) or phone number (str).
@@ -62,9 +65,6 @@ class UpdateFolder:
                 Users or chats that should pinned in the folder
                 You can pass an ID (int), username (str) or phone number (str).
                 Multiple users can be added by passing a list of IDs, usernames or phone numbers.
-
-            title (``str``, *optional*):
-                A folder title was changed to this value.
 
             contacts (``bool``, *optional*):
                 Pass True if folder should contain contacts.
@@ -101,11 +101,11 @@ class UpdateFolder:
                 app.update_folder(folder_id, title="New folder", included_chats="me")
         """
         if not isinstance(included_chats, list):
-            included_chats = [included_chats]
+            included_chats = [included_chats] if included_chats else []
         if not isinstance(excluded_chats, list):
-            excluded_chats = [excluded_chats]
+            excluded_chats = [excluded_chats] if excluded_chats else []
         if not isinstance(pinned_chats, list):
-            pinned_chats = [pinned_chats]
+            pinned_chats = [pinned_chats] if pinned_chats else []
 
         r = await self.invoke(
             raw.functions.messages.UpdateDialogFilter(
