@@ -637,6 +637,7 @@ def pyrogram_api():
             Chat.unpin_all_messages
             Chat.mute
             Chat.unmute
+            Chat.set_ttl
         """,
         user="""
         User
