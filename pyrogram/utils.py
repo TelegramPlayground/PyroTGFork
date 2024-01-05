@@ -378,19 +378,20 @@ def datetime_to_timestamp(dt: Optional[datetime]) -> Optional[int]:
 
 async def get_reply_head_fm(
     client: "pyroram.Client",
-    message_thread_id: int,  # TODO
-    reply_to_message_id: int,
-    chat_id: Union[int, str] = None,
-    # TODO
-    quote: str = None,
-    quote_parse_mode: Optional["enums.ParseMode"] = None,
-    quote_entities: List["types.MessageEntity"] = None,
-    quote_position: int = None
-    # TODO
+    message_thread_id: int = None,
+    reply_parameters: "types.ReplyParameters" = None
 ) -> raw.types.InputReplyToMessage:
     reply_to = None
     if not reply_to_message_id:
         return reply_to
+    reply_to_message_id = reply_parameters.message_id
+    chat_id = reply_parameters.chat_id
+    # TODO
+    quote = reply_parameters.quote
+    quote_parse_mode = reply_parameters.quote_parse_mode
+    quote_entities = reply_parameters.quote_entities
+    quote_position = reply_parameters.quote_position
+
     reply_to = raw.types.InputReplyToMessage(
         reply_to_msg_id=reply_to_message_id
     )
