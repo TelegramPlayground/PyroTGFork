@@ -129,7 +129,11 @@ class SendMessage:
                         ]))
         """
 
-        reply_to = utils.get_reply_head_fm(message_thread_id, reply_to_message_id)
+        reply_to = await utils.get_reply_head_fm(
+            self,
+            message_thread_id,
+            reply_to_message_id
+        )
         message, entities = (await utils.parse_text_entities(self, text, parse_mode, entities)).values()
 
         if message:
@@ -152,8 +156,7 @@ class SendMessage:
                     entities=entities,
                 )
             )
-        else:
-
+        elif link_preview_options.url:
             r = await self.invoke(
                 raw.functions.messages.SendMedia(
                     peer=await self.resolve_peer(chat_id),

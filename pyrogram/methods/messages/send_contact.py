@@ -95,7 +95,11 @@ class SendContact:
                 await app.send_contact("me", "+1-123-456-7890", "Name")
         """
 
-        reply_to = utils.get_reply_head_fm(message_thread_id, reply_to_message_id)
+        reply_to = await utils.get_reply_head_fm(
+            self,
+            message_thread_id,
+            reply_to_message_id
+        )
 
         r = await self.invoke(
             raw.functions.messages.SendMedia(

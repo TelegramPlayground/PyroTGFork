@@ -68,7 +68,11 @@ class SendInlineBotResult:
                 await app.send_inline_bot_result(chat_id, query_id, result_id)
         """
 
-        reply_to = utils.get_reply_head_fm(message_thread_id, reply_to_message_id)
+        reply_to = await utils.get_reply_head_fm(
+            self,
+            message_thread_id,
+            reply_to_message_id
+        )
 
         return await self.invoke(
             raw.functions.messages.SendInlineBotResult(

@@ -77,7 +77,11 @@ class SendGame:
                 await app.send_game(chat_id, "gamename")
         """
 
-        reply_to = utils.get_reply_head_fm(message_thread_id, reply_to_message_id)
+        reply_to = await utils.get_reply_head_fm(
+            self,
+            message_thread_id,
+            reply_to_message_id
+        )
 
         r = await self.invoke(
             raw.functions.messages.SendMedia(
