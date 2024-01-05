@@ -217,17 +217,6 @@ text = create(text_filter)
 
 # endregion
 
-# region reply_filter
-async def reply_filter(_, __, m: Message):
-    return bool(m.reply_to_message_id)
-
-
-reply = create(reply_filter)
-"""Filter messages that are replies to other messages."""
-
-
-# endregion
-
 # region forwarded_filter
 async def forwarded_filter(_, __, m: Message):
     return bool(m.forward_date)
