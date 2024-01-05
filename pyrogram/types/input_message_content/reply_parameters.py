@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, List
+from typing import Optional, List, Union
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
@@ -57,7 +57,7 @@ class ReplyParameters(Object):
         message_id: int,
         chat_id: Union[int, str] = None,
         # TODO
-        quote: str,
+        quote: str = None,
         quote_parse_mode: Optional["enums.ParseMode"] = None,
         quote_entities: List["types.MessageEntity"] = None,
         quote_position: int = None,

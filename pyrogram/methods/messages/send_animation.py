@@ -46,7 +46,7 @@ class SendAnimation:
         thumb: Union[str, BinaryIO] = None,
         file_name: str = None,
         disable_notification: bool = None,
-        reply_to_message_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
@@ -122,9 +122,8 @@ class SendAnimation:
                 If you set a timer, the animation will self-destruct in *ttl_seconds*
                 seconds after it was viewed.
 
-
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
@@ -242,7 +241,7 @@ class SendAnimation:
             reply_to = await utils.get_reply_head_fm(
                 self,
                 message_thread_id,
-                reply_to_message_id
+                reply_parameters
             )
 
             while True:

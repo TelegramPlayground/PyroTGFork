@@ -36,7 +36,7 @@ class CopyMessage:
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
         disable_notification: bool = None,
-        reply_to_message_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         has_spoiler: bool = None,
@@ -84,8 +84,8 @@ class CopyMessage:
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -118,7 +118,7 @@ class CopyMessage:
             parse_mode=parse_mode,
             caption_entities=caption_entities,
             disable_notification=disable_notification,
-            reply_to_message_id=reply_to_message_id,
+            reply_parameters=reply_parameters,
             schedule_date=schedule_date,
             protect_content=protect_content,
             has_spoiler=has_spoiler,

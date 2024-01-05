@@ -382,6 +382,8 @@ async def get_reply_head_fm(
     reply_parameters: "types.ReplyParameters" = None
 ) -> raw.types.InputReplyToMessage:
     reply_to = None
+    if not reply_parameters:
+        return reply_to
     reply_to_message_id = reply_parameters.message_id
     if not reply_to_message_id:
         return reply_to

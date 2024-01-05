@@ -30,7 +30,7 @@ class SendDice:
         chat_id: Union[int, str],
         emoji: str = "🎲",
         disable_notification: bool = None,
-        reply_to_message_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
@@ -62,8 +62,8 @@ class SendDice:
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
@@ -97,7 +97,7 @@ class SendDice:
         reply_to = await utils.get_reply_head_fm(
             self,
             message_thread_id,
-            reply_to_message_id
+            reply_parameters
         )
 
         r = await self.invoke(

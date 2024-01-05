@@ -42,7 +42,7 @@ class SendPoll:
         is_closed: bool = None,
         disable_notification: bool = None,
         protect_content: bool = None,
-        reply_to_message_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
         schedule_date: datetime = None,
         reply_markup: Union[
@@ -115,8 +115,8 @@ class SendPoll:
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
@@ -144,7 +144,7 @@ class SendPoll:
         reply_to = await utils.get_reply_head_fm(
             self,
             message_thread_id,
-            reply_to_message_id
+            reply_parameters
         )
 
         r = await self.invoke(

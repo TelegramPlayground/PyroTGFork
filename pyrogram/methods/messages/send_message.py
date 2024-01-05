@@ -27,22 +27,23 @@ from pyrogram import types
 class SendMessage:
     async def send_message(
         self: "pyrogram.Client",
-        chat_id: Union[int, str],
-        text: str,
+        *,
+        chat_id: Union[int, str] = None,
+        message_thread_id: int = None,
+        text: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         disable_notification: bool = None,
-        reply_to_message_id: int = None,
-        message_thread_id: int = None,
-        schedule_date: datetime = None,
         protect_content: bool = None,
+        reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+        schedule_date: datetime = None
     ) -> "types.Message":
         """Send text messages.
 
@@ -53,6 +54,9 @@ class SendMessage:
                 Unique identifier (int) or username (str) of the target chat.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
 
             text (``str``):
                 Text of the message to be sent.
@@ -71,21 +75,18 @@ class SendMessage:
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            reply_to_message_id (``int``, *optional*):
-                If the message is a reply, ID of the original message.
-
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
-
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
+
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
 
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the sent text message is returned.
@@ -94,18 +95,18 @@ class SendMessage:
             .. code-block:: python
 
                 # Simple example
-                await app.send_message("me", "Message sent with **Pyrogram**!")
+                await app.send_message(chat_id="me", text="Message sent with **Pyrogram**!")
 
                 # Disable web page previews
                 await app.send_message(
-                    "me", "https://docs.pyrogram.org",
+                    chat_id="me", text="https://docs.pyrogram.org",
                     link_preview_options=types.LinkPreviewOption(
                         is_disabled=True
                     )
                 )
 
                 # Reply to a message using its id
-                await app.send_message("me", "this is a reply", reply_to_message_id=123)
+                await app.send_message(chat_id="me", text="this is a reply", reply_parameters=types.ReplyParameters(message_id=123))
 
             .. code-block:: python
 
@@ -116,12 +117,12 @@ class SendMessage:
 
                 # Send a normal keyboard
                 await app.send_message(
-                    chat_id, "Look at that button!",
+                    chat_id=chat_id, text="Look at that button!",
                     reply_markup=ReplyKeyboardMarkup([["Nice!"]]))
 
                 # Send an inline keyboard
                 await app.send_message(
-                    chat_id, "These are inline buttons",
+                    chat_id=chat_id, text="These are inline buttons",
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [InlineKeyboardButton("Data", callback_data="callback_data")],
@@ -132,7 +133,7 @@ class SendMessage:
         reply_to = await utils.get_reply_head_fm(
             self,
             message_thread_id,
-            reply_to_message_id
+            reply_parameters
         )
         message, entities = (await utils.parse_text_entities(self, text, parse_mode, entities)).values()
 
