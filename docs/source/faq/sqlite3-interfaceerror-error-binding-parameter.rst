@@ -10,4 +10,4 @@ accidentally passed the whole user or chat object instead of the id or username.
     app.send_message(chat, "text")
 
     # Correct
-    app.send_message(chat.id, "text")
+    app.send_message(chat_id=chat.id, text="text")

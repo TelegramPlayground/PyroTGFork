@@ -34,7 +34,7 @@ Pyrogram is being used inside the main function with its asynchronous interface.
         app = Client("my_account")
 
         async with app:
-            await app.send_message("me", "Hi!")
+            await app.send_message(chat_id="me", text="Hi!")
 
 
     asyncio.run(main())
@@ -49,7 +49,7 @@ As you can see, the non-async example becomes less cluttered.
     app = Client("my_account")
 
     with app:
-        app.send_message("me", "Hi!")
+        app.send_message(chat_id="me", text="Hi!")
 
 Synchronous handlers
 --------------------

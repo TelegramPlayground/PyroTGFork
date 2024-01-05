@@ -33,7 +33,7 @@ Get Pyrogram Real Fast
 
         async def main():
             async with Client("my_account", api_id, api_hash) as app:
-                await app.send_message("me", "Greetings from **Pyrogram**!")
+                await app.send_message(chat_id="me", text="Greetings from **Pyrogram**!")
 
 
         asyncio.run(main())

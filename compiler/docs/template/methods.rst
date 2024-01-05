@@ -12,7 +12,7 @@ the main package directly.
     app = Client("my_account")
 
     with app:
-        app.send_message("me", "hi")
+        app.send_message(chat_id="me", text="hi")
 
 -----
 

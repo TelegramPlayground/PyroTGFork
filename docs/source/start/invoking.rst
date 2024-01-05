@@ -21,7 +21,7 @@ Making API calls with Pyrogram is very simple. Here's a basic example we are goi
 
     async def main():
         async with app:
-            await app.send_message("me", "Hi!")
+            await app.send_message(chat_id="me", text="Hi!")
 
 
     app.run(main())
@@ -49,7 +49,7 @@ Step-by-step
 
         async def main():
             async with app:
-                await app.send_message("me", "Hi!")
+                await app.send_message(chat_id="me", text="Hi!")
 
 #.  Finally, we tell Python to schedule our ``main()`` async function by using Pyrogram's :meth:`~pyrogram.Client.run`
     method.
@@ -77,7 +77,7 @@ Below there's the same example as above, but without the use of the context mana
 
     async def main():
         await app.start()
-        await app.send_message("me", "Hi!")
+        await app.send_message(chat_id="me", text="Hi!")
         await app.stop()
 
 
@@ -100,7 +100,7 @@ be instantiated inside the main function.
         app = Client("my_account")
 
         async with app:
-            await app.send_message("me", "Hi!")
+            await app.send_message(chat_id="me", text="Hi!")
 
 
     asyncio.run(main())

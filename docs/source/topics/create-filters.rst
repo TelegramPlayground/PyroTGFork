@@ -22,8 +22,8 @@ button:
     from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
     await app.send_message(
-        "username",  # Change this to your username or id
-        "Pyrogram custom filter test",
+        chat_id="username",  # Change this to your username or id
+        text="Pyrogram custom filter test",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("Press me", "pyrogram")]]
         )

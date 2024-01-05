@@ -471,23 +471,23 @@ class Client(Methods):
                 from pyrogram import enums
 
                 # Default combined mode: Markdown + HTML
-                await app.send_message("me", "1. **markdown** and <i>html</i>")
+                await app.send_message(chat_id="me", text="1. **markdown** and <i>html</i>")
 
                 # Force Markdown-only, HTML is disabled
                 app.set_parse_mode(enums.ParseMode.MARKDOWN)
-                await app.send_message("me", "2. **markdown** and <i>html</i>")
+                await app.send_message(chat_id="me", text="2. **markdown** and <i>html</i>")
 
                 # Force HTML-only, Markdown is disabled
                 app.set_parse_mode(enums.ParseMode.HTML)
-                await app.send_message("me", "3. **markdown** and <i>html</i>")
+                await app.send_message(chat_id="me", text="3. **markdown** and <i>html</i>")
 
                 # Disable the parser completely
                 app.set_parse_mode(enums.ParseMode.DISABLED)
-                await app.send_message("me", "4. **markdown** and <i>html</i>")
+                await app.send_message(chat_id="me", text="4. **markdown** and <i>html</i>")
 
                 # Bring back the default combined mode
                 app.set_parse_mode(enums.ParseMode.DEFAULT)
-                await app.send_message("me", "5. **markdown** and <i>html</i>")
+                await app.send_message(chat_id="me", text="5. **markdown** and <i>html</i>")
         """
 
         self.parse_mode = parse_mode

@@ -22,8 +22,8 @@ like send_audio(), send_document(), send_location(), etc...
     async def main():
         async with app:
             await app.send_message(
-                "me",  # Edit this
-                "This is a ReplyKeyboardMarkup example",
+                chat_id="me",  # Edit this
+                text="This is a ReplyKeyboardMarkup example",
                 reply_markup=ReplyKeyboardMarkup(
                     [
                         ["A", "B", "C", "D"],  # First row
@@ -36,8 +36,8 @@ like send_audio(), send_document(), send_location(), etc...
             )
 
             await app.send_message(
-                "me",  # Edit this
-                "This is a InlineKeyboardMarkup example",
+                chat_id="me",  # Edit this
+                text="This is a InlineKeyboardMarkup example",
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [  # First row

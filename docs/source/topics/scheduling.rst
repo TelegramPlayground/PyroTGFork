@@ -29,7 +29,7 @@ Asynchronously
 
 
     async def job():
-        await app.send_message("me", "Hi!")
+        await app.send_message(chat_id="me", text="Hi!")
 
 
     scheduler = AsyncIOScheduler()
@@ -51,7 +51,7 @@ Non-Asynchronously
 
 
     def job():
-        app.send_message("me", "Hi!")
+        app.send_message(chat_id="me", text="Hi!")
 
 
     scheduler = BackgroundScheduler()

@@ -14,7 +14,7 @@ This page is about the Client class, which exposes high-level methods for an eas
     app = Client("my_account")
 
     with app:
-        app.send_message("me", "Hi!")
+        app.send_message(chat_id="me", text="Hi!")
 
 -----
 
