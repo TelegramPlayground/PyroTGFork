@@ -378,43 +378,36 @@ def datetime_to_timestamp(dt: Optional[datetime]) -> Optional[int]:
 
 async def get_reply_head_fm(
     client: "pyroram.Client",
-    message_thread_id: int,
+    message_thread_id: int,  # TODO
     reply_to_message_id: int,
-    chat_id: Optional[int, str] = None,
+    chat_id: Union[int, str] = None,
     # TODO
     quote: str = None,
     quote_parse_mode: Optional["enums.ParseMode"] = None,
     quote_entities: List["types.MessageEntity"] = None,
     quote_position: int = None
+    # TODO
 ) -> raw.types.InputReplyToMessage:
     reply_to = None
-    if (
-        reply_to_message_id or
-        message_thread_id
-    ):
-        if not reply_to_message_id:
-            reply_to = raw.types.InputReplyToMessage(
-                reply_to_msg_id=message_thread_id,
-                top_msg_id=message_thread_id
-            )
-        else:
-            reply_to = raw.types.InputReplyToMessage(
-                reply_to_msg_id=reply_to_message_id,
-                top_msg_id=message_thread_id
-            )
-    if reply_to:
-        message, entities = (await parse_text_entities(
-            client,
-            quote,
-            quote_parse_mode,
-            quote_entities
-        )).values()
-        reply_to.quote_text = message
-        reply_to.quote_entities = entities
-        if chat_id:
-            reply_to.reply_to_peer_id = await client.resolve_peer(chat_id)
-        if quote_position:
-            reply_to.quote_offset = quote_position
+    if not reply_to_message_id:
+        return reply_to
+    reply_to = raw.types.InputReplyToMessage(
+        reply_to_msg_id=reply_to_message_id
+    )
+    if message_thread_id:
+        reply_to.top_msg_id = message_thread_id
+    message, entities = (await parse_text_entities(
+        client,
+        quote,
+        quote_parse_mode,
+        quote_entities
+    )).values()
+    reply_to.quote_text = message
+    reply_to.quote_entities = entities
+    if chat_id:
+        reply_to.reply_to_peer_id = await client.resolve_peer(chat_id)
+    if quote_position:
+        reply_to.quote_offset = quote_position
     return reply_to
 
 
