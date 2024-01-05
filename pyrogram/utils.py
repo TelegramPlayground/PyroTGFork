@@ -104,7 +104,7 @@ async def parse_messages(
     for message in messages.messages:
         parsed_messages.append(await types.Message._parse(client, message, users, chats, replies=0))
 
-    if replies:
+    if replies and False:  # TODO
         messages_with_replies = {
             # TODO: fix this logic someday
             i.id: i.reply_to.reply_to_msg_id
@@ -382,9 +382,9 @@ async def get_reply_head_fm(
     reply_parameters: "types.ReplyParameters" = None
 ) -> raw.types.InputReplyToMessage:
     reply_to = None
+    reply_to_message_id = reply_parameters.message_id
     if not reply_to_message_id:
         return reply_to
-    reply_to_message_id = reply_parameters.message_id
     chat_id = reply_parameters.chat_id
     # TODO
     quote = reply_parameters.quote
