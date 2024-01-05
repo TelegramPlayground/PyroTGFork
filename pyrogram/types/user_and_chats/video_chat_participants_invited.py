@@ -22,7 +22,7 @@ from pyrogram import raw, types
 from ..object import Object
 
 
-class VideoChatMembersInvited(Object):
+class VideoChatParticipantsInvited(Object):
     """A service message about new members invited to a voice chat.
 
 
@@ -44,7 +44,7 @@ class VideoChatMembersInvited(Object):
         client,
         action: "raw.types.MessageActionInviteToGroupCall",
         users: Dict[int, "raw.types.User"]
-    ) -> "VideoChatMembersInvited":
+    ) -> "VideoChatParticipantsInvited":
         users = [types.User._parse(client, users[i]) for i in action.users]
 
-        return VideoChatMembersInvited(users=users)
+        return VideoChatParticipantsInvited(users=users)

@@ -66,8 +66,8 @@ class MessageServiceType(AutoName):
     VIDEO_CHAT_SCHEDULED = auto()
     "Video chat scheduled"
 
-    VIDEO_CHAT_MEMBERS_INVITED = auto()
-    "Video chat members invited"
+    VIDEO_CHAT_PARTICIPANTS_INVITED = auto()
+    "Video chat participants invited"
 
     WEB_APP_DATA = auto()
     "Web app data"

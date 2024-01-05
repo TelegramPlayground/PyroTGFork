@@ -63,6 +63,9 @@ class Message(Object, Update):
         id (``int``):
             Unique message identifier inside this chat.
 
+        message_thread_id (``int``, *optional*):
+            Unique identifier of a message thread to which the message belongs; for supergroups only
+
         from_user (:obj:`~pyrogram.types.User`, *optional*):
             Sender, empty for messages sent to channels.
 
@@ -77,6 +80,8 @@ class Message(Object, Update):
 
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
             Conversation the message belongs to.
+
+        forward_origin
 
         forward_from (:obj:`~pyrogram.types.User`, *optional*):
             For forwarded messages, sender of the original message.
@@ -96,15 +101,45 @@ class Message(Object, Update):
         forward_date (:py:obj:`~datetime.datetime`, *optional*):
             For forwarded messages, date the original message was sent.
 
+        is_topic_message
+
+        is_automatic_forward
+
         reply_to_message_id (``int``, *optional*):
             The id of the message which this message directly replied to.
-
-        reply_to_top_message_id (``int``, *optional*):
-            The id of the first message which started this message thread.
 
         reply_to_message (:obj:`~pyrogram.types.Message`, *optional*):
             For replies, the original message. Note that the Message object in this field will not contain
             further reply_to_message fields even if it itself is a reply.
+
+        external_reply
+
+        quote
+
+        via_bot (:obj:`~pyrogram.types.User`):
+            The information of the bot that generated the message from an inline query of a user.
+
+        edit_date (:py:obj:`~datetime.datetime`, *optional*):
+            Date the message was last edited.
+
+        has_protected_content (``bool``, *optional*):
+            True, if the message can't be forwarded.
+
+        media_group_id (``str``, *optional*):
+            The unique identifier of a media message group this message belongs to.
+
+        author_signature (``str``, *optional*):
+            Signature of the post author for messages in channels, or the custom title of an anonymous group
+            administrator.
+
+        text (``str``, *optional*):
+            For text messages, the actual UTF-8 text of the message, 0-4096 characters.
+            If the message contains entities (bold, italic, ...) you can access *text.markdown* or
+            *text.html* to get the marked up message text. In case there is no entity, the fields
+            will contain the same text as *text*.
+
+        entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
+            For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
 
         mentioned (``bool``, *optional*):
             The message contains a mention.
@@ -123,34 +158,11 @@ class Message(Object, Update):
             This field will contain the enumeration type of the media message.
             You can use ``media = getattr(message, message.media.value)`` to access the media message.
 
-        edit_date (:py:obj:`~datetime.datetime`, *optional*):
-            Date the message was last edited.
+        link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+            Options used for link preview generation for the message, if it is a text message and link preview options were changed
 
-        media_group_id (``str``, *optional*):
-            The unique identifier of a media message group this message belongs to.
-
-        author_signature (``str``, *optional*):
-            Signature of the post author for messages in channels, or the custom title of an anonymous group
-            administrator.
-
-        has_protected_content (``bool``, *optional*):
-            True, if the message can't be forwarded.
-
-        has_media_spoiler (``bool``, *optional*):
-            True, if the message media is covered by a spoiler animation.
-
-        text (``str``, *optional*):
-            For text messages, the actual UTF-8 text of the message, 0-4096 characters.
-            If the message contains entities (bold, italic, ...) you can access *text.markdown* or
-            *text.html* to get the marked up message text. In case there is no entity, the fields
-            will contain the same text as *text*.
-
-        entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-            For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
-
-        caption_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-            For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear
-            in the caption.
+        animation (:obj:`~pyrogram.types.Animation`, *optional*):
+            Message is an animation, information about the animation.
 
         audio (:obj:`~pyrogram.types.Audio`, *optional*):
             Message is an audio file, information about the file.
@@ -164,20 +176,16 @@ class Message(Object, Update):
         sticker (:obj:`~pyrogram.types.Sticker`, *optional*):
             Message is a sticker, information about the sticker.
 
-        animation (:obj:`~pyrogram.types.Animation`, *optional*):
-            Message is an animation, information about the animation.
-
-        game (:obj:`~pyrogram.types.Game`, *optional*):
-            Message is a game, information about the game.
+        story
 
         video (:obj:`~pyrogram.types.Video`, *optional*):
             Message is a video, information about the video.
 
-        voice (:obj:`~pyrogram.types.Voice`, *optional*):
-            Message is a voice message, information about the file.
-
         video_note (:obj:`~pyrogram.types.VideoNote`, *optional*):
             Message is a video note, information about the video message.
+
+        voice (:obj:`~pyrogram.types.Voice`, *optional*):
+            Message is a voice message, information about the file.
 
         caption (``str``, *optional*):
             Caption for the audio, document, photo, video or voice, 0-1024 characters.
@@ -185,23 +193,30 @@ class Message(Object, Update):
             *caption.html* to get the marked up caption text. In case there is no caption entity, the fields
             will contain the same text as *caption*.
 
+        caption_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
+            For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear
+            in the caption.
+
+        has_media_spoiler (``bool``, *optional*):
+            True, if the message media is covered by a spoiler animation.
+
         contact (:obj:`~pyrogram.types.Contact`, *optional*):
             Message is a shared contact, information about the contact.
 
-        location (:obj:`~pyrogram.types.Location`, *optional*):
-            Message is a shared location, information about the location.
+        dice (:obj:`~pyrogram.types.Dice`, *optional*):
+            A dice containing a value that is randomly generated by Telegram.
 
-        venue (:obj:`~pyrogram.types.Venue`, *optional*):
-            Message is a venue, information about the venue.
-
-        web_page (:obj:`~pyrogram.types.WebPage`, *optional*):
-            Message was sent with a webpage preview.
+        game (:obj:`~pyrogram.types.Game`, *optional*):
+            Message is a game, information about the game.
 
         poll (:obj:`~pyrogram.types.Poll`, *optional*):
             Message is a native poll, information about the poll.
 
-        dice (:obj:`~pyrogram.types.Dice`, *optional*):
-            A dice containing a value that is randomly generated by Telegram.
+        venue (:obj:`~pyrogram.types.Venue`, *optional*):
+            Message is a venue, information about the venue.
+
+        location (:obj:`~pyrogram.types.Location`, *optional*):
+            Message is a shared location, information about the location.
 
         new_chat_members (List of :obj:`~pyrogram.types.User`, *optional*):
             New members that were added to the group or supergroup and information about them
@@ -234,6 +249,8 @@ class Message(Object, Update):
             channel when it is created. It can only be found in reply_to_message if someone replies to a very
             first message in a channel.
 
+        message_auto_delete_timer_changed
+
         migrate_to_chat_id (``int``, *optional*):
             The group has been migrated to a supergroup with the specified identifier.
             This number may be greater than 32 bits and some programming languages may have difficulty/silent defects
@@ -251,6 +268,64 @@ class Message(Object, Update):
             Note that the Message object in this field will not contain further reply_to_message fields even if it
             is itself a reply.
 
+        invoice
+
+        successful_payment
+
+        users_shared
+
+        chat_shared
+
+        connected_website
+
+        write_access_allowed
+
+        passport_data
+
+        proximity_alert_triggered
+
+        forum_topic_created
+
+        forum_topic_edited
+
+        forum_topic_closed
+
+        forum_topic_reopened
+
+        general_forum_topic_hidden
+
+        general_forum_topic_unhidden
+
+        giveaway_created
+
+        giveaway
+
+        giveaway_winners
+
+        giveaway_completed
+
+        video_chat_scheduled (:obj:`~pyrogram.types.VideoChatScheduled`, *optional*):
+            Service message: voice chat scheduled.
+
+        video_chat_started (:obj:`~pyrogram.types.VideoChatStarted`, *optional*):
+            Service message: the voice chat started.
+
+        video_chat_ended (:obj:`~pyrogram.types.VideoChatEnded`, *optional*):
+            Service message: the voice chat has ended.
+
+        video_chat_participants_invited (:obj:`~pyrogram.types.VoiceChatParticipantsInvited`, *optional*):
+            Service message: new members were invited to the voice chat.
+
+        web_app_data (:obj:`~pyrogram.types.WebAppData`, *optional*):
+            Service message: web app data sent to the bot.
+
+        reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
+            Additional interface options. An object for an inline keyboard, custom reply keyboard,
+            instructions to remove reply keyboard or to force a reply from the user.
+
+        web_page (:obj:`~pyrogram.types.WebPage`, *optional*):
+            Message was sent with a webpage preview.
+
         game_high_score (:obj:`~pyrogram.types.GameHighScore`, *optional*):
             The game score for a user.
             The reply_to_message field will contain the game Message.
@@ -258,11 +333,8 @@ class Message(Object, Update):
         views (``int``, *optional*):
             Channel post views.
 	    
-	forwards (``int``, *optional*):
+	    forwards (``int``, *optional*):
             Channel post forwards.
-
-        via_bot (:obj:`~pyrogram.types.User`):
-            The information of the bot that generated the message from an inline query of a user.
 
         outgoing (``bool``, *optional*):
             Whether the message is incoming or outgoing.
@@ -278,25 +350,6 @@ class Message(Object, Update):
             A list containing the command and its arguments, if any.
             E.g.: "/start 1 2 3" would produce ["start", "1", "2", "3"].
             Only applicable when using :obj:`~pyrogram.filters.command`.
-
-        video_chat_scheduled (:obj:`~pyrogram.types.VideoChatScheduled`, *optional*):
-            Service message: voice chat scheduled.
-
-        video_chat_started (:obj:`~pyrogram.types.VideoChatStarted`, *optional*):
-            Service message: the voice chat started.
-
-        video_chat_ended (:obj:`~pyrogram.types.VideoChatEnded`, *optional*):
-            Service message: the voice chat has ended.
-
-        video_chat_members_invited (:obj:`~pyrogram.types.VoiceChatParticipantsInvited`, *optional*):
-            Service message: new members were invited to the voice chat.
-
-        web_app_data (:obj:`~pyrogram.types.WebAppData`, *optional*):
-            Service message: web app data sent to the bot.
-
-        reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
-            Additional interface options. An object for an inline keyboard, custom reply keyboard,
-            instructions to remove reply keyboard or to force a reply from the user.
 
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this message.
@@ -323,7 +376,7 @@ class Message(Object, Update):
         forward_signature: str = None,
         forward_date: datetime = None,
         reply_to_message_id: int = None,
-        reply_to_top_message_id: int = None,
+        message_thread_id: int = None,
         reply_to_message: "Message" = None,
         mentioned: bool = None,
         empty: bool = None,
@@ -376,7 +429,7 @@ class Message(Object, Update):
         video_chat_scheduled: "types.VideoChatScheduled" = None,
         video_chat_started: "types.VideoChatStarted" = None,
         video_chat_ended: "types.VideoChatEnded" = None,
-        video_chat_members_invited: "types.VideoChatMembersInvited" = None,
+        video_chat_participants_invited: "types.VideoChatParticipantsInvited" = None,
         web_app_data: "types.WebAppData" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -402,7 +455,7 @@ class Message(Object, Update):
         self.forward_signature = forward_signature
         self.forward_date = forward_date
         self.reply_to_message_id = reply_to_message_id
-        self.reply_to_top_message_id = reply_to_top_message_id
+        self.message_thread_id = message_thread_id
         self.reply_to_message = reply_to_message
         self.mentioned = mentioned
         self.empty = empty
@@ -456,7 +509,7 @@ class Message(Object, Update):
         self.video_chat_scheduled = video_chat_scheduled
         self.video_chat_started = video_chat_started
         self.video_chat_ended = video_chat_ended
-        self.video_chat_members_invited = video_chat_members_invited
+        self.video_chat_participants_invited = video_chat_participants_invited
         self.web_app_data = web_app_data
         self.reactions = reactions
         self.link_preview_options = link_preview_options
@@ -509,7 +562,7 @@ class Message(Object, Update):
             video_chat_scheduled = None
             video_chat_started = None
             video_chat_ended = None
-            video_chat_members_invited = None
+            video_chat_participants_invited = None
             web_app_data = None
 
             service_type = None
@@ -555,8 +608,8 @@ class Message(Object, Update):
                     video_chat_started = types.VideoChatStarted()
                     service_type = enums.MessageServiceType.VIDEO_CHAT_STARTED
             elif isinstance(action, raw.types.MessageActionInviteToGroupCall):
-                video_chat_members_invited = types.VideoChatMembersInvited._parse(client, action, users)
-                service_type = enums.MessageServiceType.VIDEO_CHAT_MEMBERS_INVITED
+                video_chat_participants_invited = types.VideoChatParticipantsInvited._parse(client, action, users)
+                service_type = enums.MessageServiceType.VIDEO_CHAT_PARTICIPANTS_INVITED
             elif isinstance(action, raw.types.MessageActionWebViewDataSentMe):
                 web_app_data = types.WebAppData._parse(action)
                 service_type = enums.MessageServiceType.WEB_APP_DATA
@@ -583,7 +636,7 @@ class Message(Object, Update):
                 video_chat_scheduled=video_chat_scheduled,
                 video_chat_started=video_chat_started,
                 video_chat_ended=video_chat_ended,
-                video_chat_members_invited=video_chat_members_invited,
+                video_chat_participants_invited=video_chat_participants_invited,
                 web_app_data=web_app_data,
                 client=client
                 # TODO: supergroup_chat_created
@@ -831,10 +884,10 @@ class Message(Object, Update):
 
             if message.reply_to:
                 parsed_message.reply_to_message_id = None
-                parsed_message.reply_to_top_message_id = None
+                parsed_message.message_thread_id = None
                 if isinstance(message.reply_to, raw.types.MessageReplyHeader):
                     parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
-                    parsed_message.reply_to_top_message_id = message.reply_to.reply_to_top_id
+                    parsed_message.message_thread_id = message.reply_to.reply_to_top_id
                 if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
                     parsed_message.reply_to_message_id = message.reply_to.story_id
 
