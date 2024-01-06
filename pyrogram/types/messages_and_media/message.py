@@ -141,23 +141,6 @@ class Message(Object, Update):
         entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
 
-        mentioned (``bool``, *optional*):
-            The message contains a mention.
-
-        empty (``bool``, *optional*):
-            The message is empty.
-            A message can be empty in case it was deleted or you tried to retrieve a message that doesn't exist yet.
-
-        service (:obj:`~pyrogram.enums.MessageServiceType`, *optional*):
-            The message is a service message.
-            This field will contain the enumeration type of the service message.
-            You can use ``service = getattr(message, message.service.value)`` to access the service message.
-
-        media (:obj:`~pyrogram.enums.MessageMediaType`, *optional*):
-            The message is a media message.
-            This field will contain the enumeration type of the media message.
-            You can use ``media = getattr(message, message.media.value)`` to access the media message.
-
         link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
             Options used for link preview generation for the message, if it is a text message and link preview options were changed
 
@@ -323,6 +306,23 @@ class Message(Object, Update):
             Additional interface options. An object for an inline keyboard, custom reply keyboard,
             instructions to remove reply keyboard or to force a reply from the user.
 
+        empty (``bool``, *optional*):
+            The message is empty.
+            A message can be empty in case it was deleted or you tried to retrieve a message that doesn't exist yet.
+
+        mentioned (``bool``, *optional*):
+            The message contains a mention.
+
+        service (:obj:`~pyrogram.enums.MessageServiceType`, *optional*):
+            The message is a service message.
+            This field will contain the enumeration type of the service message.
+            You can use ``service = getattr(message, message.service.value)`` to access the service message.
+
+        media (:obj:`~pyrogram.enums.MessageMediaType`, *optional*):
+            The message is a media message.
+            This field will contain the enumeration type of the media message.
+            You can use ``media = getattr(message, message.media.value)`` to access the media message.
+
         web_page (:obj:`~pyrogram.types.WebPage`, *optional*):
             Message was sent with a webpage preview.
 
@@ -365,49 +365,50 @@ class Message(Object, Update):
         *,
         client: "pyrogram.Client" = None,
         id: int,
+        message_thread_id: int = None,
         from_user: "types.User" = None,
         sender_chat: "types.Chat" = None,
         date: datetime = None,
         chat: "types.Chat" = None,
+        
         forward_from: "types.User" = None,
         forward_sender_name: str = None,
         forward_from_chat: "types.Chat" = None,
         forward_from_message_id: int = None,
         forward_signature: str = None,
         forward_date: datetime = None,
+        
+
         reply_to_message_id: int = None,
-        message_thread_id: int = None,
         reply_to_message: "Message" = None,
-        mentioned: bool = None,
-        empty: bool = None,
-        service: "enums.MessageServiceType" = None,
-        scheduled: bool = None,
-        from_scheduled: bool = None,
-        media: "enums.MessageMediaType" = None,
+        
+
+        via_bot: "types.User" = None,
         edit_date: datetime = None,
+        has_protected_content: bool = None,
         media_group_id: str = None,
         author_signature: str = None,
-        has_protected_content: bool = None,
-        has_media_spoiler: bool = None,
         text: Str = None,
         entities: List["types.MessageEntity"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        link_preview_options: "types.LinkPreviewOptions" = None,
+        animation: "types.Animation" = None,
         audio: "types.Audio" = None,
         document: "types.Document" = None,
         photo: "types.Photo" = None,
         sticker: "types.Sticker" = None,
-        animation: "types.Animation" = None,
-        game: "types.Game" = None,
+        
         video: "types.Video" = None,
-        voice: "types.Voice" = None,
         video_note: "types.VideoNote" = None,
+        voice: "types.Voice" = None,
         caption: Str = None,
+        caption_entities: List["types.MessageEntity"] = None,
+        has_media_spoiler: bool = None,
         contact: "types.Contact" = None,
-        location: "types.Location" = None,
-        venue: "types.Venue" = None,
-        web_page: "types.WebPage" = None,
-        poll: "types.Poll" = None,
         dice: "types.Dice" = None,
+        game: "types.Game" = None,
+        poll: "types.Poll" = None,
+        venue: "types.Venue" = None,
+        location: "types.Location" = None,
         new_chat_members: List["types.User"] = None,
         left_chat_member: "types.User" = None,
         new_chat_title: str = None,
@@ -416,16 +417,28 @@ class Message(Object, Update):
         group_chat_created: bool = None,
         supergroup_chat_created: bool = None,
         channel_chat_created: bool = None,
+
         migrate_to_chat_id: int = None,
         migrate_from_chat_id: int = None,
         pinned_message: "Message" = None,
-        game_high_score: int = None,
-        views: int = None,
-        forwards: int = None,
-        via_bot: "types.User" = None,
-        outgoing: bool = None,
-        matches: List[Match] = None,
-        command: List[str] = None,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         video_chat_scheduled: "types.VideoChatScheduled" = None,
         video_chat_started: "types.VideoChatStarted" = None,
         video_chat_ended: "types.VideoChatEnded" = None,
@@ -437,8 +450,22 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+
+        empty: bool = None,
+        mentioned: bool = None,
+        service: "enums.MessageServiceType" = None,
+        scheduled: bool = None,
+        from_scheduled: bool = None,
+        media: "enums.MessageMediaType" = None,
+        web_page: "types.WebPage" = None,
+        game_high_score: int = None,
+        views: int = None,
+        forwards: int = None,
+        outgoing: bool = None,
+        matches: List[Match] = None,
+        command: List[str] = None,
         reactions: List["types.Reaction"] = None,
-        link_preview_options: "types.LinkPreviewOptions" = None,
+
         _raw = None
     ):
         super().__init__(client)

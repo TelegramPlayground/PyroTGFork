@@ -213,10 +213,15 @@ class SendAnimation:
                 elif re.match("^https?://", animation):
                     media = raw.types.InputMediaDocumentExternal(
                         url=animation,
-                        spoiler=has_spoiler
+                        spoiler=has_spoiler,
+                        ttl_seconds=ttl_seconds
                     )
                 else:
-                    media = utils.get_input_media_from_file_id(animation, FileType.ANIMATION)
+                    media = utils.get_input_media_from_file_id(
+                        animation,
+                        FileType.ANIMATION,
+                        ttl_seconds=ttl_seconds
+                    )
             else:
                 thumb = await self.save_file(thumb)
                 file = await self.save_file(animation, progress=progress, progress_args=progress_args)

@@ -170,10 +170,15 @@ class SendVoice:
                     )
                 elif re.match("^https?://", voice):
                     media = raw.types.InputMediaDocumentExternal(
-                        url=voice
+                        url=voice,
+                        ttl_seconds=ttl_seconds
                     )
                 else:
-                    media = utils.get_input_media_from_file_id(voice, FileType.VOICE)
+                    media = utils.get_input_media_from_file_id(
+                        voice,
+                        FileType.VOICE,
+                        ttl_seconds=ttl_seconds
+                    )
             else:
                 file = await self.save_file(voice, progress=progress, progress_args=progress_args)
                 media = raw.types.InputMediaUploadedDocument(

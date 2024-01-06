@@ -167,7 +167,11 @@ class SendVideoNote:
                         ttl_seconds=ttl_seconds
                     )
                 else:
-                    media = utils.get_input_media_from_file_id(video_note, FileType.VIDEO_NOTE)
+                    media = utils.get_input_media_from_file_id(
+                        video_note,
+                        FileType.VIDEO_NOTE,
+                        ttl_seconds=ttl_seconds
+                    )
             else:
                 thumb = await self.save_file(thumb)
                 file = await self.save_file(video_note, progress=progress, progress_args=progress_args)
