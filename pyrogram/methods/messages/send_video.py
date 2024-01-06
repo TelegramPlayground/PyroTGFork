@@ -215,7 +215,7 @@ class SendVideo:
                     media = utils.get_input_media_from_file_id(
                         video,
                         FileType.VIDEO,
-                        ttl_seconds=ttl_seconds
+                        ttl_seconds=ttl_seconds,
                         has_spoiler=has_spoiler
                     )
             else:
