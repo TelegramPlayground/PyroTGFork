@@ -387,29 +387,27 @@ async def get_reply_head_fm(
     reply_to_message_id = reply_parameters.message_id
     if not reply_to_message_id:
         return reply_to
-    chat_id = reply_parameters.chat_id
-    # TODO
-    quote = reply_parameters.quote
-    quote_parse_mode = reply_parameters.quote_parse_mode
-    quote_entities = reply_parameters.quote_entities
-    quote_position = reply_parameters.quote_position
-
     reply_to = raw.types.InputReplyToMessage(
         reply_to_msg_id=reply_to_message_id
     )
     if message_thread_id:
         reply_to.top_msg_id = message_thread_id
-    message, entities = (await parse_text_entities(
-        client,
-        quote,
-        quote_parse_mode,
-        quote_entities
-    )).values()
-    reply_to.quote_text = message
-    reply_to.quote_entities = entities
-    if chat_id:
+    # TODO
+    quote = reply_parameters.quote
+    if quote is not None:
+        quote_parse_mode = reply_parameters.quote_parse_mode
+        quote_entities = reply_parameters.quote_entities
+        message, entities = (await parse_text_entities(
+            client,
+            quote,
+            quote_parse_mode,
+            quote_entities
+        )).values()
+        reply_to.quote_text = message
+        reply_to.quote_entities = entities
+    if reply_parameters.chat_id:
         reply_to.reply_to_peer_id = await client.resolve_peer(chat_id)
-    if quote_position:
+    if reply_parameters.quote_position:
         reply_to.quote_offset = quote_position
     return reply_to
 
