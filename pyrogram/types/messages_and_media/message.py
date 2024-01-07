@@ -25,7 +25,7 @@ import pyrogram
 from pyrogram import raw, enums
 from pyrogram import types
 from pyrogram import utils
-from pyrogram.errors import MessageIdsEmpty, PeerIdInvalid, ChannelPrivate, BotMethodInvalid
+from pyrogram.errors import MessageIdsEmpty, PeerIdInvalid, ChannelPrivate, BotMethodInvalid, ChannelForumMissing
 from pyrogram.parser import utils as parser_utils, Parser
 from ..object import Object
 from ..update import Update
@@ -1131,7 +1131,7 @@ class Message(Object, Update):
                         chat_id=parsed_message.chat.id,
                         topic_ids=parsed_message.message_thread_id or 1
                     )
-                except BotMethodInvalid:
+                except (BotMethodInvalid, ChannelForumMissing):
                     pass
 
             if not parsed_message.poll:  # Do not cache poll messages
