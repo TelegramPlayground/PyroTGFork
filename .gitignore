@@ -2,6 +2,7 @@
 *.session
 config.ini
 main.py
+docs
 unknown_errors.txt
 
 # Pyrogram generated code
