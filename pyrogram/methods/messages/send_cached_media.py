@@ -101,7 +101,9 @@ class SendCachedMedia:
                 peer=await self.resolve_peer(chat_id),
                 media=utils.get_input_media_from_file_id(file_id),
                 silent=disable_notification or None,
-                reply_to_msg_id=reply_to_message_id,
+                reply_to=raw.types.InputReplyToMessage(
+                    reply_to_msg_id=reply_to_message_id
+                ),
                 random_id=self.rnd_id(),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
