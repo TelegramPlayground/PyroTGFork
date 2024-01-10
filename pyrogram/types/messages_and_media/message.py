@@ -891,7 +891,7 @@ class Message(Object, Update):
                     else:
                         try:
                             story = await client.get_stories(utils.get_peer_id(media.peer), media.id)
-                        except BotMethodInvalid:
+                        except (BotMethodInvalid, ChannelPrivate):
                             story = await types.Story._parse(client, media, users, chats, media.peer)
 
                     media_type = enums.MessageMediaType.STORY
