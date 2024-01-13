@@ -357,7 +357,6 @@ def pyrogram_api():
             edit_story_caption
             edit_story_media
             edit_story_privacy
-            export_story_link
             forward_story
             get_all_stories
             get_chat_stories

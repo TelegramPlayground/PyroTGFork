@@ -343,6 +343,13 @@ class Story(Object, Update):
             client=client
         )
 
+    @property
+    def link(self) -> str:
+        if not self.chat.username:
+            return None
+
+        return f"https://t.me/{self.chat.username}/s/{self.id}"
+
     async def reply_text(
         self,
         text: str,
@@ -1616,31 +1623,6 @@ class Story(Object, Update):
             allowed_users=allowed_users,
             disallowed_users=disallowed_users,
         )
-
-    async def export_link(self) -> "types.ExportedStoryLink":
-        """Bound method *export_link* of :obj:`~pyrogram.types.Story`.
-
-        Use as a shortcut for:
-
-        .. code-block:: python
-
-            await client.export_story_link(
-                chat_id=self.chat.id,
-                story_id=story.id
-            )
-
-        Example:
-            .. code-block:: python
-
-                link = await story.export_link()
-
-        Returns:
-            ``str``: On success, a link to the story as string is returned.
-
-        Raises:
-            RPCError: In case of a Telegram RPC error.
-        """
-        return await self._client.export_story_link(chat_id=self.chat.id, story_id=self.id)
 
     async def react(self, emoji: Union[int, str] = None) -> bool:
         """Bound method *react* of :obj:`~pyrogram.types.Story`.
