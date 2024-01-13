@@ -126,8 +126,8 @@ class Session:
                                 device_model=self.client.device_model,
                                 system_version=self.client.system_version,
                                 system_lang_code=self.client.lang_code,
+                                lang_pack=self.client.lang_pack,
                                 lang_code=self.client.lang_code,
-                                lang_pack="",
                                 query=raw.functions.help.GetConfig(),
                             )
                         ),

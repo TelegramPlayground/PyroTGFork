@@ -88,6 +88,10 @@ class Client(Methods):
             Operating System version.
             Defaults to *platform.system() + " " + platform.release()*.
 
+        lang_pack (``str``, *optional*):
+            Name of the language pack used on the client.
+            Defaults to "" (empty string).
+
         lang_code (``str``, *optional*):
             Code of the language used on the client, in ISO 639-1 standard.
             Defaults to "en".
@@ -187,6 +191,7 @@ class Client(Methods):
     DEVICE_MODEL = f"{platform.python_implementation()} {platform.python_version()}"
     SYSTEM_VERSION = f"{platform.system()} {platform.release()}"
 
+    LANG_PACK = ""
     LANG_CODE = "en"
 
     PARENT_DIR = Path(sys.argv[0]).parent
@@ -211,6 +216,7 @@ class Client(Methods):
         app_version: str = APP_VERSION,
         device_model: str = DEVICE_MODEL,
         system_version: str = SYSTEM_VERSION,
+        lang_pack: str = LANG_PACK,
         lang_code: str = LANG_CODE,
         ipv6: bool = False,
         proxy: dict = None,
@@ -240,6 +246,7 @@ class Client(Methods):
         self.app_version = app_version
         self.device_model = device_model
         self.system_version = system_version
+        self.lang_pack = lang_pack.lower()
         self.lang_code = lang_code.lower()
         self.ipv6 = ipv6
         self.proxy = proxy
