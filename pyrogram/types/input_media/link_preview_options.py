@@ -72,32 +72,28 @@ class LinkPreviewOptions(Object):
     @staticmethod
     def _parse(
         client,
-        message: "raw.types.Message"
+        media_webpage: "raw.types.MessageMediaWebPage",
+        media_first_url: str = None,
+        invert_media: bool = False
     ) -> Optional["LinkPreviewOptions"]:
-        webpage = message.media
         if (
-            webpage and
-            isinstance(webpage, raw.types.MessageMediaWebPage)
+            media_webpage and
+            isinstance(media_webpage, raw.types.MessageMediaWebPage)
         ):
-            url = None
-            if webpage.webpage:
-                url = webpage.webpage.url
-            else:
-                url = utils.get_first_url(message)
+            if media_webpage.webpage:
+                media_first_url = media_webpage.webpage.url
             return LinkPreviewOptions(
                 is_disabled=False,
-                url=url,
-                prefer_small_media=getattr(webpage, "force_small_media"),
-                prefer_large_media=getattr(webpage, "force_large_media"),
-                show_above_text=getattr(message, "invert_media", False),
-                manual=getattr(webpage, "manual"),
-                safe=getattr(webpage, "safe")
+                url=media_first_url,
+                prefer_small_media=getattr(media_webpage, "force_small_media"),
+                prefer_large_media=getattr(media_webpage, "force_large_media"),
+                show_above_text=invert_media,
+                manual=getattr(media_webpage, "manual"),
+                safe=getattr(media_webpage, "safe")
             )
-        else:
-            url = utils.get_first_url(message)
-            if url:
-                return LinkPreviewOptions(
-                    is_disabled=True
-                )
-            else:
-                return None
+        if media_first_url:
+            return LinkPreviewOptions(
+                is_disabled=True,
+                url=media_first_url,
+                show_above_text=invert_media,
+            )

@@ -751,6 +751,9 @@ class Message(Object, Update):
             media_type = None
             has_media_spoiler = None
 
+            link_preview_options = None
+            web_page_url = utils.get_first_url(message)
+
             if media:
                 if isinstance(media, raw.types.MessageMediaPhoto):
                     photo = types.Photo._parse(client, media.photo, media.ttl_seconds)
@@ -814,8 +817,15 @@ class Message(Object, Update):
                     if isinstance(media.webpage, raw.types.WebPage):
                         web_page = types.WebPage._parse(client, media.webpage)
                         media_type = enums.MessageMediaType.WEB_PAGE
+                        web_page_url = media.webpage.url
                     else:
                         media = None
+                    link_preview_options = types.LinkPreviewOptions._parse(
+                        client,
+                        media,
+                        web_page_url,
+                        getattr(message, "invert_media", False)
+                    )
                 elif isinstance(media, raw.types.MessageMediaPoll):
                     poll = types.Poll._parse(client, media)
                     media_type = enums.MessageMediaType.POLL
@@ -824,6 +834,17 @@ class Message(Object, Update):
                     media_type = enums.MessageMediaType.DICE
                 else:
                     media = None
+
+            if (
+                not link_preview_options and
+                web_page_url
+            ):
+                link_preview_options = types.LinkPreviewOptions._parse(
+                    client,
+                    None,
+                    web_page_url,
+                    getattr(message, "invert_media", False)
+                )
 
             reply_markup = message.reply_markup
 
@@ -906,7 +927,8 @@ class Message(Object, Update):
                 outgoing=message.out,
                 reply_markup=reply_markup,
                 reactions=reactions,
-                client=client
+                client=client,
+                link_preview_options=link_preview_options
             )
 
             if message.reply_to:
@@ -933,11 +955,6 @@ class Message(Object, Update):
                         parsed_message.reply_to_message = reply_to_message
                     except MessageIdsEmpty:
                         pass
-
-            link_preview_options = types.LinkPreviewOptions._parse(
-                client, message
-            )
-            parsed_message.link_preview_options = link_preview_options
 
             if not parsed_message.poll:  # Do not cache poll messages
                 client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
