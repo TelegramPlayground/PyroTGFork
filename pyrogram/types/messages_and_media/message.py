@@ -381,7 +381,7 @@ class Message(Object, Update):
 
         reply_to_message_id: int = None,
         reply_to_message: "Message" = None,
-        
+        external_reply: "types.ExternalReplyInfo" = None,
 
         via_bot: "types.User" = None,
         edit_date: datetime = None,
@@ -540,6 +540,7 @@ class Message(Object, Update):
         self.web_app_data = web_app_data
         self.reactions = reactions
         self.link_preview_options = link_preview_options
+        self.external_reply = external_reply
         self._raw = _raw
 
     @staticmethod
@@ -959,6 +960,10 @@ class Message(Object, Update):
             if not parsed_message.poll:  # Do not cache poll messages
                 client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
 
+            parsed_message.external_reply = await types.ExternalReplyInfo._parse(
+                client,
+                message.reply_to
+            )
             parsed_message._raw = message
 
             return parsed_message
