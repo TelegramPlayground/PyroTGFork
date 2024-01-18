@@ -769,7 +769,7 @@ class Message(Object, Update):
                     venue = types.Venue._parse(client, media)
                     media_type = enums.MessageMediaType.VENUE
                 elif isinstance(media, raw.types.MessageMediaGame):
-                    game = types.Game._parse(client, message)
+                    game = types.Game._parse(client, media.game)
                     media_type = enums.MessageMediaType.GAME
                 elif isinstance(media, raw.types.MessageMediaDocument):
                     doc = media.document

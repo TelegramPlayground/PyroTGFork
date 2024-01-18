@@ -68,8 +68,7 @@ class Game(Object):
         self.animation = animation
 
     @staticmethod
-    def _parse(client, message: "raw.types.Message") -> "Game":
-        game: "raw.types.Game" = message.media.game
+    def _parse(client, game: "raw.types.Game") -> "Game":
         animation = None
 
         if game.document:
