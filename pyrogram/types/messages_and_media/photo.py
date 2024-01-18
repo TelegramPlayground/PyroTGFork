@@ -67,6 +67,7 @@ class Photo(Object):
         file_size: int,
         date: datetime,
         ttl_seconds: int = None,
+        has_spoiler: bool = None,
         thumbs: List["types.Thumbnail"] = None
     ):
         super().__init__(client)
@@ -78,10 +79,16 @@ class Photo(Object):
         self.file_size = file_size
         self.date = date
         self.ttl_seconds = ttl_seconds
+        self.has_spoiler = has_spoiler
         self.thumbs = thumbs
 
     @staticmethod
-    def _parse(client, photo: "raw.types.Photo", ttl_seconds: int = None) -> "Photo":
+    def _parse(
+        client,
+        photo: "raw.types.Photo",
+        ttl_seconds: int = None,
+        has_spoiler: bool = None,
+    ) -> "Photo":
         if isinstance(photo, raw.types.Photo):
             photos: List[raw.types.PhotoSize] = []
 
@@ -125,6 +132,7 @@ class Photo(Object):
                 file_size=main.size,
                 date=utils.timestamp_to_datetime(photo.date),
                 ttl_seconds=ttl_seconds,
+                has_spoiler=has_spoiler,
                 thumbs=types.Thumbnail._parse(client, photo),
                 client=client
             )
