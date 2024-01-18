@@ -247,6 +247,7 @@ class User(Object, Update):
 
     @staticmethod
     def _parse_status(user_status: "raw.base.UserStatus", is_bot: bool = False):
+        # TODO
         if isinstance(user_status, raw.types.UserStatusOnline):
             status, date = enums.UserStatus.ONLINE, user_status.expires
         elif isinstance(user_status, raw.types.UserStatusOffline):
