@@ -5,15 +5,15 @@ CHAT_ADMIN_INVITE_REQUIRED	You don't have rights to invite other users
 CHAT_ADMIN_REQUIRED	The method requires chat admin privileges
 CHAT_FORBIDDEN	You cannot write in this chat
 CHAT_GUEST_SEND_FORBIDDEN	You need to join the discussion group before commenting
+CHAT_SEND_AUDIOS_FORBIDDEN	You can't send audio messages in this chat
+CHAT_SEND_GAME_FORBIDDEN	You can't send a game to this chat
 CHAT_SEND_GIFS_FORBIDDEN	You can't send animations in this chat
 CHAT_SEND_INLINE_FORBIDDEN	You cannot use inline bots to send messages in this chat
 CHAT_SEND_MEDIA_FORBIDDEN	You can't send media messages in this chat
-CHAT_SEND_POLL_FORBIDDEN	You can't send polls in this chat
-CHAT_SEND_STICKERS_FORBIDDEN	You can't send stickers in this chat
-CHAT_SEND_AUDIOS_FORBIDDEN	You can't send audio messages in this chat
-CHAT_SEND_GAME_FORBIDDEN	You can't send a game to this chat
 CHAT_SEND_PHOTOS_FORBIDDEN	You can't send photos in this chat
 CHAT_SEND_PLAIN_FORBIDDEN	You can't send non-media (text) messages in this chat
+CHAT_SEND_POLL_FORBIDDEN	You can't send polls in this chat
+CHAT_SEND_STICKERS_FORBIDDEN	You can't send stickers in this chat
 CHAT_SEND_VIDEOS_FORBIDDEN	You can't send videos in this chat
 CHAT_SEND_VOICES_FORBIDDEN	You can't send voice recordings in this chat
 CHAT_WRITE_FORBIDDEN	You don't have rights to send messages in this chat
@@ -25,6 +25,7 @@ MESSAGE_AUTHOR_REQUIRED	You are not the author of this message
 MESSAGE_DELETE_FORBIDDEN	You don't have rights to delete messages in this chat, most likely because you are not the author of them
 POLL_VOTE_REQUIRED	Cast a vote in the poll before calling this method
 PREMIUM_ACCOUNT_REQUIRED	This action requires a premium account
+PRIVACY_PREMIUM_REQUIRED	The user has restricted from sending messages or this action requires a premium account
 RIGHT_FORBIDDEN	You don't have enough rights for this action, or you tried to set one or more admin rights that can't be applied to this kind of chat (channel or supergroup)
 SENSITIVE_CHANGE_FORBIDDEN	Your sensitive content settings can't be changed at this time
 TAKEOUT_REQUIRED	The method must be invoked inside a takeout session
