@@ -84,12 +84,14 @@ class Chat(Object):
 
         has_aggressive_anti_spam_enabled
 
-        has_hidden_members
+        has_hidden_members (``bool``, *optional*):
+            True, if non-administrators can only get the list of bots and administrators in the chat.
 
         has_protected_content (``bool``, *optional*):
             True, if messages from the chat can't be forwarded to other chats.
 
-        has_visible_history
+        has_visible_history (``bool``, *optional*):
+            True, if new chat members will have access to old messages; available only to chat administrators.
 
         sticker_set_name (``str``, *optional*):
             For supergroups, name of group sticker set.
@@ -178,6 +180,7 @@ class Chat(Object):
         send_as_chat: "types.Chat" = None,
         available_reactions: Optional["types.ChatReactions"] = None,
         has_visible_history: bool = None,
+        has_hidden_members: bool = None,
         _raw: Union[
             "raw.types.Channel",
             "raw.types.Chat",
@@ -217,6 +220,7 @@ class Chat(Object):
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
         self.has_visible_history = has_visible_history
+        self.has_hidden_members = has_hidden_members
         self._raw = _raw
 
     @staticmethod
@@ -343,6 +347,7 @@ class Chat(Object):
                     parsed_chat.members_count = int(parsed_chat.members_count)
                 
                 parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
+                parsed_chat.has_hidden_members = not getattr(full_chat, "can_view_participants", True)
             else:
                 parsed_chat = Chat._parse_channel_chat(client, chat_raw)
                 parsed_chat.members_count = full_chat.participants_count
