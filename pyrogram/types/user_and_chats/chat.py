@@ -36,6 +36,73 @@ class Chat(Object):
         type (:obj:`~pyrogram.enums.ChatType`):
             Type of chat.
 
+        title (``str``, *optional*):
+            Title, for supergroups, channels and basic group chats.
+
+        username (``str``, *optional*):
+            Username, for private chats, bots, supergroups and channels if available.
+        
+        first_name (``str``, *optional*):
+            First name of the other party in a private chat, for private chats and bots.
+
+        last_name (``str``, *optional*):
+            Last name of the other party in a private chat, for private chats.
+
+        is_forum
+
+        photo (:obj:`~pyrogram.types.ChatPhoto`, *optional*):
+            Chat photo. Suitable for downloads only.
+
+        active_usernames
+
+        available_reactions (:obj:`~pyrogram.types.ChatReactions`, *optional*):
+            Available reactions in the chat.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        bio (``str``, *optional*):
+            Bio of the other party in a private chat.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+        
+        description (``str``, *optional*):
+            Description, for groups, supergroups and channel chats.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        invite_link (``str``, *optional*):
+            Chat invite link, for groups, supergroups and channels.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        pinned_message (:obj:`~pyrogram.types.Message`, *optional*):
+            Pinned message, for groups, supergroups channels and own chat.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        permissions (:obj:`~pyrogram.types.ChatPermissions` *optional*):
+            Default chat member permissions, for groups and supergroups.
+
+        slow_mode_delay
+
+        message_auto_delete_time
+
+        has_aggressive_anti_spam_enabled
+
+        has_hidden_members
+
+        has_protected_content (``bool``, *optional*):
+            True, if messages from the chat can't be forwarded to other chats.
+
+        has_visible_history
+
+        sticker_set_name (``str``, *optional*):
+            For supergroups, name of group sticker set.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        can_set_sticker_set (``bool``, *optional*):
+            True, if the group sticker set can be changed by you.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        linked_chat (:obj:`~pyrogram.types.Chat`, *optional*):
+            The linked discussion group (in case of channels) or the linked channel (in case of supergroups).
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
         is_verified (``bool``, *optional*):
             True, if this chat has been verified by Telegram. Supergroups, channels and bots only.
 
@@ -55,53 +122,11 @@ class Chat(Object):
         is_support (``bool``):
             True, if this chat is part of the Telegram support team. Users and bots only.
 
-        title (``str``, *optional*):
-            Title, for supergroups, channels and basic group chats.
-
-        username (``str``, *optional*):
-            Username, for private chats, bots, supergroups and channels if available.
-
-        first_name (``str``, *optional*):
-            First name of the other party in a private chat, for private chats and bots.
-
-        last_name (``str``, *optional*):
-            Last name of the other party in a private chat, for private chats.
-
-        photo (:obj:`~pyrogram.types.ChatPhoto`, *optional*):
-            Chat photo. Suitable for downloads only.
-
-        bio (``str``, *optional*):
-            Bio of the other party in a private chat.
-            Returned only in :meth:`~pyrogram.Client.get_chat`.
-
-        description (``str``, *optional*):
-            Description, for groups, supergroups and channel chats.
-            Returned only in :meth:`~pyrogram.Client.get_chat`.
-
         dc_id (``int``, *optional*):
             The chat assigned DC (data center). Available only in case the chat has a photo.
             Note that this information is approximate; it is based on where Telegram stores the current chat photo.
             It is accurate only in case the owner has set the chat photo, otherwise the dc_id will be the one assigned
             to the administrator who set the current chat photo.
-
-        has_protected_content (``bool``, *optional*):
-            True, if messages from the chat can't be forwarded to other chats.
-
-        invite_link (``str``, *optional*):
-            Chat invite link, for groups, supergroups and channels.
-            Returned only in :meth:`~pyrogram.Client.get_chat`.
-
-        pinned_message (:obj:`~pyrogram.types.Message`, *optional*):
-            Pinned message, for groups, supergroups channels and own chat.
-            Returned only in :meth:`~pyrogram.Client.get_chat`.
-
-        sticker_set_name (``str``, *optional*):
-            For supergroups, name of group sticker set.
-            Returned only in :meth:`~pyrogram.Client.get_chat`.
-
-        can_set_sticker_set (``bool``, *optional*):
-            True, if the group sticker set can be changed by you.
-            Returned only in :meth:`~pyrogram.Client.get_chat`.
 
         members_count (``int``, *optional*):
             Chat members count, for groups, supergroups and channels only.
@@ -111,23 +136,12 @@ class Chat(Object):
             The list of reasons why this chat might be unavailable to some users.
             This field is available only in case *is_restricted* is True.
 
-        permissions (:obj:`~pyrogram.types.ChatPermissions` *optional*):
-            Default chat member permissions, for groups and supergroups.
-
         distance (``int``, *optional*):
             Distance in meters of this group chat from your location.
             Returned only in :meth:`~pyrogram.Client.get_nearby_chats`.
 
-        linked_chat (:obj:`~pyrogram.types.Chat`, *optional*):
-            The linked discussion group (in case of channels) or the linked channel (in case of supergroups).
-            Returned only in :meth:`~pyrogram.Client.get_chat`.
-
         send_as_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             The default "send_as" chat.
-            Returned only in :meth:`~pyrogram.Client.get_chat`.
-
-        available_reactions (:obj:`~pyrogram.types.ChatReactions`, *optional*):
-            Available reactions in the chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
     """
 
@@ -163,6 +177,7 @@ class Chat(Object):
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
         available_reactions: Optional["types.ChatReactions"] = None,
+        has_visible_history: bool = None,
         _raw: Union[
             "raw.types.Channel",
             "raw.types.Chat",
@@ -201,6 +216,7 @@ class Chat(Object):
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
+        self.has_visible_history = has_visible_history
         self._raw = _raw
 
     @staticmethod
@@ -322,8 +338,11 @@ class Chat(Object):
                 parsed_chat = Chat._parse_chat_chat(client, chat_raw)
                 parsed_chat.description = full_chat.about or None
 
-                if isinstance(full_chat.participants, raw.types.ChatParticipants):
-                    parsed_chat.members_count = len(full_chat.participants.participants)
+                parsed_chat.members_count = getattr(full_chat, "participants_count")
+                if parsed_chat.members_count:
+                    parsed_chat.members_count = int(parsed_chat.members_count)
+                
+                parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
             else:
                 parsed_chat = Chat._parse_channel_chat(client, chat_raw)
                 parsed_chat.members_count = full_chat.participants_count
