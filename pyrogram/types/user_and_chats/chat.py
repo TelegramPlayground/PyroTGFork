@@ -78,7 +78,11 @@ class Chat(Object):
         permissions (:obj:`~pyrogram.types.ChatPermissions` *optional*):
             Default chat member permissions, for groups and supergroups.
 
-        slow_mode_delay
+        slowmode_next_send_date (:py:obj:`~datetime.datetime`, *optional*):
+            Indicates when the user will be allowed to send another message in the chat. For supergroups only.
+
+        slow_mode_delay (``int``, *optional*):
+            For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds.
 
         message_auto_delete_time (``int``, *optional*):
             The time after which all messages sent to the chat will be automatically deleted; in seconds.
@@ -185,6 +189,8 @@ class Chat(Object):
         has_hidden_members: bool = None,
         has_aggressive_anti_spam_enabled: bool = None,
         message_auto_delete_time: int = None,
+        slow_mode_delay: int = None,
+        slowmode_next_send_date: datetime = None,
         _raw: Union[
             "raw.types.Channel",
             "raw.types.Chat",
@@ -227,6 +233,8 @@ class Chat(Object):
         self.has_hidden_members = has_hidden_members
         self.has_aggressive_anti_spam_enabled = has_aggressive_anti_spam_enabled
         self.message_auto_delete_time = message_auto_delete_time
+        self.slow_mode_delay = slow_mode_delay
+        self.slowmode_next_send_date = slowmode_next_send_date
         self._raw = _raw
 
     @staticmethod
@@ -377,6 +385,11 @@ class Chat(Object):
                 parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
                 parsed_chat.has_hidden_members = not getattr(full_chat, "can_view_participants", True)
                 parsed_chat.has_aggressive_anti_spam_enabled = getattr(full_chat, "antispam", False)
+
+                parsed_chat.slow_mode_delay = getattr(full_chat, "slowmode_seconds")
+                parsed_chat.slowmode_next_send_date = utils.timestamp_to_datetime(
+                    getattr(full_chat, "slowmode_next_send_date")
+                )
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
