@@ -421,6 +421,8 @@ def pyrogram_api():
             WebAppData
             MessageReactions
             ChatReactions
+            MessageReactionUpdated
+            MessageReactionCountUpdated
         """,
         bot_keyboards="""
         Bot keyboards
@@ -490,6 +492,8 @@ def pyrogram_api():
         InputMessageContent
             InputMessageContent
             InputTextMessageContent
+            ExternalReplyInfo
+            ReplyParameters
         """,
         authorization="""
         Authorization
