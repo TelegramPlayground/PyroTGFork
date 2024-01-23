@@ -80,7 +80,8 @@ class Chat(Object):
 
         slow_mode_delay
 
-        message_auto_delete_time
+        message_auto_delete_time (``int``, *optional*):
+            The time after which all messages sent to the chat will be automatically deleted; in seconds.
 
         has_aggressive_anti_spam_enabled (``bool``, *optional*):
             True, if aggressive anti-spam checks are enabled in the supergroup. The field is only available to chat administrators.
@@ -183,6 +184,7 @@ class Chat(Object):
         has_visible_history: bool = None,
         has_hidden_members: bool = None,
         has_aggressive_anti_spam_enabled: bool = None,
+        message_auto_delete_time: int = None,
         _raw: Union[
             "raw.types.Channel",
             "raw.types.Chat",
@@ -224,6 +226,7 @@ class Chat(Object):
         self.has_visible_history = has_visible_history
         self.has_hidden_members = has_hidden_members
         self.has_aggressive_anti_spam_enabled = has_aggressive_anti_spam_enabled
+        self.message_auto_delete_time = message_auto_delete_time
         self._raw = _raw
 
     @staticmethod
@@ -374,6 +377,8 @@ class Chat(Object):
                 parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
                 parsed_chat.has_hidden_members = not getattr(full_chat, "can_view_participants", True)
                 parsed_chat.has_aggressive_anti_spam_enabled = getattr(full_chat, "antispam", False)
+
+            parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
             if full_chat.pinned_msg_id:
                 parsed_chat.pinned_message = await client.get_messages(
