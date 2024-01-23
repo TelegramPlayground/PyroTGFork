@@ -345,13 +345,8 @@ class Chat(Object):
                 parsed_chat = Chat._parse_chat_chat(client, chat_raw)
                 parsed_chat.description = full_chat.about or None
 
-                parsed_chat.members_count = getattr(full_chat, "participants_count")
-                if parsed_chat.members_count:
-                    parsed_chat.members_count = int(parsed_chat.members_count)
-                
-                parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
-                parsed_chat.has_hidden_members = not getattr(full_chat, "can_view_participants", True)
-                parsed_chat.has_aggressive_anti_spam_enabled = getattr(full_chat, "antispam", False)
+                if isinstance(full_chat.participants, raw.types.ChatParticipants):
+                    parsed_chat.members_count = len(full_chat.participants.participants)
             else:
                 parsed_chat = Chat._parse_channel_chat(client, chat_raw)
                 parsed_chat.members_count = full_chat.participants_count
@@ -374,6 +369,11 @@ class Chat(Object):
                         send_as_raw = chats[default_send_as.channel_id]
 
                     parsed_chat.send_as_chat = Chat._parse_chat(client, send_as_raw)
+
+                parsed_chat.members_count = getattr(full_chat, "participants_count")                
+                parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
+                parsed_chat.has_hidden_members = not getattr(full_chat, "can_view_participants", True)
+                parsed_chat.has_aggressive_anti_spam_enabled = getattr(full_chat, "antispam", False)
 
             if full_chat.pinned_msg_id:
                 parsed_chat.pinned_message = await client.get_messages(
