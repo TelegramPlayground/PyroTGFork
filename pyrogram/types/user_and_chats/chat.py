@@ -48,7 +48,8 @@ class Chat(Object):
         last_name (``str``, *optional*):
             Last name of the other party in a private chat, for private chats.
 
-        is_forum
+        is_forum (``bool``, *optional*):
+            True, if the supergroup chat is a forum
 
         photo (:obj:`~pyrogram.types.ChatPhoto`, *optional*):
             Chat photo. Suitable for downloads only.
@@ -191,6 +192,7 @@ class Chat(Object):
         message_auto_delete_time: int = None,
         slow_mode_delay: int = None,
         slowmode_next_send_date: datetime = None,
+        is_forum: bool = None,
         _raw: Union[
             "raw.types.Channel",
             "raw.types.Chat",
@@ -235,6 +237,7 @@ class Chat(Object):
         self.message_auto_delete_time = message_auto_delete_time
         self.slow_mode_delay = slow_mode_delay
         self.slowmode_next_send_date = slowmode_next_send_date
+        self.is_forum = is_forum
         self._raw = _raw
 
     @staticmethod
@@ -292,14 +295,19 @@ class Chat(Object):
             is_fake=getattr(channel, "fake", None),
             title=channel.title,
             username=getattr(channel, "username", None),
-            photo=types.ChatPhoto._parse(client, getattr(channel, "photo", None), peer_id,
-                                         getattr(channel, "access_hash", 0)),
+            photo=types.ChatPhoto._parse(
+                client,
+                getattr(channel, "photo", None),
+                peer_id,
+                getattr(channel, "access_hash", 0)
+            ),
             restrictions=types.List([types.Restriction._parse(r) for r in restriction_reason]) or None,
             permissions=types.ChatPermissions._parse(getattr(channel, "default_banned_rights", None)),
             members_count=getattr(channel, "participants_count", None),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
             client=client,
+            is_forum=getattr(channel, "forum"), 
             _raw=channel
         )
 
