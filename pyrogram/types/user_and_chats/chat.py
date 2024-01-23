@@ -82,7 +82,8 @@ class Chat(Object):
 
         message_auto_delete_time
 
-        has_aggressive_anti_spam_enabled
+        has_aggressive_anti_spam_enabled (``bool``, *optional*):
+            True, if aggressive anti-spam checks are enabled in the supergroup. The field is only available to chat administrators.
 
         has_hidden_members (``bool``, *optional*):
             True, if non-administrators can only get the list of bots and administrators in the chat.
@@ -181,6 +182,7 @@ class Chat(Object):
         available_reactions: Optional["types.ChatReactions"] = None,
         has_visible_history: bool = None,
         has_hidden_members: bool = None,
+        has_aggressive_anti_spam_enabled: bool = None,
         _raw: Union[
             "raw.types.Channel",
             "raw.types.Chat",
@@ -221,6 +223,7 @@ class Chat(Object):
         self.available_reactions = available_reactions
         self.has_visible_history = has_visible_history
         self.has_hidden_members = has_hidden_members
+        self.has_aggressive_anti_spam_enabled = has_aggressive_anti_spam_enabled
         self._raw = _raw
 
     @staticmethod
@@ -348,6 +351,7 @@ class Chat(Object):
                 
                 parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
                 parsed_chat.has_hidden_members = not getattr(full_chat, "can_view_participants", True)
+                parsed_chat.has_aggressive_anti_spam_enabled = getattr(full_chat, "antispam", False)
             else:
                 parsed_chat = Chat._parse_channel_chat(client, chat_raw)
                 parsed_chat.members_count = full_chat.participants_count
