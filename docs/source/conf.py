@@ -63,7 +63,7 @@ copybutton_prompt_text = "$ "
 
 suppress_warnings = ["image.not_readable"]
 
-html_title = "Pyrogram-Mod Documentation"
+html_title = "pg Fork Pyrogram Documentation"
 html_theme = "furo"
 html_static_path = [os.path.abspath("static")]
 print("ABSOLUTE PATH", os.path.abspath("static"))
@@ -80,7 +80,7 @@ html_theme_options = {
         {
             # Telegram channel logo
             "name": "Telegram Channel",
-            "url": "https://t.me/Pyrogram/",
+            "url": "https://Pyrogram.t.me",
             "html": (
                 '<svg stroke="currentColor" fill="currentColor" stroke-width="0" '
                 'viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">'

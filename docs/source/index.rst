@@ -1,4 +1,4 @@
-Welcome to Pyrogram-Mod
+Welcome to Pyrogram
 ===================
 
 .. raw:: html
@@ -6,7 +6,7 @@ Welcome to Pyrogram-Mod
     <div align="center">
         <a href="/">
             <div class="pyrogram-logo-index"><img src="_static/pyrogram.png" alt="Pyrogram"></div>
-            <div class="pyrogram-text pyrogram-text-index">Pyrogram-Mod</div>
+            <div class="pyrogram-text pyrogram-text-index">Pyrogram</div>
         </a>
     </div>
 
