@@ -3546,7 +3546,11 @@ class Message(Object, Update):
             is_big (``bool``, *optional*):
                 Pass True to set the reaction with a big animation.
                 Defaults to False.
-
+            
+            add_to_recent (``bool``, *optional*):
+                Pass True if the reaction should appear in the recently used reactions.
+                This option is applicable only for users.
+                Defaults to True.
         Returns:
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 

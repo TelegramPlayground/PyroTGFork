@@ -28,6 +28,7 @@ class SetMessageReaction:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_id: int = None,
+        story_id: int = None,
         reaction: List["types.ReactionType"] = [],
         is_big: bool = False,
         add_to_recent: bool = True
@@ -40,14 +41,19 @@ class SetMessageReaction:
 
         .. include:: /_includes/usable-by/users-bots.rst
 
+        .. include:: /_includes/usable-by/users.rst
+
         Parameters:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
 
-            message_id (``int``):
+            message_id (``int``, *optional*):
                 Identifier of the target message. If the message belongs to a media group, the reaction is set to the first non-deleted message in the group instead.
 
-            reaction (List of :obj:`~pyrogram.types.ReactionType` *optional*):
+            story_id (``int``, *optional*):
+                Identifier of the story.
+
+            reaction (List of :obj:`~pyrogram.types.ReactionType`, *optional*):
                 New list of reaction types to set on the message.
                 Pass None as emoji (default) to retract the reaction.
 
@@ -90,5 +96,24 @@ class SetMessageReaction:
             for i in r.updates:
                 if isinstance(i, raw.types.UpdateMessageReactions):
                     return types.MessageReactions._parse(self, i.reactions)
+        
+        elif story_id is not None:
+            r = await self.invoke(
+                raw.functions.stories.SendReaction(
+                    peer=await self.resolve_peer(chat_id),
+                    story_id=story_id,
+                    reaction=(
+                        [
+                            r.write(self)
+                            for r in reaction
+                        ] if reaction else [
+                            raw.types.ReactionEmpty()
+                        ]
+                    )[0],
+                    add_to_recent=add_to_recent
+                )
+            )
+            # TODO
+            return r
         else:
-            raise ValueError("You need to pass one of message_id!")
+            raise ValueError("You need to pass one of message_id OR story_id!")
