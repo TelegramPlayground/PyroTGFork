@@ -307,7 +307,7 @@ class Chat(Object):
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
             client=client,
-            is_forum=getattr(channel, "forum"), 
+            is_forum=getattr(channel, "forum", None),
             _raw=channel
         )
 
