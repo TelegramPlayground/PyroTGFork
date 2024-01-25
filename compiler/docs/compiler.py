@@ -464,6 +464,7 @@ def pyrogram_api():
             InputMediaAnimation
             InputMediaDocument
             InputPhoneContact
+            LinkPreviewOptions
         """,
         inline_mode="""
         Inline Mode
