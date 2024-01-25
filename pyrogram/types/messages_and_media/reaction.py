@@ -87,6 +87,12 @@ class Reaction(Object):
 
 
 class ReactionType(Object):
+    """This object describes the type of a reaction. Currently, it can be one of
+
+    - :obj:`~pyrogram.types.ReactionTypeEmoji`
+    - :obj:`~pyrogram.types.ReactionTypeCustomEmoji`
+    """
+
     def __init__(
         self,
         *,
@@ -121,6 +127,10 @@ class ReactionType(Object):
 
 class ReactionTypeEmoji(ReactionType):
     """The reaction is based on an emoji.
+
+    Parameters:
+        emoji (``str``, *optional*):
+            Reaction emoji.
     """
 
     def __init__(
@@ -141,6 +151,10 @@ class ReactionTypeEmoji(ReactionType):
 
 class ReactionTypeCustomEmoji(ReactionType):
     """The reaction is based on a custom emoji.
+
+    Parameters:
+        custom_emoji_id (``str``, *optional*):
+            Custom emoji id.
     """
 
     def __init__(
@@ -161,6 +175,17 @@ class ReactionTypeCustomEmoji(ReactionType):
 
 class ReactionCount(Object):
     """Represents a reaction added to a message along with the number of times it was added.
+
+    Parameters:
+        type (:obj:`~pyrogram.types.ReactionType`):
+            Type of the reaction
+
+        total_count (``int``):
+            Reaction count.
+
+        chosen_order (``int``):
+            Chosen reaction order.
+            Available for chosen reactions.
     """
 
     def __init__(
