@@ -139,7 +139,7 @@ class Message(Object, Update):
             This field will contain the enumeration type of the media message.
             You can use ``media = getattr(message, message.media.value)`` to access the media message.
 
-        invert_media (``bool``, *optional*):
+        show_above_text (``bool``, *optional*):
             If True, link preview will be shown above the message text.
             Otherwise, the link preview will be shown below the message text.
 
@@ -402,7 +402,7 @@ class Message(Object, Update):
         scheduled: bool = None,
         from_scheduled: bool = None,
         media: "enums.MessageMediaType" = None,
-        invert_media: bool = None,
+        show_above_text: bool = None,
         edit_date: datetime = None,
         edit_hidden: bool = None,
         media_group_id: int = None,
@@ -501,7 +501,7 @@ class Message(Object, Update):
         self.scheduled = scheduled
         self.from_scheduled = from_scheduled
         self.media = media
-        self.invert_media = invert_media
+        self.show_above_text = show_above_text
         self.edit_date = edit_date
         self.edit_hidden = edit_hidden
         self.media_group_id = media_group_id
@@ -1018,7 +1018,7 @@ class Message(Object, Update):
                 scheduled=is_scheduled,
                 from_scheduled=message.from_scheduled,
                 media=media_type,
-                invert_media=getattr(message, "invert_media", None),
+                show_above_text=getattr(message, "invert_media", None),
                 edit_date=utils.timestamp_to_datetime(message.edit_date),
                 edit_hidden=message.edit_hide,
                 media_group_id=message.grouped_id,
@@ -1187,7 +1187,7 @@ class Message(Object, Update):
         disable_web_page_preview: bool = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
-        invert_media: bool = None,
+        show_above_text: bool = None,
         reply_to_message_id: int = None,
         quote_text: str = None,
         quote_entities: List["types.MessageEntity"] = None,
@@ -1241,7 +1241,7 @@ class Message(Object, Update):
                 Unique identifier of a message thread to which the message belongs.
                 For supergroups only.
 
-            invert_media (``bool``, *optional*):
+            show_above_text (``bool``, *optional*):
                 If True, link preview will be shown above the message text.
                 Otherwise, the link preview will be shown below the message text.
 
@@ -1287,7 +1287,7 @@ class Message(Object, Update):
             disable_web_page_preview=disable_web_page_preview,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
-            invert_media=invert_media,
+            show_above_text=show_above_text,
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             quote_entities=quote_entities,
@@ -3429,13 +3429,13 @@ class Message(Object, Update):
         self,
         text: str = None,
         url: str = None,
-        force_large_media: bool = None,
-        force_small_media: bool = None,
+        prefer_large_media: bool = None,
+        prefer_small_media: bool = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
-        invert_media: bool = None,
+        show_above_text: bool = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
         reply_to_story_id: int = None,
@@ -3482,15 +3482,15 @@ class Message(Object, Update):
             entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
-            force_large_media (``bool``, *optional*):
+            prefer_large_media (``bool``, *optional*):
                 If True, media in the link preview will be larger.
                 Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
 
-            force_small_media (``bool``, *optional*):
+            prefer_small_media (``bool``, *optional*):
                 If True, media in the link preview will be smaller.
                 Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
 
-            invert_media (``bool``, *optional*):
+            show_above_text (``bool``, *optional*):
                 If True, link preview will be shown above the message text.
                 Otherwise, the link preview will be shown below the message text.
 
@@ -3537,13 +3537,13 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             text=text,
             url=url,
-            force_large_media=force_large_media,
-            force_small_media=force_small_media,
+            prefer_large_media=prefer_large_media,
+            prefer_small_media=prefer_small_media,
             parse_mode=parse_mode,
             entities=entities,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
-            invert_media=invert_media,
+            show_above_text=show_above_text,
             reply_to_message_id=reply_to_message_id,
             reply_to_chat_id=reply_to_chat_id,
             reply_to_story_id=reply_to_story_id,

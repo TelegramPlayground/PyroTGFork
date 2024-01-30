@@ -29,13 +29,13 @@ class SendWebPage:
         chat_id: Union[int, str],
         text: str = None,
         url: str = None,
-        force_large_media: bool = None,
-        force_small_media: bool = None,
+        prefer_large_media: bool = None,
+        prefer_small_media: bool = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
-        invert_media: bool = None,
+        show_above_text: bool = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
         reply_to_story_id: int = None,
@@ -75,15 +75,15 @@ class SendWebPage:
             entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
-            force_large_media (``bool``, *optional*):
+            prefer_large_media (``bool``, *optional*):
                 If True, media in the link preview will be larger.
                 Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
 
-            force_small_media (``bool``, *optional*):
+            prefer_small_media (``bool``, *optional*):
                 If True, media in the link preview will be smaller.
                 Ignored if the URL isn't explicitly specified or media size change isn't supported for the preview.
 
-            invert_media (``bool``, *optional*):
+            show_above_text (``bool``, *optional*):
                 If True, link preview will be shown above the message text.
                 Otherwise, the link preview will be shown below the message text.
 
@@ -133,7 +133,7 @@ class SendWebPage:
                 await app.send_web_page("me", "https://docs.pyrogram.org")
 
                 # Make web preview image larger
-                await app.send_web_page("me", "https://docs.pyrogram.org", force_large_media=True)
+                await app.send_web_page("me", "https://docs.pyrogram.org", prefer_large_media=True)
 
         """
 
@@ -173,10 +173,10 @@ class SendWebPage:
                 message=message,
                 media=raw.types.InputMediaWebPage(
                     url=url,
-                    force_large_media=force_large_media,
-                    force_small_media=force_small_media
+                    force_large_media=prefer_large_media,
+                    force_small_media=prefer_small_media
                 ),
-                invert_media=invert_media,
+                invert_media=show_above_text,
                 entities=entities,
                 noforwards=protect_content
             )

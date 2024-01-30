@@ -43,7 +43,7 @@ class SendCachedMedia:
         schedule_date: datetime = None,
         protect_content: bool = None,
         has_spoiler: bool = None,
-        invert_media: bool = None,
+        show_above_text: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -111,7 +111,7 @@ class SendCachedMedia:
             has_spoiler (``bool``, *optional*):
                 True, if the message media is covered by a spoiler animation.
 
-            invert_media (``bool``, *optional*):
+            show_above_text (``bool``, *optional*):
                 If True, link preview will be shown above the message text.
                 Otherwise, the link preview will be shown below the message text.
 
@@ -135,7 +135,7 @@ class SendCachedMedia:
                 peer=peer,
                 media=utils.get_input_media_from_file_id(file_id, has_spoiler=has_spoiler),
                 silent=disable_notification or None,
-                invert_media=invert_media,
+                invert_media=show_above_text,
                 reply_to=utils.get_reply_to(
                     reply_to_message_id=reply_to_message_id,
                     message_thread_id=message_thread_id,

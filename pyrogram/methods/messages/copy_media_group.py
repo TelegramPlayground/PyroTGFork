@@ -40,7 +40,7 @@ class CopyMediaGroup:
         quote_entities: List["types.MessageEntity"] = None,
         quote_offset: int = None,
         schedule_date: datetime = None,
-        invert_media: bool = None,
+        show_above_text: bool = None,
     ) -> List["types.Message"]:
         """Copy a media group by providing one of the message ids.
 
@@ -102,7 +102,7 @@ class CopyMediaGroup:
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
-            invert_media (``bool``, *optional*):
+            show_above_text (``bool``, *optional*):
                 If True, link preview will be shown above the message text.
                 Otherwise, the link preview will be shown below the message text.
 
@@ -165,7 +165,7 @@ class CopyMediaGroup:
                     quote_offset=quote_offset,
                 ),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
-                invert_media=invert_media
+                invert_media=show_above_text
             ),
             sleep_threshold=60
         )

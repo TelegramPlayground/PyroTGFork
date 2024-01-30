@@ -54,7 +54,7 @@ class SendMediaGroup:
         quote_offset: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
-        invert_media: bool = None,
+        show_above_text: bool = None,
     ) -> List["types.Message"]:
         """Send a group of photos or videos as an album.
 
@@ -105,7 +105,7 @@ class SendMediaGroup:
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            invert_media (``bool``, *optional*):
+            show_above_text (``bool``, *optional*):
                 If True, link preview will be shown above the message text.
                 Otherwise, the link preview will be shown below the message text.
 
@@ -445,7 +445,7 @@ class SendMediaGroup:
                 ),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
-                invert_media=invert_media
+                invert_media=show_above_text
             ),
             sleep_threshold=60
         )

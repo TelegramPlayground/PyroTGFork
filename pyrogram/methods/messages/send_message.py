@@ -34,7 +34,7 @@ class SendMessage:
         disable_web_page_preview: bool = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
-        invert_media: bool = None,
+        show_above_text: bool = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
         reply_to_story_id: int = None,
@@ -81,7 +81,7 @@ class SendMessage:
                 Unique identifier for the target message thread (topic) of the forum.
                 For supergroups only.
 
-            invert_media (``bool``, *optional*):
+            show_above_text (``bool``, *optional*):
                 If True, link preview will be shown above the message text.
                 Otherwise, the link preview will be shown below the message text.
 
@@ -161,7 +161,7 @@ class SendMessage:
                 peer=peer,
                 no_webpage=disable_web_page_preview or None,
                 silent=disable_notification or None,
-                invert_media=invert_media or None,
+                invert_media=show_above_text or None,
                 reply_to=utils.get_reply_to(
                     reply_to_message_id=reply_to_message_id,
                     message_thread_id=message_thread_id,
