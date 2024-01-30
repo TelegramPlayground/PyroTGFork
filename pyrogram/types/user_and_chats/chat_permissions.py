@@ -9,7 +9,7 @@
 #  (at your option) any later version.
 #
 #  Pyrogram is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  but WITHOUT ANY WARRANTY without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU Lesser General Public License for more details.
 #
@@ -113,34 +113,76 @@ class ChatPermissions(Object):
 
     @staticmethod
     def _parse(denied_permissions: "raw.base.ChatBannedRights") -> "ChatPermissions":
+        can_send_messages = False
+        can_send_audios = False
+        can_send_documents = False
+        can_send_photos = False
+        can_send_videos = False
+        can_send_video_notes = False
+        can_send_voice_notes = False
+        can_send_polls = False
+        can_send_other_messages = False
+        can_add_web_page_previews = False
+        can_change_info = False
+        can_invite_users = False
+        can_pin_messages = False
+        can_manage_topics = False
+        can_send_media_messages = False
+
         if isinstance(denied_permissions, raw.types.ChatBannedRights):
+            can_send_messages = not denied_permissions.send_messages
+            can_send_polls = not denied_permissions.send_polls
+            can_send_other_messages = any([
+                not denied_permissions.send_gifs,
+                not denied_permissions.send_games,
+                not denied_permissions.send_stickers,
+                not denied_permissions.send_inline
+            ])
+            can_add_web_page_previews = not denied_permissions.embed_links
+            can_change_info = not denied_permissions.change_info
+            can_invite_users = not denied_permissions.invite_users
+            can_pin_messages = not denied_permissions.pin_messages
+            if denied_permissions.manage_topics is not None:
+                can_manage_topics = not denied_permissions.manage_topics
+            else:
+                can_manage_topics = can_pin_messages
+            if (
+                denied_permissions.send_audios is not None or
+                denied_permissions.send_docs is not None or
+                denied_permissions.send_photos is not None or
+                denied_permissions.send_videos is not None or
+                denied_permissions.send_roundvideos is not None or
+                denied_permissions.send_voices is not None
+            ):
+                can_send_audios = not denied_permissions.send_audios
+                can_send_documents = not denied_permissions.send_docs
+                can_send_photos = not denied_permissions.send_photos
+                can_send_videos = not denied_permissions.send_videos
+                can_send_video_notes = not denied_permissions.send_roundvideos
+                can_send_voice_notes = not denied_permissions.send_voices
+            else:
+                can_send_media_messages = not denied_permissions.send_media
+                can_send_audios = can_send_media_messages
+                can_send_documents = can_send_media_messages
+                can_send_photos = can_send_media_messages
+                can_send_videos = can_send_media_messages
+                can_send_video_notes = can_send_media_messages
+                can_send_voice_notes = can_send_media_messages
+
             return ChatPermissions(
-                can_send_messages=not denied_permissions.send_messages,
-                can_send_audios=not denied_permissions.send_audios,
-                can_send_documents=not denied_permissions.send_docs,
-                can_send_photos=not denied_permissions.send_photos,
-                can_send_videos=not denied_permissions.send_videos,
-                can_send_video_notes=not denied_permissions.send_roundvideos,
-                can_send_voice_notes=not denied_permissions.send_voices,
-                can_send_polls=not denied_permissions.send_polls,
-                can_send_other_messages=any([
-                    not denied_permissions.send_stickers,
-                    not denied_permissions.send_gifs,
-                    not denied_permissions.send_games,
-                    not denied_permissions.send_inline
-                ]),
-                can_add_web_page_previews=not denied_permissions.embed_links,
-                can_change_info=not denied_permissions.change_info,
-                can_invite_users=not denied_permissions.invite_users,
-                can_pin_messages=not denied_permissions.pin_messages,
-                can_manage_topics=not denied_permissions.manage_topics,
-                can_send_media_messages=not denied_permissions.send_media,
-                # can_send_media_messages=any([
-                #     not denied_permissions.send_audios,
-                #     not denied_permissions.send_docs,
-                #     not denied_permissions.send_photos,
-                #     not denied_permissions.send_videos,
-                #     not denied_permissions.send_roundvideos,
-                #     not denied_permissions.send_voices
-                # ])
+                can_send_messages=can_send_messages,
+                can_send_audios=can_send_audios,
+                can_send_documents=can_send_documents,
+                can_send_photos=can_send_photos,
+                can_send_videos=can_send_videos,
+                can_send_video_notes=can_send_video_notes,
+                can_send_voice_notes=can_send_voice_notes,
+                can_send_polls=can_send_polls,
+                can_send_other_messages=can_send_other_messages,
+                can_add_web_page_previews=can_add_web_page_previews,
+                can_change_info=can_change_info,
+                can_invite_users=can_invite_users,
+                can_pin_messages=can_pin_messages,
+                can_manage_topics=can_manage_topics,
+                can_send_media_messages=can_send_media_messages
             )
