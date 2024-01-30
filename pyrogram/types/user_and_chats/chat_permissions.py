@@ -123,7 +123,6 @@ class ChatPermissions(Object):
                 can_send_video_notes=not denied_permissions.send_roundvideos,
                 can_send_voice_notes=not denied_permissions.send_voices,
                 can_send_polls=not denied_permissions.send_polls,
-                can_send_media_messages=not denied_permissions.send_media,
                 can_send_other_messages=any([
                     not denied_permissions.send_stickers,
                     not denied_permissions.send_gifs,
@@ -135,12 +134,13 @@ class ChatPermissions(Object):
                 can_invite_users=not denied_permissions.invite_users,
                 can_pin_messages=not denied_permissions.pin_messages,
                 can_manage_topics=not denied_permissions.manage_topics,
-                can_send_media_messages=any([
-                    not denied_permissions.send_audios,
-                    not denied_permissions.send_docs,
-                    not denied_permissions.send_photos,
-                    not denied_permissions.send_videos,
-                    not denied_permissions.send_roundvideos,
-                    not denied_permissions.send_voices
-                ])
+                can_send_media_messages=not denied_permissions.send_media,
+                # can_send_media_messages=any([
+                #     not denied_permissions.send_audios,
+                #     not denied_permissions.send_docs,
+                #     not denied_permissions.send_photos,
+                #     not denied_permissions.send_videos,
+                #     not denied_permissions.send_roundvideos,
+                #     not denied_permissions.send_voices
+                # ])
             )
