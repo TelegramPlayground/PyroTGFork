@@ -1887,6 +1887,7 @@ class Message(Object, Update):
         quote_text: str = None,
         quote_entities: List["types.MessageEntity"] = None,
         schedule_date: datetime = None,
+        protect_content: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1973,6 +1974,9 @@ class Message(Object, Update):
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2031,6 +2035,7 @@ class Message(Object, Update):
             quote_text=quote_text,
             quote_entities=quote_entities,
             schedule_date=schedule_date,
+            protect_content=protect_content,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
