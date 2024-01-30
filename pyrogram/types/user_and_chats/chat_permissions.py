@@ -30,19 +30,19 @@ class ChatPermissions(Object):
         can_send_audios (``bool``, *optional*):
             True, if the user is allowed to send audios
 
-        can_send_documents
+        can_send_documents (``bool``, *optional*):
             True, if the user is allowed to send documents
 
-        can_send_photos
+        can_send_photos (``bool``, *optional*):
             True, if the user is allowed to send photos
 
-        can_send_videos
+        can_send_videos (``bool``, *optional*):
             True, if the user is allowed to send videos
 
-        can_send_video_notes
+        can_send_video_notes (``bool``, *optional*):
             True, if the user is allowed to send video notes
 
-        can_send_voice_notes
+        can_send_voice_notes (``bool``, *optional*):
             True, if the user is allowed to send voice notes
 
         can_send_polls (``bool``, *optional*):

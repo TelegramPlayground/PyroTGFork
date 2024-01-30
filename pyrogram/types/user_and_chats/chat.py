@@ -701,6 +701,7 @@ class Chat(Object):
         self,
         user_id: Union[int, str],
         permissions: "types.ChatPermissions",
+        use_independent_chat_permissions: bool = False,
         until_date: datetime = utils.zero_datetime(),
     ) -> "types.Chat":
         """Bound method *unban_member* of :obj:`~pyrogram.types.Chat`.
@@ -728,6 +729,9 @@ class Chat(Object):
             permissions (:obj:`~pyrogram.types.ChatPermissions`):
                 New user permissions.
 
+            use_independent_chat_permissions (``bool``, *optional*):
+                Pass True if chat permissions are set independently. Otherwise, the can_send_other_messages and can_add_web_page_previews permissions will imply the can_send_messages, can_send_audios, can_send_documents, can_send_photos, can_send_videos, can_send_video_notes, and can_send_voice_notes permissions; the can_send_polls permission will imply the can_send_messages permission.
+
             until_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the user will be unbanned.
                 If user is banned for more than 366 days or less than 30 seconds from the current time they are
@@ -744,6 +748,7 @@ class Chat(Object):
             chat_id=self.id,
             user_id=user_id,
             permissions=permissions,
+            use_independent_chat_permissions=use_independent_chat_permissions,
             until_date=until_date,
         )
 
