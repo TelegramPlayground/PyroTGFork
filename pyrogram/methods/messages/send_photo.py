@@ -44,6 +44,7 @@ class SendPhoto:
         message_thread_id: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        view_once: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -87,6 +88,9 @@ class SendPhoto:
                 Self-Destruct Timer.
                 If you set a timer, the photo will self-destruct in *ttl_seconds*
                 seconds after it was viewed.
+
+            view_once (``bool``, *optional*):
+                Pass True if the photo should be viewable only once.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -157,7 +161,7 @@ class SendPhoto:
                     file = await self.save_file(photo, progress=progress, progress_args=progress_args)
                     media = raw.types.InputMediaUploadedPhoto(
                         file=file,
-                        ttl_seconds=ttl_seconds,
+                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds,
                         spoiler=has_spoiler,
                     )
                 elif re.match("^https?://", photo):
@@ -177,7 +181,7 @@ class SendPhoto:
                 file = await self.save_file(photo, progress=progress, progress_args=progress_args)
                 media = raw.types.InputMediaUploadedPhoto(
                     file=file,
-                    ttl_seconds=ttl_seconds,
+                    ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds,
                     spoiler=has_spoiler
                 )
 

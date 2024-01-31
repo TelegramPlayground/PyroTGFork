@@ -42,6 +42,7 @@ class SendVideoNote:
         message_thread_id: int = None,
         schedule_date: datetime = None,
         ttl_seconds: int = None,
+        view_once: bool = None,
         protect_content: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -102,6 +103,9 @@ class SendVideoNote:
                 If you set a timer, the video note will self-destruct in *ttl_seconds*
                 seconds after it was viewed.
 
+            view_once (``bool``, *optional*):
+                Pass True if the photo should be viewable only once.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -144,6 +148,9 @@ class SendVideoNote:
 
                 # Send self-destructing video note message
                 await app.send_video_note("me", "video_note.mp4", ttl_seconds=10)
+
+                # Send view-once video note message
+                await app.send_video_note("me", "video_note.mp4", view_once=True)
         """
         file = None
 
@@ -164,7 +171,7 @@ class SendVideoNote:
                                 h=length
                             )
                         ],
-                        ttl_seconds=ttl_seconds
+                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds
                     )
                 else:
                     media = utils.get_input_media_from_file_id(
@@ -187,7 +194,7 @@ class SendVideoNote:
                             h=length
                         )
                     ],
-                    ttl_seconds=ttl_seconds
+                    ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds
                 )
 
             reply_to = await utils.get_reply_head_fm(

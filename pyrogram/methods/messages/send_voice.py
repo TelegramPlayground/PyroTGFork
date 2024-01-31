@@ -45,6 +45,7 @@ class SendVoice:
         schedule_date: datetime = None,
         protect_content: bool = None,
         ttl_seconds: int = None,
+        view_once: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -105,6 +106,9 @@ class SendVoice:
                 Self-Destruct Timer.
                 If you set a timer, the voice message will self-destruct in *ttl_seconds*
                 seconds after it was viewed.
+
+            view_once (``bool``, *optional*):
+                Pass True if the photo should be viewable only once.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -172,7 +176,7 @@ class SendVoice:
                                 waveform=waveform
                             )
                         ],
-                        ttl_seconds=ttl_seconds
+                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds
                     )
                 elif re.match("^https?://", voice):
                     media = raw.types.InputMediaDocumentExternal(
@@ -198,7 +202,7 @@ class SendVoice:
                             waveform=waveform
                         )
                     ],
-                    ttl_seconds=ttl_seconds
+                    ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds
                 )
 
             reply_to = await utils.get_reply_head_fm(
