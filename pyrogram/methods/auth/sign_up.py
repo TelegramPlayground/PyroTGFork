@@ -63,7 +63,8 @@ class SignUp:
                 phone_number=phone_number,
                 first_name=first_name,
                 last_name=last_name,
-                phone_code_hash=phone_code_hash
+                phone_code_hash=phone_code_hash,
+                no_joined_notifications=True  # TODO
             )
         )
 
