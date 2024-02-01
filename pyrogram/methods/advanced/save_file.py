@@ -153,8 +153,6 @@ class SaveFile:
             queue = asyncio.Queue(1)
 
             try:
-                await session.start()
-
                 fp.seek(part_size * file_part)
 
                 while True:
@@ -225,8 +223,6 @@ class SaveFile:
                     await queue.put(None)
 
                 await asyncio.gather(*workers)
-
-                await session.stop()
 
                 if isinstance(path, (str, PurePath)):
                     fp.close()
