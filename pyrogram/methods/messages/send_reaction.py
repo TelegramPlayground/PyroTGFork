@@ -27,8 +27,8 @@ class SendReaction:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_id: int = None,
-        story_id: int = None,
         emoji: Union[int, str, List[Union[int, str]]] = None,
+        story_id: int = None,
         big: bool = False
     ) -> bool:
         """Send a reaction to a message or story.
@@ -42,13 +42,13 @@ class SendReaction:
             message_id (``int``, *optional*):
                 Identifier of the message.
 
-            story_id (``int``, *optional*):
-                Identifier of the story.
-
             emoji (``int`` | ``str`` | List of ``int`` | ``str``, *optional*):
                 Reaction emoji.
                 Pass None as emoji (default) to retract the reaction.
                 Pass list of int or str to react multiple emojis.
+
+            story_id (``int``, *optional*):
+                Identifier of the story.
 
             big (``bool``, *optional*):
                 Pass True to show a bigger and longer reaction.
