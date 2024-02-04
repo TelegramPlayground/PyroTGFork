@@ -444,6 +444,10 @@ class Message(Object, Update):
         video_chat_ended: "types.VideoChatEnded" = None,
         video_chat_participants_invited: "types.VideoChatParticipantsInvited" = None,
         web_app_data: "types.WebAppData" = None,
+        gift_code: "types.GiftCode" = None,
+        requested_chats: List["types.Chat"] = None,
+        giveaway_launched: bool = None,
+        chat_ttl_period: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -539,6 +543,7 @@ class Message(Object, Update):
         self.video_chat_participants_invited = video_chat_participants_invited
         self.web_app_data = web_app_data
         self.reactions = reactions
+        self.chat_ttl_period = chat_ttl_period
         self.link_preview_options = link_preview_options
         self.external_reply = external_reply
         self._raw = _raw
@@ -592,6 +597,10 @@ class Message(Object, Update):
             video_chat_ended = None
             video_chat_participants_invited = None
             web_app_data = None
+            gift_code = None
+            giveaway_launched = None
+            requested_chats = None
+            chat_ttl_period = None
 
             service_type = None
 
@@ -641,6 +650,44 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionWebViewDataSentMe):
                 web_app_data = types.WebAppData._parse(action)
                 service_type = enums.MessageServiceType.WEB_APP_DATA
+            elif isinstance(action, raw.types.MessageActionGiveawayLaunch):
+                giveaway_launched = True
+                service_type = enums.MessageServiceType.GIVEAWAY_LAUNCH
+            elif isinstance(action, raw.types.MessageActionGiftCode):
+                gift_code = types.GiftCode._parse(client, action, chats)
+                service_type = enums.MessageServiceType.GIFT_CODE
+            elif isinstance(action, raw.types.MessageActionRequestedPeer):
+                _requested_chats = []
+
+                for requested_peer in action.peers:
+                    chat_id = utils.get_peer_id(requested_peer)
+                    peer_type = utils.get_peer_type(chat_id)
+
+                    if peer_type == "user":
+                        chat_type = enums.ChatType.PRIVATE
+                    elif peer_type == "chat":
+                        chat_type = enums.ChatType.GROUP
+                    else:
+                        chat_type = enums.ChatType.CHANNEL
+
+                    _requested_chats.append(
+                        types.Chat(
+                            id=chat_id,
+                            type=chat_type,
+                            client=client
+                        )
+                    )
+
+                requested_chats = types.List(_requested_chats) or None
+
+                service_type = enums.MessageServiceType.REQUESTED_CHAT
+            elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
+                chat_ttl_period = action.period
+                service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
+
+            elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
+                chat_ttl_period = action.period
+                service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
 
             from_user = types.User._parse(client, users.get(user_id, None))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
@@ -666,6 +713,10 @@ class Message(Object, Update):
                 video_chat_ended=video_chat_ended,
                 video_chat_participants_invited=video_chat_participants_invited,
                 web_app_data=web_app_data,
+                giveaway_launched=giveaway_launched,
+                gift_code=gift_code,
+                requested_chats=requested_chats,
+                chat_ttl_period=chat_ttl_period,
                 client=client
                 # TODO: supergroup_chat_created
             )

@@ -610,6 +610,31 @@ class Chat(Object):
             video_start_ts=video_start_ts
         )
 
+    async def set_ttl(self, ttl_seconds: int) -> "types.Message":
+        """Bound method *set_ttl* of :obj:`~pyrogram.types.Chat`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.set_chat_ttl(
+                chat_id=chat_id,
+                ttl_seconds=ttl_seconds
+            )
+
+        Example:
+            .. code-block:: python
+
+                await chat.set_ttl(86400)
+
+        Returns:
+            :obj:`~pyrogram.types.Message`: On success, the generated service message is returned.
+        """
+        return await self._client.set_chat_ttl(
+            chat_id=self.id,
+            ttl_seconds=ttl_seconds
+        )
+
     async def ban_member(
         self,
         user_id: Union[int, str],
