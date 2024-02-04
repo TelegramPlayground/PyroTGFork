@@ -38,6 +38,7 @@ import pyrogram
 from pyrogram import __version__, __license__
 from pyrogram import enums
 from pyrogram import raw
+from pyrogram.raw.all import layer
 from pyrogram import utils
 from pyrogram.crypto import aes
 from pyrogram.errors import CDNFileHashMismatch
@@ -187,7 +188,7 @@ class Client(Methods):
             Defaults to False
     """
 
-    APP_VERSION = f"Pyrogram {__version__}"
+    APP_VERSION = f"Pyrogram ({layer}) {__version__}"
     DEVICE_MODEL = f"{platform.python_implementation()} {platform.python_version()}"
     SYSTEM_VERSION = f"{platform.system()} {platform.release()}"
 
