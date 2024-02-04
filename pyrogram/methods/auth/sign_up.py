@@ -64,7 +64,7 @@ class SignUp:
                 first_name=first_name,
                 last_name=last_name,
                 phone_code_hash=phone_code_hash,
-                no_joined_notifications=True  # TODO
+                no_joined_notifications=self.no_joined_notifications
             )
         )
 

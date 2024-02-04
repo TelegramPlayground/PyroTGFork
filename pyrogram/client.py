@@ -181,6 +181,10 @@ class Client(Methods):
         storage_engine (:obj:`~pyrogram.storage.Storage`, *optional*):
             Pass an instance of your own implementation of session storage engine.
             Useful when you want to store your session in databases like Mongo, Redis, etc.
+        
+        no_joined_notifications (``bool``, *optional*):
+            Pass False to Notify people on Telegram who know my phone number that I signed up.
+            Defaults to False
     """
 
     APP_VERSION = f"Pyrogram {__version__}"
@@ -231,7 +235,8 @@ class Client(Methods):
         sleep_threshold: int = Session.SLEEP_THRESHOLD,
         hide_password: bool = False,
         max_concurrent_transmissions: int = MAX_CONCURRENT_TRANSMISSIONS,
-        storage_engine: Storage = None
+        storage_engine: Storage = None,
+        no_joined_notifications: bool = False
     ):
         super().__init__()
 
@@ -260,6 +265,7 @@ class Client(Methods):
         self.sleep_threshold = sleep_threshold
         self.hide_password = hide_password
         self.max_concurrent_transmissions = max_concurrent_transmissions
+        self.no_joined_notifications = no_joined_notifications
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 
