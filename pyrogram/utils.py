@@ -138,9 +138,20 @@ async def parse_messages(
     return types.List(parsed_messages)
 
 
-def parse_deleted_messages(client, update) -> List["types.Message"]:
+async def parse_deleted_messages(client, update) -> List["types.Message"]:
     messages = update.messages
     channel_id = getattr(update, "channel_id", None)
+    delete_chat = None
+    if channel_id is not None:
+        chan_id = get_channel_id(channel_id)
+        try:
+            delete_chat = await client.get_chat(chan_id)
+        except pyrogram.errors.RPCError:
+            delete_chat = types.Chat(
+                id=chan_id,
+                type=enums.ChatType.CHANNEL,
+                client=client
+            )
 
     parsed_messages = []
 
@@ -148,11 +159,7 @@ def parse_deleted_messages(client, update) -> List["types.Message"]:
         parsed_messages.append(
             types.Message(
                 id=message,
-                chat=types.Chat(
-                    id=get_channel_id(channel_id),
-                    type=enums.ChatType.CHANNEL,
-                    client=client
-                ) if channel_id is not None else None,
+                chat=delete_chat,
                 client=client
             )
         )

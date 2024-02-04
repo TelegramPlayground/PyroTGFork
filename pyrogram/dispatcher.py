@@ -103,7 +103,7 @@ class Dispatcher:
 
         async def deleted_messages_parser(update, users, chats):
             return (
-                utils.parse_deleted_messages(self.client, update),
+                await utils.parse_deleted_messages(self.client, update),
                 DeletedMessagesHandler
             )
 
