@@ -101,3 +101,6 @@ class MessageServiceType(AutoName):
 
     REQUESTED_CHAT = auto()
     "Requested chat"
+
+    CHAT_TTL_CHANGED = auto()
+    "Chat TTL changed"

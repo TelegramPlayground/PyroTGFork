@@ -466,6 +466,7 @@ class Message(Object, Update):
         gift_code: "types.GiftCode" = None,
         requested_chats: List["types.Chat"] = None,
         giveaway_launched: bool = None,
+        chat_ttl_period: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -567,6 +568,7 @@ class Message(Object, Update):
         self.requested_chats = requested_chats
         self.giveaway_launched = giveaway_launched
         self.reactions = reactions
+        self.chat_ttl_period = chat_ttl_period
 
     @staticmethod
     async def _parse(
@@ -629,6 +631,7 @@ class Message(Object, Update):
             gift_code = None
             giveaway_launched = None
             requested_chats = None
+            chat_ttl_period = None
 
             service_type = None
 
@@ -732,6 +735,9 @@ class Message(Object, Update):
                 requested_chats = types.List(_requested_chats) or None
 
                 service_type = enums.MessageServiceType.REQUESTED_CHAT
+            elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
+                chat_ttl_period = action.period
+                service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
 
             from_user = types.User._parse(client, users.get(user_id, None))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
@@ -768,6 +774,7 @@ class Message(Object, Update):
                 giveaway_launched=giveaway_launched,
                 gift_code=gift_code,
                 requested_chats=requested_chats,
+                chat_ttl_period=chat_ttl_period,
                 client=client
                 # TODO: supergroup_chat_created
             )

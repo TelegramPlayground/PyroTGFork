@@ -54,11 +54,19 @@ class SetChatTTL:
                 # Disable TTL for this chat
                 app.set_chat_ttl(chat_id, 0)
         """
-        await self.invoke(
+        r = await self.invoke(
             raw.functions.messages.SetHistoryTTL(
                 peer=await self.resolve_peer(chat_id),
                 period=ttl_seconds,
             )
         )
 
-        return True
+        for i in r.updates:
+            if isinstance(i, (raw.types.UpdateNewMessage,
+                              raw.types.UpdateNewChannelMessage)):
+                return await types.Message._parse(
+                    self,
+                    i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                )
