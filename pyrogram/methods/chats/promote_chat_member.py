@@ -82,7 +82,6 @@ class PromoteChatMember:
                 channel=chat_id,
                 user_id=user_id,
                 admin_rights=raw.types.ChatAdminRights(
-                    anonymous=privileges.is_anonymous,
                     change_info=privileges.can_change_info,
                     post_messages=privileges.can_post_messages,
                     edit_messages=privileges.can_edit_messages,
@@ -91,8 +90,13 @@ class PromoteChatMember:
                     invite_users=privileges.can_invite_users,
                     pin_messages=privileges.can_pin_messages,
                     add_admins=privileges.can_promote_members,
+                    anonymous=privileges.is_anonymous,
                     manage_call=privileges.can_manage_video_chats,
-                    other=privileges.can_manage_chat
+                    other=privileges.can_manage_chat,
+                    manage_topics=privileges.can_manage_topics,
+                    post_stories=privileges.can_post_stories,
+                    edit_stories=privileges.can_edit_stories,
+                    delete_stories=privileges.can_delete_stories
                 ),
                 rank=rank or ""
             )
