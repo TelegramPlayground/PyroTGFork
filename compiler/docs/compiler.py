@@ -231,6 +231,7 @@ def pyrogram_api():
             delete_supergroup
             delete_user_history
             set_slow_mode
+            set_chat_ttl
             mark_chat_unread
             get_chat_event_log
             get_chat_online_count
