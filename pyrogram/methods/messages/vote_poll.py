@@ -43,7 +43,7 @@ class VotePoll:
             message_id (``int``):
                 Identifier of the original message with the poll.
 
-            options (``Int`` | List of ``int``):
+            options (``int`` | List of ``int``):
                 Index or list of indexes (for multiple answers) of the poll option(s) you want to vote for (0 to 9).
 
         Returns:

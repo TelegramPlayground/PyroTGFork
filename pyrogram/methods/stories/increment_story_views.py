@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import Union, List
 
 import pyrogram
 from pyrogram import raw
@@ -26,7 +26,7 @@ class IncrementStoryViews:
     async def increment_story_views(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        story_id: int,
+        story_id: Union[int, List[int]],
     ) -> bool:
         """Increment story views.
 
@@ -37,8 +37,8 @@ class IncrementStoryViews:
                 Unique identifier (int) or username (str) of the target chat.
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            story_id (``int``):
-                Unique identifier of the target story.
+            story_id (``int`` | List of ``int``):
+                Identifier or list of story identifiers of the target story.
 
         Returns:
             ``bool``: On success, True is returned.
@@ -49,10 +49,12 @@ class IncrementStoryViews:
                 # Increment story views
                 await app.increment_story_views(chat_id, 1)
         """
+        ids = [story_id] if not isinstance(story_id, list) else story_id
+
         r = await self.invoke(
             raw.functions.stories.IncrementStoryViews(
                 peer=await self.resolve_peer(chat_id),
-                id=story_id
+                id=ids
             )
         )
 
