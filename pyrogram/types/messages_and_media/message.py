@@ -1671,7 +1671,7 @@ class Message(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
         file_name: str = None,
-        force_document: bool = None,
+        disable_content_type_detection: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
@@ -1732,7 +1732,8 @@ class Message(Object, Update):
                 File name of the document sent.
                 Defaults to file's path basename.
 
-            force_document (``bool``, *optional*):
+            disable_content_type_detection (``bool``, *optional*):
+                Disables automatic server-side content type detection for files uploaded using multipart/form-data.
                 Pass True to force sending files as document. Useful for video files that need to be sent as
                 document messages instead of video messages.
                 Defaults to False.
@@ -1797,7 +1798,7 @@ class Message(Object, Update):
             parse_mode=parse_mode,
             caption_entities=caption_entities,
             file_name=file_name,
-            force_document=force_document,
+            disable_content_type_detection=disable_content_type_detection,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
             schedule_date=schedule_date,

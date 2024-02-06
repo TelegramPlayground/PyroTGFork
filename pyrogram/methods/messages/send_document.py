@@ -40,7 +40,7 @@ class SendDocument:
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
         file_name: str = None,
-        force_document: bool = None,
+        disable_content_type_detection: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
@@ -92,7 +92,8 @@ class SendDocument:
                 File name of the document sent.
                 Defaults to file's path basename.
 
-            force_document (``bool``, *optional*):
+            disable_content_type_detection (``bool``, *optional*):
+                Disables automatic server-side content type detection for files uploaded using multipart/form-data.
                 Pass True to force sending files as document. Useful for video files that need to be sent as
                 document messages instead of video messages.
                 Defaults to False.
@@ -168,7 +169,7 @@ class SendDocument:
                     media = raw.types.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(document) or "application/zip",
                         file=file,
-                        force_file=force_document or None,
+                        force_file=disable_content_type_detection or None,
                         thumb=thumb,
                         attributes=[
                             raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(document))
@@ -186,6 +187,7 @@ class SendDocument:
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(file_name or document.name) or "application/zip",
                     file=file,
+                    force_file=disable_content_type_detection or None,
                     thumb=thumb,
                     attributes=[
                         raw.types.DocumentAttributeFilename(file_name=file_name or document.name)
