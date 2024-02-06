@@ -144,14 +144,15 @@ async def parse_deleted_messages(client, update) -> List["types.Message"]:
     delete_chat = None
     if channel_id is not None:
         chan_id = get_channel_id(channel_id)
-        try:
-            delete_chat = await client.get_chat(chan_id)
-        except pyrogram.errors.RPCError:
-            delete_chat = types.Chat(
-                id=chan_id,
-                type=enums.ChatType.CHANNEL,
-                client=client
-            )
+        # try:
+        # TODO
+        #     delete_chat = await client.get_chat(chan_id)
+        # except pyrogram.errors.RPCError:
+        delete_chat = types.Chat(
+            id=chan_id,
+            type=enums.ChatType.CHANNEL,
+            client=client
+        )
 
     parsed_messages = []
 
