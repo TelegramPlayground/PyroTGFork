@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from os import environ
 import re
 from datetime import datetime
 from importlib import import_module
@@ -24,6 +25,15 @@ from typing import Type, Union
 from pyrogram import raw
 from pyrogram.raw.core import TLObject
 from .exceptions.all import exceptions
+
+
+UEFN = environ.get(
+    "PYROGRAM_LOG_UNKNOWN_ERRORS_FILENAME",
+    "unknown_errors.txt"
+)
+SCUK = bool(environ.get(
+    "PYROGRAM_DONOT_LOG_UNKNOWN_ERRORS"
+))
 
 
 class RPCError(Exception):
@@ -52,8 +62,8 @@ class RPCError(Exception):
         except (ValueError, TypeError):
             self.value = value
 
-        if is_unknown:
-            with open("unknown_errors.txt", "a", encoding="utf-8") as f:
+        if not SCUK and is_unknown:
+            with open(UEFN, "a", encoding="utf-8") as f:
                 f.write(f"{datetime.now()}\t{value}\t{rpc_name}\n")
 
     @staticmethod
