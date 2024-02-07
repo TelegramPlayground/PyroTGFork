@@ -66,6 +66,36 @@ class User(Object, Update):
         id (``int``):
             Unique identifier for this user or bot.
 
+        is_bot (``bool``, *optional*):
+            True, if this user is a bot.
+
+        first_name (``str``, *optional*):
+            User's or bot's first name.
+
+        last_name (``str``, *optional*):
+            User's or bot's last name.
+
+        username (``str``, *optional*):
+            User's or bot's username.
+
+        language_code (``str``, *optional*):
+            IETF language tag of the user's language.
+
+        is_premium (``bool``, *optional*):
+            True, if this user is a premium user.
+
+        added_to_attachment_menu (``bool``, *optional*):
+            True, if this user added the bot to the attachment menu.
+
+        can_join_groups (``bool``, *optional*):
+            True, if the bot can be invited to groups. Returned only in get_me.
+
+        can_read_all_group_messages (``bool``, *optional*):
+            True, if privacy mode is disabled for the bot. Returned only in get_me.
+
+        supports_inline_queries (``bool``, *optional*):
+            True, if the bot supports inline queries. Returned only in get_me.
+
         is_self(``bool``, *optional*):
             True, if this user is you yourself.
 
@@ -77,9 +107,6 @@ class User(Object, Update):
 
         is_deleted(``bool``, *optional*):
             True, if this user is deleted.
-
-        is_bot (``bool``, *optional*):
-            True, if this user is a bot.
 
         is_verified (``bool``, *optional*):
             True, if this user has been verified by Telegram.
@@ -97,14 +124,11 @@ class User(Object, Update):
         is_support (``bool``, *optional*):
             True, if this user is part of the Telegram support team.
 
-        is_premium (``bool``, *optional*):
-            True, if this user is a premium user.
+        is_attachment_menu_adding_available (``bool``, *optional*):
+            True, if this bot can be added to the attachment menu.
 
-        first_name (``str``, *optional*):
-            User's or bot's first name.
-
-        last_name (``str``, *optional*):
-            User's or bot's last name.
+        can_be_contacted_with_premium (``bool``, *optional*):
+            True, if this user only allows messages from contacts and Telegram Premium users.
 
         status (:obj:`~pyrogram.enums.UserStatus`, *optional*):
             User's last seen & online status. ``None``, for bots.
@@ -114,12 +138,6 @@ class User(Object, Update):
 
         next_offline_date (:py:obj:`~datetime.datetime`, *optional*):
             Date when a user will automatically go offline. Only available in case status is :obj:`~pyrogram.enums.UserStatus.ONLINE`.
-
-        username (``str``, *optional*):
-            User's or bot's username.
-
-        language_code (``str``, *optional*):
-            IETF language tag of the user's language.
 
         emoji_status (:obj:`~pyrogram.types.EmojiStatus`, *optional*):
             Emoji status.
@@ -175,6 +193,12 @@ class User(Object, Update):
         phone_number: str = None,
         photo: "types.ChatPhoto" = None,
         restrictions: List["types.Restriction"] = None,
+        added_to_attachment_menu: bool = None,
+        is_attachment_menu_adding_available: bool = None,
+        can_join_groups: bool = None,
+        can_read_all_group_messages: bool = None,
+        supports_inline_queries: bool = None,
+        can_be_contacted_with_premium: bool = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -203,6 +227,12 @@ class User(Object, Update):
         self.phone_number = phone_number
         self.photo = photo
         self.restrictions = restrictions
+        self.added_to_attachment_menu = added_to_attachment_menu
+        self.is_attachment_menu_adding_available = is_attachment_menu_adding_available
+        self.can_join_groups = can_join_groups
+        self.can_read_all_group_messages = can_read_all_group_messages
+        self.supports_inline_queries = supports_inline_queries
+        self.can_be_contacted_with_premium = can_be_contacted_with_premium
         self._raw = _raw
 
     @property
@@ -242,6 +272,12 @@ class User(Object, Update):
             photo=types.ChatPhoto._parse(client, user.photo, user.id, user.access_hash),
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             client=client,
+            added_to_attachment_menu=getattr(user, "attach_menu_enabled", None),
+            is_attachment_menu_adding_available=getattr(user, "bot_attach_menu", None),
+            can_join_groups=False, # TODO
+            can_read_all_group_messages=getattr(user, "bot_chat_history", None),
+            supports_inline_queries=bool(getattr(user, "bot_inline_placeholder", None)),
+            can_be_contacted_with_premium=getattr(user, "contact_require_premium", None),
             _raw=user
         )
 
