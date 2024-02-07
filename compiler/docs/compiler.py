@@ -418,7 +418,7 @@ def pyrogram_api():
             VideoChatScheduled
             VideoChatStarted
             VideoChatEnded
-            VideoChatMembersInvited
+            VideoChatParticipantsInvited
             WebAppData
             MessageReactions
             ChatReactions
