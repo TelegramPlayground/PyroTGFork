@@ -7,7 +7,7 @@ RM := rm -rf
 
 .PHONY: venv clean-build clean-api clean api build clean-docs docs
 
-all: clean venv build docs
+all: clean venv build
 	echo Done
 
 venv:
@@ -50,10 +50,8 @@ docs:
 	$(VENV)/bin/sphinx-build \
 		-b html "docs/source" "docs/build/html" -j auto
 
-build:
-	make clean
-	$(PYTHON) setup.py sdist
-	$(PYTHON) setup.py bdist_wheel
+build: clean api docs
+	echo Build
 
 tag:
 	git tag $(TAG)
