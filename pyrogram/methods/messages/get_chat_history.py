@@ -79,11 +79,19 @@ class GetChatHistory:
                 By default, no limit is applied and all messages are returned.
 
             offset (``int``, *optional*):
-                Sequential number of the first message to be returned..
+                Sequential number of the first message to be returned.
                 Negative values are also accepted and become useful in case you set offset_id or offset_date.
 
             offset_id (``int``, *optional*):
                 Identifier of the first message to be returned.
+
+            min_id (``int``, *optional*):
+                If a positive value was transferred, the method will return only messages with IDs more than min_id.
+                Defaults to 0.
+
+            max_id (``int``, *optional*):
+                If a positive value was transferred, the method will return only messages with IDs less than max_id.
+                Defaults to 0.
 
             offset_date (:py:obj:`~datetime.datetime`, *optional*):
                 Pass a date as offset to retrieve only older messages starting from that date.
