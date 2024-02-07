@@ -72,3 +72,6 @@ packages = ["pyrogram"]
 
 [tool.hatch.build.targets.sdist]
 include = ["pyrogram"]
+
+[project.optional-dependencies]
+fast = ["tgcrypto==1.2.5"]
