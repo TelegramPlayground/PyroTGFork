@@ -5,7 +5,7 @@ TAG = v$(shell grep -E '__version__ = ".*"' pyrogram/__init__.py | cut -d\" -f2)
 
 RM := rm -rf
 
-.PHONY: venv clean-build clean-api clean api build docs
+.PHONY: venv clean-build clean-api clean api build clean-docs docs
 
 all: clean venv build docs
 	echo Done
@@ -14,7 +14,7 @@ venv:
 	$(RM) $(VENV)
 	python3 -m venv $(VENV)
 	$(PYTHON) -m pip install -U pip wheel setuptools
-	$(PYTHON) -m pip install -U -r requirements.txt -r dev-requirements.txt -r docs/requirements.txt
+	$(PYTHON) -m pip install -U -e .
 	@echo "Created venv with $$($(PYTHON) --version)"
 
 clean-build:
@@ -29,7 +29,6 @@ clean-api:
 
 clean:
 	make clean-build
-	make clean-docs
 	make clean-api
 
 api:
@@ -52,11 +51,9 @@ docs:
 		-b html "docs/source" "docs/build/html" -j auto
 
 build:
-	make clean-build
-	make clean-api
+	make clean
 	$(PYTHON) setup.py sdist
 	$(PYTHON) setup.py bdist_wheel
-	$(PYTHON) setup.py install
 
 tag:
 	git tag $(TAG)

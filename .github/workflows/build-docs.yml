@@ -18,8 +18,8 @@ jobs:
       run: |
           make
           rm -rf .github compiler Pyrogram* pyrogram* tests .gitignore COPYING*
-          rm -f MANIFEST* Makefile NOTICE README.md *requirements.txt
-          rm -f setup.py tox.ini
+          rm -f MANIFEST* Makefile NOTICE README.md
+          rm -f pyproject.toml
           mv docs/build/html/* .
           rm -rf docs venv 
           touch .nojekyll
