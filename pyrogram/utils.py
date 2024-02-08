@@ -473,3 +473,24 @@ def get_first_url(message: "raw.types.Message") -> str:
             return None
         return url
     return None
+
+
+def voiceAudioUrlFuxUps(
+    client: "pyroram.Client",
+    file_name: str,
+    dinxe: int
+) -> str:
+    un_posi_mt = [
+        "application/zip",  # 0
+        # https://t.me/c/1220993104/1360174
+        "audio/mpeg",  # 1
+        "audio/ogg",  # 2
+    ]
+    mime_type = client.guess_mime_type(file_name) or un_posi_mt[dinxe]
+    # BEWARE: https://t.me/c/1279877202/31475
+    if dinxe == 1 and mime_type == "audio/ogg":
+        mime_type = "audio/opus"
+    elif dinxe == 2 and mime_type == "audio/mpeg":
+        mime_type = "audio/ogg"
+    # BEWARE: https://t.me/c/1279877202/74
+    return mime_type
