@@ -39,6 +39,7 @@ BROADCAST_REQUIRED	The request can only be used with a channel
 BUTTON_DATA_INVALID	The button callback data is invalid or too large
 BUTTON_TYPE_INVALID	The type of one of the buttons you provided is invalid
 BUTTON_URL_INVALID	The button url is invalid
+BUTTON_USER_INVALID	The user_id passed to inputKeyboardButtonUserProfile is invalid
 BUTTON_USER_PRIVACY_RESTRICTED	The privacy settings of the user specified in a keyboard button do not allow creating such button
 CALL_ALREADY_ACCEPTED	The call is already accepted
 CALL_ALREADY_DECLINED	The call is already declined
@@ -175,7 +176,7 @@ MEDIA_INVALID	The media is invalid
 MEDIA_NEW_INVALID	The new media to edit the message with is invalid
 MEDIA_PREV_INVALID	The previous media cannot be edited with anything else
 MEDIA_TTL_INVALID	The media ttl is invalid
-MEDIA_VIDEO_STORY_MISSING	The media does not have a photo or a video
+MEDIA_VIDEO_STORY_MISSING	A non-story video cannot be republished as a story (emitted when trying to resend a non-story video as a story using inputDocument)
 MEGAGROUP_ID_INVALID	The supergroup is invalid
 MEGAGROUP_PREHISTORY_HIDDEN	The action failed because the supergroup has the pre-history hidden
 MEGAGROUP_REQUIRED	The request can only be used with a supergroup
