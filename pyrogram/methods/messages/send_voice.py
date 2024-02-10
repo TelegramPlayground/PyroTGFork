@@ -51,6 +51,7 @@ class SendVoice:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        waveform: bytes = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> Optional["types.Message"]:
@@ -109,6 +110,10 @@ class SendVoice:
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
+            waveform (``bytes``, *optional*):
+                Only for [user-accounts](https://github.com/tdlib/telegram-bot-api/issues/354#issuecomment-1399423438).
+                Do Not use if you do not know what this is!
+
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
                 The function must take *(current, total)* as positional arguments (look at Other Parameters below for a
@@ -164,7 +169,8 @@ class SendVoice:
                         attributes=[
                             raw.types.DocumentAttributeAudio(
                                 voice=True,
-                                duration=duration
+                                duration=duration,
+                                waveform=waveform
                             )
                         ],
                         ttl_seconds=ttl_seconds
@@ -189,7 +195,8 @@ class SendVoice:
                     attributes=[
                         raw.types.DocumentAttributeAudio(
                             voice=True,
-                            duration=duration
+                            duration=duration,
+                            waveform=waveform
                         )
                     ],
                     ttl_seconds=ttl_seconds
