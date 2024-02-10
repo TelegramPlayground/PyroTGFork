@@ -2,7 +2,9 @@ callback_queries
 ================
 
 This example shows how to handle callback queries, i.e.: queries coming from inline button presses.
-It uses the @on_callback_query decorator to register a CallbackQueryHandler.
+It uses the :meth:`~pyrogram.Client.on_callback_query` decorator to register a :obj:`~pyrogram.handlers.CallbackQueryHandler`.
+
+.. include:: /_includes/usable-by/bots.rst
 
 .. code-block:: python
 

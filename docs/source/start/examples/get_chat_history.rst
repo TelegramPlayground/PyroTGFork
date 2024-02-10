@@ -3,6 +3,8 @@ get_history
 
 This example shows how to get the full message history of a chat, starting from the latest message.
 
+.. include:: /_includes/usable-by/users.rst
+
 .. code-block:: python
 
     from pyrogram import Client

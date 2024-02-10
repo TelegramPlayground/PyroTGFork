@@ -4,7 +4,9 @@ inline_queries
 This example shows how to handle inline queries.
 
 Two results are generated when users invoke the bot inline mode, e.g.: @pyrogrambot hi.
-It uses the @on_inline_query decorator to register an InlineQueryHandler.
+It uses the :meth:`~pyrogram.Client.on_inline_query` decorator to register an :obj:`~pyrogram.handlers.InlineQueryHandler`.
+
+.. include:: /_includes/usable-by/bots.rst
 
 .. code-block:: python
 

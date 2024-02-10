@@ -3438,7 +3438,7 @@ class Message(Object, Update):
                 disable_notification=disable_notification,
                 protect_content=protect_content,
                 reply_parameters=reply_parameters,
-                reply_markup=self.reply_markup if reply_markup is object else reply_markup
+                reply_markup=self.reply_markup if reply_markup is object else reply_markup,
                 schedule_date=schedule_date
             )
         elif self.media:

@@ -3,6 +3,8 @@ get_chat_members
 
 This example shows how to get all the members of a chat.
 
+.. include:: /_includes/usable-by/users-bots.rst
+
 .. code-block:: python
 
     from pyrogram import Client

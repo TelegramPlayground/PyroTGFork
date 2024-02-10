@@ -3,6 +3,8 @@ hello_world
 
 This example demonstrates a basic API usage
 
+.. include:: /_includes/usable-by/users.rst
+
 .. code-block:: python
 
     from pyrogram import Client

@@ -28,17 +28,20 @@ list of the basic styles currently supported by Pyrogram.
 
 - **bold**
 - *italic*
-- :strike:`strike`
 - :underline:`underline`
-- spoiler
-- `text URL <https://pyrogrammod.github.io>`_
-- `user text mention <tg://user?id=123456789>`_
+- :strike:`strike`
+- blockquote
 - ``inline fixed-width code``
 - .. code-block:: text
 
     pre-formatted
       fixed-width
         code block
+- spoiler
+- `text URL <https://docs.pyrogram.org>`_
+- `user text mention <tg://user?id=123456789>`_
+
+
 
 Markdown Style
 --------------
@@ -56,11 +59,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
 
     ~~strike~~
 
-    ||spoiler||
-
-    [text URL](https://pyrogrammod.github.io/)
-
-    [text user mention](tg://user?id=123456789)
+    > blockquote
 
     `inline fixed-width code`
 
@@ -70,7 +69,12 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
         code block
     ```
 
-    > Quoted text
+    ||spoiler||
+
+    [text URL](https://docs.pyrogram.org/)
+
+    [text user mention](tg://user?id=123456789)
+
 
 **Example**:
 
@@ -86,7 +90,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
             "--underline--, "
             "~~strike~~, "
             "||spoiler||, "
-            "[URL](https://pyrogrammod.github.io), "
+            "[URL](https://docs.pyrogram.org), "
             "`code`, "
             "```"
             "for i in range(10):\n"
@@ -114,7 +118,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
 
     <spoiler>spoiler</spoiler>
 
-    <a href="https://pyrogrammod.github.io/">text URL</a>
+    <a href="https://docs.pyrogram.org">text URL</a>
 
     <a href="tg://user?id=123456789">inline mention</a>
 
@@ -122,7 +126,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
 
     <emoji id="12345678901234567890">🔥</emoji>
 
-    <pre>
+    <pre language="py">
     pre-formatted
       fixed-width
         code block
@@ -142,9 +146,9 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
             "<u>underline</u>, "
             "<s>strike</s>, "
             "<spoiler>spoiler</spoiler>, "
-            "<a href=\"https://pyrogrammod.github.io/\">URL</a>, "
+            "<a href=\"https://docs.pyrogram.org\">URL</a>, "
             "<code>code</code>\n\n"
-            "<pre>"
+            "<pre language='py'>"
             "for i in range(10):\n"
             "    print(i)"
             "</pre>"

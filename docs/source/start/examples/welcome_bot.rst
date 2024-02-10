@@ -4,6 +4,8 @@ welcome_bot
 This example uses the ``emoji`` module to easily add emoji in your text messages and ``filters``
 to make it only work for specific messages in a specific chat.
 
+.. include:: /_includes/usable-by/bots.rst
+
 .. code-block:: python
 
     from pyrogram import Client, emoji, filters
@@ -17,12 +19,16 @@ to make it only work for specific messages in a specific chat.
 
 
     # Filter in only new_chat_members updates generated in TARGET chat
-    @app.on_message(filters.chat(TARGET) & filters.new_chat_members)
-    async def welcome(client, message):
+    @app.on_chat_member_updated(filters.chat(TARGET) & filters.new_chat_members)
+    async def welcome(client, chat_member_updated):
         # Build the new members list (with mentions) by using their first_name
-        new_members = [u.mention for u in message.new_chat_members]
+        new_member = chat_member_updated.new_chat_member.user.mention
         # Build the welcome message by using an emoji and the list we built above
-        text = MESSAGE.format(emoji.SPARKLES, ", ".join(new_members))
-
+        text = MESSAGE.format(emoji.SPARKLES, new_member)
+        # send a message to the chat
+        await client.send_message(
+            chat_id=chat_member_updated.chat.id,
+            text=text
+        )
 
     app.run()  # Automatically start() and idle()

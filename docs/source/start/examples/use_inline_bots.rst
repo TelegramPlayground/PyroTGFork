@@ -3,6 +3,8 @@ use_inline_bots
 
 This example shows how to query an inline bot (as user).
 
+.. include:: /_includes/usable-by/users.rst
+
 .. code-block:: python
 
     from pyrogram import Client

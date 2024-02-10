@@ -3,6 +3,8 @@ get_dialogs
 
 This example shows how to get the full dialogs list (as user).
 
+.. include:: /_includes/usable-by/users.rst
+
 .. code-block:: python
 
     from pyrogram import Client

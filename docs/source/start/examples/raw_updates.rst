@@ -3,6 +3,8 @@ raw_updates
 
 This example shows how to handle raw updates.
 
+.. include:: /_includes/usable-by/users-bots.rst
+
 .. code-block:: python
 
     from pyrogram import Client

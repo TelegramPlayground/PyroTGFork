@@ -6,8 +6,10 @@ This example will show you how to send normal and inline keyboards (as bot).
 You must log-in as a regular bot in order to send keyboards (use the token from @BotFather).
 Any attempt in sending keyboards with a user account will be simply ignored by the server.
 
-send_message() is used as example, but a keyboard can be sent with any other send_* methods,
-like send_audio(), send_document(), send_location(), etc...
+:meth:`~pyrogram.Client.send_message` is used as example, but a keyboard can be sent with any other send_* methods,
+like :meth:`~pyrogram.Client.send_audio`, :meth:`~pyrogram.Client.send_document`, :meth:`~pyrogram.Client.send_location`, etc...
+
+.. include:: /_includes/usable-by/bots.rst
 
 .. code-block:: python
 
@@ -22,7 +24,7 @@ like send_audio(), send_document(), send_location(), etc...
     async def main():
         async with app:
             await app.send_message(
-                chat_id="me",  # Edit this
+                chat_id="@PyrogramChat",  # Edit this
                 text="This is a ReplyKeyboardMarkup example",
                 reply_markup=ReplyKeyboardMarkup(
                     [
@@ -36,7 +38,7 @@ like send_audio(), send_document(), send_location(), etc...
             )
 
             await app.send_message(
-                chat_id="me",  # Edit this
+                chat_id="@PyrogramChat",  # Edit this
                 text="This is a InlineKeyboardMarkup example",
                 reply_markup=InlineKeyboardMarkup(
                     [

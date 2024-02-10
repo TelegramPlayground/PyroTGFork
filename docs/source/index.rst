@@ -121,6 +121,7 @@ Meta
     api/client
     api/methods/index
     api/types/index
+    api/storage/index
     api/bound-methods/index
     api/enums/index
     api/handlers
@@ -140,7 +141,6 @@ Meta
     topics/text-formatting
     topics/synchronous
     topics/smart-plugins
-    topics/storage-engines
     topics/serializing
     topics/proxy
     topics/scheduling

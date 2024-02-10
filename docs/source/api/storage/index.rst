@@ -1,3 +1,6 @@
+Pyrogram Storage Engines
+===============
+
 Storage Engines
 ===============
 
@@ -84,3 +87,9 @@ login using the same session; the storage used will still be in-memory:
 
 Session strings are useful when you want to run authorized Pyrogram clients on platforms where their ephemeral
 filesystems makes it harder for a file-based storage engine to properly work as intended.
+
+
+Details
+-------
+
+.. autoclass:: pyrogram.storage.Storage()
