@@ -2095,6 +2095,10 @@ class Message(Object, Update):
         ttl_seconds: int = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
+        view_once: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2157,6 +2161,18 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
+            view_once (``bool``, *optional*):
+                Pass True if the photo should be viewable only once.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2209,6 +2225,10 @@ class Message(Object, Update):
             ttl_seconds=ttl_seconds,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
+            view_once=view_once,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -2570,14 +2590,15 @@ class Message(Object, Update):
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
-        has_spoiler: bool = None,
-        ttl_seconds: int = None,
+        message_thread_id: int = None,
         duration: int = 0,
         width: int = 0,
         height: int = 0,
         thumb: str = None,
+        has_spoiler: bool = None,
         supports_streaming: bool = True,
         disable_notification: bool = None,
+        protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2585,6 +2606,10 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        ttl_seconds: int = None,
+        view_once: bool = None,
+        file_name: str = None,
+        schedule_date: datetime = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -2626,13 +2651,8 @@ class Message(Object, Update):
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
-            has_spoiler (``bool``, *optional*):
-                Pass True if the video needs to be covered with a spoiler animation.
-
-            ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the video will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
 
             duration (``int``, *optional*):
                 Duration of sent video in seconds.
@@ -2643,18 +2663,25 @@ class Message(Object, Update):
             height (``int``, *optional*):
                 Video height.
 
-            thumb (``str``, *optional*):
+            thumb (``str`` | ``BinaryIO``, *optional*):
                 Thumbnail of the video sent.
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.
                 Thumbnails can't be reused and can be only uploaded as a new file.
 
+            has_spoiler (``bool``, *optional*):
+                Pass True if the video needs to be covered with a spoiler animation.
+
             supports_streaming (``bool``, *optional*):
                 Pass True, if the uploaded video is suitable for streaming.
+                Defaults to True.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -2662,6 +2689,21 @@ class Message(Object, Update):
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
+
+            ttl_seconds (``int``, *optional*):
+                Self-Destruct Timer.
+                If you set a timer, the video will self-destruct in *ttl_seconds*
+                seconds after it was viewed.
+
+            view_once (``bool``, *optional*):
+                Pass True if the photo should be viewable only once.
+
+            file_name (``str``, *optional*):
+                File name of the video sent.
+                Defaults to file's path basename.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -2707,16 +2749,21 @@ class Message(Object, Update):
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
-            has_spoiler=has_spoiler,
-            ttl_seconds=ttl_seconds,
+            message_thread_id=message_thread_id,
             duration=duration,
             width=width,
             height=height,
             thumb=thumb,
+            has_spoiler=has_spoiler,
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
+            protect_content=protect_content,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
+            ttl_seconds=ttl_seconds,
+            view_once=view_once,
+            file_name=file_name,
+            schedule_date=schedule_date,
             progress=progress,
             progress_args=progress_args
         )
@@ -2729,6 +2776,7 @@ class Message(Object, Update):
         length: int = 1,
         thumb: str = None,
         disable_notification: bool = None,
+        protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2736,6 +2784,13 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        message_thread_id: int = None,
+        caption: str = "",
+        parse_mode: Optional["enums.ParseMode"] = None,
+        caption_entities: List["types.MessageEntity"] = None,
+        schedule_date: datetime = None,
+        ttl_seconds: int = None,
+        view_once: bool = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -2783,12 +2838,39 @@ class Message(Object, Update):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            caption (``str``, *optional*):
+                Video caption, 0-1024 characters.
+
+            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            ttl_seconds (``int``, *optional*):
+                Self-Destruct Timer.
+                If you set a timer, the video note will self-destruct in *ttl_seconds*
+                seconds after it was viewed.
+
+            view_once (``bool``, *optional*):
+                Pass True if the photo should be viewable only once.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -2835,8 +2917,16 @@ class Message(Object, Update):
             length=length,
             thumb=thumb,
             disable_notification=disable_notification,
+            protect_content=protect_content,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
+            message_thread_id=message_thread_id,
+            caption=caption,
+            parse_mode=parse_mode,
+            caption_entities=caption_entities,
+            schedule_date=schedule_date,
+            ttl_seconds=ttl_seconds,
+            view_once=view_once,
             progress=progress,
             progress_args=progress_args
         )
@@ -2848,19 +2938,20 @@ class Message(Object, Update):
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        message_thread_id: int = None,
         duration: int = 0,
         disable_notification: bool = None,
-        reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        schedule_date: datetime = None,
         protect_content: bool = None,
-        ttl_seconds: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        schedule_date: datetime = None,
+        ttl_seconds: int = None,
+        view_once: bool = None,
         waveform: bytes = None,
         progress: Callable = None,
         progress_args: tuple = ()
@@ -2903,6 +2994,9 @@ class Message(Object, Update):
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
             duration (``int``, *optional*):
                 Duration of the voice message in seconds.
 
@@ -2910,26 +3004,26 @@ class Message(Object, Update):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
+            reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
+                Additional interface options. An object for an inline keyboard, custom reply keyboard,
+                instructions to remove reply keyboard or to force a reply from the user.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
-
-            protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
 
             ttl_seconds (``int``, *optional*):
                 Self-Destruct Timer.
                 If you set a timer, the voice message will self-destruct in *ttl_seconds*
                 seconds after it was viewed.
 
-            reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
-                Additional interface options. An object for an inline keyboard, custom reply keyboard,
-                instructions to remove reply keyboard or to force a reply from the user.
+            view_once (``bool``, *optional*):
+                Pass True if the photo should be viewable only once.
 
             waveform (``bytes``, *optional*):
                 no docs!
@@ -2978,14 +3072,15 @@ class Message(Object, Update):
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
+            message_thread_id=message_thread_id,
             duration=duration,
             disable_notification=disable_notification,
-            reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            schedule_date=schedule_date,
             protect_content=protect_content,
-            ttl_seconds=ttl_seconds,
+            reply_parameters=reply_parameters,
             reply_markup=reply_markup,
+            schedule_date=schedule_date,
+            ttl_seconds=ttl_seconds,
+            view_once=view_once,
             waveform=waveform,
             progress=progress,
             progress_args=progress_args

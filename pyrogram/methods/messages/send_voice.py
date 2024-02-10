@@ -38,20 +38,20 @@ class SendVoice:
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        message_thread_id: int = None,
         duration: int = 0,
         disable_notification: bool = None,
-        reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        schedule_date: datetime = None,
         protect_content: bool = None,
-        ttl_seconds: int = None,
-        view_once: bool = None,
+        reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        schedule_date: datetime = None,
+        ttl_seconds: int = None,
+        view_once: bool = None,
         waveform: bytes = None,
         progress: Callable = None,
         progress_args: tuple = ()
@@ -83,6 +83,9 @@ class SendVoice:
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
             duration (``int``, *optional*):
                 Duration of the voice message in seconds.
 
@@ -90,17 +93,18 @@ class SendVoice:
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
+            reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
+                Additional interface options. An object for an inline keyboard, custom reply keyboard,
+                instructions to remove reply keyboard or to force a reply from the user.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
-
-            protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
 
             ttl_seconds (``int``, *optional*):
                 Self-Destruct Timer.
@@ -109,10 +113,6 @@ class SendVoice:
 
             view_once (``bool``, *optional*):
                 Pass True if the photo should be viewable only once.
-
-            reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
-                Additional interface options. An object for an inline keyboard, custom reply keyboard,
-                instructions to remove reply keyboard or to force a reply from the user.
 
             waveform (``bytes``, *optional*):
                 no docs!
