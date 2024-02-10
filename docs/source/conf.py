@@ -62,7 +62,7 @@ copybutton_prompt_text = "$ "
 
 suppress_warnings = ["image.not_readable"]
 
-html_title = "pg Fork Pyrogram Documentation"
+html_title = f"Fork Pyrogram Documentation {version}"
 html_theme = "furo"
 html_static_path = [os.path.abspath("static")]
 print("ABSOLUTE PATH", os.path.abspath("static"))
