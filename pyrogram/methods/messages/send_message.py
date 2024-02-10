@@ -27,7 +27,6 @@ from pyrogram import types
 class SendMessage:
     async def send_message(
         self: "pyrogram.Client",
-        *,
         chat_id: Union[int, str] = None,
         message_thread_id: int = None,
         text: str = None,
