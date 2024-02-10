@@ -2851,12 +2851,17 @@ class Message(Object, Update):
         duration: int = 0,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
+        ttl_seconds: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        waveform: bytes = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -2908,9 +2913,26 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
+            ttl_seconds (``int``, *optional*):
+                Self-Destruct Timer.
+                If you set a timer, the voice message will self-destruct in *ttl_seconds*
+                seconds after it was viewed.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
+
+            waveform (``bytes``, *optional*):
+                no docs!
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -2959,7 +2981,12 @@ class Message(Object, Update):
             duration=duration,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
+            ttl_seconds=ttl_seconds,
             reply_markup=reply_markup,
+            waveform=waveform,
             progress=progress,
             progress_args=progress_args
         )

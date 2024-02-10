@@ -111,8 +111,7 @@ class SendVoice:
                 instructions to remove reply keyboard or to force a reply from the user.
 
             waveform (``bytes``, *optional*):
-                Only for [user-accounts](https://github.com/tdlib/telegram-bot-api/issues/354#issuecomment-1399423438).
-                Do Not use if you do not know what this is!
+                no docs!
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
