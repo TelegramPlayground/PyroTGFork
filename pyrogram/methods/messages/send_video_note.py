@@ -18,7 +18,7 @@
 
 import os
 from datetime import datetime
-from typing import Union, BinaryIO, Optional, Callable
+from typing import List, Union, BinaryIO, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission

@@ -156,6 +156,7 @@ Meta
 
     faq/index
     support
+    releases/index
 
 .. toctree::
     :hidden:
