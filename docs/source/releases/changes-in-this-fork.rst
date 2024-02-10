@@ -12,9 +12,9 @@ it can take advantage of new goodies!
 | Scheme layer used: 173 |
 +------------------------+
 
-- Bug fix in parsing ``Vector<Bool>`` (Thanks to `@AmarnathCJD <https://github.com/AmarnathCJD/>`_ and `@roj1512 <https://github.com/roj1512>`_).
 - Added ``has_visible_history``, ``has_hidden_members``, ``has_aggressive_anti_spam_enabled``, ``message_auto_delete_time``, ``slow_mode_delay``, ``slowmode_next_send_date``, ``is_forum`` to the :obj:`~pyrogram.types.Chat` object.
 - Added ``add_to_recent``, ``story_id`` parameters in :obj:`~pyrogram.Client.set_message_reaction`.
+- Bug fix in parsing ``Vector<Bool>`` (Thanks to `@AmarnathCJD <https://github.com/AmarnathCJD/>`_ and `@roj1512 <https://github.com/roj1512>`_).
 - Documentation Fix of ``max_concurrent_transmissions`` type hint.
 - Bug Fix in the ``get_file`` method. (Thanks to `@ALiwoto <https://github.com/ALiwoto>`_).
 - Added missing attributes to :obj:`~pyrogram.types.ChatPermissions` and :obj:`~pyrogram.types.ChatPrivileges`.
@@ -28,7 +28,7 @@ it can take advantage of new goodies!
 - PRs from upstream: `1305 <https://github.com/pyrogram/pyrogram/pull/1305>`_, `1288 <https://github.com/pyrogram/pyrogram/pull/1288>`_, `1262 <https://github.com/pyrogram/pyrogram/pull/1262>`_, `1253 <https://github.com/pyrogram/pyrogram/pull/1253>`_, `1143 <https://github.com/pyrogram/pyrogram/pull/1143>`_.
 - Bug fix for :obj:`~pyrogram.Client.send_audio` and :obj:`~pyrogram.Client.send_voice`. (Thanks to `... <https://t.me/c/1220993104/1360174>`_).
 - Add `waveform` parameter to :obj:`~pyrogram.Client.send_voice`.
-- Added `view_once` parameter to `:obj:`~pyrogram.Client.send_photo`, `:obj:`~pyrogram.Client.send_video`, :obj:`~pyrogram.Client.send_video_note`, :obj:`~pyrogram.Client.send_voice`.
+- Added `view_once` parameter to :obj:`~pyrogram.Client.send_photo`, :obj:`~pyrogram.Client.send_video`, :obj:`~pyrogram.Client.send_video_note`, :obj:`~pyrogram.Client.send_voice`.
 - Add missing parameters to :obj:`~pyrogram.types.Message.reply_photo`, :obj:`~pyrogram.types.Message.reply_video`, :obj:`~pyrogram.types.Message.reply_video_note`, :obj:`~pyrogram.types.Message.reply_voice`.
 
 +------------------------+
@@ -39,13 +39,13 @@ it can take advantage of new goodies!
 - Removed `send_reaction` and Added `set_message_reaction`.
 - Added support for voice, photo, video, animation messages that could be played once.
 - Added ``_raw`` to the :obj:`~pyrogram.types.Chat` object.
-- Added the field ``via_chat_folder_invite_link`` to the class ChatMemberUpdated.
-- **BOTS ONLY**: Added updates about a reaction change on a message with non-anonymous reactions, represented by the class MessageReactionUpdated and the field message_reaction in the class Update.
-- **BOTS ONLY**: Added updates about reaction changes on a message with anonymous reactions, represented by the class MessageReactionCountUpdated and the field message_reaction_count in the class Update.
+- Added the field ``via_chat_folder_invite_link`` to the class :obj:`~pyrogram.types.ChatMemberUpdated`.
+- **BOTS ONLY**: Added updates about a reaction change on a message with non-anonymous reactions, represented by the class :obj:`~pyrogram.types.MessageReactionUpdated` and the field ``message_reaction`` in the class Update.
+- **BOTS ONLY**: Added updates about reaction changes on a message with anonymous reactions, represented by the class :obj:`~pyrogram.types.MessageReactionCountUpdated` and the field ``message_reaction_count`` in the class Update.
 - Replaced the parameter ``disable_web_page_preview`` with :obj:`~pyrogram.types.LinkPreviewOptions` in the methods sendMessage and editMessageText.
 - Replaced the field ``disable_web_page_preview`` with :obj:`~pyrogram.types.LinkPreviewOptions` in the class InputTextMessageContent.
 - Added missing parameters to :obj:`~pyrogram.Client.forward_messages`.
-- Added the class :obj:`~pyrogram.types.ReplyParameters` and replaced parameters ``reply_to_message_id`` in the methods copyMessage, sendMessage, sendPhoto, sendVideo, sendAnimation, sendAudio, sendDocument, sendSticker, sendVideoNote, sendVoice, sendLocation, sendVenue, sendContact, sendPoll, sendDice, sendInvoice, sendGame, and sendMediaGroup, copy_media_group, send_inline_bot_result, send_cached_media, and the corresponding reply_* methods with the field ``reply_parameters`` of type :obj:`~pyrogram.types.ReplyParameters`.
+- Added the class :obj:`~pyrogram.types.ReplyParameters` and replaced parameters ``reply_to_message_id`` in the methods :obj:`~pyrogram.Client.copy_message`, :obj:`~pyrogram.Client.send_message`, :obj:`~pyrogram.Client.send_photo`, :obj:`~pyrogram.Client.send_video`, :obj:`~pyrogram.Client.send_animation`, :obj:`~pyrogram.Client.send_audio`, :obj:`~pyrogram.Client.send_document`, :obj:`~pyrogram.Client.send_sticker`, :obj:`~pyrogram.Client.send_video_note`, :obj:`~pyrogram.Client.send_voice`, :obj:`~pyrogram.Client.send_location`, :obj:`~pyrogram.Client.send_venue`, :obj:`~pyrogram.Client.send_contact`, :obj:`~pyrogram.Client.send_poll`, :obj:`~pyrogram.Client.send_dice`, :obj:`~pyrogram.Client.send_invoice`, :obj:`~pyrogram.Client.send_game`, :obj:`~pyrogram.Client.send_media_group`, :obj:`~pyrogram.Client.copy_media_group`, :obj:`~pyrogram.Client.send_inline_bot_result`, :obj:`~pyrogram.Client.send_cached_media`,, and the corresponding reply_* methods with the field ``reply_parameters`` of type :obj:`~pyrogram.types.ReplyParameters`.
 - Bug fixes for sending ``ttl_seconds`` and ``has_spoiler``.
 
 +------------------------+
