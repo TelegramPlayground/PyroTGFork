@@ -39,4 +39,6 @@ from . import raw, types, filters, handlers, emoji, enums
 from .client import Client
 from .sync import idle, compose
 
+__version__ = f"v{__version__} TL: {raw.all.layer}"
+
 crypto_executor = ThreadPoolExecutor(1, thread_name_prefix="CryptoWorker")

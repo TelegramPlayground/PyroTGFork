@@ -20,7 +20,6 @@ import os
 import sys
 
 from pyrogram import __version__
-from pyrogram.raw.all import layer
 
 sys.path.insert(0, os.path.abspath("../.."))
 
@@ -28,7 +27,7 @@ project = "Pyrogram"
 copyright = f"2017-present, Dan"
 author = "Dan"
 
-version = ".".join(__version__.split(".")[:-1]) + " [" + str(layer) + "]"
+version = __version__
 
 extensions = [
     "sphinx.ext.autodoc",

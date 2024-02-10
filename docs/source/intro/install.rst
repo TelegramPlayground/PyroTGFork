@@ -33,8 +33,8 @@ If no error shows up you are good to go.
 
 .. parsed-literal::
 
-    >>> from pyrogram.raw.all import layer
-    >>> layer
-    '158'
+    >>> from pyrogram import __version__
+    >>> __version__
+    'v2.0.106 TL: 158'
 
 .. _`Github repo`: http://github.com/pyrogram/pyrogram
