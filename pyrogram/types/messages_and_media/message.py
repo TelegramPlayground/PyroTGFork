@@ -3344,17 +3344,17 @@ class Message(Object, Update):
         caption: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        message_thread_id: int = None,
         disable_notification: bool = None,
-        reply_parameters: "types.ReplyParameters" = None,
-        schedule_date: datetime = None,
         protect_content: bool = None,
-        has_spoiler: bool = None,
+        reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = object
+        ] = object,
+        schedule_date: datetime = None
     ) -> Union["types.Message", List["types.Message"]]:
         """Bound method *copy* of :obj:`~pyrogram.types.Message`.
 
@@ -3391,27 +3391,27 @@ class Message(Object, Update):
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the new caption, which can be specified instead of *parse_mode*.
 
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
-                Description of the message to reply to
-
-            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
-
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            has_spoiler (``bool``, *optional*):
-                True, if the message media is covered by a spoiler animation.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
                 If not specified, the original reply markup is kept.
                 Pass None to remove the reply markup.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
 
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the copied message is returned.
@@ -3430,15 +3430,16 @@ class Message(Object, Update):
         elif self.text:
             return await self._client.send_message(
                 chat_id=chat_id,
+                message_thread_id=message_thread_id,
                 text=self.text,
-                entities=self.entities,
                 parse_mode=enums.ParseMode.DISABLED,
+                entities=self.entities,
                 link_preview_options=self.link_preview_options,
                 disable_notification=disable_notification,
-                reply_parameters=reply_parameters,
-                schedule_date=schedule_date,
                 protect_content=protect_content,
+                reply_parameters=reply_parameters,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
+                schedule_date=schedule_date
             )
         elif self.media:
             send_media = partial(
@@ -3446,9 +3447,10 @@ class Message(Object, Update):
                 chat_id=chat_id,
                 disable_notification=disable_notification,
                 reply_parameters=reply_parameters,
+                message_thread_id=message_thread_id,
                 schedule_date=schedule_date,
                 protect_content=protect_content,
-                has_spoiler=has_spoiler,
+                has_spoiler=self.has_media_spoiler,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
 
