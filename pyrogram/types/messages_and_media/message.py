@@ -101,9 +101,11 @@ class Message(Object, Update):
         forward_date (:py:obj:`~datetime.datetime`, *optional*):
             For forwarded messages, date the original message was sent.
 
-        is_topic_message
+        is_topic_message (``bool``, *optional*):
+            True, if the message is sent to a forum topic.
 
-        is_automatic_forward
+        is_automatic_forward (``bool``, *optional*):
+            True, if the message is a channel post that was automatically forwarded to the connected discussion group.
 
         reply_to_message_id (``int``, *optional*):
             The id of the message which this message directly replied to.
@@ -370,6 +372,8 @@ class Message(Object, Update):
         sender_chat: "types.Chat" = None,
         date: datetime = None,
         chat: "types.Chat" = None,
+
+        is_topic_message: bool = None,
         
         forward_from: "types.User" = None,
         forward_sender_name: str = None,
@@ -546,6 +550,7 @@ class Message(Object, Update):
         self.chat_ttl_period = chat_ttl_period
         self.link_preview_options = link_preview_options
         self.external_reply = external_reply
+        self.is_topic_message = is_topic_message
         self._raw = _raw
 
     @staticmethod
@@ -1007,6 +1012,9 @@ class Message(Object, Update):
                         parsed_message.reply_to_message = reply_to_message
                     except MessageIdsEmpty:
                         pass
+
+                if message.reply_to.forum_topic:
+                    parsed_message.is_topic_message = True
 
             if not parsed_message.poll:  # Do not cache poll messages
                 client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
