@@ -26,7 +26,7 @@ class UnblockUser:
     async def unblock_user(
         self: "pyrogram.Client",
         user_id: Union[int, str],
-        my_stories_from: Union[bool, None] = None
+        my_stories_from: bool = None
     ) -> bool:
         """Unblock a user.
 
@@ -37,6 +37,9 @@ class UnblockUser:
                 Unique identifier (int) or username (str) of the target user.
                 For you yourself you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            my_stories_from (``bool``, *optional*):
+                Whether the peer should be removed from the story blocklist; if not set, the peer will be removed from the main blocklist.
 
         Returns:
             ``bool``: True on success

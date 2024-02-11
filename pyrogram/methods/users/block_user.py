@@ -26,17 +26,20 @@ class BlockUser:
     async def block_user(
         self: "pyrogram.Client",
         user_id: Union[int, str],
-        my_stories_from: Union[bool, None] = None
+        my_stories_from: bool = None
     ) -> bool:
         """Block a user.
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            user_id (``int`` | ``str``)::
+            user_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target user.
                 For you yourself you can simply use "me" or "self".
-                For a contact that exists in your Telegram address book you can use his phone number (str).
+                For a contact that exists in your Telegram address book you can use their phone number (str).
+
+            my_stories_from (``bool``, *optional*):
+                Whether the peer should be added to the story blocklist; if not set, the peer will be added to the main blocklist.
 
         Returns:
             ``bool``: True on success
