@@ -17,24 +17,32 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import subprocess
 import sys
 
-from pyrogram import __version__
-
 sys.path.insert(0, os.path.abspath("../.."))
+
+from pyrogram import __version__
 
 project = "Pyrogram"
 copyright = f"2017-present, Dan"
 author = "Dan"
 
+commit_id = subprocess.check_output([
+    "git",
+    "rev-parse",
+    "--short",
+    "HEAD",
+])
+
 version = __version__
 
 extensions = [
     "sphinx.ext.autodoc",
-    "sphinx.ext.viewcode",
     "sphinx.ext.autosummary",
-    "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
     "sphinx_copybutton",
     "sphinx.ext.coverage",
 ]
@@ -98,7 +106,7 @@ html_theme_options = {
         },
         {  # Github logo
             "name": "GitHub",
-            "url": "https://github.com/TelegramPlayGround/pyrogram/",
+            "url": f"https://github.com/TelegramPlayGround/pyrogram/tree/{commit_id}",
             "html": (
                 '<svg stroke="currentColor" fill="currentColor" stroke-width="0" '
                 'viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 '
