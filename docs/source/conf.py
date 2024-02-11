@@ -33,9 +33,9 @@ commit_id = subprocess.check_output([
     "rev-parse",
     "--short",
     "HEAD",
-])
+]).decode("UTF-8").strip()
 
-version = __version__
+version = f"{__version__} <a href='https://github.com/TelegramPlayGround/pyrogram/tree/{commit_id}'>{commit_id}</a>"
 
 extensions = [
     "sphinx.ext.autodoc",

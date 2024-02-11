@@ -65,9 +65,11 @@ class ForwardMessages:
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            drop_author (``bool``, *optional*)
+            drop_author (``bool``, *optional*):
+                Whether to forward messages without quoting the original author.
 
-            drop_media_captions (``bool``, *optional*)
+            drop_media_captions (``bool``, *optional*):
+                Whether to strip captions from media.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
