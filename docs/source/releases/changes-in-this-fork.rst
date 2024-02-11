@@ -12,6 +12,8 @@ it can take advantage of new goodies!
 | Scheme layer used: 173 |
 +------------------------+
 
+- Fix ConnectionResetError when only ping task (`#24 <https://github.com/KurimuzonAkuma/pyrogram/pull/24>`_)
+- Added `is_topic_message` to the :obj:`~pyrogram.types.Message` object.
 - Added ``has_visible_history``, ``has_hidden_members``, ``has_aggressive_anti_spam_enabled``, ``message_auto_delete_time``, ``slow_mode_delay``, ``slowmode_next_send_date``, ``is_forum`` to the :obj:`~pyrogram.types.Chat` object.
 - Added ``add_to_recent``, ``story_id`` parameters in :obj:`~pyrogram.Client.set_message_reaction`.
 - Bug fix in parsing ``Vector<Bool>`` (Thanks to `@AmarnathCJD <https://github.com/AmarnathCJD/>`_ and `@roj1512 <https://github.com/roj1512>`_).
