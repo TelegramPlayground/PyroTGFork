@@ -182,6 +182,7 @@ class Client(Methods):
         storage_engine (:obj:`~pyrogram.storage.Storage`, *optional*):
             Pass an instance of your own implementation of session storage engine.
             Useful when you want to store your session in databases like Mongo, Redis, etc.
+            :doc:`Storage Engines <../../topics/storage-engines>`
         
         no_joined_notifications (``bool``, *optional*):
             Pass False to Notify people on Telegram who know my phone number that I signed up.

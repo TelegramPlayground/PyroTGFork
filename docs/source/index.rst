@@ -45,6 +45,17 @@ Welcome to Pyrogram
 It enables you to easily interact with the main Telegram API through a user account (custom client) or a bot identity
 (bot API alternative) using Python.
 
+.. admonition :: A Word of Warning
+    :class: tip
+    
+    We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable.
+
+.. admonition :: USE AT YOUR OWN RISK
+    :class: tip
+    
+    All of the repositories that we merge features from are listed in `Release Notes <https://telegramplayground.github.io/pyrogram/releases/changes-in-this-fork.html>`_ file.
+
+
 Support
 -------
 
@@ -95,6 +106,7 @@ Meta
 
     - :doc:`Pyrogram FAQ <faq/index>`: Answers to common Pyrogram questions.
     - :doc:`Support Pyrogram <support>`: Ways to show your appreciation.
+    - :doc:`Release Notes <releases/index>`: Changes in this Fork.
 
 .. toctree::
     :hidden:
@@ -147,6 +159,7 @@ Meta
     topics/mtproto-vs-botapi
     topics/debugging
     topics/test-servers
+    topics/message-identifiers
     topics/advanced-usage
     topics/voice-calls
 
