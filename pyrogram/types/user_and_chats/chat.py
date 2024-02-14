@@ -391,7 +391,7 @@ class Chat(Object):
 
                 parsed_chat.members_count = getattr(full_chat, "participants_count")                
                 parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
-                parsed_chat.has_hidden_members = not getattr(full_chat, "can_view_participants", True)
+                parsed_chat.has_hidden_members = not getattr(full_chat, "participants_hidden", True)
                 parsed_chat.has_aggressive_anti_spam_enabled = getattr(full_chat, "antispam", False)
 
                 parsed_chat.slow_mode_delay = getattr(full_chat, "slowmode_seconds")
