@@ -321,7 +321,7 @@ def get_reply_to(
 ) -> Optional[Union[raw.types.InputReplyToMessage, raw.types.InputReplyToStory]]:
     """Get InputReply for reply_to argument"""
     if all((reply_to_peer, reply_to_story_id)):
-        return raw.types.InputReplyToStory(user_id=reply_to_peer, story_id=reply_to_story_id)  # type: ignore[arg-type]
+        return raw.types.InputReplyToStory(peer=reply_to_peer, story_id=reply_to_story_id)  # type: ignore[arg-type]
 
     if any((reply_to_message_id, message_thread_id)):
         return raw.types.InputReplyToMessage(
