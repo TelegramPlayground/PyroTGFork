@@ -37,22 +37,22 @@ class Str(str):
     def __init__(self, *args):
         super().__init__()
 
-        self.entities = None
+        self.entities: list = None
 
-    def init(self, entities):
+    def init(self, entities: list):
         self.entities = entities
 
         return self
 
     @property
-    def markdown(self):
+    def markdown(self) -> str:
         return Parser.unparse(self, self.entities, False)
 
     @property
-    def html(self):
+    def html(self) -> str:
         return Parser.unparse(self, self.entities, True)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> str:
         return parser_utils.remove_surrogates(parser_utils.add_surrogates(self)[item])
 
 
