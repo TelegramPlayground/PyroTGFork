@@ -64,16 +64,13 @@ class ChatPrivileges(Object):
             groups and supergroups only
         
         can_post_stories (``bool``, *optional*):
-            True, if the administrator can post stories in the channel.
-            channels only
+            True, if the administrator can post stories to the chat.
 
         can_edit_stories (``bool``, *optional*):
             True, if the administrator can edit stories posted by other users.
-            channels only
 
         can_delete_stories (``bool``, *optional*):
-            True, if the administrator can delete stories posted by other users.
-            channels only
+            True, if the administrator can delete stories posted by other users
 
         can_manage_topics (``bool``, *optional*):
             True, if the user is allowed to create, rename, close, and reopen forum topics.
@@ -94,9 +91,9 @@ class ChatPrivileges(Object):
         can_post_messages: bool = False,  # Channels only
         can_edit_messages: bool = False,  # Channels only
         can_pin_messages: bool = False,  # Groups and supergroups only
-        can_post_stories: bool = False,  # Channels only
-        can_edit_stories: bool = False,  # Channels only
-        can_delete_stories: bool = False,  # Channels only
+        can_post_stories: bool = False,
+        can_edit_stories: bool = False,
+        can_delete_stories: bool = False,
         can_manage_topics: bool = False,  # supergroups only
     ):
         super().__init__(None)
