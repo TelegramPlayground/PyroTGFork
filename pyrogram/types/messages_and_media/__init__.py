@@ -47,6 +47,7 @@ from .web_page import WebPage
 from .message_reactions import MessageReactions
 from .message_reaction_updated import MessageReactionUpdated
 from .message_reaction_count_updated import MessageReactionCountUpdated
+from .chat_boost_added import ChatBoostAdded
 
 __all__ = [
     "Animation",
@@ -77,5 +78,6 @@ __all__ = [
     "ReactionTypeEmoji",
     "ReactionTypeCustomEmoji",
     "MessageReactionUpdated",
-    "MessageReactionCountUpdated"
+    "MessageReactionCountUpdated",
+    "ChatBoostAdded"
 ]

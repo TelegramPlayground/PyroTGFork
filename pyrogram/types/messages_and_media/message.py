@@ -272,6 +272,9 @@ class Message(Object, Update):
 
         proximity_alert_triggered
 
+        boost_added (:obj:`~pyrogram.types.ChatBoostAdded`, *optional*):
+            Service message: user boosted the chat
+
         forum_topic_created
 
         forum_topic_edited
@@ -437,6 +440,7 @@ class Message(Object, Update):
 
 
 
+        boost_added: "types.ChatBoostAdded" = None,
 
 
 
@@ -556,6 +560,7 @@ class Message(Object, Update):
         self.external_reply = external_reply
         self.is_topic_message = is_topic_message
         self.sender_boost_count = sender_boost_count
+        self.boost_added = boost_added
         self._raw = _raw
 
     @staticmethod
@@ -611,6 +616,7 @@ class Message(Object, Update):
             giveaway_launched = None
             requested_chats = None
             chat_ttl_period = None
+            boost_added = None
 
             service_type = None
 
@@ -699,6 +705,12 @@ class Message(Object, Update):
                 chat_ttl_period = action.period
                 service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
 
+            elif isinstance(action, raw.types.MessageActionBoostApply):
+                service_type = enums.MessageServiceType.CHAT_BOOST_ADDED
+                boost_added = types.ChatBoostAdded._parse(
+                    action
+                )
+
             from_user = types.User._parse(client, users.get(user_id, None))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
 
@@ -727,6 +739,7 @@ class Message(Object, Update):
                 gift_code=gift_code,
                 requested_chats=requested_chats,
                 chat_ttl_period=chat_ttl_period,
+                boost_added=boost_added,
                 client=client
                 # TODO: supergroup_chat_created
             )

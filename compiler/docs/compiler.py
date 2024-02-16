@@ -425,6 +425,7 @@ def pyrogram_api():
             MessageReactionUpdated
             MessageReactionCountUpdated
             ReactionCount
+            ChatBoostAdded
         """,
         bot_keyboards="""
         Bot keyboards

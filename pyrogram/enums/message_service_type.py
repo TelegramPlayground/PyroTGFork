@@ -83,3 +83,6 @@ class MessageServiceType(AutoName):
 
     CHAT_TTL_CHANGED = auto()
     "Chat TTL changed"
+
+    CHAT_BOOST_ADDED = auto()
+    "Chat Boost Added"
