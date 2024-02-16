@@ -185,6 +185,7 @@ class Client(Methods):
             :doc:`Storage Engines <../../topics/storage-engines>`
         
         no_joined_notifications (``bool``, *optional*):
+            Pass True to disable notification about the current user joining Telegram for other users that added them to contact list.
             Pass False to Notify people on Telegram who know my phone number that I signed up.
             Defaults to False
     """
