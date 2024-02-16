@@ -75,6 +75,9 @@ class Message(Object, Update):
             The supergroup itself for messages from anonymous group administrators.
             The linked channel for messages automatically forwarded to the discussion group.
 
+        sender_boost_count (``int``, *optional*):
+            If the sender of the message boosted the chat, the number of boosts added by the user.
+
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the message was sent.
 
@@ -370,6 +373,7 @@ class Message(Object, Update):
         message_thread_id: int = None,
         from_user: "types.User" = None,
         sender_chat: "types.Chat" = None,
+        sender_boost_count: int = None,
         date: datetime = None,
         chat: "types.Chat" = None,
 
@@ -551,6 +555,7 @@ class Message(Object, Update):
         self.link_preview_options = link_preview_options
         self.external_reply = external_reply
         self.is_topic_message = is_topic_message
+        self.sender_boost_count = sender_boost_count
         self._raw = _raw
 
     @staticmethod
@@ -1016,13 +1021,15 @@ class Message(Object, Update):
                 if message.reply_to.forum_topic:
                     parsed_message.is_topic_message = True
 
-            if not parsed_message.poll:  # Do not cache poll messages
-                client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
-
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
                 client,
                 message.reply_to
             )
+            parsed_message.sender_boost_count = getattr(message, "from_boosts_applied", None)
+
+            if not parsed_message.poll:  # Do not cache poll messages
+                client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
+
             parsed_message._raw = message
 
             return parsed_message

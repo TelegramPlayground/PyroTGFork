@@ -9,6 +9,12 @@ it can take advantage of new goodies!
 `For a more detailed description, you can check the commits. <https://github.com/TelegramPlayGround/pyrogram/>`_
 
 +------------------------+
+| Scheme layer used: 174 |
++------------------------+
+
+- Added the field ``sender_boost_count`` to the class :obj:`~pyrogram.types.Message`.
+
++------------------------+
 | Scheme layer used: 173 |
 +------------------------+
 
