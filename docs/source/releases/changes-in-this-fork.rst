@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 174 |
 +------------------------+
 
+- Added the field ``unrestrict_boost_count`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the field ``sender_boost_count`` to the class :obj:`~pyrogram.types.Message`.
 
 +------------------------+

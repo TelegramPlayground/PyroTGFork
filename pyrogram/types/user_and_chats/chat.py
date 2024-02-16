@@ -85,6 +85,9 @@ class Chat(Object):
         slow_mode_delay (``int``, *optional*):
             For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user; in seconds.
 
+        unrestrict_boost_count (``int``, *optional*):
+            For supergroups, the minimum number of boosts that a non-administrator user needs to add in order to ignore slow mode and chat permissions.
+
         message_auto_delete_time (``int``, *optional*):
             The time after which all messages sent to the chat will be automatically deleted; in seconds.
 
@@ -192,6 +195,7 @@ class Chat(Object):
         message_auto_delete_time: int = None,
         slow_mode_delay: int = None,
         slowmode_next_send_date: datetime = None,
+        unrestrict_boost_count: int = None,
         is_forum: bool = None,
         _raw: Union[
             "raw.types.Channel",
@@ -238,6 +242,7 @@ class Chat(Object):
         self.slow_mode_delay = slow_mode_delay
         self.slowmode_next_send_date = slowmode_next_send_date
         self.is_forum = is_forum
+        self.unrestrict_boost_count = unrestrict_boost_count
         self._raw = _raw
 
     @staticmethod
@@ -308,6 +313,7 @@ class Chat(Object):
             has_protected_content=getattr(channel, "noforwards", None),
             client=client,
             is_forum=getattr(channel, "forum", None),
+            unrestrict_boost_count=getattr(channel, "boosts_unrestrict", None),
             _raw=channel
         )
 
