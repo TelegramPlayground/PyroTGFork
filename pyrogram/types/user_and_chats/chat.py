@@ -318,8 +318,6 @@ class Chat(Object):
             has_protected_content=getattr(channel, "noforwards", None),
             client=client,
             is_forum=getattr(channel, "forum", None),
-            unrestrict_boost_count=getattr(channel, "boosts_unrestrict", None),
-            custom_emoji_sticker_set_name=getattr(channel, "emojiset", None),
             _raw=channel
         )
 
@@ -410,6 +408,10 @@ class Chat(Object):
                 parsed_chat.slowmode_next_send_date = utils.timestamp_to_datetime(
                     getattr(full_chat, "slowmode_next_send_date")
                 )
+
+                parsed_chat.unrestrict_boost_count = getattr(full_chat, "boosts_unrestrict", None)
+                # TODO: Add EmojieStickerSet type
+                parsed_chat.custom_emoji_sticker_set_name = getattr(full_chat.emojiset, "short_name", None)
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
