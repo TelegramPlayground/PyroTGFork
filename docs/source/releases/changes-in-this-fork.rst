@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 174 |
 +------------------------+
 
+- Added the field ``story`` to the class :obj:`~pyrogram.types.Message` for messages with forwarded stories. Currently, it holds no information.
 - Added the class :obj:`~pyrogram.types.ChatBoostAdded` and the field ``boost_added`` to the class :obj:`~pyrogram.types.Message` for service messages about a user boosting a chat.
 - Added the field ``custom_emoji_sticker_set_name`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the field ``unrestrict_boost_count`` to the class :obj:`~pyrogram.types.Chat`.

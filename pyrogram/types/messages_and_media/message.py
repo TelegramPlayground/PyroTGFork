@@ -164,7 +164,8 @@ class Message(Object, Update):
         sticker (:obj:`~pyrogram.types.Sticker`, *optional*):
             Message is a sticker, information about the sticker.
 
-        story
+        story (:obj:`~pyrogram.types.Story`, *optional*):
+            Message might be a forwarded story.
 
         video (:obj:`~pyrogram.types.Video`, *optional*):
             Message is a video, information about the video.
@@ -407,7 +408,7 @@ class Message(Object, Update):
         document: "types.Document" = None,
         photo: "types.Photo" = None,
         sticker: "types.Sticker" = None,
-        
+        story: "types.Story" = None,
         video: "types.Video" = None,
         video_note: "types.VideoNote" = None,
         voice: "types.Voice" = None,
@@ -561,6 +562,7 @@ class Message(Object, Update):
         self.is_topic_message = is_topic_message
         self.sender_boost_count = sender_boost_count
         self.boost_added = boost_added
+        self.story = story
         self._raw = _raw
 
     @staticmethod
@@ -817,6 +819,7 @@ class Message(Object, Update):
             video = None
             video_note = None
             sticker = None
+            story = None
             document = None
             web_page = None
             poll = None
@@ -907,6 +910,9 @@ class Message(Object, Update):
                 elif isinstance(media, raw.types.MessageMediaDice):
                     dice = types.Dice._parse(client, media)
                     media_type = enums.MessageMediaType.DICE
+                elif isinstance(media, raw.types.MessageMediaStory):
+                    story = await types.Story._parse(client, chats, media)
+                    media_type = enums.MessageMediaType.STORY
                 else:
                     media = None
 
@@ -992,6 +998,7 @@ class Message(Object, Update):
                 video=video,
                 video_note=video_note,
                 sticker=sticker,
+                story=story,
                 document=document,
                 web_page=web_page,
                 poll=poll,
