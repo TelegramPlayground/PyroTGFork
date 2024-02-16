@@ -69,6 +69,9 @@ class ForumTopic(Object):
 
         is_hidden (``bool``, *optional*):
             True, if the topic is hidden.
+
+        deleted (``bool``, *optional*):
+            The forum topic is deleted.
     """
 
     def __init__(
@@ -88,7 +91,8 @@ class ForumTopic(Object):
         is_closed: bool = None,
         is_pinned: bool = None,
         is_short: bool = None,
-        is_hidden: bool = None
+        is_hidden: bool = None,
+        deleted: bool = None
     ):
         super().__init__()
 
@@ -107,9 +111,13 @@ class ForumTopic(Object):
         self.is_pinned = is_pinned
         self.is_short = is_short
         self.is_hidden = is_hidden
+        self.deleted = deleted
 
     @staticmethod
     def _parse(client: "pyrogram.Client", forum_topic: "raw.types.ForumTopic", messages: dict = {},  users: dict = {}, chats: dict = {}) -> "ForumTopic":
+        if isinstance(forum_topic, raw.types.ForumTopicDeleted):
+            return ForumTopic(id=forum_topic.id, deleted=True)
+
         creator = None
 
         peer = getattr(forum_topic, "from_id", None)
