@@ -111,6 +111,9 @@ class Chat(Object):
             True, if the group sticker set can be changed by you.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
 
+        custom_emoji_sticker_set_name (``str``, *optional*):
+            For supergroups, the name of the group's custom emoji sticker set. Custom emoji from this set can be used by all users and bots in the group.
+
         linked_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             The linked discussion group (in case of channels) or the linked channel (in case of supergroups).
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -181,6 +184,7 @@ class Chat(Object):
         invite_link: str = None,
         pinned_message=None,
         sticker_set_name: str = None,
+        custom_emoji_sticker_set_name: str = None,
         can_set_sticker_set: bool = None,
         members_count: int = None,
         restrictions: List["types.Restriction"] = None,
@@ -227,6 +231,7 @@ class Chat(Object):
         self.invite_link = invite_link
         self.pinned_message = pinned_message
         self.sticker_set_name = sticker_set_name
+        self.custom_emoji_sticker_set_name = custom_emoji_sticker_set_name
         self.can_set_sticker_set = can_set_sticker_set
         self.members_count = members_count
         self.restrictions = restrictions
@@ -314,6 +319,7 @@ class Chat(Object):
             client=client,
             is_forum=getattr(channel, "forum", None),
             unrestrict_boost_count=getattr(channel, "boosts_unrestrict", None),
+            custom_emoji_sticker_set_name=getattr(channel, "emojiset", None),
             _raw=channel
         )
 
