@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .block_user import BlockUser
+from .check_username import CheckUsername
 from .delete_profile_photos import DeleteProfilePhotos
 from .get_chat_photos import GetChatPhotos
 from .get_chat_photos_count import GetChatPhotosCount
@@ -34,6 +35,7 @@ from .update_status import UpdateStatus
 
 class Users(
     BlockUser,
+    CheckUsername,
     GetCommonChats,
     GetChatPhotos,
     SetProfilePhoto,
