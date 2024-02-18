@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import List
+
 import pyrogram
 from pyrogram import enums
 from pyrogram import raw, utils, types
@@ -38,7 +40,7 @@ class RequestedChats(Object):
         self, *,
         client: "pyrogram.Client" = None,
         button_id: int,
-        chats: bool,
+        chats: List["types.Chat"],
     ):
         super().__init__(client)
 
