@@ -230,11 +230,11 @@ text = create(text_filter)
 
 # region reply_filter
 async def reply_filter(_, __, m: Message):
-    return bool(m.reply_to_message_id)
+    return bool(m.reply_to_message_id or m.reply_to_story_id)
 
 
 reply = create(reply_filter)
-"""Filter messages that are replies to other messages."""
+"""Filter messages that are replies to other messages or stories."""
 
 
 # endregion
