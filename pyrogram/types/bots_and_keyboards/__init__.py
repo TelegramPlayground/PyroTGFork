@@ -43,6 +43,7 @@ from .request_channel_info import RequestChannelInfo
 from .request_chat_info import RequestChatInfo
 from .request_user_info import RequestUserInfo
 from .request_poll_info import RequestPollInfo
+from .requested_chats import RequestedChats
 from .sent_web_app_message import SentWebAppMessage
 from .web_app_info import WebAppInfo
 
@@ -60,6 +61,7 @@ __all__ = [
     "RequestChatInfo",
     "RequestUserInfo",
     "RequestPollInfo",
+    "RequestedChats",
     "LoginUrl",
     "BotCommand",
     "BotCommandScope",

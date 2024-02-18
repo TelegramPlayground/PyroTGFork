@@ -357,7 +357,7 @@ class Message(Object, Update):
         gift_code (:obj:`~pyrogram.types.GiftCode`, *optional*):
             Service message: gift code information.
 
-        requested_chats (List of :obj:`~pyrogram.types.Chat`, *optional*):
+        requested_chats (:obj:`~pyrogram.types.RequestedChats`, *optional*):
             Service message: requested chats information.
 
         reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
@@ -464,7 +464,7 @@ class Message(Object, Update):
         video_chat_members_invited: "types.VideoChatMembersInvited" = None,
         web_app_data: "types.WebAppData" = None,
         gift_code: "types.GiftCode" = None,
-        requested_chats: List["types.Chat"] = None,
+        requested_chats: "types.RequestedChats" = None,
         giveaway_launched: bool = None,
         chat_ttl_period: int = None,
         reply_markup: Union[
@@ -711,29 +711,7 @@ class Message(Object, Update):
                 gift_code = types.GiftCode._parse(client, action, chats)
                 service_type = enums.MessageServiceType.GIFT_CODE
             elif isinstance(action, raw.types.MessageActionRequestedPeer):
-                _requested_chats = []
-
-                for requested_peer in action.peers:
-                    chat_id = utils.get_peer_id(requested_peer)
-                    peer_type = utils.get_peer_type(chat_id)
-
-                    if peer_type == "user":
-                        chat_type = enums.ChatType.PRIVATE
-                    elif peer_type == "chat":
-                        chat_type = enums.ChatType.GROUP
-                    else:
-                        chat_type = enums.ChatType.CHANNEL
-
-                    _requested_chats.append(
-                        types.Chat(
-                            id=chat_id,
-                            type=chat_type,
-                            client=client
-                        )
-                    )
-
-                requested_chats = types.List(_requested_chats) or None
-
+                requested_chats = types.RequestedChats._parse(client, action)
                 service_type = enums.MessageServiceType.REQUESTED_CHAT
             elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
                 chat_ttl_period = action.period
