@@ -189,6 +189,10 @@ class Client(Methods):
         storage_engine (:obj:`~pyrogram.storage.Storage`, *optional*):
             Pass an instance of your own implementation of session storage engine.
             Useful when you want to store your session in databases like Mongo, Redis, etc.
+
+        init_connection_params (:obj:`~raw.base.JSONValue`, *optional*):
+            Additional initConnection parameters.
+            For now, only the tz_offset field is supported, for specifying timezone offset in seconds.
     """
 
     APP_VERSION = f"Pyrogram {__version__}"
@@ -242,7 +246,8 @@ class Client(Methods):
         sleep_threshold: int = Session.SLEEP_THRESHOLD,
         hide_password: bool = False,
         max_concurrent_transmissions: int = MAX_CONCURRENT_TRANSMISSIONS,
-        storage_engine: Storage = None
+        storage_engine: Storage = None,
+        init_connection_params: "raw.base.JSONValue" = None,
     ):
         super().__init__()
 
@@ -273,6 +278,7 @@ class Client(Methods):
         self.sleep_threshold = sleep_threshold
         self.hide_password = hide_password
         self.max_concurrent_transmissions = max_concurrent_transmissions
+        self.init_connection_params = init_connection_params
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 

@@ -129,6 +129,7 @@ class Session:
                                 lang_pack=self.client.lang_pack,
                                 lang_code=self.client.lang_code,
                                 query=raw.functions.help.GetConfig(),
+                                params=self.client.init_connection_params,
                             )
                         ),
                         timeout=self.START_TIMEOUT
