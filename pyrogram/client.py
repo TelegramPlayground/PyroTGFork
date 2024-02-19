@@ -96,6 +96,10 @@ class Client(Methods):
             Code of the language used on the client, in ISO 639-1 standard.
             Defaults to "en".
 
+        system_lang_code (``str``, *optional*):
+            Code of the language used on the system, in ISO 639-1 standard.
+            Defaults to "en".
+
         ipv6 (``bool``, *optional*):
             Pass True to connect to Telegram using IPv6.
             Defaults to False (IPv4).
@@ -193,6 +197,7 @@ class Client(Methods):
 
     LANG_PACK = ""
     LANG_CODE = "en"
+    SYSTEM_LANG_CODE = "en"
 
     PARENT_DIR = Path(sys.argv[0]).parent
 
@@ -218,6 +223,7 @@ class Client(Methods):
         system_version: str = SYSTEM_VERSION,
         lang_pack: str = LANG_PACK,
         lang_code: str = LANG_CODE,
+        system_lang_code: str = SYSTEM_LANG_CODE,
         ipv6: bool = False,
         proxy: dict = None,
         test_mode: bool = False,
@@ -248,6 +254,7 @@ class Client(Methods):
         self.system_version = system_version
         self.lang_pack = lang_pack.lower()
         self.lang_code = lang_code.lower()
+        self.system_lang_code = system_lang_code.lower()
         self.ipv6 = ipv6
         self.proxy = proxy
         self.test_mode = test_mode

@@ -26,7 +26,7 @@ from .sqlite_storage import SQLiteStorage
 log = logging.getLogger(__name__)
 
 SCHEMA = """
-CREATE TABLE usernames
+CREATE TABLE IF NOT EXISTS usernames
 (
     id       INTEGER,
     username TEXT,
