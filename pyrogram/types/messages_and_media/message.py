@@ -360,6 +360,15 @@ class Message(Object, Update):
         requested_chats (:obj:`~pyrogram.types.RequestedChats`, *optional*):
             Service message: requested chats information.
 
+        giveaway_launched (``bool``, *optional*):
+            Service message: giveaway launched.
+
+        chat_ttl_period (``int``, *optional*):
+            Service message: chat TTL period changed.
+
+        boosts_applied (``int``, *optional*):
+            Service message: how many boosts were applied.
+
         reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
             Additional interface options. An object for an inline keyboard, custom reply keyboard,
             instructions to remove reply keyboard or to force a reply from the user.
@@ -467,6 +476,7 @@ class Message(Object, Update):
         requested_chats: "types.RequestedChats" = None,
         giveaway_launched: bool = None,
         chat_ttl_period: int = None,
+        boosts_applied: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -569,6 +579,7 @@ class Message(Object, Update):
         self.giveaway_launched = giveaway_launched
         self.reactions = reactions
         self.chat_ttl_period = chat_ttl_period
+        self.boosts_applied = boosts_applied
 
     @staticmethod
     async def _parse(
@@ -632,6 +643,7 @@ class Message(Object, Update):
             giveaway_launched = None
             requested_chats = None
             chat_ttl_period = None
+            boosts_applied = None
 
             service_type = None
 
@@ -716,6 +728,9 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
                 chat_ttl_period = action.period
                 service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
+            elif isinstance(action, raw.types.MessageActionBoostApply):
+                boosts_applied = action.boosts
+                service_type = enums.MessageServiceType.BOOST_APPLY
 
             from_user = types.User._parse(client, users.get(user_id, None))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
@@ -753,6 +768,7 @@ class Message(Object, Update):
                 gift_code=gift_code,
                 requested_chats=requested_chats,
                 chat_ttl_period=chat_ttl_period,
+                boosts_applied=boosts_applied,
                 client=client
                 # TODO: supergroup_chat_created
             )
@@ -4429,4 +4445,3 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id
         )
-
