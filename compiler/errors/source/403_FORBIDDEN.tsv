@@ -21,6 +21,7 @@ EDIT_BOT_INVITE_FORBIDDEN	Bots' chat invite links can't be edited
 INLINE_BOT_REQUIRED	The action must be performed through an inline bot callback
 MESSAGE_AUTHOR_REQUIRED	You are not the author of this message
 MESSAGE_DELETE_FORBIDDEN	You don't have rights to delete messages in this chat, most likely because you are not the author of them
+NOT_ELIGIBLE	You are not eligible to take part in Telegram's Premium for SMS initiative
 POLL_VOTE_REQUIRED	Cast a vote in the poll before calling this method
 PREMIUM_ACCOUNT_REQUIRED	This action requires a premium account
 PRIVACY_PREMIUM_REQUIRED	The user has restricted from sending messages OR This action requires a premium account

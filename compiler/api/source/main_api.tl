@@ -2276,4 +2276,14 @@ test.useError = Error;
 test.useConfigSimple = help.ConfigSimple;
 test.parseInputAppEvent = InputAppEvent;
 
+smsjobs.eligibleToJoin#dc8b44cf terms_of_use: string monthly_sent_sms: int;
+smsjobs.status#2aee9191 flags: int allow_international: Bool recent_sent: int recent_since: int recent_remains: int total_sent: int total_since: int last_gift_slug: flags.2?string terms_url: string; 
+updateSmsJob#f16269d4 job_id: string = Update; smsJob#e6a1eeb8 job_id: string phone_number: string text: string;
+smsjobs.isEligibleToJoin#edc39d0 = smsjobs.eligibleToJoin;
+smsjobs.join#a74ece2d = Bool;
+smsjobs.leave#9898ad73 = Bool;
+smsjobs.getStatus#10a698e8 = smsjobs.status;
+smsjobs.getSmsJob#778d902f job_id: string = smsJob; smsjobs.finishJob#4f1ebf24 flags: int job_id: string error: flags.1?string = Bool;
+smsjobs.updateSettings#93fa0bf flags: int allow_international: Bool = Bool;
+
 // LAYER 174
