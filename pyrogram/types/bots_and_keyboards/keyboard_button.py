@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from pyrogram import raw, types
+from pyrogram import raw, types, enums
 from ..object import Object
 
 
@@ -38,6 +38,10 @@ class KeyboardButton(Object):
             If True, the user's current location will be sent when the button is pressed.
             Available in private chats only.
 
+        request_poll (:obj:`~pyrogram.types.KeyboardButtonPollType`, *optional*):
+            If specified, the user will be asked to create a poll and send it to the bot when the button is pressed.
+            Available in private chats only
+
         web_app (:obj:`~pyrogram.types.WebAppInfo`, *optional*):
             If specified, the described `Web App <https://core.telegram.org/bots/webapps>`_ will be launched when the
             button is pressed. The Web App will be able to send a “web_app_data” service message. Available in private
@@ -50,6 +54,7 @@ class KeyboardButton(Object):
         text: str,
         request_contact: bool = None,
         request_location: bool = None,
+        request_poll: "types.KeyboardButtonPollType" = None,
         web_app: "types.WebAppInfo" = None
     ):
         super().__init__()
@@ -57,6 +62,7 @@ class KeyboardButton(Object):
         self.text = str(text)
         self.request_contact = request_contact
         self.request_location = request_location
+        self.request_poll = request_poll
         self.web_app = web_app
 
     @staticmethod
@@ -76,6 +82,14 @@ class KeyboardButton(Object):
                 request_location=True
             )
 
+        if isinstance(b, raw.types.KeyboardButtonRequestPoll):
+            return KeyboardButton(
+                text=b.text,
+                request_poll=types.KeyboardButtonPollType(
+                    type=enums.PollType.QUIZ if b.quiz else enums.PollType.REGULAR
+                )
+            )
+
         if isinstance(b, raw.types.KeyboardButtonSimpleWebView):
             return KeyboardButton(
                 text=b.text,
@@ -89,6 +103,11 @@ class KeyboardButton(Object):
             return raw.types.KeyboardButtonRequestPhone(text=self.text)
         elif self.request_location:
             return raw.types.KeyboardButtonRequestGeoLocation(text=self.text)
+        elif self.request_poll:
+            return raw.types.KeyboardButtonRequestPoll(
+                text=self.text,
+                quiz=True if self.request_poll.type == enums.PollType.QUIZ else False
+            )
         elif self.web_app:
             return raw.types.KeyboardButtonSimpleWebView(text=self.text, url=self.web_app.url)
         else:

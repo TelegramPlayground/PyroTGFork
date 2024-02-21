@@ -446,6 +446,9 @@ def pyrogram_api():
             MenuButtonWebApp
             MenuButtonDefault
             SentWebAppMessage
+            KeyboardButtonPollType
+            KeyboardButtonPollTypeRegular
+            KeyboardButtonPollTypeQuiz
         """,
         bot_commands="""
         Bot commands
