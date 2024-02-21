@@ -1,7 +1,7 @@
 Message identifiers
 ===========================
 
-This is an in-depth explanation for how the :obj:`pyrogram.types.Message` ``id`` works.
+This is an in-depth explanation (`copied <https://docs.telethon.dev/en/v2/concepts/messages.html#message-identifiers>`_) for how the :obj:`pyrogram.types.Message` ``id`` works.
 
 .. note::
 
