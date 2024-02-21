@@ -45,15 +45,15 @@ class ReplyKeyboardMarkup(Object):
             but clients will automatically display the usual letter-keyboard in the chat – the user can press a
             special button in the input field to see the custom keyboard again. Defaults to false.
 
+        input_field_placeholder (``str``, *optional*):
+            The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
+
         selective (``bool``, *optional*):
             Use this parameter if you want to show the keyboard to specific users only. Targets:
             1) users that are @mentioned in the text of the Message object;
             2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
             Example: A user requests to change the bot's language, bot replies to the request with a keyboard to
             select the new language. Other users in the group don't see the keyboard.
-
-        placeholder (``str``, *optional*):
-            The placeholder to be shown in the input field when the keyboard is active; 1-64 characters.
     """
 
     def __init__(
@@ -62,8 +62,8 @@ class ReplyKeyboardMarkup(Object):
         is_persistent: bool = None,
         resize_keyboard: bool = None,
         one_time_keyboard: bool = None,
-        selective: bool = None,
-        placeholder: str = None
+        input_field_placeholder: str = None,
+        selective: bool = None
     ):
         super().__init__()
 
@@ -71,8 +71,8 @@ class ReplyKeyboardMarkup(Object):
         self.is_persistent = is_persistent
         self.resize_keyboard = resize_keyboard
         self.one_time_keyboard = one_time_keyboard
+        self.input_field_placeholder = input_field_placeholder
         self.selective = selective
-        self.placeholder = placeholder
 
     @staticmethod
     def read(kb: "raw.base.ReplyMarkup"):
@@ -92,7 +92,7 @@ class ReplyKeyboardMarkup(Object):
             resize_keyboard=kb.resize,
             one_time_keyboard=kb.single_use,
             selective=kb.selective,
-            placeholder=kb.placeholder
+            input_field_placeholder=kb.placeholder
         )
 
     async def write(self, _: "pyrogram.Client"):
@@ -108,5 +108,5 @@ class ReplyKeyboardMarkup(Object):
             single_use=self.one_time_keyboard or None,
             selective=self.selective or None,
             persistent=self.is_persistent or None,
-            placeholder=self.placeholder or None
+            placeholder=self.input_field_placeholder or None
         )
