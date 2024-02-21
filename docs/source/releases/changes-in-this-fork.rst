@@ -9,6 +9,13 @@ it can take advantage of new goodies!
 `For a more detailed description, you can check the commits. <https://github.com/TelegramPlayGround/pyrogram/>`_
 
 +------------------------+
+|   Leaked Scheme layer  |
++------------------------+
+
+- `#693 <https://github.com/KurimuzonAkuma/pyrogram/pull/693>`_
+- Revert `e678c05 <https://github.com/TelegramPlayGround/pyrogram/commit/e678c054d4aa0bbbb7d583eb426ca8753a4c9354>_` and stole squashed unauthored changes from `bcd18d5 <https://github.com/Masterolic/pyrogram/commit/bcd18d5e04f18f949389a03f309816d6f0f9eabe>_`
+
++------------------------+
 | Scheme layer used: 174 |
 +------------------------+
 
