@@ -20,10 +20,11 @@ from datetime import datetime
 from typing import List
 
 import pyrogram
-from pyrogram import raw, utils, types
+from pyrogram import raw, utils, types, enums
 from ..object import Object
 from ..update import Update
 from .message import Str
+from pyrogram.errors import RPCError
 
 
 class Story(Object, Update):
@@ -140,6 +141,23 @@ class Story(Object, Update):
     ) -> "Video":
         story_id = None
         chat = None
+
+        date = None
+        expire_date = None
+        media = None
+        has_protected_content = None
+        photo = None
+        video = None
+        edited = None
+        pinned = None
+        caption = None
+        caption_entities = None
+        views = None
+        forwards = None
+        reactions = None
+        skipped = None
+        deleted = None
+
         if story_media:
             if story_media.peer:
                 raw_peer_id = utils.get_peer_id(story_media.peer)
@@ -150,9 +168,66 @@ class Story(Object, Update):
                 raw_peer_id = utils.get_peer_id(reply_story.peer)
                 chat = await client.get_chat(raw_peer_id)
             story_id = getattr(reply_story, "story_id", None)
+        if story_id and not client.me.is_bot:
+            try:
+                story_item = (
+                    await client.invoke(
+                        raw.functions.stories.GetStoriesByID(
+                            peer=await client.resolve_peer(raw_peer_id),
+                            id=[story_id]
+                        )
+                    )
+                ).stories[0]
+            except (RPCError,IndexError):
+                pass
+            else:
+                if isinstance(story_item, raw.types.StoryItemDeleted):
+                    deleted = True
+                elif isinstance(story_item, raw.types.StoryItemSkipped):
+                    skipped = True
+                else:
+                    date = utils.timestamp_to_datetime(story_item.date)
+                    expire_date = utils.timestamp_to_datetime(story_item.expire_date)
+                    if isinstance(story_item.media, raw.types.MessageMediaPhoto):
+                        photo = types.Photo._parse(client, story_item.media.photo, story_item.media.ttl_seconds)
+                        media = enums.MessageMediaType.PHOTO
+                    elif isinstance(story_item.media, raw.types.MessageMediaDocument):
+                        doc = story_item.media.document
+                        attributes = {type(i): i for i in doc.attributes}
+                        video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
+                        video = types.Video._parse(client, doc, video_attributes, None)
+                        media = enums.MessageMediaType.VIDEO
+                    has_protected_content = story_item.noforwards
+                    edited = story_item.edited
+                    pinned = story_item.pinned
+                    entities = [e for e in (types.MessageEntity._parse(client, entity, {}) for entity in story_item.entities) if e]
+                    caption = Str(story_item.caption or "").init(entities) or None
+                    caption_entities = entities or None
+                    if story_item.views:
+                        views = getattr(story_item.views, "views_count", None)
+                        forwards = getattr(story_item.views, "forwards_count", None)
+                        reactions = [
+                            types.Reaction._parse_count(client, reaction)
+                            for reaction in getattr(story_item.views, "reactions", [])
+                        ] or None
         return Story(
             client=client,
             _raw=story_media,
             id=story_id,
-            chat=chat
+            chat=chat,
+            date=date,
+            expire_date=expire_date,
+            media=media,
+            has_protected_content=has_protected_content,
+            photo=photo,
+            video=video,
+            edited=edited,
+            pinned=pinned,
+            caption=caption,
+            caption_entities=caption_entities,
+            views=views,
+            forwards=forwards,
+            reactions=reactions,
+            skipped=skipped,
+            deleted=deleted
         )
