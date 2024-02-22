@@ -449,6 +449,7 @@ def pyrogram_api():
             KeyboardButtonPollType
             KeyboardButtonPollTypeRegular
             KeyboardButtonPollTypeQuiz
+            SwitchInlineQueryChosenChat
         """,
         bot_commands="""
         Bot commands

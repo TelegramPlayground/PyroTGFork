@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 |   Leaked Scheme layer  |
 +------------------------+
 
+- Added the field ``switch_inline_query_chosen_chat`` of the type :obj:`~pyrogram.types.SwitchInlineQueryChosenChat` to the class :obj:`~pyrogram.types.InlineKeyboardButton`, which allows bots to switch to inline mode in a chosen chat of the given type.
 - Add support for ``pay`` in :obj:`~pyrogram.types.InlineKeyboardButton`
 - `#1345 <https://github.com/pyrogram/pyrogram/issues/1345>`_
 - `Add undocumented things <https://github.com/TelegramPlayGround/pyrogram/commit/8a72939d98f343eae1e07981f95769efaa741e4e>`_

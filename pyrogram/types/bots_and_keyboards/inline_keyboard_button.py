@@ -66,6 +66,9 @@ class InlineKeyboardButton(Object):
             quick way for the user to open your bot in inline mode in the same chat – good for selecting something
             from multiple options.
 
+        switch_inline_query_chosen_chat (:obj:`~pyrogram.types.SwitchInlineQueryChosenChat`, *optional*):
+            If set, pressing the button will prompt the user to select one of their chats of the specified type, open that chat and insert the bot's username and the specified inline query in the input field
+
         callback_game (:obj:`~pyrogram.types.CallbackGame`, *optional*):
             Description of the game that will be launched when the user presses the button.
             **NOTE**: This type of button **must** always be the first button in the first row.
@@ -85,6 +88,7 @@ class InlineKeyboardButton(Object):
         user_id: int = None,
         switch_inline_query: str = None,
         switch_inline_query_current_chat: str = None,
+        switch_inline_query_chosen_chat: "types.SwitchInlineQueryChosenChat" = None,
         callback_game: "types.CallbackGame" = None,
         pay: bool = None
     ):
@@ -98,6 +102,7 @@ class InlineKeyboardButton(Object):
         self.user_id = user_id
         self.switch_inline_query = switch_inline_query
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
+        self.switch_inline_query_chosen_chat = switch_inline_query_chosen_chat
         self.callback_game = callback_game
         self.pay = pay
 
@@ -139,6 +144,11 @@ class InlineKeyboardButton(Object):
                 return InlineKeyboardButton(
                     text=b.text,
                     switch_inline_query_current_chat=b.query
+                )
+            elif b.peer_types:
+                return InlineKeyboardButton(
+                    text=b.text,
+                    switch_inline_query_chosen_chat=types.SwitchInlineQueryChosenChat.read(b)
                 )
             else:
                 return InlineKeyboardButton(
@@ -205,6 +215,11 @@ class InlineKeyboardButton(Object):
                 text=self.text,
                 query=self.switch_inline_query_current_chat,
                 same_peer=True
+            )
+
+        if self.switch_inline_query_chosen_chat is not None:
+            return self.switch_inline_query_chosen_chat.write(
+                text=self.text
             )
 
         if self.callback_game is not None:
