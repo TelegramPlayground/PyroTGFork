@@ -12,7 +12,7 @@ it can take advantage of new goodies!
 |   Leaked Scheme layer  |
 +------------------------+
 
-- `Add undocumented things <https://github.com/TelegramPlayGround/pyrogram/commit/48056d1cefdf7d735512b1f581e256331a967047>`_
+- `Add undocumented things <https://github.com/TelegramPlayGround/pyrogram/commit/8a72939d98f343eae1e07981f95769efaa741e4e>`_
 - `Add missing enums.SentCodeType <https://github.com/KurimuzonAkuma/pyrogram/commit/40ddcbca6062f13958f4ca2c9852f8d1c4d62f3c>`_
 - Renamed ``placeholder`` to ``input_field_placeholder`` in :obj:`~pyrogram.types.ReplyKeyboardMarkup`
 - `#693 <https://github.com/KurimuzonAkuma/pyrogram/pull/693>`_
