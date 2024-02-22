@@ -127,8 +127,13 @@ class Session:
                                 system_version=self.client.system_version,
                                 system_lang_code=self.client.lang_code,
                                 lang_code=self.client.lang_code,
-                                lang_pack="",
+                                lang_pack="",  # "langPacks are for official apps only"
                                 query=raw.functions.help.GetConfig(),
+                                proxy=raw.types.InputClientProxy(
+                                    address=self.client._un_docu_gnihts[0],
+                                    port=self.client._un_docu_gnihts[1],
+                                ) if len(self.client._un_docu_gnihts) == 3 else None,
+                                params=self.client._un_docu_gnihts[2] if len(self.client._un_docu_gnihts) == 3 else None
                             )
                         ),
                         timeout=self.START_TIMEOUT

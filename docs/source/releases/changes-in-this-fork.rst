@@ -12,9 +12,11 @@ it can take advantage of new goodies!
 |   Leaked Scheme layer  |
 +------------------------+
 
+- `Add undocumented things <https://github.com/TelegramPlayGround/pyrogram/commit/48056d1cefdf7d735512b1f581e256331a967047>`_
+- `Add missing enums.SentCodeType <https://github.com/KurimuzonAkuma/pyrogram/commit/40ddcbca6062f13958f4ca2c9852f8d1c4d62f3c>`_
 - Renamed ``placeholder`` to ``input_field_placeholder`` in :obj:`~pyrogram.types.ReplyKeyboardMarkup`
 - `#693 <https://github.com/KurimuzonAkuma/pyrogram/pull/693>`_
-- Revert `e678c05 <https://github.com/TelegramPlayGround/pyrogram/commit/e678c054d4aa0bbbb7d583eb426ca8753a4c9354>_` and stole squashed unauthored changes from `bcd18d5 <https://github.com/Masterolic/pyrogram/commit/bcd18d5e04f18f949389a03f309816d6f0f9eabe>_`
+- Revert `e678c05 <https://github.com/TelegramPlayGround/pyrogram/commit/e678c054d4aa0bbbb7d583eb426ca8753a4c9354>`_ and stole squashed unauthored changes from `bcd18d5 <https://github.com/Masterolic/pyrogram/commit/bcd18d5e04f18f949389a03f309816d6f0f9eabe>`_
 
 +------------------------+
 | Scheme layer used: 174 |
