@@ -41,5 +41,11 @@ class SentCodeType(AutoName):
     FRAGMENT_SMS = raw.types.auth.SentCodeTypeFragmentSms
     "The code was sent via Fragment SMS."
 
+    FIREBASE_SMS = raw.types.auth.SentCodeTypeFirebaseSms
+    "The code should be delivered via SMS after Firebase attestation."
+
     EMAIL_CODE = raw.types.auth.SentCodeTypeEmailCode
     "The code was sent via email."
+
+    SETUP_EMAIL_REQUIRED = raw.types.auth.SentCodeTypeSetUpEmailRequired
+    "The user should add and verify an email address in order to login."
