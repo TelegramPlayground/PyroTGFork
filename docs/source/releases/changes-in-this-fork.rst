@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 |   Leaked Scheme layer  |
 +------------------------+
 
+- Added the field ``reply_to_story`` to the class :obj:`~pyrogram.types.Message`.
 - Added the field ``user_chat_id`` to the class :obj:`~pyrogram.types.ChatJoinRequest`.
 - Added the field ``switch_inline_query_chosen_chat`` of the type :obj:`~pyrogram.types.SwitchInlineQueryChosenChat` to the class :obj:`~pyrogram.types.InlineKeyboardButton`, which allows bots to switch to inline mode in a chosen chat of the given type.
 - Add support for ``pay`` in :obj:`~pyrogram.types.InlineKeyboardButton`

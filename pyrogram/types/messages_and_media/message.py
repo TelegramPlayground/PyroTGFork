@@ -395,6 +395,7 @@ class Message(Object, Update):
         reply_to_message: "Message" = None,
         external_reply: "types.ExternalReplyInfo" = None,
 
+        reply_to_story: "types.Story" = None,
         via_bot: "types.User" = None,
         edit_date: datetime = None,
         has_protected_content: bool = None,
@@ -563,6 +564,7 @@ class Message(Object, Update):
         self.sender_boost_count = sender_boost_count
         self.boost_added = boost_added
         self.story = story
+        self.reply_to_story = reply_to_story
         self._raw = _raw
 
     @staticmethod
@@ -911,7 +913,7 @@ class Message(Object, Update):
                     dice = types.Dice._parse(client, media)
                     media_type = enums.MessageMediaType.DICE
                 elif isinstance(media, raw.types.MessageMediaStory):
-                    story = await types.Story._parse(client, chats, media)
+                    story = await types.Story._parse(client, chats, media, None)
                     media_type = enums.MessageMediaType.STORY
                 else:
                     media = None
@@ -1019,8 +1021,11 @@ class Message(Object, Update):
                 if isinstance(message.reply_to, raw.types.MessageReplyHeader):
                     parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
                     parsed_message.message_thread_id = message.reply_to.reply_to_top_id
+                    if message.reply_to.forum_topic:
+                        parsed_message.is_topic_message = True
+
                 if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
-                    parsed_message.reply_to_message_id = message.reply_to.story_id
+                    parsed_message.reply_to_story = await types.Story._parse(client, chats, None, message.reply_to)
 
                 if replies:
                     try:
@@ -1037,9 +1042,6 @@ class Message(Object, Update):
                         parsed_message.reply_to_message = reply_to_message
                     except MessageIdsEmpty:
                         pass
-
-                if message.reply_to.forum_topic:
-                    parsed_message.is_topic_message = True
 
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
                 client,

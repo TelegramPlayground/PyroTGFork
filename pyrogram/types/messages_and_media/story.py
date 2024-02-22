@@ -135,16 +135,24 @@ class Story(Object, Update):
     async def _parse(
         client,
         chats: dict,
-        story_media: "raw.types.MessageMediaStory"
+        story_media: "raw.types.MessageMediaStory",
+        reply_story: "raw.types.MessageReplyStoryHeader"
     ) -> "Video":
+        story_id = None
         chat = None
-        if story_media.peer:
-            raw_peer_id = utils.get_peer_id(story_media.peer)
-            chat = await client.get_chat(raw_peer_id)
-
+        if story_media:
+            if story_media.peer:
+                raw_peer_id = utils.get_peer_id(story_media.peer)
+                chat = await client.get_chat(raw_peer_id)
+            story_id = getattr(story_media, "id", None)
+        if reply_story:
+            if reply_story.peer:
+                raw_peer_id = utils.get_peer_id(reply_story.peer)
+                chat = await client.get_chat(raw_peer_id)
+            story_id = getattr(reply_story, "story_id", None)
         return Story(
             client=client,
             _raw=story_media,
-            id=getattr(story_media, "id", None),
+            id=story_id,
             chat=chat
         )
