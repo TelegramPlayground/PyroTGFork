@@ -69,6 +69,10 @@ class InlineKeyboardButton(Object):
         callback_game (:obj:`~pyrogram.types.CallbackGame`, *optional*):
             Description of the game that will be launched when the user presses the button.
             **NOTE**: This type of button **must** always be the first button in the first row.
+        
+        pay (``bool``, *optional*):
+            Specify True, to send a Pay button.
+            **NOTE**: This type of button **must** always be the first button in the first row and can only be used in invoice messages.
     """
 
     def __init__(
@@ -81,7 +85,8 @@ class InlineKeyboardButton(Object):
         user_id: int = None,
         switch_inline_query: str = None,
         switch_inline_query_current_chat: str = None,
-        callback_game: "types.CallbackGame" = None
+        callback_game: "types.CallbackGame" = None,
+        pay: bool = None
     ):
         super().__init__()
 
@@ -94,7 +99,7 @@ class InlineKeyboardButton(Object):
         self.switch_inline_query = switch_inline_query
         self.switch_inline_query_current_chat = switch_inline_query_current_chat
         self.callback_game = callback_game
-        # self.pay = pay
+        self.pay = pay
 
     @staticmethod
     def read(b: "raw.base.KeyboardButton"):
@@ -154,6 +159,12 @@ class InlineKeyboardButton(Object):
                     url=b.url
                 )
             )
+        
+        if isinstance(b, raw.types.KeyboardButtonBuy):
+            return InlineKeyboardButton(
+                text=b.text,
+                pay=True
+            )
 
     async def write(self, client: "pyrogram.Client"):
         if self.callback_data is not None:
@@ -205,4 +216,12 @@ class InlineKeyboardButton(Object):
             return raw.types.KeyboardButtonWebView(
                 text=self.text,
                 url=self.web_app.url
+            )
+
+        if (
+            self.pay is not None and
+            self.pay
+        ):
+            return raw.types.KeyboardButtonBuy(
+                text=self.text
             )
