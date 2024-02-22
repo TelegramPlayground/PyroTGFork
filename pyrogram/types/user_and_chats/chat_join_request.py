@@ -36,6 +36,9 @@ class ChatJoinRequest(Object, Update):
         from_user (:obj:`~pyrogram.types.User`):
             User that sent the join request.
 
+        user_chat_id (``int``):
+            Identifier of a private chat with the user who sent the join request. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. The bot can use this identifier for 5 minutes to send messages until the join request is processed, assuming no other administrator contacted the user.
+
         date (:py:obj:`~datetime.datetime`):
             Date the request was sent.
 
@@ -52,6 +55,7 @@ class ChatJoinRequest(Object, Update):
         client: "pyrogram.Client" = None,
         chat: "types.Chat",
         from_user: "types.User",
+        user_chat_id: int,
         date: datetime,
         bio: str = None,
         invite_link: "types.ChatInviteLink" = None
@@ -60,6 +64,7 @@ class ChatJoinRequest(Object, Update):
 
         self.chat = chat
         self.from_user = from_user
+        self.user_chat_id = user_chat_id
         self.date = date
         self.bio = bio
         self.invite_link = invite_link
@@ -72,10 +77,10 @@ class ChatJoinRequest(Object, Update):
         chats: Dict[int, "raw.types.Chat"]
     ) -> "ChatJoinRequest":
         chat_id = utils.get_raw_peer_id(update.peer)
-
         return ChatJoinRequest(
             chat=types.Chat._parse_chat(client, chats[chat_id]),
             from_user=types.User._parse(client, users[update.user_id]),
+            user_chat_id=update.user_id,  # TODO
             date=utils.timestamp_to_datetime(update.date),
             bio=update.about,
             invite_link=types.ChatInviteLink._parse(client, update.invite, users),
@@ -91,7 +96,7 @@ class ChatJoinRequest(Object, Update):
 
             await client.approve_chat_join_request(
                 chat_id=request.chat.id,
-                user_id=request.from_user.id
+                user_id=request.user_chat_id
             )
             
         Example:
@@ -107,7 +112,7 @@ class ChatJoinRequest(Object, Update):
         """
         return await self._client.approve_chat_join_request(
             chat_id=self.chat.id,
-            user_id=self.from_user.id
+            user_id=self.user_chat_id
         )
 
     async def decline(self) -> bool:
@@ -119,7 +124,7 @@ class ChatJoinRequest(Object, Update):
 
             await client.decline_chat_join_request(
                 chat_id=request.chat.id,
-                user_id=request.from_user.id
+                user_id=request.user_chat_id
             )
             
         Example:
@@ -135,5 +140,5 @@ class ChatJoinRequest(Object, Update):
         """
         return await self._client.decline_chat_join_request(
             chat_id=self.chat.id,
-            user_id=self.from_user.id
+            user_id=self.user_chat_id
         )
