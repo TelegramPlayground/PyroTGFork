@@ -27,6 +27,7 @@ to give you a basic idea.
     :doc:`use_inline_bots`, "Query an inline bot (as user) and send a result to a chat"
     :doc:`bot_keyboards`, "Send normal and inline keyboards using regular bots"
     :doc:`raw_updates`, "Handle raw updates (old, should be avoided)"
+    :doc:`send_voice_message`, "Download audio file and reupload as Voice Message with waveforms"
 
 For more advanced examples, see https://github.com/ColinShark/Pyrogram-Snippets.
 

@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 |   Leaked Scheme layer  |
 +------------------------+
 
+- `#713 <https://github.com/pyrogram/pyrogram/pull/713>`_
 - Removed :obj:`~pyrogram.types.ChatPreview` class.
 - Added ``description``, ``accent_color_id``, ``is_verified``, ``is_scam``, ``is_fake``, ``is_public``, ``join_by_request`` attributes to the class :obj:`~pyrogram.types.ChatPreview`.
 - Added ``force_full`` parameter to :meth:`~pyrogram.Client.get_chat`.
