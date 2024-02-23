@@ -60,7 +60,7 @@ class GetChat:
         """
         match = self.INVITE_LINK_RE.match(str(chat_id))
 
-        if not self.me.is_bot and match:
+        if match:
             r = await self.invoke(
                 raw.functions.messages.CheckChatInvite(
                     hash=match.group(1)

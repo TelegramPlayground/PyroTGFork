@@ -30,10 +30,10 @@ class Chat(Object):
     """A chat.
 
     Parameters:
-        id (``int``):
+        id (``int``, *optional*):
             Unique identifier for this chat.
 
-        type (:obj:`~pyrogram.enums.ChatType`):
+        type (:obj:`~pyrogram.enums.ChatType`, *optional*):
             Type of chat.
 
         title (``str``, *optional*):
@@ -176,8 +176,8 @@ class Chat(Object):
         self,
         *,
         client: "pyrogram.Client" = None,
-        id: int,
-        type: "enums.ChatType",
+        id: int = None,
+        type: "enums.ChatType" = None,
         is_verified: bool = None,
         is_restricted: bool = None,
         is_creator: bool = None,
