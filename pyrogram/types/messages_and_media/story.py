@@ -123,6 +123,9 @@ class Story(Object, Update):
         deleted (``bool``, *optional*):
             The story is deleted.
             A story can be deleted in case it was deleted or you tried to retrieve a story that doesn't exist yet.
+
+        raw (``pyrogram.raw.types.StoryItem``, *optional*):
+            The raw story object, as received from the Telegram API.
     """
 
     # TODO: Add Media Areas
@@ -160,7 +163,8 @@ class Story(Object, Update):
         disallowed_users: List[Union[int, str]] = None,
         reactions: List["types.Reaction"] = None,
         skipped: bool = None,
-        deleted: bool = None
+        deleted: bool = None,
+        raw: "raw.types.StoryItem" = None
     ):
         super().__init__(client)
 
@@ -194,6 +198,7 @@ class Story(Object, Update):
         self.reactions = reactions
         self.skipped = skipped
         self.deleted = deleted
+        self.raw = raw
 
     @staticmethod
     async def _parse(
@@ -340,6 +345,7 @@ class Story(Object, Update):
             allowed_users=allowed_users,
             disallowed_users=disallowed_users,
             reactions=reactions,
+            raw=story,
             client=client
         )
 
