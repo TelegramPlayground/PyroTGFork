@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 |   Leaked Scheme layer  |
 +------------------------+
 
+- Removed :obj:`~pyrogram.types.ChatPreview` class.
 - Added ``description``, ``accent_color_id``, ``is_verified``, ``is_scam``, ``is_fake``, ``is_public``, ``join_by_request`` attributes to the class :obj:`~pyrogram.types.ChatPreview`.
 - Added ``force_full`` parameter to :meth:`~pyrogram.Client.get_chat`.
 - Bug Fix for :meth:`~pyrogram.Client.get_chat` and :meth:`~pyrogram.Client.join_chat` when ``https://t.me/username`` was passed.

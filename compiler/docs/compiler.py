@@ -374,7 +374,6 @@ def pyrogram_api():
         Users & Chats
             User
             Chat
-            ChatPreview
             ChatPhoto
             ChatMember
             ChatPermissions

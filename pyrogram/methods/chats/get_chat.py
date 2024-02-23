@@ -27,7 +27,7 @@ class GetChat:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         force_full: bool = True
-    ) -> Union["types.Chat", "types.ChatPreview"]:
+    ) -> "types.Chat":
         """Get up to date information about a chat.
 
         Information include current name of the user for one-on-one conversations, current username of a user, group or
@@ -46,7 +46,7 @@ class GetChat:
                 Pass False, if do not need to fetch the full variant.
 
         Returns:
-            :obj:`~pyrogram.types.Chat` | :obj:`~pyrogram.types.ChatPreview`: On success, if you've already joined the chat, a chat object is returned,
+            :obj:`~pyrogram.types.Chat`: On success, if you've already joined the chat, a chat object is returned,
             otherwise, a chat preview object is returned.
 
         Raises:
@@ -68,7 +68,7 @@ class GetChat:
             )
 
             if isinstance(r, raw.types.ChatInvite):
-                return types.ChatPreview._parse(self, r)
+                return types.Chat._parse_chat_preview(self, r)
 
             await self.fetch_peers([r.chat])
 

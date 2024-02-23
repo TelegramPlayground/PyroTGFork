@@ -60,10 +60,16 @@ class Chat(Object):
             Available reactions in the chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
 
+        accent_color_id (``int``, *optional*):
+            Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview. See `accent colors <https://core.telegram.org/bots/api#accent-colors>`_ for more details. Returned only in :meth:`~pyrogram.Client.get_chat`. Always returned in :meth:`~pyrogram.Client.get_chat`.
+
         bio (``str``, *optional*):
             Bio of the other party in a private chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
         
+        join_by_request (``bool``, *optional*):
+            True, if all users directly joining the supergroup need to be approved by supergroup administrators.
+
         description (``str``, *optional*):
             Description, for groups, supergroups and channel chats.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -134,14 +140,20 @@ class Chat(Object):
         is_fake (``bool``, *optional*):
             True, if this chat has been flagged for impersonation.
 
-        is_support (``bool``):
+        is_support (``bool``, *optional*):
             True, if this chat is part of the Telegram support team. Users and bots only.
+
+        is_public (``bool``, *optional*):
+            True, if this chat is public.
 
         dc_id (``int``, *optional*):
             The chat assigned DC (data center). Available only in case the chat has a photo.
             Note that this information is approximate; it is based on where Telegram stores the current chat photo.
             It is accurate only in case the owner has set the chat photo, otherwise the dc_id will be the one assigned
             to the administrator who set the current chat photo.
+
+        members (List of :obj:`~pyrogram.types.User`, *optional*):
+            Preview of some of the chat members.
 
         members_count (``int``, *optional*):
             Chat members count, for groups, supergroups and channels only.
@@ -172,12 +184,14 @@ class Chat(Object):
         is_scam: bool = None,
         is_fake: bool = None,
         is_support: bool = None,
+        is_public: bool = None,
         title: str = None,
         username: str = None,
         first_name: str = None,
         last_name: str = None,
         photo: "types.ChatPhoto" = None,
         bio: str = None,
+        join_by_request: bool = None,
         description: str = None,
         dc_id: int = None,
         has_protected_content: bool = None,
@@ -186,6 +200,7 @@ class Chat(Object):
         sticker_set_name: str = None,
         custom_emoji_sticker_set_name: str = None,
         can_set_sticker_set: bool = None,
+        members: List["types.User"] = None,
         members_count: int = None,
         restrictions: List["types.Restriction"] = None,
         permissions: "types.ChatPermissions" = None,
@@ -201,7 +216,9 @@ class Chat(Object):
         slowmode_next_send_date: datetime = None,
         unrestrict_boost_count: int = None,
         is_forum: bool = None,
+        accent_color_id: int = None,
         _raw: Union[
+            "raw.types.ChatInvite",
             "raw.types.Channel",
             "raw.types.Chat",
             "raw.types.User",
@@ -233,6 +250,7 @@ class Chat(Object):
         self.sticker_set_name = sticker_set_name
         self.custom_emoji_sticker_set_name = custom_emoji_sticker_set_name
         self.can_set_sticker_set = can_set_sticker_set
+        self.members = members
         self.members_count = members_count
         self.restrictions = restrictions
         self.permissions = permissions
@@ -248,6 +266,9 @@ class Chat(Object):
         self.slowmode_next_send_date = slowmode_next_send_date
         self.is_forum = is_forum
         self.unrestrict_boost_count = unrestrict_boost_count
+        self.accent_color_id = accent_color_id
+        self.is_public = is_public
+        self.join_by_request = join_by_request
         self._raw = _raw
 
     @staticmethod
@@ -441,6 +462,32 @@ class Chat(Object):
             return Chat._parse_user_chat(client, chat)
         else:
             return Chat._parse_channel_chat(client, chat)
+
+    @staticmethod
+    def _parse_chat_preview(client, chat_invite: "raw.types.ChatInvite") -> "Chat":
+        return Chat(
+            _raw=chat_invite,
+            title=chat_invite.title,
+            type=(
+                enums.ChatType.GROUP if not chat_invite.channel else
+                enums.ChatType.CHANNEL if chat_invite.broadcast else
+                enums.ChatType.SUPERGROUP
+            ),
+            members_count=chat_invite.participants_count,
+            photo=types.Photo._parse(client, chat_invite.photo),
+            members=[
+                types.User._parse(client, user)
+                for user in chat_invite.participants
+            ] or None,
+            description=getattr(chat_invite, "about", None),
+            accent_color_id=getattr(chat_invite, "color", None),
+            is_verified=getattr(chat_invite, "verified", None),
+            is_scam=getattr(chat_invite, "scam", None),
+            is_fake=getattr(chat_invite, "fake", None),
+            is_public=getattr(chat_invite, "public", None),
+            join_by_request=getattr(chat_invite, "request_needed", None),
+            client=client
+        )
 
     async def archive(self):
         """Bound method *archive* of :obj:`~pyrogram.types.Chat`.
