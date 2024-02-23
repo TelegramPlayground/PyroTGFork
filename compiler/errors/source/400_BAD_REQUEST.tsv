@@ -248,6 +248,7 @@ POLL_QUESTION_INVALID	The poll question is invalid
 POLL_UNSUPPORTED	This layer does not support polls in the invoked method
 POLL_VOTE_REQUIRED	Cast a vote in the poll before calling this method
 PREMIUM_ACCOUNT_REQUIRED	The method requires a premium user account
+PREMIUM_GIFTCODE_WAS_REFUNDED	This gift code can't be redeemed because the giveaway organizer requested a refund
 PRIVACY_KEY_INVALID	The privacy key is invalid
 PRIVACY_TOO_LONG	Your privacy exception list has exceeded the maximum capacity
 PRIVACY_VALUE_INVALID	The privacy value is invalid
@@ -376,4 +377,5 @@ WEBDOCUMENT_URL_EMPTY	The web document URL is empty
 WEBDOCUMENT_URL_INVALID	The web document URL is invalid
 WEBPAGE_CURL_FAILED	Telegram server could not fetch the provided URL
 WEBPAGE_MEDIA_EMPTY	The URL doesn't contain any valid media
+WEBPAGE_NOT_FOUND	A preview for the specified webpage url could not be generated
 YOU_BLOCKED_USER	You blocked this user

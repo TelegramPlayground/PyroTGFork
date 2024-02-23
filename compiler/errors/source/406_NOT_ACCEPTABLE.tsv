@@ -8,6 +8,7 @@ FRESH_CHANGE_PHONE_FORBIDDEN	You can't change your phone number because your ses
 FRESH_RESET_AUTHORISATION_FORBIDDEN	You can't terminate other authorized sessions because the current was logged-in recently
 PHONE_NUMBER_INVALID	The phone number is invalid
 PHONE_PASSWORD_FLOOD	You have tried to log-in too many times
+PREMIUM_GIFTCODE_WAS_REFUNDED	This gift code can't be redeemed because the giveaway organizer requested a refund
 STICKERSET_INVALID	The sticker set is invalid
 STICKERSET_OWNER_ANONYMOUS	This sticker set can't be used as the group's sticker set because it was created by one of its anonymous admins
 USERPIC_UPLOAD_REQUIRED	You must have a profile picture to publish your geolocation
