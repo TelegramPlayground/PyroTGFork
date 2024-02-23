@@ -376,6 +376,9 @@ class Message(Object, Update):
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this message.
 
+        raw (``pyrogram.raw.types.Message``, *optional*):
+            The raw message object, as received from the Telegram API.
+
         link (``str``, *property*):
             Generate a link to this message, only for groups and channels.
     """
@@ -483,7 +486,8 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reactions: List["types.Reaction"] = None
+        reactions: List["types.Reaction"] = None,
+        raw: "raw.types.Message" = None
     ):
         super().__init__(client)
 
@@ -577,9 +581,10 @@ class Message(Object, Update):
         self.gift_code = gift_code
         self.requested_chats = requested_chats
         self.giveaway_launched = giveaway_launched
-        self.reactions = reactions
         self.chat_ttl_period = chat_ttl_period
         self.boosts_applied = boosts_applied
+        self.reactions = reactions
+        self.raw = raw
 
     @staticmethod
     async def _parse(
@@ -592,7 +597,7 @@ class Message(Object, Update):
         replies: int = 1
     ):
         if isinstance(message, raw.types.MessageEmpty):
-            return Message(id=message.id, empty=True, client=client)
+            return Message(id=message.id, empty=True, client=client, raw=message)
 
         from_id = utils.get_raw_peer_id(message.from_id)
         peer_id = utils.get_raw_peer_id(message.peer_id)
@@ -769,6 +774,7 @@ class Message(Object, Update):
                 requested_chats=requested_chats,
                 chat_ttl_period=chat_ttl_period,
                 boosts_applied=boosts_applied,
+                raw=message,
                 client=client
                 # TODO: supergroup_chat_created
             )
@@ -1047,6 +1053,7 @@ class Message(Object, Update):
                 outgoing=message.out,
                 reply_markup=reply_markup,
                 reactions=reactions,
+                raw=message,
                 client=client
             )
 
