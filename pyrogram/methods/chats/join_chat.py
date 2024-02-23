@@ -71,7 +71,7 @@ class JoinChat:
         else:
             match2 = self.TME_PUBLIC_LINK_RE.match(str(chat_id))
             if match2:
-                chat_id = match2.group(1)
+                chat_id = match2.group(1) or match2.group(2) or chat_id
             chat = await self.invoke(
                 raw.functions.channels.JoinChannel(
                     channel=await self.resolve_peer(chat_id)
