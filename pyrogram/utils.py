@@ -146,7 +146,7 @@ async def parse_deleted_messages(client, update) -> List["types.Message"]:
         chan_id = get_channel_id(channel_id)
         # try:
         # TODO
-        #     delete_chat = await client.get_chat(chan_id)
+        #     delete_chat = await client.get_chat(chan_id, False)
         # except pyrogram.errors.RPCError:
         delete_chat = types.Chat(
             id=chan_id,

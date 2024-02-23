@@ -158,15 +158,16 @@ class Story(Object, Update):
         skipped = None
         deleted = None
 
+        # TODO: investigate a bug here
         if story_media:
             if story_media.peer:
                 raw_peer_id = utils.get_peer_id(story_media.peer)
-                chat = await client.get_chat(raw_peer_id)
+                chat = await client.get_chat(raw_peer_id, False)
             story_id = getattr(story_media, "id", None)
         if reply_story:
             if reply_story.peer:
                 raw_peer_id = utils.get_peer_id(reply_story.peer)
-                chat = await client.get_chat(raw_peer_id)
+                chat = await client.get_chat(raw_peer_id, False)
             story_id = getattr(reply_story, "story_id", None)
         if story_id and not client.me.is_bot:
             try:
