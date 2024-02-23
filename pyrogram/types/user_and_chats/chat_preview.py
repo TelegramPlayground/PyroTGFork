@@ -19,8 +19,7 @@
 from typing import List
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types, enums
 from ..object import Object
 
 
@@ -42,6 +41,28 @@ class ChatPreview(Object):
 
         members (List of :obj:`~pyrogram.types.User`, *optional*):
             Preview of some of the chat members.
+        
+        description (``str``, *optional*):
+            Description, for groups, supergroups and channel chats.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        accent_color_id (``int``, *optional*):
+            Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview. See `accent colors <https://core.telegram.org/bots/api#accent-colors>`_ for more details. Returned only in :meth:`~pyrogram.Client.get_chat`. Always returned in :meth:`~pyrogram.Client.get_chat`.
+
+        is_verified (``bool``, *optional*):
+            True, if this chat has been verified by Telegram. Supergroups, channels and bots only.
+
+        is_scam (``bool``, *optional*):
+            True, if this chat has been flagged for scam.
+
+        is_fake (``bool``, *optional*):
+            True, if this chat has been flagged for impersonation.
+        
+        is_public (``bool``, *optional*):
+            True, if this chat is public.
+
+        join_by_request (``bool``, *optional*):
+            True, if all users directly joining the supergroup need to be approved by supergroup administrators.
     """
 
     def __init__(
@@ -52,7 +73,14 @@ class ChatPreview(Object):
         type: str,
         members_count: int,
         photo: "types.Photo" = None,
-        members: List["types.User"] = None
+        members: List["types.User"] = None,
+        description: str = None,
+        accent_color_id: int = None,
+        is_verified: bool = None,
+        is_scam: bool = None,
+        is_fake: bool = None,
+        is_public: bool = None,
+        join_by_request: bool = None
     ):
         super().__init__(client)
 
@@ -61,17 +89,36 @@ class ChatPreview(Object):
         self.members_count = members_count
         self.photo = photo
         self.members = members
+        self.description = description
+        self.accent_color_id = accent_color_id
+        self.is_verified = is_verified
+        self.is_scam = is_scam
+        self.is_fake = is_fake
+        self.is_public = is_public
+        self.join_by_request = join_by_request
 
     @staticmethod
     def _parse(client, chat_invite: "raw.types.ChatInvite") -> "ChatPreview":
         return ChatPreview(
             title=chat_invite.title,
-            type=("group" if not chat_invite.channel else
-                  "channel" if chat_invite.broadcast else
-                  "supergroup"),
+            type=(
+                enums.ChatType.GROUP if not chat_invite.channel else
+                enums.ChatType.CHANNEL if chat_invite.broadcast else
+                enums.ChatType.SUPERGROUP
+            ),
             members_count=chat_invite.participants_count,
             photo=types.Photo._parse(client, chat_invite.photo),
-            members=[types.User._parse(client, user) for user in chat_invite.participants] or None,
+            members=[
+                types.User._parse(client, user)
+                for user in chat_invite.participants
+            ] or None,
+            description=getattr(chat_invite, "about", None),
+            accent_color_id=getattr(chat_invite, "color", None),
+            is_verified=getattr(chat_invite, "verified", None),
+            is_scam=getattr(chat_invite, "scam", None),
+            is_fake=getattr(chat_invite, "fake", None),
+            is_public=getattr(chat_invite, "public", None),
+            join_by_request=getattr(chat_invite, "request_needed", None),
             client=client
         )
 
