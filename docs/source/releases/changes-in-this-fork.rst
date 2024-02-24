@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 |   Leaked Scheme layer  |
 +------------------------+
 
+- `Add ttl_seconds attribute to Voice and VideoNote class <https://github.com/KurimuzonAkuma/pyrogram/commit/7556d3e3864215386f018692947cdf52a82cb420>`_
 - `#713 <https://github.com/pyrogram/pyrogram/pull/713>`_
 - Removed :obj:`~pyrogram.types.ChatPreview` class.
 - Added ``description``, ``accent_color_id``, ``is_verified``, ``is_scam``, ``is_fake``, ``is_public``, ``join_by_request`` attributes to the class :obj:`~pyrogram.types.ChatPreview`.
