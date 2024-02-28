@@ -95,12 +95,12 @@ class GetChat:
         else:
             if isinstance(peer, (raw.types.InputPeerUser, raw.types.InputPeerSelf)):
                 r = await self.invoke(raw.functions.users.GetUsers(id=[peer]))
-                return await types.Chat._parse_chat(self, r[0])
+                return types.Chat._parse_chat(self, r[0])
             else:
                 if isinstance(peer, raw.types.InputPeerChannel):
-                    r = await self.invoke(raw.functions.messages.GetChats(id=[peer.channel_id]))
+                    r = await self.invoke(raw.functions.channels.GetChannels(id=[peer]))
                 elif isinstance(peer, raw.types.InputPeerChat):
                     r = await self.invoke(raw.functions.messages.GetChats(id=[peer.chat_id]))
                 else:
                     raise ValueError("unknown chat type")
-                return await types.Chat._parse_chat(self, r.chats[0])
+                return types.Chat._parse_chat(self, r.chats[0])
