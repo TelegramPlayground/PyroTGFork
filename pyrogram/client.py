@@ -190,7 +190,7 @@ class Client(Methods):
             Pass an instance of your own implementation of session storage engine.
             Useful when you want to store your session in databases like Mongo, Redis, etc.
 
-        init_connection_params (:obj:`~raw.base.JSONValue`, *optional*):
+        init_connection_params (:obj:`~pyrogram.raw.base.JSONValue`, *optional*):
             Additional initConnection parameters.
             For now, only the tz_offset field is supported, for specifying timezone offset in seconds.
     """

@@ -41,7 +41,7 @@ class GiftCode(Object):
             You can combine it with `t.me/giftcode/{slug}`
             to get link for this gift.
 
-        mention (``str``, *property*):
+        link (``str``, *property*):
             Generate a link to this gift code.
     """
 
