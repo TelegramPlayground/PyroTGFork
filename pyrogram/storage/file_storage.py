@@ -25,7 +25,7 @@ from .sqlite_storage import SQLiteStorage
 
 log = logging.getLogger(__name__)
 
-SCHEMA = """
+SCHEMA_UN_V3 = """
 CREATE TABLE IF NOT EXISTS usernames
 (
     id       INTEGER,
@@ -45,8 +45,16 @@ class FileStorage(SQLiteStorage):
 
         self.database = workdir / (self.name + self.FILE_EXTENSION)
 
-    def update(self):
-        version = self.version()
+    def _connect_impl(self, path):
+        self.conn = sqlite3.connect(path)
+        
+        with self.conn:
+            self.conn.execute("PRAGMA journal_mode=WAL").close()
+            self.conn.execute("PRAGMA synchronous=NORMAL").close()
+            self.conn.execute("PRAGMA temp_store=1").close()
+
+    async def update(self):
+        version = await self.version()
 
         if version == 1:
             with self.conn:
@@ -56,7 +64,16 @@ class FileStorage(SQLiteStorage):
 
         if version == 2:
             with self.conn:
-                self.conn.execute("ALTER TABLE sessions ADD api_id INTEGER")
+                try:
+                    self.conn.execute("ALTER TABLE sessions ADD api_id INTEGER")
+                except Exception as e:
+                    log.exception(e)
+
+            version += 1
+
+        if version == 3:
+            with self.conn:
+                self.conn.executescript(SCHEMA_UN_V3)
 
             version += 1
 
@@ -66,7 +83,7 @@ class FileStorage(SQLiteStorage):
 
             version += 1
 
-        self.version(version)
+        await self.version(version)
 
     async def open(self):
         path = self.database
@@ -75,9 +92,9 @@ class FileStorage(SQLiteStorage):
         self.conn = sqlite3.connect(str(path), timeout=1, check_same_thread=False)
 
         if not file_exists:
-            self.create()
+            await self.create()
         else:
-            self.update()
+            await self.update()
 
         with self.conn:
             self.conn.execute("VACUUM")

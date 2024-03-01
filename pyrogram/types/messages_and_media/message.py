@@ -755,7 +755,6 @@ class Message(Object, Update):
                         reply_to_message_ids=message.id,
                         replies=0
                     )
-
                     parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
                 except MessageIdsEmpty:
                     pass

@@ -23,6 +23,7 @@ import pyrogram
 from pyrogram import raw, enums
 from pyrogram import types
 from pyrogram import utils
+from pyrogram.errors import MessageIdsEmpty
 from ..object import Object
 
 
@@ -314,16 +315,24 @@ class Chat(Object):
     @staticmethod
     def _parse_channel_chat(client, channel: raw.types.Channel) -> "Chat":
         peer_id = utils.get_channel_id(channel.id)
-        restriction_reason = getattr(channel, "restriction_reason", [])
+
+        if isinstance(channel, raw.types.ChannelForbidden):
+            return Chat(
+                id=peer_id,
+                type=enums.ChatType.SUPERGROUP if channel.megagroup else enums.ChatType.CHANNEL,
+                title=channel.title,
+                client=client,
+                _raw=channel
+            )
 
         return Chat(
             id=peer_id,
-            type=enums.ChatType.SUPERGROUP if getattr(channel, "megagroup", None) else enums.ChatType.CHANNEL,
-            is_verified=getattr(channel, "verified", None),
-            is_restricted=getattr(channel, "restricted", None),
-            is_creator=getattr(channel, "creator", None),
-            is_scam=getattr(channel, "scam", None),
-            is_fake=getattr(channel, "fake", None),
+            type=enums.ChatType.SUPERGROUP if channel.megagroup else enums.ChatType.CHANNEL,
+            is_verified=channel.verified,
+            is_restricted=channel.restricted,
+            is_creator=channel.creator,
+            is_scam=channel.scam,
+            is_fake=channel.fake,
             title=channel.title,
             username=getattr(channel, "username", None),
             photo=types.ChatPhoto._parse(
@@ -332,13 +341,18 @@ class Chat(Object):
                 peer_id,
                 getattr(channel, "access_hash", 0)
             ),
-            restrictions=types.List([types.Restriction._parse(r) for r in restriction_reason]) or None,
+            restrictions=types.List(
+                [
+                    types.Restriction._parse(r)
+                    for r in getattr(channel, "restriction_reason", None)
+                ]
+            ) or None,
             permissions=types.ChatPermissions._parse(getattr(channel, "default_banned_rights", None)),
             members_count=getattr(channel, "participants_count", None),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
-            client=client,
             is_forum=getattr(channel, "forum", None),
+            client=client,
             _raw=channel
         )
 
@@ -383,10 +397,17 @@ class Chat(Object):
             parsed_chat.bio = full_user.about
 
             if full_user.pinned_msg_id:
-                parsed_chat.pinned_message = await client.get_messages(
-                    parsed_chat.id,
-                    message_ids=full_user.pinned_msg_id
-                )
+                try:
+                    parsed_chat.pinned_message = await client.get_messages(
+                        parsed_chat.id,
+                        message_ids=full_user.pinned_msg_id
+                    )
+                except MessageIdsEmpty:
+                    parsed_chat.pinned_message = types.Message(
+                        id=full_user.pinned_msg_id,
+                        empty=True,
+                        client=client
+                    )
         else:
             full_chat = chat_full.full_chat
             chat_raw = chats[full_chat.id]

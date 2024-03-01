@@ -40,7 +40,6 @@ docs-live:
 	cd compiler/docs && ../../$(PYTHON) compiler.py
 	$(RM) docs/source/telegram
 	$(VENV)/bin/sphinx-autobuild \
-		--host $(shell ifconfig | grep "inet " | grep -v 127.0.0.1 | cut -d\  -f2) \
 		--watch pyrogram --watch docs/resources \
 		-b html "docs/source" "docs/build/html" -j auto
 

@@ -122,15 +122,17 @@ class Sticker(Object):
             if name is not None:
                 return name
 
-            name = (await invoke(
-                raw.functions.messages.GetStickerSet(
-                    stickerset=raw.types.InputStickerSetID(
-                        id=set_id,
-                        access_hash=set_access_hash
-                    ),
-                    hash=0
+            name = (
+                await invoke(
+                    raw.functions.messages.GetStickerSet(
+                        stickerset=raw.types.InputStickerSetID(
+                            id=set_id,
+                            access_hash=set_access_hash
+                        ),
+                        hash=0
+                    )
                 )
-            )).set.short_name
+            ).set.short_name
 
             Sticker.cache[(set_id, set_access_hash)] = name
 

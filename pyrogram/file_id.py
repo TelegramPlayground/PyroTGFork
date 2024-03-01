@@ -17,8 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import base64
+import functools
 import logging
 import struct
+import typing
 from enum import IntEnum
 from io import BytesIO
 from typing import List
@@ -56,11 +58,9 @@ def b64_decode(s: str) -> bytes:
 
 def rle_encode(s: bytes) -> bytes:
     """Zero-value RLE encoder
-
     Parameters:
         s (``bytes``):
             Bytes to encode
-
     Returns:
         ``bytes``: The encoded bytes
     """
@@ -81,7 +81,6 @@ def rle_encode(s: bytes) -> bytes:
         r.extend((0, n))
 
     return bytes(r)
-
 
 def rle_decode(s: bytes) -> bytes:
     """Zero-value RLE decoder
@@ -156,45 +155,9 @@ class FileId:
     MAJOR = 4
     MINOR = 30
 
-    def __init__(
-        self, *,
-        major: int = MAJOR,
-        minor: int = MINOR,
-        file_type: FileType,
-        dc_id: int,
-        file_reference: bytes = b"",
-        url: str = None,
-        media_id: int = None,
-        access_hash: int = None,
-        volume_id: int = None,
-        thumbnail_source: ThumbnailSource = None,
-        thumbnail_file_type: FileType = None,
-        thumbnail_size: str = "",
-        secret: int = None,
-        local_id: int = None,
-        chat_id: int = None,
-        chat_access_hash: int = None,
-        sticker_set_id: int = None,
-        sticker_set_access_hash: int = None
-    ):
-        self.major = major
-        self.minor = minor
-        self.file_type = file_type
-        self.dc_id = dc_id
-        self.file_reference = file_reference
-        self.url = url
-        self.media_id = media_id
-        self.access_hash = access_hash
-        self.volume_id = volume_id
-        self.thumbnail_source = thumbnail_source
-        self.thumbnail_file_type = thumbnail_file_type
-        self.thumbnail_size = thumbnail_size
-        self.secret = secret
-        self.local_id = local_id
-        self.chat_id = chat_id
-        self.chat_access_hash = chat_access_hash
-        self.sticker_set_id = sticker_set_id
-        self.sticker_set_access_hash = sticker_set_access_hash
+    @functools.lru_cache(maxsize=8128)
+    def __new__(cls, **kwargs) -> "FileIdCached":
+        return FileIdCached(**kwargs)
 
     @staticmethod
     def decode(file_id: str):
@@ -337,7 +300,62 @@ class FileId:
                 access_hash=access_hash
             )
 
+
+class FileIdCached:
+    MAJOR = 4
+    MINOR = 30
+
+    _encoded: typing.Optional[str] = None
+
+    def __init__(
+            self, *,
+            major: int = MAJOR,
+            minor: int = MINOR,
+            file_type: FileType,
+            dc_id: int,
+            file_reference: bytes = b"",
+            url: str = None,
+            media_id: int = None,
+            access_hash: int = None,
+            volume_id: int = None,
+            thumbnail_source: ThumbnailSource = None,
+            thumbnail_file_type: FileType = None,
+            thumbnail_size: str = "",
+            secret: int = None,
+            local_id: int = None,
+            chat_id: int = None,
+            chat_access_hash: int = None,
+            sticker_set_id: int = None,
+            sticker_set_access_hash: int = None
+    ):
+        self.major = major
+        self.minor = minor
+        self.file_type = file_type
+        self.dc_id = dc_id
+        self.file_reference = file_reference
+        self.url = url
+        self.media_id = media_id
+        self.access_hash = access_hash
+        self.volume_id = volume_id
+        self.thumbnail_source = thumbnail_source
+        self.thumbnail_file_type = thumbnail_file_type
+        self.thumbnail_size = thumbnail_size
+        self.secret = secret
+        self.local_id = local_id
+        self.chat_id = chat_id
+        self.chat_access_hash = chat_access_hash
+        self.sticker_set_id = sticker_set_id
+        self.sticker_set_access_hash = sticker_set_access_hash
+
+    def __setattr__(self, key, value):
+        if self._encoded is not None and key != "_encoded":
+            super().__setattr__("_encoded", None)
+        super().__setattr__(key, value)
+
     def encode(self, *, major: int = None, minor: int = None):
+        if self._encoded is not None:
+            return self._encoded
+
         major = major if major is not None else self.major
         minor = minor if minor is not None else self.minor
 
@@ -395,7 +413,8 @@ class FileId:
 
         buffer.write(struct.pack("<bb", minor, major))
 
-        return b64_encode(rle_encode(buffer.getvalue()))
+        self._encoded = b64_encode(rle_encode(buffer.getvalue()))
+        return self._encoded
 
     def __str__(self):
         return str({k: v for k, v in self.__dict__.items() if v is not None})
@@ -412,19 +431,9 @@ class FileUniqueType(IntEnum):
 
 
 class FileUniqueId:
-    def __init__(
-        self, *,
-        file_unique_type: FileUniqueType,
-        url: str = None,
-        media_id: int = None,
-        volume_id: int = None,
-        local_id: int = None
-    ):
-        self.file_unique_type = file_unique_type
-        self.url = url
-        self.media_id = media_id
-        self.volume_id = volume_id
-        self.local_id = local_id
+    @functools.lru_cache(maxsize=8128)
+    def __new__(cls, **kwargs) -> "FileUniqueIdCached":
+        return FileUniqueIdCached(**kwargs)
 
     @staticmethod
     def decode(file_unique_id: str):
@@ -464,7 +473,33 @@ class FileUniqueId:
         # TODO: Missing decoder for SECURE, ENCRYPTED and TEMP
         raise ValueError(f"Unknown decoder for file_unique_type {file_unique_type} of file_unique_id {file_unique_id}")
 
+
+class FileUniqueIdCached:
+    _encoded: typing.Optional[str] = None
+
+    def __init__(
+            self, *,
+            file_unique_type: FileUniqueType,
+            url: str = None,
+            media_id: int = None,
+            volume_id: int = None,
+            local_id: int = None
+    ):
+        self.file_unique_type = file_unique_type
+        self.url = url
+        self.media_id = media_id
+        self.volume_id = volume_id
+        self.local_id = local_id
+
+    def __setattr__(self, key, value):
+        if self._encoded is not None and key != "_encoded":
+            super().__setattr__("_encoded", None)
+        super().__setattr__(key, value)
+
     def encode(self):
+        if self._encoded is not None:
+            return self._encoded
+
         if self.file_unique_type == FileUniqueType.WEB:
             string = struct.pack("<is", self.file_unique_type, String(self.url))
         elif self.file_unique_type == FileUniqueType.PHOTO:
@@ -475,7 +510,8 @@ class FileUniqueId:
             # TODO: Missing encoder for SECURE, ENCRYPTED and TEMP
             raise ValueError(f"Unknown encoder for file_unique_type {self.file_unique_type}")
 
-        return b64_encode(rle_encode(string))
+        self._encoded = b64_encode(rle_encode(string))
+        return self._encoded
 
     def __str__(self):
         return str({k: v for k, v in self.__dict__.items() if v is not None})

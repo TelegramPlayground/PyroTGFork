@@ -406,7 +406,9 @@ class Session:
 
                 await asyncio.sleep(amount)
             except (OSError, InternalServerError, ServiceUnavailable) as e:
-                if retries == 0:
+                if retries == 0 \
+                        or (isinstance(e, InternalServerError)
+                            and e.code == 500 and (e.ID or e.NAME) == "HISTORY_GET_FAILED"):
                     raise e from None
 
                 (log.warning if retries < 2 else log.info)(

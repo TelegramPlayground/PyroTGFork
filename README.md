@@ -22,15 +22,14 @@
     </a>
 </p>
 
-## Pyrogram
+## WARNING
+We've made faster-pyrogram publicly available in order to facilitate conversation about potentially upstreaming some of this work to Pyrogram and to reduce duplication of effort among people working on Pyrogram performance.
 
 > Elegant, modern and asynchronous Telegram MTProto API framework in Python for users and bots
 
 **WARNING**: We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable, __USE AT YOUR OWN RISK__.
 All of the repositories that we merge features from are listed in [Release Notes](https://telegramplayground.github.io/pyrogram/releases/changes-in-this-fork.html) file.
 
-``` python
-from pyrogram import Client, filters
 
 app = Client("my_account")
 

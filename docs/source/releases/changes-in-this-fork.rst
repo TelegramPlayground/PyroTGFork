@@ -8,9 +8,22 @@ it can take advantage of new goodies!
 
 `For a more detailed description, you can check the commits. <https://github.com/TelegramPlayGround/pyrogram/>`_
 
-+------------------------+
-|   Leaked Scheme layer  |
-+------------------------+
++-------------+
+|  PmOItrOAe  |
++-------------+
+
+- Documentation Builder Fixes
+- `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`_ is not polished or documented for anyone else's use. We don't have the capacity to support `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`_ as an independent open-source project, nor any desire for it to become an alternative to Pyrogram. Our goal in making this code available is a unified faster Pyrogram. `... <https://github.com/cavallium/faster-pyrogram/blob/b781909/README.md#L28>`_
+    - Lock-free and asynchronous implementation of the sqlite session.
+    - The possibility of turning off journaling and vacuum when starting a session.
+    - Improved implementation of rle_encode.
+    - Implementation of _parse_channel_chat without getattr, in some scenarios.
+    - Cache of FileId and UniqueFileId instances and of their string-coded versions.
+    - Use of tcp abridged instead of tcp obfuscated as the default protocol.
+
++-----------------------------+
+|   Leaked Scheme Layers (2)  |
++-----------------------------+
 
 - `Add ttl_seconds attribute to Voice and VideoNote class <https://github.com/KurimuzonAkuma/pyrogram/commit/7556d3e3864215386f018692947cdf52a82cb420>`_
 - `#713 <https://github.com/pyrogram/pyrogram/pull/713>`_
