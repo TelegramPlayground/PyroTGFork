@@ -3574,6 +3574,7 @@ class Message(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         disable_web_page_preview: bool = None,
+        show_above_text: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> "Message":
         """Bound method *edit_text* of :obj:`~pyrogram.types.Message`.
@@ -3609,6 +3610,10 @@ class Message(Object, Update):
             disable_web_page_preview (``bool``, *optional*):
                 Disables link previews for links in this message.
 
+            show_above_text (``bool``, *optional*):
+                If True, link preview will be shown above the message text.
+                Otherwise, the link preview will be shown below the message text.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
 
@@ -3625,6 +3630,7 @@ class Message(Object, Update):
             parse_mode=parse_mode,
             entities=entities,
             disable_web_page_preview=disable_web_page_preview,
+            show_above_text=show_above_text,
             reply_markup=reply_markup
         )
 
