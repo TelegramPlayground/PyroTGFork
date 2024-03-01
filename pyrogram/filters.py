@@ -69,7 +69,7 @@ class AndFilter(Filter):
 
     async def __call__(
         self, client: "pyrogram.Client", update: Update
-    ) -> Any | Literal[False]:
+    ) -> Union[Any, Literal[False]]:
         if inspect.iscoroutinefunction(self.base.__call__):
             x = await self.base(client, update)
         else:
@@ -98,7 +98,7 @@ class OrFilter(Filter):
 
     async def __call__(
         self, client: "pyrogram.Client", update: Update
-    ) -> Any | Literal[True]:
+    ) -> Union[Any, Literal[True]]:
         if inspect.iscoroutinefunction(self.base.__call__):
             x = await self.base(client, update)
         else:
