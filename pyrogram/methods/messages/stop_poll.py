@@ -56,7 +56,10 @@ class StopPoll:
 
                 await app.stop_poll(chat_id, message_id)
         """
-        poll = (await self.get_messages(chat_id, message_id)).poll
+        poll = (await self.get_messages(
+            chat_id=chat_id,
+            message_ids=message_id
+        )).poll
 
         r = await self.invoke(
             raw.functions.messages.EditMessage(

@@ -399,7 +399,7 @@ class Chat(Object):
             if full_user.pinned_msg_id:
                 try:
                     parsed_chat.pinned_message = await client.get_messages(
-                        parsed_chat.id,
+                        chat_id=parsed_chat.id,
                         message_ids=full_user.pinned_msg_id
                     )
                 except MessageIdsEmpty:
@@ -459,7 +459,7 @@ class Chat(Object):
 
             if full_chat.pinned_msg_id:
                 parsed_chat.pinned_message = await client.get_messages(
-                    parsed_chat.id,
+                    chat_id=parsed_chat.id,
                     message_ids=full_chat.pinned_msg_id
                 )
 

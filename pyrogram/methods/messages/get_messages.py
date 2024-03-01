@@ -33,16 +33,19 @@ log = logging.getLogger(__name__)
 class GetMessages:
     async def get_messages(
         self: "pyrogram.Client",
-        chat_id: Union[int, str],
+        chat_id: Union[int, str] = None,
         message_ids: Union[int, Iterable[int]] = None,
         reply_to_message_ids: Union[int, Iterable[int]] = None,
-        replies: int = 1
+        replies: int = 1,
+        link: str = None,
     ) -> Union["types.Message", List["types.Message"]]:
         """Get one or more messages from a chat by using message identifiers.
 
         You can retrieve up to 200 messages at once.
 
         .. include:: /_includes/usable-by/users-bots.rst
+
+        You must use exactly one of ``chat_id`` OR ``link``.
 
         Parameters:
             chat_id (``int`` | ``str``):
@@ -64,6 +67,9 @@ class GetMessages:
                 Pass 0 for no reply at all or -1 for unlimited replies.
                 Defaults to 1.
 
+            link (``str``):
+                A link of the message, usually can be copied using ``Copy Link`` functionality OR obtained using :obj:`~pyrogram.raw.types.Message.link` OR  :obj:`~pyrogram.raw.functions.channels.ExportMessageLink`
+
         Returns:
             :obj:`~pyrogram.types.Message` | List of :obj:`~pyrogram.types.Message`: In case *message_ids* was not
             a list, a single message is returned, otherwise a list of messages is returned.
@@ -72,48 +78,85 @@ class GetMessages:
             .. code-block:: python
 
                 # Get one message
-                await app.get_messages(chat_id, 12345)
+                await app.get_messages(chat_id=chat_id, message_ids=12345)
 
                 # Get more than one message (list of messages)
-                await app.get_messages(chat_id, [12345, 12346])
+                await app.get_messages(chat_id=chat_id, message_ids=[12345, 12346])
 
                 # Get message by ignoring any replied-to message
-                await app.get_messages(chat_id, message_id, replies=0)
+                await app.get_messages(chat_id=chat_id, message_ids=message_id, replies=0)
 
                 # Get message with all chained replied-to messages
-                await app.get_messages(chat_id, message_id, replies=-1)
+                await app.get_messages(chat_id=chat_id, message_ids=message_id, replies=-1)
 
                 # Get the replied-to message of a message
-                await app.get_messages(chat_id, reply_to_message_ids=message_id)
+                await app.get_messages(chat_id=chat_id, reply_to_message_ids=message_id)
 
         Raises:
             ValueError: In case of invalid arguments.
         """
-        ids, ids_type = (
-            (message_ids, raw.types.InputMessageID) if message_ids
-            else (reply_to_message_ids, raw.types.InputMessageReplyTo) if reply_to_message_ids
-            else (None, None)
-        )
+        if chat_id:
+            ids, ids_type = (
+                (message_ids, raw.types.InputMessageID) if message_ids
+                else (reply_to_message_ids, raw.types.InputMessageReplyTo) if reply_to_message_ids
+                else (None, None)
+            )
 
-        if ids is None:
-            raise ValueError("No argument supplied. Either pass message_ids or reply_to_message_ids")
+            if ids is None:
+                raise ValueError("No argument supplied. Either pass message_ids or reply_to_message_ids")
 
-        peer = await self.resolve_peer(chat_id)
+            peer = await self.resolve_peer(chat_id)
 
-        is_iterable = not isinstance(ids, int)
-        ids = list(ids) if is_iterable else [ids]
-        ids = [ids_type(id=i) for i in ids]
+            is_iterable = not isinstance(ids, int)
+            ids = list(ids) if is_iterable else [ids]
+            ids = [ids_type(id=i) for i in ids]
 
-        if replies < 0:
-            replies = (1 << 31) - 1
+            if replies < 0:
+                replies = (1 << 31) - 1
 
-        if isinstance(peer, raw.types.InputPeerChannel):
-            rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
-        else:
-            rpc = raw.functions.messages.GetMessages(id=ids)
+            if isinstance(peer, raw.types.InputPeerChannel):
+                rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
+            else:
+                rpc = raw.functions.messages.GetMessages(id=ids)
 
-        r = await self.invoke(rpc, sleep_threshold=-1)
+            r = await self.invoke(rpc, sleep_threshold=-1)
 
-        messages = await utils.parse_messages(self, r, replies=replies)
+            messages = await utils.parse_messages(self, r, replies=replies)
 
-        return messages if is_iterable else messages[0] if messages else None
+            return messages if is_iterable else messages[0] if messages else None
+
+        if link:
+            linkps = link.split("/")
+            raw_chat_id, message_thread_id, message_id = None, None, None
+            if (
+                len(linkps) == 7 and
+                linkps[3] == "c"
+            ):
+                # https://t.me/c/1192302355/322/487
+                raw_chat_id = utils.get_channel_id(
+                    int(linkps[4])
+                )
+                message_thread_id = int(linkps[5])
+                message_id = int(linkps[6])
+            elif len(linkps) == 6:
+                if linkps[3] == "c":
+                    # https://t.me/c/1387666944/609282
+                    raw_chat_id = utils.get_channel_id(
+                        int(linkps[4])
+                    )
+                    message_id = int(linkps[5])
+                else:
+                    # https://t.me/TheForum/322/487
+                    raw_chat_id = linkps[3]
+                    message_thread_id = int(linkps[4])
+                    message_id = int(linkps[5])
+            elif len(linkps) == 5:
+                # https://t.me/pyrogramchat/609282
+                raw_chat_id = linkps[3]
+                message_id = int(linkps[4])
+            return await self.get_messages(
+                chat_id=raw_chat_id,
+                message_ids=message_id
+            )
+
+        raise ValueError("No argument supplied. Either pass link OR (chat_id, message_ids or reply_to_message_ids)")

@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 |  PmOItrOAe  |
 +-------------+
 
+- Add ``link`` parameter in :meth:`~pyrogram.Client.get_messages`
 - `fix(filters): add type hints in filters.py <https://github.com/TelegramPlayGround/pyrogram/pull/8>`_
 - Documentation Builder Fixes
 - `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`_ is not polished or documented for anyone else's use. We don't have the capacity to support `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`_ as an independent open-source project, nor any desire for it to become an alternative to Pyrogram. Our goal in making this code available is a unified faster Pyrogram. `... <https://github.com/cavallium/faster-pyrogram/blob/b781909/README.md#L28>`_

@@ -751,7 +751,7 @@ class Message(Object, Update):
             if isinstance(action, raw.types.MessageActionPinMessage):
                 try:
                     parsed_message.pinned_message = await client.get_messages(
-                        parsed_message.chat.id,
+                        chat_id=parsed_message.chat.id,
                         reply_to_message_ids=message.id,
                         replies=0
                     )
@@ -765,7 +765,7 @@ class Message(Object, Update):
                 if message.reply_to and replies:
                     try:
                         parsed_message.reply_to_message = await client.get_messages(
-                            parsed_message.chat.id,
+                            chat_id=parsed_message.chat.id,
                             reply_to_message_ids=message.id,
                             replies=0
                         )
@@ -1033,7 +1033,7 @@ class Message(Object, Update):
 
                         if not reply_to_message:
                             reply_to_message = await client.get_messages(
-                                parsed_message.chat.id,
+                                chat_id=parsed_message.chat.id,
                                 reply_to_message_ids=message.id,
                                 replies=replies - 1
                             )

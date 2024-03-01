@@ -55,7 +55,10 @@ class VotePoll:
                 await app.vote_poll(chat_id, message_id, 6)
         """
 
-        poll = (await self.get_messages(chat_id, message_id)).poll
+        poll = (await self.get_messages(
+            chat_id=chat_id,
+            message_ids=message_id
+        )).poll
         options = [options] if not isinstance(options, list) else options
 
         r = await self.invoke(
