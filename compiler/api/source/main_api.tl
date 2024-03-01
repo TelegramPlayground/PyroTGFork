@@ -2286,4 +2286,25 @@ smsjobs.getStatus#10a698e8 = smsjobs.status;
 smsjobs.getSmsJob#778d902f job_id: string = smsJob; smsjobs.finishJob#4f1ebf24 flags: int job_id: string error: flags.1?string = Bool;
 smsjobs.updateSettings#93fa0bf flags: int allow_international: Bool = Bool;
 
+accountConnectedBots#b1b41517 connected_bots:Vector<ConnectedBot> users:Vector<User> = AccountConnectedBots;
+
+connectedBot#2e8defb1 flags:# bot_id:long can_reply:flags.0?true recipients:BusinessRecipients = ConnectedBot;
+
+businessRecipients#8d8d82d7 flags:# existing_chats:flags.0?true new_chats:flags.1?true contacts:flags.2?true non_contacts:flags.3?true exclude_selected:flags.5?true users:flags.4?Vector<long> = BusinessRecipients;
+
+accountUpdateBusinessAwayMessage#9a97e1f3 flags:# message:flags.0?InputBusinessAwayMessage = AccountUpdateBusinessAwayMessage;
+
+inputBusinessAwayMessage#19f7e578 flags:# text:string = InputBusinessAwayMessage;
+
+businessAwayMessageScheduleEmpty#e6c49073 = BusinessAwayMessageSchedule;
+businessAwayMessageScheduleAlways#76e28c1f = BusinessAwayMessageSchedule;
+businessAwayMessageScheduleOutsideWorkHours#a3b54985 = BusinessAwayMessageSchedule;
+businessAwayMessageScheduleCustom#79d93855 = BusinessAwayMessageSchedule;
+
+businessAwayMessageSchedule#f1e69bf3 = BusinessAwayMessageSchedule;
+
+businessWorkHours#8af52acd flags:# open_now:flags.0?true timezone_id:string weekly_open:Vector<BusinessWeeklyOpen> = BusinessWorkHours;
+
+businessWeeklyOpen#a3b7aacb weekday:int start_time:int end_time:int = BusinessWeeklyOpen;
+
 // LAYER 174
