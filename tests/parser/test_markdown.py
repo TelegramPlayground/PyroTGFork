@@ -69,6 +69,15 @@ def test_markdown_unparse_url():
     assert Markdown.unparse(text=text, entities=entities) == expected
 
 
+def test_markdown_unparse_emoji():
+    expected = '![🥲](tg://emoji?id=5195264424893488796) im crying'
+    text = "🥲 im crying"
+    entities = pyrogram.types.List([pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.CUSTOM_EMOJI,
+                                                                 offset=0, length=2, custom_emoji_id=5195264424893488796)])
+
+    assert Markdown.unparse(text=text, entities=entities) == expected
+
+
 def test_markdown_unparse_code():
     expected = '`code`'
     text = "code"
