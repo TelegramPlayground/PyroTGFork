@@ -61,39 +61,37 @@ class Markdown:
     def __init__(self, client: Optional["pyrogram.Client"]):
         self.html = HTML(client)
 
-    def blockquote_parser(self, text):
-        text = re.sub(r'\n&gt;', '\n>', re.sub(r'^&gt;', '>', text))
+    def _parse_blockquotes(self, text: str):
+        text = html.unescape(text)
         lines = text.split('\n')
         result = []
-
         in_blockquote = False
+        current_blockquote = []
 
         for line in lines:
             if line.startswith(BLOCKQUOTE_DELIM):
-                if not in_blockquote:
-                    line = re.sub(r'^> ', OPENING_TAG.format("blockquote"), line)
-                    line = re.sub(r'^>', OPENING_TAG.format("blockquote"), line)
-                    in_blockquote = True
-                    result.append(line.strip())
-                else:
-                    result.append(line[-1].strip())
+                in_blockquote = True
+                current_blockquote.append(line[1:].strip())
             else:
                 if in_blockquote:
-                    line = CLOSING_TAG.format("blockquote") + line
                     in_blockquote = False
-                result.append(line.strip())
+                    result.append(OPENING_TAG.format("blockquote") + '\n'.join(current_blockquote) + CLOSING_TAG.format("blockquote"))
+                    current_blockquote = []
+                result.append(line)
 
         if in_blockquote:
-            line = result[len(result)-1] + CLOSING_TAG.format("blockquote")
-            result.pop(len(result)-1)
-            result.append(line)
+            result.append(OPENING_TAG.format("blockquote") + '\n'.join(current_blockquote) + CLOSING_TAG.format("blockquote"))
 
         return '\n'.join(result)
 
     async def parse(self, text: str, strict: bool = False):
         if strict:
             text = html.escape(text)
-        text = self.blockquote_parser(text)
+        
+
+        text = self._parse_blockquotes(text)
+
+        text = self._parse_blockquotes(text)
 
         delims = set()
         is_fixed_width = False
@@ -179,7 +177,7 @@ class Markdown:
                 lines = blockquote_text.split("\n")
                 last_length = 0
                 for line in lines:
-                    if len(line) == end:
+                    if len(line) == 0 and last_length == end:
                         continue
                     start_offset = start+last_length
                     last_length = last_length+len(line)
