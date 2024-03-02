@@ -93,6 +93,21 @@ for i in range(10):
     assert Markdown.unparse(text=text, entities=entities) == expected
 
 
+def test_markdown_unparse_blockquote():
+    expected = """> Hello
+> from
+
+> pyrogram!"""
+
+    text = """Hello\nfrom\n\npyrogram!"""
+
+    entities = pyrogram.types.List(
+        [pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.BLOCKQUOTE, offset=0, length=10),
+         pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.BLOCKQUOTE, offset=12, length=9)])
+
+    assert Markdown.unparse(text=text, entities=entities) == expected
+
+
 def test_markdown_unparse_mixed():
     expected = "**aaaaaaa__aaabbb**__~~dddddddd||ddeee~~||||eeeeeeefff||ffff`fffggggggg`ggghhhhhhhhhh"
     text = "aaaaaaaaaabbbddddddddddeeeeeeeeeeffffffffffgggggggggghhhhhhhhhh"
