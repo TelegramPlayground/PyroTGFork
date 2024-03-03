@@ -42,7 +42,9 @@ This means everyone has a message counter of one.
 
 First, User-A will sent a welcome message to both User-B and User-C::
 
+..
     User-A → User-B: Hey, welcome!
+
     User-A → User-C: ¡Bienvenido!
 
 * For User-A, "Hey, welcome!" will have the message identifier 1. The message with "¡Bienvenido!" will have an ID of 2.
@@ -57,7 +59,9 @@ First, User-A will sent a welcome message to both User-B and User-C::
 
 Next, User-B and User-C will respond to User-A::
 
+..
     User-B → User-A: Thanks!
+
     User-C → User-A: Gracias :)
 
 .. csv-table:: Message identifiers
@@ -72,6 +76,7 @@ Notice how for each message, the counter goes up by one, and they are independen
 
 Let's see what happens when User-B sends a message to Group-S::
 
+..
     User-B → Group-S: Nice group
 
 .. csv-table:: Message identifiers
@@ -89,6 +94,7 @@ The chat where the message was sent can be completely ignored.
 
 Megagroups behave differently::
 
+..
     User-C → Group-M: Buen grupo
 
 .. csv-table:: Message identifiers

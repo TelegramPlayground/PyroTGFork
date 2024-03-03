@@ -6,7 +6,7 @@ in reverse chronological order. You should read this when upgrading
 to this fork to know where your code can break, and where
 it can take advantage of new goodies!
 
-`For a more detailed description, you can check the commits. <https://github.com/TelegramPlayGround/pyrogram/>`_
+`For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/>`_
 
 +-------------+
 |  PmOItrOAe  |
@@ -15,7 +15,7 @@ it can take advantage of new goodies!
 - Add ``link`` parameter in :meth:`~pyrogram.Client.get_messages`
 - `fix(filters): add type hints in filters.py <https://github.com/TelegramPlayGround/pyrogram/pull/8>`_
 - Documentation Builder Fixes
-- `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`_ is not polished or documented for anyone else's use. We don't have the capacity to support `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`_ as an independent open-source project, nor any desire for it to become an alternative to Pyrogram. Our goal in making this code available is a unified faster Pyrogram. `... <https://github.com/cavallium/faster-pyrogram/blob/b781909/README.md#L28>`_
+- `faster-pyrogram <https://github.com/cavallium/faster-pyrogram>`_ is not polished or documented for anyone else's use. We don't have the capacity to support `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`_ as an independent open-source project, nor any desire for it to become an alternative to Pyrogram. Our goal in making this code available is a unified faster Pyrogram. `... <https://github.com/cavallium/faster-pyrogram/blob/b781909/README.md#L28>`_
     - Lock-free and asynchronous implementation of the sqlite session.
     - The possibility of turning off journaling and vacuum when starting a session.
     - Improved implementation of rle_encode.
@@ -29,7 +29,7 @@ it can take advantage of new goodies!
 
 - `Add ttl_seconds attribute to Voice and VideoNote class <https://github.com/KurimuzonAkuma/pyrogram/commit/7556d3e3864215386f018692947cdf52a82cb420>`_
 - `#713 <https://github.com/pyrogram/pyrogram/pull/713>`_
-- Removed :obj:`~pyrogram.types.ChatPreview` class.
+- Removed :obj:`~pyrogram.types.ChatPreview` class, and merged the parameters with the :obj:`~pyrogram.types.Chat` class.
 - Added ``description``, ``accent_color_id``, ``is_verified``, ``is_scam``, ``is_fake``, ``is_public``, ``join_by_request`` attributes to the class :obj:`~pyrogram.types.ChatPreview`.
 - Added ``force_full`` parameter to :meth:`~pyrogram.Client.get_chat`.
 - Bug Fix for :meth:`~pyrogram.Client.get_chat` and :meth:`~pyrogram.Client.join_chat` when ``https://t.me/username`` was passed.
@@ -75,25 +75,25 @@ it can take advantage of new goodies!
 - Added missing attributes ``added_to_attachment_menu``, ``is_attachment_menu_adding_available``, ``can_join_groups``, ``can_read_all_group_messages``, ``supports_inline_queries``, ``can_be_contacted_with_premium`` to the :obj:`~pyrogram.types.User`.
 - Migrate project to ``pyproject.toml`` from ``setup.py``.
 - PRs from upstream: `1366 <https://github.com/pyrogram/pyrogram/pull/1366>`_, `1305 <https://github.com/pyrogram/pyrogram/pull/1305>`_, `1288 <https://github.com/pyrogram/pyrogram/pull/1288>`_, `1262 <https://github.com/pyrogram/pyrogram/pull/1262>`_, `1253 <https://github.com/pyrogram/pyrogram/pull/1253>`_, `1234 <https://github.com/pyrogram/pyrogram/pull/1234>`_, `1210 <https://github.com/pyrogram/pyrogram/pull/1210>`_, `1201 <https://github.com/pyrogram/pyrogram/pull/1201>`_, `1197 <https://github.com/pyrogram/pyrogram/pull/1197>`_, `1143 <https://github.com/pyrogram/pyrogram/pull/1143>`_, `1059 <https://github.com/pyrogram/pyrogram/pull/1059>`_.
-- Bug fix for :obj:`~pyrogram.Client.send_audio` and :obj:`~pyrogram.Client.send_voice`. (Thanks to `... <https://t.me/c/1220993104/1360174>`_).
-- Add `waveform` parameter to :obj:`~pyrogram.Client.send_voice`.
-- Added `view_once` parameter to :obj:`~pyrogram.Client.send_photo`, :obj:`~pyrogram.Client.send_video`, :obj:`~pyrogram.Client.send_video_note`, :obj:`~pyrogram.Client.send_voice`.
+- Bug fix for :meth:`~pyrogram.Client.send_audio` and :meth:`~pyrogram.Client.send_voice`. (Thanks to `... <https://t.me/c/1220993104/1360174>`_).
+- Add `waveform` parameter to :meth:`~pyrogram.Client.send_voice`.
+- Added `view_once` parameter to :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_video_note`, :meth:`~pyrogram.Client.send_voice`.
 - Add missing parameters to :obj:`~pyrogram.types.Message.reply_photo`, :obj:`~pyrogram.types.Message.reply_video`, :obj:`~pyrogram.types.Message.reply_video_note`, :obj:`~pyrogram.types.Message.reply_voice`.
 
 +------------------------+
 | Scheme layer used: 170 |
 +------------------------+
 
-- Stole documentation from `https://github.com/PyrogramMod/PyrogramMod`.
-- Removed `send_reaction` and Added `set_message_reaction`.
-- Added support for voice, photo, video, animation messages that could be played once.
+- Stole documentation from `PyrogramMod <https://github.com/PyrogramMod/PyrogramMod>`_.
+- Renamed ``send_reaction`` to :meth:`~pyrogram.Client.set_message_reaction`.
+- Added support for :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_animation`, :meth:`~pyrogram.Client.send_voice` messages that could be played once.
 - Added ``_raw`` to the :obj:`~pyrogram.types.Chat` object.
 - Added the field ``via_chat_folder_invite_link`` to the class :obj:`~pyrogram.types.ChatMemberUpdated`.
 - **BOTS ONLY**: Added updates about a reaction change on a message with non-anonymous reactions, represented by the class :obj:`~pyrogram.handlers.MessageReactionUpdatedHandler` and the field ``message_reaction`` in the class Update.
 - **BOTS ONLY**: Added updates about reaction changes on a message with anonymous reactions, represented by the class :obj:`~pyrogram.handlers.MessageReactionCountUpdatedHandler` and the field ``message_reaction_count`` in the class Update.
-- Replaced the parameter ``disable_web_page_preview`` with :obj:`~pyrogram.types.LinkPreviewOptions` in the methods sendMessage and editMessageText.
-- Replaced the field ``disable_web_page_preview`` with :obj:`~pyrogram.types.LinkPreviewOptions` in the class InputTextMessageContent.
-- Added missing parameters to :obj:`~pyrogram.Client.forward_messages`.
+- Replaced the parameter ``disable_web_page_preview`` with :obj:`~pyrogram.types.LinkPreviewOptions` in the methods :meth:`~pyrogram.Client.send_message` and :meth:`~pyrogram.Client.edit_message_text`.
+- Replaced the field ``disable_web_page_preview`` with :obj:`~pyrogram.types.LinkPreviewOptions` in the class :obj:`~pyrogram.types.InputTextMessageContent`.
+- Added missing parameters to :meth:`~pyrogram.Client.forward_messages`.
 - Added the class :obj:`~pyrogram.types.ReplyParameters` and replaced parameters ``reply_to_message_id`` in the methods :meth:`~pyrogram.Client.copy_message`, :meth:`~pyrogram.Client.forward_messages`, :meth:`~pyrogram.Client.send_message`, :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_animation`, :meth:`~pyrogram.Client.send_audio`, :meth:`~pyrogram.Client.send_document`, :meth:`~pyrogram.Client.send_sticker`, :meth:`~pyrogram.Client.send_video_note`, :meth:`~pyrogram.Client.send_voice`, :meth:`~pyrogram.Client.send_location`, :meth:`~pyrogram.Client.send_venue`, :meth:`~pyrogram.Client.send_contact`, :meth:`~pyrogram.Client.send_poll`, :meth:`~pyrogram.Client.send_dice`, :meth:`~pyrogram.Client.send_game`, :meth:`~pyrogram.Client.send_media_group`, :meth:`~pyrogram.Client.copy_media_group`, :meth:`~pyrogram.Client.send_inline_bot_result`, :meth:`~pyrogram.Client.send_cached_media`, and the corresponding reply_* methods with the field ``reply_parameters`` of type :obj:`~pyrogram.types.ReplyParameters`.
 - Bug fixes for sending ``ttl_seconds`` and ``has_spoiler``.
 

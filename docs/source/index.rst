@@ -5,7 +5,9 @@ Welcome to Pyrogram
 
     <div align="center">
         <a href="/">
-            <div class="pyrogram-logo-index"><img src="_static/pyrogram.png" alt="Pyrogram"></div>
+            <div class="pyrogram-logo-index">
+                <img src="_static/pyrogram.png" alt="Pyrogram">
+            </div>
             <div class="pyrogram-text pyrogram-text-index">Pyrogram</div>
         </a>
     </div>
@@ -22,6 +24,10 @@ Welcome to Pyrogram
             Development
         </a>
         •
+        <a href="./releases/">
+            Releases
+        </a>
+        •
         <a href="https://t.me/pyrogram">
             News
         </a>
@@ -33,11 +39,9 @@ Welcome to Pyrogram
 
     app = Client("my_account")
 
-
     @app.on_message(filters.private)
     async def hello(client, message):
         await message.reply("Hello from Pyrogram!")
-
 
     app.run()
 
@@ -53,7 +57,7 @@ It enables you to easily interact with the main Telegram API through a user acco
 .. admonition :: USE AT YOUR OWN RISK
     :class: tip
     
-    All of the repositories that we merge features from are listed in `Release Notes <https://telegramplayground.github.io/pyrogram/releases/changes-in-this-fork.html>`_ file.
+    All of the repositories that we merge features from are listed in :doc:`Release Notes <releases/changes-in-this-fork>` file.
 
 
 Support
@@ -92,7 +96,7 @@ API Reference
 .. hlist::
     :columns: 1
 
-    - :doc:`Pyrogram Mod Client <api/client>`: Reference details about the Client class.
+    - :doc:`Pyrogram Client <api/client>`: Reference details about the Client class.
     - :doc:`Available Methods <api/methods/index>`: List of available high-level methods.
     - :doc:`Available Types <api/types/index>`: List of available high-level types.
     - :doc:`Enumerations <api/enums/index>`: List of available enumerations.
@@ -133,7 +137,6 @@ Meta
     api/client
     api/methods/index
     api/types/index
-    api/storage/index
     api/bound-methods/index
     api/enums/index
     api/handlers
@@ -151,6 +154,7 @@ Meta
     topics/client-settings
     topics/speedups
     topics/text-formatting
+    topics/storage-engines
     topics/synchronous
     topics/smart-plugins
     topics/serializing

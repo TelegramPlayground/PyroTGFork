@@ -1,6 +1,3 @@
-Pyrogram Storage Engines
-===============
-
 Storage Engines
 ===============
 

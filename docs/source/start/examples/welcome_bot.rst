@@ -19,10 +19,13 @@ to make it only work for specific messages in a specific chat.
 
 
     # Filter in only new_chat_members updates generated in TARGET chat
-    @app.on_chat_member_updated(filters.chat(TARGET) & filters.new_chat_members)
+    @app.on_chat_member_updated(filters.chat(TARGET))
     async def welcome(client, chat_member_updated):
+        if chat_member_updated.old_chat_member:
+            return # it's not a new join
         # Build the new members list (with mentions) by using their first_name
         new_member = chat_member_updated.new_chat_member.user.mention
+        added_by = message.from_user.id  # is equal to new_member if user wasn't added
         # Build the welcome message by using an emoji and the list we built above
         text = MESSAGE.format(emoji.SPARKLES, new_member)
         # send a message to the chat

@@ -37,8 +37,8 @@ api:
 
 docs-live:
 	make clean-docs
+	make api
 	cd compiler/docs && ../../$(PYTHON) compiler.py
-	$(RM) docs/source/telegram
 	$(VENV)/bin/sphinx-autobuild \
 		--watch pyrogram --watch docs/resources \
 		-b html "docs/source" "docs/build/html" -j auto
