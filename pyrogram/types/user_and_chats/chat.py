@@ -171,6 +171,9 @@ class Chat(Object):
         send_as_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             The default "send_as" chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
+        
+        is_peak_preview (``bool``, *optional*):
+            True, if this is a peak preview.
     """
 
     def __init__(
@@ -218,6 +221,7 @@ class Chat(Object):
         unrestrict_boost_count: int = None,
         is_forum: bool = None,
         accent_color_id: int = None,
+        is_peak_preview: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -270,6 +274,7 @@ class Chat(Object):
         self.accent_color_id = accent_color_id
         self.is_public = is_public
         self.join_by_request = join_by_request
+        self.is_peak_preview = is_peak_preview
         self._raw = _raw
 
     @staticmethod
@@ -507,6 +512,7 @@ class Chat(Object):
             is_fake=getattr(chat_invite, "fake", None),
             is_public=getattr(chat_invite, "public", None),
             join_by_request=getattr(chat_invite, "request_needed", None),
+            is_peak_preview=True,
             client=client
         )
 
