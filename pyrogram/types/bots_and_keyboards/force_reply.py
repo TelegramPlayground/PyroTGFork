@@ -37,30 +37,30 @@ class ForceReply(Object):
             1) users that are @mentioned in the text of the Message object;
             2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.
 
-        placeholder (``str``, *optional*):
+        input_field_placeholder (``str``, *optional*):
             The placeholder to be shown in the input field when the reply is active; 1-64 characters.
     """
 
     def __init__(
         self,
         selective: bool = None,
-        placeholder: str = None
+        input_field_placeholder: str = None
     ):
         super().__init__()
 
         self.selective = selective
-        self.placeholder = placeholder
+        self.input_field_placeholder = input_field_placeholder
 
     @staticmethod
     def read(b):
         return ForceReply(
             selective=b.selective,
-            placeholder=b.placeholder
+            input_field_placeholder=b.placeholder
         )
 
     async def write(self, _: "pyrogram.Client"):
         return raw.types.ReplyKeyboardForceReply(
             single_use=True,
             selective=self.selective or None,
-            placeholder=self.placeholder or None
+            placeholder=self.input_field_placeholder or None
         )

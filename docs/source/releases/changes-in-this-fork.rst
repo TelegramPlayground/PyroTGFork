@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 |  PmOItrOAe  |
 +-------------+
 
+- Renamed ``placeholder`` to ``input_field_placeholder`` in :obj:`~pyrogram.types.ForceReply`.
 - Add ``link`` parameter in :meth:`~pyrogram.Client.get_messages`
 - `fix(filters): add type hints in filters.py <https://github.com/TelegramPlayGround/pyrogram/pull/8>`_
 - Documentation Builder Fixes
