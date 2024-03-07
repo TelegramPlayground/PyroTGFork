@@ -163,7 +163,8 @@ class SQLiteStorage(Storage):
     async def update_state(self, value: Tuple[int, int, int, int, int] = object):
         if value == object:
             return self.conn.execute(
-                "SELECT id, pts, qts, date, seq FROM update_state"
+                "SELECT id, pts, qts, date, seq FROM update_state "
+                "ORDER BY date ASC"
             ).fetchall()
         else:
             with self.conn:

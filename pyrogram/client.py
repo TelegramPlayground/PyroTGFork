@@ -603,7 +603,7 @@ class Client(Methods):
                             pts,
                             None,
                             updates.date,
-                            None
+                            updates.seq
                         )
                     )
 
