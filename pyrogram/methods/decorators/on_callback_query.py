@@ -33,6 +33,8 @@ class OnCallbackQuery:
         This does the same thing as :meth:`~pyrogram.Client.add_handler` using the
         :obj:`~pyrogram.handlers.CallbackQueryHandler`.
 
+        .. include:: /_includes/usable-by/bots.rst
+
         Parameters:
             filters (:obj:`~pyrogram.filters`, *optional*):
                 Pass one or more filters to allow only a subset of callback queries to be passed

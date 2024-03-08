@@ -27,6 +27,9 @@ class OnDisconnect:
 
         This does the same thing as :meth:`~pyrogram.Client.add_handler` using the
         :obj:`~pyrogram.handlers.DisconnectHandler`.
+
+        .. include:: /_includes/usable-by/users-bots.rst
+
         """
 
         def decorator(func: Callable) -> Callable:
