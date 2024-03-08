@@ -190,6 +190,7 @@ class SendVideo:
                 await app.send_video("me", "video.mp4", progress=progress)
         """
         file = None
+        ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
 
         try:
             if isinstance(video, str):
@@ -199,7 +200,7 @@ class SendVideo:
                     media = raw.types.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(video) or "video/mp4",
                         file=file,
-                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds,
+                        ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler,
                         thumb=thumb,
                         attributes=[
@@ -215,14 +216,14 @@ class SendVideo:
                 elif re.match("^https?://", video):
                     media = raw.types.InputMediaDocumentExternal(
                         url=video,
-                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds,
+                        ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler
                     )
                 else:
                     media = utils.get_input_media_from_file_id(
                         video,
                         FileType.VIDEO,
-                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds,
+                        ttl_seconds=ttl_seconds,
                         has_spoiler=has_spoiler
                     )
             else:
@@ -231,7 +232,7 @@ class SendVideo:
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(file_name or video.name) or "video/mp4",
                     file=file,
-                    ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds,
+                    ttl_seconds=ttl_seconds,
                     spoiler=has_spoiler,
                     thumb=thumb,
                     attributes=[

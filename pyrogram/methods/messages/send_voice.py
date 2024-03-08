@@ -160,6 +160,7 @@ class SendVoice:
 
         """
         file = None
+        ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
 
         try:
             if isinstance(voice, str):
@@ -176,7 +177,7 @@ class SendVoice:
                                 waveform=waveform
                             )
                         ],
-                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds
+                        ttl_seconds=ttl_seconds
                     )
                 elif re.match("^https?://", voice):
                     media = raw.types.InputMediaDocumentExternal(
@@ -202,7 +203,7 @@ class SendVoice:
                             waveform=waveform
                         )
                     ],
-                    ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds
+                    ttl_seconds=ttl_seconds
                 )
 
             reply_to = await utils.get_reply_head_fm(

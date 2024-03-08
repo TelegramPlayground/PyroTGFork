@@ -154,6 +154,7 @@ class SendPhoto:
                 await app.send_photo("me", "photo.jpg", ttl_seconds=10)
         """
         file = None
+        ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
 
         try:
             if isinstance(photo, str):
@@ -161,7 +162,7 @@ class SendPhoto:
                     file = await self.save_file(photo, progress=progress, progress_args=progress_args)
                     media = raw.types.InputMediaUploadedPhoto(
                         file=file,
-                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds,
+                        ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler,
                     )
                 elif re.match("^https?://", photo):
@@ -181,7 +182,7 @@ class SendPhoto:
                 file = await self.save_file(photo, progress=progress, progress_args=progress_args)
                 media = raw.types.InputMediaUploadedPhoto(
                     file=file,
-                    ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds,
+                    ttl_seconds=ttl_seconds,
                     spoiler=has_spoiler
                 )
 

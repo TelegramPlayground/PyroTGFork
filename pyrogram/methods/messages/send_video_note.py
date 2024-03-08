@@ -166,6 +166,7 @@ class SendVideoNote:
                 await app.send_video_note("me", "video_note.mp4", view_once=True)
         """
         file = None
+        ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
 
         try:
             if isinstance(video_note, str):
@@ -184,7 +185,7 @@ class SendVideoNote:
                                 h=length
                             )
                         ],
-                        ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds
+                        ttl_seconds=ttl_seconds
                     )
                 else:
                     media = utils.get_input_media_from_file_id(
@@ -207,7 +208,7 @@ class SendVideoNote:
                             h=length
                         )
                     ],
-                    ttl_seconds=0x7FFFFFFF if view_once else ttl_seconds
+                    ttl_seconds=ttl_seconds
                 )
 
             reply_to = await utils.get_reply_head_fm(
