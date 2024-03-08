@@ -47,7 +47,8 @@ class RPCError(Exception):
         value: Union[int, str, raw.types.RpcError] = None,
         rpc_name: str = None,
         is_unknown: bool = False,
-        is_signed: bool = False
+        is_signed: bool = False,
+        _raw = None
     ):
         super().__init__("Telegram says: [{}{} {}] - {} {}".format(
             "-" if is_signed else "",
@@ -56,6 +57,8 @@ class RPCError(Exception):
             self.MESSAGE.format(value=value),
             f'(caused by "{rpc_name}")' if rpc_name else ""
         ))
+
+        self._raw = _raw
 
         try:
             self.value = int(value)
@@ -81,7 +84,8 @@ class RPCError(Exception):
                 value=f"[{error_code} {error_message}]",
                 rpc_name=rpc_name,
                 is_unknown=True,
-                is_signed=is_signed
+                is_signed=is_signed,
+                _raw=rpc_error
             )
 
         error_id = re.sub(r"_\d+", "_X", error_message)
@@ -93,7 +97,8 @@ class RPCError(Exception):
             )(value=f"[{error_code} {error_message}]",
               rpc_name=rpc_name,
               is_unknown=True,
-              is_signed=is_signed)
+              is_signed=is_signed,
+              _raw=rpc_error)
 
         value = re.search(r"_(\d+)", error_message)
         value = value.group(1) if value is not None else value
@@ -104,7 +109,8 @@ class RPCError(Exception):
         )(value=value,
           rpc_name=rpc_name,
           is_unknown=False,
-          is_signed=is_signed)
+          is_signed=is_signed,
+          _raw=rpc_error)
 
 
 class UnknownError(RPCError):
