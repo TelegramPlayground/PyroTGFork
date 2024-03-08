@@ -422,6 +422,7 @@ updateBotMessageReactions#9cb7759 peer:Peer msg_id:int date:int reactions:Vector
 updateSavedDialogPinned#aeaf9e74 flags:# pinned:flags.0?true peer:DialogPeer = Update;
 updatePinnedSavedDialogs#686c85a6 flags:# order:flags.0?Vector<DialogPeer> = Update;
 updateSavedReactionTags#39c67432 = Update;
+updateSmsJob#f16269d4 job_id:string = Update;
 
 updates.state#a56c2a3e pts:int qts:int date:int seq:int unread_count:int = updates.State;
 
@@ -1673,6 +1674,12 @@ messages.savedReactionTags#3259950a tags:Vector<SavedReactionTag> hash:long = me
 
 outboxReadDate#3bb842ac date:int = OutboxReadDate;
 
+smsjobs.eligibleToJoin#dc8b44cf terms_url:string monthly_sent_sms:int = smsjobs.EligibilityToJoin;
+
+smsjobs.status#2aee9191 flags:# allow_international:flags.0?true recent_sent:int recent_since:int recent_remains:int total_sent:int total_since:int last_gift_slug:flags.1?string terms_url:string = smsjobs.Status;
+
+smsJob#e6a1eeb8 job_id:string phone_number:string text:string = SmsJob;
+
 ---functions---
 
 invokeAfterMsg#cb9f372d {X:Type} msg_id:long query:!X = X;
@@ -2272,39 +2279,16 @@ premium.applyBoost#6b7da746 flags:# slots:flags.0?Vector<int> peer:InputPeer = p
 premium.getBoostsStatus#42f1f61 peer:InputPeer = premium.BoostsStatus;
 premium.getUserBoosts#39854d1f peer:InputPeer user_id:InputUser = premium.BoostsList;
 
+smsjobs.isEligibleToJoin#edc39d0 = smsjobs.EligibilityToJoin;
+smsjobs.join#a74ece2d = Bool;
+smsjobs.leave#9898ad73 = Bool;
+smsjobs.updateSettings#93fa0bf flags:# allow_international:flags.0?true = Bool;
+smsjobs.getStatus#10a698e8 = smsjobs.Status;
+smsjobs.getSmsJob#778d902f job_id:string = SmsJob;
+smsjobs.finishJob#4f1ebf24 flags:# job_id:string error:flags.0?string = Bool;
+
 test.useError = Error;
 test.useConfigSimple = help.ConfigSimple;
 test.parseInputAppEvent = InputAppEvent;
 
-smsjobs.eligibleToJoin#dc8b44cf terms_of_use: string monthly_sent_sms: int;
-smsjobs.status#2aee9191 flags: int allow_international: Bool recent_sent: int recent_since: int recent_remains: int total_sent: int total_since: int last_gift_slug: flags.2?string terms_url: string; 
-updateSmsJob#f16269d4 job_id: string = Update; smsJob#e6a1eeb8 job_id: string phone_number: string text: string;
-smsjobs.isEligibleToJoin#edc39d0 = smsjobs.eligibleToJoin;
-smsjobs.join#a74ece2d = Bool;
-smsjobs.leave#9898ad73 = Bool;
-smsjobs.getStatus#10a698e8 = smsjobs.status;
-smsjobs.getSmsJob#778d902f job_id: string = smsJob; smsjobs.finishJob#4f1ebf24 flags: int job_id: string error: flags.1?string = Bool;
-smsjobs.updateSettings#93fa0bf flags: int allow_international: Bool = Bool;
-
-accountConnectedBots#b1b41517 connected_bots:Vector<ConnectedBot> users:Vector<User> = AccountConnectedBots;
-
-connectedBot#2e8defb1 flags:# bot_id:long can_reply:flags.0?true recipients:BusinessRecipients = ConnectedBot;
-
-businessRecipients#8d8d82d7 flags:# existing_chats:flags.0?true new_chats:flags.1?true contacts:flags.2?true non_contacts:flags.3?true exclude_selected:flags.5?true users:flags.4?Vector<long> = BusinessRecipients;
-
-accountUpdateBusinessAwayMessage#9a97e1f3 flags:# message:flags.0?InputBusinessAwayMessage = AccountUpdateBusinessAwayMessage;
-
-inputBusinessAwayMessage#19f7e578 flags:# text:string = InputBusinessAwayMessage;
-
-businessAwayMessageScheduleEmpty#e6c49073 = BusinessAwayMessageSchedule;
-businessAwayMessageScheduleAlways#76e28c1f = BusinessAwayMessageSchedule;
-businessAwayMessageScheduleOutsideWorkHours#a3b54985 = BusinessAwayMessageSchedule;
-businessAwayMessageScheduleCustom#79d93855 = BusinessAwayMessageSchedule;
-
-businessAwayMessageSchedule#f1e69bf3 = BusinessAwayMessageSchedule;
-
-businessWorkHours#8af52acd flags:# open_now:flags.0?true timezone_id:string weekly_open:Vector<BusinessWeeklyOpen> = BusinessWorkHours;
-
-businessWeeklyOpen#a3b7aacb weekday:int start_time:int end_time:int = BusinessWeeklyOpen;
-
-// LAYER 174
+// LAYER 175
