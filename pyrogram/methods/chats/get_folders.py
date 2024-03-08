@@ -56,8 +56,10 @@ class GetFolders:
         is_iterable = hasattr(folder_ids, "__iter__")
         ids = set(folder_ids) if is_iterable else {folder_ids}
 
+        dialog_filters = await self.invoke(raw.functions.messages.GetDialogFilters())
+
         raw_folders = [
-            folder for folder in await self.invoke(raw.functions.messages.GetDialogFilters())
+            folder for folder in dialog_filters.filters
             if not isinstance(folder, raw.types.DialogFilterDefault) and (is_iterable and folder.id in ids or not is_iterable)
         ]
 
