@@ -178,6 +178,7 @@ class SendMessage:
                     random_id=self.rnd_id(),
                     message=message,
                     entities=entities,
+                    # TODO
                 )
             )
 
