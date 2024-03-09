@@ -22,7 +22,7 @@ from datetime import datetime
 from typing import Union, Optional, Callable, BinaryIO
 
 import pyrogram
-from pyrogram import types
+from pyrogram import types, enums
 from pyrogram.file_id import FileId, FileType, PHOTO_TYPES
 
 DEFAULT_DOWNLOAD_DIR = "downloads/"
@@ -31,7 +31,7 @@ DEFAULT_DOWNLOAD_DIR = "downloads/"
 class DownloadMedia:
     async def download_media(
         self: "pyrogram.Client",
-        message: Union["types.Message", str],
+        message: Union["types.Message", "types.Story", str],
         file_name: str = DEFAULT_DOWNLOAD_DIR,
         in_memory: bool = False,
         block: bool = True,
@@ -43,7 +43,7 @@ class DownloadMedia:
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
-            message (:obj:`~pyrogram.types.Message` | ``str``):
+            message (:obj:`~pyrogram.types.Message` | :obj:`~pyrogram.types.Story` | ``str``):
                 Pass a Message containing the media, the media itself (message.audio, message.video, ...) or a file id
                 as string.
 
@@ -119,19 +119,43 @@ class DownloadMedia:
                 file_name = file.name
                 file_bytes = bytes(file.getbuffer())
         """
-        available_media = ("audio", "document", "photo", "sticker", "animation", "video", "voice", "video_note",
-                           "new_chat_photo")
+
+        media = message
 
         if isinstance(message, types.Message):
-            for kind in available_media:
-                media = getattr(message, kind, None)
+            if message.new_chat_photo:
+                media = message.new_chat_photo
 
-                if media is not None:
-                    break
+            elif (
+                not self.me.is_bot and
+                message.story or message.reply_to_story
+            ):
+                story_media = message.story or message.reply_to_story or None
+                if story_media and story_media.media:
+                    media = getattr(story_media, story_media.media.value, None)
+                else:
+                    media = None
+
             else:
-                raise ValueError("This message doesn't contain any downloadable media")
-        else:
+                if message.media:
+                    media = getattr(message, message.media.value, None)
+                else:
+                    media = None
+
+        elif isinstance(message, types.Story):
+            if self.me.is_bot:
+                raise ValueError("This method cannot be used by bots")
+            else:
+                if message.media:
+                    media = getattr(message, message.media.value, None)
+                else:
+                    media = None
+
+        elif isinstance(message, str):
             media = message
+
+        if not media:
+            raise ValueError("This message doesn't contain any downloadable media")
 
         if isinstance(media, str):
             file_id_str = media
@@ -141,8 +165,8 @@ class DownloadMedia:
         file_id_obj = FileId.decode(file_id_str)
 
         file_type = file_id_obj.file_type
-        media_file_name = getattr(media, "file_name", "")
-        file_size = getattr(media, "file_size", 0)
+        media_file_name = getattr(media, "file_name", "")  # TODO
+        file_size = getattdr(media, "file_size", 0)
         mime_type = getattr(media, "mime_type", "")
         date = getattr(media, "date", None)
 

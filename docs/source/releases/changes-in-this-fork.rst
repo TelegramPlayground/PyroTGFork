@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- Rewrote :meth:`~pyrogram.Client.download_media` to support Story, and also made it future proof.
 - `Fix bug in clicking UpdateBotCallbackQuery buttons <https://t.me/pyrogramchat/610636>`_
 
 +-------------+
