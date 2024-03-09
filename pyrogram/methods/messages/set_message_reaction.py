@@ -39,9 +39,15 @@ class SetMessageReaction:
         a channel to its discussion group have the
         same available reactions as messages in the channel.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        You must use exactly one of ``chat_id`` OR ``story_id``.
 
-        .. include:: /_includes/usable-by/users.rst
+            If you specify, ``chat_id``
+
+                .. include:: /_includes/usable-by/users-bots.rst
+
+            If you specify, ``story_id``
+
+                .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):

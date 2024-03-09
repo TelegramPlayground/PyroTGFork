@@ -618,7 +618,11 @@ def pyrogram_api():
         ChatJoinRequest
             ChatJoinRequest.approve
             ChatJoinRequest.decline
-        """
+        """,
+        story="""
+        Story
+            Story.react
+        """,
     )
 
     root = PYROGRAM_API_DEST + "/bound-methods"

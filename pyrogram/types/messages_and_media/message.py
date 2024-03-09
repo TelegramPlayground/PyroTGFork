@@ -3727,7 +3727,11 @@ class Message(Object, Update):
 
     async def react(
         self,
-        reaction: List["types.ReactionType"] = [],
+        reaction: Union[
+            int,
+            str,
+            List[Union[int, str, "types.ReactionType"]]
+        ] = None,
         is_big: bool = False,
         add_to_recent: bool = True
     ) -> "types.MessageReactions":
@@ -3753,7 +3757,7 @@ class Message(Object, Update):
                 await message.react()
 
         Parameters:
-            reaction (List of :obj:`~pyrogram.types.ReactionType` *optional*):
+            reaction (``int`` | ``str`` | List of ``int`` OR ``str`` | List of :obj:`~pyrogram.types.ReactionType`, *optional*):
                 New list of reaction types to set on the message.
                 Pass None as emoji (default) to retract the reaction.
 
@@ -3771,11 +3775,40 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
+        sr = None
+
+        if isinstance(reaction, List):
+            sr = []
+            for i in reaction:
+                if isinstance(i, types.ReactionType):
+                    sr.append(i)
+                elif isinstance(i, int):
+                    sr.append(types.ReactionTypeCustomEmoji(
+                        custom_emoji_id=str(i)
+                    ))
+                else:
+                    sr.append(types.ReactionTypeEmoji(
+                        emoji=i
+                    ))
+
+        elif isinstance(reaction, int):
+            sr = [
+                types.ReactionTypeCustomEmoji(
+                    custom_emoji_id=str(reaction)
+                )
+            ]
+
+        elif isinstance(reaction, str):
+            sr = [
+                types.ReactionTypeEmoji(
+                    emoji=reaction
+                )
+            ]
 
         return await self._client.set_message_reaction(
             chat_id=self.chat.id,
             message_id=self.id,
-            reaction=reaction,
+            reaction=sr,
             is_big=is_big,
             add_to_recent=add_to_recent
         )

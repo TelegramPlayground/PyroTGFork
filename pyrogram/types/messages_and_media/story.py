@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List
+from typing import List, Union
 
 import pyrogram
 from pyrogram import raw, utils, types, enums
@@ -231,4 +231,85 @@ class Story(Object, Update):
             reactions=reactions,
             skipped=skipped,
             deleted=deleted
+        )
+
+    async def react(
+        self,
+        reaction: Union[
+            int,
+            str
+        ] = None,
+        add_to_recent: bool = True
+    ) -> "types.MessageReactions":
+        """Bound method *react* of :obj:`~pyrogram.types.Story`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.set_message_reaction(
+                chat_id=chat_id,
+                story_id=message.id,
+                reaction=[ReactionTypeEmoji(emoji="👍")]
+            )
+
+        Example:
+            .. code-block:: python
+
+                # Send a reaction
+                await story.react([ReactionTypeEmoji(emoji="👍")])
+
+                # Retract a reaction
+                await story.react()
+
+        Parameters:
+            reaction (``int`` | ``str``, *optional*):
+                New list of reaction types to set on the message.
+                Pass None as emoji (default) to retract the reaction.
+
+            add_to_recent (``bool``, *optional*):
+                Pass True if the reaction should appear in the recently used reactions.
+                This option is applicable only for users.
+                Defaults to True.
+        Returns:
+            On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+        """
+        sr = None
+
+        if isinstance(reaction, List):
+            sr = []
+            for i in reaction:
+                if isinstance(i, types.ReactionType):
+                    sr.append(i)
+                elif isinstance(i, int):
+                    sr.append(types.ReactionTypeCustomEmoji(
+                        custom_emoji_id=str(i)
+                    ))
+                else:
+                    sr.append(types.ReactionTypeEmoji(
+                        emoji=i
+                    ))
+
+        elif isinstance(reaction, int):
+            sr = [
+                types.ReactionTypeCustomEmoji(
+                    custom_emoji_id=str(reaction)
+                )
+            ]
+
+        elif isinstance(reaction, str):
+            sr = [
+                types.ReactionTypeEmoji(
+                    emoji=reaction
+                )
+            ]
+
+        return await self._client.set_message_reaction(
+            chat_id=self.chat.id,
+            story_id=self.id,
+            reaction=sr,
+            add_to_recent=add_to_recent
         )
