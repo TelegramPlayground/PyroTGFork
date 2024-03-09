@@ -142,17 +142,17 @@ class DownloadMedia:
                 else:
                     media = None
 
-        elif isinstance(message, types.Story):
+        elif isinstance(message, str):
+            media = message
+
+        if isinstance(media, types.Story):
             if self.me.is_bot:
                 raise ValueError("This method cannot be used by bots")
             else:
-                if message.media:
+                if media.media:
                     media = getattr(message, message.media.value, None)
                 else:
                     media = None
-
-        elif isinstance(message, str):
-            media = message
 
         if not media:
             raise ValueError("This message doesn't contain any downloadable media")
@@ -166,7 +166,7 @@ class DownloadMedia:
 
         file_type = file_id_obj.file_type
         media_file_name = getattr(media, "file_name", "")  # TODO
-        file_size = getattdr(media, "file_size", 0)
+        file_size = getattr(media, "file_size", 0)
         mime_type = getattr(media, "mime_type", "")
         date = getattr(media, "date", None)
 

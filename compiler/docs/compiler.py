@@ -622,6 +622,7 @@ def pyrogram_api():
         story="""
         Story
             Story.react
+            Story.download
         """,
     )
 
