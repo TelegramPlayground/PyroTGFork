@@ -35,6 +35,7 @@ REG_ID_GENERATE_FAILED	The registration id failed to generate due to Telegram ha
 RPC_CALL_FAIL	Telegram is having internal problems. Please try again later
 RPC_CONNECT_FAILED	Telegram is having internal problems. Please try again later
 RPC_MCGET_FAIL	Telegram is having internal problems. Please try again later
+RPC_SEND_FAIL	Telegram is having internal problems. Please try again later
 SIGN_IN_FAILED	Failure while signing in due to Telegram having internal problems. Please try again later
 STORAGE_CHECK_FAILED	Server storage check failed due to Telegram having internal problems. Please try again later
 STORAGE_CHOOSE_VOLUME_FAILED	Storage choose volume failed due to Telegram having internal problems. Please try again later
