@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- `Fix bug in clicking UpdateBotCallbackQuery buttons <https://t.me/pyrogramchat/610636>`_
 
 +-------------+
 |  PmOItrOAe  |

@@ -19,8 +19,8 @@
 from typing import Union, List, Match, Optional
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
+from pyrogram import raw, enums, types
+from pyrogram.errors import ChannelPrivate
 from ..object import Object
 from ..update import Update
 from ... import utils
@@ -87,21 +87,34 @@ class CallbackQuery(Object, Update):
         self.matches = matches
 
     @staticmethod
-    async def _parse(client: "pyrogram.Client", callback_query, users) -> "CallbackQuery":
+    async def _parse(client: "pyrogram.Client", callback_query, users, chats) -> "CallbackQuery":
         message = None
         inline_message_id = None
 
         if isinstance(callback_query, raw.types.UpdateBotCallbackQuery):
             chat_id = utils.get_peer_id(callback_query.peer)
+            peer_id = utils.get_raw_peer_id(callback_query.peer)
             message_id = callback_query.msg_id
 
             message = client.message_cache[(chat_id, message_id)]
 
             if not message:
-                message = await client.get_messages(
-                    chat_id=chat_id,
-                    message_ids=message_id
-                )
+                try:
+                    message = await client.get_messages(
+                        chat_id=chat_id,
+                        message_ids=message_id
+                    )
+                except ChannelPrivate:
+                    channel = chats.get(peer_id, None)
+                    if channel:
+                        message = types.Message(
+                            id=message_id,
+                            date=utils.timestamp_to_datetime(0),
+                            chat=types.Chat._parse_channel_chat(
+                                client,
+                                channel
+                            )
+                        )
         elif isinstance(callback_query, raw.types.UpdateInlineBotCallbackQuery):
             inline_message_id = utils.pack_inline_message_id(callback_query.msg_id)
 
