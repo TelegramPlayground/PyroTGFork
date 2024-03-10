@@ -141,24 +141,29 @@ class SQLiteStorage(Storage):
         raise NotImplementedError
 
     async def update_peers(self, peers: List[Tuple[int, int, str, List[str], str]]):
-        for peer_data in peers:
-            id, access_hash, type, usernames, phone_number = peer_data
+        peers_data = []
+        usernames_data = []
+        ids_to_delete = []
 
-            self.conn.execute(
-                "REPLACE INTO peers (id, access_hash, type, phone_number)"
-                "VALUES (?, ?, ?, ?)",
-                (id, access_hash, type, phone_number)
-            )
+        for id, access_hash, type, usernames, phone_number in peers:
+            ids_to_delete.append((id,))
+            peers_data.append((id, access_hash, type, phone_number))
 
-            self.conn.execute(
-                "DELETE FROM usernames WHERE id = ?",
-                (id,)
-            )
+            if usernames:
+                usernames_data.extend([(id, username) for username in usernames])
 
+        self.conn.executemany(
+            "REPLACE INTO peers (id, access_hash, type, phone_number) VALUES (?, ?, ?, ?)",
+            peers_data)
+
+        self.conn.executemany(
+            "DELETE FROM usernames WHERE id = ?",
+            ids_to_delete)
+
+        if usernames_data:
             self.conn.executemany(
                 "REPLACE INTO usernames (id, username) VALUES (?, ?)",
-                [(id, username) for username in usernames] if usernames else [(id, None)]
-            )
+                usernames_data)
 
     async def update_state(self, value: Tuple[int, int, int, int, int] = object):
         if value == object:
