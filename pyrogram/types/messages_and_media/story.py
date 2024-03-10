@@ -1788,7 +1788,7 @@ class Story(Object, Update):
             ``ValueError``: If the message doesn't contain any downloadable media
         """
         return await self._client.download_media(
-            message=getattr(self, self.media.value),
+            message=self,
             file_name=file_name,
             in_memory=in_memory,
             block=block,

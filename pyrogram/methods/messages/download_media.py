@@ -122,18 +122,25 @@ class DownloadMedia:
         available_media = ("audio", "document", "photo", "sticker", "animation", "video", "voice", "video_note",
                            "new_chat_photo")
 
-        if isinstance(message, (types.Message, types.Story)):
-            story = getattr(message, "story", None)
+        media = None
 
+        if isinstance(message, types.Message) and message.media:
             for kind in available_media:
-                media = getattr(story or message, kind, None)
+                story = message.story or message.reply_to_story
+                if story:
+                    media = getattr(story, kind, None)
+                else:
+                    media = getattr(message, kind, None)
 
                 if media is not None:
                     break
-            else:
-                raise ValueError("This message doesn't contain any downloadable media")
-        else:
+        elif isinstance(message, types.Story):
+            media = getattr(message, message.media.value, None)
+        elif isinstance(message, str):
             media = message
+
+        if not media:
+            raise ValueError("This message doesn't contain any downloadable media")
 
         if isinstance(media, str):
             file_id_str = media
