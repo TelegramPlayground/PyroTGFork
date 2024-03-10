@@ -418,7 +418,6 @@ def pyrogram_api():
             BusinessInfo
             BusinessMessage
             BusinessRecipients
-            BusinessSchedule
             BusinessWeeklyOpen
             BusinessWorkingHours
             User
@@ -688,7 +687,6 @@ def pyrogram_api():
             Story.edit_media
             Story.edit_caption
             Story.edit_privacy
-            Story.export_link
             Story.react
             Story.copy
             Story.forward
