@@ -599,7 +599,7 @@ class Client(Methods):
                 if pts:
                     await self.storage.update_state(
                         (
-                            utils.get_channel_id(channel_id) if channel_id else self.me.id,
+                            utils.get_channel_id(channel_id) if channel_id else 0,
                             pts,
                             None,
                             updates.date,
@@ -639,7 +639,7 @@ class Client(Methods):
         elif isinstance(updates, (raw.types.UpdateShortMessage, raw.types.UpdateShortChatMessage)):
             await self.storage.update_state(
                 (
-                    self.me.id,
+                    0,
                     updates.pts,
                     None,
                     updates.date,
