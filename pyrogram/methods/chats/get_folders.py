@@ -82,4 +82,16 @@ class GetFolders:
 
         folders = types.List(types.Folder._parse(self, folder, users, chats) for folder in raw_folders)
 
-        return folders if is_iterable or folder_ids is None else folders[0] if folders else None
+        if not folders:
+            return None
+
+        if folder_ids:
+            if is_iterable:
+                return folders
+            else:
+                for folder in folders:
+                    if folder.id == folder_ids:
+                        return folder
+                return None
+
+        return folders
