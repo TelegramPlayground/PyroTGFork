@@ -20,6 +20,7 @@ from typing import List, Union
 
 import pyrogram
 from pyrogram import raw
+from pyrogram import enums
 
 
 class UpdateFolder:
@@ -38,6 +39,7 @@ class UpdateFolder:
         exclude_muted: bool = None,
         exclude_read: bool = None,
         exclude_archived: bool = None,
+        color: "enums.FolderColor" = None,
         emoji: str = None
     ) -> bool:
         """Create or update a user's folder.
@@ -91,6 +93,10 @@ class UpdateFolder:
                 Folder emoji.
                 Pass None to leave the folder icon as default.
 
+            color (:obj:`~pyrogram.enums.FolderColor`, *optional*):
+                Color type.
+                Pass :obj:`~pyrogram.enums.FolderColor` to set folder color.
+
         Returns:
             ``bool``: True, on success.
 
@@ -133,7 +139,8 @@ class UpdateFolder:
                     exclude_muted=exclude_muted,
                     exclude_read=exclude_read,
                     exclude_archived=exclude_archived,
-                    emoticon=emoji
+                    emoticon=emoji,
+                    color=color.value if color else None
                 )
             )
         )

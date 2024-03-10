@@ -19,6 +19,7 @@
 from typing import List, Union
 
 import pyrogram
+from pyrogram import enums
 from pyrogram import raw
 from pyrogram import types
 from pyrogram import utils
@@ -70,6 +71,9 @@ class Folder(Object):
 
         emoji (``str``, *optional*):
             Folder emoji.
+
+        color (:obj:`~pyrogram.enums.FolderColor`, *optional*)
+            Chat reply color.
     """
 
     def __init__(
@@ -90,6 +94,7 @@ class Folder(Object):
         exclude_read: bool = None,
         exclude_archived: bool = None,
         emoji: str = None,
+        color: "enums.FolderColor" = None,
         has_my_invites: bool = None
     ):
         super().__init__(client)
@@ -108,6 +113,7 @@ class Folder(Object):
         self.exclude_read = exclude_read
         self.exclude_archived = exclude_archived
         self.emoji = emoji
+        self.color = color
         self.has_my_invites = has_my_invites
 
     @staticmethod
@@ -150,6 +156,7 @@ class Folder(Object):
             exclude_read=getattr(folder, "exclude_read", None),
             exclude_archived=getattr(folder, "exclude_archived", None),
             emoji=folder.emoticon or None,
+            color=enums.FolderColor(getattr(folder, "color", None)),
             has_my_invites=getattr(folder, "has_my_invites", None),
             client=client
         )
@@ -188,7 +195,8 @@ class Folder(Object):
         exclude_muted: bool = None,
         exclude_read: bool = None,
         exclude_archived: bool = None,
-        emoji: str = None
+        emoji: str = None,
+        color: "enums.FolderColor" = None
     ):
         """Bound method *update_peers* of :obj:`~pyrogram.types.Folder`.
 
@@ -251,6 +259,10 @@ class Folder(Object):
                 Folder emoji.
                 Pass None to leave the folder icon as default.
 
+            color (:obj:`~pyrogram.enums.FolderColor`, *optional*):
+                Color type.
+                Pass :obj:`~pyrogram.enums.FolderColor` to set folder color.
+
         Returns:
             True on success.
         """
@@ -277,7 +289,8 @@ class Folder(Object):
             exclude_muted=exclude_muted or self.exclude_muted,
             exclude_read=exclude_read or self.exclude_read,
             exclude_archived=exclude_archived or self.exclude_archived,
-            emoji=emoji or self.emoji
+            emoji=emoji or self.emoji,
+            color=color or self.color
         )
 
     async def include_chat(self, chat_id: Union[int, str]):
@@ -346,6 +359,39 @@ class Folder(Object):
             included_chats=[i.id for i in self.included_chats or []],
             excluded_chats=[i.id for i in self.excluded_chats or []] + [chat_id],
             pinned_chats=[i.id for i in self.pinned_chats or []],
+        )
+
+    async def update_color(self, color: "enums.FolderColor"):
+        """Bound method *update_color* of :obj:`~pyrogram.types.Folder`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.update_folder(
+                folder_id=123456789,
+                included_chats=[chat_id],
+                excluded_chats=[chat_id],
+                pinned_chats=[...],
+                color=color
+            )
+
+        Example:
+            .. code-block:: python
+
+               await folder.update_color(enums.FolderColor.RED)
+
+        Parameters:
+            color (:obj:`~pyrogram.enums.FolderColor`, *optional*):
+                Color type.
+                Pass :obj:`~pyrogram.enums.FolderColor` to set folder color.
+
+        Returns:
+            True on success.
+        """
+
+        return await self.update(
+            color=color
         )
 
     async def pin_chat(self, chat_id: Union[int, str]):

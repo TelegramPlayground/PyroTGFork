@@ -22,6 +22,7 @@ from .chat_event_action import ChatEventAction
 from .chat_member_status import ChatMemberStatus
 from .chat_members_filter import ChatMembersFilter
 from .chat_type import ChatType
+from .folder_color import FolderColor
 from .message_entity_type import MessageEntityType
 from .message_media_type import MessageMediaType
 from .message_service_type import MessageServiceType
@@ -42,6 +43,7 @@ __all__ = [
     'ChatMemberStatus',
     'ChatMembersFilter',
     'ChatType',
+    'FolderColor',
     'MessageEntityType',
     'MessageMediaType',
     'MessageServiceType',
