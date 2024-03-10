@@ -64,6 +64,7 @@ from .set_chat_ttl import SetChatTTL
 from .set_chat_username import SetChatUsername
 from .set_send_as_chat import SetSendAsChat
 from .set_slow_mode import SetSlowMode
+from .toggle_folder_tags import ToggleFolderTags
 from .toggle_forum_topics import ToggleForumTopics
 from .toggle_join_to_send import ToggleJoinToSend
 from .unarchive_chats import UnarchiveChats
@@ -122,6 +123,7 @@ class Chats(
     GetNearbyChats,
     SetAdministratorTitle,
     SetSlowMode,
+    ToggleFolderTags,
     ToggleForumTopics,
     ToggleJoinToSend,
     DeleteUserHistory,
