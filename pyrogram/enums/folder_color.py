@@ -35,10 +35,10 @@ class FolderColor(AutoName):
     "Violet color."
 
     GREEN = 3
-    "Cyan color."
+    "Green color."
 
     CYAN = 4
-    "Green color."
+    "Cyan color."
 
     BLUE = 5
     "Blue color."
