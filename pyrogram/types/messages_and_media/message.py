@@ -3716,10 +3716,21 @@ class Message(Object, Update):
                 )
             elif button.url:
                 return button.url
+            elif button.web_app:
+                return button.web_app.url  # TODO
+            elif button.login_url:
+                return button.login_url  # . TODO
+            elif button.user_id:
+                return await self._client.get_chat(
+                    button.user_id,
+                    False
+                )
             elif button.switch_inline_query:
                 return button.switch_inline_query
             elif button.switch_inline_query_current_chat:
                 return button.switch_inline_query_current_chat
+            elif button.switch_inline_query_chosen_chat:
+                return button.switch_inline_query_chosen_chat  # TODO
             else:
                 raise ValueError("This button is not supported yet")
         else:
