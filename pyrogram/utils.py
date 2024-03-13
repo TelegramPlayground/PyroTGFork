@@ -389,10 +389,19 @@ async def get_reply_head_fm(
     client: "pyroram.Client",
     message_thread_id: int = None,
     reply_parameters: "types.ReplyParameters" = None
-) -> raw.types.InputReplyToMessage:
+) -> raw.types.InputReplyTo:
     reply_to = None
     if not reply_parameters:
         return reply_to
+    if (
+       reply_parameters and
+       reply_parameters.story_id and
+       reply_parameters.chat_id
+    ):
+        return raw.types.InputReplyToStory(
+            peer=await client.resolve_peer(reply_parameters.chat_id),
+            story_id=reply_parameters.story_id
+        )
     reply_to_message_id = reply_parameters.message_id
     if not reply_to_message_id:
         return reply_to

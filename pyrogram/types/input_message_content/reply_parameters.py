@@ -26,10 +26,15 @@ from ..object import Object
 class ReplyParameters(Object):
     """Describes reply parameters for the message that is being sent.
 
+    You must use exactly one of ``message_id`` OR ``story_id``.
+
     Parameters:
-        message_id  (``int``):
+        message_id  (``int``, *optional*):
             Identifier of the message that will be replied to in the current chat,
             or in the chat chat_id if it is specified
+
+        story_id  (``int``, *optional*):
+            Unique identifier for the story in the chat
 
         chat_id (``int`` | ``str``, *optional*):
             Unique identifier (int) or username (str) of the target chat.
@@ -54,7 +59,9 @@ class ReplyParameters(Object):
 
     def __init__(
         self,
-        message_id: int,
+        *,
+        message_id: int = None,
+        story_id: int = None,
         chat_id: Union[int, str] = None,
         # TODO
         quote: str = None,
@@ -65,6 +72,7 @@ class ReplyParameters(Object):
         super().__init__()
 
         self.message_id = message_id
+        self.story_id = story_id
         self.chat_id = chat_id
         self.quote = quote
         self.quote_parse_mode = quote_parse_mode
