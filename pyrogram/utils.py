@@ -389,7 +389,10 @@ async def get_reply_head_fm(
     client: "pyroram.Client",
     message_thread_id: int = None,
     reply_parameters: "types.ReplyParameters" = None
-) -> raw.types.InputReplyTo:
+) -> Union[
+    raw.types.InputReplyToStory,
+    raw.types.InputReplyToMessage
+]:
     reply_to = None
     if not reply_parameters:
         return reply_to
