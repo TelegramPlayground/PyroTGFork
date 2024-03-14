@@ -3671,6 +3671,8 @@ class Message(Object, Update):
             -   A string in case the inline button is a URL, a *switch_inline_query* or a
                 *switch_inline_query_current_chat* button.
             -   A string URL with the user details, in case of a LoginUrl button.
+            -   A :obj:`~pyrogram.types.SwitchInlineQueryChosenChat` object in case of a ``switch_inline_query_chosen_chat``.
+            -   A :obj:`~pyrogram.types.User` object in case of a ``KeyboardButtonUserProfile`` button.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
@@ -3761,7 +3763,7 @@ class Message(Object, Update):
             elif button.switch_inline_query_current_chat:
                 return button.switch_inline_query_current_chat
             elif button.switch_inline_query_chosen_chat:
-                return button.switch_inline_query_chosen_chat  # TODO
+                return button.switch_inline_query_chosen_chat
             else:
                 raise ValueError("This button is not supported yet")
         else:
