@@ -1036,6 +1036,7 @@ class Story(Object, Update):
         file_name: str = None,
         supports_streaming: bool = True,
         disable_notification: bool = None,
+        no_sound: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1113,6 +1114,10 @@ class Story(Object, Update):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
+            no_sound (``bool``, *optional*):
+                Pass True, if the uploaded video is a video message with no sound.
+                Doesn't work for external links.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -1162,6 +1167,7 @@ class Story(Object, Update):
             file_name=file_name,
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
+            no_sound=no_sound,
             reply_to_story_id=self.id,
             reply_markup=reply_markup,
             progress=progress,

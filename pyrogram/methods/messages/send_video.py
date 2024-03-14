@@ -56,6 +56,7 @@ class SendVideo:
         quote_offset: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        no_sound: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -155,6 +156,10 @@ class SendVideo:
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
+            no_sound (``bool``, *optional*):
+                Pass True, if the uploaded video is a video message with no sound.
+                Doesn't work for external links.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -216,6 +221,7 @@ class SendVideo:
                         ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler,
                         thumb=thumb,
+                        nosound_video=no_sound,
                         attributes=[
                             raw.types.DocumentAttributeVideo(
                                 supports_streaming=supports_streaming or None,
@@ -243,6 +249,7 @@ class SendVideo:
                     ttl_seconds=ttl_seconds,
                     spoiler=has_spoiler,
                     thumb=thumb,
+                    nosound_video=no_sound,
                     attributes=[
                         raw.types.DocumentAttributeVideo(
                             supports_streaming=supports_streaming or None,
