@@ -54,7 +54,8 @@ class ExternalReplyInfo(Object):
         sticker (:obj:`~pyrogram.types.Sticker`, *optional*):
             Message is a sticker, information about the sticker.
 
-        story
+        story (:obj:`~pyrogram.types.Story`, *optional*):
+            Message is a forwarded story.
 
         video (:obj:`~pyrogram.types.Video`, *optional*):
             Message is a video, information about the video.
@@ -106,7 +107,7 @@ class ExternalReplyInfo(Object):
         document: "types.Document" = None,
         photo: "types.Photo" = None,
         sticker: "types.Sticker" = None,
-        
+        story: "types.Story" = None,
         video: "types.Video" = None,
         video_note: "types.VideoNote" = None,
         voice: "types.Voice" = None,
@@ -131,6 +132,7 @@ class ExternalReplyInfo(Object):
         self.document = document
         self.photo = photo
         self.sticker = sticker
+        self.story = story
         self.video = video
         self.video_note = video_note
         self.voice = voice
@@ -156,6 +158,7 @@ class ExternalReplyInfo(Object):
             document = None
             photo = None
             sticker = None
+            story = None
             video = None
             video_note = None
             voice = None
@@ -257,6 +260,9 @@ class ExternalReplyInfo(Object):
                 elif isinstance(media, raw.types.MessageMediaDice):
                     dice = types.Dice._parse(client, media)
                     media_type = enums.MessageMediaType.DICE
+                elif isinstance(media, raw.types.MessageMediaStory):
+                    story = await types.Story._parse(client, {}, media, None)
+                    media_type = enums.MessageMediaType.STORY
 
             return ExternalReplyInfo(
                 chat=chat,
@@ -267,6 +273,7 @@ class ExternalReplyInfo(Object):
                 document=document,
                 photo=photo,
                 sticker=sticker,
+                story=story,
                 video=video,
                 video_note=video_note,
                 voice=voice,
