@@ -22,9 +22,7 @@ from functools import partial
 from typing import List, Match, Union, BinaryIO, Optional, Callable
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import raw, enums, types, utils
 from pyrogram.errors import MessageIdsEmpty, PeerIdInvalid
 from pyrogram.parser import utils as parser_utils, Parser
 from ..object import Object
@@ -3604,7 +3602,14 @@ class Message(Object, Update):
             revoke=revoke
         )
 
-    async def click(self, x: Union[int, str] = 0, y: int = None, quote: bool = None, timeout: int = 10):
+    async def click(
+        self,
+        x: Union[int, str] = 0,
+        y: int = None,
+        quote: bool = None,
+        timeout: int = 10,
+        request_write_access: bool = True
+    ):
         """Bound method *click* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for clicking a button attached to the message instead of:
@@ -3656,11 +3661,16 @@ class Message(Object, Update):
             timeout (``int``, *optional*):
                 Timeout in seconds.
 
+            request_write_access (``bool``, *optional*):
+                Only used in case of :obj:`~pyrogram.types.LoginUrl` button.
+                True, if the bot can send messages to the user.
+                Defaults to ``True``.
         Returns:
             -   The result of :meth:`~pyrogram.Client.request_callback_answer` in case of inline callback button clicks.
             -   The result of :meth:`~Message.reply()` in case of normal button clicks.
             -   A string in case the inline button is a URL, a *switch_inline_query* or a
                 *switch_inline_query_current_chat* button.
+            -   A string URL with the user details, in case of a LoginUrl button.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
@@ -3719,7 +3729,28 @@ class Message(Object, Update):
             elif button.web_app:
                 return button.web_app.url  # TODO
             elif button.login_url:
-                return button.login_url  # . TODO
+                tlu = button.login_url
+                rieep = await self._client.resolve_peer(
+                    self.chat.id
+                )
+                okduit = await self._client.invoke(
+                    raw.functions.messages.RequestUrlAuth(
+                        peer=rieep,
+                        msg_id=self.id,
+                        button_id=tlu.button_id,
+                        url=tlu.url
+                    )
+                )
+                tiudko = await self._client.invoke(
+                    raw.functions.messages.AcceptUrlAuth(
+                        write_allowed=request_write_access,
+                        peer=rieep,
+                        msg_id=self.id,
+                        button_id=tlu.button_id,
+                        url=tlu.url
+                    )
+                )
+                return tiudko.url
             elif button.user_id:
                 return await self._client.get_chat(
                     button.user_id,

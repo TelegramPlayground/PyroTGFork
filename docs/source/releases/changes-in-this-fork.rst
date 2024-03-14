@@ -12,6 +12,8 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- Added support for clicking :obj:`~pyrogram.types.LoginUrl` buttons.
+- Added ``story`` to :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Added ``story_id`` to :obj:`~pyrogram.types.ReplyParameters`.
 - Added missing conditions (``web_app``, ``login_url``, ``user_id``, ``switch_inline_query_chosen_chat``) to :meth:`~pyrogram.types.Message.click`.
 - Rewrote :meth:`~pyrogram.Client.download_media` to support Story, and also made it future proof.
