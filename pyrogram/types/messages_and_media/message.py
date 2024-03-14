@@ -3728,8 +3728,6 @@ class Message(Object, Update):
                 )
             elif button.url:
                 return button.url
-            elif button.web_app:
-                return button.web_app.url  # TODO
             elif button.login_url:
                 tlu = button.login_url
                 rieep = await self._client.resolve_peer(
