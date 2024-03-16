@@ -463,10 +463,17 @@ class Chat(Object):
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
             if full_chat.pinned_msg_id:
-                parsed_chat.pinned_message = await client.get_messages(
-                    chat_id=parsed_chat.id,
-                    message_ids=full_chat.pinned_msg_id
-                )
+                try:
+                    parsed_chat.pinned_message = await client.get_messages(
+                        chat_id=parsed_chat.id,
+                        message_ids=full_chat.pinned_msg_id
+                    )
+                except MessageIdsEmpty:
+                    parsed_chat.pinned_message = types.Message(
+                        id=full_chat.pinned_msg_id,
+                        empty=True,
+                        client=client
+                    )
 
             if isinstance(full_chat.exported_invite, raw.types.ChatInviteExported):
                 parsed_chat.invite_link = full_chat.exported_invite.link
