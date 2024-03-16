@@ -37,6 +37,7 @@ from .get_discussion_replies import GetDiscussionReplies
 from .get_discussion_replies_count import GetDiscussionRepliesCount
 from .get_media_group import GetMediaGroup
 from .get_messages import GetMessages
+from .get_stickers import GetStickers
 from .read_chat_history import ReadChatHistory
 from .read_mentions import ReadMentions
 from .read_reactions import ReadReactions
@@ -79,6 +80,7 @@ class Messages(
     ForwardMessages,
     GetMediaGroup,
     GetMessages,
+    GetStickers,
     SendAudio,
     SendChatAction,
     SendContact,
