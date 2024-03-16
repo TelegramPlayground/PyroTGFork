@@ -361,8 +361,16 @@ class Message(Object, Update):
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this message.
 
+        chat_ttl_period (``int``, *optional*):
+            New Time-To-Live of all messages sent in this chat.
+            if 0, autodeletion was disabled.
+
+        chat_ttl_setting_from (:obj:`~pyrogram.types.User`, *optional*):
+            if set, the chat TTL setting was set not due to a manual change by one of participants, but automatically because one of the participants has the default TTL settings enabled.
+
         link (``str``, *property*):
             Generate a link to this message, only for groups and channels.
+
     """
 
     # TODO: Add game missing field. Also invoice, successful_payment, connected_website
@@ -460,6 +468,7 @@ class Message(Object, Update):
         requested_chats: List["types.Chat"] = None,
         giveaway_launched: bool = None,
         chat_ttl_period: int = None,
+        chat_ttl_setting_from: "types.User" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -556,6 +565,7 @@ class Message(Object, Update):
         self.web_app_data = web_app_data
         self.reactions = reactions
         self.chat_ttl_period = chat_ttl_period
+        self.chat_ttl_setting_from = chat_ttl_setting_from
         self.link_preview_options = link_preview_options
         self.external_reply = external_reply
         self.is_topic_message = is_topic_message
@@ -618,6 +628,7 @@ class Message(Object, Update):
             giveaway_launched = None
             requested_chats = None
             chat_ttl_period = None
+            chat_ttl_setting_from = None
             boost_added = None
 
             service_type = None
@@ -702,10 +713,12 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
                 chat_ttl_period = action.period
                 service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
-
-            elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
-                chat_ttl_period = action.period
-                service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
+                auto_setting_from = getattr(action, "auto_setting_from", None)
+                if auto_setting_from:
+                    chat_ttl_setting_from = types.User._parse(
+                        client,
+                        users[auto_setting_from]
+                    )
 
             elif isinstance(action, raw.types.MessageActionBoostApply):
                 service_type = enums.MessageServiceType.CHAT_BOOST_ADDED
@@ -741,6 +754,7 @@ class Message(Object, Update):
                 gift_code=gift_code,
                 requested_chats=requested_chats,
                 chat_ttl_period=chat_ttl_period,
+                chat_ttl_setting_from=chat_ttl_setting_from,
                 boost_added=boost_added,
                 client=client
                 # TODO: supergroup_chat_created
