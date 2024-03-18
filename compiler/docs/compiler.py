@@ -176,6 +176,7 @@ def pyrogram_api():
             send_chat_action
             delete_messages
             get_messages
+            get_scheduled_messages
             get_stickers
             get_media_group
             get_chat_history
