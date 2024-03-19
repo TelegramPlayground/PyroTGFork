@@ -32,23 +32,35 @@ async def get_chunk(
     min_id: int = 0,
     max_id: int = 0,
     from_message_id: int = 0,
-    from_date: datetime = utils.zero_datetime()
+    from_date: datetime = utils.zero_datetime(),
+    is_scheduled: bool = False
 ):
-    messages = await client.invoke(
-        raw.functions.messages.GetHistory(
-            peer=await client.resolve_peer(chat_id),
-            offset_id=from_message_id,
-            offset_date=utils.datetime_to_timestamp(from_date),
-            add_offset=offset,
-            limit=limit,
-            max_id=max_id,
-            min_id=min_id,
-            hash=0
-        ),
-        sleep_threshold=60
-    )
+    if is_scheduled:
+        r = await client.invoke(
+            # TODO
+            raw.functions.messages.GetScheduledHistory(
+                peer=await client.resolve_peer(chat_id),
+                hash=0
+            ),
+            sleep_threshold=60
+        )
+        return await utils.parse_messages(client, r, replies=0)
+    else:
+        messages = await client.invoke(
+            raw.functions.messages.GetHistory(
+                peer=await client.resolve_peer(chat_id),
+                offset_id=from_message_id,
+                offset_date=utils.datetime_to_timestamp(from_date),
+                add_offset=offset,
+                limit=limit,
+                max_id=max_id,
+                min_id=min_id,
+                hash=0
+            ),
+            sleep_threshold=60
+        )
 
-    return await utils.parse_messages(client, messages, replies=0)
+        return await utils.parse_messages(client, messages, replies=0)
 
 
 class GetChatHistory:
@@ -60,7 +72,8 @@ class GetChatHistory:
         offset_id: int = 0,
         min_id: int = 0,
         max_id: int = 0,
-        offset_date: datetime = utils.zero_datetime()
+        offset_date: datetime = utils.zero_datetime(),
+        is_scheduled: bool = False
     ) -> Optional[AsyncGenerator["types.Message", None]]:
         """Get messages from a chat history.
 
@@ -96,6 +109,8 @@ class GetChatHistory:
             offset_date (:py:obj:`~datetime.datetime`, *optional*):
                 Pass a date as offset to retrieve only older messages starting from that date.
 
+            is_scheduled (``bool``, *optional*):
+                Whether to get scheduled messages. Defaults to False.
         Returns:
             ``Generator``: A generator yielding :obj:`~pyrogram.types.Message` objects.
 
@@ -118,7 +133,8 @@ class GetChatHistory:
                 from_message_id=offset_id,
                 min_id=min_id,
                 max_id=max_id,
-                from_date=offset_date
+                from_date=offset_date,
+                is_scheduled=is_scheduled
             )
 
             if not messages:
@@ -133,3 +149,6 @@ class GetChatHistory:
 
                 if current >= total:
                     return
+
+            if is_scheduled:
+                break
