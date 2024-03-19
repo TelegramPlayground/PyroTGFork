@@ -248,7 +248,7 @@ class User(Object, Update):
         if user is None or isinstance(user, raw.types.UserEmpty):
             return None
 
-        return User(
+        parsed_user = User(
             id=user.id,
             is_self=user.is_self,
             is_contact=user.contact,
@@ -272,14 +272,16 @@ class User(Object, Update):
             photo=types.ChatPhoto._parse(client, user.photo, user.id, user.access_hash),
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             client=client,
-            added_to_attachment_menu=getattr(user, "attach_menu_enabled", None),
-            is_attachment_menu_adding_available=getattr(user, "bot_attach_menu", None),
-            can_join_groups=False, # TODO
-            can_read_all_group_messages=getattr(user, "bot_chat_history", None),
-            supports_inline_queries=bool(getattr(user, "bot_inline_placeholder", None)),
             can_be_contacted_with_premium=getattr(user, "contact_require_premium", None),
             _raw=user
         )
+        if parsed_user.is_bot:
+            parsed_user.added_to_attachment_menu = getattr(user, "attach_menu_enabled", None)
+            parsed_user.is_attachment_menu_adding_available = getattr(user, "bot_attach_menu", None)
+            parsed_user.can_join_groups = not bool(getattr(user, "bot_nochats", None))
+            parsed_user.can_read_all_group_messages = getattr(user, "bot_chat_history", None)
+            parsed_user.supports_inline_queries = bool(getattr(user, "bot_inline_placeholder", None))
+        return parsed_user
 
     @staticmethod
     def _parse_status(user_status: "raw.base.UserStatus", is_bot: bool = False):

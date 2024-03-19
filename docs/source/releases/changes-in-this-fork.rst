@@ -12,10 +12,12 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
-- Added support for clicking :obj:`~pyrogram.types.LoginUrl` buttons.
+- Added ``is_scheduled`` to :meth:`~pyrogram.Client.get_messages`.
+- Added ``is_scheduled`` to :meth:`~pyrogram.Client.get_chat_history`.
+- PR from upstream: `1403 <https://github.com/pyrogram/pyrogram/pull/1403>`_.
 - Added ``story`` to :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Added ``story_id`` to :obj:`~pyrogram.types.ReplyParameters`.
-- Added missing conditions (``web_app``, ``login_url``, ``user_id``, ``switch_inline_query_chosen_chat``) to :meth:`~pyrogram.types.Message.click`.
+- Added support for clicking (``web_app``, :obj:`~pyrogram.types.LoginUrl`, ``user_id``, ``switch_inline_query_chosen_chat``) buttons in :meth:`~pyrogram.types.Message.click`.
 - Rewrote :meth:`~pyrogram.Client.download_media` to support Story, and also made it future proof.
 - `Fix bug in clicking UpdateBotCallbackQuery buttons <https://t.me/pyrogramchat/610636>`_
 
