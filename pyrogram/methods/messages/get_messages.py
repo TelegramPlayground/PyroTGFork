@@ -35,6 +35,7 @@ class GetMessages:
         message_ids: Union[int, Iterable[int]] = None,
         reply_to_message_ids: Union[int, Iterable[int]] = None,
         replies: int = 1,
+        is_scheduled: bool = False,
         link: str = None,
     ) -> Union["types.Message", List["types.Message"]]:
         """Get one or more messages from a chat by using message identifiers.
@@ -64,6 +65,9 @@ class GetMessages:
                 The number of subsequent replies to get for each message.
                 Pass 0 for no reply at all or -1 for unlimited replies.
                 Defaults to 1.
+
+            is_scheduled (``bool``, *optional*):
+                Whether to get scheduled messages. Defaults to False.
 
             link (``str``):
                 A link of the message, usually can be copied using ``Copy Link`` functionality OR obtained using :obj:`~pyrogram.raw.types.Message.link` OR  :obj:`~pyrogram.raw.functions.channels.ExportMessageLink`
@@ -107,15 +111,21 @@ class GetMessages:
 
             is_iterable = not isinstance(ids, int)
             ids = list(ids) if is_iterable else [ids]
-            ids = [ids_type(id=i) for i in ids]
 
             if replies < 0:
                 replies = (1 << 31) - 1
 
-            if isinstance(peer, raw.types.InputPeerChannel):
-                rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
+            if is_scheduled:
+                rpc = raw.functions.messages.GetScheduledMessages(
+                    peer=peer,
+                    id=ids
+                )
             else:
-                rpc = raw.functions.messages.GetMessages(id=ids)
+                ids = [ids_type(id=i) for i in ids]
+                if isinstance(peer, raw.types.InputPeerChannel):
+                    rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
+                else:
+                    rpc = raw.functions.messages.GetMessages(id=ids)
 
             r = await self.invoke(rpc, sleep_threshold=-1)
 
