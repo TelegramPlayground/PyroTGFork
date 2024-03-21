@@ -191,6 +191,10 @@ class Client(Methods):
             Pass True to disable notification about the current user joining Telegram for other users that added them to contact list.
             Pass False to Notify people on Telegram who know my phone number that I signed up.
             Defaults to False
+
+        client_platform (:obj:`~pyrogram.enums.ClientPlatform`, *optional*):
+            The platform where this client is running.
+            Defaults to 'other'
     """
 
     APP_VERSION = f"Pyrogram {__version__}"
@@ -245,6 +249,7 @@ class Client(Methods):
         max_message_cache_size: int = MAX_MESSAGE_CACHE_SIZE,
         storage_engine: Storage = None,
         no_joined_notifications: bool = False,
+        client_platform: enums.ClientPlatform = enums.ClientPlatform.OTHER,
         _un_docu_gnihts: List = None
     ):
         super().__init__()
@@ -276,6 +281,7 @@ class Client(Methods):
         self.max_concurrent_transmissions = max_concurrent_transmissions
         self.max_message_cache_size = max_message_cache_size
         self.no_joined_notifications = no_joined_notifications
+        self.client_platform = client_platform
         self._un_docu_gnihts = []
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")

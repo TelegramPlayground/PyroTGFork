@@ -30,6 +30,7 @@ from .parse_mode import ParseMode
 from .poll_type import PollType
 from .sent_code_type import SentCodeType
 from .user_status import UserStatus
+from .client_platform import ClientPlatform
 
 __all__ = [
     'ChatAction', 
@@ -45,5 +46,6 @@ __all__ = [
     'ParseMode', 
     'PollType', 
     'SentCodeType', 
-    'UserStatus'
+    'UserStatus',
+    'ClientPlatform'
 ]
