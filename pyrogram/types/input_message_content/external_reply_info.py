@@ -152,7 +152,7 @@ class ExternalReplyInfo(Object):
         chats: dict,
         reply_to: "raw.types.MessageReplyHeader"
     ) -> "ExternalReplyInfo":
-        if not reply_to.reply_from:
+        if not getattr(reply_to, "reply_from", None):
             # TODO: temp. workaround
             return None
 
