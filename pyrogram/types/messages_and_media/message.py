@@ -3773,6 +3773,36 @@ class Message(Object, Update):
                     )
                 )
                 return tiudko.url
+            elif button.web_app:
+                tlu = button.web_app
+                whichbotchat = (
+                    self.via_bot and
+                    self.via_bot.id
+                ) or (
+                    self.from_user and
+                    self.from_user.is_bot and
+                    self.from_user.id
+                ) or None
+                if not whichbotchat:
+                    raise ValueError(
+                        "Invalid ChatBotType"
+                    )
+                rieep = await self._client.resolve_peer(
+                    self.chat.id
+                )
+                ieepr = await self._client.resolve_peer(
+                    whichbotchat
+                )
+                okduit = await self._client.invoke(
+                    raw.functions.messages.RequestWebView(
+                        peer=rieep,
+                        bot=ieepr,
+                        url=tlu.url,
+                        platform=self._client.client_platform.value,
+                        # TODO
+                    )
+                )
+                return okduit.url
             elif button.user_id:
                 return await self._client.get_chat(
                     button.user_id,
