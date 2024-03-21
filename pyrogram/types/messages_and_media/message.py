@@ -288,7 +288,8 @@ class Message(Object, Update):
 
         giveaway_created
 
-        giveaway
+        giveaway (:obj:`~pyrogram.types.Giveaway`, *optional*):
+            The message is a scheduled giveaway message
 
         giveaway_winners
 
@@ -456,7 +457,7 @@ class Message(Object, Update):
 
 
 
-
+        giveaway: "types.Giveaway" = None,
 
 
         video_chat_scheduled: "types.VideoChatScheduled" = None,
@@ -573,6 +574,7 @@ class Message(Object, Update):
         self.boost_added = boost_added
         self.story = story
         self.reply_to_story = reply_to_story
+        self.giveaway = giveaway
         self._raw = _raw
 
     @staticmethod
@@ -837,6 +839,7 @@ class Message(Object, Update):
             web_page = None
             poll = None
             dice = None
+            giveaway = None
 
             media = message.media
             media_type = None
@@ -926,6 +929,9 @@ class Message(Object, Update):
                 elif isinstance(media, raw.types.MessageMediaStory):
                     story = await types.Story._parse(client, chats, media, None)
                     media_type = enums.MessageMediaType.STORY
+                elif isinstance(media, raw.types.MessageMediaGiveaway):
+                    giveaway = types.Giveaway._parse(client, chats, media)
+                    media_type = enums.MessageMediaType.GIVEAWAY
                 else:
                     media = None
 
@@ -1016,6 +1022,7 @@ class Message(Object, Update):
                 web_page=web_page,
                 poll=poll,
                 dice=dice,
+                giveaway=giveaway,
                 views=message.views,
                 forwards=message.forwards,
                 via_bot=types.User._parse(client, users.get(message.via_bot_id, None)),
@@ -1056,6 +1063,7 @@ class Message(Object, Update):
 
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
                 client,
+                chats,
                 message.reply_to
             )
             parsed_message.sender_boost_count = getattr(message, "from_boosts_applied", None)

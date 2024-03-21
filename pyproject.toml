@@ -64,7 +64,7 @@ allow-direct-references = true
 
 [tool.hatch.build]
 include = ["pyrogram/py.typed"]
-exclude = ["tests", "requirements.lock", "requirements-dev.lock", ".github", ".gitignore"]
+exclude = ["tests", "docs", "requirements.lock", "requirements-dev.lock", ".github", ".gitignore"]
 
 [tool.hatch.build.targets.wheel]
 ignore-vcs = true

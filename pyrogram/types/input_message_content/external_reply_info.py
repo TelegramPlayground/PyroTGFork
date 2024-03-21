@@ -78,7 +78,8 @@ class ExternalReplyInfo(Object):
         game (:obj:`~pyrogram.types.Game`, *optional*):
             Message is a game, information about the game.
         
-        giveaway
+        giveaway (:obj:`~pyrogram.types.Giveaway`, *optional*):
+            Message is a scheduled giveaway, information about the giveaway
 
         giveaway_winners
 
@@ -115,7 +116,7 @@ class ExternalReplyInfo(Object):
         contact: "types.Contact" = None,
         dice: "types.Dice" = None,
         game: "types.Game" = None,
-
+        giveaway: "types.Giveaway" = None,
 
 
         location: "types.Location" = None,
@@ -140,6 +141,7 @@ class ExternalReplyInfo(Object):
         self.contact = contact
         self.dice = dice
         self.game = game
+        self.giveaway = giveaway
         self.location = location
         self.poll = poll
         self.venue = venue
@@ -147,8 +149,13 @@ class ExternalReplyInfo(Object):
     @staticmethod
     async def _parse(
         client,
+        chats: dict,
         reply_to: "raw.types.MessageReplyHeader"
     ) -> "ExternalReplyInfo":
+        if not reply_to.reply_from:
+            # TODO: temp. workaround
+            return None
+
         if isinstance(reply_to, raw.types.MessageReplyHeader):
             reply_from = reply_to.reply_from  # raw.types.MessageFwdHeader
             chat = None
@@ -168,6 +175,7 @@ class ExternalReplyInfo(Object):
             contact = None
             dice = None
             game = None
+            giveaway = None
             location = None
             poll = None
             venue = None
@@ -261,8 +269,11 @@ class ExternalReplyInfo(Object):
                     dice = types.Dice._parse(client, media)
                     media_type = enums.MessageMediaType.DICE
                 elif isinstance(media, raw.types.MessageMediaStory):
-                    story = await types.Story._parse(client, {}, media, None)
+                    story = await types.Story._parse(client, chats, media, None)
                     media_type = enums.MessageMediaType.STORY
+                elif isinstance(media, raw.types.MessageMediaGiveaway):
+                    giveaway = types.Giveaway._parse(client, chats, media)
+                    media_type = enums.MessageMediaType.GIVEAWAY
 
             return ExternalReplyInfo(
                 chat=chat,
@@ -281,6 +292,7 @@ class ExternalReplyInfo(Object):
                 contact=contact,
                 dice=dice,
                 game=game,
+                giveaway=giveaway,
                 location=location,
                 poll=poll,
                 venue=venue

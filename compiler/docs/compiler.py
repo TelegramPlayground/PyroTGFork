@@ -426,6 +426,7 @@ def pyrogram_api():
             ReactionCount
             ChatBoostAdded
             Story
+            Giveaway
         """,
         bot_keyboards="""
         Bot keyboards
