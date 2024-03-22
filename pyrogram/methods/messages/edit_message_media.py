@@ -143,7 +143,8 @@ class EditMessageMedia:
                                     file_name=file_name or os.path.basename(media.media)
                                 )
                             ],
-                            force_file=media.nosound_video or None,
+                            nosound_video=not media.disable_content_type_detection,
+                            force_file=media.disable_content_type_detection or None,
                         )
                     )
                 )

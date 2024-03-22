@@ -109,3 +109,7 @@ Megagroups behave differently::
 
 The group has its own message counter.
 Each user won't get a copy of the message with their own identifier, but rather everyone sees the same message.
+
+# TODO
+
+Things get even messier in Scheduled Messages history section. todo blah blah, try to copy documentation from somewhere..

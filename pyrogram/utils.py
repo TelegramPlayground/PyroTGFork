@@ -406,9 +406,9 @@ async def get_reply_head_fm(
     if not reply_parameters:
         if message_thread_id:
             reply_to = raw.types.InputReplyToMessage(
-                reply_to_msg_id=0
+                reply_to_msg_id=message_thread_id,
+                top_msg_id=message_thread_id
             )
-            reply_to.top_msg_id = message_thread_id
         return reply_to
     if (
        reply_parameters and

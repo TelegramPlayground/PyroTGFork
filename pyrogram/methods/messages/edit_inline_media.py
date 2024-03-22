@@ -169,7 +169,8 @@ class EditInlineMedia:
                                    ),
                                    raw.types.DocumentAttributeAnimated()
                                ] + filename_attribute,
-                    nosound_video=True
+                    nosound_video=True,
+                    force_file=False
                 )
             elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(

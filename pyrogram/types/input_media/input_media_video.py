@@ -67,8 +67,9 @@ class InputMediaVideo(InputMedia):
         has_spoiler (``bool``, *optional*):
             Pass True if the photo needs to be covered with a spoiler animation.
 
-        nosound_video (``bool``, *optional*):
+        disable_content_type_detection (``bool``, *optional*):
             Pass True, if the uploaded video is a video message with no sound.
+            Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always True, if the document is sent as part of an album.
     """
 
     def __init__(
@@ -83,7 +84,7 @@ class InputMediaVideo(InputMedia):
         duration: int = 0,
         supports_streaming: bool = True,
         has_spoiler: bool = None,
-        nosound_video: bool = None,
+        disable_content_type_detection: bool = None,
     ):
         super().__init__(media, caption, parse_mode, caption_entities)
 
@@ -93,4 +94,4 @@ class InputMediaVideo(InputMedia):
         self.duration = duration
         self.supports_streaming = supports_streaming
         self.has_spoiler = has_spoiler
-        self.nosound_video = nosound_video
+        self.disable_content_type_detection = disable_content_type_detection
