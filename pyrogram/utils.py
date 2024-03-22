@@ -102,7 +102,16 @@ async def parse_messages(
     parsed_messages = []
 
     for message in messages.messages:
-        parsed_messages.append(await types.Message._parse(client, message, users, chats, replies=0))
+        parsed_messages.append(
+            await types.Message._parse(
+                client,
+                message,
+                users,
+                chats,
+                # TODO ?
+                replies=0
+            )
+        )
 
     if replies and False:  # TODO
         messages_with_replies = {

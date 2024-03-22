@@ -138,7 +138,11 @@ class SendMediaGroup:
                             spoiler=i.has_spoiler
                         )
                     else:
-                        media = utils.get_input_media_from_file_id(i.media, FileType.PHOTO)
+                        media = utils.get_input_media_from_file_id(
+                            i.media,
+                            FileType.PHOTO,
+                            has_spoiler=i.has_spoiler
+                        )
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
@@ -211,7 +215,7 @@ class SendMediaGroup:
                             spoiler=i.has_spoiler
                         )
                     else:
-                        media = utils.get_input_media_from_file_id(i.media, FileType.VIDEO)
+                        media = utils.get_input_media_from_file_id(i.media, FileType.VIDEO, has_spoiler=i.has_spoiler)
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
@@ -331,6 +335,7 @@ class SendMediaGroup:
                                     attributes=[
                                         raw.types.DocumentAttributeFilename(file_name=os.path.basename(i.media))
                                     ]
+                                    # TODO
                                 )
                             )
                         )
@@ -417,12 +422,19 @@ class SendMediaGroup:
         return await utils.parse_messages(
             self,
             raw.types.messages.Messages(
-                messages=[m.message for m in filter(
-                    lambda u: isinstance(u, (raw.types.UpdateNewMessage,
-                                             raw.types.UpdateNewChannelMessage,
-                                             raw.types.UpdateNewScheduledMessage)),
-                    r.updates
-                )],
+                messages=[
+                    m.message for m in filter(
+                        lambda u: isinstance(
+                            u,
+                            (
+                                raw.types.UpdateNewMessage,
+                                raw.types.UpdateNewChannelMessage,
+                                raw.types.UpdateNewScheduledMessage
+                            )
+                        ),
+                        r.updates
+                    )
+                ],
                 users=r.users,
                 chats=r.chats
             )
