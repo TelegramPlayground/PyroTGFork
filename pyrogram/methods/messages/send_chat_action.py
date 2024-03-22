@@ -68,6 +68,7 @@ class SendChatAction:
         action_name = action.name.lower()
 
         if "upload" in action_name or "history" in action_name:
+            # TODO
             action = action.value(progress=0)
         else:
             action = action.value()
