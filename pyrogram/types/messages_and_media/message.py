@@ -286,7 +286,10 @@ class Message(Object, Update):
 
         general_forum_topic_unhidden
 
-        giveaway_created
+        giveaway_created (``bool``, *optional*):
+            Service message: a scheduled giveaway was created.
+            This object represents a service message about the creation of a scheduled giveaway.
+            Currently holds no information.
 
         giveaway (:obj:`~pyrogram.types.Giveaway`, *optional*):
             The message is a scheduled giveaway message
@@ -456,7 +459,7 @@ class Message(Object, Update):
 
 
 
-
+        giveaway_created: bool = None,
         giveaway: "types.Giveaway" = None,
 
 
@@ -467,7 +470,6 @@ class Message(Object, Update):
         web_app_data: "types.WebAppData" = None,
         gift_code: "types.GiftCode" = None,
         requested_chats: List["types.Chat"] = None,
-        giveaway_launched: bool = None,
         chat_ttl_period: int = None,
         chat_ttl_setting_from: "types.User" = None,
         reply_markup: Union[
@@ -575,6 +577,7 @@ class Message(Object, Update):
         self.story = story
         self.reply_to_story = reply_to_story
         self.giveaway = giveaway
+        self.giveaway_created = giveaway_created
         self._raw = _raw
 
     @staticmethod
@@ -627,7 +630,7 @@ class Message(Object, Update):
             video_chat_participants_invited = None
             web_app_data = None
             gift_code = None
-            giveaway_launched = None
+            giveaway_created = None
             requested_chats = None
             chat_ttl_period = None
             chat_ttl_setting_from = None
@@ -682,8 +685,8 @@ class Message(Object, Update):
                 web_app_data = types.WebAppData._parse(action)
                 service_type = enums.MessageServiceType.WEB_APP_DATA
             elif isinstance(action, raw.types.MessageActionGiveawayLaunch):
-                giveaway_launched = True
-                service_type = enums.MessageServiceType.GIVEAWAY_LAUNCH
+                giveaway_created = True
+                service_type = enums.MessageServiceType.GIVEAWAY_CREATED
             elif isinstance(action, raw.types.MessageActionGiftCode):
                 gift_code = types.GiftCode._parse(client, action, chats)
                 service_type = enums.MessageServiceType.GIFT_CODE
@@ -752,7 +755,7 @@ class Message(Object, Update):
                 video_chat_ended=video_chat_ended,
                 video_chat_participants_invited=video_chat_participants_invited,
                 web_app_data=web_app_data,
-                giveaway_launched=giveaway_launched,
+                giveaway_created=giveaway_created,
                 gift_code=gift_code,
                 requested_chats=requested_chats,
                 chat_ttl_period=chat_ttl_period,

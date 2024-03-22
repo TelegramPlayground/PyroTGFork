@@ -57,8 +57,8 @@ class MessageServiceType(AutoName):
     GAME_HIGH_SCORE = auto()
     "Game high score"
 
-    GIVEAWAY_LAUNCH = auto()
-    "Giveaway launch"
+    GIVEAWAY_CREATED = auto()
+    "Giveaway Created"
 
     GIFT_CODE = auto()
     "Gift code"
