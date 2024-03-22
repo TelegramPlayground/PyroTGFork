@@ -228,6 +228,7 @@ class CallbackQuery(Object, Update):
         self,
         caption: str,
         parse_mode: Optional["enums.ParseMode"] = None,
+        caption_entities: List["types.MessageEntity"] = None,
         reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> Union["types.Message", bool]:
         """Edit the caption of media messages attached to callback queries.
@@ -242,6 +243,9 @@ class CallbackQuery(Object, Update):
                 By default, texts are parsed using both Markdown and HTML styles.
                 You can combine both syntaxes together.
 
+            caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in message text, which can be specified instead of *parse_mode*.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
 
@@ -252,12 +256,18 @@ class CallbackQuery(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        return await self.edit_message_text(caption, parse_mode, reply_markup=reply_markup)
+        return await self.edit_message_text(
+            text=caption,
+            parse_mode=parse_mode,
+            entities=caption_entities,
+            reply_markup=reply_markup
+        )
 
     async def edit_message_media(
         self,
         media: "types.InputMedia",
-        reply_markup: "types.InlineKeyboardMarkup" = None
+        reply_markup: "types.InlineKeyboardMarkup" = None,
+        file_name: str = None
     ) -> Union["types.Message", bool]:
         """Edit animation, audio, document, photo or video messages attached to callback queries.
 
@@ -269,6 +279,10 @@ class CallbackQuery(Object, Update):
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
+
+            file_name (``str``, *optional*):
+                File name of the media to be sent. Not applicable to photos.
+                Defaults to file's path basename.
 
         Returns:
             :obj:`~pyrogram.types.Message` | ``bool``: On success, if the edited message was sent by the bot, the edited
@@ -282,7 +296,8 @@ class CallbackQuery(Object, Update):
                 chat_id=self.message.chat.id,
                 message_id=self.message.id,
                 media=media,
-                reply_markup=reply_markup
+                reply_markup=reply_markup,
+                file_name=file_name
             )
         else:
             return await self._client.edit_inline_media(
