@@ -16,15 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from datetime import datetime
 import io
 import os
 import re
 from typing import Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import raw, types, utils
 from pyrogram.file_id import FileType
 
 
@@ -35,7 +34,8 @@ class EditMessageMedia:
         message_id: int,
         media: "types.InputMedia",
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        file_name: str = None
+        file_name: str = None,
+        schedule_date: datetime = None
     ) -> "types.Message":
         """Edit animation, audio, document, photo or video messages.
 
@@ -62,6 +62,9 @@ class EditMessageMedia:
             file_name (``str``, *optional*):
                 File name of the media to be sent. Not applicable to photos.
                 Defaults to file's path basename.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
 
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the edited message is returned.
@@ -118,7 +121,7 @@ class EditMessageMedia:
                     spoiler=media.has_spoiler
                 )
             else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO)
+                media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaVideo):
             if isinstance(media.media, io.BytesIO) or os.path.isfile(media.media):
                 uploaded_media = await self.invoke(
@@ -139,7 +142,8 @@ class EditMessageMedia:
                                 raw.types.DocumentAttributeFilename(
                                     file_name=file_name or os.path.basename(media.media)
                                 )
-                            ]
+                            ],
+                            force_file=media.nosound_video or None,
                         )
                     )
                 )
@@ -249,7 +253,8 @@ class EditMessageMedia:
                                 raw.types.DocumentAttributeFilename(
                                     file_name=file_name or os.path.basename(media.media)
                                 )
-                            ]
+                            ],
+                            # force_file= #TODO
                         )
                     )
                 )
@@ -275,14 +280,24 @@ class EditMessageMedia:
                 media=media,
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 message=message,
-                entities=entities
+                entities=entities,
+                schedule_date=utils.datetime_to_timestamp(schedule_date)
             )
         )
 
         for i in r.updates:
-            if isinstance(i, (raw.types.UpdateEditMessage, raw.types.UpdateEditChannelMessage)):
+            if isinstance(
+                i,
+                (
+                    raw.types.UpdateEditMessage,
+                    raw.types.UpdateEditChannelMessage,
+                    raw.types.UpdateNewScheduledMessage
+                )
+            ):
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},
-                    {i.id: i for i in r.chats}
+                    {i.id: i for i in r.chats},
+                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
+                    replies=0
                 )

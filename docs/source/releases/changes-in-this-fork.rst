@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- Add ``schedule_date`` parameter to :meth:`~pyrogram.Client.edit_message_caption`, :meth:`~pyrogram.Client.edit_message_media`, :meth:`~pyrogram.Client.edit_message_text`.
 - Added new parameter ``client_platform`` to :obj:`~pyrogram.Client`.
 - Added ``is_scheduled`` to :meth:`~pyrogram.Client.get_messages`.
 - Added ``is_scheduled`` to :meth:`~pyrogram.Client.get_chat_history`.

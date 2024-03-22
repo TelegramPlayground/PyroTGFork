@@ -60,7 +60,7 @@ class StopPoll:
             chat_id=chat_id,
             message_ids=message_id
         )).poll
-
+        # TODO
         r = await self.invoke(
             raw.functions.messages.EditMessage(
                 peer=await self.resolve_peer(chat_id),
