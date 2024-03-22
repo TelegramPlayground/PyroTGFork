@@ -78,8 +78,11 @@ class MessageServiceType(AutoName):
     WEB_APP_DATA = auto()
     "Web app data"
 
-    REQUESTED_CHAT = auto()
-    "Requested chat"
+    USERS_SHARED = auto()
+    "Users Shared"
+
+    CHAT_SHARED = auto()
+    "Chat Shared"
 
     CHAT_TTL_CHANGED = auto()
     "Chat TTL changed"

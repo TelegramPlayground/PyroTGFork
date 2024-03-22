@@ -446,7 +446,8 @@ class Message(Object, Update):
         pinned_message: "Message" = None,
 
 
-
+        users_shared: List["types.User"] = None,
+        chat_shared: List["types.Chat"] = None,
 
 
 
@@ -469,7 +470,6 @@ class Message(Object, Update):
         video_chat_participants_invited: "types.VideoChatParticipantsInvited" = None,
         web_app_data: "types.WebAppData" = None,
         gift_code: "types.GiftCode" = None,
-        requested_chats: List["types.Chat"] = None,
         chat_ttl_period: int = None,
         chat_ttl_setting_from: "types.User" = None,
         reply_markup: Union[
@@ -578,6 +578,8 @@ class Message(Object, Update):
         self.reply_to_story = reply_to_story
         self.giveaway = giveaway
         self.giveaway_created = giveaway_created
+        self.users_shared = users_shared
+        self.chat_shared = chat_shared
         self._raw = _raw
 
     @staticmethod
@@ -631,7 +633,8 @@ class Message(Object, Update):
             web_app_data = None
             gift_code = None
             giveaway_created = None
-            requested_chats = None
+            users_shared = None
+            chat_shared = None
             chat_ttl_period = None
             chat_ttl_setting_from = None
             boost_added = None
@@ -692,29 +695,36 @@ class Message(Object, Update):
                 service_type = enums.MessageServiceType.GIFT_CODE
             elif isinstance(action, raw.types.MessageActionRequestedPeer):
                 _requested_chats = []
+                _requested_users = []
 
                 for requested_peer in action.peers:
+                    raw_peer_id = utils.get_raw_peer_id(requested_peer)
                     chat_id = utils.get_peer_id(requested_peer)
                     peer_type = utils.get_peer_type(chat_id)
 
                     if peer_type == "user":
-                        chat_type = enums.ChatType.PRIVATE
-                    elif peer_type == "chat":
-                        chat_type = enums.ChatType.GROUP
-                    else:
-                        chat_type = enums.ChatType.CHANNEL
-
-                    _requested_chats.append(
-                        types.Chat(
-                            id=chat_id,
-                            type=chat_type,
-                            client=client
+                        _requested_users.append(
+                            types.Chat._parse_user_chat(
+                                client,
+                                users.get(raw_peer_id)
+                            )
                         )
-                    )
+                    else:
+                        _requested_chats.append(
+                            types.Chat._parse_chat_chat(
+                                client,
+                                chats.get(raw_peer_id)
+                            )
+                        )
 
-                requested_chats = types.List(_requested_chats) or None
+                users_shared = types.List(_requested_users) or None
+                chat_shared = types.List(_requested_chats) or None
 
-                service_type = enums.MessageServiceType.REQUESTED_CHAT
+                if users_shared:
+                    service_type = enums.MessageServiceType.USERS_SHARED
+                if chat_shared:
+                    service_type = enums.MessageServiceType.CHAT_SHARED
+
             elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
                 chat_ttl_period = action.period
                 service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
@@ -757,7 +767,8 @@ class Message(Object, Update):
                 web_app_data=web_app_data,
                 giveaway_created=giveaway_created,
                 gift_code=gift_code,
-                requested_chats=requested_chats,
+                users_shared=users_shared,
+                chat_shared=chat_shared,
                 chat_ttl_period=chat_ttl_period,
                 chat_ttl_setting_from=chat_ttl_setting_from,
                 boost_added=boost_added,
