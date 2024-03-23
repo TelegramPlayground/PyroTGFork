@@ -109,7 +109,7 @@ async def parse_messages(
                 message,
                 users,
                 chats,
-                is_scheduled=is_scheduled
+                is_scheduled=is_scheduled,
                 replies=replies
             )
         )
