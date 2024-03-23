@@ -37,14 +37,18 @@ async def get_chunk(
 ):
     if is_scheduled:
         r = await client.invoke(
-            # TODO
             raw.functions.messages.GetScheduledHistory(
                 peer=await client.resolve_peer(chat_id),
                 hash=0
             ),
             sleep_threshold=60
         )
-        return await utils.parse_messages(client, r, replies=0)
+        return await utils.parse_messages(
+            client,
+            r,
+            is_scheduled=True,
+            replies=0
+        )
     else:
         messages = await client.invoke(
             raw.functions.messages.GetHistory(
@@ -60,7 +64,12 @@ async def get_chunk(
             sleep_threshold=60
         )
 
-        return await utils.parse_messages(client, messages, replies=0)
+        return await utils.parse_messages(
+            client,
+            messages,
+            is_scheduled=False,
+            replies=0
+        )
 
 
 class GetChatHistory:

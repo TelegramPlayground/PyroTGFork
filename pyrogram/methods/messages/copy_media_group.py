@@ -137,6 +137,7 @@ class CopyMediaGroup:
 
         return await utils.parse_messages(
             self,
+            # TODO
             raw.types.messages.Messages(
                 messages=[
                     m.message for m in filter(

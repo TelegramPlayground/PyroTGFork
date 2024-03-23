@@ -91,6 +91,7 @@ def get_input_media_from_file_id(
 async def parse_messages(
     client,
     messages: "raw.types.messages.Messages",
+    is_scheduled: bool = False,
     replies: int = 1
 ) -> List["types.Message"]:
     users = {i.id: i for i in messages.users}
@@ -108,8 +109,8 @@ async def parse_messages(
                 message,
                 users,
                 chats,
-                # TODO ?
-                replies=0
+                is_scheduled=is_scheduled
+                replies=replies
             )
         )
 
