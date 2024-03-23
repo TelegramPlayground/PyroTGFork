@@ -47,6 +47,8 @@ from .reply_keyboard_remove import ReplyKeyboardRemove
 from .sent_web_app_message import SentWebAppMessage
 from .web_app_info import WebAppInfo
 from .switch_inline_query_chosen_chat import SwitchInlineQueryChosenChat
+from .keyboard_button_request_users import KeyboardButtonRequestUsers
+from .keyboard_button_request_chat import KeyboardButtonRequestChat
 
 __all__ = [
     "CallbackGame",
@@ -77,5 +79,7 @@ __all__ = [
     "MenuButtonWebApp",
     "MenuButtonDefault",
     "SentWebAppMessage",
-    "SwitchInlineQueryChosenChat"
+    "SwitchInlineQueryChosenChat",
+    "KeyboardButtonRequestUsers",
+    "KeyboardButtonRequestChat"
 ]

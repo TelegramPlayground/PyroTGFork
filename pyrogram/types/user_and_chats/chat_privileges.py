@@ -116,6 +116,8 @@ class ChatPrivileges(Object):
 
     @staticmethod
     def _parse(admin_rights: "raw.base.ChatAdminRights") -> "ChatPrivileges":
+        if not admin_rights:
+            return None
         return ChatPrivileges(
             can_change_info=admin_rights.change_info,
             can_post_messages=admin_rights.post_messages,
@@ -133,3 +135,22 @@ class ChatPrivileges(Object):
             can_edit_stories=admin_rights.edit_stories,
             can_delete_stories=admin_rights.delete_stories
         )
+
+    def write(self):
+        return raw.types.ChatAdminRights(
+            change_info=self.can_change_info,
+            post_messages=self.can_post_messages,
+            edit_messages=self.can_edit_messages,
+            delete_messages=self.can_delete_messages,
+            ban_users=self.can_restrict_members,
+            invite_users=self.can_invite_users,
+            pin_messages=self.can_pin_messages,
+            add_admins=self.can_promote_members,
+            anonymous=self.is_anonymous,
+            manage_call=self.can_manage_video_chats,
+            other=self.can_manage_chat,
+            manage_topics=self.can_manage_topics,
+            post_stories=self.can_post_stories,
+            edit_stories=self.can_edit_stories,
+            delete_stories=self.can_delete_stories
+        ) if self else raw.types.ChatAdminRights()
