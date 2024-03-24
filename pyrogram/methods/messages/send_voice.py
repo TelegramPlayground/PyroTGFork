@@ -49,7 +49,7 @@ class SendVoice:
         quote_offset: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
-        ttl_seconds: int = None,
+        view_once: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -121,10 +121,9 @@ class SendVoice:
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            ttl_seconds (``int``, *optional*):
+            view_once (``bool``, *optional*):
                 Self-Destruct Timer.
-                If you set a timer, the voice note will self-destruct in *ttl_seconds*
-                seconds after it was listened.
+                If True, the voice note will self-destruct after it was listened.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -189,7 +188,7 @@ class SendVoice:
                                 duration=duration
                             )
                         ],
-                        ttl_seconds=ttl_seconds
+                        ttl_seconds=(1 << 31) - 1 if view_once else None
                     )
                 elif re.match("^https?://", voice):
                     media = raw.types.InputMediaDocumentExternal(
@@ -211,7 +210,7 @@ class SendVoice:
                             duration=duration
                         )
                     ],
-                    ttl_seconds=ttl_seconds
+                    ttl_seconds=(1 << 31) - 1 if view_once else None
                 )
 
             quote_text, quote_entities = (await utils.parse_text_entities(self, quote_text, parse_mode, quote_entities)).values()
