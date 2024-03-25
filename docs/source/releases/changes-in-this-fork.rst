@@ -12,10 +12,15 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
-- Add ``schedule_date`` parameter to :meth:`~pyrogram.Client.edit_message_caption`, :meth:`~pyrogram.Client.edit_message_media`, :meth:`~pyrogram.Client.edit_message_text`.
+- Bug fix for :meth:`~pyrogram.Client.send_message` with the ``message_thread_id`` parameter.
+- Added ``request_users`` and ``request_chat`` to :obj:`~pyrogram.types.KeyboardButton`.
+- Added :obj:`~pyrogram.types.Giveaway`, ``users_shared``, ``chat_shared`` to :obj:`~pyrogram.types.Message`.
+- **NOTE**: using the ``scheduled`` parameter, please be aware about using the correct :doc:`Message Identifiers <../../topics/message-identifiers>`.
+    - Add ``is_scheduled`` parameter to :meth:`~pyrogram.Client.delete_messages`.
+    - Add ``schedule_date`` parameter to :meth:`~pyrogram.Client.edit_message_caption`, :meth:`~pyrogram.Client.edit_message_media`, :meth:`~pyrogram.Client.edit_message_text`.
+    - Added ``is_scheduled`` to :meth:`~pyrogram.Client.get_messages`.
+    - Added ``is_scheduled`` to :meth:`~pyrogram.Client.get_chat_history`.
 - Added new parameter ``client_platform`` to :obj:`~pyrogram.Client`.
-- Added ``is_scheduled`` to :meth:`~pyrogram.Client.get_messages`.
-- Added ``is_scheduled`` to :meth:`~pyrogram.Client.get_chat_history`.
 - PR from upstream: `1403 <https://github.com/pyrogram/pyrogram/pull/1403>`_.
 - Added ``story`` to :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Added ``story_id`` to :obj:`~pyrogram.types.ReplyParameters`.
