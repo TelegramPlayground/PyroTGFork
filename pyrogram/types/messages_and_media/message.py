@@ -647,6 +647,9 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionChatJoinedByLink):
                 new_chat_members = [types.User._parse(client, users[utils.get_raw_peer_id(message.from_id)])]
                 service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
+            elif isinstance(action, raw.types.MessageActionChatJoinedByRequest):
+                new_chat_members = [types.User._parse(client, users[utils.get_raw_peer_id(message.from_id)])]
+                service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
             elif isinstance(action, raw.types.MessageActionChatDeleteUser):
                 left_chat_member = types.User._parse(client, users[action.user_id])
                 service_type = enums.MessageServiceType.LEFT_CHAT_MEMBERS
