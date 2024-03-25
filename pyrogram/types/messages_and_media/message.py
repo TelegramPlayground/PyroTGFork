@@ -3647,7 +3647,8 @@ class Message(Object, Update):
         return await self._client.delete_messages(
             chat_id=self.chat.id,
             message_ids=self.id,
-            revoke=revoke
+            revoke=revoke,
+            is_scheduled=self.scheduled
         )
 
     async def click(
