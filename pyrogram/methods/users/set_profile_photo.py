@@ -27,7 +27,9 @@ class SetProfilePhoto:
         self: "pyrogram.Client",
         *,
         photo: Union[str, BinaryIO] = None,
-        video: Union[str, BinaryIO] = None
+        video: Union[str, BinaryIO] = None,
+        public: bool = False,
+        for_my_bot: Union[int, str] = None,
     ) -> bool:
         """Set a new profile photo or video (H.264/MPEG-4 AVC video, max 5 seconds).
 
@@ -39,7 +41,7 @@ class SetProfilePhoto:
             This method only works for Users.
             Bots profile photos must be set using BotFather.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
             photo (``str`` | ``BinaryIO``, *optional*):
@@ -51,6 +53,14 @@ class SetProfilePhoto:
                 Profile video to set.
                 Pass a file path as string to upload a new video that exists on your local machine or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.
+
+            public (``bool``, *optional*):
+                Pass True to upload a public profile photo for users who are restricted from viewing your real profile photos due to your privacy settings.
+                Defaults to False.
+
+            for_my_bot (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the bot for which profile photo has to be updated instead of the current user.
+                The bot should have ``can_edit_bot`` property set to True.
 
         Returns:
             ``bool``: True on success.
@@ -68,8 +78,10 @@ class SetProfilePhoto:
         return bool(
             await self.invoke(
                 raw.functions.photos.UploadProfilePhoto(
+                    fallback=public,
                     file=await self.save_file(photo),
-                    video=await self.save_file(video)
+                    video=await self.save_file(video),
+                    bot=await self.resolve_peer(for_my_bot)
                 )
             )
         )
