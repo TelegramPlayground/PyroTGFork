@@ -66,9 +66,6 @@ class User(Object, Update):
         id (``int``):
             Unique identifier for this user or bot.
 
-        is_bot (``bool``, *optional*):
-            True, if this user is a bot.
-
         first_name (``str``, *optional*):
             User's or bot's first name.
 
@@ -83,18 +80,6 @@ class User(Object, Update):
 
         is_premium (``bool``, *optional*):
             True, if this user is a premium user.
-
-        added_to_attachment_menu (``bool``, *optional*):
-            True, if this user added the bot to the attachment menu.
-
-        can_join_groups (``bool``, *optional*):
-            True, if the bot can be invited to groups. Returned only in get_me.
-
-        can_read_all_group_messages (``bool``, *optional*):
-            True, if privacy mode is disabled for the bot. Returned only in get_me.
-
-        supports_inline_queries (``bool``, *optional*):
-            True, if the bot supports inline queries. Returned only in get_me.
 
         is_self(``bool``, *optional*):
             True, if this user is you yourself.
@@ -123,9 +108,6 @@ class User(Object, Update):
 
         is_support (``bool``, *optional*):
             True, if this user is part of the Telegram support team.
-
-        is_attachment_menu_adding_available (``bool``, *optional*):
-            True, if this bot can be added to the attachment menu.
 
         can_be_contacted_with_premium (``bool``, *optional*):
             True, if this user only allows messages from contacts and Telegram Premium users.
@@ -163,6 +145,30 @@ class User(Object, Update):
             You can use ``user.mention()`` to mention the user using their first name (styled using html), or
             ``user.mention("another name")`` for a custom name. To choose a different style
             ("HTML" or "MARKDOWN") use ``user.mention(style=ParseMode.MARKDOWN)``.
+        
+        is_bot (``bool``, *optional*):
+            True, if this user is a bot.
+
+        is_attachment_menu_adding_available (``bool``, *optional*):
+            True, if this bot can be added to the attachment menu.
+
+        added_to_attachment_menu (``bool``, *optional*):
+            True, if this user added the bot to the attachment menu.
+
+        can_join_groups (``bool``, *optional*):
+            True, if the bot can be invited to groups. Returned only in get_me.
+
+        can_read_all_group_messages (``bool``, *optional*):
+            True, if privacy mode is disabled for the bot. Returned only in get_me.
+
+        supports_inline_queries (``bool``, *optional*):
+            True, if the bot supports inline queries. Returned only in get_me.
+
+        supports_inline_location_requests (``bool``, *optional*):
+            True, if the bot supports inline `user location <https://core.telegram.org/bots/inline#location-based-results>`_ requests. Returned only in get_me.
+        
+        can_edit_bot (``bool``, *optional*):
+            True, if the current user can edit this bot's profile picture.
     """
 
     def __init__(
@@ -199,6 +205,8 @@ class User(Object, Update):
         can_read_all_group_messages: bool = None,
         supports_inline_queries: bool = None,
         can_be_contacted_with_premium: bool = None,
+        supports_inline_location_requests: bool = None,
+        can_edit_bot: bool = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -233,6 +241,8 @@ class User(Object, Update):
         self.can_read_all_group_messages = can_read_all_group_messages
         self.supports_inline_queries = supports_inline_queries
         self.can_be_contacted_with_premium = can_be_contacted_with_premium
+        self.supports_inline_location_requests = supports_inline_location_requests
+        self.can_edit_bot = can_edit_bot
         self._raw = _raw
 
     @property
@@ -281,6 +291,16 @@ class User(Object, Update):
             parsed_user.can_join_groups = not bool(getattr(user, "bot_nochats", None))
             parsed_user.can_read_all_group_messages = getattr(user, "bot_chat_history", None)
             parsed_user.supports_inline_queries = bool(getattr(user, "bot_inline_placeholder", None))
+            parsed_user.supports_inline_location_requests = bool(
+                getattr(user, "bot_inline_geo", None)
+            )
+        if (
+            not client.me.is_bot and
+            parsed_user.is_bot
+        ):
+            parsed_user.can_edit_bot = bool(
+                getattr(user, "bot_can_edit", None)
+            )
         return parsed_user
 
     @staticmethod

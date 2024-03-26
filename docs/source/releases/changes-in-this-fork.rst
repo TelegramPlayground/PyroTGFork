@@ -12,7 +12,8 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
-- ``giveaway``, ``giveaway_created``, ``giveaway_completed`` and ``giveaway_winners`` in :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`..
+- Add ``supports_inline_location_requests``, ``can_edit_bot`` to :obj:`~pyrogram.types.User`.
+- Add ``giveaway``, ``giveaway_created``, ``giveaway_completed`` and ``giveaway_winners`` in :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Bug fix for :meth:`~pyrogram.Client.send_message` with the ``message_thread_id`` parameter.
 - Added ``request_users`` and ``request_chat`` to :obj:`~pyrogram.types.KeyboardButton`.
 - Added ``users_shared``, ``chat_shared`` to :obj:`~pyrogram.types.Message`.
