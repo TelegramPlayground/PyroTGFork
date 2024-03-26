@@ -60,6 +60,9 @@ class MessageServiceType(AutoName):
     GIVEAWAY_CREATED = auto()
     "Giveaway Created"
 
+    GIVEAWAY_COMPLETED = auto()
+    "Giveaway Completed"
+
     GIFT_CODE = auto()
     "Gift code"
 

@@ -296,7 +296,8 @@ class Message(Object, Update):
 
         giveaway_winners
 
-        giveaway_completed
+        giveaway_completed (:obj:`~pyrogram.types.GiveawayCompleted`, *optional*):
+            Service message: a giveaway without public winners was completed
 
         video_chat_scheduled (:obj:`~pyrogram.types.VideoChatScheduled`, *optional*):
             Service message: voice chat scheduled.
@@ -463,7 +464,7 @@ class Message(Object, Update):
         giveaway_created: bool = None,
         giveaway: "types.Giveaway" = None,
 
-
+        giveaway_completed: "types.GiveawayCompleted" = None,
         video_chat_scheduled: "types.VideoChatScheduled" = None,
         video_chat_started: "types.VideoChatStarted" = None,
         video_chat_ended: "types.VideoChatEnded" = None,
@@ -580,6 +581,7 @@ class Message(Object, Update):
         self.giveaway_created = giveaway_created
         self.users_shared = users_shared
         self.chat_shared = chat_shared
+        self.giveaway_completed = giveaway_completed
         self._raw = _raw
 
     @staticmethod
@@ -638,6 +640,7 @@ class Message(Object, Update):
             chat_ttl_period = None
             chat_ttl_setting_from = None
             boost_added = None
+            giveaway_completed = None
 
             service_type = None
 
@@ -744,6 +747,22 @@ class Message(Object, Update):
                     action
                 )
 
+            elif isinstance(action, raw.types.MessageActionGiveawayResults):
+                service_type = enums.MessageServiceType.GIVEAWAY_COMPLETED
+                giveaway_completed = types.GiveawayCompleted._parse(
+                    client,
+                    action,
+                    getattr(
+                        getattr(
+                            message,
+                            "reply_to",
+                            None
+                        ),
+                        "reply_to_msg_id",
+                        None
+                    )
+                )
+
             from_user = types.User._parse(client, users.get(user_id, None))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
 
@@ -769,6 +788,7 @@ class Message(Object, Update):
                 video_chat_participants_invited=video_chat_participants_invited,
                 web_app_data=web_app_data,
                 giveaway_created=giveaway_created,
+                giveaway_completed=giveaway_completed,
                 gift_code=gift_code,
                 users_shared=users_shared,
                 chat_shared=chat_shared,

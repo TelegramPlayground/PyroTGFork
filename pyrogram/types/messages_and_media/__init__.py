@@ -50,6 +50,7 @@ from .message_reaction_count_updated import MessageReactionCountUpdated
 from .chat_boost_added import ChatBoostAdded
 from .story import Story
 from .giveaway import Giveaway
+from .giveaway_completed import GiveawayCompleted
 
 __all__ = [
     "Animation",
@@ -58,6 +59,7 @@ __all__ = [
     "Document",
     "Game",
     "Giveaway",
+    "GiveawayCompleted",
     "Location",
     "Message",
     "MessageEntity",
