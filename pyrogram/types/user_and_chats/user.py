@@ -294,11 +294,9 @@ class User(Object, Update):
             parsed_user.supports_inline_location_requests = bool(
                 getattr(user, "bot_inline_geo", None)
             )
-        if (
-            not client.me.is_bot and
-            parsed_user.is_bot
-        ):
+        if parsed_user.is_bot:
             parsed_user.can_edit_bot = bool(
+                # TODO: 💩 figure out this 💩
                 getattr(user, "bot_can_edit", None)
             )
         return parsed_user
