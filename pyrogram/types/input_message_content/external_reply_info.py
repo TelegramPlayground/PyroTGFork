@@ -81,7 +81,8 @@ class ExternalReplyInfo(Object):
         giveaway (:obj:`~pyrogram.types.Giveaway`, *optional*):
             Message is a scheduled giveaway, information about the giveaway
 
-        giveaway_winners
+        giveaway_winners (:obj:`~pyrogram.types.GiveawayWinners`, *optional*):
+            A giveaway with public winners was completed
 
         invoice
 
@@ -117,7 +118,7 @@ class ExternalReplyInfo(Object):
         dice: "types.Dice" = None,
         game: "types.Game" = None,
         giveaway: "types.Giveaway" = None,
-
+        giveaway_winners: "types.GiveawayWinners" = None,
 
         location: "types.Location" = None,
         poll: "types.Poll" = None,
@@ -142,6 +143,7 @@ class ExternalReplyInfo(Object):
         self.dice = dice
         self.game = game
         self.giveaway = giveaway
+        self.giveaway_winners = giveaway_winners
         self.location = location
         self.poll = poll
         self.venue = venue
@@ -150,6 +152,7 @@ class ExternalReplyInfo(Object):
     async def _parse(
         client,
         chats: dict,
+        users: dict,
         reply_to: "raw.types.MessageReplyHeader"
     ) -> "ExternalReplyInfo":
         if not getattr(reply_to, "reply_from", None):
@@ -176,6 +179,7 @@ class ExternalReplyInfo(Object):
             dice = None
             game = None
             giveaway = None
+            giveaway_winners = None
             location = None
             poll = None
             venue = None
@@ -274,6 +278,9 @@ class ExternalReplyInfo(Object):
                 elif isinstance(media, raw.types.MessageMediaGiveaway):
                     giveaway = types.Giveaway._parse(client, chats, media)
                     media_type = enums.MessageMediaType.GIVEAWAY
+                elif isinstance(media, raw.types.MessageMediaGiveawayResults):
+                    giveaway_winners = types.GiveawayWinners._parse(client, chats, users, media)
+                    media_type = enums.MessageMediaType.GIVEAWAY_WINNERS
 
             return ExternalReplyInfo(
                 chat=chat,
@@ -293,6 +300,7 @@ class ExternalReplyInfo(Object):
                 dice=dice,
                 game=game,
                 giveaway=giveaway,
+                giveaway_winners=giveaway_winners,
                 location=location,
                 poll=poll,
                 venue=venue

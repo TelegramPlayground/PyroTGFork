@@ -294,7 +294,8 @@ class Message(Object, Update):
         giveaway (:obj:`~pyrogram.types.Giveaway`, *optional*):
             The message is a scheduled giveaway message
 
-        giveaway_winners
+        giveaway_winners (:obj:`~pyrogram.types.GiveawayWinners`, *optional*):
+            A giveaway with public winners was completed        
 
         giveaway_completed (:obj:`~pyrogram.types.GiveawayCompleted`, *optional*):
             Service message: a giveaway without public winners was completed
@@ -463,7 +464,7 @@ class Message(Object, Update):
 
         giveaway_created: bool = None,
         giveaway: "types.Giveaway" = None,
-
+        giveaway_winners: "types.GiveawayWinners" = None,
         giveaway_completed: "types.GiveawayCompleted" = None,
         video_chat_scheduled: "types.VideoChatScheduled" = None,
         video_chat_started: "types.VideoChatStarted" = None,
@@ -582,6 +583,7 @@ class Message(Object, Update):
         self.users_shared = users_shared
         self.chat_shared = chat_shared
         self.giveaway_completed = giveaway_completed
+        self.giveaway_winners = giveaway_winners
         self._raw = _raw
 
     @staticmethod
@@ -877,6 +879,7 @@ class Message(Object, Update):
             poll = None
             dice = None
             giveaway = None
+            giveaway_winners = None
 
             media = message.media
             media_type = None
@@ -969,6 +972,9 @@ class Message(Object, Update):
                 elif isinstance(media, raw.types.MessageMediaGiveaway):
                     giveaway = types.Giveaway._parse(client, chats, media)
                     media_type = enums.MessageMediaType.GIVEAWAY
+                elif isinstance(media, raw.types.MessageMediaGiveawayResults):
+                    giveaway_winners = types.GiveawayWinners._parse(client, chats, users, media)
+                    media_type = enums.MessageMediaType.GIVEAWAY_WINNERS
                 else:
                     media = None
 
@@ -1060,6 +1066,7 @@ class Message(Object, Update):
                 poll=poll,
                 dice=dice,
                 giveaway=giveaway,
+                giveaway_winners=giveaway_winners,
                 views=message.views,
                 forwards=message.forwards,
                 via_bot=types.User._parse(client, users.get(message.via_bot_id, None)),
@@ -1101,6 +1108,7 @@ class Message(Object, Update):
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
                 client,
                 chats,
+                users,
                 message.reply_to
             )
             parsed_message.sender_boost_count = getattr(message, "from_boosts_applied", None)

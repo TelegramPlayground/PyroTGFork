@@ -51,6 +51,7 @@ from .chat_boost_added import ChatBoostAdded
 from .story import Story
 from .giveaway import Giveaway
 from .giveaway_completed import GiveawayCompleted
+from .giveaway_winners import GiveawayWinners
 
 __all__ = [
     "Animation",
@@ -60,6 +61,7 @@ __all__ = [
     "Game",
     "Giveaway",
     "GiveawayCompleted",
+    "GiveawayWinners",
     "Location",
     "Message",
     "MessageEntity",

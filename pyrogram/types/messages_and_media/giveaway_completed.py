@@ -27,7 +27,7 @@ from ..object import Object
 
 
 class GiveawayCompleted(Object):
-    """This object represents a message about a scheduled giveaway.
+    """This object represents a service message about the completion of a giveaway without public winners.
 
     Parameters:
         winner_count (``int``):

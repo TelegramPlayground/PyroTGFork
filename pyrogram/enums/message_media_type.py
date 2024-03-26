@@ -74,3 +74,6 @@ class MessageMediaType(AutoName):
 
     GIVEAWAY = auto()
     "Giveaway"
+
+    GIVEAWAY_WINNERS = auto()
+    "Giveaway Winners"
