@@ -12,9 +12,10 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- ``giveaway``, ``giveaway_created``, ``giveaway_completed`` and ``giveaway_winners`` in :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`..
 - Bug fix for :meth:`~pyrogram.Client.send_message` with the ``message_thread_id`` parameter.
 - Added ``request_users`` and ``request_chat`` to :obj:`~pyrogram.types.KeyboardButton`.
-- Added :obj:`~pyrogram.types.Giveaway`, ``users_shared``, ``chat_shared`` to :obj:`~pyrogram.types.Message`.
+- Added ``users_shared``, ``chat_shared`` to :obj:`~pyrogram.types.Message`.
 - **NOTE**: using the ``scheduled`` parameter, please be aware about using the correct :doc:`Message Identifiers <../../topics/message-identifiers>`.
     - Add ``is_scheduled`` parameter to :meth:`~pyrogram.Client.delete_messages`.
     - Add ``schedule_date`` parameter to :meth:`~pyrogram.Client.edit_message_caption`, :meth:`~pyrogram.Client.edit_message_media`, :meth:`~pyrogram.Client.edit_message_text`.
