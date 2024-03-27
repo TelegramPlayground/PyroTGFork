@@ -471,9 +471,6 @@ class Message(Object, Update):
         video_chat_ended: "types.VideoChatEnded" = None,
         video_chat_participants_invited: "types.VideoChatParticipantsInvited" = None,
         web_app_data: "types.WebAppData" = None,
-        gift_code: "types.GiftCode" = None,
-        chat_ttl_period: int = None,
-        chat_ttl_setting_from: "types.User" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -481,6 +478,9 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
 
+        gift_code: "types.GiftCode" = None,
+        chat_ttl_period: int = None,
+        chat_ttl_setting_from: "types.User" = None,
         empty: bool = None,
         mentioned: bool = None,
         service: "enums.MessageServiceType" = None,
@@ -584,6 +584,7 @@ class Message(Object, Update):
         self.chat_shared = chat_shared
         self.giveaway_completed = giveaway_completed
         self.giveaway_winners = giveaway_winners
+        self.gift_code = gift_code
         self._raw = _raw
 
     @staticmethod

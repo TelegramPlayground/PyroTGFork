@@ -52,6 +52,7 @@ from .story import Story
 from .giveaway import Giveaway
 from .giveaway_completed import GiveawayCompleted
 from .giveaway_winners import GiveawayWinners
+from .gift_code import GiftCode
 
 __all__ = [
     "Animation",
@@ -87,5 +88,6 @@ __all__ = [
     "MessageReactionUpdated",
     "MessageReactionCountUpdated",
     "ChatBoostAdded",
-    "Story"
+    "Story",
+    "GiftCode"
 ]
