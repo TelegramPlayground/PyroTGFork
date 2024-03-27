@@ -430,6 +430,7 @@ def pyrogram_api():
             Giveaway
             GiveawayWinners
             GiveawayCompleted
+            GiftCode
         """,
         bot_keyboards="""
         Bot keyboards
@@ -453,6 +454,8 @@ def pyrogram_api():
             KeyboardButtonPollTypeRegular
             KeyboardButtonPollTypeQuiz
             SwitchInlineQueryChosenChat
+            KeyboardButtonRequestUsers
+            KeyboardButtonRequestChat
         """,
         bot_commands="""
         Bot commands
