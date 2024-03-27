@@ -12,7 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
-- Add ``public``, ``for_my_bot`` to :meth:`~pyrogram.Client.set_profile_photo`.
+- Add ``public``, ``for_my_bot``, ``photo_frame_start_timestamp`` to :meth:`~pyrogram.Client.set_profile_photo`.
 - Add ``supports_inline_location_requests``, ``can_edit_bot`` to :obj:`~pyrogram.types.User`.
 - Add ``giveaway``, ``giveaway_created``, ``giveaway_completed`` and ``giveaway_winners`` in :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Bug fix for :meth:`~pyrogram.Client.send_message` with the ``message_thread_id`` parameter.

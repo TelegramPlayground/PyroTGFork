@@ -100,9 +100,3 @@ the official HTTP Bot API. Using Pyrogram you can:
 
     - :guilabel:`+` **Has more meaningful errors in case something went wrong**
     - :guilabel:`--` The Bot API reports less detailed errors
-
-.. hlist::
-    :columns: 1
-
-    - :guilabel:`+` **Get API version updates, and thus new features, sooner**
-    - :guilabel:`--` The Bot API is simply slower in implementing new features

@@ -30,6 +30,7 @@ class SetProfilePhoto:
         video: Union[str, BinaryIO] = None,
         public: bool = False,
         for_my_bot: Union[int, str] = None,
+        photo_frame_start_timestamp: float = None
     ) -> bool:
         """Set a new profile photo or video (H.264/MPEG-4 AVC video, max 5 seconds).
 
@@ -58,9 +59,12 @@ class SetProfilePhoto:
                 Pass True to upload a public profile photo for users who are restricted from viewing your real profile photos due to your privacy settings.
                 Defaults to False.
 
-            for_my_bot (``int`` | ``str``):
+            for_my_bot (``int`` | ``str``, *optional*):
                 Unique identifier (int) or username (str) of the bot for which profile photo has to be updated instead of the current user.
                 The bot should have ``can_edit_bot`` property set to True.
+
+            photo_frame_start_timestamp (``float``, *optional*):
+                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` or ``video_emoji_markup`` is set.
 
         Returns:
             ``bool``: True on success.
@@ -81,7 +85,8 @@ class SetProfilePhoto:
                     fallback=public,
                     file=await self.save_file(photo),
                     video=await self.save_file(video),
-                    bot=await self.resolve_peer(for_my_bot)
+                    bot=await self.resolve_peer(for_my_bot) if for_my_bot else None,
+                    video_start_ts=photo_frame_start_timestamp
                 )
             )
         )
