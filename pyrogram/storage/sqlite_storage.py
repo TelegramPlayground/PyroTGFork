@@ -1,5 +1,10 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
 #  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present bakatrouble <https://github.com/bakatrouble>
+#  Copyright (C) 2017-present cavallium <https://github.com/cavallium>
+#  Copyright (C) 2017-present andrew-ld <https://github.com/andrew-ld>
+#  Copyright (C) 2017-present 01101sam <https://github.com/01101sam>
+#  Copyright (C) 2017-present KurimuzonAkuma <https://github.com/KurimuzonAkuma>
 #
 #  This file is part of Pyrogram.
 #
@@ -15,7 +20,9 @@
 #
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
+
 import asyncio
+import inspect
 import sqlite3
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -52,6 +59,15 @@ CREATE TABLE usernames
     id       INTEGER,
     username TEXT,
     FOREIGN KEY (id) REFERENCES peers(id)
+);
+
+CREATE TABLE update_state
+(
+    id   INTEGER PRIMARY KEY,
+    pts  INTEGER,
+    qts  INTEGER,
+    date INTEGER,
+    seq  INTEGER
 );
 
 CREATE TABLE version
@@ -96,7 +112,7 @@ def get_input_peer(peer_id: int, access_hash: int, peer_type: str):
 
 
 class SQLiteStorage(Storage):
-    VERSION = 4
+    VERSION = 5
     USERNAME_TTL = 8 * 60 * 60
 
     def __init__(self, name: str):
@@ -139,6 +155,9 @@ class SQLiteStorage(Storage):
 
     def _update_peers_impl(self, peers):
         with self.conn:
+            peers_data = []
+            usernames_data = []
+            ids_to_delete = []
             for peer_data in peers:
                 id, access_hash, type, usernames, phone_number = peer_data
 
@@ -158,8 +177,28 @@ class SQLiteStorage(Storage):
                     [(id, username) for username in usernames] if usernames else [(id, None)]
                 )
 
-    async def update_peers(self, peers: List[Tuple[int, int, str, str, str]]):
+    async def update_peers(self, peers: List[Tuple[int, int, str, List[str], str]]):
         return await self.loop.run_in_executor(self.executor, self._update_peers_impl, peers)
+
+    async def update_state(self, value: Tuple[int, int, int, int, int] = object):
+        if value == object:
+            return self.conn.execute(
+                "SELECT id, pts, qts, date, seq FROM update_state "
+                "ORDER BY date ASC"
+            ).fetchall()
+        else:
+            with self.conn:
+                if isinstance(value, int):
+                    self.conn.execute(
+                        "DELETE FROM update_state WHERE id = ?",
+                        (value,)
+                    )
+                else:
+                    self.conn.execute(
+                        "REPLACE INTO update_state (id, pts, qts, date, seq)"
+                        "VALUES (?, ?, ?, ?, ?)",
+                        value
+                    )
 
     def _get_peer_by_id_impl(self, peer_id: int):
         with self.conn:
@@ -216,19 +255,29 @@ class SQLiteStorage(Storage):
         with self.conn:
             return self.conn.execute(f"SELECT {attr} FROM sessions").fetchone()[0]
 
-    async def _get(self, attr: str):
+    # async def _get(self, attr: str):
+    #     return await self.loop.run_in_executor(self.executor, self._get_impl, attr)
+
+    def _get(self):
+        attr = inspect.stack()[2].function
         return await self.loop.run_in_executor(self.executor, self._get_impl, attr)
 
     def _set_impl(self, attr: str, value: any):
         with self.conn:
             return self.conn.execute(f"UPDATE sessions SET {attr} = ?", (value,))
 
-    async def _set(self, attr: str, value: Any):
+    # async def _set(self, attr: str, value: Any):
+    #     return await self.loop.run_in_executor(self.executor, self._set_impl, attr, value)
+
+    def _set(self, value: Any):
+        attr = inspect.stack()[2].function
+
         return await self.loop.run_in_executor(self.executor, self._set_impl, attr, value)
 
-    async def _accessor(self, attr: str, value: Any = object):
-        return await self._get(attr) if value == object else await self._set(attr, value)
-
+    async def _accessor(self, value: Any = object):
+        # return await self._get(attr) if value == object else await self._set(attr, value)
+        return await self._get() if value == object else await self._set(value)
+    
     def _get_version_impl(self):
         with self.conn:
             return self.conn.execute("SELECT number FROM version").fetchone()[0]
@@ -238,27 +287,27 @@ class SQLiteStorage(Storage):
             return self.conn.execute("UPDATE version SET number = ?", (value,))
 
     async def dc_id(self, value: int = object):
-        return await self._accessor("dc_id", value)
+        return await self._accessor(value)
 
     async def api_id(self, value: int = object):
-        return await self._accessor("api_id", value)
+        return await self._accessor(value)
 
     async def test_mode(self, value: bool = object):
-        return await self._accessor("test_mode", value)
+        return await self._accessor(value)
 
     async def auth_key(self, value: bytes = object):
-        return await self._accessor("auth_key", value)
+        return await self._accessor(value)
 
     async def date(self, value: int = object):
-        return await self._accessor("date", value)
+        return await self._accessor(value)
 
     async def user_id(self, value: int = object):
-        return await self._accessor("user_id", value)
+        return await self._accessor(value)
 
     async def is_bot(self, value: bool = object):
-        return await self._accessor("is_bot", value)
+        return await self._accessor(value)
 
-    async def version(self, value: int = object):
+    def version(self, value: int = object):
         if value == object:
             return await self.loop.run_in_executor(self.executor, self._get_version_impl)
         else:

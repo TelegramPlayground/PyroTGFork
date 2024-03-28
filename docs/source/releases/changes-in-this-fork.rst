@@ -12,9 +12,38 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- Add ``AioSQLiteStorage``, by stealing the following commits:
+    - `fded06e <https://github.com/KurimuzonAkuma/pyrogram/commit/fded06e7bdf8bb591fb5857d0f126986ccf357c8>`_
+
+    - How to use the Storage Engine is shown below.
+    
+    - ``/path/to/your/file.session`` will be created if does not exist.
+
+    .. code-block:: python
+
+        import asyncio
+        from pyrogram import Client
+        from pyrogram.storage.aio_sqlite_storage import AioSQLiteStorage
+
+        api_id = 12345
+        api_hash = "0123456789abcdef0123456789abcdef"
+
+
+        async def main():
+            async with Client(
+                "my_account",
+                api_id,
+                api_hash,
+                storage_engine=AioSQLiteStorage("/path/to/your/file.session")
+            ) as app:
+                await app.send_message(chat_id="me", text="Greetings from **Pyrogram**!")
+
+
+        asyncio.run(main())
+
 - Add ``skip_updates`` parameter to :obj:`~pyrogram.Client` class, by stealing the following commits:
-        - `c16c83a <https://github.com/KurimuzonAkuma/pyrogram/commit/c16c83abc307e4646df0eba34aad6de42517c8bb>`_
-        - `55aa162 <https://github.com/KurimuzonAkuma/pyrogram/commit/55aa162a38831d79604d4c10df1a046c8a1c3ea6>`_
+    - `c16c83a <https://github.com/KurimuzonAkuma/pyrogram/commit/c16c83abc307e4646df0eba34aad6de42517c8bb>`_
+    - `55aa162 <https://github.com/KurimuzonAkuma/pyrogram/commit/55aa162a38831d79604d4c10df1a046c8a1c3ea6>`_
 - Add ``public``, ``for_my_bot`` to :meth:`~pyrogram.Client.delete_profile_photos`.
 - Make ``photo_ids`` parameter as optional in :meth:`~pyrogram.Client.delete_profile_photos`.
 - Add ``supergroup_chat_created`` to :obj:`~pyrogram.types.Message`.

@@ -1,5 +1,10 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
 #  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present bakatrouble <https://github.com/bakatrouble>
+#  Copyright (C) 2017-present cavallium <https://github.com/cavallium>
+#  Copyright (C) 2017-present andrew-ld <https://github.com/andrew-ld>
+#  Copyright (C) 2017-present 01101sam <https://github.com/01101sam>
+#  Copyright (C) 2017-present KurimuzonAkuma <https://github.com/KurimuzonAkuma>
 #
 #  This file is part of Pyrogram.
 #
@@ -25,7 +30,7 @@ from .sqlite_storage import SQLiteStorage
 
 log = logging.getLogger(__name__)
 
-SCHEMA_UN_V3 = """
+USERNAMES_SCHEMA = """
 CREATE TABLE IF NOT EXISTS usernames
 (
     id       INTEGER,
@@ -34,6 +39,17 @@ CREATE TABLE IF NOT EXISTS usernames
 );
 
 CREATE INDEX idx_usernames_username ON usernames (username);
+"""
+
+UPDATE_STATE_SCHEMA = """
+CREATE TABLE update_state
+(
+    id   INTEGER PRIMARY KEY,
+    pts  INTEGER,
+    qts  INTEGER,
+    date INTEGER,
+    seq  INTEGER
+);
 """
 
 
@@ -73,13 +89,13 @@ class FileStorage(SQLiteStorage):
 
         if version == 3:
             with self.conn:
-                self.conn.executescript(SCHEMA_UN_V3)
+                self.conn.executescript(USERNAMES_SCHEMA)
 
             version += 1
 
-        if version == 3:
+        if version == 4:
             with self.conn:
-                self.conn.executescript(SCHEMA)
+                self.conn.executescript(UPDATE_STATE_SCHEMA)
 
             version += 1
 

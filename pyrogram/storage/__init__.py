@@ -1,5 +1,10 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
 #  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present bakatrouble <https://github.com/bakatrouble>
+#  Copyright (C) 2017-present cavallium <https://github.com/cavallium>
+#  Copyright (C) 2017-present andrew-ld <https://github.com/andrew-ld>
+#  Copyright (C) 2017-present 01101sam <https://github.com/01101sam>
+#  Copyright (C) 2017-present KurimuzonAkuma <https://github.com/KurimuzonAkuma>
 #
 #  This file is part of Pyrogram.
 #
