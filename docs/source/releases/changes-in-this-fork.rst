@@ -12,6 +12,8 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- Add ``public``, ``for_my_bot`` to :meth:`~pyrogram.Client.delete_profile_photos`.
+- Make ``photo_ids`` parameter as optional in :meth:`~pyrogram.Client.delete_profile_photos`.
 - Add ``supergroup_chat_created`` to :obj:`~pyrogram.types.Message`.
 - Add ``forum_topic_created``, ``forum_topic_closed``, ``forum_topic_edited``, ``forum_topic_reopened``, ``general_forum_topic_hidden``, ``general_forum_topic_unhidden`` to :obj:`~pyrogram.types.Message`.
 - Add ``custom_action`` to :obj:`~pyrogram.types.Message`.
