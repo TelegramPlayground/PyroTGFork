@@ -12,6 +12,9 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- Add ``skip_updates`` parameter to :obj:`~pyrogram.Client` class, by stealing the following commits:
+        - `c16c83a <https://github.com/KurimuzonAkuma/pyrogram/commit/c16c83abc307e4646df0eba34aad6de42517c8bb>`_
+        - `55aa162 <https://github.com/KurimuzonAkuma/pyrogram/commit/55aa162a38831d79604d4c10df1a046c8a1c3ea6>`_
 - Add ``public``, ``for_my_bot`` to :meth:`~pyrogram.Client.delete_profile_photos`.
 - Make ``photo_ids`` parameter as optional in :meth:`~pyrogram.Client.delete_profile_photos`.
 - Add ``supergroup_chat_created`` to :obj:`~pyrogram.types.Message`.

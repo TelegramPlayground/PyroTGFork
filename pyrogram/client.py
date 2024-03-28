@@ -88,8 +88,16 @@ class Client(Methods):
             Operating System version.
             Defaults to *platform.system() + " " + platform.release()*.
 
+        lang_pack (``str``, *optional*):
+            Name of the language pack used on the client.
+            Defaults to "" (empty string).
+
         lang_code (``str``, *optional*):
             Code of the language used on the client, in ISO 639-1 standard.
+            Defaults to "en".
+
+        system_lang_code (``str``, *optional*):
+            Code of the language used on the system, in ISO 639-1 standard.
             Defaults to "en".
 
         ipv6 (``bool``, *optional*):
@@ -155,6 +163,10 @@ class Client(Methods):
             Useful for batch programs that don't need to deal with updates.
             Defaults to False (updates enabled and received).
 
+        skip_updates (``bool``, *optional*):
+            Pass True to skip pending updates that arrived while the client was offline.
+            Defaults to True.
+
         takeout (``bool``, *optional*):
             Pass True to let the client use a takeout session instead of a normal one, implies *no_updates=True*.
             Useful for exporting Telegram data. Methods invoked inside a takeout session (such as get_chat_history,
@@ -186,7 +198,7 @@ class Client(Methods):
             Pass an instance of your own implementation of session storage engine.
             Useful when you want to store your session in databases like Mongo, Redis, etc.
             :doc:`Storage Engines <../../topics/storage-engines>`
-        
+
         no_joined_notifications (``bool``, *optional*):
             Pass True to disable notification about the current user joining Telegram for other users that added them to contact list.
             Pass False to Notify people on Telegram who know my phone number that I signed up.
@@ -201,7 +213,9 @@ class Client(Methods):
     DEVICE_MODEL = f"{platform.python_implementation()} {platform.python_version()}"
     SYSTEM_VERSION = f"{platform.system()} {platform.release()}"
 
+    LANG_PACK = ""
     LANG_CODE = "en"
+    SYSTEM_LANG_CODE = "en"
 
     PARENT_DIR = Path(sys.argv[0]).parent
 
@@ -227,7 +241,9 @@ class Client(Methods):
         app_version: str = APP_VERSION,
         device_model: str = DEVICE_MODEL,
         system_version: str = SYSTEM_VERSION,
+        lang_pack: str = LANG_PACK,
         lang_code: str = LANG_CODE,
+        system_lang_code: str = SYSTEM_LANG_CODE,
         ipv6: bool = False,
         proxy: dict = None,
         test_mode: bool = False,
@@ -242,6 +258,7 @@ class Client(Methods):
         plugins: dict = None,
         parse_mode: "enums.ParseMode" = enums.ParseMode.DEFAULT,
         no_updates: bool = None,
+        skip_updates: bool = True,
         takeout: bool = None,
         sleep_threshold: int = Session.SLEEP_THRESHOLD,
         hide_password: bool = False,
@@ -260,7 +277,9 @@ class Client(Methods):
         self.app_version = app_version
         self.device_model = device_model
         self.system_version = system_version
+        self.lang_pack = lang_pack.lower()
         self.lang_code = lang_code.lower()
+        self.system_lang_code = system_lang_code.lower()
         self.ipv6 = ipv6
         self.proxy = proxy
         self.test_mode = test_mode
@@ -275,6 +294,7 @@ class Client(Methods):
         self.plugins = plugins
         self.parse_mode = parse_mode
         self.no_updates = no_updates
+        self.skip_updates = skip_updates
         self.takeout = takeout
         self.sleep_threshold = sleep_threshold
         self.hide_password = hide_password
@@ -587,6 +607,17 @@ class Client(Methods):
                 pts = getattr(update, "pts", None)
                 pts_count = getattr(update, "pts_count", None)
 
+                if pts:
+                    await self.storage.update_state(
+                        (
+                            utils.get_channel_id(channel_id) if channel_id else 0,
+                            pts,
+                            None,
+                            updates.date,
+                            updates.seq
+                        )
+                    )
+
                 if isinstance(update, raw.types.UpdateChannelTooLong):
                     log.info(update)
 
@@ -617,6 +648,16 @@ class Client(Methods):
 
                 self.dispatcher.updates_queue.put_nowait((update, users, chats))
         elif isinstance(updates, (raw.types.UpdateShortMessage, raw.types.UpdateShortChatMessage)):
+            await self.storage.update_state(
+                (
+                    0,
+                    updates.pts,
+                    None,
+                    updates.date,
+                    None
+                )
+            )
+
             diff = await self.invoke(
                 raw.functions.updates.GetDifference(
                     pts=updates.pts - updates.pts_count,
