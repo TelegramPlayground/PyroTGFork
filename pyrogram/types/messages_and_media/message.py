@@ -639,6 +639,10 @@ class Message(Object, Update):
         if isinstance(message, raw.types.MessageService):
             action = message.action
 
+            chat = types.Chat._parse(client, message, users, chats, is_chat=True)
+            from_user = types.User._parse(client, users.get(user_id, None))
+            sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
+
             new_chat_members = None
             left_chat_member = None
             new_chat_title = None
@@ -646,6 +650,7 @@ class Message(Object, Update):
             migrate_to_chat_id = None
             migrate_from_chat_id = None
             group_chat_created = None
+            supergroup_chat_created = None
             channel_chat_created = None
             new_chat_photo = None
             video_chat_scheduled = None
@@ -700,8 +705,12 @@ class Message(Object, Update):
                 group_chat_created = True
                 service_type = enums.MessageServiceType.GROUP_CHAT_CREATED
             elif isinstance(action, raw.types.MessageActionChannelCreate):
-                channel_chat_created = True
-                service_type = enums.MessageServiceType.CHANNEL_CHAT_CREATED
+                if chat.type == enums.ChatType.SUPERGROUP:
+                    supergroup_chat_created = True
+                    service_type = enums.MessageServiceType.SUPERGROUP_CHAT_CREATED
+                else:
+                    channel_chat_created = True
+                    service_type = enums.MessageServiceType.CHANNEL_CHAT_CREATED
             elif isinstance(action, raw.types.MessageActionChatEditPhoto):
                 new_chat_photo = types.Photo._parse(client, action.photo)
                 service_type = enums.MessageServiceType.NEW_CHAT_PHOTO
@@ -828,13 +837,10 @@ class Message(Object, Update):
                         service_type = enums.MessageServiceType.FORUM_TOPIC_REOPENED
                         forum_topic_reopened = types.ForumTopicReopened()
 
-            from_user = types.User._parse(client, users.get(user_id, None))
-            sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
-
             parsed_message = Message(
                 id=message.id,
                 date=utils.timestamp_to_datetime(message.date),
-                chat=types.Chat._parse(client, message, users, chats, is_chat=True),
+                chat=chat,
                 from_user=from_user,
                 sender_chat=sender_chat,
                 service=service_type,
@@ -846,6 +852,7 @@ class Message(Object, Update):
                 migrate_to_chat_id=utils.get_channel_id(migrate_to_chat_id) if migrate_to_chat_id else None,
                 migrate_from_chat_id=-migrate_from_chat_id if migrate_from_chat_id else None,
                 group_chat_created=group_chat_created,
+                supergroup_chat_created=supergroup_chat_created,
                 channel_chat_created=channel_chat_created,
                 video_chat_scheduled=video_chat_scheduled,
                 video_chat_started=video_chat_started,
@@ -868,7 +875,6 @@ class Message(Object, Update):
                 general_forum_topic_unhidden=general_forum_topic_unhidden,
                 custom_action=custom_action,
                 client=client
-                # TODO: supergroup_chat_created
             )
 
             if isinstance(action, raw.types.MessageActionPinMessage):

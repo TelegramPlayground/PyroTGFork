@@ -42,6 +42,9 @@ class MessageServiceType(AutoName):
     GROUP_CHAT_CREATED = auto()
     "Group chat created"
 
+    SUPERGROUP_CHAT_CREATED = auto()
+    "Supergroup chat created"
+
     CHANNEL_CHAT_CREATED = auto()
     "Channel chat created"
 
