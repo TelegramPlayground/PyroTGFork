@@ -180,7 +180,7 @@ class SQLiteStorage(Storage):
     async def update_peers(self, peers: List[Tuple[int, int, str, List[str], str]]):
         return await self.loop.run_in_executor(self.executor, self._update_peers_impl, peers)
 
-    async def update_state(self, value: Tuple[int, int, int, int, int] = object):
+    def _update_state_impl(self, value: Tuple[int, int, int, int, int] = object):
         if value == object:
             return self.conn.execute(
                 "SELECT id, pts, qts, date, seq FROM update_state "
@@ -199,6 +199,9 @@ class SQLiteStorage(Storage):
                         "VALUES (?, ?, ?, ?, ?)",
                         value
                     )
+
+    async def update_state(self, value: Tuple[int, int, int, int, int] = object):
+        return await self.loop.run_in_executor(self.executor, self._update_state_impl, value)
 
     def _get_peer_by_id_impl(self, peer_id: int):
         with self.conn:
@@ -258,7 +261,7 @@ class SQLiteStorage(Storage):
     # async def _get(self, attr: str):
     #     return await self.loop.run_in_executor(self.executor, self._get_impl, attr)
 
-    def _get(self):
+    async def _get(self):
         attr = inspect.stack()[2].function
         return await self.loop.run_in_executor(self.executor, self._get_impl, attr)
 
@@ -269,7 +272,7 @@ class SQLiteStorage(Storage):
     # async def _set(self, attr: str, value: Any):
     #     return await self.loop.run_in_executor(self.executor, self._set_impl, attr, value)
 
-    def _set(self, value: Any):
+    async def _set(self, value: Any):
         attr = inspect.stack()[2].function
 
         return await self.loop.run_in_executor(self.executor, self._set_impl, attr, value)
@@ -307,7 +310,7 @@ class SQLiteStorage(Storage):
     async def is_bot(self, value: bool = object):
         return await self._accessor(value)
 
-    def version(self, value: int = object):
+    async def version(self, value: int = object):
         if value == object:
             return await self.loop.run_in_executor(self.executor, self._get_version_impl)
         else:

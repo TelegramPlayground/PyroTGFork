@@ -154,7 +154,7 @@ class Dispatcher:
             )
 
         
-    async def message_bot_na_reaction_parser(update, users, chats):
+        async def message_bot_na_reaction_parser(update, users, chats):
             return (
                 pyrogram.types.MessageReactionUpdated._parse(self.client, update, users, chats),
                 MessageReactionUpdatedHandler
@@ -182,6 +182,7 @@ class Dispatcher:
         }
 
         self.update_parsers = {key: value for key_tuple, value in self.update_parsers.items() for key in key_tuple}
+
 
     async def start(self):
         if not self.client.no_updates:
