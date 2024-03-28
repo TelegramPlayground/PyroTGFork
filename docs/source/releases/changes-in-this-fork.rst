@@ -41,6 +41,8 @@ it can take advantage of new goodies!
 
         asyncio.run(main())
 
+    - The above example code requires the PIP package ``pip install aiosqlite==0.20.0`` to be installed in the environment.
+
 - Add ``skip_updates`` parameter to :obj:`~pyrogram.Client` class, by stealing the following commits:
     - `c16c83a <https://github.com/KurimuzonAkuma/pyrogram/commit/c16c83abc307e4646df0eba34aad6de42517c8bb>`_
     - `55aa162 <https://github.com/KurimuzonAkuma/pyrogram/commit/55aa162a38831d79604d4c10df1a046c8a1c3ea6>`_

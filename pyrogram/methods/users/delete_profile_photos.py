@@ -64,7 +64,7 @@ class DeleteProfilePhotos:
                 await app.delete_profile_photos([p.file_id for p in photos[1:]])
 
                 # Delete one photo without fetching the current profile photos of the user
-                await app.delete_profile_photos(photos[0].file_id)
+                await app.delete_profile_photos()
         """
         if photo_ids is None:
             return bool(
