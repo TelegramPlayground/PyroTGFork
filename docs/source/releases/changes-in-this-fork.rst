@@ -12,6 +12,8 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
+- Add ``forum_topic_created``, ``forum_topic_closed``, ``forum_topic_edited``, ``forum_topic_reopened``, ``general_forum_topic_hidden``, ``general_forum_topic_unhidden`` to :obj:`~pyrogram.types.Message`.
+- Add ``custom_action`` to :obj:`~pyrogram.types.Message`.
 - Add ``public``, ``for_my_bot``, ``photo_frame_start_timestamp`` to :meth:`~pyrogram.Client.set_profile_photo`.
 - Add ``supports_inline_location_requests``, ``can_edit_bot`` to :obj:`~pyrogram.types.User`.
 - Add ``giveaway``, ``giveaway_created``, ``giveaway_completed`` and ``giveaway_winners`` in :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`.

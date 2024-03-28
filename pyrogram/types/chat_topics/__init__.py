@@ -16,14 +16,18 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .authorization import *
-from .bots_and_keyboards import *
-from .inline_mode import *
-from .input_media import *
-from .input_message_content import *
-from .list import List
-from .messages_and_media import *
-from .object import Object
-from .update import *
-from .user_and_chats import *
-from .chat_topics import *
+from .forum_topic_created import ForumTopicCreated
+from .forum_topic_closed import ForumTopicClosed
+from .forum_topic_edited import ForumTopicEdited
+from .forum_topic_reopened import ForumTopicReopened
+from .general_forum_topic_hidden import GeneralForumTopicHidden
+from .general_forum_topic_unhidden import GeneralForumTopicUnhidden
+
+__all__ = [
+    "ForumTopicCreated",
+    "ForumTopicClosed",
+    "ForumTopicEdited",
+    "ForumTopicReopened",
+    "GeneralForumTopicHidden",
+    "GeneralForumTopicUnhidden",
+]

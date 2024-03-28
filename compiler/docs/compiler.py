@@ -514,6 +514,15 @@ def pyrogram_api():
         Authorization
             SentCode
             TermsOfService
+        """,
+        chat_topics="""
+        Chat Forum Topics
+            ForumTopicCreated
+            ForumTopicClosed
+            ForumTopicEdited
+            ForumTopicReopened
+            GeneralForumTopicHidden
+            GeneralForumTopicUnhidden
         """
     )
 

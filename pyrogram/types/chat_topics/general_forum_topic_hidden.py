@@ -16,14 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .authorization import *
-from .bots_and_keyboards import *
-from .inline_mode import *
-from .input_media import *
-from .input_message_content import *
-from .list import List
-from .messages_and_media import *
-from .object import Object
-from .update import *
-from .user_and_chats import *
-from .chat_topics import *
+from ..object import Object
+
+
+class GeneralForumTopicHidden(Object):
+    """This object represents a service message about General forum topic hidden in the chat. Currently holds no information.
+    """
+
+    def __init__(
+        self
+    ):
+        super().__init__()

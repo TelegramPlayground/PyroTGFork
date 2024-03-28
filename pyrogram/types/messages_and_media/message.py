@@ -274,17 +274,23 @@ class Message(Object, Update):
         boost_added (:obj:`~pyrogram.types.ChatBoostAdded`, *optional*):
             Service message: user boosted the chat
 
-        forum_topic_created
+        forum_topic_created (:obj:`~pyrogram.types.ForumTopicCreated`, *optional*):
+            Service message: forum topic created
 
-        forum_topic_edited
+        forum_topic_edited (:obj:`~pyrogram.types.ForumTopicEdited`, *optional*):
+            Service message: forum topic edited
 
-        forum_topic_closed
+        forum_topic_closed (:obj:`~pyrogram.types.ForumTopicClosed`, *optional*):
+            Service message: forum topic closed
 
-        forum_topic_reopened
+        forum_topic_reopened (:obj:`~pyrogram.types.ForumTopicReopened`, *optional*):
+            Service message: forum topic reopened
 
-        general_forum_topic_hidden
+        general_forum_topic_hidden (:obj:`~pyrogram.types.GeneralForumTopicHidden`, *optional*):
+            Service message: the 'General' forum topic hidden
 
-        general_forum_topic_unhidden
+        general_forum_topic_unhidden (:obj:`~pyrogram.types.GeneralForumTopicUnhidden`, *optional*):
+            Service message: the 'General' forum topic unhidden
 
         giveaway_created (``bool``, *optional*):
             Service message: a scheduled giveaway was created.
@@ -374,6 +380,9 @@ class Message(Object, Update):
         chat_ttl_setting_from (:obj:`~pyrogram.types.User`, *optional*):
             if set, the chat TTL setting was set not due to a manual change by one of participants, but automatically because one of the participants has the default TTL settings enabled.
 
+        custom_action (``str``, *optional*):
+            Custom action (most likely not supported by the current layer, an upgrade might be needed)
+
         link (``str``, *property*):
             Generate a link to this message, only for groups and channels.
 
@@ -456,12 +465,12 @@ class Message(Object, Update):
 
 
         boost_added: "types.ChatBoostAdded" = None,
-
-
-
-
-
-
+        forum_topic_created: "types.ForumTopicCreated" = None,
+        forum_topic_edited: "types.ForumTopicEdited" = None,
+        forum_topic_closed: "types.ForumTopicClosed" = None,
+        forum_topic_reopened: "types.ForumTopicReopened" = None,
+        general_forum_topic_hidden: "types.GeneralForumTopicHidden" = None,
+        general_forum_topic_unhidden: "types.GeneralForumTopicUnhidden" = None,
         giveaway_created: bool = None,
         giveaway: "types.Giveaway" = None,
         giveaway_winners: "types.GiveawayWinners" = None,
@@ -495,6 +504,7 @@ class Message(Object, Update):
         matches: List[Match] = None,
         command: List[str] = None,
         reactions: List["types.Reaction"] = None,
+        custom_action: str = None,
 
         _raw = None
     ):
@@ -585,6 +595,13 @@ class Message(Object, Update):
         self.giveaway_completed = giveaway_completed
         self.giveaway_winners = giveaway_winners
         self.gift_code = gift_code
+        self.forum_topic_created = forum_topic_created
+        self.forum_topic_edited = forum_topic_edited
+        self.forum_topic_closed = forum_topic_closed
+        self.forum_topic_reopened = forum_topic_reopened
+        self.general_forum_topic_hidden = general_forum_topic_hidden
+        self.general_forum_topic_unhidden = general_forum_topic_unhidden
+        self.custom_action = custom_action
         self._raw = _raw
 
     @staticmethod
@@ -644,6 +661,14 @@ class Message(Object, Update):
             chat_ttl_setting_from = None
             boost_added = None
             giveaway_completed = None
+            custom_action = None
+
+            forum_topic_created = None
+            forum_topic_edited = None
+            forum_topic_closed = None
+            forum_topic_reopened = None
+            general_forum_topic_hidden = None
+            general_forum_topic_unhidden = None
 
             service_type = None
 
@@ -766,6 +791,43 @@ class Message(Object, Update):
                     )
                 )
 
+            elif isinstance(action, raw.types.MessageActionCustomAction):
+                service_type = enums.MessageServiceType.CUSTOM_ACTION
+                custom_action = action.message
+
+            elif isinstance(action, raw.types.MessageActionTopicCreate):
+                title = action.title
+                icon_color = action.icon_color
+                icon_emoji_id = getattr(action, "icon_emoji_id", None)
+                service_type = enums.MessageServiceType.FORUM_TOPIC_CREATED
+                forum_topic_created = types.ForumTopicCreated._parse(action)
+
+            elif isinstance(action, raw.types.MessageActionTopicEdit):
+                title = getattr(action, "title", None)
+                icon_emoji_id = getattr(action, "icon_emoji_id", None)
+                closed = getattr(action, "closed", None)
+                hidden = getattr(action, "hidden", None)
+
+                if title:
+                    forum_topic_edited = types.ForumTopicEdited._parse(action)
+                    service_type = enums.MessageServiceType.FORUM_TOPIC_EDITED
+                elif hidden in {True, False}:
+                    if not bool(message.reply_to):
+                        if action.hidden:
+                            service_type = enums.MessageServiceType.GENERAL_FORUM_TOPIC_HIDDEN
+                            general_forum_topic_hidden = types.GeneralForumTopicHidden()
+                        else:
+                            service_type = enums.MessageServiceType.GENERAL_FORUM_TOPIC_UNHIDDEN
+                            general_forum_topic_unhidden = types.GeneralForumTopicUnhidden()
+                    # else: # TODO
+                elif closed in {True, False}:
+                    if action.closed:
+                        service_type = enums.MessageServiceType.FORUM_TOPIC_CLOSED
+                        forum_topic_closed = types.ForumTopicClosed()
+                    else:
+                        service_type = enums.MessageServiceType.FORUM_TOPIC_REOPENED
+                        forum_topic_reopened = types.ForumTopicReopened()
+
             from_user = types.User._parse(client, users.get(user_id, None))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
 
@@ -798,6 +860,13 @@ class Message(Object, Update):
                 chat_ttl_period=chat_ttl_period,
                 chat_ttl_setting_from=chat_ttl_setting_from,
                 boost_added=boost_added,
+                forum_topic_created=forum_topic_created,
+                forum_topic_edited=forum_topic_edited,
+                forum_topic_closed=forum_topic_closed,
+                forum_topic_reopened=forum_topic_reopened,
+                general_forum_topic_hidden=general_forum_topic_hidden,
+                general_forum_topic_unhidden=general_forum_topic_unhidden,
+                custom_action=custom_action,
                 client=client
                 # TODO: supergroup_chat_created
             )
