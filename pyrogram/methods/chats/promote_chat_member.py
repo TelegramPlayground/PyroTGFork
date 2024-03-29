@@ -87,7 +87,7 @@ class PromoteChatMember:
                     post_messages=privileges.can_post_messages,
                     post_stories=privileges.can_post_stories,
                     edit_messages=privileges.can_edit_messages,
-                    edit_stories=privileges.can_post_stories,
+                    edit_stories=privileges.can_edit_stories,
                     delete_messages=privileges.can_delete_messages,
                     delete_stories=privileges.can_delete_stories,
                     ban_users=privileges.can_restrict_members,
