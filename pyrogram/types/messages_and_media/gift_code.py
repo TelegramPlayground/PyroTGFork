@@ -28,7 +28,8 @@ class GiftCode(Object):
             True if the gift code is received via giveaway.
 
         is_unclaimed (``bool``):
-            True if the gift code is unclaimed.
+            True, if the winner for the corresponding Telegram Premium subscription wasn't chosen.
+            `The code is received by creator of a chat, which started the giveaway that had less winners than planned. <https://telegram.org/tos/in#7-8-giveaways-in-channels>`_
 
         boosted_chat (:obj:`~pyrogram.types.Chat`):
             The channel where the gift code was won.
