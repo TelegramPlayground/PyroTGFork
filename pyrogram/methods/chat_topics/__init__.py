@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .get_forum_topic_icon_stickers import GetForumTopicIconStickers
 from .create_forum_topic import CreateForumTopic
 from .edit_forum_topic import EditForumTopic
 from .close_forum_topic import CloseForumTopic
@@ -26,6 +27,7 @@ from .delete_forum_topic import DeleteForumTopic
 
 
 class ChatTopics(
+    GetForumTopicIconStickers,
     CreateForumTopic,
     EditForumTopic,
     CloseForumTopic,

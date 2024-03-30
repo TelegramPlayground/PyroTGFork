@@ -13,7 +13,7 @@ it can take advantage of new goodies!
 +------------------------+
 
 - Add ``message_thread_id`` parameter to :meth:`~pyrogram.Client.unpin_all_chat_messages`.
-- Add :meth:`~pyrogram.Client.create_forum_topic`, :meth:`~pyrogram.Client.edit_forum_topic`, :meth:`~pyrogram.Client.close_forum_topic`, :meth:`~pyrogram.Client.reopen_forum_topic`, :meth:`~pyrogram.Client.hide_forum_topic`, :meth:`~pyrogram.Client.unhide_forum_topic`, :meth:`~pyrogram.Client.delete_forum_topic`.
+- Add :meth:`~pyrogram.Client.create_forum_topic`, :meth:`~pyrogram.Client.edit_forum_topic`, :meth:`~pyrogram.Client.close_forum_topic`, :meth:`~pyrogram.Client.reopen_forum_topic`, :meth:`~pyrogram.Client.hide_forum_topic`, :meth:`~pyrogram.Client.unhide_forum_topic`, :meth:`~pyrogram.Client.delete_forum_topic`, :meth:`~pyrogram.Client.get_forum_topic_icon_stickers`.
 - Add ``AioSQLiteStorage``, by stealing the following commits:
     - `fded06e <https://github.com/KurimuzonAkuma/pyrogram/commit/fded06e7bdf8bb591fb5857d0f126986ccf357c8>`_
 
