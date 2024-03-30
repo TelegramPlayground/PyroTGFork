@@ -31,7 +31,7 @@ class CreateForumTopic:
         icon_color: int = None,
         icon_custom_emoji_id: str = None,
         send_as: Union[int, str] = None,
-    ) -> List["types.Message"]:
+    ) -> "types.Message":
         """Use this method to create a topic in a forum supergroup chat.
         The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
 

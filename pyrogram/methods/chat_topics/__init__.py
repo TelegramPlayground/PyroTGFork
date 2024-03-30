@@ -18,10 +18,14 @@
 
 from .create_forum_topic import CreateForumTopic
 from .edit_forum_topic import EditForumTopic
+from .close_forum_topic import CloseForumTopic
+from .reopen_forum_topic import ReopenForumTopic
 
 
 class ChatTopics(
     CreateForumTopic,
-    EditForumTopic
+    EditForumTopic,
+    CloseForumTopic,
+    ReopenForumTopic,
 ):
     pass

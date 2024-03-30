@@ -23,16 +23,14 @@ import pyrogram
 from pyrogram import types, utils, raw
 
 
-class EditForumTopic:
-    async def edit_forum_topic(
+class CloseForumTopic:
+    async def close_forum_topic(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        message_thread_id: int,
-        name: str = None,
-        icon_custom_emoji_id: str = None
+        message_thread_id: int
     ) -> "types.Message":
-        """Use this method to edit name and icon of a topic in a forum supergroup chat.
-        The bot must be an administrator in the chat for this to work and must have can_manage_topics administrator rights, unless it is the creator of the topic.
+        """Use this method to close an open topic in a forum supergroup chat.
+        The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights, unless it is the creator of the topic.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
@@ -45,12 +43,6 @@ class EditForumTopic:
             message_thread_id (``int``):
                 Unique identifier for the target message thread of the forum topic
 
-            name (``str``, *optional*):
-                New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept
-
-            icon_custom_emoji_id (``str``, *optional*):
-                New unique identifier of the custom emoji shown as the topic icon. Use :meth:`~pyrogram.Client.getForumTopicIconStickers` to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept
-
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the edited message is returned.
 
@@ -59,17 +51,15 @@ class EditForumTopic:
 
                 # Create a new Topic
                 message = await app.create_forum_topic(chat, "Topic Title")
-                # Edit the Topic
-                await app.edit_forum_topic(chat, message.id, "New Topic Title")
-                # TODO: there is `a bug <https://github.com/pyrogram/pyrogram/issues/1280>`_ here!
+                # Close the Topic
+                await app.close_forum_topic(chat, message.id)
         """
 
         r = await self.invoke(
             raw.functions.channels.EditForumTopic(
                 channel=await self.resolve_peer(chat_id),
                 topic_id=message_thread_id,
-                title=name,
-                icon_emoji_id=icon_custom_emoji_id
+                closed=True
             )
         )
 
