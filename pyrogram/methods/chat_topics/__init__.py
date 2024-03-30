@@ -22,6 +22,7 @@ from .close_forum_topic import CloseForumTopic
 from .reopen_forum_topic import ReopenForumTopic
 from .hide_forum_topic import HideForumTopic
 from .unhide_forum_topic import UnhideForumTopic
+from .delete_forum_topic import DeleteForumTopic
 
 
 class ChatTopics(
@@ -31,5 +32,6 @@ class ChatTopics(
     ReopenForumTopic,
     HideForumTopic,
     UnhideForumTopic,
+    DeleteForumTopic,
 ):
     pass
