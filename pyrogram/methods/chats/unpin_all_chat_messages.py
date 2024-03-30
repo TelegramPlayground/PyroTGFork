@@ -26,8 +26,10 @@ class UnpinAllChatMessages:
     async def unpin_all_chat_messages(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-    ) -> bool:
-        """Use this method to clear the list of pinned messages in a chat.
+        message_thread_id: int = None
+    ) -> int:
+        """
+        Use this method to clear the list of pinned messages in a chat.
         If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have
         the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel.
 
@@ -37,8 +39,11 @@ class UnpinAllChatMessages:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
 
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread of the forum topic
+
         Returns:
-            ``bool``: True on success.
+            ``int``: Amount of affected messages
 
         Example:
             .. code-block:: python
@@ -46,10 +51,10 @@ class UnpinAllChatMessages:
                 # Unpin all chat messages
                 await app.unpin_all_chat_messages(chat_id)
         """
-        await self.invoke(
+        r = await self.invoke(
             raw.functions.messages.UnpinAllMessages(
-                peer=await self.resolve_peer(chat_id)
+                peer=await self.resolve_peer(chat_id),
+                top_msg_id=message_thread_id
             )
         )
-
-        return True
+        return r.pts_count
