@@ -52,6 +52,7 @@ CHANNELS_ADMIN_PUBLIC_TOO_MUCH	You are an administrator of too many public chann
 CHANNELS_TOO_MUCH	You have joined too many channels or supergroups, leave some and try again
 CHANNEL_ADD_INVALID	Internal error.
 CHANNEL_BANNED	The channel is banned
+CHANNEL_FORUM_MISSING	This supergroup is not a forum.
 CHANNEL_INVALID	The channel parameter is invalid
 CHANNEL_PRIVATE	The channel/supergroup is not accessible
 CHANNEL_TOO_LARGE	The channel is too large
@@ -136,6 +137,7 @@ FRESH_CHANGE_ADMINS_FORBIDDEN	You can't change administrator settings in this ch
 FROM_MESSAGE_BOT_DISABLED	Bots can't use fromMessage min constructors
 FROM_PEER_INVALID	The from peer value is invalid
 GAME_BOT_INVALID	You cannot send that game with the current bot
+GENERAL_MODIFY_ICON_FORBIDDEN	You can't modify the icon of the "General" topic.
 GEO_POINT_INVALID	Invalid geo point provided
 GIF_CONTENT_TYPE_INVALID	GIF content-type invalid
 GIF_ID_INVALID	The provided gif/animation id is invalid
@@ -197,6 +199,7 @@ MULTI_MEDIA_TOO_LONG	The album/media group contains too many items
 NEW_SALT_INVALID	The new salt is invalid
 NEW_SETTINGS_INVALID	The new settings are invalid
 NEXT_OFFSET_INVALID	The next offset value is invalid
+NOGENERAL_HIDE_FORBIDDEN	The hidden parameter is only valid for the General topic message_thread_id=1
 OFFSET_INVALID	The offset parameter is invalid
 OFFSET_PEER_ID_INVALID	The provided offset peer is invalid
 OPTIONS_TOO_MUCH	The poll options are too many
@@ -331,8 +334,10 @@ THEME_MIME_INVALID	You cannot create this theme because the mime-type is invalid
 TMP_PASSWORD_DISABLED	The temporary password is disabled
 TMP_PASSWORD_INVALID	The temporary password is invalid
 TOKEN_INVALID	The provided token is invalid
-TOPIC_ID_INVALID	The provided message_thread_id is invalid
-TOPIC_NOT_MODIFIED	The topic was not modified
+TOPIC_CLOSE_SEPARATELY	The close flag cannot be provided together with any of the other flags.
+TOPIC_HIDE_SEPARATELY	The hide flag cannot be provided together with any of the other flags.
+TOPIC_ID_INVALID	The specified message_thread_id is invalid
+TOPIC_NOT_MODIFIED	The updated topic info is equal to the current topic info, nothing was changed.
 TRANSCRIPTION_FAILED	Telegram is having internal problems. Please try again later to transcribe the audio.
 TTL_DAYS_INVALID	The provided TTL days is invalid
 TTL_MEDIA_INVALID	The media does not support self-destruction
