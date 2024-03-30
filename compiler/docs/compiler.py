@@ -241,7 +241,14 @@ def pyrogram_api():
         """,
         chat_topics="""
         Chat Forum Topics
+            close_forum_topic
             create_forum_topic
+            delete_forum_topic
+            edit_forum_topic
+            get_forum_topic_icon_stickers
+            hide_forum_topic
+            reopen_forum_topic
+            unhide_forum_topic
         """,
         users="""
         Users
