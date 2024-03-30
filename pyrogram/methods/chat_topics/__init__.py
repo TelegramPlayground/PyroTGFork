@@ -17,9 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .create_forum_topic import CreateForumTopic
+from .edit_forum_topic import EditForumTopic
 
 
 class ChatTopics(
-    CreateForumTopic
+    CreateForumTopic,
+    EditForumTopic
 ):
     pass

@@ -12,7 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 176 |
 +------------------------+
 
-- Add :meth:`~pyrogram.Client.create_forum_topic`.
+- Add :meth:`~pyrogram.Client.create_forum_topic`, :meth:`~pyrogram.Client.edit_forum_topic`.
 - Add ``AioSQLiteStorage``, by stealing the following commits:
     - `fded06e <https://github.com/KurimuzonAkuma/pyrogram/commit/fded06e7bdf8bb591fb5857d0f126986ccf357c8>`_
 
