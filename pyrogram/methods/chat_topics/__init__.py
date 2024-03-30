@@ -20,6 +20,8 @@ from .create_forum_topic import CreateForumTopic
 from .edit_forum_topic import EditForumTopic
 from .close_forum_topic import CloseForumTopic
 from .reopen_forum_topic import ReopenForumTopic
+from .hide_forum_topic import HideForumTopic
+from .unhide_forum_topic import UnhideForumTopic
 
 
 class ChatTopics(
@@ -27,5 +29,7 @@ class ChatTopics(
     EditForumTopic,
     CloseForumTopic,
     ReopenForumTopic,
+    HideForumTopic,
+    UnhideForumTopic,
 ):
     pass
