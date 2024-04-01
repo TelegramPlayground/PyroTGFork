@@ -108,10 +108,18 @@ class KeyboardButton(Object):
                     url=b.url
                 )
             )
-        
-        if isinstance(b, raw.types.KeyboardButtonRequestPeer):
+
+        if (
+            isinstance(b, raw.types.KeyboardButtonRequestPeer) or
+            isinstance(b, raw.types.InputKeyboardButtonRequestPeer)
+        ):
             isFakeChannel = isinstance(b.peer_type, raw.types.RequestPeerTypeBroadcast)
             isFakeChat = isinstance(b.peer_type, raw.types.RequestPeerTypeChat)
+
+            _nr = getattr(b, "name_requested", None)
+            _ur = getattr(b, "username_requested", None)
+            _pr = getattr(b, "photo_requested", None)
+
             if isFakeChannel or isFakeChat:
                 user_administrator_rights = types.ChatPrivileges._parse(
                     getattr(
@@ -148,9 +156,13 @@ class KeyboardButton(Object):
                         request_id=b.button_id,
                         user_is_bot=getattr(b.peer_type, "bot", None),
                         user_is_premium=getattr(b.peer_type, "premium", None),
-                        max_quantity=b.max_quantity
+                        max_quantity=b.max_quantity,
+                        request_name=_nr,
+                        request_username=_ur,
+                        request_photo=_pr
                     )
                 )
+
 
     def write(self):
         if self.request_contact:
@@ -165,7 +177,10 @@ class KeyboardButton(Object):
         elif self.web_app:
             return raw.types.KeyboardButtonSimpleWebView(text=self.text, url=self.web_app.url)
         elif self.request_users:
-            return raw.types.KeyboardButtonRequestPeer(
+            return raw.types.InputKeyboardButtonRequestPeer(
+                name_requested=self.request_users.request_name,
+                username_requested=self.request_users.request_username,
+                photo_requested=self.request_users.request_photo,
                 text=self.text,
                 button_id=self.request_users.request_id,
                 peer_type=raw.types.RequestPeerTypeUser(
@@ -174,6 +189,7 @@ class KeyboardButton(Object):
                 ),
                 max_quantity=self.request_users.max_quantity
             )
+
         elif self.request_chat:
             user_admin_rights = self.request_chat.user_administrator_rights.write() if self.request_chat.user_administrator_rights else None
             bot_admin_rights = self.request_chat.bot_administrator_rights.write() if self.request_chat.bot_administrator_rights else None

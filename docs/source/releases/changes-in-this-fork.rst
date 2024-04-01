@@ -9,6 +9,12 @@ it can take advantage of new goodies!
 `For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/>`_
 
 +------------------------+
+| Scheme layer used: 177 |
++------------------------+
+
+- Added the fields ``request_name``, ``request_username``, and ``request_photo`` to the class :meth:`~pyrogram.types.KeyboardButtonRequestUsers`.
+
++------------------------+
 | Scheme layer used: 176 |
 +------------------------+
 

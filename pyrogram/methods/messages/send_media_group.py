@@ -101,8 +101,8 @@ class SendMediaGroup:
                 if isinstance(i.media, str):
                     if os.path.isfile(i.media):
                         media = await self.invoke(
-                            business_connection_id=None,  # TODO
                             raw.functions.messages.UploadMedia(
+                                business_connection_id=None,  # TODO
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedPhoto(
                                     file=await self.save_file(i.media),
