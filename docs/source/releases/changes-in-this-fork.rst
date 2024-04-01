@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added the fields ``request_title``, ``request_username``, and ``request_photo`` to the class :meth:`~pyrogram.types.KeyboardButtonRequestChat`.
 - Added the fields ``request_name``, ``request_username``, and ``request_photo`` to the class :meth:`~pyrogram.types.KeyboardButtonRequestUsers`.
 
 +------------------------+

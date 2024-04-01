@@ -146,6 +146,9 @@ class KeyboardButton(Object):
                         user_administrator_rights=user_administrator_rights,
                         bot_administrator_rights=bot_administrator_rights,
                         bot_is_member=getattr(b.peer_type, "bot_participant", None),
+                        request_title=_nr,
+                        request_username=_ur,
+                        request_photo=_pr
                     )
                 )
 
@@ -194,7 +197,10 @@ class KeyboardButton(Object):
             user_admin_rights = self.request_chat.user_administrator_rights.write() if self.request_chat.user_administrator_rights else None
             bot_admin_rights = self.request_chat.bot_administrator_rights.write() if self.request_chat.bot_administrator_rights else None
             if self.request_chat.chat_is_channel:
-                return raw.types.KeyboardButtonRequestPeer(
+                return raw.types.InputKeyboardButtonRequestPeer(
+                    name_requested=self.request_chat.request_title,
+                    username_requested=self.request_chat.request_username,
+                    photo_requested=self.request_chat.request_photo,
                     text=self.text,
                     button_id=self.request_chat.request_id,
                     peer_type=raw.types.RequestPeerTypeBroadcast(
@@ -206,7 +212,10 @@ class KeyboardButton(Object):
                     max_quantity=1
                 )
             else:
-                return raw.types.KeyboardButtonRequestPeer(
+                return raw.types.InputKeyboardButtonRequestPeer(
+                    name_requested=self.request_chat.request_title,
+                    username_requested=self.request_chat.request_username,
+                    photo_requested=self.request_chat.request_photo,
                     text=self.text,
                     button_id=self.request_chat.request_id,
                     peer_type=raw.types.RequestPeerTypeChat(

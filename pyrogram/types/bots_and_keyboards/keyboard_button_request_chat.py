@@ -22,7 +22,8 @@ from ..object import Object
 
 class KeyboardButtonRequestChat(Object):
     """This object defines the criteria used to request a suitable chat.
-    The identifier of the selected chat will be shared with the bot when the corresponding button is pressed.
+    Information about the selected chat will be shared with the bot when the corresponding button is pressed.
+    The bot will be granted requested rights in the сhat if appropriate.
     `More about requesting chats. <https://core.telegram.org/bots/features#chat-and-user-selection>`_
 
     Parameters:
@@ -50,6 +51,15 @@ class KeyboardButtonRequestChat(Object):
         bot_is_member (``bool``, *optional*):
             Pass True to request a chat with the bot as a member. Otherwise, no additional restrictions are applied.
 
+        request_title (``bool``, *optional*):
+            Pass True to request the chat's title
+
+        request_username (``bool``, *optional*):
+            Pass True to request the chat's username
+
+        request_photo (``bool``, *optional*):
+            Pass True to request the chat's photo
+
     """
     def __init__(
         self,
@@ -60,7 +70,10 @@ class KeyboardButtonRequestChat(Object):
         chat_is_created: bool = None,
         user_administrator_rights: "types.ChatPrivileges" = None,
         bot_administrator_rights: "types.ChatPrivileges" = None,
-        bot_is_member: bool = None
+        bot_is_member: bool = None,
+        request_title: bool = None,
+        request_username: bool = None,
+        request_photo: bool = None
     ):
         self.request_id = request_id
         self.chat_is_channel = chat_is_channel
@@ -70,3 +83,6 @@ class KeyboardButtonRequestChat(Object):
         self.user_administrator_rights = user_administrator_rights
         self.bot_administrator_rights = bot_administrator_rights
         self.bot_is_member = bot_is_member
+        self.request_title = request_title
+        self.request_username = request_username
+        self.request_photo = request_photo
