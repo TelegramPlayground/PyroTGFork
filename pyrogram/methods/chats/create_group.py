@@ -63,5 +63,5 @@ class CreateGroup:
                 users=[await self.resolve_peer(u) for u in users]
             )
         )
-
+        # TODO
         return types.Chat._parse_chat(self, r.chats[0])

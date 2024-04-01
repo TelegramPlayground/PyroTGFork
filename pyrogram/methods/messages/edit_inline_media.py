@@ -203,6 +203,7 @@ class EditInlineMedia:
         if is_uploaded_file:
             uploaded_media = await self.invoke(
                 raw.functions.messages.UploadMedia(
+                    business_connection_id=None,  # TODO
                     peer=raw.types.InputPeerSelf(),
                     media=media
                 )

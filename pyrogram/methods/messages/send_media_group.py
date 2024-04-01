@@ -101,6 +101,7 @@ class SendMediaGroup:
                 if isinstance(i.media, str):
                     if os.path.isfile(i.media):
                         media = await self.invoke(
+                            business_connection_id=None,  # TODO
                             raw.functions.messages.UploadMedia(
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedPhoto(
@@ -121,6 +122,7 @@ class SendMediaGroup:
                     elif re.match("^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
+                                business_connection_id=None,  # TODO
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaPhotoExternal(
                                     url=i.media,
@@ -146,6 +148,7 @@ class SendMediaGroup:
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
+                            business_connection_id=None,  # TODO
                             peer=await self.resolve_peer(chat_id),
                             media=raw.types.InputMediaUploadedPhoto(
                                 file=await self.save_file(i.media),
@@ -167,6 +170,7 @@ class SendMediaGroup:
                     if os.path.isfile(i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
+                                business_connection_id=None,  # TODO
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedDocument(
                                     file=await self.save_file(i.media),
@@ -199,6 +203,7 @@ class SendMediaGroup:
                     elif re.match("^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
+                                business_connection_id=None,  # TODO
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaDocumentExternal(
                                     url=i.media,
@@ -220,6 +225,7 @@ class SendMediaGroup:
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
+                            business_connection_id=None,  # TODO
                             peer=await self.resolve_peer(chat_id),
                             media=raw.types.InputMediaUploadedDocument(
                                 file=await self.save_file(i.media),
@@ -254,6 +260,7 @@ class SendMediaGroup:
                     if os.path.isfile(i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
+                                business_connection_id=None,  # TODO
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedDocument(
                                     mime_type=self.guess_mime_type(i.media) or "audio/mpeg",
@@ -281,6 +288,7 @@ class SendMediaGroup:
                     elif re.match("^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
+                                business_connection_id=None,  # TODO
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaDocumentExternal(
                                     url=i.media
@@ -300,6 +308,7 @@ class SendMediaGroup:
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
+                            business_connection_id=None,  # TODO
                             peer=await self.resolve_peer(chat_id),
                             media=raw.types.InputMediaUploadedDocument(
                                 mime_type=self.guess_mime_type(getattr(i.media, "name", "audio.mp3")) or "audio/mpeg",
@@ -329,6 +338,7 @@ class SendMediaGroup:
                     if os.path.isfile(i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
+                                business_connection_id=None,  # TODO
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedDocument(
                                     mime_type=self.guess_mime_type(i.media) or "application/zip",
@@ -352,6 +362,7 @@ class SendMediaGroup:
                     elif re.match("^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
+                                business_connection_id=None,  # TODO
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaDocumentExternal(
                                     url=i.media
@@ -371,6 +382,7 @@ class SendMediaGroup:
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
+                            business_connection_id=None,  # TODO
                             peer=await self.resolve_peer(chat_id),
                             media=raw.types.InputMediaUploadedDocument(
                                 mime_type=self.guess_mime_type(
