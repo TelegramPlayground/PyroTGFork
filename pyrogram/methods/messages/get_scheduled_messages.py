@@ -55,7 +55,7 @@ class GetScheduledMessages:
             ValueError: In case of invalid arguments.
         """
         r = await self.invoke(
-            raw.functions.GetScheduledHistory(peer=await self.resolve_peer(chat_id), hash=0)
+            raw.functions.messages.GetScheduledHistory(peer=await self.resolve_peer(chat_id), hash=0)
         )
 
         return await utils.parse_messages(self, r, replies=0)
