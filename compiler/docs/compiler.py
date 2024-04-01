@@ -279,6 +279,7 @@ def pyrogram_api():
             set_emoji_status
             update_status
             check_username
+            update_birthday
         """,
         invite_links="""
         Invite Links
