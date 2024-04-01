@@ -2442,6 +2442,6 @@ test.useError = Error;
 test.useConfigSimple = help.ConfigSimple;
 test.parseInputAppEvent = InputAppEvent;
 
-invokeWithBusinessConnectionPrefix connection_id:string = Error;
+invokeWithBusinessConnectionPrefix#dd289f8e connection_id:string = Error;
 
 // LAYER 177
