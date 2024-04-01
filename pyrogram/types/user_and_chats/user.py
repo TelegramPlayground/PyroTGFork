@@ -164,10 +164,10 @@ class User(Object, Update):
             ``user.mention("another name")`` for a custom name. To choose a different style
             ("html" or "md"/"markdown") use ``user.mention(style="md")``.
 
-        reply_color (:obj:`~pyrogram.types.ChatColor`, *optional*)
+        reply_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
             Chat reply color.
 
-        profile_color (:obj:`~pyrogram.types.ChatColor`, *optional*)
+        profile_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
             Chat profile color.
     """
 
