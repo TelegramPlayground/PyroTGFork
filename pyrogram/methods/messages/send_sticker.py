@@ -19,13 +19,11 @@
 import os
 import re
 from datetime import datetime
-from typing import Union, BinaryIO, Optional, Callable
+from typing import List, Union, BinaryIO, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission
-from pyrogram import raw
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import raw, types, utils
 from pyrogram.errors import FilePartMissing
 from pyrogram.file_id import FileType
 
@@ -35,17 +33,21 @@ class SendSticker:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         sticker: Union[str, BinaryIO],
+        caption: str = "",
+        parse_mode: Optional["enums.ParseMode"] = None,
+        caption_entities: List["types.MessageEntity"] = None,
+        # emoji: str = None,
         disable_notification: bool = None,
-        reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        schedule_date: datetime = None,
         protect_content: bool = None,
+        message_thread_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        schedule_date: datetime = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> Optional["types.Message"]:
@@ -66,25 +68,38 @@ class SendSticker:
                 pass a file path as string to upload a new sticker that exists on your local machine, or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
+            caption (``str``, *optional*):
+                Photo caption, 0-1024 characters.
+
+            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
+            emoji (``str``, *optional*):  // UNUSED CURRENTLY
+                Emoji associated with the sticker; only for just uploaded stickers
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
-                Description of the message to reply to
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
 
-            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
-
-            protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -132,7 +147,7 @@ class SendSticker:
                         mime_type=self.guess_mime_type(sticker) or "image/webp",
                         file=file,
                         attributes=[
-                            raw.types.DocumentAttributeFilename(file_name=os.path.basename(sticker))
+                            raw.types.DocumentAttributeFilename(file_name=os.path.basename(sticker)),
                         ]
                     )
                 elif re.match("^https?://", sticker):
@@ -147,7 +162,7 @@ class SendSticker:
                     mime_type=self.guess_mime_type(sticker.name) or "image/webp",
                     file=file,
                     attributes=[
-                        raw.types.DocumentAttributeFilename(file_name=sticker.name)
+                        raw.types.DocumentAttributeFilename(file_name=sticker.name),
                     ]
                 )
 
@@ -161,15 +176,21 @@ class SendSticker:
                 try:
                     r = await self.invoke(
                         raw.functions.messages.SendMedia(
-                            peer=await self.resolve_peer(chat_id),
-                            media=media,
                             silent=disable_notification or None,
-                            reply_to=reply_to,
-                            random_id=self.rnd_id(),
-                            schedule_date=utils.datetime_to_timestamp(schedule_date),
+                            
+
                             noforwards=protect_content,
+
+
+                            peer=await self.resolve_peer(chat_id),
+                            reply_to=reply_to,
+                            media=media,
+                            random_id=self.rnd_id(),
                             reply_markup=await reply_markup.write(self) if reply_markup else None,
-                            message=""
+                            schedule_date=utils.datetime_to_timestamp(schedule_date),
+
+
+                            **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
                         )
                     )
                 except FilePartMissing as e:
