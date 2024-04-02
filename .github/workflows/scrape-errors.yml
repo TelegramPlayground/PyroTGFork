@@ -1,0 +1,38 @@
+name: Scrape Errors
+on:
+  workflow_dispatch: {} # Allow manually kicking off builds
+  schedule:
+    - cron:  '0 12 * * *' # Every day at 12:00 (noon). Ref https://crontab.guru/examples.html
+jobs:
+  build:
+    name: scrape-errors
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+
+    - name: scrape
+      run: |
+          cd compiler/errors/
+          pip install --upgrade pip setuptools wheel
+          pip install requests==2.28.1
+          python sort.py scrape
+          python sort.py sort
+
+    - name: Open Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        commit-message: >
+          Update unknown_errors
+        title: >
+          Update Telegram API errors
+        body: >
+          This is an automated PR. Please check the diff, and the action logs, to check for any funky behaviour.
+        branch: automated/api-error-scrape
+        labels: automated
+        delete-branch: true

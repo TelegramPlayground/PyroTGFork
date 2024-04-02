@@ -166,7 +166,6 @@ FILE_PART_LENGTH_INVALID	The length of a file part is invalid.
 FILE_PART_SIZE_CHANGED	Provided file part size has changed.
 FILE_PART_SIZE_INVALID	The provided file part size is invalid.
 FILE_PART_TOO_BIG	The uploaded file part is too big.
-FILE_REFERENCE_*	The file reference expired, it [must be refreshed](https://core.telegram.org/api/file_reference).
 FILE_REFERENCE_EMPTY	An empty [file reference](https://core.telegram.org/api/file_reference) was specified.
 FILE_REFERENCE_EXPIRED	File reference expired, it must be refetched as described in [the documentation](https://core.telegram.org/api/file_reference).
 FILE_REFERENCE_INVALID	The specified [file reference](https://core.telegram.org/api/file_reference) is invalid.

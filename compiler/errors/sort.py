@@ -18,18 +18,54 @@
 
 import csv
 from pathlib import Path
+import re
+import requests  # requests==2.28.1
+import sys
 
-for p in Path("source").glob("*.tsv"):
-    with open(p) as f:
-        reader = csv.reader(f, delimiter="\t")
-        dct = {k: v for k, v in reader if k != "id"}
-        keys = sorted(dct)
+if len(sys.argv) != 1:
+    sys.exit(1)
 
-    with open(p, "w") as f:
-        f.write("id\tmessage\n")
+if sys.argv[1] == "sort": 
+    for p in Path("source").glob("*.tsv"):
+        with open(p) as f:
+            reader = csv.reader(f, delimiter="\t")
+            dct = {k: v for k, v in reader if k != "id"}
+            keys = sorted(dct)
 
-        for i, item in enumerate(keys, start=1):
-            f.write(f"{item}\t{dct[item]}")
+        with open(p, "w") as f:
+            f.write("id\tmessage\n")
 
-            if i != len(keys):
-                f.write("\n")
+            for i, item in enumerate(keys, start=1):
+                f.write(f"{item}\t{dct[item]}")
+
+                if i != len(keys):
+                    f.write("\n")
+
+elif sys.argv[1] == "scrape":
+    b = "https://core.telegram.org"
+    c = "/api/errors"
+    a = requests.get(b + c)
+    d = a.text
+    e = r"\<a\ href\=\"(.*)\"\>here.*\<\/a\>"
+    f = re.search(e, d)
+    if f:
+        a = requests.get(
+            b + f.group(1)
+        )
+        d = a.json()
+        e = d.get("errors", [])
+        w = ""
+        for h in e:
+            j = b.get("errors").get(h)
+            for k in j:
+                if k.endswith("_*"):
+                    continue
+                g = d.get("descriptions")
+                l = g.get(k)
+                m = k.replace("_%d", "_X")
+                l = l.replace("%d", "{value}")
+                w += f"{m}\t{l}\n"
+            for p in Path("source/").glob(f"{d}*.tsv"):
+                with open(p, "w") as f:
+                    f.write("id\tmessage\n")
+                    f.write(w)
