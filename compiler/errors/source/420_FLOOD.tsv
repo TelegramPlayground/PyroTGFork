@@ -1,9 +1,9 @@
 id	message
-2FA_CONFIRM_WAIT_X	A wait of {value} seconds is required because this account is active and protected by a 2FA password
-FLOOD_TEST_PHONE_WAIT_X	A wait of {value} seconds is required in the test servers
+2FA_CONFIRM_WAIT_X	Since this account is active and protected by a 2FA password, we will delete it in 1 week for security purposes. You can cancel this process at any time, you'll be able to reset your account in {value} seconds.
 FLOOD_PREMIUM_WAIT_X	A wait of {value} seconds is required
+FLOOD_TEST_PHONE_WAIT_X	A wait of {value} seconds is required in the test servers
 FLOOD_WAIT_X	A wait of {value} seconds is required
-PREMIUM_SUB_ACTIVE_UNTIL_X	A wait of {value} seconds is required
-SLOWMODE_WAIT_X	A wait of {value} seconds is required to send messages in this chat
+PREMIUM_SUB_ACTIVE_UNTIL_X	You already have a premium subscription active until unixtime {value} .
+SLOWMODE_WAIT_X	Slowmode is enabled in this chat: wait {value} seconds before sending another message to this chat.
 STORY_SEND_FLOOD_X	A wait of {value} seconds is required to continue posting stories
-TAKEOUT_INIT_DELAY_X	You have to confirm the data export request using one of your mobile devices or wait {value} seconds
+TAKEOUT_INIT_DELAY_X	Sorry, for security reasons, you will be able to begin downloading your data in {value} seconds. We have notified all your devices about the export request to make sure it's authorized and to give you time to react if it's not.
