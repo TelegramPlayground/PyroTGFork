@@ -57,6 +57,9 @@ class Chat(Object):
 
         active_usernames
 
+        personal_chat (:obj:`~pyrogram.types.Chat`, *optional*):
+            For private chats, the personal channel of the user.
+
         available_reactions (:obj:`~pyrogram.types.ChatReactions`, *optional*):
             Available reactions in the chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -211,6 +214,7 @@ class Chat(Object):
         distance: int = None,
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
+        personal_chat: "types.Chat" = None,
         available_reactions: Optional["types.ChatReactions"] = None,
         has_visible_history: bool = None,
         has_hidden_members: bool = None,
@@ -275,6 +279,7 @@ class Chat(Object):
         self.is_public = is_public
         self.join_by_request = join_by_request
         self.is_peak_preview = is_peak_preview
+        self.personal_chat = personal_chat
         self._raw = _raw
 
     @staticmethod
@@ -395,11 +400,18 @@ class Chat(Object):
         users = {u.id: u for u in chat_full.users}
         chats = {c.id: c for c in chat_full.chats}
 
+        personal_chat = None
+
         if isinstance(chat_full, raw.types.users.UserFull):
             full_user = chat_full.full_user
 
             parsed_chat = Chat._parse_user_chat(client, users[full_user.id])
             parsed_chat.bio = full_user.about
+
+            personal_chat = Chat._parse_channel_chat(
+                client,
+                chats[full_user.personal_channel_id]
+            )
 
             if full_user.pinned_msg_id:
                 try:
@@ -483,6 +495,7 @@ class Chat(Object):
                 full_chat.available_reactions
             )
 
+        parsed_chat.personal_chat = personal_chat
         parsed_chat._raw = chat_full
 
         return parsed_chat
