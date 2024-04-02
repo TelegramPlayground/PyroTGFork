@@ -20,8 +20,7 @@ from datetime import datetime
 from typing import Union, List, Optional
 
 import pyrogram
-from pyrogram import raw, utils, enums
-from pyrogram import types
+from pyrogram import raw, utils, enums, types, errors
 
 
 class SendMessage:
@@ -140,25 +139,64 @@ class SendMessage:
             link_preview_options and
             link_preview_options.url
         ):
-            r = await self.invoke(
-                raw.functions.messages.SendMedia(
-                    peer=await self.resolve_peer(chat_id),
-                    silent=disable_notification or None,
-                    reply_to=reply_to,
-                    random_id=self.rnd_id(),
-                    schedule_date=utils.datetime_to_timestamp(schedule_date),
-                    reply_markup=await reply_markup.write(self) if reply_markup else None,
-                    message=message,
-                    media=raw.types.InputMediaWebPage(
-                        url=link_preview_options.url,
-                        force_large_media=link_preview_options.prefer_large_media,
-                        force_small_media=link_preview_options.prefer_small_media
-                    ),
-                    invert_media=link_preview_options.show_above_text,
-                    entities=entities,
-                    noforwards=protect_content
+            try:
+                r = await self.invoke(
+                    raw.functions.messages.SendMedia(
+                        peer=await self.resolve_peer(chat_id),
+                        silent=disable_notification or None,
+                        reply_to=reply_to,
+                        random_id=self.rnd_id(),
+                        schedule_date=utils.datetime_to_timestamp(schedule_date),
+                        reply_markup=await reply_markup.write(self) if reply_markup else None,
+                        message=message,
+                        media=raw.types.InputMediaWebPage(
+                            url=link_preview_options.url,
+                            force_large_media=link_preview_options.prefer_large_media,
+                            force_small_media=link_preview_options.prefer_small_media
+                        ),
+                        invert_media=link_preview_options.show_above_text,
+                        entities=entities,
+                        noforwards=protect_content
+                    )
                 )
-            )
+            except errors.WebpageNotFound:
+                if not message:
+                    raise ValueError(
+                        "Bad Request: text is empty"
+                    ) from None
+
+                xe = [
+                    raw.types.MessageEntityTextUrl(
+                        offset=0,
+                        length=1,
+                        url=link_preview_options.url
+                    )
+                ]
+                if entities:
+                    entities = xe + entities
+                else:
+                    entities = xe
+
+                r = await self.invoke(
+                    raw.functions.messages.SendMessage(
+                        peer=await self.resolve_peer(chat_id),
+                        no_webpage=link_preview_options.is_disabled if link_preview_options else None,
+                        silent=disable_notification or None,
+                        # TODO
+                        # TODO
+                        noforwards=protect_content,
+                        # TODO
+                        invert_media=link_preview_options.show_above_text if link_preview_options else None,
+                        reply_to=reply_to,
+                        schedule_date=utils.datetime_to_timestamp(schedule_date),
+                        reply_markup=await reply_markup.write(self) if reply_markup else None,
+                        # TODO
+                        random_id=self.rnd_id(),
+                        message=message,
+                        entities=entities,
+                        # TODO
+                    )
+                )
 
         elif message:
             r = await self.invoke(

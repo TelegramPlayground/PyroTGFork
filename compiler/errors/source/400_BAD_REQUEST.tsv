@@ -388,4 +388,5 @@ WEBDOCUMENT_URL_INVALID	The web document URL is invalid
 WEBPAGE_CURL_FAILED	Telegram server could not fetch the provided URL
 WEBPAGE_MEDIA_EMPTY	The URL doesn't contain any valid media
 WEBPAGE_NOT_FOUND	A preview for the specified webpage url could not be generated
+WEBPAGE_URL_INVALID	The URL doesn't contain a valid webpage
 YOU_BLOCKED_USER	You blocked this user

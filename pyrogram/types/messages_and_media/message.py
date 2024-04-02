@@ -962,7 +962,7 @@ class Message(Object, Update):
             has_media_spoiler = None
 
             link_preview_options = None
-            web_page_url = utils.get_first_url(message)
+            web_page_url = None
 
             if media:
                 if isinstance(media, raw.types.MessageMediaPhoto):
@@ -1028,14 +1028,20 @@ class Message(Object, Update):
                         web_page = types.WebPage._parse(client, media.webpage)
                         media_type = enums.MessageMediaType.WEB_PAGE
                         web_page_url = media.webpage.url
+                    elif isinstance(media.webpage, raw.types.WebPageEmpty):
+                        media_type = None
+                        web_page_url = getattr(media.webpage, "url", None)
                     else:
-                        media = None
+                        media_type = None
+                        web_page_url = utils.get_first_url(message)
                     link_preview_options = types.LinkPreviewOptions._parse(
                         client,
                         media,
                         web_page_url,
                         getattr(message, "invert_media", False)
                     )
+                    if not web_page:
+                        media = None
                 elif isinstance(media, raw.types.MessageMediaPoll):
                     poll = types.Poll._parse(client, media)
                     media_type = enums.MessageMediaType.POLL
