@@ -164,6 +164,9 @@ class User(Object, Update):
         supports_inline_queries (``bool``, *optional*):
             True, if the bot supports inline queries. Returned only in get_me.
 
+        can_connect_to_business (``bool``, *optional*):
+            True, if the bot can be connected to a Telegram Business account to receive its messages.
+
         supports_inline_location_requests (``bool``, *optional*):
             True, if the bot supports inline `user location <https://core.telegram.org/bots/inline#location-based-results>`_ requests. Returned only in get_me.
         
@@ -207,6 +210,7 @@ class User(Object, Update):
         can_be_contacted_with_premium: bool = None,
         supports_inline_location_requests: bool = None,
         can_edit_bot: bool = None,
+        can_connect_to_business: bool = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -243,6 +247,7 @@ class User(Object, Update):
         self.can_be_contacted_with_premium = can_be_contacted_with_premium
         self.supports_inline_location_requests = supports_inline_location_requests
         self.can_edit_bot = can_edit_bot
+        self.can_connect_to_business = can_connect_to_business
         self._raw = _raw
 
     @property
@@ -255,8 +260,15 @@ class User(Object, Update):
 
     @staticmethod
     def _parse(client, user: "raw.base.User") -> Optional["User"]:
-        if user is None or isinstance(user, raw.types.UserEmpty):
+        if user is None:
             return None
+
+        if isinstance(user, raw.types.UserEmpty):
+            return User(
+                id=user.id,
+                client=client,
+                _raw=user
+            )
 
         parsed_user = User(
             id=user.id,
@@ -293,6 +305,9 @@ class User(Object, Update):
             parsed_user.supports_inline_queries = bool(getattr(user, "bot_inline_placeholder", None))
             parsed_user.supports_inline_location_requests = bool(
                 getattr(user, "bot_inline_geo", None)
+            )
+            parsed_user.can_connect_to_business = bool(
+                getattr(user, "bot_business", None)
             )
         if parsed_user.is_bot:
             parsed_user.can_edit_bot = bool(

@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added the field ``can_connect_to_business`` to the class :obj:`~pyrogram.types.User`.
 - Rearrange :meth:`~pyrogram.Client.send_sticker` parameter names.
 - Added the fields ``request_title``, ``request_username``, and ``request_photo`` to the class :obj:`~pyrogram.types.KeyboardButtonRequestChat`.
 - Added the fields ``request_name``, ``request_username``, and ``request_photo`` to the class :obj:`~pyrogram.types.KeyboardButtonRequestUsers`.
