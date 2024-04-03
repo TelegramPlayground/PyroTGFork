@@ -118,7 +118,8 @@ class Message(Object, Update):
             For replies, the original message. Note that the Message object in this field will not contain
             further reply_to_message fields even if it itself is a reply.
 
-        external_reply
+        external_reply (:obj:`~pyrogram.types.ExternalReplyInfo`, *optional*):
+            Information about the message that is being replied to, which may come from another chat or forum topic
 
         quote
 
@@ -323,7 +324,7 @@ class Message(Object, Update):
         video_chat_ended (:obj:`~pyrogram.types.VideoChatEnded`, *optional*):
             Service message: the voice chat has ended.
 
-        video_chat_participants_invited (:obj:`~pyrogram.types.VoiceChatParticipantsInvited`, *optional*):
+        video_chat_participants_invited (:obj:`~pyrogram.types.VideoChatParticipantsInvited`, *optional*):
             Service message: new members were invited to the voice chat.
 
         web_app_data (:obj:`~pyrogram.types.WebAppData`, *optional*):

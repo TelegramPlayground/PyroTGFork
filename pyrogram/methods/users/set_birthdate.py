@@ -16,44 +16,47 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import Optional
 
 import pyrogram
-from pyrogram import raw
+from pyrogram import raw, types
 
 
-class UnblockUser:
-    async def unblock_user(
+class SetBirthdate:
+    async def set_birthdate(
         self: "pyrogram.Client",
-        user_id: Union[int, str],
-        my_stories_from: bool = None
+        birthdate: Optional["types.Birthdate"] = None
     ) -> bool:
-        """Unblock a user.
+        """Changes the birthdate of the current user 
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            user_id (``int`` | ``str``):
-                Unique identifier (int) or username (str) of the target user.
-                For you yourself you can simply use "me" or "self".
-                For a contact that exists in your Telegram address book you can use his phone number (str).
-
-            my_stories_from (``bool``, *optional*):
-                Whether the peer should be removed from the story blocklist; if not set, the peer will be removed from the main blocklist.
+            birthdate (:obj:`~pyrogram.types.Birthdate`, *optional*):
+                The new value of the current user's birthdate; pass None to remove the birthdate
 
         Returns:
-            ``bool``: True on success
+            ``bool``: True on success.
 
         Example:
             .. code-block:: python
 
-                await app.unblock_user(user_id)
+                # Update your birthdate
+                await app.set_birthdate(birthdate=types.Birthdate(
+                    day=15,
+                    month=12,
+                    year=2017
+                ))
+
+                # Remove your birthdate
+                await app.set_birthdate()
+
         """
+
         return bool(
             await self.invoke(
-                raw.functions.contacts.Unblock(
-                    id=await self.resolve_peer(user_id),
-                    my_stories_from=my_stories_from
+                raw.functions.account.UpdateBirthday(
+                    birthday=birthdate.write() if birthdate else None
                 )
             )
         )

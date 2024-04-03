@@ -16,44 +16,44 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw
 
 
-class UnblockUser:
-    async def unblock_user(
+class SetPersonalChat:
+    async def set_personal_chat(
         self: "pyrogram.Client",
-        user_id: Union[int, str],
-        my_stories_from: bool = None
+        chat_id: Optional[Union[int, str]] = None,
     ) -> bool:
-        """Unblock a user.
+        """Changes the personal chat of the current user
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            user_id (``int`` | ``str``):
-                Unique identifier (int) or username (str) of the target user.
-                For you yourself you can simply use "me" or "self".
-                For a contact that exists in your Telegram address book you can use his phone number (str).
-
-            my_stories_from (``bool``, *optional*):
-                Whether the peer should be removed from the story blocklist; if not set, the peer will be removed from the main blocklist.
+            chat_id (``int`` | ``str`, *optional*):
+                Identifier of the new personal chat; pass None to remove the chat. Use :meth:`~pyrogram.Client.get_suitable_personal_chats` to get suitable chats
 
         Returns:
-            ``bool``: True on success
+            ``bool``: True on success.
 
         Example:
             .. code-block:: python
 
-                await app.unblock_user(user_id)
+                # Update your personal chat
+                await app.set_personal_chat(chat_id="@Pyrogram")
+
+                # Hide your personal chat
+                await app.set_personal_chat()
         """
+
         return bool(
             await self.invoke(
-                raw.functions.contacts.Unblock(
-                    id=await self.resolve_peer(user_id),
-                    my_stories_from=my_stories_from
+                raw.functions.account.UpdatePersonalChannel(
+                    channel=await self.resolve_peer(
+                        chat_id
+                    ) if chat_id else raw.types.InputChannelEmpty()
                 )
             )
         )

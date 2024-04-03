@@ -29,6 +29,8 @@ from .set_profile_photo import SetProfilePhoto
 from .set_username import SetUsername
 from .unblock_user import UnblockUser
 from .update_profile import UpdateProfile
+from .set_birthdate import SetBirthdate
+from .set_personal_chat import SetPersonalChat
 
 
 class Users(
@@ -44,6 +46,8 @@ class Users(
     UnblockUser,
     UpdateProfile,
     GetDefaultEmojiStatuses,
-    SetEmojiStatus
+    SetEmojiStatus,
+    SetBirthdate,
+    SetPersonalChat
 ):
     pass
