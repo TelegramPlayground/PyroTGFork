@@ -76,6 +76,9 @@ class Message(Object, Update):
         sender_boost_count (``int``, *optional*):
             If the sender of the message boosted the chat, the number of boosts added by the user.
 
+        sender_business_bot (:obj:`~pyrogram.types.User`, *optional*):
+            The bot that actually sent the message on behalf of the business account. Available only for outgoing messages sent on behalf of the connected business account.
+
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the message was sent.
 
@@ -127,6 +130,9 @@ class Message(Object, Update):
 
         has_protected_content (``bool``, *optional*):
             True, if the message can't be forwarded.
+
+        is_from_offline (``bool``, *optional*):
+            True, if the message was sent by an implicit action, for example, as an away or a greeting business message, or as a scheduled message
 
         media_group_id (``str``, *optional*):
             The unique identifier of a media message group this message belongs to.
@@ -401,6 +407,7 @@ class Message(Object, Update):
         from_user: "types.User" = None,
         sender_chat: "types.Chat" = None,
         sender_boost_count: int = None,
+        sender_business_bot: "types.User" = None,
         date: datetime = None,
         chat: "types.Chat" = None,
 
@@ -422,6 +429,7 @@ class Message(Object, Update):
         via_bot: "types.User" = None,
         edit_date: datetime = None,
         has_protected_content: bool = None,
+        is_from_offline: bool = None,
         media_group_id: str = None,
         author_signature: str = None,
         text: Str = None,
@@ -536,6 +544,7 @@ class Message(Object, Update):
         self.media_group_id = media_group_id
         self.author_signature = author_signature
         self.has_protected_content = has_protected_content
+        self.is_from_offline = is_from_offline
         self.has_media_spoiler = has_media_spoiler
         self.text = text
         self.entities = entities
@@ -604,6 +613,7 @@ class Message(Object, Update):
         self.general_forum_topic_hidden = general_forum_topic_hidden
         self.general_forum_topic_unhidden = general_forum_topic_unhidden
         self.custom_action = custom_action
+        self.sender_business_bot = sender_business_bot
         self._raw = _raw
 
     @staticmethod
@@ -1165,6 +1175,11 @@ class Message(Object, Update):
                 message.reply_to
             )
             parsed_message.sender_boost_count = getattr(message, "from_boosts_applied", None)
+
+            if getattr(message, "via_business_bot_id", None):
+                parsed_message.sender_business_bot = types.User._parse(client, users.get(message.via_business_bot_id, None))
+
+            parsed_message.is_from_offline = getattr(message, "offline", None)
 
         if getattr(message, "reply_to", None):
             parsed_message.reply_to_message_id = None
