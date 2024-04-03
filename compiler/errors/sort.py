@@ -22,7 +22,7 @@ import re
 import requests  # requests==2.28.1
 import sys
 
-if len(sys.argv) != 1:
+if len(sys.argv) != 2:
     sys.exit(1)
 
 if sys.argv[1] == "sort": 
@@ -54,9 +54,15 @@ elif sys.argv[1] == "scrape":
         )
         d = a.json()
         e = d.get("errors", [])
-        w = ""
         for h in e:
-            j = b.get("errors").get(h)
+            dct = {}
+
+            for p in Path("source/").glob(f"{h}*.tsv"):
+                with open(p) as f:
+                    reader = csv.reader(f, delimiter="\t")
+                    dct = {k: v for k, v in reader if k != "id"}
+
+            j = d.get("errors").get(h)
             for k in j:
                 if k.endswith("_*"):
                     continue
@@ -64,8 +70,12 @@ elif sys.argv[1] == "scrape":
                 l = g.get(k)
                 m = k.replace("_%d", "_X")
                 l = l.replace("%d", "{value}")
-                w += f"{m}\t{l}\n"
-            for p in Path("source/").glob(f"{d}*.tsv"):
+                dct[m] = l
+
+            keys = sorted(dct)
+            
+            for p in Path("source/").glob(f"{h}*.tsv"):
                 with open(p, "w") as f:
                     f.write("id\tmessage\n")
-                    f.write(w)
+                    for i, item in enumerate(keys, start=1):
+                        f.write(f"{item}\t{dct[item]}\n")
