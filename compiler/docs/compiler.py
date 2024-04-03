@@ -442,6 +442,8 @@ def pyrogram_api():
             GiveawayWinners
             GiveawayCompleted
             GiftCode
+            UsersShared
+            ChatShared
         """,
         bot_keyboards="""
         Bot keyboards

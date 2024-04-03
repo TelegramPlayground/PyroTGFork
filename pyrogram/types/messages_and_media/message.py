@@ -259,9 +259,11 @@ class Message(Object, Update):
 
         successful_payment
 
-        users_shared
+        users_shared (:obj:`~pyrogram.types.UsersShared`, *optional*):
+            Service message: users were shared with the bot
 
-        chat_shared
+        chat_shared (:obj:`~pyrogram.types.ChatShared`, *optional*):
+            Service message: a chat was shared with the bot
 
         connected_website
 
@@ -742,10 +744,8 @@ class Message(Object, Update):
 
                 for requested_peer in action.peers:
                     raw_peer_id = utils.get_raw_peer_id(requested_peer)
-                    chat_id = utils.get_peer_id(requested_peer)
-                    peer_type = utils.get_peer_type(chat_id)
 
-                    if peer_type == "user":
+                    if isinstance(requested_peer, raw.types.PeerUser):
                         _requested_users.append(
                             types.Chat._parse_user_chat(
                                 client,
@@ -754,19 +754,24 @@ class Message(Object, Update):
                         )
                     else:
                         _requested_chats.append(
-                            types.Chat._parse_chat_chat(
+                            types.Chat._parse_chat(
                                 client,
                                 chats.get(raw_peer_id)
                             )
                         )
 
-                users_shared = types.List(_requested_users) or None
-                chat_shared = types.List(_requested_chats) or None
-
-                if users_shared:
+                if _requested_users:
                     service_type = enums.MessageServiceType.USERS_SHARED
-                if chat_shared:
+                    users_shared = types.UsersShared(
+                        request_id=action.button_id,
+                        users=types.List(_requested_users) or None
+                    )
+                if _requested_chats:
                     service_type = enums.MessageServiceType.CHAT_SHARED
+                    chat_shared = types.ChatShared(
+                        request_id=action.button_id,
+                        chats=types.List(_requested_chats) or None
+                    )
 
             elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
                 chat_ttl_period = action.period
@@ -902,12 +907,6 @@ class Message(Object, Update):
                         parsed_message.service = enums.MessageServiceType.GAME_HIGH_SCORE
                     except MessageIdsEmpty:
                         pass
-
-            client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
-
-            parsed_message._raw = message
-
-            return parsed_message
 
         if isinstance(message, raw.types.Message):
             entities = [types.MessageEntity._parse(client, entity, users) for entity in message.entities]
@@ -1159,34 +1158,6 @@ class Message(Object, Update):
                 link_preview_options=link_preview_options
             )
 
-            if message.reply_to:
-                parsed_message.reply_to_message_id = None
-                parsed_message.message_thread_id = None
-                if isinstance(message.reply_to, raw.types.MessageReplyHeader):
-                    parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
-                    parsed_message.message_thread_id = message.reply_to.reply_to_top_id
-                    if message.reply_to.forum_topic:
-                        parsed_message.is_topic_message = True
-
-                if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
-                    parsed_message.reply_to_story = await types.Story._parse(client, chats, None, message.reply_to)
-
-                if replies:
-                    try:
-                        key = (parsed_message.chat.id, parsed_message.reply_to_message_id)
-                        reply_to_message = client.message_cache[key]
-
-                        if not reply_to_message:
-                            reply_to_message = await client.get_messages(
-                                chat_id=parsed_message.chat.id,
-                                reply_to_message_ids=message.id,
-                                replies=replies - 1
-                            )
-
-                        parsed_message.reply_to_message = reply_to_message
-                    except MessageIdsEmpty:
-                        pass
-
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
                 client,
                 chats,
@@ -1195,12 +1166,40 @@ class Message(Object, Update):
             )
             parsed_message.sender_boost_count = getattr(message, "from_boosts_applied", None)
 
-            if not parsed_message.poll:  # Do not cache poll messages
-                client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
+        if getattr(message, "reply_to", None):
+            parsed_message.reply_to_message_id = None
+            parsed_message.message_thread_id = None
+            if isinstance(message.reply_to, raw.types.MessageReplyHeader):
+                parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
+                parsed_message.message_thread_id = message.reply_to.reply_to_top_id
+                if message.reply_to.forum_topic:
+                    parsed_message.is_topic_message = True
 
-            parsed_message._raw = message
+            if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
+                parsed_message.reply_to_story = await types.Story._parse(client, chats, None, message.reply_to)
 
-            return parsed_message
+            if replies:
+                try:
+                    key = (parsed_message.chat.id, parsed_message.reply_to_message_id)
+                    reply_to_message = client.message_cache[key]
+
+                    if not reply_to_message:
+                        reply_to_message = await client.get_messages(
+                            chat_id=parsed_message.chat.id,
+                            reply_to_message_ids=message.id,
+                            replies=replies - 1
+                        )
+
+                    parsed_message.reply_to_message = reply_to_message
+                except MessageIdsEmpty:
+                    pass
+
+        if not parsed_message.poll:  # Do not cache poll messages
+            client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
+
+        parsed_message._raw = message
+
+        return parsed_message
 
     @property
     def link(self) -> str:
