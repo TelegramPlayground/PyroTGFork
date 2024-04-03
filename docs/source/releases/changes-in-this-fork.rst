@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Bug fix for the ``users_shared``, ``chat_shared`` logic in :obj:`~pyrogram.types.Message`.
 - Added :meth:`~pyrogram.Client.set_birthdate` and :meth:`~pyrogram.Client.set_personal_chat`, for user accounts only.
 - Added the field ``birthdate`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the field ``is_from_offline`` to the class :obj:`~pyrogram.types.Message`.

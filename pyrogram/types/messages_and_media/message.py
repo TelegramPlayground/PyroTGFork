@@ -784,6 +784,68 @@ class Message(Object, Update):
                         chats=types.List(_requested_chats) or None
                     )
 
+            elif isinstance(action, raw.types.MessageActionRequestedPeerSentMe):
+                # TODO: duplicate code here
+
+                _requested_chats = []
+                _requested_users = []
+
+                for requested_peer in action.peers:
+                    if isinstance(requested_peer, raw.types.RequestedPeerUser):
+                        _requested_users.append(
+                            types.Chat(
+                                client=client,
+                                id=requested_peer.user_id,
+                                first_name=requested_peer.first_name,
+                                last_name=requested_peer.last_name,
+                                username=requested_peer.username,
+                                photo=types.Photo._parse(
+                                    client=client,
+                                    photo=getattr(requested_peer, "photo", None)
+                                )
+                            )
+                        )
+                    elif isinstance(requested_peer, raw.types.RequestedPeerChat):
+                        _requested_chats.append(
+                            types.Chat(
+                                client=client,
+                                id=-requested_peer.chat_id,
+                                title=requested_peer.title,
+                                photo=types.Photo._parse(
+                                    client=client,
+                                    photo=getattr(requested_peer, "photo", None)
+                                )
+                            )
+                        )
+                    else:
+                        _requested_chats.append(
+                            types.Chat(
+                                client=client,
+                                id=utils.get_channel_id(
+                                    requested_peer.channel_id
+                                ),
+                                title=requested_peer.title,
+                                username=requested_peer.username,
+                                photo=types.Photo._parse(
+                                    client=client,
+                                    photo=getattr(requested_peer, "photo", None)
+                                )
+                            )
+                        )
+
+                if _requested_users:
+                    service_type = enums.MessageServiceType.USERS_SHARED
+                    users_shared = types.UsersShared(
+                        request_id=action.button_id,
+                        users=types.List(_requested_users) or None
+                    )
+                if _requested_chats:
+                    service_type = enums.MessageServiceType.CHAT_SHARED
+                    chat_shared = types.ChatShared(
+                        request_id=action.button_id,
+                        chats=types.List(_requested_chats) or None
+                    )
+
             elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
                 chat_ttl_period = action.period
                 service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
