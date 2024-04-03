@@ -57,6 +57,9 @@ class Chat(Object):
 
         active_usernames
 
+        birthdate (:obj:`~pyrogram.types.Birthdate`, *optional*):
+            For private chats, the date of birth of the user.
+
         personal_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             For private chats, the personal channel of the user.
 
@@ -197,6 +200,7 @@ class Chat(Object):
         first_name: str = None,
         last_name: str = None,
         photo: "types.ChatPhoto" = None,
+        birthdate: "types.Birthdate" = None,
         bio: str = None,
         join_by_request: bool = None,
         description: str = None,
@@ -280,6 +284,7 @@ class Chat(Object):
         self.join_by_request = join_by_request
         self.is_peak_preview = is_peak_preview
         self.personal_chat = personal_chat
+        self.birthdate = birthdate
         self._raw = _raw
 
     @staticmethod
@@ -408,10 +413,11 @@ class Chat(Object):
             parsed_chat = Chat._parse_user_chat(client, users[full_user.id])
             parsed_chat.bio = full_user.about
 
-            personal_chat = Chat._parse_channel_chat(
-                client,
-                chats[full_user.personal_channel_id]
-            )
+            if getattr(full_user, "personal_channel_id", None):
+                personal_chat = Chat._parse_channel_chat(
+                    client,
+                    chats[full_user.personal_channel_id]
+                )
 
             if full_user.pinned_msg_id:
                 try:
@@ -425,6 +431,11 @@ class Chat(Object):
                         empty=True,
                         client=client
                     )
+            
+            if getattr(full_user, "birthday", None):
+                parsed_chat.birthdate = types.Birthdate._parse(
+                    full_user.birthday
+                )
         else:
             full_chat = chat_full.full_chat
             chat_raw = chats[full_chat.id]

@@ -399,6 +399,10 @@ def pyrogram_api():
             Dialog
             Restriction
             EmojiStatus
+            ChatReactions
+            UsersShared
+            ChatShared
+            Birthdate
         """,
         messages_media="""
         Messages & Media
@@ -431,7 +435,6 @@ def pyrogram_api():
             VideoChatParticipantsInvited
             WebAppData
             MessageReactions
-            ChatReactions
             MessageReactionUpdated
             MessageReactionCountUpdated
             ReactionCount
@@ -442,8 +445,6 @@ def pyrogram_api():
             GiveawayWinners
             GiveawayCompleted
             GiftCode
-            UsersShared
-            ChatShared
         """,
         bot_keyboards="""
         Bot keyboards

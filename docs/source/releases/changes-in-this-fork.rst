@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added the field ``birthdate`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the field ``is_from_offline`` to the class :obj:`~pyrogram.types.Message`.
 - Added the field ``sender_business_bot`` to the class :obj:`~pyrogram.types.Message`.
 - Added the fields ``users_shared``, ``chat_shared`` to the class :obj:`~pyrogram.types.Message`.

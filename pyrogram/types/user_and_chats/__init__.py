@@ -40,6 +40,7 @@ from .video_chat_scheduled import VideoChatScheduled
 from .video_chat_started import VideoChatStarted
 from .users_shared import UsersShared
 from .chat_shared import ChatShared
+from .birthdate import Birthdate
 
 __all__ = [
     "Chat",
@@ -66,4 +67,5 @@ __all__ = [
     "ChatReactions",
     "UsersShared",
     "ChatShared",
+    "Birthdate",
 ]
