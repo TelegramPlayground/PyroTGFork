@@ -294,6 +294,19 @@ class Chat(Object):
     def _parse_user_chat(client, user: raw.types.User) -> "Chat":
         peer_id = user.id
 
+        active_usernames = types.List(
+            [
+                types.Username._parse(u)
+                for u in getattr(user, "usernames", [])
+            ]
+        ) or None
+        _tmp_username = None
+        if (
+            active_usernames and
+            len(active_usernames) > 0
+        ):
+            _tmp_username = active_usernames[0].username
+
         return Chat(
             id=peer_id,
             type=enums.ChatType.BOT if user.bot else enums.ChatType.PRIVATE,
@@ -302,19 +315,14 @@ class Chat(Object):
             is_scam=getattr(user, "scam", None),
             is_fake=getattr(user, "fake", None),
             is_support=getattr(user, "support", None),
-            username=user.username,
+            username=user.username or _tmp_username,
             first_name=user.first_name,
             last_name=user.last_name,
             photo=types.ChatPhoto._parse(client, user.photo, peer_id, user.access_hash),
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             dc_id=getattr(getattr(user, "photo", None), "dc_id", None),
             client=client,
-            active_usernames=types.List(
-                [
-                    types.Username._parse(u)
-                    for u in getattr(user, "usernames", [])
-                ]
-            ) or None,
+            active_usernames=active_usernames,
             _raw=user
         )
 
@@ -349,6 +357,19 @@ class Chat(Object):
                 _raw=channel
             )
 
+        active_usernames = types.List(
+            [
+                types.Username._parse(u)
+                for u in getattr(channel, "usernames", [])
+            ]
+        ) or None
+        _tmp_username = None
+        if (
+            active_usernames and
+            len(active_usernames) > 0
+        ):
+            _tmp_username = active_usernames[0].username
+
         return Chat(
             id=peer_id,
             type=enums.ChatType.SUPERGROUP if channel.megagroup else enums.ChatType.CHANNEL,
@@ -358,7 +379,7 @@ class Chat(Object):
             is_scam=channel.scam,
             is_fake=channel.fake,
             title=channel.title,
-            username=getattr(channel, "username", None),
+            username=channel.username or _tmp_username,
             photo=types.ChatPhoto._parse(
                 client,
                 getattr(channel, "photo", None),
@@ -377,12 +398,7 @@ class Chat(Object):
             has_protected_content=getattr(channel, "noforwards", None),
             is_forum=getattr(channel, "forum", None),
             client=client,
-            active_usernames=types.List(
-                [
-                    types.Username._parse(u)
-                    for u in getattr(channel, "usernames", [])
-                ]
-            ) or None,
+            active_usernames=active_usernames,
             _raw=channel
         )
 
