@@ -46,7 +46,7 @@ class DeleteProfilePhotos:
 
             for_my_bot (``int`` | ``str``, *optional*):
                 Unique identifier (int) or username (str) of the bot for which profile photo has to be updated instead of the current user.
-                The bot should have ``can_edit_bot`` property set to True.
+                The bot should have ``can_be_edited`` property set to True.
 
         Returns:
             ``bool``: True on success.

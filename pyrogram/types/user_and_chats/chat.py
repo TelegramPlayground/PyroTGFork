@@ -431,7 +431,7 @@ class Chat(Object):
                         empty=True,
                         client=client
                     )
-            
+
             if getattr(full_user, "birthday", None):
                 parsed_chat.birthdate = types.Birthdate._parse(
                     full_user.birthday

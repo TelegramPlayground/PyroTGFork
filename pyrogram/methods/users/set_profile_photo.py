@@ -61,7 +61,7 @@ class SetProfilePhoto:
 
             for_my_bot (``int`` | ``str``, *optional*):
                 Unique identifier (int) or username (str) of the bot for which profile photo has to be updated instead of the current user.
-                The bot should have ``can_edit_bot`` property set to True.
+                The bot should have ``can_be_edited`` property set to True.
 
             photo_frame_start_timestamp (``float``, *optional*):
                 Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` or ``video_emoji_markup`` is set.

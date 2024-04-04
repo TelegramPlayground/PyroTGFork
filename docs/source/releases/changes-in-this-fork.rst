@@ -70,7 +70,7 @@ it can take advantage of new goodies!
 - Add ``forum_topic_created``, ``forum_topic_closed``, ``forum_topic_edited``, ``forum_topic_reopened``, ``general_forum_topic_hidden``, ``general_forum_topic_unhidden`` to :obj:`~pyrogram.types.Message`.
 - Add ``custom_action`` to :obj:`~pyrogram.types.Message`.
 - Add ``public``, ``for_my_bot``, ``photo_frame_start_timestamp`` to :meth:`~pyrogram.Client.set_profile_photo`.
-- Add ``supports_inline_location_requests``, ``can_edit_bot`` to :obj:`~pyrogram.types.User`.
+- Add ``inline_need_location``, ``can_be_edited`` to :obj:`~pyrogram.types.User`.
 - Add ``giveaway``, ``giveaway_created``, ``giveaway_completed`` and ``giveaway_winners`` in :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Bug fix for :meth:`~pyrogram.Client.send_message` with the ``message_thread_id`` parameter.
 - Added ``request_users`` and ``request_chat`` to :obj:`~pyrogram.types.KeyboardButton`.
@@ -152,7 +152,7 @@ it can take advantage of new goodies!
 - Fix history TTL Service Message Parse.
 - Added environment variables ``PYROGRAM_DONOT_LOG_UNKNOWN_ERRORS``. Thanks to `... <https://t.me/pyrogramchat/607757>`_.
 - Renamed ``force_document`` to ``disable_content_type_detection`` in :obj:`~pyrogram.Client.send_document` and :obj:`~pyrogram.types.Message.reply_document`.
-- Added missing attributes ``added_to_attachment_menu``, ``is_attachment_menu_adding_available``, ``can_join_groups``, ``can_read_all_group_messages``, ``supports_inline_queries``, ``can_be_contacted_with_premium`` to the :obj:`~pyrogram.types.User`.
+- Added missing attributes ``added_to_attachment_menu``, ``can_be_added_to_attachment_menu``, ``can_join_groups``, ``can_read_all_group_messages``, ``supports_inline_queries``, ``can_be_contacted_with_premium`` to the :obj:`~pyrogram.types.User`.
 - Migrate project to ``pyproject.toml`` from ``setup.py``.
 - PRs from upstream: `1366 <https://github.com/pyrogram/pyrogram/pull/1366>`_, `1305 <https://github.com/pyrogram/pyrogram/pull/1305>`_, `1288 <https://github.com/pyrogram/pyrogram/pull/1288>`_, `1262 <https://github.com/pyrogram/pyrogram/pull/1262>`_, `1253 <https://github.com/pyrogram/pyrogram/pull/1253>`_, `1234 <https://github.com/pyrogram/pyrogram/pull/1234>`_, `1210 <https://github.com/pyrogram/pyrogram/pull/1210>`_, `1201 <https://github.com/pyrogram/pyrogram/pull/1201>`_, `1197 <https://github.com/pyrogram/pyrogram/pull/1197>`_, `1143 <https://github.com/pyrogram/pyrogram/pull/1143>`_, `1059 <https://github.com/pyrogram/pyrogram/pull/1059>`_.
 - Bug fix for :meth:`~pyrogram.Client.send_audio` and :meth:`~pyrogram.Client.send_voice`. (Thanks to `... <https://t.me/c/1220993104/1360174>`_).

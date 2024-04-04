@@ -147,8 +147,8 @@ class User(Object, Update):
         is_bot (``bool``, *optional*):
             True, if this user is a bot.
 
-        is_attachment_menu_adding_available (``bool``, *optional*):
-            True, if this bot can be added to the attachment menu.
+        can_be_added_to_attachment_menu (``bool``, *optional*):
+            True, if the bot can be added to attachment or side menu.
 
         added_to_attachment_menu (``bool``, *optional*):
             True, if this user added the bot to the attachment menu.
@@ -165,10 +165,13 @@ class User(Object, Update):
         can_connect_to_business (``bool``, *optional*):
             True, if the bot can be connected to a Telegram Business account to receive its messages.
 
-        supports_inline_location_requests (``bool``, *optional*):
+        inline_query_placeholder (``str``, *optional*):
+            Placeholder for inline queries (displayed on the application input field)
+
+        inline_need_location (``bool``, *optional*):
             True, if the bot supports inline `user location <https://core.telegram.org/bots/inline#location-based-results>`_ requests. Returned only in get_me.
         
-        can_edit_bot (``bool``, *optional*):
+        can_be_edited (``bool``, *optional*):
             True, if the current user can edit this bot's profile picture.
     """
 
@@ -201,14 +204,15 @@ class User(Object, Update):
         photo: "types.ChatPhoto" = None,
         restrictions: List["types.Restriction"] = None,
         added_to_attachment_menu: bool = None,
-        is_attachment_menu_adding_available: bool = None,
+        can_be_added_to_attachment_menu: bool = None,
         can_join_groups: bool = None,
         can_read_all_group_messages: bool = None,
         supports_inline_queries: bool = None,
         can_be_contacted_with_premium: bool = None,
-        supports_inline_location_requests: bool = None,
-        can_edit_bot: bool = None,
+        inline_need_location: bool = None,
+        can_be_edited: bool = None,
         can_connect_to_business: bool = None,
+        inline_query_placeholder: str = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -238,14 +242,15 @@ class User(Object, Update):
         self.photo = photo
         self.restrictions = restrictions
         self.added_to_attachment_menu = added_to_attachment_menu
-        self.is_attachment_menu_adding_available = is_attachment_menu_adding_available
+        self.can_be_added_to_attachment_menu = can_be_added_to_attachment_menu
         self.can_join_groups = can_join_groups
         self.can_read_all_group_messages = can_read_all_group_messages
         self.supports_inline_queries = supports_inline_queries
         self.can_be_contacted_with_premium = can_be_contacted_with_premium
-        self.supports_inline_location_requests = supports_inline_location_requests
-        self.can_edit_bot = can_edit_bot
+        self.inline_need_location = inline_need_location
+        self.can_be_edited = can_be_edited
         self.can_connect_to_business = can_connect_to_business
+        self.inline_query_placeholder = inline_query_placeholder
         self._raw = _raw
 
     @property
@@ -297,19 +302,21 @@ class User(Object, Update):
         )
         if parsed_user.is_bot:
             parsed_user.added_to_attachment_menu = getattr(user, "attach_menu_enabled", None)
-            parsed_user.is_attachment_menu_adding_available = getattr(user, "bot_attach_menu", None)
+            parsed_user.can_be_added_to_attachment_menu = getattr(user, "bot_attach_menu", None)
             parsed_user.can_join_groups = not bool(getattr(user, "bot_nochats", None))
             parsed_user.can_read_all_group_messages = getattr(user, "bot_chat_history", None)
-            parsed_user.supports_inline_queries = bool(getattr(user, "bot_inline_placeholder", None))
-            parsed_user.supports_inline_location_requests = bool(
+            parsed_user.inline_query_placeholder = getattr(
+                user, "bot_inline_placeholder", None
+            )
+            parsed_user.supports_inline_queries = bool(parsed_user.inline_query_placeholder)
+            parsed_user.inline_need_location = bool(
                 getattr(user, "bot_inline_geo", None)
             )
             parsed_user.can_connect_to_business = bool(
                 getattr(user, "bot_business", None)
             )
         if parsed_user.is_bot:
-            parsed_user.can_edit_bot = bool(
-                # TODO: 💩 figure out this 💩
+            parsed_user.can_be_edited = bool(
                 getattr(user, "bot_can_edit", None)
             )
         return parsed_user
