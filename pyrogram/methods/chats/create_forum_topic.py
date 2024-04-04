@@ -53,7 +53,7 @@ class CreateForumTopic:
         Example:
             .. code-block:: python
 
-                await app.create_forum_topic("Topic Title")
+                await app.create_forum_topic(chat_id=chat_id, title="Topic Title")
         """
         r = await self.invoke(
             raw.functions.channels.CreateForumTopic(
