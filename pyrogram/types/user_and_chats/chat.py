@@ -55,7 +55,8 @@ class Chat(Object):
         photo (:obj:`~pyrogram.types.ChatPhoto`, *optional*):
             Chat photo. Suitable for downloads only.
 
-        active_usernames
+        active_usernames (List of :obj:`~pyrogram.types.Username`, *optional*):
+            If non-empty, the list of all `active chat usernames <https://telegram.org/blog/topics-in-groups-collectible-usernames#collectible-usernames>`_; for private chats, supergroups and channels.
 
         birthdate (:obj:`~pyrogram.types.Birthdate`, *optional*):
             For private chats, the date of birth of the user.
@@ -200,6 +201,7 @@ class Chat(Object):
         first_name: str = None,
         last_name: str = None,
         photo: "types.ChatPhoto" = None,
+        active_usernames: List["types.Username"] = None,
         birthdate: "types.Birthdate" = None,
         bio: str = None,
         join_by_request: bool = None,
@@ -285,6 +287,7 @@ class Chat(Object):
         self.is_peak_preview = is_peak_preview
         self.personal_chat = personal_chat
         self.birthdate = birthdate
+        self.active_usernames = active_usernames
         self._raw = _raw
 
     @staticmethod
@@ -306,6 +309,12 @@ class Chat(Object):
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             dc_id=getattr(getattr(user, "photo", None), "dc_id", None),
             client=client,
+            active_usernames=types.List(
+                [
+                    types.Username._parse(u)
+                    for u in getattr(user, "usernames", [])
+                ]
+            ) or None,
             _raw=user
         )
 
@@ -368,6 +377,12 @@ class Chat(Object):
             has_protected_content=getattr(channel, "noforwards", None),
             is_forum=getattr(channel, "forum", None),
             client=client,
+            active_usernames=types.List(
+                [
+                    types.Username._parse(u)
+                    for u in getattr(channel, "usernames", [])
+                ]
+            ) or None,
             _raw=channel
         )
 

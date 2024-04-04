@@ -405,6 +405,7 @@ def pyrogram_api():
             UsersShared
             ChatShared
             Birthdate
+            Username
         """,
         messages_media="""
         Messages & Media

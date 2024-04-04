@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added ``active_usernames`` to :obj:`~pyrogram.types.Chat`.
 - Bug fix for the ``users_shared``, ``chat_shared`` logic in :obj:`~pyrogram.types.Message`.
 - Added :meth:`~pyrogram.Client.set_birthdate` and :meth:`~pyrogram.Client.set_personal_chat`, for user accounts only.
 - Added the field ``birthdate`` to the class :obj:`~pyrogram.types.Chat`.
