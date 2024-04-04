@@ -468,8 +468,8 @@ class Message(Object, Update):
         pinned_message: "Message" = None,
 
 
-        users_shared: List["types.User"] = None,
-        chat_shared: List["types.Chat"] = None,
+        users_shared: "types.UsersShared" = None,
+        chat_shared: "types.ChatShared" = None,
 
 
 
@@ -749,44 +749,11 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionGiftCode):
                 gift_code = types.GiftCode._parse(client, action, chats)
                 service_type = enums.MessageServiceType.GIFT_CODE
-            elif isinstance(action, raw.types.MessageActionRequestedPeer):
-                _requested_chats = []
-                _requested_users = []
 
-                for requested_peer in action.peers:
-                    raw_peer_id = utils.get_raw_peer_id(requested_peer)
-
-                    if isinstance(requested_peer, raw.types.PeerUser):
-                        _requested_users.append(
-                            types.Chat._parse_user_chat(
-                                client,
-                                users.get(raw_peer_id)
-                            )
-                        )
-                    else:
-                        _requested_chats.append(
-                            types.Chat._parse_chat(
-                                client,
-                                chats.get(raw_peer_id)
-                            )
-                        )
-
-                if _requested_users:
-                    service_type = enums.MessageServiceType.USERS_SHARED
-                    users_shared = types.UsersShared(
-                        request_id=action.button_id,
-                        users=types.List(_requested_users) or None
-                    )
-                if _requested_chats:
-                    service_type = enums.MessageServiceType.CHAT_SHARED
-                    chat_shared = types.ChatShared(
-                        request_id=action.button_id,
-                        chats=types.List(_requested_chats) or None
-                    )
-
-            elif isinstance(action, raw.types.MessageActionRequestedPeerSentMe):
-                # TODO: duplicate code here
-
+            elif (
+                isinstance(action, raw.types.MessageActionRequestedPeer) or
+                isinstance(action, raw.types.MessageActionRequestedPeerSentMe)
+            ):
                 _requested_chats = []
                 _requested_users = []
 
@@ -817,7 +784,7 @@ class Message(Object, Update):
                                 )
                             )
                         )
-                    else:
+                    elif isinstance(requested_peer, raw.types.RequestedPeerChannel):
                         _requested_chats.append(
                             types.Chat(
                                 client=client,
@@ -832,6 +799,23 @@ class Message(Object, Update):
                                 )
                             )
                         )
+                    else:
+                        raw_peer_id = utils.get_raw_peer_id(requested_peer)
+
+                        if isinstance(requested_peer, raw.types.PeerUser):
+                            _requested_users.append(
+                                types.Chat._parse_user_chat(
+                                    client,
+                                    users.get(raw_peer_id)
+                                )
+                            )
+                        else:
+                            _requested_chats.append(
+                                types.Chat._parse_chat(
+                                    client,
+                                    chats.get(raw_peer_id)
+                                )
+                            )
 
                 if _requested_users:
                     service_type = enums.MessageServiceType.USERS_SHARED
