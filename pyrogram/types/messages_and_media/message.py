@@ -3349,7 +3349,11 @@ class Message(Object, Update):
 
     async def edit_text(
         self,
-        **kwargs
+        text: str,
+        parse_mode: Optional["enums.ParseMode"] = None,
+        entities: List["types.MessageEntity"] = None,
+        link_preview_options: "types.LinkPreviewOptions" = None,
+        reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> "Message":
         """Bound method *edit_text* of :obj:`~pyrogram.types.Message`.
 
@@ -3397,7 +3401,11 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id,
             schedule_date=self.date if self.scheduled else None,
-            **kwargs
+            text=text,
+            parse_mode=parse_mode,
+            entities=entities,
+            link_preview_options=link_preview_options,
+            reply_markup=reply_markup
         )
 
     edit = edit_text

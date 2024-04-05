@@ -182,7 +182,11 @@ class CallbackQuery(Object, Update):
 
     async def edit_message_text(
         self,
-        **kwargs
+        text: str,
+        parse_mode: Optional["enums.ParseMode"] = None,
+        entities: List["types.MessageEntity"] = None,
+        link_preview_options: "types.LinkPreviewOptions" = None,
+        reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> Union["types.Message", bool]:
         """Edit the text of messages attached to callback queries.
 
@@ -216,12 +220,20 @@ class CallbackQuery(Object, Update):
             return await self._client.edit_message_text(
                 chat_id=self.message.chat.id,
                 message_id=self.message.id,
-                **kwargs
+                text=text,
+                parse_mode=parse_mode,
+                entities=entities,
+                link_preview_options=link_preview_options,
+                reply_markup=reply_markup
             )
         else:
             return await self._client.edit_inline_text(
                 inline_message_id=self.inline_message_id,
-                **kwargs
+                text=text,
+                parse_mode=parse_mode,
+                entities=entities,
+                link_preview_options=link_preview_options,
+                reply_markup=reply_markup
             )
 
     async def edit_message_caption(
