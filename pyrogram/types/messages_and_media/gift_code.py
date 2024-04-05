@@ -24,15 +24,6 @@ class GiftCode(Object):
     """Contains gift code data.
 
     Parameters:
-        via_giveaway (``bool``):
-            True if the gift code is received via giveaway.
-
-        unclaimed (``bool``):
-            True if the gift code is unclaimed.
-
-        boost_peer (:obj:`~pyrogram.types.Chat`):
-            The channel where the gift code was won.
-
         months (``int``):
             Number of months of subscription.
 
@@ -41,6 +32,15 @@ class GiftCode(Object):
             You can combine it with `t.me/giftcode/{slug}`
             to get link for this gift.
 
+        via_giveaway (``bool``):
+            True if the gift code is received via giveaway.
+
+        is_unclaimed (``bool``):
+            True if the winner for the corresponding Telegram Premium subscription wasn't chosen.
+
+        boosted_chat (:obj:`~pyrogram.types.Chat`):
+            The channel where the gift code was won.
+
         link (``str``, *property*):
             Generate a link to this gift code.
     """
@@ -48,30 +48,30 @@ class GiftCode(Object):
     def __init__(
         self,
         *,
-        via_giveaway: bool,
-        unclaimed: bool,
-        boost_peer,
         months: int,
-        slug: str
+        slug: str,
+        via_giveaway: bool = None,
+        is_unclaimed: bool = None,
+        boosted_chat: "types.Chat" = None
     ):
         super().__init__()
 
-        self.via_giveaway = via_giveaway
-        self.unclaimed = unclaimed
-        self.boost_peer = boost_peer
         self.months = months
         self.slug = slug
+        self.via_giveaway = via_giveaway
+        self.is_unclaimed = is_unclaimed
+        self.boosted_chat = boosted_chat
 
     @staticmethod
     def _parse(client, giftcode: "raw.types.MessageActionGiftCode", chats):
-        peer = chats.get(utils.get_raw_peer_id(giftcode.boost_peer))
+        peer = chats.get(utils.get_raw_peer_id(getattr(giftcode, "boost_peer")))
 
         return GiftCode(
-            via_giveaway=giftcode.via_giveaway,
-            unclaimed=giftcode.unclaimed,
-            boost_peer=types.Chat._parse_chat(client, peer) if peer else None,
             months=giftcode.months,
-            slug=giftcode.slug
+            slug=giftcode.slug,
+            via_giveaway=getattr(giftcode, "via_giveaway"),
+            is_unclaimed=getattr(giftcode, "unclaimed"),
+            boosted_chat=types.Chat._parse_chat(client, peer) if peer else None
         )
 
     @property
