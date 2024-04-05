@@ -24,7 +24,7 @@ class MessagesFilter(AutoName):
     """Messages filter enumeration used in :meth:`~pyrogram.Client.search_messages` and :meth:`~pyrogram.Client.search_global`"""
 
     EMPTY = raw.types.InputMessagesFilterEmpty
-    "Empty filter (any kind of messages)"
+    "Empty filter (Filter is absent.)"
 
     PHOTO = raw.types.InputMessagesFilterPhotos
     "Photo messages"
@@ -50,8 +50,8 @@ class MessagesFilter(AutoName):
     VIDEO_NOTE = raw.types.InputMessagesFilterRoundVideo
     "Video note messages"
 
-    AUDIO_VIDEO_NOTE = raw.types.InputMessagesFilterRoundVideo
-    "Audio and video note messages"
+    VOICE_VIDEO_NOTE = raw.types.InputMessagesFilterRoundVoice
+    "Voice and video note messages"
 
     AUDIO = raw.types.InputMessagesFilterMusic
     "Audio messages (music)"
@@ -59,7 +59,7 @@ class MessagesFilter(AutoName):
     CHAT_PHOTO = raw.types.InputMessagesFilterChatPhotos
     "Chat photo messages"
 
-    PHONE_CALL = raw.types.InputMessagesFilterPhoneCalls
+    PHONE_CALL = raw.types.InputMessagesFilterPhoneCalls  # TODO
     "Phone call messages"
 
     MENTION = raw.types.InputMessagesFilterMyMentions
