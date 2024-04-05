@@ -48,10 +48,10 @@ class BusinessMessage(Object):
         schedule (:obj:`~pyrogram.enums.BusinessSchedule`, *optional*):
             Schedule of the away message to be sent.
 
-        start_date (``datetime``, *optional*):
+        start_date (:py:obj:`~datetime.datetime`, *optional*):
             Start date of the away message.
 
-        end_date (``datetime``, *optional*):
+        end_date (:py:obj:`~datetime.datetime`, *optional*):
             End date of the away message.
     """
 

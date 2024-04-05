@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from datetime import datetime
+
 import pyrogram
 from pyrogram import types, raw, utils
 from ..object import Object
@@ -31,7 +33,7 @@ class ForumTopic(Object):
         title (``str``):
             The topic title.
 
-        date (``int``, *optional*):
+        date (:py:obj:`~datetime.datetime`, *optional*):
             Date when the topic was created.
 
         icon_color (``str``, *optional*):
@@ -70,7 +72,7 @@ class ForumTopic(Object):
         is_hidden (``bool``, *optional*):
             True, if the topic is hidden.
 
-        deleted (``bool``, *optional*):
+        is_deleted (``bool``, *optional*):
             The forum topic is deleted.
     """
 
@@ -79,7 +81,7 @@ class ForumTopic(Object):
         *,
         id: int,
         title: str = None,
-        date: int = None,
+        date: datetime = None,
         icon_color: str = None,
         icon_emoji_id: int = None,
         creator: "types.Chat" = None,
@@ -92,7 +94,7 @@ class ForumTopic(Object):
         is_pinned: bool = None,
         is_short: bool = None,
         is_hidden: bool = None,
-        deleted: bool = None
+        is_deleted: bool = None
     ):
         super().__init__()
 
@@ -111,12 +113,12 @@ class ForumTopic(Object):
         self.is_pinned = is_pinned
         self.is_short = is_short
         self.is_hidden = is_hidden
-        self.deleted = deleted
+        self.is_deleted = is_deleted
 
     @staticmethod
     def _parse(client: "pyrogram.Client", forum_topic: "raw.types.ForumTopic", messages: dict = {},  users: dict = {}, chats: dict = {}) -> "ForumTopic":
         if isinstance(forum_topic, raw.types.ForumTopicDeleted):
-            return ForumTopic(id=forum_topic.id, deleted=True)
+            return ForumTopic(id=forum_topic.id, is_deleted=True)
 
         creator = None
 
