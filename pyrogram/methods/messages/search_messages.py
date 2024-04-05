@@ -30,7 +30,8 @@ async def get_chunk(
     filter: "enums.MessagesFilter" = enums.MessagesFilter.EMPTY,
     offset: int = 0,
     limit: int = 100,
-    from_user: Union[int, str] = None
+    from_user: Union[int, str] = None,
+    message_thread_id: int = None
 ) -> List["types.Message"]:
     r = await client.invoke(
         raw.functions.messages.Search(
@@ -49,7 +50,8 @@ async def get_chunk(
                 if from_user
                 else None
             ),
-            hash=0
+            hash=0,
+            top_msg_id=message_thread_id
         ),
         sleep_threshold=60
     )
@@ -66,7 +68,8 @@ class SearchMessages:
         offset: int = 0,
         filter: "enums.MessagesFilter" = enums.MessagesFilter.EMPTY,
         limit: int = 0,
-        from_user: Union[int, str] = None
+        from_user: Union[int, str] = None,
+        message_thread_id: int = None
     ) -> Optional[AsyncGenerator["types.Message", None]]:
         """Search for text and media messages inside a specific chat.
 
@@ -101,6 +104,9 @@ class SearchMessages:
             from_user (``int`` | ``str``, *optional*):
                 Unique identifier (int) or username (str) of the target user you want to search for messages from.
 
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+
         Returns:
             ``Generator``: A generator yielding :obj:`~pyrogram.types.Message` objects.
 
@@ -134,7 +140,8 @@ class SearchMessages:
                 filter=filter,
                 offset=offset,
                 limit=limit,
-                from_user=from_user
+                from_user=from_user,
+                message_thread_id=message_thread_id
             )
 
             if not messages:
