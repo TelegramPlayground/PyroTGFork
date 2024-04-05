@@ -33,6 +33,7 @@ class SendCachedMedia:
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        business_connection_id: str = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
@@ -74,6 +75,9 @@ class SendCachedMedia:
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
@@ -112,19 +116,27 @@ class SendCachedMedia:
             reply_parameters
         )
 
-        r = await self.invoke(
-            raw.functions.messages.SendMedia(
-                peer=await self.resolve_peer(chat_id),
-                media=utils.get_input_media_from_file_id(file_id, has_spoiler=has_spoiler),
-                silent=disable_notification or None,
-                reply_to=reply_to,
-                random_id=self.rnd_id(),
-                schedule_date=utils.datetime_to_timestamp(schedule_date),
-                noforwards=protect_content,
-                reply_markup=await reply_markup.write(self) if reply_markup else None,
-                **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
-            )
+        rpc = raw.functions.messages.SendMedia(
+            peer=await self.resolve_peer(chat_id),
+            media=utils.get_input_media_from_file_id(file_id, has_spoiler=has_spoiler),
+            silent=disable_notification or None,
+            reply_to=reply_to,
+            random_id=self.rnd_id(),
+            schedule_date=utils.datetime_to_timestamp(schedule_date),
+            noforwards=protect_content,
+            reply_markup=await reply_markup.write(self) if reply_markup else None,
+            **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
         )
+
+        if business_connection_id:
+            r = await self.invoke(
+                raw.functions.InvokeWithBusinessConnection(
+                    query=rpc,
+                    connection_id=business_connection_id
+                )
+            )
+        else:
+            r = await self.invoke(rpc)
 
         for i in r.updates:
             if isinstance(
@@ -140,4 +152,20 @@ class SendCachedMedia:
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                )
+            elif isinstance(
+                i,
+                (
+                    raw.types.UpdateBotNewBusinessMessage,
+                    # raw.types.UpdateBotEditBusinessMessage,
+                    # raw.types.UpdateBotDeleteBusinessMessage
+                )
+            ):
+                return await types.Message._parse(
+                    self,
+                    i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    business_connection_id=i.connection_id,
+                    reply_to_message=i.reply_to_message
                 )

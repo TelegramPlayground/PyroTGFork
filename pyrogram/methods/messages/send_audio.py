@@ -176,7 +176,7 @@ class SendAudio:
         try:
             if isinstance(audio, str):
                 if os.path.isfile(audio):
-                    mime_type = utils.voiceAudioUrlFuxUps(self, audio, 1)
+                    mime_type = utils.fix_up_voice_audio_uri(self, audio, 1)
                     thumb = await self.save_file(thumb)
                     file = await self.save_file(audio, progress=progress, progress_args=progress_args)
                     media = raw.types.InputMediaUploadedDocument(
@@ -199,7 +199,7 @@ class SendAudio:
                 else:
                     media = utils.get_input_media_from_file_id(audio, FileType.AUDIO)
             else:
-                mime_type = utils.voiceAudioUrlFuxUps(self, file_name or audio.name, 1)
+                mime_type = utils.fix_up_voice_audio_uri(self, file_name or audio.name, 1)
                 thumb = await self.save_file(thumb)
                 file = await self.save_file(audio, progress=progress, progress_args=progress_args)
                 media = raw.types.InputMediaUploadedDocument(
@@ -254,6 +254,20 @@ class SendAudio:
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
                                 is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                            )
+                        elif isinstance(
+                            i,
+                            (
+                                raw.types.UpdateBotNewBusinessMessage
+                            )
+                        ):
+                            return await types.Message._parse(
+                                self,
+                                i.message,
+                                {i.id: i for i in r.users},
+                                {i.id: i for i in r.chats},
+                                business_connection_id=i.connection_id,
+                                reply_to_message=i.reply_to_message
                             )
         except StopTransmission:
             return None

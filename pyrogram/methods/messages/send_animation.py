@@ -36,9 +36,9 @@ class SendAnimation:
         chat_id: Union[int, str],
         animation: Union[str, BinaryIO],
         caption: str = "",
-        unsave: bool = False,
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        unsave: bool = False,
         has_spoiler: bool = None,
         duration: int = 0,
         width: int = 0,
@@ -80,16 +80,16 @@ class SendAnimation:
             caption (``str``, *optional*):
                 Animation caption, 0-1024 characters.
 
-            unsave (``bool``, *optional*):
-                By default, the server will save into your own collection any new animation you send.
-                Pass True to automatically unsave the sent animation. Defaults to False.
-
             parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.
                 You can combine both syntaxes together.
 
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
+            unsave (``bool``, *optional*):
+                By default, the server will save into your own collection any new animation you send.
+                Pass True to automatically unsave the sent animation. Defaults to False.
 
             has_spoiler (``bool``, *optional*):
                 Pass True if the animation needs to be covered with a spoiler animation.
@@ -249,21 +249,21 @@ class SendAnimation:
                 reply_parameters
             )
 
+            rpc = raw.functions.messages.SendMedia(
+                peer=await self.resolve_peer(chat_id),
+                media=media,
+                silent=disable_notification or None,
+                reply_to=reply_to,
+                random_id=self.rnd_id(),
+                schedule_date=utils.datetime_to_timestamp(schedule_date),
+                noforwards=protect_content,
+                reply_markup=await reply_markup.write(self) if reply_markup else None,
+                **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
+            )
+
             while True:
                 try:
-                    r = await self.invoke(
-                        raw.functions.messages.SendMedia(
-                            peer=await self.resolve_peer(chat_id),
-                            media=media,
-                            silent=disable_notification or None,
-                            reply_to=reply_to,
-                            random_id=self.rnd_id(),
-                            schedule_date=utils.datetime_to_timestamp(schedule_date),
-                            noforwards=protect_content,
-                            reply_markup=await reply_markup.write(self) if reply_markup else None,
-                            **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
-                        )
-                    )
+                    r = await self.invoke(rpc)
                 except FilePartMissing as e:
                     await self.save_file(animation, file_id=file.id, file_part=e.value)
                 else:

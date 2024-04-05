@@ -54,16 +54,19 @@ from pyrogram.raw.types import (
     UpdateBotInlineSend, UpdateChatParticipant, UpdateChannelParticipant,
     UpdateBotChatInviteRequester,
     UpdateBotMessageReaction,
-    UpdateBotMessageReactions
+    UpdateBotMessageReactions,
+    UpdateBotNewBusinessMessage,
+    UpdateBotEditBusinessMessage,
+    UpdateBotDeleteBusinessMessage
 )
 
 log = logging.getLogger(__name__)
 
 
 class Dispatcher:
-    NEW_MESSAGE_UPDATES = (UpdateNewMessage, UpdateNewChannelMessage, UpdateNewScheduledMessage)
-    EDIT_MESSAGE_UPDATES = (UpdateEditMessage, UpdateEditChannelMessage)
-    DELETE_MESSAGES_UPDATES = (UpdateDeleteMessages, UpdateDeleteChannelMessages)
+    NEW_MESSAGE_UPDATES = (UpdateNewMessage, UpdateNewChannelMessage, UpdateNewScheduledMessage, UpdateBotNewBusinessMessage)
+    EDIT_MESSAGE_UPDATES = (UpdateEditMessage, UpdateEditChannelMessage, UpdateBotEditBusinessMessage)
+    DELETE_MESSAGES_UPDATES = (UpdateDeleteMessages, UpdateDeleteChannelMessages, UpdateBotDeleteBusinessMessage)
     CALLBACK_QUERY_UPDATES = (UpdateBotCallbackQuery, UpdateInlineBotCallbackQuery)
     CHAT_MEMBER_UPDATES = (UpdateChatParticipant, UpdateChannelParticipant)
     USER_STATUS_UPDATES = (UpdateUserStatus,)
@@ -91,7 +94,9 @@ class Dispatcher:
                     update.message,
                     users,
                     chats,
-                    is_scheduled=isinstance(update, UpdateNewScheduledMessage)
+                    is_scheduled=isinstance(update, UpdateNewScheduledMessage),
+                    business_connection_id=getattr(update, "connection_id", None),
+                    reply_to_message=getattr(update, "reply_to_message", None)
                 ),
                 MessageHandler
             )
@@ -107,7 +112,7 @@ class Dispatcher:
 
         async def deleted_messages_parser(update, users, chats):
             return (
-                await utils.parse_deleted_messages(self.client, update),
+                await utils.parse_deleted_messages(self.client, update, users, chats),
                 DeletedMessagesHandler
             )
 

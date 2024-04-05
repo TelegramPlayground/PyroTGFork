@@ -148,36 +148,6 @@ async def parse_messages(
     return types.List(parsed_messages)
 
 
-async def parse_deleted_messages(client, update) -> List["types.Message"]:
-    messages = update.messages
-    channel_id = getattr(update, "channel_id", None)
-    delete_chat = None
-    if channel_id is not None:
-        chan_id = get_channel_id(channel_id)
-        # try:
-        # TODO
-        #     delete_chat = await client.get_chat(chan_id, False)
-        # except pyrogram.errors.RPCError:
-        delete_chat = types.Chat(
-            id=chan_id,
-            type=enums.ChatType.CHANNEL,
-            client=client
-        )
-
-    parsed_messages = []
-
-    for message in messages:
-        parsed_messages.append(
-            types.Message(
-                id=message,
-                chat=delete_chat,
-                client=client
-            )
-        )
-
-    return types.List(parsed_messages)
-
-
 def pack_inline_message_id(msg_id: "raw.base.InputBotInlineMessageID"):
     if isinstance(msg_id, raw.types.InputBotInlineMessageID):
         inline_message_id_packed = struct.pack(
@@ -383,6 +353,55 @@ async def parse_text_entities(
     }
 
 
+async def parse_deleted_messages(client, update, users, chats) -> List["types.Message"]:
+    messages = update.messages
+    channel_id = getattr(update, "channel_id", None)
+    business_connection_id = getattr(update, "connection_id", None)
+    raw_business_peer = getattr(update, "peer", None)
+
+    delete_chat = None
+    if channel_id is not None:
+        chan_id = get_channel_id(channel_id)
+        # try:
+        # TODO
+        #     delete_chat = await client.get_chat(chan_id, False)
+        # except pyrogram.errors.RPCError:
+        delete_chat = types.Chat(
+            id=chan_id,
+            type=enums.ChatType.CHANNEL,
+            client=client
+        )
+
+    elif raw_business_peer is not None:
+        chat_id = get_raw_peer_id(raw_business_peer)
+        # yet another TODO comment here
+        if chat_id:
+            if isinstance(raw_business_peer, raw.types.PeerUser):
+                delete_chat = types.Chat._parse_user_chat(client, users[chat_id])
+
+            elif isinstance(raw_business_peer, raw.types.PeerChat):
+                delete_chat = types.Chat._parse_chat_chat(client, chats[chat_id])
+
+            else:
+                delete_chat = types.Chat._parse_channel_chat(
+                    client, chats[chat_id]
+                )
+
+    parsed_messages = []
+
+    for message in messages:
+        parsed_messages.append(
+            types.Message(
+                id=message,
+                chat=delete_chat,
+                business_connection_id=business_connection_id,
+                client=client
+            )
+        )
+
+    return types.List(parsed_messages)
+
+
 def zero_datetime() -> datetime:
     return datetime.fromtimestamp(0, timezone.utc)
 
@@ -502,7 +521,7 @@ def get_first_url(message: "raw.types.Message") -> str:
     return None
 
 
-def voiceAudioUrlFuxUps(
+def fix_up_voice_audio_uri(
     client: "pyroram.Client",
     file_name: str,
     dinxe: int

@@ -26,11 +26,17 @@ class SendChatAction:
     async def send_chat_action(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        action: "enums.ChatAction"
+        action: "enums.ChatAction",
+        message_thread_id: int = None,
+        progress: int = 0,
+        business_connection_id: str = None
     ) -> bool:
-        """Tell the other party that something is happening on your side.
+        """Use this method when you need to tell the user that something is happening on the bot's side.
+        The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
 
         .. include:: /_includes/usable-by/users-bots.rst
+
+        We only recommend using this method when a response from the bot will take a **noticeable** amount of time to arrive.
 
         Parameters:
             chat_id (``int`` | ``str``):
@@ -40,6 +46,15 @@ class SendChatAction:
 
             action (:obj:`~pyrogram.enums.ChatAction`):
                 Type of action to broadcast.
+
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread; for supergroups only
+
+            progress (``int``, *optional*):
+                Upload progress, as a percentage.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the action will be sent
 
         Returns:
             ``bool``: On success, True is returned.
@@ -67,15 +82,25 @@ class SendChatAction:
 
         action_name = action.name.lower()
 
-        if "upload" in action_name or "history" in action_name:
-            # TODO
-            action = action.value(progress=0)
+        if (
+            "upload" in action_name or
+            "import" in action_name
+        ):
+            action = action.value(progress=progress)
         else:
             action = action.value()
 
-        return await self.invoke(
-            raw.functions.messages.SetTyping(
-                peer=await self.resolve_peer(chat_id),
-                action=action
-            )
+        rpc = raw.functions.messages.SetTyping(
+            peer=await self.resolve_peer(chat_id),
+            action=action,
+            top_msg_id=message_thread_id
         )
+        if business_connection_id:
+            return await self.invoke(
+                raw.functions.InvokeWithBusinessConnection(
+                    query=rpc,
+                    connection_id=business_connection_id
+                )
+            )
+        else:
+            return await self.invoke(rpc)

@@ -82,6 +82,11 @@ class Message(Object, Update):
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the message was sent.
 
+        business_connection_id (``str``, *optional*):
+            Unique identifier of the business connection from which the message was received.
+            If non-empty, the message belongs to a chat of the corresponding business account that is independent from any potential bot chat which might share the same identifier.
+            This update may at times be triggered by unavailable changes to message fields that are either unavailable or not actively used by the current bot.
+
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
             Conversation the message belongs to.
 
@@ -410,6 +415,7 @@ class Message(Object, Update):
         sender_boost_count: int = None,
         sender_business_bot: "types.User" = None,
         date: datetime = None,
+        business_connection_id: str = None,
         chat: "types.Chat" = None,
 
         is_topic_message: bool = None,
@@ -615,6 +621,7 @@ class Message(Object, Update):
         self.general_forum_topic_unhidden = general_forum_topic_unhidden
         self.custom_action = custom_action
         self.sender_business_bot = sender_business_bot
+        self.business_connection_id = business_connection_id
         self._raw = _raw
 
     @staticmethod
@@ -624,10 +631,18 @@ class Message(Object, Update):
         users: dict,
         chats: dict,
         is_scheduled: bool = False,
-        replies: int = 1
+        replies: int = 1,
+        business_connection_id: str = None,
+        reply_to_message: raw.base.Message = None
     ):
         if isinstance(message, raw.types.MessageEmpty):
-            return Message(id=message.id, empty=True, client=client, _raw=message)
+            return Message(
+                id=message.id,
+                empty=True,
+                business_connection_id=business_connection_id if business_connection_id else None,
+                client=client,
+                _raw=message
+            )
 
         from_id = utils.get_raw_peer_id(message.from_id)
         peer_id = utils.get_raw_peer_id(message.peer_id)
@@ -1255,6 +1270,8 @@ class Message(Object, Update):
                     parsed_message.reply_to_message = reply_to_message
                 except MessageIdsEmpty:
                     pass
+
+        parsed_message.business_connection_id = business_connection_id if business_connection_id else None
 
         if not parsed_message.poll:  # Do not cache poll messages
             client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message

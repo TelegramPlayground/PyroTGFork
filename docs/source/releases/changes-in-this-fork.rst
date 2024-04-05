@@ -12,6 +12,10 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- **BOTS ONLY**: Handled the parameter ``business_connection_id`` to the update handlers :obj:`~pyrogram.handlers.MessageHandler`, :obj:`~pyrogram.handlers.EditedMessageHandler`, :obj:`~pyrogram.handlers.DeletedMessagesHandler`.
+- Added the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_cached_media`.
+- Added the field ``business_connection_id`` to the class :obj:`~pyrogram.types.Message`.
+- Added the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_chat_action`.
 - Added ``active_usernames`` to :obj:`~pyrogram.types.Chat`.
 - Bug fix for the ``users_shared``, ``chat_shared`` logic in :obj:`~pyrogram.types.Message`.
 - Added :meth:`~pyrogram.Client.set_birthdate` and :meth:`~pyrogram.Client.set_personal_chat`, for user accounts only.
