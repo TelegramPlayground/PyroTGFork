@@ -309,6 +309,10 @@ def pyrogram_api():
             get_contacts
             get_contacts_count
         """,
+        payments="""
+        Payments
+            check_gift_code
+        """,
         password="""
         Password
             enable_cloud_password
@@ -486,6 +490,7 @@ def pyrogram_api():
             Giveaway
             GiveawayResult
             GiftCode
+            CheckedGiftCode
         """,
         bot_keyboards="""
         Bot keyboards

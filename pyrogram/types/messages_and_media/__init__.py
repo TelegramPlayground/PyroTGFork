@@ -19,6 +19,7 @@
 from .animation import Animation
 from .audio import Audio
 from .boosts_status import BoostsStatus
+from .checked_gift_code import CheckedGiftCode
 from .contact import Contact
 from .dice import Dice
 from .document import Document
@@ -54,7 +55,7 @@ from .message_reactions import MessageReactions
 from .my_boost import MyBoost
 
 __all__ = [
-    "Animation", "Audio", "BoostsStatus", "Contact", "Document", "ForumTopic", "ForumTopicCreated",
+    "Animation", "Audio", "BoostsStatus", "CheckedGiftCode", "Contact", "Document", "ForumTopic", "ForumTopicCreated",
     "ForumTopicClosed", "ForumTopicReopened", "ForumTopicEdited", "GeneralTopicHidden",
     "GeneralTopicUnhidden", "Game", "GiftCode", "Giveaway", "GiveawayResult", "Location",
     "Message", "MessageEntity", "Photo", "Thumbnail", "StrippedThumbnail", "Story", "Poll",
