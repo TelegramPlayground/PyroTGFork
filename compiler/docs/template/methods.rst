@@ -73,6 +73,19 @@ Chats
 
     {chats}
 
+Chat Forum Topics
+-----
+
+.. autosummary::
+    :nosignatures:
+
+    {chat_topics}
+
+.. toctree::
+    :hidden:
+
+    {chat_topics}
+
 Users
 -----
 

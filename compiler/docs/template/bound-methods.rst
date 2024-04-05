@@ -101,3 +101,15 @@ ChatJoinRequest
 
     {chat_join_request_toctree}
 
+Story
+---------------
+
+.. hlist::
+    :columns: 2
+
+    {story_hlist}
+
+.. toctree::
+    :hidden:
+
+    {story_toctree}

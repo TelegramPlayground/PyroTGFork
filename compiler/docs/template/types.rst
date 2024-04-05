@@ -124,3 +124,29 @@ Authorization
     :hidden:
 
     {authorization}
+
+Chat Forum Topics
+-------------
+
+.. autosummary::
+    :nosignatures:
+
+    {chat_topics}
+
+.. toctree::
+    :hidden:
+
+    {chat_topics}
+
+Telegram Business
+-------------
+
+.. autosummary::
+    :nosignatures:
+
+    {business}
+
+.. toctree::
+    :hidden:
+
+    {business}
