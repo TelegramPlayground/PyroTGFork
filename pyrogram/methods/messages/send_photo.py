@@ -176,7 +176,7 @@ class SendPhoto:
                         photo,
                         FileType.PHOTO,
                         ttl_seconds=ttl_seconds,
-                        spoiler=has_spoiler
+                        has_spoiler=has_spoiler
                     )
             else:
                 file = await self.save_file(photo, progress=progress, progress_args=progress_args)
