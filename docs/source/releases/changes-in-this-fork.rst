@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added support for ``https://t.me/m/blah`` links in the ``link`` parameter of :meth:`~pyrogram.Client.get_messages`
 - Added the parameter ``message_thread_id`` to the :meth:`~pyrogram.Client.search_messages` and :meth:`~pyrogram.Client.search_messages_count`.
 - Added the parameter ``chat_list`` to the :meth:`~pyrogram.Client.search_global` and :meth:`~pyrogram.Client.search_global_count`.
 - PR from upstream: `1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.

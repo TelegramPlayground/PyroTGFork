@@ -21,6 +21,7 @@ from typing import Union, List, Iterable
 
 import pyrogram
 from pyrogram import raw, types, utils
+from pyrogram.types.messages_and_media.message import Str
 
 log = logging.getLogger(__name__)
 
@@ -163,10 +164,54 @@ class GetMessages:
                     raw_chat_id = linkps[3]
                     message_thread_id = int(linkps[4])
                     message_id = int(linkps[5])
+
+            elif (
+                not self.me.is_bot and
+                len(linkps) == 5 and
+                linkps[3] == "m"
+            ):
+                r = await self.invoke(
+                    raw.functions.account.ResolveBusinessChatLink(
+                        slug=linkps[4]
+                    )
+                )
+                users = {i.id: i for i in r.users}
+                # chats = {i.id: i for i in r.chats}
+                entities = [
+                    types.MessageEntity._parse(
+                        self, entity, users
+                    )
+                    for entity in getattr(r, "entities", [])
+                ]
+                entities = types.List(
+                    filter(lambda x: x is not None, entities)
+                )
+                sender_chat = None
+                cat_id = utils.get_raw_peer_id(r.peer)
+                if isinstance(r.peer, raw.types.PeerUser):
+                    sender_chat = types.Chat._parse_user_chat(self, users[cat_id])
+                # elif isinstance(r.peer, raw.types.PeerChat):
+                #     sender_chat = types.Chat._parse_chat_chat(self, chats[cat_id])
+                # else:
+                #     sender_chat = types.Chat._parse_channel_chat(
+                #         self, chats[cat_id]
+                #     )
+                return types.Message(
+                    id=0,  # TODO modify this later with a Draft type
+                    text=Str(r.message).init(entities) or None,
+                    entities=entities or None,
+                    sender_chat=sender_chat,
+                )
+
             elif len(linkps) == 5:
                 # https://t.me/pyrogramchat/609282
                 raw_chat_id = linkps[3]
+                if raw_chat_id == "m":
+                    raise ValueError(
+                        "Invalid ClientType used to parse this message link"
+                    )
                 message_id = int(linkps[4])
+
             return await self.get_messages(
                 chat_id=raw_chat_id,
                 message_ids=message_id
