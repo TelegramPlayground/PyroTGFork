@@ -49,12 +49,16 @@ class JoinFolder:
         """
         match = re.match(r"^(?:https?://)?(?:www\.)?(?:t(?:elegram)?\.(?:org|me|dog)/(?:addlist/|\+))([\w-]+)$", link)
 
-        if not match:
+        if match:
+            slug = match.group(1)
+        elif isinstance(link, str):
+            slug = link
+        else:
             raise ValueError("Invalid folder invite link")
 
         r = await self.invoke(
             raw.functions.chatlists.CheckChatlistInvite(
-                slug=match.group(1)
+                slug=slug
             )
         )
 
@@ -65,7 +69,7 @@ class JoinFolder:
 
         await self.invoke(
             raw.functions.chatlists.JoinChatlistInvite(
-                slug=match.group(1),
+                slug=slug,
                 peers=[
                     await self.resolve_peer(utils.get_peer_id(id)) for id in peers
                 ],

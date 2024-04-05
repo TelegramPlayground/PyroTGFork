@@ -55,12 +55,16 @@ class LeaveFolder:
         """
         match = re.match(r"^(?:https?://)?(?:www\.)?(?:t(?:elegram)?\.(?:org|me|dog)/(?:addlist/|\+))([\w-]+)$", link)
 
-        if not match:
+        if match:
+            slug = match.group(1)
+        elif isinstance(link, str):
+            slug = link
+        else:
             raise ValueError("Invalid folder invite link")
 
         r = await self.invoke(
             raw.functions.chatlists.CheckChatlistInvite(
-                slug=match.group(1)
+                slug=slug
             )
         )
 
