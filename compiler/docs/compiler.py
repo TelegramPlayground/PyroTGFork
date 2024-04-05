@@ -540,7 +540,11 @@ def pyrogram_api():
             ForumTopicReopened
             GeneralForumTopicHidden
             GeneralForumTopicUnhidden
-        """
+        """,
+        business="""
+        Telegram Business
+            BusinessConnection
+        """,
     )
 
     root = PYROGRAM_API_DEST + "/types"
