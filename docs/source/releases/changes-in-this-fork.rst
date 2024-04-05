@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added the parameter ``chat_list`` to the :meth:`~pyrogram.Client.search_global` and :meth:`~pyrogram.Client.search_global_count`.
 - PR from upstream: `1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
 - **BOTS ONLY**: Handled the parameter ``business_connection_id`` to the update handlers :obj:`~pyrogram.handlers.MessageHandler`, :obj:`~pyrogram.handlers.EditedMessageHandler`, :obj:`~pyrogram.handlers.DeletedMessagesHandler`.
 - Added the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_cached_media`.
