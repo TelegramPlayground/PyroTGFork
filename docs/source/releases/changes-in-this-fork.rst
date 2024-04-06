@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added ``active_usernames`` to :obj:`~pyrogram.types.Chat` and :obj:`~pyrogram.types.User`.
 - Added :obj:`~pyrogram.types.BusinessConnection`.
 - Added support for ``https://t.me/m/blah`` links in the ``link`` parameter of :meth:`~pyrogram.Client.get_messages`
 - Added the parameter ``message_thread_id`` to the :meth:`~pyrogram.Client.search_messages` and :meth:`~pyrogram.Client.search_messages_count`.
@@ -21,7 +22,6 @@ it can take advantage of new goodies!
 - Added the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_cached_media`.
 - Added the field ``business_connection_id`` to the class :obj:`~pyrogram.types.Message`.
 - Added the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_chat_action`.
-- Added ``active_usernames`` to :obj:`~pyrogram.types.Chat`.
 - Bug fix for the ``users_shared``, ``chat_shared`` logic in :obj:`~pyrogram.types.Message`.
 - Added :meth:`~pyrogram.Client.set_birthdate` and :meth:`~pyrogram.Client.set_personal_chat`, for user accounts only.
 - Added the field ``birthdate`` to the class :obj:`~pyrogram.types.Chat`.

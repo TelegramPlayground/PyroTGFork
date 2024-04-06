@@ -134,6 +134,9 @@ class User(Object, Update):
         photo (:obj:`~pyrogram.types.ChatPhoto`, *optional*):
             User's or bot's current profile photo. Suitable for downloads only.
 
+        active_usernames (List of :obj:`~pyrogram.types.Username`, *optional*):
+            If non-empty, the list of all `active chat usernames <https://telegram.org/blog/topics-in-groups-collectible-usernames#collectible-usernames>`_; for private chats, supergroups and channels.
+
         restrictions (List of :obj:`~pyrogram.types.Restriction`, *optional*):
             The list of reasons why this bot might be unavailable to some users.
             This field is available only in case *is_restricted* is True.
@@ -202,6 +205,7 @@ class User(Object, Update):
         dc_id: int = None,
         phone_number: str = None,
         photo: "types.ChatPhoto" = None,
+        active_usernames: List["types.Username"] = None,
         restrictions: List["types.Restriction"] = None,
         added_to_attachment_menu: bool = None,
         can_be_added_to_attachment_menu: bool = None,
@@ -251,6 +255,7 @@ class User(Object, Update):
         self.can_be_edited = can_be_edited
         self.can_connect_to_business = can_connect_to_business
         self.inline_query_placeholder = inline_query_placeholder
+        self.active_usernames = active_usernames
         self._raw = _raw
 
     @property
@@ -273,6 +278,19 @@ class User(Object, Update):
                 _raw=user
             )
 
+        active_usernames = types.List(
+            [
+                types.Username._parse(u)
+                for u in getattr(user, "usernames", [])
+            ]
+        ) or None
+        _tmp_username = None
+        if (
+            active_usernames and
+            len(active_usernames) > 0
+        ):
+            _tmp_username = active_usernames[0].username
+
         parsed_user = User(
             id=user.id,
             is_self=user.is_self,
@@ -289,7 +307,7 @@ class User(Object, Update):
             first_name=user.first_name,
             last_name=user.last_name,
             **User._parse_status(user.status, user.bot),
-            username=user.username,
+            username=user.username or _tmp_username,
             language_code=user.lang_code,
             emoji_status=types.EmojiStatus._parse(client, user.emoji_status),
             dc_id=getattr(user.photo, "dc_id", None),
@@ -298,6 +316,7 @@ class User(Object, Update):
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             client=client,
             can_be_contacted_with_premium=getattr(user, "contact_require_premium", None),
+            active_usernames=active_usernames,
             _raw=user
         )
         if parsed_user.is_bot:
