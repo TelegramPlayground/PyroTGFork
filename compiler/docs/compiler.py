@@ -321,6 +321,10 @@ def pyrogram_api():
             get_chat_menu_button
             answer_web_app_query
         """,
+        business="""
+        Telegram Business
+            get_business_connection
+        """,
         authorization="""
         Authorization
             connect

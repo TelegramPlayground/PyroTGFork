@@ -86,6 +86,19 @@ Chat Forum Topics
 
     {chat_topics}
 
+Telegram Business
+-------------
+
+.. autosummary::
+    :nosignatures:
+
+    {business}
+
+.. toctree::
+    :hidden:
+
+    {business}
+
 Users
 -----
 

@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added :meth:`~pyrogram.Client.get_business_connection`.
 - Added ``active_usernames`` to :obj:`~pyrogram.types.Chat` and :obj:`~pyrogram.types.User`.
 - Added :obj:`~pyrogram.types.BusinessConnection`.
 - Added support for ``https://t.me/m/blah`` links in the ``link`` parameter of :meth:`~pyrogram.Client.get_messages`

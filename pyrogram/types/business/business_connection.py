@@ -19,7 +19,7 @@
 from datetime import datetime
 
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import raw, types, utils
 
 from ..object import Object
 
@@ -68,3 +68,26 @@ class BusinessConnection(Object):
         self.can_reply = can_reply
         self.is_enabled = is_enabled
         self._raw = _raw
+
+
+    @staticmethod
+    def _parse(
+        client,
+        business_connect_update: "raw.types.UpdateBotBusinessConnect",
+        users: dict,
+        chats: dict
+    ) -> "BusinessConnection":
+        return BusinessConnection(
+            _raw=business_connect_update,
+            id=business_connect_update.connection.connection_id,
+            user=types.User._parse(
+                client,
+                users[
+                    business_connect_update.connection.user_id
+                ]
+            ),
+            user_chat_id=business_connect_update.connection.user_id,
+            date=utils.timestamp_to_datetime(business_connect_update.connection.date),
+            can_reply=getattr(business_connect_update.connection, "can_reply", False),
+            is_enabled=not bool(getattr(business_connect_update.connection, "disabled", None))
+        )
