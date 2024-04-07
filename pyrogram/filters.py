@@ -718,6 +718,24 @@ video_chat_ended: Filter = create(video_chat_ended_filter)
 
 # endregion
 
+
+# region business message
+async def tg_business_filter(_, __, m: Union[Message, List[Message]]):
+    if (
+        isinstance(m, list) and
+        len(m) > 0
+    ):
+        return bool(m[0].business_connection_id)
+    elif isinstance(m, Message):
+        return bool(m.business_connection_id)
+
+
+tg_business = create(tg_business_filter)
+"""Filter non-service messages from a connected business account"""
+
+
+# endregion
+
 # region video_chat_participants_invited_filter
 async def video_chat_participants_invited_filter(_, __, m: Message) -> bool:
     return bool(m.video_chat_participants_invited)
