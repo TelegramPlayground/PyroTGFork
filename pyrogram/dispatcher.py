@@ -96,7 +96,7 @@ class Dispatcher:
                     chats,
                     is_scheduled=isinstance(update, UpdateNewScheduledMessage),
                     business_connection_id=getattr(update, "connection_id", None),
-                    reply_to_message=getattr(update, "reply_to_message", None)
+                    raw_reply_to_message=getattr(update, "reply_to_message", None)
                 ),
                 MessageHandler
             )

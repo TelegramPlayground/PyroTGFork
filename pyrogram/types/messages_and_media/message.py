@@ -633,7 +633,7 @@ class Message(Object, Update):
         is_scheduled: bool = False,
         replies: int = 1,
         business_connection_id: str = None,
-        reply_to_message: raw.base.Message = None
+        raw_reply_to_message: raw.base.Message = None
     ):
         if isinstance(message, raw.types.MessageEmpty):
             return Message(
@@ -1271,7 +1271,16 @@ class Message(Object, Update):
                 except MessageIdsEmpty:
                     pass
 
-        parsed_message.business_connection_id = business_connection_id if business_connection_id else None
+        if business_connection_id:
+            parsed_message.business_connection_id = business_connection_id
+        if raw_reply_to_message:
+            parsed_message.reply_to_message = types.Message._parse(
+                client,
+                raw_reply_to_message,
+                users,
+                chats,
+                business_connection_id=business_connection_id
+            )
 
         if not parsed_message.poll:  # Do not cache poll messages
             client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
