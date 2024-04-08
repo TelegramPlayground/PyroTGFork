@@ -119,11 +119,6 @@ class SendAnimation:
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the animation will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
-
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
@@ -138,6 +133,11 @@ class SendAnimation:
 
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
+
+            ttl_seconds (``int``, *optional*):
+                Self-Destruct Timer.
+                If you set a timer, the animation will self-destruct in *ttl_seconds*
+                seconds after it was viewed.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,

@@ -1331,14 +1331,15 @@ class Message(Object, Update):
 
     async def reply_text(
         self,
-        quote: bool = None,
-        message_thread_id: int = None,
         text: str = None,
+        quote: bool = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -1373,6 +1374,11 @@ class Message(Object, Update):
             text (``str``):
                 Text of the message to be sent.
 
+            quote (``bool``, *optional*):
+                If ``True``, the message will be sent as a reply to this message.
+                If *reply_parameters* is passed, this parameter will be ignored.
+                Defaults to ``True`` in group chats and ``False`` in private chats.
+
             parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.
                 You can combine both syntaxes together.
@@ -1387,21 +1393,24 @@ class Message(Object, Update):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
-                Description of the message to reply to
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
 
-            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
-            protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
 
         Returns:
             On success, the sent Message is returned.
@@ -1419,13 +1428,14 @@ class Message(Object, Update):
 
         return await self._client.send_message(
             chat_id=self.chat.id,
-            message_thread_id=message_thread_id,
             text=text,
             parse_mode=parse_mode,
             entities=entities,
             link_preview_options=link_preview_options,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             schedule_date=schedule_date
@@ -1440,19 +1450,26 @@ class Message(Object, Update):
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        unsave: bool = False,
         has_spoiler: bool = None,
         duration: int = 0,
         width: int = 0,
         height: int = 0,
         thumb: str = None,
+        file_name: str = None,
         disable_notification: bool = None,
+        reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
+        ttl_seconds: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_parameters: "types.ReplyParameters" = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -1481,7 +1498,7 @@ class Message(Object, Update):
 
             quote (``bool``, *optional*):
                 If ``True``, the message will be sent as a reply to this message.
-                If *reply_to_message_id* is passed, this parameter will be ignored.
+                If *reply_parameters* is passed, this parameter will be ignored.
                 Defaults to ``True`` in group chats and ``False`` in private chats.
 
             caption (``str``, *optional*):
@@ -1493,6 +1510,10 @@ class Message(Object, Update):
 
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
+            unsave (``bool``, *optional*):
+                By default, the server will save into your own collection any new animation you send.
+                Pass True to automatically unsave the sent animation. Defaults to False.
 
             has_spoiler (``bool``, *optional*):
                 Pass True if the animation needs to be covered with a spoiler animation.
@@ -1512,12 +1533,33 @@ class Message(Object, Update):
                 A thumbnail's width and height should not exceed 320 pixels.
                 Thumbnails can't be reused and can be only uploaded as a new file.
 
+            file_name (``str``, *optional*):
+                File name of the animation sent.
+                Defaults to file's path basename.
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
+            ttl_seconds (``int``, *optional*):
+                Self-Destruct Timer.
+                If you set a timer, the animation will self-destruct in *ttl_seconds*
+                seconds after it was viewed.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -1567,13 +1609,20 @@ class Message(Object, Update):
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
+            unsave=unsave,
             has_spoiler=has_spoiler,
             duration=duration,
             width=width,
             height=height,
             thumb=thumb,
+            file_name=file_name,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
+            ttl_seconds=ttl_seconds,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1590,8 +1639,13 @@ class Message(Object, Update):
         performer: str = None,
         title: str = None,
         thumb: str = None,
+        file_name: str = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1654,12 +1708,28 @@ class Message(Object, Update):
                 A thumbnail's width and height should not exceed 320 pixels.
                 Thumbnails can't be reused and can be only uploaded as a new file.
 
+            file_name (``str``, *optional*):
+                File name of the audio sent.
+                Defaults to file's path basename.
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -1713,8 +1783,13 @@ class Message(Object, Update):
             performer=performer,
             title=title,
             thumb=thumb,
+            file_name=file_name,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -1729,6 +1804,11 @@ class Message(Object, Update):
         caption_entities: List["types.MessageEntity"] = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
+        has_spoiler: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1779,6 +1859,21 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+            
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
+            has_spoiler (``bool``, *optional*):
+                True, if the message media is covered by a spoiler animation.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -1805,10 +1900,21 @@ class Message(Object, Update):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
+            has_spoiler=has_spoiler,
             reply_markup=reply_markup
         )
 
-    async def reply_chat_action(self, action: "enums.ChatAction") -> bool:
+    async def reply_chat_action(
+        self,
+        action: "enums.ChatAction",
+        progress: int = 0,
+        message_thread_id: int = None,
+        business_connection_id: str = None
+    ) -> bool:
         """Bound method *reply_chat_action* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -1833,6 +1939,15 @@ class Message(Object, Update):
             action (:obj:`~pyrogram.enums.ChatAction`):
                 Type of action to broadcast.
 
+            progress (``int``, *optional*):
+                Upload progress, as a percentage.
+
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread; for supergroups only
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the action will be sent
+
         Returns:
             ``bool``: On success, True is returned.
 
@@ -1842,7 +1957,10 @@ class Message(Object, Update):
         """
         return await self._client.send_chat_action(
             chat_id=self.chat.id,
-            action=action
+            action=action,
+            progress=progress,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id
         )
 
     async def reply_contact(
@@ -1854,6 +1972,10 @@ class Message(Object, Update):
         vcard: str = "",
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1903,6 +2025,18 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -1929,6 +2063,10 @@ class Message(Object, Update):
             vcard=vcard,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
             reply_markup=reply_markup
         )
 
@@ -1944,7 +2082,10 @@ class Message(Object, Update):
         disable_content_type_detection: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         schedule_date: datetime = None,
+        protect_content: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2015,8 +2156,17 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2071,7 +2221,10 @@ class Message(Object, Update):
             disable_content_type_detection=disable_content_type_detection,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             schedule_date=schedule_date,
+            protect_content=protect_content,
             reply_markup=reply_markup,
             progress=progress,
             progress_args=progress_args
@@ -2082,6 +2235,9 @@ class Message(Object, Update):
         game_short_name: str,
         quote: bool = None,
         disable_notification: bool = None,
+        protect_content: bool = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2122,6 +2278,15 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown automatically.
                 If not empty, the first button must launch the game.
@@ -2145,6 +2310,9 @@ class Message(Object, Update):
             game_short_name=game_short_name,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             reply_markup=reply_markup
         )
 
@@ -2221,6 +2389,10 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2264,6 +2436,18 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2288,6 +2472,10 @@ class Message(Object, Update):
             longitude=longitude,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
             reply_markup=reply_markup
         )
 
@@ -2297,6 +2485,10 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
     ) -> List["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
 
@@ -2332,6 +2524,18 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
         Returns:
             On success, a :obj:`~pyrogram.types.Messages` object is returned containing all the
             single messages sent.
@@ -2351,7 +2555,11 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             media=media,
             disable_notification=disable_notification,
-            reply_parameters=reply_parameters
+            reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content
         )
 
     async def reply_photo(
@@ -2366,6 +2574,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
+        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         view_once: bool = None,
@@ -2434,6 +2643,9 @@ class Message(Object, Update):
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2496,6 +2708,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
             message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content,
             view_once=view_once,
@@ -2522,6 +2735,8 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         schedule_date: datetime = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2609,6 +2824,12 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2647,6 +2868,8 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             schedule_date=schedule_date,
             reply_markup=reply_markup
         )
@@ -2656,6 +2879,9 @@ class Message(Object, Update):
         sticker: Union[str, BinaryIO],
         quote: bool = None,
         disable_notification: bool = None,
+        protect_content: bool = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2663,6 +2889,7 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        schedule_date: datetime = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -2698,12 +2925,24 @@ class Message(Object, Update):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -2747,8 +2986,12 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             sticker=sticker,
             disable_notification=disable_notification,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
+            schedule_date=schedule_date,
             progress=progress,
             progress_args=progress_args
         )
@@ -2764,6 +3007,10 @@ class Message(Object, Update):
         foursquare_type: str = "",
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
+        schedule_date: datetime = None,
+        protect_content: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2819,6 +3066,18 @@ class Message(Object, Update):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
@@ -2850,6 +3109,10 @@ class Message(Object, Update):
             foursquare_type=foursquare_type,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
+            schedule_date=schedule_date,
+            protect_content=protect_content,
             reply_markup=reply_markup
         )
 
@@ -2860,7 +3123,6 @@ class Message(Object, Update):
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
-        message_thread_id: int = None,
         duration: int = 0,
         width: int = 0,
         height: int = 0,
@@ -2869,6 +3131,8 @@ class Message(Object, Update):
         supports_streaming: bool = True,
         disable_notification: bool = None,
         protect_content: bool = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2921,9 +3185,6 @@ class Message(Object, Update):
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
             duration (``int``, *optional*):
                 Duration of sent video in seconds.
 
@@ -2952,6 +3213,12 @@ class Message(Object, Update):
 
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -3019,7 +3286,6 @@ class Message(Object, Update):
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
-            message_thread_id=message_thread_id,
             duration=duration,
             width=width,
             height=height,
@@ -3028,6 +3294,8 @@ class Message(Object, Update):
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             ttl_seconds=ttl_seconds,
@@ -3047,6 +3315,8 @@ class Message(Object, Update):
         thumb: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -3054,7 +3324,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        message_thread_id: int = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
@@ -3111,15 +3380,18 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
-
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
 
             caption (``str``, *optional*):
                 Video caption, 0-1024 characters.
@@ -3188,9 +3460,10 @@ class Message(Object, Update):
             thumb=thumb,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
-            message_thread_id=message_thread_id,
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
@@ -3208,10 +3481,11 @@ class Message(Object, Update):
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
-        message_thread_id: int = None,
         duration: int = 0,
         disable_notification: bool = None,
         protect_content: bool = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -3264,9 +3538,6 @@ class Message(Object, Update):
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
             duration (``int``, *optional*):
                 Duration of the voice message in seconds.
 
@@ -3276,6 +3547,12 @@ class Message(Object, Update):
 
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+            
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -3342,10 +3619,11 @@ class Message(Object, Update):
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
-            message_thread_id=message_thread_id,
             duration=duration,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            message_thread_id=message_thread_id,
+            business_connection_id=business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             schedule_date=schedule_date,
