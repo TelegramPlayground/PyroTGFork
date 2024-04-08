@@ -28,6 +28,7 @@ from pyrogram import types
 from pyrogram import utils
 from pyrogram.errors import FilePartMissing
 from pyrogram.file_id import FileType
+from .inline_session import get_session
 
 
 class SendDocument:
@@ -44,6 +45,7 @@ class SendDocument:
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
+        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -107,6 +109,9 @@ class SendDocument:
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -199,22 +204,35 @@ class SendDocument:
                 message_thread_id,
                 reply_parameters
             )
+            rpc = raw.functions.messages.SendMedia(
+                peer=await self.resolve_peer(chat_id),
+                media=media,
+                silent=disable_notification or None,
+                reply_to=reply_to,
+                random_id=self.rnd_id(),
+                schedule_date=utils.datetime_to_timestamp(schedule_date),
+                noforwards=protect_content,
+                reply_markup=await reply_markup.write(self) if reply_markup else None,
+                **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
+            )
+            session = None
+            business_connection = None
+            if business_connection_id:
+                business_connection = self.business_user_connection_cache[business_connection_id]
+                if not business_connection:
+                    business_connection = await self.get_business_connection(business_connection_id)
+                session = await get_session(
+                    self,
+                    business_connection._raw.connection.dc_id
+                )
 
             while True:
                 try:
-                    r = await self.invoke(
-                        raw.functions.messages.SendMedia(
-                            peer=await self.resolve_peer(chat_id),
-                            media=media,
-                            silent=disable_notification or None,
-                            reply_to=reply_to,
-                            random_id=self.rnd_id(),
-                            schedule_date=utils.datetime_to_timestamp(schedule_date),
-                            noforwards=protect_content,
-                            reply_markup=await reply_markup.write(self) if reply_markup else None,
-                            **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
-                        )
-                    )
+                    if business_connection_id:
+                        r = await session.invoke(rpc)
+                        # await session.stop()
+                    else:
+                        r = await self.invoke(rpc)
                 except FilePartMissing as e:
                     await self.save_file(document, file_id=file.id, file_part=e.value)
                 else:
@@ -233,5 +251,20 @@ class SendDocument:
                                 {i.id: i for i in r.chats},
                                 is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
                             )
+                        elif isinstance(
+                            i,
+                            (
+                                raw.types.UpdateBotNewBusinessMessage
+                            )
+                        ):
+                            return await types.Message._parse(
+                                self,
+                                i.message,
+                                {i.id: i for i in r.users},
+                                {i.id: i for i in r.chats},
+                                business_connection_id=i.connection_id,
+                                raw_reply_to_message=i.reply_to_message
+                            )
+
         except StopTransmission:
             return None

@@ -27,8 +27,8 @@ class SendChatAction:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         action: "enums.ChatAction",
-        message_thread_id: int = None,
         progress: int = 0,
+        message_thread_id: int = None,
         business_connection_id: str = None
     ) -> bool:
         """Use this method when you need to tell the user that something is happening on the bot's side.
@@ -47,11 +47,11 @@ class SendChatAction:
             action (:obj:`~pyrogram.enums.ChatAction`):
                 Type of action to broadcast.
 
-            message_thread_id (``int``, *optional*):
-                Unique identifier for the target message thread; for supergroups only
-
             progress (``int``, *optional*):
                 Upload progress, as a percentage.
+
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread; for supergroups only
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the action will be sent

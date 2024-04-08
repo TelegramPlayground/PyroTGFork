@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_cached_media`, :meth:`~pyrogram.Client.send_chat_action`, :meth:`~pyrogram.Client.send_animation`, :meth:`~pyrogram.Client.send_audio`, :meth:`~pyrogram.Client.send_contact`, :meth:`~pyrogram.Client.send_dice`, :meth:`~pyrogram.Client.send_document`, :meth:`~pyrogram.Client.send_media_group`, :meth:`~pyrogram.Client.send_message`, :meth:`~pyrogram.Client.send_photo`,  :meth:`~pyrogram.Client.send_poll`, :meth:`~pyrogram.Client.send_sticker`, :meth:`~pyrogram.Client.send_video_note`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_voice`.
 - Added :meth:`~pyrogram.Client.get_business_connection`.
 - Added ``active_usernames`` to :obj:`~pyrogram.types.Chat` and :obj:`~pyrogram.types.User`.
 - Added :obj:`~pyrogram.types.BusinessConnection`.
@@ -20,9 +21,7 @@ it can take advantage of new goodies!
 - Added the parameter ``chat_list`` to the :meth:`~pyrogram.Client.search_global` and :meth:`~pyrogram.Client.search_global_count`.
 - PR from upstream: `1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
 - **BOTS ONLY**: Handled the parameter ``business_connection_id`` to the update handlers :obj:`~pyrogram.handlers.MessageHandler`, :obj:`~pyrogram.handlers.EditedMessageHandler`, :obj:`~pyrogram.handlers.DeletedMessagesHandler`.
-- Added the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_cached_media`.
 - Added the field ``business_connection_id`` to the class :obj:`~pyrogram.types.Message`.
-- Added the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_chat_action`.
 - Bug fix for the ``users_shared``, ``chat_shared`` logic in :obj:`~pyrogram.types.Message`.
 - Added :meth:`~pyrogram.Client.set_birthdate` and :meth:`~pyrogram.Client.set_personal_chat`, for user accounts only.
 - Added the field ``birthdate`` to the class :obj:`~pyrogram.types.Chat`.

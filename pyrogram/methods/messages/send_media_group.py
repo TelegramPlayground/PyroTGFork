@@ -27,6 +27,8 @@ from pyrogram import raw
 from pyrogram import types
 from pyrogram import utils
 from pyrogram.file_id import FileType
+from .inline_session import get_session
+
 
 log = logging.getLogger(__name__)
 
@@ -45,6 +47,7 @@ class SendMediaGroup:
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
+        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
     ) -> List["types.Message"]:
@@ -70,6 +73,9 @@ class SendMediaGroup:
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -102,7 +108,7 @@ class SendMediaGroup:
                     if os.path.isfile(i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
-                                business_connection_id=None,  # TODO
+                                business_connection_id=business_connection_id,
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedPhoto(
                                     file=await self.save_file(i.media),
@@ -122,7 +128,7 @@ class SendMediaGroup:
                     elif re.match("^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
-                                business_connection_id=None,  # TODO
+                                business_connection_id=business_connection_id,
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaPhotoExternal(
                                     url=i.media,
@@ -148,7 +154,7 @@ class SendMediaGroup:
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
-                            business_connection_id=None,  # TODO
+                            business_connection_id=business_connection_id,
                             peer=await self.resolve_peer(chat_id),
                             media=raw.types.InputMediaUploadedPhoto(
                                 file=await self.save_file(i.media),
@@ -170,7 +176,7 @@ class SendMediaGroup:
                     if os.path.isfile(i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
-                                business_connection_id=None,  # TODO
+                                business_connection_id=business_connection_id,
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedDocument(
                                     file=await self.save_file(i.media),
@@ -203,7 +209,7 @@ class SendMediaGroup:
                     elif re.match("^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
-                                business_connection_id=None,  # TODO
+                                business_connection_id=business_connection_id,
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaDocumentExternal(
                                     url=i.media,
@@ -225,7 +231,7 @@ class SendMediaGroup:
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
-                            business_connection_id=None,  # TODO
+                            business_connection_id=business_connection_id,
                             peer=await self.resolve_peer(chat_id),
                             media=raw.types.InputMediaUploadedDocument(
                                 file=await self.save_file(i.media),
@@ -260,7 +266,7 @@ class SendMediaGroup:
                     if os.path.isfile(i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
-                                business_connection_id=None,  # TODO
+                                business_connection_id=business_connection_id,
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedDocument(
                                     mime_type=self.guess_mime_type(i.media) or "audio/mpeg",
@@ -288,7 +294,7 @@ class SendMediaGroup:
                     elif re.match("^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
-                                business_connection_id=None,  # TODO
+                                business_connection_id=business_connection_id,
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaDocumentExternal(
                                     url=i.media
@@ -308,7 +314,7 @@ class SendMediaGroup:
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
-                            business_connection_id=None,  # TODO
+                            business_connection_id=business_connection_id,
                             peer=await self.resolve_peer(chat_id),
                             media=raw.types.InputMediaUploadedDocument(
                                 mime_type=self.guess_mime_type(getattr(i.media, "name", "audio.mp3")) or "audio/mpeg",
@@ -338,7 +344,7 @@ class SendMediaGroup:
                     if os.path.isfile(i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
-                                business_connection_id=None,  # TODO
+                                business_connection_id=business_connection_id,
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaUploadedDocument(
                                     mime_type=self.guess_mime_type(i.media) or "application/zip",
@@ -382,7 +388,7 @@ class SendMediaGroup:
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
-                            business_connection_id=None,  # TODO
+                            business_connection_id=business_connection_id,
                             peer=await self.resolve_peer(chat_id),
                             media=raw.types.InputMediaUploadedDocument(
                                 mime_type=self.guess_mime_type(
@@ -420,18 +426,32 @@ class SendMediaGroup:
             message_thread_id,
             reply_parameters
         )
-
-        r = await self.invoke(
-            raw.functions.messages.SendMultiMedia(
-                peer=await self.resolve_peer(chat_id),
-                multi_media=multi_media,
-                silent=disable_notification or None,
-                reply_to=reply_to,
-                schedule_date=utils.datetime_to_timestamp(schedule_date),
-                noforwards=protect_content
-            ),
-            sleep_threshold=60
+        rpc = raw.functions.messages.SendMultiMedia(
+            peer=await self.resolve_peer(chat_id),
+            multi_media=multi_media,
+            silent=disable_notification or None,
+            reply_to=reply_to,
+            schedule_date=utils.datetime_to_timestamp(schedule_date),
+            noforwards=protect_content
         )
+        session = None
+        business_connection = None
+        if business_connection_id:
+            business_connection = self.business_user_connection_cache[business_connection_id]
+            if not business_connection:
+                business_connection = await self.get_business_connection(business_connection_id)
+            session = await get_session(
+                self,
+                business_connection._raw.connection.dc_id
+            )
+        if business_connection_id:
+            r = await session.invoke(rpc)
+            # await session.stop()
+        else:
+            r = await self.invoke(
+                rpc,
+                sleep_threshold=60
+            )
 
         return await utils.parse_messages(
             self,
@@ -444,7 +464,9 @@ class SendMediaGroup:
                             (
                                 raw.types.UpdateNewMessage,
                                 raw.types.UpdateNewChannelMessage,
-                                raw.types.UpdateNewScheduledMessage
+                                raw.types.UpdateNewScheduledMessage,
+                                # TODO
+                                raw.types.UpdateBotNewBusinessMessage,
                             )
                         ),
                         r.updates

@@ -33,10 +33,10 @@ class SendCachedMedia:
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
-        business_connection_id: str = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
+        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         has_spoiler: bool = None,
@@ -75,9 +75,6 @@ class SendCachedMedia:
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
@@ -87,6 +84,9 @@ class SendCachedMedia:
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -115,7 +115,6 @@ class SendCachedMedia:
             message_thread_id,
             reply_parameters
         )
-
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
             media=utils.get_input_media_from_file_id(file_id, has_spoiler=has_spoiler),
