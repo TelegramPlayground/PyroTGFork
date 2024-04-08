@@ -49,7 +49,7 @@ class SendMediaGroup:
         message_thread_id: int = None,
         business_connection_id: str = None,
         schedule_date: datetime = None,
-        protect_content: bool = None,
+        protect_content: bool = None
     ) -> List["types.Message"]:
         """Send a group of photos or videos as an album.
 
@@ -181,8 +181,7 @@ class SendMediaGroup:
                                 media=raw.types.InputMediaUploadedDocument(
                                     file=await self.save_file(i.media),
                                     thumb=await self.save_file(i.thumb),
-                                    nosound_video=i.disable_content_type_detection,
-                                    force_file=not i.disable_content_type_detection or None,
+                                    nosound_video=i.disable_content_type_detection or True,
                                     spoiler=i.has_spoiler,
                                     mime_type=self.guess_mime_type(i.media) or "video/mp4",
                                     attributes=[
@@ -454,25 +453,7 @@ class SendMediaGroup:
             )
 
         return await utils.parse_messages(
-            self,
-            # TODO
-            raw.types.messages.Messages(
-                messages=[
-                    m.message for m in filter(
-                        lambda u: isinstance(
-                            u,
-                            (
-                                raw.types.UpdateNewMessage,
-                                raw.types.UpdateNewChannelMessage,
-                                raw.types.UpdateNewScheduledMessage,
-                                # TODO
-                                raw.types.UpdateBotNewBusinessMessage,
-                            )
-                        ),
-                        r.updates
-                    )
-                ],
-                users=r.users,
-                chats=r.chats
-            )
+            client=self,
+            messages=None,
+            r=r
         )

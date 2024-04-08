@@ -92,15 +92,59 @@ async def parse_messages(
     client,
     messages: "raw.types.messages.Messages",
     is_scheduled: bool = False,
-    replies: int = 1
+    replies: int = 1,
+    r: "raw.base.Updates" = None
 ) -> List["types.Message"]:
+    parsed_messages = []
+
+    if not messages and r:
+        users = {i.id: i for i in getattr(r, "users", [])}
+        chats = {i.id: i for i in getattr(r, "chats", [])}
+
+        for u in getattr(r, "updates", []):
+            if isinstance(
+                u,
+                (
+                    raw.types.UpdateNewMessage,
+                    raw.types.UpdateNewChannelMessage,
+                    raw.types.UpdateNewScheduledMessage,
+                )
+            ):
+                parsed_messages.append(
+                    await types.Message._parse(
+                        client,
+                        u.message,
+                        users,
+                        chats,
+                        is_scheduled=isinstance(u, raw.types.UpdateNewScheduledMessage),
+                        replies=0
+                    )
+                )
+
+            elif isinstance(
+                u,
+                (
+                    raw.types.UpdateBotNewBusinessMessage,
+                )
+            ):
+                parsed_messages.append(
+                    await types.Message._parse(
+                        client,
+                        u.message,
+                        users,
+                        chats,
+                        business_connection_id=u.connection_id,
+                        raw_reply_to_message=u.reply_to_message
+                    )
+                )
+
+        return types.List(parsed_messages)
+
     users = {i.id: i for i in messages.users}
     chats = {i.id: i for i in messages.chats}
 
     if not messages.messages:
         return types.List()
-
-    parsed_messages = []
 
     for message in messages.messages:
         parsed_messages.append(

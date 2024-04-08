@@ -136,23 +136,7 @@ class CopyMediaGroup:
         )
 
         return await utils.parse_messages(
-            self,
-            # TODO
-            raw.types.messages.Messages(
-                messages=[
-                    m.message for m in filter(
-                        lambda u: isinstance(
-                            u,
-                            (
-                                raw.types.UpdateNewMessage,
-                                raw.types.UpdateNewChannelMessage,
-                                raw.types.UpdateNewScheduledMessage
-                            )
-                        ),
-                        r.updates
-                    )
-                ],
-                users=r.users,
-                chats=r.chats
-            )
+            client=self,
+            messages=None,
+            r=r
         )
