@@ -54,9 +54,13 @@ class GetBusinessConnection:
                     raw.types.UpdateBotBusinessConnect
                 )
             ):
-                return types.BusinessConnection._parse(
+                business_connection = types.BusinessConnection._parse(
                     self,
                     i,
                     users,
                     chats
                 )
+                self.business_user_connection_cache[
+                    business_connection_id
+                ] = business_connection
+                return business_connection
