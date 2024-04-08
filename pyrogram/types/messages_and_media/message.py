@@ -3912,6 +3912,7 @@ class Message(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
         message_thread_id: int = None,
+        business_connection_id: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
@@ -3961,6 +3962,9 @@ class Message(Object, Update):
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
@@ -3998,6 +4002,7 @@ class Message(Object, Update):
             return await self._client.send_message(
                 chat_id=chat_id,
                 message_thread_id=message_thread_id,
+                business_connection_id=business_connection_id,
                 text=self.text,
                 parse_mode=enums.ParseMode.DISABLED,
                 entities=self.entities,
@@ -4015,6 +4020,7 @@ class Message(Object, Update):
                 disable_notification=disable_notification,
                 reply_parameters=reply_parameters,
                 message_thread_id=message_thread_id,
+                business_connection_id=business_connection_id,
                 schedule_date=schedule_date,
                 protect_content=protect_content,
                 has_spoiler=self.has_media_spoiler,
@@ -4045,7 +4051,12 @@ class Message(Object, Update):
                     last_name=self.contact.last_name,
                     vcard=self.contact.vcard,
                     disable_notification=disable_notification,
-                    schedule_date=schedule_date
+                    reply_parameters=reply_parameters,
+                    message_thread_id=message_thread_id,
+                    business_connection_id=business_connection_id,
+                    schedule_date=schedule_date,
+                    protect_content=protect_content,
+                    reply_markup=reply_markup
                 )
             elif self.location:
                 return await self._client.send_location(
@@ -4053,7 +4064,12 @@ class Message(Object, Update):
                     latitude=self.location.latitude,
                     longitude=self.location.longitude,
                     disable_notification=disable_notification,
-                    schedule_date=schedule_date
+                    reply_parameters=reply_parameters,
+                    message_thread_id=message_thread_id,
+                    business_connection_id=business_connection_id,
+                    schedule_date=schedule_date,
+                    protect_content=protect_content,
+                    reply_markup=reply_markup
                 )
             elif self.venue:
                 return await self._client.send_venue(
@@ -4065,21 +4081,46 @@ class Message(Object, Update):
                     foursquare_id=self.venue.foursquare_id,
                     foursquare_type=self.venue.foursquare_type,
                     disable_notification=disable_notification,
-                    schedule_date=schedule_date
+                    reply_parameters=reply_parameters,
+                    message_thread_id=message_thread_id,
+                    business_connection_id=business_connection_id,
+                    schedule_date=schedule_date,
+                    protect_content=protect_content,
+                    reply_markup=reply_markup
                 )
             elif self.poll:
                 return await self._client.send_poll(
                     chat_id,
                     question=self.poll.question,
                     options=[opt.text for opt in self.poll.options],
+                    is_anonymous=
+                    type=
+                    allows_multiple_answers=
+                    correct_option_id=
+                    explanation=
+                    explanation_parse_mode=
+                    explanation_entities=
+                    open_period=
+                    close_date=
+                    is_closed=
                     disable_notification=disable_notification,
-                    schedule_date=schedule_date
+                    protect_content=protect_content,
+                    reply_parameters=reply_parameters,
+                    message_thread_id=message_thread_id,
+                    business_connection_id=business_connection_id,
+                    schedule_date=schedule_date,
+                    reply_markup=reply_markup
                 )
             elif self.game:
                 return await self._client.send_game(
                     chat_id,
                     game_short_name=self.game.short_name,
-                    disable_notification=disable_notification
+                    disable_notification=disable_notification,
+                    protect_content=protect_content,
+                    message_thread_id=message_thread_id,
+                    business_connection_id=business_connection_id,
+                    reply_parameters=reply_parameters,
+                    reply_markup=reply_markup
                 )
             else:
                 raise ValueError("Unknown media type")

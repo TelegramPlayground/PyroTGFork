@@ -18,7 +18,8 @@ to give you a basic idea.
 
     :doc:`hello_world`, "Demonstration of basic API usage"
     :doc:`echo_bot`, "Echo every private text message"
-    :doc:`welcome_bot`, "The Welcome Bot in @PyrogramChat"
+    :doc:`tg_business_echo_bot`, "Reply back the same message, in `Business <https://core.telegram.org/bots/business>`_ Chats"
+    :doc:`welcome_bot`, "An example Welcome Bot, updated to support the `new Telegram Updates <https://t.me/BotNews/57>`_"
     :doc:`get_chat_history`, "Get the full message history of a chat"
     :doc:`get_chat_members`, "Get all the members of a chat"
     :doc:`get_dialogs`, "Get all of your dialog chats"
@@ -36,6 +37,7 @@ For more advanced examples, see https://github.com/ColinShark/Pyrogram-Snippets.
 
     hello_world
     echo_bot
+    tg_business_echo_bot
     welcome_bot
     get_chat_history
     get_chat_members
