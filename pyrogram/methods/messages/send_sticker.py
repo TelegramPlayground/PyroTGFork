@@ -240,7 +240,7 @@ class SendSticker:
                                 i.message,
                                 {i.id: i for i in r.users},
                                 {i.id: i for i in r.chats},
-                                business_connection_id=i.connection_id,
+                                business_connection_id=getattr(i, "connection_id", business_connection_id),
                                 raw_reply_to_message=i.reply_to_message
                             )
         except StopTransmission:

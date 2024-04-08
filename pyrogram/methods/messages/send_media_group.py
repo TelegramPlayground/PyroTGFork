@@ -367,7 +367,7 @@ class SendMediaGroup:
                     elif re.match("^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
-                                business_connection_id=None,  # TODO
+                                business_connection_id=business_connection_id,
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaDocumentExternal(
                                     url=i.media
@@ -455,5 +455,6 @@ class SendMediaGroup:
         return await utils.parse_messages(
             client=self,
             messages=None,
+            business_connection_id=business_connection_id,
             r=r
         )

@@ -93,6 +93,7 @@ async def parse_messages(
     messages: "raw.types.messages.Messages",
     is_scheduled: bool = False,
     replies: int = 1,
+    business_connection_id: str = "",
     r: "raw.base.Updates" = None
 ) -> List["types.Message"]:
     parsed_messages = []
@@ -133,7 +134,7 @@ async def parse_messages(
                         u.message,
                         users,
                         chats,
-                        business_connection_id=u.connection_id,
+                        business_connection_id=getattr(u, "connection_id", business_connection_id),
                         raw_reply_to_message=u.reply_to_message
                     )
                 )
