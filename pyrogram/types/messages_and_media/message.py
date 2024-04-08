@@ -4093,16 +4093,14 @@ class Message(Object, Update):
                     chat_id,
                     question=self.poll.question,
                     options=[opt.text for opt in self.poll.options],
-                    is_anonymous=
-                    type=
-                    allows_multiple_answers=
-                    correct_option_id=
-                    explanation=
-                    explanation_parse_mode=
-                    explanation_entities=
-                    open_period=
-                    close_date=
-                    is_closed=
+                    is_anonymous=self.poll.is_anonymous,
+                    type=self.poll.type,
+                    allows_multiple_answers=self.poll.allows_multiple_answers,
+                    correct_option_id=self.poll.correct_option_id,
+                    explanation=self.poll.explanation,
+                    explanation_entities=self.poll.explanation_entities,
+                    open_period=self.poll.open_period,
+                    close_date=self.poll.close_date,
                     disable_notification=disable_notification,
                     protect_content=protect_content,
                     reply_parameters=reply_parameters,
