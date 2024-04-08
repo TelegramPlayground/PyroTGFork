@@ -28,9 +28,10 @@ class SendGame:
         chat_id: Union[int, str],
         game_short_name: str,
         disable_notification: bool = None,
-        reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
         protect_content: bool = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
+        reply_parameters: "types.ReplyParameters" = None,        
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -55,14 +56,17 @@ class SendGame:
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
-                Description of the message to reply to
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
 
-            protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown automatically.
@@ -82,24 +86,30 @@ class SendGame:
             message_thread_id,
             reply_parameters
         )
-
-        r = await self.invoke(
-            raw.functions.messages.SendMedia(
-                peer=await self.resolve_peer(chat_id),
-                media=raw.types.InputMediaGame(
-                    id=raw.types.InputGameShortName(
-                        bot_id=raw.types.InputUserSelf(),
-                        short_name=game_short_name
-                    ),
+        rpc = raw.functions.messages.SendMedia(
+            peer=await self.resolve_peer(chat_id),
+            media=raw.types.InputMediaGame(
+                id=raw.types.InputGameShortName(
+                    bot_id=raw.types.InputUserSelf(),
+                    short_name=game_short_name
                 ),
-                message="",
-                silent=disable_notification or None,
-                reply_to=reply_to,
-                random_id=self.rnd_id(),
-                noforwards=protect_content,
-                reply_markup=await reply_markup.write(self) if reply_markup else None
-            )
+            ),
+            message="",
+            silent=disable_notification or None,
+            reply_to=reply_to,
+            random_id=self.rnd_id(),
+            noforwards=protect_content,
+            reply_markup=await reply_markup.write(self) if reply_markup else None
         )
+        if business_connection_id:
+            r = await self.invoke(
+                raw.functions.InvokeWithBusinessConnection(
+                    query=rpc,
+                    connection_id=business_connection_id
+                )
+            )
+        else:
+            r = await self.invoke(rpc)
 
         for i in r.updates:
             if isinstance(i, (raw.types.UpdateNewMessage, raw.types.UpdateNewChannelMessage)):
@@ -107,4 +117,18 @@ class SendGame:
                     self, i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats}
+                )
+            elif isinstance(
+                i,
+                (
+                    raw.types.UpdateBotNewBusinessMessage
+                )
+            ):
+                return await types.Message._parse(
+                    self,
+                    i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    business_connection_id=i.connection_id,
+                    raw_reply_to_message=i.reply_to_message
                 )
