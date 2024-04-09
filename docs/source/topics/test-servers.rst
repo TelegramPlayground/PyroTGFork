@@ -25,8 +25,10 @@ Test Mode in Official Apps
 
 You can also login yourself into test servers using official desktop apps, such as Telegram Web and Telegram Desktop:
 
-- **Telegram Web**: Login here: https://web.telegram.org/?test=1
-- **Telegram Desktop**: Hold ``Alt+Shift`` and right click on "Add account", then choose "Test server".
+- **Telegram Web**: Login here: https://web.telegram.org/?legacy=1&test=1
+- **Telegram Desktop**: Hold ``Shift+Alt`` and right click on "Add account", then choose "Test server".
+- **iOS**: Tap 10 times on the Settings icon > Accounts > Login to another account > Test.
+- **macSwift**: click the Settings icon 10 times to open the Debug Menu, ⌘ + click "Add Account" and log in via phone number.
 
 Test Numbers
 ------------

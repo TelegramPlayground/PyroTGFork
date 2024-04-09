@@ -84,3 +84,65 @@ login using the same session; the storage used will still be in-memory:
 
 Session strings are useful when you want to run authorized Pyrogram clients on platforms where their ephemeral
 filesystems makes it harder for a file-based storage engine to properly work as intended.
+
+Custom Storages
+---------------
+
+If you want to use a custom storage engine, you can do so by implementing the :obj:`~pyrogram.storage.Storage` class. This class is an base class that defines the interface that all storage engines must implement.
+
+This class is a class that cannot be instantiated, but can be used to define a common interface for its subclasses. In this case, the :obj:`~pyrogram.storage.Storage` class defines the interface that all storage engines must implement.
+
+Custom Storage can be defined in :obj:`~pyrogram.Client` by passing ``storage_engine`` parameter with a :obj:`~pyrogram.storage.Storage` subclass.
+
+Example of File Storage (using ``aiosqlite==0.20.0``)
+^^^^^^^^^^^^
+
+How to use this Storage Engine is shown below.
+
+This storage is almost completely identical to the default File Storage, but instead has an extra dependency required to run it.
+
+``/path/to/your/file.session`` will be created if does not exist.
+
+.. code-block:: python
+
+    from pyrogram import Client
+    from pyrogram.storage.aio_sqlite_storage import AioSQLiteStorage
+
+    async with Client(
+        "my_account",
+        storage_engine=AioSQLiteStorage("/path/to/your/file.session")
+    ) as app:
+        await app.send_message(chat_id="me", text="Greetings from **Pyrogram**!")
+
+Example of Telethon Storage
+^^^^^^^^^^^^
+
+If you want to use sessions from telethon in pyrogram (originally incompatible), you can use this `storage <https://gist.github.com/KurimuzonAkuma/3991606c259facef95d0c8afb676bd85>`_.
+
+This storage is almost completely identical and once used in pyrogram can be reused in telethon without breaking session integrity.
+
+.. code-block:: python
+
+    from pyrogram import Client
+    from .tele_storage import TelethonStorage  # assumes that the path downloaded is accurate
+
+    workdir = Path(__file__).parent
+    test_mode = False
+    is_bot = False # Pass True if your session is bot session
+
+    async with Client(
+        "my_account",
+        api_id=api_id,
+        api_hash=api_hash,
+        lang_code="ru",
+        workdir=workdir,
+        test_mode=test_mode,
+        storage_engine=TelethonStorage(
+            name="my_account",
+            workdir=workdir,
+            api_id=api_id,
+            test_mode=test_mode,
+            is_bot=is_bot
+        )
+    ) as app:
+        await app.send_message(chat_id="me", text="Greetings from **Pyrogram**!")

@@ -24,10 +24,6 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 from pyrogram import __version__
 
-project = "Pyrogram"
-copyright = f"2017-present, Dan"
-author = "Dan"
-
 commit_id = subprocess.check_output([
     "git",
     "rev-parse",
@@ -35,7 +31,11 @@ commit_id = subprocess.check_output([
     "HEAD",
 ]).decode("UTF-8").strip()
 
-version = f"{__version__} <a href='https://github.com/TelegramPlayGround/pyrogram/tree/{commit_id}'>{commit_id}</a>"
+version = __version__
+
+project = "Pyrogram"
+copyright = "2017-present, Dan"
+author = "Dan"
 
 extensions = [
     "sphinx.ext.autodoc",
