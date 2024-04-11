@@ -3911,10 +3911,7 @@ class Message(Object, Update):
         caption: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         disable_notification: bool = None,
-        protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -3959,18 +3956,9 @@ class Message(Object, Update):
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the new caption, which can be specified instead of *parse_mode*.
 
-            message_thread_id (``int``, *optional*):
-                Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
-
-            protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -4001,14 +3989,14 @@ class Message(Object, Update):
         elif self.text:
             return await self._client.send_message(
                 chat_id=chat_id,
-                message_thread_id=message_thread_id,
-                business_connection_id=business_connection_id,
+                message_thread_id=self.message_thread_id,
+                business_connection_id=self.business_connection_id,
                 text=self.text,
                 parse_mode=enums.ParseMode.DISABLED,
                 entities=self.entities,
                 link_preview_options=self.link_preview_options,
                 disable_notification=disable_notification,
-                protect_content=protect_content,
+                protect_content=self.has_protected_content,
                 reply_parameters=reply_parameters,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup,
                 schedule_date=schedule_date
@@ -4019,10 +4007,10 @@ class Message(Object, Update):
                 chat_id=chat_id,
                 disable_notification=disable_notification,
                 reply_parameters=reply_parameters,
-                message_thread_id=message_thread_id,
-                business_connection_id=business_connection_id,
+                message_thread_id=self.message_thread_id,
+                business_connection_id=self.business_connection_id,
                 schedule_date=schedule_date,
-                protect_content=protect_content,
+                protect_content=self.has_protected_content,
                 has_spoiler=self.has_media_spoiler,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
@@ -4052,10 +4040,10 @@ class Message(Object, Update):
                     vcard=self.contact.vcard,
                     disable_notification=disable_notification,
                     reply_parameters=reply_parameters,
-                    message_thread_id=message_thread_id,
-                    business_connection_id=business_connection_id,
+                    message_thread_id=self.message_thread_id,
+                    business_connection_id=self.business_connection_id,
                     schedule_date=schedule_date,
-                    protect_content=protect_content,
+                    protect_content=self.has_protected_content,
                     reply_markup=reply_markup
                 )
             elif self.location:
@@ -4065,10 +4053,10 @@ class Message(Object, Update):
                     longitude=self.location.longitude,
                     disable_notification=disable_notification,
                     reply_parameters=reply_parameters,
-                    message_thread_id=message_thread_id,
-                    business_connection_id=business_connection_id,
+                    message_thread_id=self.message_thread_id,
+                    business_connection_id=self.business_connection_id,
                     schedule_date=schedule_date,
-                    protect_content=protect_content,
+                    protect_content=self.has_protected_content,
                     reply_markup=reply_markup
                 )
             elif self.venue:
@@ -4082,10 +4070,10 @@ class Message(Object, Update):
                     foursquare_type=self.venue.foursquare_type,
                     disable_notification=disable_notification,
                     reply_parameters=reply_parameters,
-                    message_thread_id=message_thread_id,
-                    business_connection_id=business_connection_id,
+                    message_thread_id=self.message_thread_id,
+                    business_connection_id=self.business_connection_id,
                     schedule_date=schedule_date,
-                    protect_content=protect_content,
+                    protect_content=self.has_protected_content,
                     reply_markup=reply_markup
                 )
             elif self.poll:
@@ -4102,10 +4090,10 @@ class Message(Object, Update):
                     open_period=self.poll.open_period,
                     close_date=self.poll.close_date,
                     disable_notification=disable_notification,
-                    protect_content=protect_content,
+                    protect_content=self.has_protected_content,
                     reply_parameters=reply_parameters,
-                    message_thread_id=message_thread_id,
-                    business_connection_id=business_connection_id,
+                    message_thread_id=self.message_thread_id,
+                    business_connection_id=self.business_connection_id,
                     schedule_date=schedule_date,
                     reply_markup=reply_markup
                 )
@@ -4114,9 +4102,9 @@ class Message(Object, Update):
                     chat_id,
                     game_short_name=self.game.short_name,
                     disable_notification=disable_notification,
-                    protect_content=protect_content,
-                    message_thread_id=message_thread_id,
-                    business_connection_id=business_connection_id,
+                    protect_content=self.has_protected_content,
+                    message_thread_id=self.message_thread_id,
+                    business_connection_id=self.business_connection_id,
                     reply_parameters=reply_parameters,
                     reply_markup=reply_markup
                 )

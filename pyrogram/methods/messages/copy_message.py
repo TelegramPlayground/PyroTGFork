@@ -35,10 +35,7 @@ class CopyMessage:
         caption: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         disable_notification: bool = None,
-        protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -81,18 +78,9 @@ class CopyMessage:
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the new caption, which can be specified instead of *parse_mode*.
 
-            message_thread_id (``int``, *optional*):
-                Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
-
-            protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -124,10 +112,7 @@ class CopyMessage:
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
             disable_notification=disable_notification,
-            protect_content=protect_content,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             schedule_date=schedule_date
