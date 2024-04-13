@@ -164,7 +164,7 @@ def pyrogram_api():
             send_venue
             send_contact
             send_cached_media
-            set_message_reaction
+            set_reaction
             edit_message_text
             edit_message_caption
             edit_message_media

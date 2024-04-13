@@ -4372,7 +4372,7 @@ class Message(Object, Update):
 
         .. code-block:: python
 
-            await client.set_message_reaction(
+            await client.set_reaction(
                 chat_id=chat_id,
                 message_id=message.id,
                 reaction=[ReactionTypeEmoji(emoji="👍")]
@@ -4436,7 +4436,7 @@ class Message(Object, Update):
                 )
             ]
 
-        return await self._client.set_message_reaction(
+        return await self._client.set_reaction(
             chat_id=self.chat.id,
             message_id=self.id,
             reaction=sr,

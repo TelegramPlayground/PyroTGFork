@@ -23,8 +23,8 @@ import pyrogram
 from pyrogram import raw, types
 
 
-class SetMessageReaction:
-    async def set_message_reaction(
+class SetReaction:
+    async def set_reaction(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_id: int = None,
@@ -78,13 +78,13 @@ class SetMessageReaction:
             .. code-block:: python
 
                 # Send a reaction as a bot
-                await app.set_message_reaction(chat_id, message_id, [ReactionTypeEmoji(emoji="👍")])
+                await app.set_reaction(chat_id, message_id, [ReactionTypeEmoji(emoji="👍")])
 
                 # Send multiple reaction as a premium user
-                await app.set_message_reaction(chat_id, message_id, [ReactionTypeEmoji(emoji="👍"),ReactionTypeEmoji(emoji="😍")],True)
+                await app.set_reaction(chat_id, message_id, [ReactionTypeEmoji(emoji="👍"),ReactionTypeEmoji(emoji="😍")],True)
 
                 # Retract a reaction
-                await app.set_message_reaction(chat_id, message_id=message_id)
+                await app.set_reaction(chat_id, message_id=message_id)
         """
         if message_id is not None:
             r = await self.invoke(

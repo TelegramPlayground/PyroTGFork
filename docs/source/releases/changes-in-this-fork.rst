@@ -123,7 +123,7 @@ it can take advantage of new goodies!
 - Fix ConnectionResetError when only ping task (`#24 <https://github.com/KurimuzonAkuma/pyrogram/pull/24>`_)
 - Added ``is_topic_message`` to the :obj:`~pyrogram.types.Message` object.
 - Added ``has_visible_history``, ``has_hidden_members``, ``has_aggressive_anti_spam_enabled``, ``message_auto_delete_time``, ``slow_mode_delay``, ``slowmode_next_send_date``, ``is_forum`` to the :obj:`~pyrogram.types.Chat` object.
-- Added ``add_to_recent``, ``story_id`` parameters in :obj:`~pyrogram.Client.set_message_reaction`.
+- Added ``add_to_recent``, ``story_id`` parameters in :meth:`~pyrogram.Client.set_reaction`.
 - Bug fix in parsing ``Vector<Bool>`` (Thanks to `@AmarnathCJD <https://github.com/AmarnathCJD/>`_ and `@roj1512 <https://github.com/roj1512>`_).
 - Documentation Fix of ``max_concurrent_transmissions`` type hint.
 - Bug Fix in the ``get_file`` method. (Thanks to `@ALiwoto <https://github.com/ALiwoto>`_).
@@ -146,7 +146,7 @@ it can take advantage of new goodies!
 +------------------------+
 
 - Stole documentation from `PyrogramMod <https://github.com/PyrogramMod/PyrogramMod>`_.
-- Renamed ``send_reaction`` to :meth:`~pyrogram.Client.set_message_reaction`.
+- Renamed ``send_reaction`` to :meth:`~pyrogram.Client.set_reaction`.
 - Added support for :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_animation`, :meth:`~pyrogram.Client.send_voice` messages that could be played once.
 - Added ``_raw`` to the :obj:`~pyrogram.types.Chat` object.
 - Added the field ``via_chat_folder_invite_link`` to the class :obj:`~pyrogram.types.ChatMemberUpdated`.
