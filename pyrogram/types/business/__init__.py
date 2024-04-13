@@ -17,7 +17,9 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .business_connection import BusinessConnection
+from .business_intro import BusinessIntro
 
 __all__ = [
     "BusinessConnection",
+    "BusinessIntro",
 ]

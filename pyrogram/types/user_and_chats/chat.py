@@ -61,6 +61,9 @@ class Chat(Object):
         birthdate (:obj:`~pyrogram.types.Birthdate`, *optional*):
             For private chats, the date of birth of the user.
 
+        business_intro (:obj:`~pyrogram.types.BusinessIntro`, *optional*):
+            For private chats with business accounts, the intro of the business.
+
         personal_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             For private chats, the personal channel of the user.
 
@@ -203,6 +206,7 @@ class Chat(Object):
         photo: "types.ChatPhoto" = None,
         active_usernames: List["types.Username"] = None,
         birthdate: "types.Birthdate" = None,
+        business_intro: "types.BusinessIntro" = None,
         bio: str = None,
         join_by_request: bool = None,
         description: str = None,
@@ -287,6 +291,7 @@ class Chat(Object):
         self.is_peak_preview = is_peak_preview
         self.personal_chat = personal_chat
         self.birthdate = birthdate
+        self.business_intro = business_intro
         self.active_usernames = active_usernames
         self._raw = _raw
 
@@ -466,6 +471,12 @@ class Chat(Object):
             if getattr(full_user, "birthday", None):
                 parsed_chat.birthdate = types.Birthdate._parse(
                     full_user.birthday
+                )
+            
+            if getattr(full_user, "business_intro", None):
+                parsed_chat.business_intro = await types.BusinessIntro._parse(
+                    client,
+                    full_user.business_intro
                 )
         else:
             full_chat = chat_full.full_chat
