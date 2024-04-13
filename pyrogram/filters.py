@@ -768,6 +768,17 @@ video_chat_ended = create(video_chat_ended_filter)
 
 # endregion
 
+# region business
+async def business_filter(_, __, m: Message):
+    return bool(m.business_connection_id)
+
+
+business = create(business_filter)
+"""Filter messages sent via business bot"""
+
+
+# endregion
+
 # region video_chat_members_invited_filter
 async def video_chat_members_invited_filter(_, __, m: Message):
     return bool(m.video_chat_members_invited)

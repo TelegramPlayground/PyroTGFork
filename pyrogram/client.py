@@ -295,6 +295,8 @@ class Client(Methods):
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 
+        self.storage: Storage
+
         if self.session_string:
             self.storage = MemoryStorage(self.name, self.session_string)
         elif self.in_memory:
@@ -304,13 +306,18 @@ class Client(Methods):
         else:
             self.storage = FileStorage(self.name, self.workdir)
 
-        self.dispatcher = Dispatcher(self)
+        self.dispatcher: Dispatcher = Dispatcher(self)
 
         self.rnd_id = MsgId
 
-        self.parser = Parser(self)
+        self.parser: Parser = Parser(self)
 
-        self.session = None
+        self.session: Optional[Session] = None
+
+        self.business_connections = {}
+
+        self.sessions = {}
+        self.sessions_lock = asyncio.Lock()
 
         self.media_sessions = {}
         self.media_sessions_lock = asyncio.Lock()

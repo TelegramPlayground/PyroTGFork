@@ -42,6 +42,7 @@ class CopyMessage:
         schedule_date: datetime = None,
         protect_content: bool = None,
         has_spoiler: bool = None,
+        business_connection_id: str = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -92,7 +93,7 @@ class CopyMessage:
 
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.
-                
+
             reply_to_chat_id (``int``, *optional*):
                 If the message is a reply, ID of the original chat.
 
@@ -104,6 +105,9 @@ class CopyMessage:
 
             has_spoiler (``bool``, *optional*):
                 True, if the message media is covered by a spoiler animation.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -133,5 +137,6 @@ class CopyMessage:
             schedule_date=schedule_date,
             protect_content=protect_content,
             has_spoiler=has_spoiler,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            business_connection_id=business_connection_id
         )

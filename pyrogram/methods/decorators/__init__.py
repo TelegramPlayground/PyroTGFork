@@ -16,12 +16,15 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .on_business_message import OnBusinessMessage
 from .on_callback_query import OnCallbackQuery
 from .on_chat_join_request import OnChatJoinRequest
 from .on_chat_member_updated import OnChatMemberUpdated
 from .on_chosen_inline_result import OnChosenInlineResult
+from .on_deleted_business_messages import OnDeletedBusinessMessages
 from .on_deleted_messages import OnDeletedMessages
 from .on_disconnect import OnDisconnect
+from .on_edited_business_message import OnEditedBusinessMessage
 from .on_edited_message import OnEditedMessage
 from .on_inline_query import OnInlineQuery
 from .on_message import OnMessage
@@ -35,13 +38,16 @@ class Decorators(
     OnMessage,
     OnEditedMessage,
     OnDeletedMessages,
+    OnBusinessMessage,
     OnCallbackQuery,
     OnRawUpdate,
     OnDisconnect,
+    OnEditedBusinessMessage,
     OnUserStatus,
     OnInlineQuery,
     OnPoll,
     OnChosenInlineResult,
+    OnDeletedBusinessMessages,
     OnChatMemberUpdated,
     OnChatJoinRequest,
     OnStory

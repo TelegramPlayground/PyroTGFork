@@ -110,7 +110,10 @@ class User(Object, Update):
             True, if this user has hidden stories.
 
         is_stories_unavailable (``bool``, *optional*):
-            True, if this chat stories is unavailable.
+            True, if this user stories is unavailable.
+
+        is_business_bot (``bool``, *optional*):
+            True, if this bot can connect to business account.
 
         first_name (``str``, *optional*):
             User's or bot's first name.
@@ -191,6 +194,7 @@ class User(Object, Update):
         is_close_friend: bool = None,
         is_stories_hidden: bool = None,
         is_stories_unavailable: bool = None,
+        is_business_bot: bool = None,
         first_name: str = None,
         last_name: str = None,
         status: "enums.UserStatus" = None,
@@ -225,6 +229,7 @@ class User(Object, Update):
         self.is_close_friend = is_close_friend
         self.is_stories_hidden = is_stories_hidden
         self.is_stories_unavailable = is_stories_unavailable
+        self.is_business_bot = is_business_bot
         self.first_name = first_name
         self.last_name = last_name
         self.status = status
@@ -257,7 +262,7 @@ class User(Object, Update):
     def _parse(client, user: "raw.base.User") -> Optional["User"]:
         if user is None or isinstance(user, raw.types.UserEmpty):
             return None
-
+        raw.types.User
         return User(
             id=user.id,
             is_self=user.is_self,
@@ -275,6 +280,7 @@ class User(Object, Update):
             is_close_friend=user.close_friend,
             is_stories_hidden=user.stories_hidden,
             is_stories_unavailable=user.stories_unavailable,
+            is_business_bot=user.bot_business,
             first_name=user.first_name,
             last_name=user.last_name,
             **User._parse_status(user.status, user.bot),

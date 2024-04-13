@@ -338,6 +338,10 @@ def pyrogram_api():
             get_chat_menu_button
             answer_web_app_query
         """,
+        business="""
+        Business
+            get_business_connection
+        """,
         authorization="""
         Authorization
             connect
@@ -429,7 +433,9 @@ def pyrogram_api():
         users_chats="""
         Users & Chats
             Birthday
+            BusinessConnection
             BusinessInfo
+            BusinessIntro
             BusinessMessage
             BusinessRecipients
             BusinessWeeklyOpen

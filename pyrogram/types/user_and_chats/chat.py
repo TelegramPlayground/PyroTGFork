@@ -73,6 +73,9 @@ class Chat(Object):
         is_stories_unavailable (``bool``, *optional*):
             True, if this chat stories is unavailable.
 
+        is_business_bot (``bool``, *optional*):
+            True, if this bot can connect to business account.
+
         title (``str``, *optional*):
             Title, for supergroups, channels and basic group chats.
 
@@ -175,6 +178,9 @@ class Chat(Object):
         business_info (:obj:`~pyrogram.types.BusinessInfo`, *optional*):
             Business information of a chat.
 
+        business_intro (:obj:`~pyrogram.types.BusinessIntro`, *optional*):
+            For private chats with business accounts, the intro of the business.
+
         birthday (:obj:`~pyrogram.types.Birthday`, *optional*):
             Information about user birthday.
     """
@@ -197,6 +203,7 @@ class Chat(Object):
         is_support: bool = None,
         is_stories_hidden: bool = None,
         is_stories_unavailable: bool = None,
+        is_business_bot: bool = None,
         title: str = None,
         username: str = None,
         usernames: List["types.Username"] = None,
@@ -225,6 +232,7 @@ class Chat(Object):
         reply_color: "types.ChatColor" = None,
         profile_color: "types.ChatColor" = None,
         business_info: "types.BusinessInfo" = None,
+        business_intro: "types.BusinessIntro" = None,
         birthday: "types.Birthday" = None
     ):
         super().__init__(client)
@@ -243,6 +251,7 @@ class Chat(Object):
         self.is_support = is_support
         self.is_stories_hidden = is_stories_hidden
         self.is_stories_unavailable = is_stories_unavailable
+        self.is_business_bot = is_business_bot
         self.title = title
         self.username = username
         self.usernames = usernames
@@ -271,6 +280,7 @@ class Chat(Object):
         self.reply_color = reply_color
         self.profile_color = profile_color
         self.business_info = business_info
+        self.business_intro = business_intro
         self.birthday = birthday
 
     @staticmethod
@@ -285,6 +295,9 @@ class Chat(Object):
             is_scam=getattr(user, "scam", None),
             is_fake=getattr(user, "fake", None),
             is_support=getattr(user, "support", None),
+            is_stories_hidden=getattr(user, "stories_hidden", None),
+            is_stories_unavailable=getattr(user, "stories_unavailable", None),
+            is_business_bot=getattr(user, "bot_business", None),
             username=user.username or (user.usernames[0].username if user.usernames else None),
             usernames=types.List([types.Username._parse(r) for r in user.usernames]) or None,
             first_name=user.first_name,
@@ -395,6 +408,7 @@ class Chat(Object):
             parsed_chat.bio = full_user.about
             parsed_chat.folder_id = getattr(full_user, "folder_id", None)
             parsed_chat.business_info = types.BusinessInfo._parse(client, full_user, users)
+            parsed_chat.business_intro = await types.BusinessIntro._parse(client, getattr(full_user, "business_intro", None))
             parsed_chat.birthday = types.Birthday._parse(getattr(full_user, "birthday", None))
 
             if full_user.pinned_msg_id:
