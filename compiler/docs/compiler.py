@@ -549,6 +549,7 @@ def pyrogram_api():
         Telegram Business
             BusinessConnection
             BusinessIntro
+            BusinessLocation
         """,
     )
 

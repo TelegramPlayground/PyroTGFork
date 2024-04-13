@@ -64,6 +64,9 @@ class Chat(Object):
         business_intro (:obj:`~pyrogram.types.BusinessIntro`, *optional*):
             For private chats with business accounts, the intro of the business.
 
+        business_location (:obj:`~pyrogram.types.BusinessLocation`, *optional*):
+            For private chats with business accounts, the location of the business.
+
         personal_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             For private chats, the personal channel of the user.
 
@@ -207,6 +210,7 @@ class Chat(Object):
         active_usernames: List["types.Username"] = None,
         birthdate: "types.Birthdate" = None,
         business_intro: "types.BusinessIntro" = None,
+        business_location: "types.BusinessLocation" = None,
         bio: str = None,
         join_by_request: bool = None,
         description: str = None,
@@ -292,6 +296,7 @@ class Chat(Object):
         self.personal_chat = personal_chat
         self.birthdate = birthdate
         self.business_intro = business_intro
+        self.business_location = business_location
         self.active_usernames = active_usernames
         self._raw = _raw
 
@@ -477,6 +482,11 @@ class Chat(Object):
                 parsed_chat.business_intro = await types.BusinessIntro._parse(
                     client,
                     full_user.business_intro
+                )
+            if getattr(full_user, "business_location", None):
+                parsed_chat.business_location = types.BusinessLocation._parse(
+                    client,
+                    full_user.business_location
                 )
         else:
             full_chat = chat_full.full_chat

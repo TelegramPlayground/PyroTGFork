@@ -18,8 +18,10 @@
 
 from .business_connection import BusinessConnection
 from .business_intro import BusinessIntro
+from .business_location import BusinessLocation
 
 __all__ = [
     "BusinessConnection",
     "BusinessIntro",
+    "BusinessLocation",
 ]

@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added the class :obj:`~pyrogram.types.BusinessLocation` and the field ``business_location`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the class :obj:`~pyrogram.types.BusinessIntro` and the field ``business_intro`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the parameter ``business_connection_id`` to the methods :meth:`~pyrogram.Client.send_message`, :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_animation`, :meth:`~pyrogram.Client.send_audio`, :meth:`~pyrogram.Client.send_document`, :meth:`~pyrogram.Client.send_sticker`, :meth:`~pyrogram.Client.send_video_note`, :meth:`~pyrogram.Client.send_voice`, :meth:`~pyrogram.Client.send_location`, :meth:`~pyrogram.Client.send_venue`, :meth:`~pyrogram.Client.send_contact`, :meth:`~pyrogram.Client.send_poll`, :meth:`~pyrogram.Client.send_game`, :meth:`~pyrogram.Client.send_media_group`, :meth:`~pyrogram.Client.send_dice`, :meth:`~pyrogram.Client.send_chat_action`, :meth:`~pyrogram.Client.send_cached_media` and :meth:`~pyrogram.Client.copy_message` and the corresponding reply_* methods.
 - Added :meth:`~pyrogram.Client.get_business_connection`.
