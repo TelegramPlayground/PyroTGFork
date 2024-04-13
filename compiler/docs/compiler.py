@@ -550,6 +550,8 @@ def pyrogram_api():
             BusinessConnection
             BusinessIntro
             BusinessLocation
+            BusinessOpeningHours
+            BusinessOpeningHoursInterval
         """,
     )
 

@@ -19,9 +19,13 @@
 from .business_connection import BusinessConnection
 from .business_intro import BusinessIntro
 from .business_location import BusinessLocation
+from .business_opening_hours import BusinessOpeningHours
+from .business_opening_hours_interval import BusinessOpeningHoursInterval
 
 __all__ = [
     "BusinessConnection",
     "BusinessIntro",
     "BusinessLocation",
+    "BusinessOpeningHours",
+    "BusinessOpeningHoursInterval",
 ]

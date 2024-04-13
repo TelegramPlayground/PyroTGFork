@@ -67,6 +67,9 @@ class Chat(Object):
         business_location (:obj:`~pyrogram.types.BusinessLocation`, *optional*):
             For private chats with business accounts, the location of the business.
 
+        business_opening_hours (:obj:`~pyrogram.types.BusinessOpeningHours`, *optional*):
+            For private chats with business accounts, the opening hours of the business.
+
         personal_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             For private chats, the personal channel of the user.
 
@@ -211,6 +214,7 @@ class Chat(Object):
         birthdate: "types.Birthdate" = None,
         business_intro: "types.BusinessIntro" = None,
         business_location: "types.BusinessLocation" = None,
+        business_opening_hours: "types.BusinessOpeningHours" = None,
         bio: str = None,
         join_by_request: bool = None,
         description: str = None,
@@ -297,6 +301,7 @@ class Chat(Object):
         self.birthdate = birthdate
         self.business_intro = business_intro
         self.business_location = business_location
+        self.business_opening_hours = business_opening_hours
         self.active_usernames = active_usernames
         self._raw = _raw
 
@@ -488,6 +493,12 @@ class Chat(Object):
                     client,
                     full_user.business_location
                 )
+            if getattr(full_user, "business_work_hours", None):
+                parsed_chat.business_opening_hours = types.BusinessOpeningHours._parse(
+                    client,
+                    full_user.business_work_hours
+                )
+
         else:
             full_chat = chat_full.full_chat
             chat_raw = chats[full_chat.id]
