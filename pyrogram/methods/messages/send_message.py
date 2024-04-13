@@ -174,7 +174,12 @@ class SendMessage:
                     noforwards=protect_content
                 )
                 if business_connection_id:
-                    r = await session.invoke(rpc)
+                    r = await session.invoke(
+                        raw.functions.InvokeWithBusinessConnection(
+                            query=rpc,
+                            connection_id=business_connection_id
+                        )
+                    )
                     # await session.stop()
                 else:
                     r = await self.invoke(rpc)
@@ -214,7 +219,12 @@ class SendMessage:
                     # TODO
                 )
                 if business_connection_id:
-                    r = await session.invoke(rpc)
+                    r = await session.invoke(
+                        raw.functions.InvokeWithBusinessConnection(
+                            query=rpc,
+                            connection_id=business_connection_id
+                        )
+                    )
                     # await session.stop()
                 else:
                     r = await self.invoke(rpc)
@@ -239,7 +249,12 @@ class SendMessage:
                 # TODO
             )
             if business_connection_id:
-                r = await session.invoke(rpc)
+                r = await session.invoke(
+                    raw.functions.InvokeWithBusinessConnection(
+                        query=rpc,
+                        connection_id=business_connection_id
+                    )
+                )
                 # await session.stop()
             else:
                 r = await self.invoke(rpc)
