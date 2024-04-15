@@ -1,13 +1,30 @@
+#  Pyrogram - Telegram MTProto API Client Library for Python
+#  Copyright (C) 2023-present Hydrogram <https://hydrogram.org>
+#
+#  This file is part of Pyrogram.
+#
+#  Pyrogram is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Lesser General Public License as published
+#  by the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  Pyrogram is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
+
 import sys
+from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
 # Add the current directory to the path, so we can import the compiler.
 sys.path.insert(0, ".")
 
-from hatchling.builders.hooks.plugin.interface import BuildHookInterface
-
 
 class CustomHook(BuildHookInterface):
-    """A custom build hook for hydrogram."""
+    """A custom build hook for Pyrogram."""
 
     def initialize(self, version, build_data):
         """Initialize the hook."""
