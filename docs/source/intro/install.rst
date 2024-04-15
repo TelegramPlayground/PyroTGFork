@@ -17,13 +17,13 @@ You can install the development version from the git appropriate branch using th
 
     .. code-block:: text
 
-        $ pip uninstall -y pyrogram && pip install https://github.com/TelegramPlayGround/pyrogram/archive/unknown_errors.zip
+        $ pip uninstall -y pyrogram && pip install pyrotgfork
 
 -   or, with :doc:`TgCrypto <../topics/speedups>` as extra requirement (recommended):
 
     .. code-block:: text
 
-        $ pip install tgcrypto
+        $ pip install pyrotgfork[fast]
 
 Verifying
 ---------

@@ -33,7 +33,7 @@ commit_id = subprocess.check_output([
 
 version = __version__
 
-project = "Pyrogram"
+project = "pyrotgfork"
 copyright = "2017-present, Dan"
 author = "Dan"
 
