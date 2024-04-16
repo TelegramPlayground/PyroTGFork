@@ -154,6 +154,14 @@ class Chat(Object):
             Distance in meters of this group chat from your location.
             Returned only in :meth:`~pyrogram.Client.get_nearby_chats`.
 
+        personal_channel (:obj:`~pyrogram.types.Chat`, *optional*):
+            The personal channel linked to this chat.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        personal_channel_message (:obj:`~pyrogram.types.Message`, *optional*):
+            The last message in the personal channel of this chat.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
         linked_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             The linked discussion group (in case of channels) or the linked channel (in case of supergroups).
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -225,6 +233,8 @@ class Chat(Object):
         restrictions: List["types.Restriction"] = None,
         permissions: "types.ChatPermissions" = None,
         distance: int = None,
+        personal_channel: "types.Chat" = None,
+        personal_channel_message: "types.Message" = None,
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
         available_reactions: Optional["types.ChatReactions"] = None,
@@ -273,6 +283,8 @@ class Chat(Object):
         self.restrictions = restrictions
         self.permissions = permissions
         self.distance = distance
+        self.personal_channel = personal_channel
+        self.personal_channel_message = personal_channel_message
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
@@ -402,7 +414,7 @@ class Chat(Object):
         chats = {c.id: c for c in chat_full.chats}
 
         if isinstance(chat_full, raw.types.users.UserFull):
-            full_user = chat_full.full_user
+            full_user: "raw.types.UserFull" = chat_full.full_user
 
             parsed_chat = Chat._parse_user_chat(client, users[full_user.id])
             parsed_chat.bio = full_user.about
@@ -417,7 +429,14 @@ class Chat(Object):
                     message_ids=full_user.pinned_msg_id
                 )
 
-            if getattr(full_user, "stories"):
+            if full_user.personal_channel_id:
+                parsed_chat.personal_channel = Chat._parse_channel_chat(client, chats[full_user.personal_channel_id])
+                parsed_chat.personal_channel_message = await client.get_messages(
+                    parsed_chat.personal_channel.id,
+                    message_ids=full_user.personal_channel_message
+                )
+
+            if full_user.stories:
                 peer_stories: raw.types.PeerStories = full_user.stories
                 parsed_chat.stories = types.List(
                     [
@@ -465,7 +484,7 @@ class Chat(Object):
 
                     parsed_chat.send_as_chat = Chat._parse_chat(client, send_as_raw)
 
-                if getattr(full_chat, "stories"):
+                if full_chat.stories:
                     peer_stories: raw.types.PeerStories = full_chat.stories
                     parsed_chat.stories = types.List(
                         [
@@ -476,7 +495,7 @@ class Chat(Object):
                         ]
                     ) or None
 
-                if getattr(full_chat, "wallpaper") and isinstance(full_chat.wallpaper, raw.types.WallPaper):
+                if full_chat.wallpaper and isinstance(full_chat.wallpaper, raw.types.WallPaper):
                     parsed_chat.wallpaper = types.Document._parse(client, full_chat.wallpaper.document, "wallpaper.jpg")
 
             if full_chat.pinned_msg_id:
