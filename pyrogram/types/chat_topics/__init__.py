@@ -22,6 +22,7 @@ from .forum_topic_edited import ForumTopicEdited
 from .forum_topic_reopened import ForumTopicReopened
 from .general_forum_topic_hidden import GeneralForumTopicHidden
 from .general_forum_topic_unhidden import GeneralForumTopicUnhidden
+from .forum_topic import ForumTopic
 
 __all__ = [
     "ForumTopicCreated",
@@ -30,4 +31,5 @@ __all__ = [
     "ForumTopicReopened",
     "GeneralForumTopicHidden",
     "GeneralForumTopicUnhidden",
+    "ForumTopic",
 ]

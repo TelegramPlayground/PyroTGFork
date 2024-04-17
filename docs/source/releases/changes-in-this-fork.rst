@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added the class :obj:`~pyrogram.types.ForumTopic`
 - Install the version, from PyPI, using ``pip uninstall -y pyrogram && pip install pyrotgfork==2.1.17``.
 - Added the classes :obj:`~pyrogram.types.BusinessOpeningHours` and :obj:`~pyrogram.types.BusinessOpeningHoursInterval` and the field       ``business_opening_hours`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the class :obj:`~pyrogram.types.BusinessLocation` and the field ``business_location`` to the class :obj:`~pyrogram.types.Chat`.
@@ -136,7 +137,7 @@ it can take advantage of new goodies!
 - Added new parameter ``no_joined_notifications`` to :obj:`~pyrogram.Client`.
 - Fix history TTL Service Message Parse.
 - Added environment variables ``PYROGRAM_DONOT_LOG_UNKNOWN_ERRORS``. Thanks to `... <https://t.me/pyrogramchat/607757>`_.
-- Renamed ``force_document`` to ``disable_content_type_detection`` in :obj:`~pyrogram.Client.send_document` and :obj:`~pyrogram.types.Message.reply_document`.
+- Renamed ``force_document`` to ``disable_content_type_detection`` in :meth:`~pyrogram.Client.send_document` and :meth:`~pyrogram.types.Message.reply_document`.
 - Added missing attributes ``added_to_attachment_menu``, ``can_be_added_to_attachment_menu``, ``can_join_groups``, ``can_read_all_group_messages``, ``supports_inline_queries``, ``can_be_contacted_with_premium`` to the :obj:`~pyrogram.types.User`.
 - Migrate project to ``pyproject.toml`` from ``setup.py``.
 - PRs from upstream: `1366 <https://github.com/pyrogram/pyrogram/pull/1366>`_, `1305 <https://github.com/pyrogram/pyrogram/pull/1305>`_, `1288 <https://github.com/pyrogram/pyrogram/pull/1288>`_, `1262 <https://github.com/pyrogram/pyrogram/pull/1262>`_, `1253 <https://github.com/pyrogram/pyrogram/pull/1253>`_, `1234 <https://github.com/pyrogram/pyrogram/pull/1234>`_, `1210 <https://github.com/pyrogram/pyrogram/pull/1210>`_, `1201 <https://github.com/pyrogram/pyrogram/pull/1201>`_, `1197 <https://github.com/pyrogram/pyrogram/pull/1197>`_, `1143 <https://github.com/pyrogram/pyrogram/pull/1143>`_, `1059 <https://github.com/pyrogram/pyrogram/pull/1059>`_.
@@ -170,7 +171,7 @@ it can take advantage of new goodies!
 - Added ``nosound_video`` parameter to :obj:`~pyrogram.types.InputMediaVideo`.
 - Added ``has_spoiler`` parameter to :meth:`~pyrogram.Client.copy_message`.
 - Improved :meth:`~pyrogram.Client.get_chat_history`: add ``min_id`` and ``max_id`` params.
-- Improved ``send_reaction`` for Telegram Premium Users.
+- Improved ``set_reaction`` for Telegram Premium Users.
 - `Prevent connection to dc every time in get_file <https://github.com/TelegramPlayGround/pyrogram/commit/f2581fd7ab84ada7685645a6f80475fbea5e743a>`_
 - Added ``_raw`` to the :obj:`~pyrogram.types.Chat`, :obj:`~pyrogram.types.Dialog`, and :obj:`~pyrogram.types.User` objects.
 - Fix downloading media to ``WORKDIR`` when ``WORKDIR`` was not specified.

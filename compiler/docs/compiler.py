@@ -544,6 +544,7 @@ def pyrogram_api():
             ForumTopicReopened
             GeneralForumTopicHidden
             GeneralForumTopicUnhidden
+            ForumTopic
         """,
         business="""
         Telegram Business
