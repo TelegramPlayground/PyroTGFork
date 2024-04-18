@@ -238,6 +238,7 @@ def pyrogram_api():
             get_send_as_chats
             set_send_as_chat
             set_chat_protected_content
+            get_created_chats
         """,
         chat_topics="""
         Chat Forum Topics

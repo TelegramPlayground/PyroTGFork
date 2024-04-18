@@ -33,7 +33,7 @@ class SetPersonalChat:
 
         Parameters:
             chat_id (``int`` | ``str`, *optional*):
-                Identifier of the new personal chat; pass None to remove the chat. Use :meth:`~pyrogram.Client.get_suitable_personal_chats` to get suitable chats
+                Identifier of the new personal chat; pass None to remove the chat. Use :meth:`~pyrogram.Client.get_created_chats` with ``is_suitable_for_personal_chat`` to get suitable chats
 
         Returns:
             ``bool``: True on success.
