@@ -16,16 +16,35 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .object import Object
-from .list import List
-from .update import *
-from .authorization import *
-from .bots_and_keyboards import *
-from .chat_topics import *
-from .inline_mode import *
-from .input_media import *
-from .input_message_content import *
-from .messages_and_media import *
-from .message_origin import *
-from .business import *
-from .user_and_chats import *
+from datetime import datetime
+
+from .message_origin import MessageOrigin
+
+import pyrogram
+from pyrogram import types
+
+
+class MessageOriginHiddenUser(MessageOrigin):
+    """The message was originally sent by an unknown user.
+
+    Parameters:
+        date (:py:obj:`~datetime.datetime`):
+            Date the message was sent originally in Unix time
+
+        sender_user_name (``str``):
+            Name of the user that sent the message originally
+
+    """
+
+    def __init__(
+        self,
+        *,
+        date: datetime = None,
+        sender_user_name: str = None
+    ):
+        super().__init__(
+            type="hidden_user",
+            date=date
+        )
+
+        self.sender_user_name = sender_user_name

@@ -12,6 +12,8 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added the field ``origin`` of type :obj:`~pyrogram.types.MessageOrigin`` in the class :obj:`~pyrogram.types.ExternalReplyInfo`.
+- Added the class :obj:`~pyrogram.types.MessageOrigin` and replaced the fields ``forward_from``, ``forward_from_chat``, ``forward_from_message_id``, ``forward_signature``, ``forward_sender_name``, and ``forward_date`` with the field ``forward_origin`` of type :obj:`~pyrogram.types.MessageOrigin`` in the class :obj:`~pyrogram.types.Message`.
 - Added ``accent_color``, ``profile_color``, ``emoji_status``, ``is_close_friend`` to :obj:`~pyrogram.types.Chat` and :obj:`~pyrogram.types.User`.
 - Added the method :meth:`~pyrogram.Client.get_created_chats`.
 - Added the class :obj:`~pyrogram.types.ForumTopic` and the methods :meth:`~pyrogram.Client.get_forum_topics`, :meth:`~pyrogram.Client.get_forum_topic`.

@@ -90,25 +90,8 @@ class Message(Object, Update):
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
             Conversation the message belongs to.
 
-        forward_origin
-
-        forward_from (:obj:`~pyrogram.types.User`, *optional*):
-            For forwarded messages, sender of the original message.
-
-        forward_sender_name (``str``, *optional*):
-            For messages forwarded from users who have hidden their accounts, name of the user.
-
-        forward_from_chat (:obj:`~pyrogram.types.Chat`, *optional*):
-            For messages forwarded from channels, information about the original channel. For messages forwarded from anonymous group administrators, information about the original supergroup.
-
-        forward_from_message_id (``int``, *optional*):
-            For messages forwarded from channels, identifier of the original message in the channel.
-
-        forward_signature (``str``, *optional*):
-            For messages forwarded from channels, signature of the post author if present.
-
-        forward_date (:py:obj:`~datetime.datetime`, *optional*):
-            For forwarded messages, date the original message was sent.
+        forward_origin (:obj:`~pyrogram.types.User`, *optional*):
+            Information about the original message for forwarded messages
 
         is_topic_message (``bool``, *optional*):
             True, if the message is sent to a forum topic.
@@ -417,15 +400,15 @@ class Message(Object, Update):
         date: datetime = None,
         business_connection_id: str = None,
         chat: "types.Chat" = None,
-
-        is_topic_message: bool = None,
-        
+        forward_origin: "types.MessageOrigin" = None,
         forward_from: "types.User" = None,
         forward_sender_name: str = None,
         forward_from_chat: "types.Chat" = None,
         forward_from_message_id: int = None,
         forward_signature: str = None,
         forward_date: datetime = None,
+        # TODO: should these be removed?
+        is_topic_message: bool = None,
         
 
         reply_to_message_id: int = None,
@@ -532,6 +515,7 @@ class Message(Object, Update):
         self.sender_chat = sender_chat
         self.date = date
         self.chat = chat
+        self.forward_origin = forward_origin
         self.forward_from = forward_from
         self.forward_sender_name = forward_sender_name
         self.forward_from_chat = forward_from_chat
@@ -984,6 +968,8 @@ class Message(Object, Update):
             entities = [types.MessageEntity._parse(client, entity, users) for entity in message.entities]
             entities = types.List(filter(lambda x: x is not None, entities))
 
+            forward_origin = None
+            # TODO: should these be removed?
             forward_from = None
             forward_sender_name = None
             forward_from_chat = None
@@ -994,6 +980,12 @@ class Message(Object, Update):
             forward_header = message.fwd_from  # type: raw.types.MessageFwdHeader
 
             if forward_header:
+                forward_origin = types.MessageOrigin._parse(
+                    client,
+                    forward_header,
+                    users,
+                    chats,
+                )
                 forward_date = utils.timestamp_to_datetime(forward_header.date)
 
                 if forward_header.from_id:
@@ -1190,6 +1182,7 @@ class Message(Object, Update):
                 author_signature=message.post_author,
                 has_protected_content=message.noforwards,
                 has_media_spoiler=has_media_spoiler,
+                forward_origin=forward_origin,
                 forward_from=forward_from,
                 forward_sender_name=forward_sender_name,
                 forward_from_chat=forward_from_chat,

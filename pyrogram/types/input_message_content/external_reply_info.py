@@ -28,7 +28,8 @@ class ExternalReplyInfo(Object):
     """This object contains information about a message that is being replied to, which may come from another chat or forum topic.
 
     Parameters:
-        origin
+        origin (:obj:`~pyrogram.types.User`, *optional*):
+            Origin of the message replied to by the given message
 
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
             Chat the original message belongs to. Available only if the chat is a supergroup or a channel.
@@ -100,7 +101,7 @@ class ExternalReplyInfo(Object):
         self,
         *,
         client: "pyrogram.Client" = None,
-        # TODO
+        origin: "types.MessageOrigin" = None,
         chat: "types.Chat" = None,
         message_id: int,
         link_preview_options: "types.LinkPreviewOptions" = None,
@@ -126,6 +127,7 @@ class ExternalReplyInfo(Object):
     ):
         super().__init__(client)
 
+        self.origin = origin
         self.chat = chat
         self.message_id = message_id
         self.link_preview_options = link_preview_options
@@ -161,6 +163,12 @@ class ExternalReplyInfo(Object):
 
         if isinstance(reply_to, raw.types.MessageReplyHeader):
             reply_from = reply_to.reply_from  # raw.types.MessageFwdHeader
+            origin = types.MessageOrigin._parse(
+                client,
+                reply_from,
+                users,
+                chats,
+            )
             chat = None
 
             animation = None
@@ -283,6 +291,7 @@ class ExternalReplyInfo(Object):
                     media_type = enums.MessageMediaType.GIVEAWAY_WINNERS
 
             return ExternalReplyInfo(
+                origin=origin,
                 chat=chat,
                 message_id=reply_to.reply_to_msg_id,
                 link_preview_options=link_preview_options,

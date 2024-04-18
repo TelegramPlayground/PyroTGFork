@@ -499,6 +499,11 @@ def pyrogram_api():
             Location
             Message
             MessageEntity
+            MessageOrigin
+            MessageOriginChannel
+            MessageOriginChat
+            MessageOriginHiddenUser
+            MessageOriginUser
             MessageReactionCountUpdated
             MessageReactionUpdated
             MessageReactions
