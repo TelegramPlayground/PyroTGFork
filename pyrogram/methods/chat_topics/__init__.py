@@ -25,6 +25,7 @@ from .hide_forum_topic import HideForumTopic
 from .unhide_forum_topic import UnhideForumTopic
 from .delete_forum_topic import DeleteForumTopic
 from .get_forum_topics import GetForumTopics
+from .get_forum_topic import GetForumTopic
 
 
 class ChatTopics(
@@ -37,5 +38,6 @@ class ChatTopics(
     UnhideForumTopic,
     DeleteForumTopic,
     GetForumTopics,
+    GetForumTopic,
 ):
     pass

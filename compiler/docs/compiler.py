@@ -250,6 +250,7 @@ def pyrogram_api():
             reopen_forum_topic
             unhide_forum_topic
             get_forum_topics
+            get_forum_topic
         """,
         users="""
         Users

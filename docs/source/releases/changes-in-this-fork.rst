@@ -12,8 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
-- Added :meth:`~pyrogram.Client.get_forum_topics`.
-- Added the class :obj:`~pyrogram.types.ForumTopic`
+- Added the class :obj:`~pyrogram.types.ForumTopic` and the methods :meth:`~pyrogram.Client.get_forum_topics`, :meth:`~pyrogram.Client.get_forum_topic`.
 - Install the version, from PyPI, using ``pip uninstall -y pyrogram && pip install pyrotgfork==2.1.17``.
 - Added the classes :obj:`~pyrogram.types.BusinessOpeningHours` and :obj:`~pyrogram.types.BusinessOpeningHoursInterval` and the field       ``business_opening_hours`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the class :obj:`~pyrogram.types.BusinessLocation` and the field ``business_location`` to the class :obj:`~pyrogram.types.Chat`.
