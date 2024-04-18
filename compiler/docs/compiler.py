@@ -413,6 +413,7 @@ def pyrogram_api():
             ChatShared
             Birthdate
             Username
+            ChatColor
         """,
         messages_media="""
         Messages & Media

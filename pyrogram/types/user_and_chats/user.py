@@ -107,8 +107,8 @@ class User(Object, Update):
         is_support (``bool``, *optional*):
             True, if this user is part of the Telegram support team.
 
-        can_be_contacted_with_premium (``bool``, *optional*):
-            True, if this user only allows messages from contacts and Telegram Premium users.
+        restricts_new_chats (``bool``, *optional*):
+            True, if the user may restrict new chats with non-contacts.
 
         status (:obj:`~pyrogram.enums.UserStatus`, *optional*):
             User's last seen & online status. ``None``, for bots.
@@ -176,6 +176,15 @@ class User(Object, Update):
         
         can_be_edited (``bool``, *optional*):
             True, if the current user can edit this bot's profile picture.
+
+        is_close_friend (``bool``, *optional*):
+            True, if the user is a close friend of the current user; implies that the user is a contact
+
+        accent_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
+            Chat accent color.
+
+        profile_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
+            Chat profile color.
     """
 
     def __init__(
@@ -212,11 +221,14 @@ class User(Object, Update):
         can_join_groups: bool = None,
         can_read_all_group_messages: bool = None,
         supports_inline_queries: bool = None,
-        can_be_contacted_with_premium: bool = None,
+        restricts_new_chats: bool = None,
         inline_need_location: bool = None,
         can_be_edited: bool = None,
         can_connect_to_business: bool = None,
         inline_query_placeholder: str = None,
+        is_close_friend: bool = None,
+        accent_color: "types.ChatColor" = None,
+        profile_color: "types.ChatColor" = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -250,12 +262,15 @@ class User(Object, Update):
         self.can_join_groups = can_join_groups
         self.can_read_all_group_messages = can_read_all_group_messages
         self.supports_inline_queries = supports_inline_queries
-        self.can_be_contacted_with_premium = can_be_contacted_with_premium
+        self.restricts_new_chats = restricts_new_chats
         self.inline_need_location = inline_need_location
         self.can_be_edited = can_be_edited
         self.can_connect_to_business = can_connect_to_business
         self.inline_query_placeholder = inline_query_placeholder
         self.active_usernames = active_usernames
+        self.is_close_friend = is_close_friend
+        self.accent_color = accent_color
+        self.profile_color = profile_color
         self._raw = _raw
 
     @property
@@ -315,8 +330,11 @@ class User(Object, Update):
             photo=types.ChatPhoto._parse(client, user.photo, user.id, user.access_hash),
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             client=client,
-            can_be_contacted_with_premium=getattr(user, "contact_require_premium", None),
+            restricts_new_chats=getattr(user, "contact_require_premium", None),
             active_usernames=active_usernames,
+            is_close_friend=getattr(user, "close_friend", None),
+            accent_color=types.ChatColor._parse(getattr(user, "color", None)),
+            profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
             _raw=user
         )
         if parsed_user.is_bot:

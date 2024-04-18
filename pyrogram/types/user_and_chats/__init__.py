@@ -42,6 +42,7 @@ from .users_shared import UsersShared
 from .chat_shared import ChatShared
 from .birthdate import Birthdate
 from .username import Username
+from .chat_color import ChatColor
 
 __all__ = [
     "Chat",
@@ -70,4 +71,5 @@ __all__ = [
     "ChatShared",
     "Birthdate",
     "Username",
+    "ChatColor",
 ]

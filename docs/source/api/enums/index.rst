@@ -25,6 +25,8 @@ to apply only a valid value among the expected ones.
     MessagesFilter
     ParseMode
     PollType
+    ProfileColor
+    AccentColor
     SentCodeType
     NextCodeType
     UserStatus
@@ -44,6 +46,8 @@ to apply only a valid value among the expected ones.
     MessagesFilter
     ParseMode
     PollType
+    ProfileColor
+    AccentColor
     SentCodeType
     NextCodeType
     UserStatus

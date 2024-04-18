@@ -31,6 +31,8 @@ from .poll_type import PollType
 from .sent_code_type import SentCodeType
 from .user_status import UserStatus
 from .client_platform import ClientPlatform
+from .accent_color import AccentColor
+from .profile_color import ProfileColor
 
 __all__ = [
     'ChatAction', 
@@ -47,5 +49,7 @@ __all__ = [
     'PollType', 
     'SentCodeType', 
     'UserStatus',
-    'ClientPlatform'
+    'ClientPlatform',
+    'AccentColor',
+    'ProfileColor',
 ]

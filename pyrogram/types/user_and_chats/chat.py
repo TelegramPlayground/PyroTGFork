@@ -77,8 +77,14 @@ class Chat(Object):
             Available reactions in the chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
 
-        accent_color_id (``int``, *optional*):
-            Identifier of the accent color for the chat name and backgrounds of the chat photo, reply header, and link preview. See `accent colors <https://core.telegram.org/bots/api#accent-colors>`_ for more details. Returned only in :meth:`~pyrogram.Client.get_chat`. Always returned in :meth:`~pyrogram.Client.get_chat`.
+        accent_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
+            Chat accent color.
+
+        profile_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
+            Chat profile color.
+
+        emoji_status (:obj:`~pyrogram.types.EmojiStatus`, *optional*):
+            Emoji status.
 
         bio (``str``, *optional*):
             Bio of the other party in a private chat.
@@ -190,6 +196,7 @@ class Chat(Object):
         
         is_peak_preview (``bool``, *optional*):
             True, if this is a peak preview.
+
     """
 
     def __init__(
@@ -234,6 +241,9 @@ class Chat(Object):
         send_as_chat: "types.Chat" = None,
         personal_chat: "types.Chat" = None,
         available_reactions: Optional["types.ChatReactions"] = None,
+        accent_color: "types.ChatColor" = None,
+        profile_color: "types.ChatColor" = None,
+        emoji_status: "types.EmojiStatus" = None,
         has_visible_history: bool = None,
         has_hidden_members: bool = None,
         has_aggressive_anti_spam_enabled: bool = None,
@@ -242,7 +252,6 @@ class Chat(Object):
         slowmode_next_send_date: datetime = None,
         unrestrict_boost_count: int = None,
         is_forum: bool = None,
-        accent_color_id: int = None,
         is_peak_preview: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
@@ -285,6 +294,9 @@ class Chat(Object):
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
+        self.accent_color = accent_color
+        self.profile_color = profile_color
+        self.emoji_status = emoji_status
         self.has_visible_history = has_visible_history
         self.has_hidden_members = has_hidden_members
         self.has_aggressive_anti_spam_enabled = has_aggressive_anti_spam_enabled
@@ -293,7 +305,6 @@ class Chat(Object):
         self.slowmode_next_send_date = slowmode_next_send_date
         self.is_forum = is_forum
         self.unrestrict_boost_count = unrestrict_boost_count
-        self.accent_color_id = accent_color_id
         self.is_public = is_public
         self.join_by_request = join_by_request
         self.is_peak_preview = is_peak_preview
@@ -338,6 +349,9 @@ class Chat(Object):
             dc_id=getattr(getattr(user, "photo", None), "dc_id", None),
             client=client,
             active_usernames=active_usernames,
+            accent_color=types.ChatColor._parse(getattr(user, "color", None)),
+            profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
+            emoji_status=types.EmojiStatus._parse(client, user.emoji_status),
             _raw=user
         )
 
@@ -414,6 +428,9 @@ class Chat(Object):
             is_forum=getattr(channel, "forum", None),
             client=client,
             active_usernames=active_usernames,
+            accent_color=types.ChatColor._parse(getattr(channel, "color", None)),
+            profile_color=types.ChatColor._parse_profile_color(getattr(channel, "profile_color", None)),
+            emoji_status=types.EmojiStatus._parse(client, channel.emoji_status),
             _raw=channel
         )
 
@@ -600,7 +617,6 @@ class Chat(Object):
                 for user in chat_invite.participants
             ] or None,
             description=getattr(chat_invite, "about", None),
-            accent_color_id=getattr(chat_invite, "color", None),
             is_verified=getattr(chat_invite, "verified", None),
             is_scam=getattr(chat_invite, "scam", None),
             is_fake=getattr(chat_invite, "fake", None),
