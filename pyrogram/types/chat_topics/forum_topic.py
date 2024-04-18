@@ -81,7 +81,7 @@ class ForumTopic(Object):
 
         is_reduced_version (``bool``, *optional*):
             True, if this is a reduced version of the full topic information.
-            If needed, full information can be fetched using :meth:`~pyrogram.Client.get_forum_topics_by_id`.
+            If needed, full information can be fetched using :meth:`~pyrogram.Client.get_forum_topic`.
 
     """
 
