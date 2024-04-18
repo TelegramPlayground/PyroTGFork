@@ -249,6 +249,7 @@ def pyrogram_api():
             hide_forum_topic
             reopen_forum_topic
             unhide_forum_topic
+            get_forum_topics
         """,
         users="""
         Users

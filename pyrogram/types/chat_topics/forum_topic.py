@@ -58,8 +58,31 @@ class ForumTopic(Object):
         is_deleted (``bool``, *optional*):
             True, if the topic is delete
 
+        last_message (:obj:`~pyrogram.types.Message`, *optional*):
+            Last message in the topic; may be None if unknown
+        
         is_pinned (``bool``, *optional*):
             True, if the topic is pinned
+
+        unread_count (``int``, *optional*):
+            Number of unread messages in the topic
+
+        last_read_inbox_message_id (``int``, *optional*):
+            Identifier of the last read incoming message
+
+        last_read_outbox_message_id (``int``, *optional*):
+            Identifier of the last read outgoing message
+
+        unread_mention_count (``int``, *optional*):
+            Number of unread messages with a mention/reply in the topic
+
+        unread_reaction_count (``int``, *optional*):
+            Number of messages with unread reactions in the topic
+
+        is_reduced_version (``bool``, *optional*):
+            True, if this is a reduced version of the full topic information.
+            If needed, full information can be fetched using :meth:`~pyrogram.Client.get_forum_topics_by_id`.
+
     """
 
     def __init__(
@@ -75,7 +98,15 @@ class ForumTopic(Object):
         is_closed: bool = None,
         is_hidden: bool = None,
         is_deleted: bool = None,
-        is_pinned: bool = None
+        last_message: "types.Message" = None,
+        is_pinned: bool = None,
+        unread_count: int = None,
+        last_read_inbox_message_id: int = None,
+        last_read_outbox_message_id: int = None,
+        unread_mention_count: int = None,
+        unread_reaction_count: int = None,
+
+        is_reduced_version: bool = None
     ):
         super().__init__()
 
@@ -90,16 +121,24 @@ class ForumTopic(Object):
         self.is_closed = is_closed
         self.is_hidden = is_hidden
         self.is_deleted = is_deleted
+        self.last_message = last_message
         self.is_pinned = is_pinned
+        self.unread_count = unread_count
+        self.last_read_inbox_message_id = last_read_inbox_message_id
+        self.last_read_outbox_message_id = last_read_outbox_message_id
+        self.unread_mention_count = unread_mention_count
+        self.unread_reaction_count = unread_reaction_count
+
+        self.is_reduced_version = is_reduced_version
 
 
     @staticmethod
     def _parse(
         client: "pyrogram.Client",
         forum_topic: "raw.types.ForumTopic",
-        messages: dict,
-        users: dict,
-        chats: dict
+        messages: dict, # friendly
+        users: dict, # raw
+        chats: dict, # raw 
     ) -> "ForumTopic":
         if isinstance(forum_topic, raw.types.ForumTopicDeleted):
             return ForumTopic(
@@ -122,6 +161,11 @@ class ForumTopic(Object):
                     client, chats[peer_id]
                 )
 
+        last_message = None
+        top_message_id = getattr(forum_topic, "top_message", None)
+        if top_message_id:
+            last_message = messages.get(top_message_id, None)
+
         return ForumTopic(
             message_thread_id=forum_topic.id,
             name=forum_topic.title,
@@ -132,5 +176,13 @@ class ForumTopic(Object):
             outgoing=getattr(forum_topic, "my", None),
             is_closed=getattr(forum_topic, "closed", None),
             is_hidden=getattr(forum_topic, "hidden", None),
+            last_message=last_message,
             is_pinned=getattr(forum_topic, "pinned", None),
+            unread_count=getattr(forum_topic, "unread_count", None),
+            last_read_inbox_message_id=getattr(forum_topic, "read_inbox_max_id", None),
+            last_read_outbox_message_id=getattr(forum_topic, "read_outbox_max_id", None),
+            unread_mention_count=getattr(forum_topic, "unread_mentions_count", None),
+            unread_reaction_count=getattr(forum_topic, "unread_reactions_count", None),
+            # TODO: notify_settings: PeerNotifySettings, draft: DraftMessage
+            is_reduced_version=getattr(forum_topic, "short", None)
         )
