@@ -37,22 +37,22 @@ from .revoke_chat_invite_link import RevokeChatInviteLink
 
 
 class InviteLinks(
-    RevokeChatInviteLink,
+    ApproveAllChatJoinRequests,
+    ApproveChatJoinRequest,
+    CreateChatInviteLink,
+    DeclineAllChatJoinRequests,
+    DeclineChatJoinRequest,
+    DeleteChatAdminInviteLinks,
     DeleteChatInviteLink,
     EditChatInviteLink,
-    CreateChatInviteLink,
-    GetChatInviteLinkJoiners,
-    GetChatInviteLinkJoinersCount,
-    GetChatAdminInviteLinks,
     ExportChatInviteLink,
-    DeleteChatAdminInviteLinks,
+    GetChatAdminInviteLinks,
     GetChatAdminInviteLinksCount,
     GetChatAdminsWithInviteLinks,
     GetChatInviteLink,
-    ApproveChatJoinRequest,
-    DeclineChatJoinRequest,
-    ApproveAllChatJoinRequests,
-    DeclineAllChatJoinRequests,
-    GetChatJoinRequests
+    GetChatInviteLinkJoiners,
+    GetChatInviteLinkJoinersCount,
+    GetChatJoinRequests,
+    RevokeChatInviteLink,
 ):
     pass

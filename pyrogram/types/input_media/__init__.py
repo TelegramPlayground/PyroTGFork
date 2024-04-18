@@ -26,6 +26,7 @@ from .input_phone_contact import InputPhoneContact
 from .link_preview_options import LinkPreviewOptions
 
 __all__ = [
+    "LinkPreviewOptions",
     "InputMedia",
     "InputMediaAnimation",
     "InputMediaAudio",
@@ -33,5 +34,4 @@ __all__ = [
     "InputMediaPhoto",
     "InputMediaVideo",
     "InputPhoneContact",
-    "LinkPreviewOptions"
 ]

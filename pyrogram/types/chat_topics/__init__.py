@@ -25,11 +25,11 @@ from .general_forum_topic_unhidden import GeneralForumTopicUnhidden
 from .forum_topic import ForumTopic
 
 __all__ = [
-    "ForumTopicCreated",
+    "ForumTopic",
     "ForumTopicClosed",
+    "ForumTopicCreated",
     "ForumTopicEdited",
     "ForumTopicReopened",
     "GeneralForumTopicHidden",
     "GeneralForumTopicUnhidden",
-    "ForumTopic",
 ]

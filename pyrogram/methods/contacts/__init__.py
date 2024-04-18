@@ -24,10 +24,10 @@ from .import_contacts import ImportContacts
 
 
 class Contacts(
-    GetContacts,
+    AddContact,
     DeleteContacts,
-    ImportContacts,
+    GetContacts,
     GetContactsCount,
-    AddContact
+    ImportContacts,
 ):
     pass

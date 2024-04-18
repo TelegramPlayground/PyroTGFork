@@ -32,18 +32,18 @@ from .business import TelegramBusiness
 
 
 class Methods(
+    Decorators,
     Advanced,
     Auth,
     Bots,
-    Contacts,
-    Password,
     Chats,
-    Users,
-    Messages,
-    Decorators,
-    Utilities,
-    InviteLinks,
     ChatTopics,
+    Contacts,
+    InviteLinks,
+    Messages,
+    Password,
     TelegramBusiness,
+    Users,
+    Utilities,
 ):
     pass

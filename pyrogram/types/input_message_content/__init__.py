@@ -22,8 +22,8 @@ from .reply_parameters import ReplyParameters
 from .external_reply_info import ExternalReplyInfo
 
 __all__ = [
+    "ExternalReplyInfo",
     "InputMessageContent",
     "InputTextMessageContent",
     "ReplyParameters",
-    "ExternalReplyInfo"
 ]

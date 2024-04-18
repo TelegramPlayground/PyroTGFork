@@ -37,6 +37,7 @@ from .set_game_score import SetGameScore
 class Bots(
     AnswerCallbackQuery,
     AnswerInlineQuery,
+    AnswerWebAppQuery,
     GetInlineBotResults,
     RequestCallbackAnswer,
     SendInlineBotResult,
@@ -50,6 +51,5 @@ class Bots(
     GetBotDefaultPrivileges,
     SetChatMenuButton,
     GetChatMenuButton,
-    AnswerWebAppQuery
 ):
     pass

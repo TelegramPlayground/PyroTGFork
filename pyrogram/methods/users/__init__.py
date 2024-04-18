@@ -35,19 +35,19 @@ from .set_personal_chat import SetPersonalChat
 
 class Users(
     BlockUser,
-    GetCommonChats,
-    GetChatPhotos,
-    SetProfilePhoto,
     DeleteProfilePhotos,
-    GetUsers,
-    GetMe,
-    SetUsername,
+    GetChatPhotos,
     GetChatPhotosCount,
+    GetCommonChats,
+    GetDefaultEmojiStatuses,
+    GetMe,
+    GetUsers,
+    SetBirthdate,
+    SetEmojiStatus,
+    SetPersonalChat,
+    SetProfilePhoto,
+    SetUsername,
     UnblockUser,
     UpdateProfile,
-    GetDefaultEmojiStatuses,
-    SetEmojiStatus,
-    SetBirthdate,
-    SetPersonalChat
 ):
     pass

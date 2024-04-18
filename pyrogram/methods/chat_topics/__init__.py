@@ -29,15 +29,15 @@ from .get_forum_topic import GetForumTopic
 
 
 class ChatTopics(
-    GetForumTopicIconStickers,
-    CreateForumTopic,
-    EditForumTopic,
     CloseForumTopic,
-    ReopenForumTopic,
-    HideForumTopic,
-    UnhideForumTopic,
+    CreateForumTopic,
     DeleteForumTopic,
-    GetForumTopics,
+    EditForumTopic,
     GetForumTopic,
+    GetForumTopicIconStickers,
+    GetForumTopics,
+    HideForumTopic,
+    ReopenForumTopic,
+    UnhideForumTopic,
 ):
     pass

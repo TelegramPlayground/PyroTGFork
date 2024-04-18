@@ -96,7 +96,7 @@ class ChatJoinRequest(Object, Update):
 
             await client.approve_chat_join_request(
                 chat_id=request.chat.id,
-                user_id=request.user_chat_id
+                user_id=request.from_user.id
             )
             
         Example:
@@ -112,7 +112,7 @@ class ChatJoinRequest(Object, Update):
         """
         return await self._client.approve_chat_join_request(
             chat_id=self.chat.id,
-            user_id=self.user_chat_id
+            user_id=self.from_user.id
         )
 
     async def decline(self) -> bool:
@@ -124,7 +124,7 @@ class ChatJoinRequest(Object, Update):
 
             await client.decline_chat_join_request(
                 chat_id=request.chat.id,
-                user_id=request.user_chat_id
+                user_id=request.from_user.id
             )
             
         Example:
@@ -140,5 +140,7 @@ class ChatJoinRequest(Object, Update):
         """
         return await self._client.decline_chat_join_request(
             chat_id=self.chat.id,
-            user_id=self.user_chat_id
+            user_id=self.from_user.id
         )
+
+    # TODO

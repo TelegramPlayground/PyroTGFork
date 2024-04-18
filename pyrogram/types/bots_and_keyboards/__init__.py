@@ -37,6 +37,8 @@ from .keyboard_button_poll_type import (
     KeyboardButtonPollTypeRegular,
     KeyboardButtonPollTypeQuiz
 )
+from .keyboard_button_request_chat import KeyboardButtonRequestChat
+from .keyboard_button_request_users import KeyboardButtonRequestUsers
 from .login_url import LoginUrl
 from .menu_button import MenuButton
 from .menu_button_commands import MenuButtonCommands
@@ -45,10 +47,9 @@ from .menu_button_web_app import MenuButtonWebApp
 from .reply_keyboard_markup import ReplyKeyboardMarkup
 from .reply_keyboard_remove import ReplyKeyboardRemove
 from .sent_web_app_message import SentWebAppMessage
-from .web_app_info import WebAppInfo
 from .switch_inline_query_chosen_chat import SwitchInlineQueryChosenChat
-from .keyboard_button_request_users import KeyboardButtonRequestUsers
-from .keyboard_button_request_chat import KeyboardButtonRequestChat
+from .web_app_info import WebAppInfo
+
 
 __all__ = [
     "CallbackGame",
@@ -61,6 +62,8 @@ __all__ = [
     "KeyboardButtonPollType",
     "KeyboardButtonPollTypeRegular",
     "KeyboardButtonPollTypeQuiz",
+    "KeyboardButtonRequestChat",
+    "KeyboardButtonRequestUsers",
     "ReplyKeyboardMarkup",
     "ReplyKeyboardRemove",
     "LoginUrl",
@@ -80,6 +83,4 @@ __all__ = [
     "MenuButtonDefault",
     "SentWebAppMessage",
     "SwitchInlineQueryChosenChat",
-    "KeyboardButtonRequestUsers",
-    "KeyboardButtonRequestChat"
 ]

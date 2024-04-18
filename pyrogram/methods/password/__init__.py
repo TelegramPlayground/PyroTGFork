@@ -22,8 +22,8 @@ from .remove_cloud_password import RemoveCloudPassword
 
 
 class Password(
-    RemoveCloudPassword,
     ChangeCloudPassword,
-    EnableCloudPassword
+    EnableCloudPassword,
+    RemoveCloudPassword,
 ):
     pass

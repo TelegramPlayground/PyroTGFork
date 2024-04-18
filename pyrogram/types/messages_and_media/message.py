@@ -1338,8 +1338,6 @@ class Message(Object, Update):
         link_preview_options: "types.LinkPreviewOptions" = None,
         disable_notification: bool = None,
         protect_content: bool = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -1396,12 +1394,6 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
@@ -1434,8 +1426,8 @@ class Message(Object, Update):
             link_preview_options=link_preview_options,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             schedule_date=schedule_date
@@ -1459,8 +1451,6 @@ class Message(Object, Update):
         file_name: str = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         ttl_seconds: int = None,
@@ -1544,12 +1534,6 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -1618,8 +1602,8 @@ class Message(Object, Update):
             file_name=file_name,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content,
             ttl_seconds=ttl_seconds,
@@ -1642,8 +1626,6 @@ class Message(Object, Update):
         file_name: str = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -1719,12 +1701,6 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -1786,8 +1762,8 @@ class Message(Object, Update):
             file_name=file_name,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup,
@@ -1804,11 +1780,7 @@ class Message(Object, Update):
         caption_entities: List["types.MessageEntity"] = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
-        protect_content: bool = None,
-        has_spoiler: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1859,20 +1831,8 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
-            
-            protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
-
-            has_spoiler (``bool``, *optional*):
-                True, if the message media is covered by a spoiler animation.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -1900,20 +1860,18 @@ class Message(Object, Update):
             caption_entities=caption_entities,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
-            protect_content=protect_content,
-            has_spoiler=has_spoiler,
+            protect_content=self.has_protected_content,
+            has_spoiler=self.has_media_spoiler,
             reply_markup=reply_markup
         )
 
     async def reply_chat_action(
         self,
         action: "enums.ChatAction",
-        progress: int = 0,
-        message_thread_id: int = None,
-        business_connection_id: str = None
+        progress: int = 0
     ) -> bool:
         """Bound method *reply_chat_action* of :obj:`~pyrogram.types.Message`.
 
@@ -1942,12 +1900,6 @@ class Message(Object, Update):
             progress (``int``, *optional*):
                 Upload progress, as a percentage.
 
-            message_thread_id (``int``, *optional*):
-                Unique identifier for the target message thread; for supergroups only
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the action will be sent
-
         Returns:
             ``bool``: On success, True is returned.
 
@@ -1959,8 +1911,8 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             action=action,
             progress=progress,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id
         )
 
     async def reply_contact(
@@ -1972,8 +1924,6 @@ class Message(Object, Update):
         vcard: str = "",
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -2025,12 +1975,6 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2063,8 +2007,8 @@ class Message(Object, Update):
             vcard=vcard,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup
@@ -2082,8 +2026,6 @@ class Message(Object, Update):
         disable_content_type_detection: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -2156,12 +2098,6 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2221,8 +2157,8 @@ class Message(Object, Update):
             disable_content_type_detection=disable_content_type_detection,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup,
@@ -2236,8 +2172,6 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         protect_content: bool = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2281,12 +2215,6 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown automatically.
                 If not empty, the first button must launch the game.
@@ -2311,8 +2239,8 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
             protect_content=protect_content,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             reply_markup=reply_markup
         )
 
@@ -2389,8 +2317,6 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -2436,12 +2362,6 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2472,8 +2392,8 @@ class Message(Object, Update):
             longitude=longitude,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup
@@ -2485,8 +2405,6 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
     ) -> List["types.Message"]:
@@ -2524,12 +2442,6 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2556,8 +2468,8 @@ class Message(Object, Update):
             media=media,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content
         )
@@ -2573,8 +2485,6 @@ class Message(Object, Update):
         ttl_seconds: int = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         view_once: bool = None,
@@ -2640,12 +2550,6 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2707,8 +2611,8 @@ class Message(Object, Update):
             ttl_seconds=ttl_seconds,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content,
             view_once=view_once,
@@ -2735,8 +2639,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2824,12 +2726,6 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2868,8 +2764,8 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             reply_markup=reply_markup
         )
@@ -2880,8 +2776,6 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         protect_content: bool = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2927,12 +2821,6 @@ class Message(Object, Update):
 
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
-
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -2987,8 +2875,8 @@ class Message(Object, Update):
             sticker=sticker,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             schedule_date=schedule_date,
@@ -3007,8 +2895,6 @@ class Message(Object, Update):
         foursquare_type: str = "",
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -3066,12 +2952,6 @@ class Message(Object, Update):
                 Sends the message silently.
                 Users will receive a notification with no sound.
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -3109,8 +2989,8 @@ class Message(Object, Update):
             foursquare_type=foursquare_type,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup
@@ -3131,8 +3011,6 @@ class Message(Object, Update):
         supports_streaming: bool = True,
         disable_notification: bool = None,
         protect_content: bool = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -3214,12 +3092,6 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
@@ -3294,8 +3166,8 @@ class Message(Object, Update):
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             ttl_seconds=ttl_seconds,
@@ -3315,8 +3187,6 @@ class Message(Object, Update):
         thumb: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -3379,12 +3249,6 @@ class Message(Object, Update):
 
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
-
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -3460,8 +3324,8 @@ class Message(Object, Update):
             thumb=thumb,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             caption=caption,
@@ -3484,8 +3348,6 @@ class Message(Object, Update):
         duration: int = 0,
         disable_notification: bool = None,
         protect_content: bool = None,
-        message_thread_id: int = None,
-        business_connection_id: str = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -3547,12 +3409,6 @@ class Message(Object, Update):
 
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
-
-            message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
-            
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -3622,8 +3478,8 @@ class Message(Object, Update):
             duration=duration,
             disable_notification=disable_notification,
             protect_content=protect_content,
-            message_thread_id=message_thread_id,
-            business_connection_id=business_connection_id,
+            message_thread_id=self.message_thread_id,
+            business_connection_id=self.business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             schedule_date=schedule_date,

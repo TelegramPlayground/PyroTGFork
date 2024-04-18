@@ -1,6 +1,12 @@
 Welcome to Pyrogram
 ===================
 
+.. admonition :: A Word of Warning
+    :class: tip
+    
+    We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable, __USE AT YOUR OWN RISK__.
+
+
 .. raw:: html
 
     <div align="center">
@@ -48,11 +54,6 @@ Welcome to Pyrogram
 **Pyrogram** is a modern, elegant and asynchronous :doc:`MTProto API <topics/mtproto-vs-botapi>` framework.
 It enables you to easily interact with the main Telegram API through a user account (custom client) or a bot identity
 (bot API alternative) using Python.
-
-.. admonition :: A Word of Warning
-    :class: tip
-    
-    We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable.
 
 .. admonition :: USE AT YOUR OWN RISK
     :class: tip

@@ -36,16 +36,21 @@ class Decorators(
     OnMessage,
     OnEditedMessage,
     OnDeletedMessages,
-    OnCallbackQuery,
-    OnRawUpdate,
-    OnDisconnect,
-    OnUserStatus,
+    OnMessageReactionUpdated,
+    OnMessageReactionCountUpdated,
     OnInlineQuery,
-    OnPoll,
     OnChosenInlineResult,
+    OnCallbackQuery,
+
+
+    OnPoll,
+    
     OnChatMemberUpdated,
     OnChatJoinRequest,
-    OnMessageReactionUpdated,
-    OnMessageReactionCountUpdated
+
+
+    OnDisconnect,
+    OnUserStatus,
+    OnRawUpdate,
 ):
     pass
