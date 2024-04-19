@@ -19,8 +19,7 @@
 from typing import List
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 
 
 class GetForumTopicIconStickers:
@@ -34,17 +33,7 @@ class GetForumTopicIconStickers:
         Returns:
             List of :obj:`~pyrogram.types.Sticker`: On success, a list of sticker objects is returned.
         """
-        result = await self.invoke(
-            raw.functions.messages.GetStickerSet(
-                stickerset=raw.types.InputStickerSetEmojiDefaultTopicIcons(),
-                hash=0
-            )
+        r, _ = await self._get_raw_stickers(
+            raw.types.InputStickerSetEmojiDefaultTopicIcons()
         )
-
-        stickers = []
-        for item in result.documents:
-            attributes = {type(i): i for i in item.attributes}
-            sticker = await types.Sticker._parse(self, item, attributes)
-            stickers.append(sticker)
-
-        return pyrogram.types.List(stickers)
+        return r

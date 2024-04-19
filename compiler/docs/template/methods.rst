@@ -138,6 +138,19 @@ Contacts
 
     {contacts}
 
+Stickers
+--------
+
+.. autosummary::
+    :nosignatures:
+
+    {stickers}
+
+.. toctree::
+    :hidden:
+
+    {stickers}
+
 Password
 --------
 

@@ -164,6 +164,7 @@ class Sticker(Object):
 
         if isinstance(sticker_set, raw.types.InputStickerSetID):
             input_sticker_set_id = (sticker_set.id, sticker_set.access_hash)
+            # TODO: FIXME!
             set_name = await Sticker._get_sticker_set_name(client.invoke, input_sticker_set_id)
         else:
             set_name = None

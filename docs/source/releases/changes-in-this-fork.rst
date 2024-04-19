@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added :meth:`~pyrogram.Client.get_stickers`.
 - Added ``filters.users_shared`` and ``filters.chat_shared``.
 - Added the field ``origin`` of type :obj:`~pyrogram.types.MessageOrigin`` in the class :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Added the class :obj:`~pyrogram.types.MessageOrigin` and replaced the fields ``forward_from``, ``forward_from_chat``, ``forward_from_message_id``, ``forward_signature``, ``forward_sender_name``, and ``forward_date`` with the field ``forward_origin`` of type :obj:`~pyrogram.types.MessageOrigin`` in the class :obj:`~pyrogram.types.Message`.
