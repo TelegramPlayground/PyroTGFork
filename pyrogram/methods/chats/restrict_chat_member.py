@@ -83,31 +83,9 @@ class RestrictChatMember:
             raw.functions.channels.EditBanned(
                 channel=await self.resolve_peer(chat_id),
                 participant=await self.resolve_peer(user_id),
-                banned_rights=raw.types.ChatBannedRights(
-                    until_date=utils.datetime_to_timestamp(until_date),
-                    send_messages=not permissions.can_send_messages,
-                    send_media=not permissions.can_send_media_messages,
-                    send_stickers=not permissions.can_send_other_messages,
-                    send_gifs=not permissions.can_send_other_messages,
-                    send_games=not permissions.can_send_other_messages,
-                    send_inline=not permissions.can_send_other_messages,
-                    embed_links=not permissions.can_add_web_page_previews,
-                    send_polls=not permissions.can_send_polls,
-                    change_info=not permissions.can_change_info,
-                    invite_users=not permissions.can_invite_users,
-                    pin_messages=not permissions.can_pin_messages,
-                    manage_topics=(
-                        permissions.can_manage_topics and
-                        not permissions.can_manage_topics
-                    ) or not permissions.can_pin_messages,
-                    # view_messages=# TODO
-                    send_audios=not permissions.can_send_audios,# TODO
-                    send_docs=not permissions.can_send_documents,# TODO
-                    send_photos=not permissions.can_send_photos,# TODO
-                    send_videos=not permissions.can_send_videos,# TODO
-                    send_roundvideos=not permissions.can_send_video_notes,# TODO
-                    send_voices=not permissions.can_send_voice_notes,# TODO
-                    # send_plain=# TODO
+                banned_rights=permissions.write(
+                    use_independent_chat_permissions,
+                    until_date
                 )
             )
         )
