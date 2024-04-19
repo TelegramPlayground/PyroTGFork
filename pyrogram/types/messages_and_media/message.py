@@ -401,13 +401,6 @@ class Message(Object, Update):
         business_connection_id: str = None,
         chat: "types.Chat" = None,
         forward_origin: "types.MessageOrigin" = None,
-        forward_from: "types.User" = None,
-        forward_sender_name: str = None,
-        forward_from_chat: "types.Chat" = None,
-        forward_from_message_id: int = None,
-        forward_signature: str = None,
-        forward_date: datetime = None,
-        # TODO: should these be removed?
         is_topic_message: bool = None,
         
 
@@ -516,12 +509,6 @@ class Message(Object, Update):
         self.date = date
         self.chat = chat
         self.forward_origin = forward_origin
-        self.forward_from = forward_from
-        self.forward_sender_name = forward_sender_name
-        self.forward_from_chat = forward_from_chat
-        self.forward_from_message_id = forward_from_message_id
-        self.forward_signature = forward_signature
-        self.forward_date = forward_date
         self.reply_to_message_id = reply_to_message_id
         self.message_thread_id = message_thread_id
         self.reply_to_message = reply_to_message
@@ -969,14 +956,6 @@ class Message(Object, Update):
             entities = types.List(filter(lambda x: x is not None, entities))
 
             forward_origin = None
-            # TODO: should these be removed?
-            forward_from = None
-            forward_sender_name = None
-            forward_from_chat = None
-            forward_from_message_id = None
-            forward_signature = None
-            forward_date = None
-
             forward_header = message.fwd_from  # type: raw.types.MessageFwdHeader
 
             if forward_header:
@@ -986,20 +965,6 @@ class Message(Object, Update):
                     users,
                     chats,
                 )
-                forward_date = utils.timestamp_to_datetime(forward_header.date)
-
-                if forward_header.from_id:
-                    raw_peer_id = utils.get_raw_peer_id(forward_header.from_id)
-                    peer_id = utils.get_peer_id(forward_header.from_id)
-
-                    if peer_id > 0:
-                        forward_from = types.User._parse(client, users[raw_peer_id])
-                    else:
-                        forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
-                        forward_from_message_id = forward_header.channel_post
-                        forward_signature = forward_header.post_author
-                elif forward_header.from_name:
-                    forward_sender_name = forward_header.from_name
 
             photo = None
             location = None
@@ -1183,12 +1148,6 @@ class Message(Object, Update):
                 has_protected_content=message.noforwards,
                 has_media_spoiler=has_media_spoiler,
                 forward_origin=forward_origin,
-                forward_from=forward_from,
-                forward_sender_name=forward_sender_name,
-                forward_from_chat=forward_from_chat,
-                forward_from_message_id=forward_from_message_id,
-                forward_signature=forward_signature,
-                forward_date=forward_date,
                 mentioned=message.mentioned,
                 scheduled=is_scheduled,
                 from_scheduled=message.from_scheduled,
@@ -4503,3 +4462,63 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id
         )
+
+    # BEGIN: the below properties were removed in `BOT API 7.0 <https://core.telegram.org/bots/api-changelog#december-29-2023>`_
+
+    @property
+    def forward_from(self) -> "types.User":
+        log.warning(
+            "This property is deprecated. "
+            "Please use forward_origin instead"
+        )
+        return getattr(self.forward_origin, "sender_user", None)
+    
+    @property
+    def forward_sender_name(self) -> str:
+        log.warning(
+            "This property is deprecated. "
+            "Please use forward_origin instead"
+        )
+        return getattr(self.forward_origin, "sender_user_name", None)
+
+    @property
+    def forward_from_chat(self) -> "types.Chat":
+        log.warning(
+            "This property is deprecated. "
+            "Please use forward_origin instead"
+        )
+        return getattr(
+            self.forward_origin,
+            "chat",
+            getattr(
+                self.forward_origin,
+                "sender_chat",
+                None
+            )
+        )
+
+    @property
+    def forward_from_message_id(self) -> int:
+        log.warning(
+            "This property is deprecated. "
+            "Please use forward_origin instead"
+        )
+        return getattr(self.forward_origin, "message_id", None)
+
+    @property
+    def forward_signature(self) -> str:
+        log.warning(
+            "This property is deprecated. "
+            "Please use forward_origin instead"
+        )
+        return getattr(self.forward_origin, "author_signature", None)
+        
+    @property
+    def forward_date(self) -> datetime:
+        log.warning(
+            "This property is deprecated. "
+            "Please use forward_origin instead"
+        )
+        return self.forward_origin.date
+
+    # END: the below properties were removed in `BOT API 7.0 <https://core.telegram.org/bots/api-changelog#december-29-2023>`_
