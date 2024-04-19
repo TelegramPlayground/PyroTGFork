@@ -103,7 +103,7 @@ class SendMessage:
                 # Disable web page previews
                 await app.send_message(
                     chat_id="me", text="https://docs.pyrogram.org",
-                    link_preview_options=types.LinkPreviewOption(
+                    link_preview_options=types.LinkPreviewOptions(
                         is_disabled=True
                     )
                 )

@@ -79,7 +79,7 @@ class EditMessageText:
                 # Take the same text message, remove the web page preview only
                 await app.edit_message_text(
                     chat_id, message_id, message.text,
-                    link_preview_options=types.LinkPreviewOption(
+                    link_preview_options=types.LinkPreviewOptions(
                         is_disabled=True
                     )
                 )

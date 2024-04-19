@@ -73,7 +73,7 @@ class EditInlineText:
                 # Take the same text message, remove the web page preview only
                 await app.edit_inline_text(
                     inline_message_id, message.text,
-                    link_preview_options=types.LinkPreviewOption(
+                    link_preview_options=types.LinkPreviewOptions(
                         is_disabled=True
                     )
                 )
