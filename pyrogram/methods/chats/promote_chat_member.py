@@ -28,7 +28,7 @@ class PromoteChatMember:
         chat_id: Union[int, str],
         user_id: Union[int, str],
         privileges: "types.ChatPrivileges" = None,
-    ) -> bool:
+    ) -> Union["types.Message", bool]:
         """Promote or demote a user in a supergroup or a channel.
 
         You must be an administrator in the chat for this to work and must have the appropriate admin rights.
@@ -48,7 +48,8 @@ class PromoteChatMember:
                 New user privileges.
 
         Returns:
-            ``bool``: True on success.
+            :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
+            otherwise, in case a message object couldn't be returned, True is returned.
 
         Example:
             .. code-block:: python
@@ -77,29 +78,27 @@ class PromoteChatMember:
         if isinstance(raw_chat_member, raw.types.ChannelParticipantAdmin):
             rank = raw_chat_member.rank
 
-        await self.invoke(
+        r = await self.invoke(
             raw.functions.channels.EditAdmin(
                 channel=chat_id,
                 user_id=user_id,
-                admin_rights=raw.types.ChatAdminRights(
-                    change_info=privileges.can_change_info,
-                    post_messages=privileges.can_post_messages,
-                    edit_messages=privileges.can_edit_messages,
-                    delete_messages=privileges.can_delete_messages,
-                    ban_users=privileges.can_restrict_members,
-                    invite_users=privileges.can_invite_users,
-                    pin_messages=privileges.can_pin_messages,
-                    add_admins=privileges.can_promote_members,
-                    anonymous=privileges.is_anonymous,
-                    manage_call=privileges.can_manage_video_chats,
-                    other=privileges.can_manage_chat,
-                    manage_topics=privileges.can_manage_topics,
-                    post_stories=privileges.can_post_stories,
-                    edit_stories=privileges.can_edit_stories,
-                    delete_stories=privileges.can_delete_stories
-                ),
+                admin_rights=privileges.write(),
                 rank=rank or ""
             )
         )
 
-        return True
+        for i in r.updates:
+            if isinstance(
+                i,
+                (
+                    raw.types.UpdateNewMessage,
+                    raw.types.UpdateNewChannelMessage
+                )
+            ):
+                return await types.Message._parse(
+                    self, i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats}
+                )
+        else:
+            return True
