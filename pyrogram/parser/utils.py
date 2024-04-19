@@ -34,7 +34,7 @@ def add_surrogates(text):
 
 def remove_surrogates(text):
     # Replace each surrogate pair with a SMP code point
-    return text.encode("utf-16", "surrogatepass").decode("utf-16")
+    return text.encode("utf-16", "surrogatepass").decode("utf-16", "ignore")
 
 
 def replace_once(source: str, old: str, new: str, start: int):
