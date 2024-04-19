@@ -774,8 +774,7 @@ async def media_filter(_, __, m: Message) -> bool:
 media: Filter = create(media_filter)
 """Filter media messages.
 
-A media message contains any of the following fields set: *audio*, *document*, *photo*, *sticker*, *video*,
-*animation*, *voice*, *video_note*, *contact*, *location*, *venue*, *poll*.
+A media message contains any of the following fields set: *animation*, *audio*, *contact*, *dice*, *document*, *game*, *giveaway*, *giveaway_winners*, *location*, *photo*, *poll*, *sticker*, *story*, *venue*, *video*, *video_note*, *voice*, *web_page*.
 """
 
 
@@ -1057,3 +1056,27 @@ class chat(Filter, set):
                 and not message.outgoing
             )
         )
+
+
+# region chat_shared filter
+
+chat_shared: Filter = create(
+    lambda _, __, m: (
+        bool(m.chat_shared)
+    )
+)
+"""Filter service messages for chat shared."""
+
+# endregion
+
+
+# region users_shared filter
+
+users_shared: Filter = create(
+    lambda _, __, m: (
+        bool(m.users_shared)
+    )
+)
+"""Filter service messages for chat shared."""
+
+# endregion
