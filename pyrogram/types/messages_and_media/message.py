@@ -380,6 +380,12 @@ class Message(Object, Update):
         custom_action (``str``, *optional*):
             Custom action (most likely not supported by the current layer, an upgrade might be needed)
 
+        gift_code (:obj:`~pyrogram.types.GiftCode`, *optional*):
+            Contains a `Telegram Premium giftcode link <https://core.telegram.org/api/links#premium-giftcode-links>`_.
+
+        gifted_premium (:obj:`~pyrogram.types.GiftedPremium`, *optional*):
+            Info about a gifted Telegram Premium subscription
+
         link (``str``, *property*):
             Generate a link to this message, only for groups and channels.
 
@@ -481,6 +487,7 @@ class Message(Object, Update):
         ] = None,
 
         gift_code: "types.GiftCode" = None,
+        gifted_premium: "types.GiftedPremium" = None,
         chat_ttl_period: int = None,
         chat_ttl_setting_from: "types.User" = None,
         empty: bool = None,
@@ -584,6 +591,7 @@ class Message(Object, Update):
         self.giveaway_completed = giveaway_completed
         self.giveaway_winners = giveaway_winners
         self.gift_code = gift_code
+        self.gifted_premium = gifted_premium
         self.forum_topic_created = forum_topic_created
         self.forum_topic_edited = forum_topic_edited
         self.forum_topic_closed = forum_topic_closed
@@ -658,6 +666,7 @@ class Message(Object, Update):
             video_chat_participants_invited = None
             web_app_data = None
             gift_code = None
+            gifted_premium = None
             giveaway_created = None
             users_shared = None
             chat_shared = None
@@ -735,6 +744,9 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionGiftCode):
                 gift_code = types.GiftCode._parse(client, action, chats)
                 service_type = enums.MessageServiceType.GIFT_CODE
+            elif isinstance(action, raw.types.MessageActionGiftPremium):
+                gifted_premium = await types.GiftedPremium._parse(client, action, from_user.id)
+                service_type = enums.MessageServiceType.GIFTED_PREMIUM
 
             elif (
                 isinstance(action, raw.types.MessageActionRequestedPeer) or
@@ -910,6 +922,7 @@ class Message(Object, Update):
                 giveaway_created=giveaway_created,
                 giveaway_completed=giveaway_completed,
                 gift_code=gift_code,
+                gifted_premium=gifted_premium,
                 users_shared=users_shared,
                 chat_shared=chat_shared,
                 chat_ttl_period=chat_ttl_period,

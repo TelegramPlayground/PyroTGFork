@@ -330,6 +330,10 @@ def pyrogram_api():
             change_cloud_password
             remove_cloud_password
         """,
+        stickers="""
+        Stickers
+            get_stickers
+        """,
         users="""
         Users
             get_me
@@ -493,6 +497,7 @@ def pyrogram_api():
             Document
             Game
             GiftCode
+            GiftedPremium
             Giveaway
             GiveawayCompleted
             GiveawayWinners

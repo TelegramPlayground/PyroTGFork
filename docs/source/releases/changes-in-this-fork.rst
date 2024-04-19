@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added ``gifted_premium`` service message to :obj:`~pyrogram.types.Message`.
 - Added :meth:`~pyrogram.Client.get_stickers`.
 - Added ``filters.users_shared`` and ``filters.chat_shared``.
 - Added the field ``origin`` of type :obj:`~pyrogram.types.MessageOrigin`` in the class :obj:`~pyrogram.types.ExternalReplyInfo`.
