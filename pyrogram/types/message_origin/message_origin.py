@@ -55,6 +55,7 @@ class MessageOrigin(Object):
         if not forward_header:
             return None
         forward_date = utils.timestamp_to_datetime(forward_header.date)
+        forward_signature = getattr(forward_header, "post_author", None)
         if forward_header.from_id:
             raw_peer_id = utils.get_raw_peer_id(forward_header.from_id)
             peer_id = utils.get_peer_id(forward_header.from_id)
@@ -67,7 +68,6 @@ class MessageOrigin(Object):
             else:
                 forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
                 forward_from_message_id = forward_header.channel_post
-                forward_signature = forward_header.post_author
                 if forward_from_message_id:
                     return types.MessageOriginChannel(
                         date=forward_date,
@@ -86,4 +86,9 @@ class MessageOrigin(Object):
             return types.MessageOriginHiddenUser(
                 date=forward_date,
                 sender_user_name=forward_sender_name
+            )
+        elif forward_header.imported:
+            return types.MessageImportInfo(
+                date=forward_date,
+                sender_user_name=forward_signature
             )

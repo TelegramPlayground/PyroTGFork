@@ -16,18 +16,35 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .message_origin import MessageOrigin
-from .message_origin_channel import MessageOriginChannel
-from .message_origin_chat import MessageOriginChat
-from .message_origin_hidden_user import MessageOriginHiddenUser
-from .message_origin_user import MessageOriginUser
-from .message_import_info import MessageImportInfo
+from datetime import datetime
 
-__all__ = [
-    "MessageImportInfo",
-    "MessageOrigin",
-    "MessageOriginChannel",
-    "MessageOriginChat",
-    "MessageOriginHiddenUser",
-    "MessageOriginUser",
-]
+from .message_origin import MessageOrigin
+
+import pyrogram
+from pyrogram import types
+
+
+class MessageImportInfo(MessageOrigin):
+    """Contains information about a message created with `importMessages <https://t.me/telegram/142>`_.
+
+    Parameters:
+        date (:py:obj:`~datetime.datetime`):
+            Date the message was sent originally in Unix time
+
+        sender_user_name (``str``):
+            Name of the original sender
+
+    """
+
+    def __init__(
+        self,
+        *,
+        date: datetime = None,
+        sender_user_name: str = None
+    ):
+        super().__init__(
+            type="import_info",
+            date=date
+        )
+
+        self.sender_user_name = sender_user_name
