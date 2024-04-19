@@ -272,7 +272,7 @@ class Client(Methods):
         storage_engine: Storage = None,
         no_joined_notifications: bool = False,
         client_platform: enums.ClientPlatform = enums.ClientPlatform.OTHER,
-        _un_docu_gnihts: List = None
+        _un_docu_gnihts: List = []
     ):
         super().__init__()
 
@@ -308,7 +308,7 @@ class Client(Methods):
         self.max_business_user_connection_cache_size = max_business_user_connection_cache_size
         self.no_joined_notifications = no_joined_notifications
         self.client_platform = client_platform
-        self._un_docu_gnihts = []
+        self._un_docu_gnihts = _un_docu_gnihts
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 
@@ -424,11 +424,14 @@ class Client(Methods):
 
         sent_code_descriptions = {
             enums.SentCodeType.APP: "Telegram app",
-            enums.SentCodeType.SMS: "SMS",
             enums.SentCodeType.CALL: "phone call",
             enums.SentCodeType.FLASH_CALL: "phone flash call",
+            enums.SentCodeType.MISSED_CALL: "",
+            enums.SentCodeType.SMS: "SMS",
             enums.SentCodeType.FRAGMENT_SMS: "Fragment SMS",
-            enums.SentCodeType.EMAIL_CODE: "email code"
+            enums.SentCodeType.FIREBASE_SMS: "SMS after Firebase attestation",
+            enums.SentCodeType.EMAIL_CODE: "email",
+            enums.SentCodeType.SETUP_EMAIL_REQUIRED: "add and verify email required",
         }
 
         print(f"The confirmation code has been sent via {sent_code_descriptions[sent_code.type]}")
