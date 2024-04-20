@@ -261,6 +261,7 @@ def pyrogram_api():
             toggle_join_to_send
             toggle_folder_tags
             set_chat_ttl
+            get_personal_channels
         """,
         users="""
         Users
@@ -280,6 +281,7 @@ def pyrogram_api():
             update_status
             check_username
             update_birthday
+            update_personal_channel
         """,
         invite_links="""
         Invite Links

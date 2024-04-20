@@ -30,6 +30,7 @@ from .set_profile_photo import SetProfilePhoto
 from .set_username import SetUsername
 from .unblock_user import UnblockUser
 from .update_birthday import UpdateBirthday
+from .update_personal_channel import UpdatePersonalChannel
 from .update_profile import UpdateProfile
 from .update_status import UpdateStatus
 
@@ -47,6 +48,7 @@ class Users(
     GetChatPhotosCount,
     UnblockUser,
     UpdateBirthday,
+    UpdatePersonalChannel,
     UpdateProfile,
     UpdateStatus,
     GetDefaultEmojiStatuses,
