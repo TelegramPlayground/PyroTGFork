@@ -18,7 +18,7 @@
 
 import html
 from datetime import datetime
-from typing import List, Optional
+from typing import List, Optional, Union
 
 import pyrogram
 from pyrogram import enums, utils
@@ -172,6 +172,9 @@ class User(Object, Update):
 
         profile_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
             Chat profile color.
+
+        raw (:obj:`~pyrogram.raw.base.User` | :obj:`~pyrogram.raw.base.UserStatus`, *optional*):
+            The raw user or user status object, as received from the Telegram API.
     """
 
     def __init__(
@@ -209,7 +212,8 @@ class User(Object, Update):
         photo: "types.ChatPhoto" = None,
         restrictions: List["types.Restriction"] = None,
         reply_color: "types.ChatColor" = None,
-        profile_color: "types.ChatColor" = None
+        profile_color: "types.ChatColor" = None,
+        raw: Union["raw.base.User", "raw.base.UserStatus"] = None
     ):
         super().__init__(client)
 
@@ -245,6 +249,7 @@ class User(Object, Update):
         self.restrictions = restrictions
         self.reply_color = reply_color
         self.profile_color = profile_color
+        self.raw = raw
 
     @property
     def full_name(self) -> str:
@@ -262,7 +267,7 @@ class User(Object, Update):
     def _parse(client, user: "raw.base.User") -> Optional["User"]:
         if user is None or isinstance(user, raw.types.UserEmpty):
             return None
-        raw.types.User
+
         return User(
             id=user.id,
             is_self=user.is_self,
@@ -294,6 +299,7 @@ class User(Object, Update):
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             reply_color=types.ChatColor._parse(getattr(user, "color", None)),
             profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
+            raw=user,
             client=client
         )
 
@@ -335,6 +341,7 @@ class User(Object, Update):
         return User(
             id=user_status.user_id,
             **User._parse_status(user_status.status),
+            raw=user_status,
             client=client
         )
 

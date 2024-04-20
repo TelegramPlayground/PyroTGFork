@@ -191,6 +191,9 @@ class Chat(Object):
 
         birthday (:obj:`~pyrogram.types.Birthday`, *optional*):
             Information about user birthday.
+
+        raw (:obj:`~pyrogram.raw.base.Chat` | :obj:`~pyrogram.raw.base.User` | :obj:`~pyrogram.raw.base.ChatFull` | :obj:`~pyrogram.raw.base.UserFull`, *optional*):
+            The raw chat or user object, as received from the Telegram API.
     """
 
     def __init__(
@@ -243,7 +246,8 @@ class Chat(Object):
         profile_color: "types.ChatColor" = None,
         business_info: "types.BusinessInfo" = None,
         business_intro: "types.BusinessIntro" = None,
-        birthday: "types.Birthday" = None
+        birthday: "types.Birthday" = None,
+        raw: Union["raw.base.Chat", "raw.base.User", "raw.base.ChatFull", "raw.base.UserFull"] = None
     ):
         super().__init__(client)
 
@@ -294,6 +298,7 @@ class Chat(Object):
         self.business_info = business_info
         self.business_intro = business_intro
         self.birthday = birthday
+        self.raw = raw
 
     @staticmethod
     def _parse_user_chat(client, user: raw.types.User) -> "Chat":
@@ -319,6 +324,7 @@ class Chat(Object):
             dc_id=getattr(getattr(user, "photo", None), "dc_id", None),
             reply_color=types.ChatColor._parse(getattr(user, "color", None)),
             profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
+            raw=user,
             client=client
         )
 
@@ -341,6 +347,7 @@ class Chat(Object):
             members_count=getattr(chat, "participants_count", None),
             dc_id=getattr(getattr(chat, "photo", None), "dc_id", None),
             has_protected_content=getattr(chat, "noforwards", None),
+            raw=chat,
             client=client
         )
 
@@ -376,6 +383,7 @@ class Chat(Object):
             level=getattr(channel, "level", None),
             reply_color=types.ChatColor._parse(getattr(channel, "color", None)),
             profile_color=types.ChatColor._parse(getattr(channel, "profile_color", None)),
+            raw=channel,
             client=client
         )
 
@@ -422,6 +430,7 @@ class Chat(Object):
             parsed_chat.business_info = types.BusinessInfo._parse(client, full_user, users)
             parsed_chat.business_intro = await types.BusinessIntro._parse(client, getattr(full_user, "business_intro", None))
             parsed_chat.birthday = types.Birthday._parse(getattr(full_user, "birthday", None))
+            parsed_chat.raw = full_user
 
             if full_user.pinned_msg_id:
                 parsed_chat.pinned_message = await client.get_messages(
@@ -508,6 +517,7 @@ class Chat(Object):
                 parsed_chat.invite_link = full_chat.exported_invite.link
 
             parsed_chat.available_reactions = types.ChatReactions._parse(client, full_chat.available_reactions)
+            parsed_chat.raw = full_chat
 
         return parsed_chat
 
