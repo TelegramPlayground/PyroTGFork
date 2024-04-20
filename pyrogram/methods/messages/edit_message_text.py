@@ -16,11 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from datetime import datetime
 from typing import Union, List, Optional
 
 import pyrogram
 from pyrogram import raw, enums, types, utils
+
+log = logging.getLogger(__name__)
 
 
 class EditMessageText:
@@ -33,7 +36,8 @@ class EditMessageText:
         entities: List["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        schedule_date: datetime = None
+        schedule_date: datetime = None,
+        disable_web_page_preview: bool = None
     ) -> "types.Message":
         """Edit the text of messages.
 
@@ -84,6 +88,18 @@ class EditMessageText:
                     )
                 )
         """
+        if disable_web_page_preview and link_preview_options:
+            raise ValueError(
+                "Parameters `disable_web_page_preview` and `link_preview_options` are mutually "
+                "exclusive."
+            )
+
+        if disable_web_page_preview is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use link_preview_options instead"
+            )
+            link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
         r = await self.invoke(
             raw.functions.messages.EditMessage(

@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import Optional, List
 
 import pyrogram
@@ -23,6 +24,8 @@ from pyrogram import raw, enums
 from pyrogram import types
 from pyrogram import utils
 from .inline_session import get_session
+
+log = logging.getLogger(__name__)
 
 
 class EditInlineText:
@@ -33,7 +36,8 @@ class EditInlineText:
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
-        reply_markup: "types.InlineKeyboardMarkup" = None
+        reply_markup: "types.InlineKeyboardMarkup" = None,
+        disable_web_page_preview: bool = None
     ) -> bool:
         """Edit the text of inline messages.
 
@@ -78,6 +82,18 @@ class EditInlineText:
                     )
                 )
         """
+        if disable_web_page_preview and link_preview_options:
+            raise ValueError(
+                "Parameters `disable_web_page_preview` and `link_preview_options` are mutually "
+                "exclusive."
+            )
+
+        if disable_web_page_preview is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use link_preview_options instead"
+            )
+            link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
         unpacked = utils.unpack_inline_message_id(inline_message_id)
         dc_id = unpacked.dc_id

@@ -16,11 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import Optional, List
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
 from .input_message_content import InputMessageContent
+
+log = logging.getLogger(__name__)
 
 
 class InputTextMessageContent(InputMessageContent):
@@ -47,7 +50,21 @@ class InputTextMessageContent(InputMessageContent):
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
+        disable_web_page_preview: bool = None
     ):
+        if disable_web_page_preview and link_preview_options:
+            raise ValueError(
+                "Parameters `disable_web_page_preview` and `link_preview_options` are mutually "
+                "exclusive."
+            )
+
+        if disable_web_page_preview is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use link_preview_options instead"
+            )
+            link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
+
         super().__init__()
 
         self.message_text = message_text

@@ -186,7 +186,8 @@ class CallbackQuery(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
-        reply_markup: "types.InlineKeyboardMarkup" = None
+        reply_markup: "types.InlineKeyboardMarkup" = None,
+        disable_web_page_preview: bool = None
     ) -> Union["types.Message", bool]:
         """Edit the text of messages attached to callback queries.
 
@@ -224,7 +225,8 @@ class CallbackQuery(Object, Update):
                 parse_mode=parse_mode,
                 entities=entities,
                 link_preview_options=link_preview_options,
-                reply_markup=reply_markup
+                reply_markup=reply_markup,
+                disable_web_page_preview=disable_web_page_preview
             )
         else:
             return await self._client.edit_inline_text(
@@ -233,7 +235,8 @@ class CallbackQuery(Object, Update):
                 parse_mode=parse_mode,
                 entities=entities,
                 link_preview_options=link_preview_options,
-                reply_markup=reply_markup
+                reply_markup=reply_markup,
+                disable_web_page_preview=disable_web_page_preview
             )
 
     async def edit_message_caption(

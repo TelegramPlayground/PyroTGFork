@@ -1310,7 +1310,9 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        schedule_date: datetime = None
+        schedule_date: datetime = None,
+        disable_web_page_preview: bool = None,
+        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_text* of :obj:`~pyrogram.types.Message`.
 
@@ -1395,7 +1397,9 @@ class Message(Object, Update):
             business_connection_id=self.business_connection_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
-            schedule_date=schedule_date
+            schedule_date=schedule_date,
+            disable_web_page_preview=disable_web_page_preview,
+            reply_to_message_id=reply_to_message_id
         )
 
     reply = reply_text
@@ -3461,7 +3465,8 @@ class Message(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: List["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
-        reply_markup: "types.InlineKeyboardMarkup" = None
+        reply_markup: "types.InlineKeyboardMarkup" = None,
+        disable_web_page_preview: bool = None
     ) -> "Message":
         """Bound method *edit_text* of :obj:`~pyrogram.types.Message`.
 
@@ -3513,7 +3518,8 @@ class Message(Object, Update):
             parse_mode=parse_mode,
             entities=entities,
             link_preview_options=link_preview_options,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            disable_web_page_preview=disable_web_page_preview
         )
 
     edit = edit_text

@@ -16,12 +16,15 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from datetime import datetime
 from typing import Union, List, Optional
 
 import pyrogram
 from pyrogram import raw, utils, enums, types, errors
 from .inline_session import get_session
+
+log = logging.getLogger(__name__)
 
 
 class SendMessage:
@@ -43,7 +46,9 @@ class SendMessage:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        schedule_date: datetime = None
+        schedule_date: datetime = None,
+        disable_web_page_preview: bool = None,
+        reply_to_message_id: int = None
     ) -> "types.Message":
         """Send text messages.
 
@@ -132,6 +137,31 @@ class SendMessage:
                             [InlineKeyboardButton("Docs", url="https://docs.pyrogram.org")]
                         ]))
         """
+        if disable_web_page_preview and link_preview_options:
+            raise ValueError(
+                "Parameters `disable_web_page_preview` and `link_preview_options` are mutually "
+                "exclusive."
+            )
+
+        if disable_web_page_preview is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use link_preview_options instead"
+            )
+            link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
+
+        if reply_to_message_id and reply_parameters:
+            raise ValueError(
+                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                "exclusive."
+            )
+        
+        if reply_to_message_id is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use reply_parameters instead"
+            )
+            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
 
         reply_to = await utils.get_reply_head_fm(
             self,
