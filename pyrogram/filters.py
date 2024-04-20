@@ -478,7 +478,12 @@ private: Filter = create(private_filter)
 
 
 # region group_filter
-async def group_filter(_, __, m: Message) -> bool:
+async def group_filter(_, __, m: Union[Message, CallbackQuery]) -> bool:
+    m = getattr(m, "message", None) if isinstance(m, CallbackQuery) else m
+    if not m:
+        raise ValueError(
+            "filters.group is not supported here "
+        )
     return bool(
         m.chat and m.chat.type in {enums.ChatType.GROUP, enums.ChatType.SUPERGROUP}
     )
@@ -492,7 +497,12 @@ group: Filter = create(group_filter)
 
 
 # region channel_filter
-async def channel_filter(_, __, m: Message) -> bool:
+async def channel_filter(_, __, m: Union[Message, CallbackQuery]) -> bool:
+    m = getattr(m, "message", None) if isinstance(m, CallbackQuery) else m
+    if not m:
+        raise ValueError(
+            "filters.channel is not supported here "
+        )
     return bool(m.chat and m.chat.type == enums.ChatType.CHANNEL)
 
 
