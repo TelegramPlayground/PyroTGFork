@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Attempted to revert the Backward Incompatible changes in the commits `fb118f95d <https://github.com/TelegramPlayGround/pyrogram/commit/fb118f9>`_ and `848bc8644 <https://github.com/TelegramPlayGround/pyrogram/commit/848bc86>`_.
 - Added ``callback_data_with_password`` to :obj:`~pyrogram.types.InlineKeyboardButton` and added support in :meth:`~pyrogram.types.Message.click` for such buttons.
 - PR from upstream: `1391 <https://github.com/pyrogram/pyrogram/pull/1391>`_ without attribution.
 - Added ``gifted_premium`` service message to :obj:`~pyrogram.types.Message`.
