@@ -76,6 +76,10 @@ class InlineKeyboardButton(Object):
         pay (``bool``, *optional*):
             Specify True, to send a Pay button.
             **NOTE**: This type of button **must** always be the first button in the first row and can only be used in invoice messages.
+
+        callback_data_with_password (``bytes``, *optional*):
+            A button that asks for the 2-step verification password of the current user and then sends a callback query to a bot Data to be sent to the bot via a callback query.
+
     """
 
     def __init__(
@@ -90,7 +94,8 @@ class InlineKeyboardButton(Object):
         switch_inline_query_current_chat: str = None,
         switch_inline_query_chosen_chat: "types.SwitchInlineQueryChosenChat" = None,
         callback_game: "types.CallbackGame" = None,
-        pay: bool = None
+        pay: bool = None,
+        callback_data_with_password: bytes = None
     ):
         super().__init__()
 
@@ -105,6 +110,7 @@ class InlineKeyboardButton(Object):
         self.switch_inline_query_chosen_chat = switch_inline_query_chosen_chat
         self.callback_game = callback_game
         self.pay = pay
+        self.callback_data_with_password = callback_data_with_password
 
     @staticmethod
     def read(b: "raw.base.KeyboardButton"):
@@ -115,6 +121,12 @@ class InlineKeyboardButton(Object):
                 data = b.data.decode()
             except UnicodeDecodeError:
                 data = b.data
+
+            if getattr(b, "requires_password", None):
+                return InlineKeyboardButton(
+                    text=b.text,
+                    callback_data_with_password=data
+                )
 
             return InlineKeyboardButton(
                 text=b.text,
@@ -177,6 +189,18 @@ class InlineKeyboardButton(Object):
             )
 
     async def write(self, client: "pyrogram.Client"):
+        if self.callback_data_with_password is not None:
+            if isinstance(self.callback_data_with_password, str):
+                raise ValueError(
+                    "This is not supported"
+                )
+            data = self.callback_data_with_password
+            return raw.types.KeyboardButtonCallback(
+                text=self.text,
+                data=data,
+                requires_password=True
+            )
+
         if self.callback_data is not None:
             # Telegram only wants bytes, but we are allowed to pass strings too, for convenience.
             data = bytes(self.callback_data, "utf-8") if isinstance(self.callback_data, str) else self.callback_data

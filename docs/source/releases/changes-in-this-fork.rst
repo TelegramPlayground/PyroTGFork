@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
+- Added ``callback_data_with_password`` to :obj:`~pyrogram.types.InlineKeyboardButton`.
 - PR from upstream: `1391 <https://github.com/pyrogram/pyrogram/pull/1391>`_ without attribution.
 - Added ``gifted_premium`` service message to :obj:`~pyrogram.types.Message`.
 - Added :meth:`~pyrogram.Client.get_stickers`.
