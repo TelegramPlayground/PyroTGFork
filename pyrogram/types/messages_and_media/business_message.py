@@ -24,7 +24,7 @@ from ..object import Object
 
 
 class BusinessMessage(Object):
-    """Business working hours.
+    """A Business message.
 
     Parameters:
         shortcut_id (``int``):

@@ -20,7 +20,6 @@ from .birthday import Birthday
 from .business_connection import BusinessConnection
 from .business_info import BusinessInfo
 from .business_intro import BusinessIntro
-from .business_message import BusinessMessage
 from .business_recipients import BusinessRecipients
 from .business_weekly_open import BusinessWeeklyOpen
 from .business_working_hours import BusinessWorkingHours
@@ -56,7 +55,6 @@ __all__ = [
     "BusinessConnection",
     "BusinessInfo",
     "BusinessIntro",
-    "BusinessMessage",
     "BusinessRecipients",
     "BusinessWeeklyOpen",
     "BusinessWorkingHours",
