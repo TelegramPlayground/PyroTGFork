@@ -250,23 +250,11 @@ class Message(Object, Update):
             Note that the Message object in this field will not contain further reply_to_message fields even if it
             is itself a reply.
 
-        invoice
-
-        successful_payment
-
         users_shared (:obj:`~pyrogram.types.UsersShared`, *optional*):
             Service message: users were shared with the bot
 
         chat_shared (:obj:`~pyrogram.types.ChatShared`, *optional*):
             Service message: a chat was shared with the bot
-
-        connected_website
-
-        write_access_allowed
-
-        passport_data
-
-        proximity_alert_triggered
 
         boost_added (:obj:`~pyrogram.types.ChatBoostAdded`, *optional*):
             Service message: user boosted the chat
@@ -1262,7 +1250,7 @@ class Message(Object, Update):
                 enums.ChatType.CHANNEL
             )
         ):
-            return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}/{self.id}"
+            return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
         raise ValueError("This message-chat type does not have a link")
 
     async def get_media_group(self) -> List["types.Message"]:
