@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from json import dumps
+from random import randint
 from typing import Union
 
 import pyrogram
@@ -29,7 +31,9 @@ class SendChatAction:
         action: "enums.ChatAction",
         progress: int = 0,
         message_thread_id: int = None,
-        business_connection_id: str = None
+        business_connection_id: str = None,
+        emoji: str = None,
+        emoji_message_id: int = None
     ) -> bool:
         """Use this method when you need to tell the user that something is happening on the bot's side.
         The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
@@ -55,6 +59,12 @@ class SendChatAction:
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the action will be sent
+
+            emoji (``str``, *optional*):
+                The animated emoji. Only supported for :obj:`~pyrogram.enums.ChatAction.TRIGGER_EMOJI_ANIMATION` and :obj:`~pyrogram.enums.ChatAction.WATCH_EMOJI_ANIMATION`.
+
+            emoji_message_id (``int``, *optional*):
+                Message identifier of the message containing the animated emoji. Only supported for :obj:`~pyrogram.enums.ChatAction.TRIGGER_EMOJI_ANIMATION`.
 
         Returns:
             ``bool``: On success, True is returned.
@@ -87,6 +97,43 @@ class SendChatAction:
             "import" in action_name
         ):
             action = action.value(progress=progress)
+        elif "watch_emoji" in action_name:
+            if emoji is None:
+                raise ValueError(
+                    "Invalid Argument Provided"
+                )
+            action = action.value(emoticon=emoji)
+        elif "trigger_emoji" in action_name:
+            if (
+                emoji is None or
+                emoji_message_id is None
+            ):
+                raise ValueError(
+                    "Invalid Argument Provided"
+                )
+            _, sticker_set = await self._get_raw_stickers(
+                raw.types.InputStickerSetAnimatedEmojiAnimations()
+            )
+            action = action.value(
+                emoticon=emoji,
+                msg_id=emoji_message_id,
+                interaction=raw.types.DataJSON(
+                    data=dumps(
+                        {
+                            "v": 1,
+                            "a":[
+                                {
+                                    "t": 0,
+                                    "i": randint(
+                                        1,
+                                        sticker_set.count
+                                    )
+                                }
+                            ]
+                        }
+                    )
+                )
+            )
         else:
             action = action.value()
 
