@@ -4,7 +4,7 @@ Welcome to Pyrogram
 .. admonition :: A Word of Warning
     :class: tip
     
-    We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable, __USE AT YOUR OWN RISK__.
+    We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable, **USE AT YOUR OWN RISK**.
 
 
 .. raw:: html

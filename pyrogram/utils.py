@@ -459,7 +459,7 @@ def datetime_to_timestamp(dt: Optional[datetime]) -> Optional[int]:
     return int(dt.timestamp()) if dt else None
 
 
-async def get_reply_head_fm(
+async def _get_reply_message_parameters(
     client: "pyroram.Client",
     message_thread_id: int = None,
     reply_parameters: "types.ReplyParameters" = None

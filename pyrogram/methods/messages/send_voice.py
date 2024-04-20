@@ -16,19 +16,19 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 import re
 from datetime import datetime
 from typing import Union, BinaryIO, List, Optional, Callable
 
 import pyrogram
-from pyrogram import StopTransmission, enums
-from pyrogram import raw
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import StopTransmission, enums, raw, types, utils
 from pyrogram.errors import FilePartMissing
 from pyrogram.file_id import FileType
 from .inline_session import get_session
+
+log = logging.getLogger(__name__)
 
 
 class SendVoice:
@@ -55,6 +55,7 @@ class SendVoice:
         ttl_seconds: int = None,
         view_once: bool = None,
         waveform: bytes = None,
+        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> Optional["types.Message"]:
@@ -164,6 +165,20 @@ class SendVoice:
                 await app.send_voice("me", "voice.ogg", ttl_seconds=10)
 
         """
+
+        if reply_to_message_id and reply_parameters:
+            raise ValueError(
+                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                "exclusive."
+            )
+        
+        if reply_to_message_id is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use reply_parameters instead"
+            )
+            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
+
         file = None
         ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
 
@@ -211,7 +226,7 @@ class SendVoice:
                     ttl_seconds=ttl_seconds
                 )
 
-            reply_to = await utils.get_reply_head_fm(
+            reply_to = await utils._get_reply_message_parameters(
                 self,
                 message_thread_id,
                 reply_parameters

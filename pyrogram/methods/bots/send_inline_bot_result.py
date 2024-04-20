@@ -16,10 +16,13 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils, types
+
+log = logging.getLogger(__name__)
 
 
 class SendInlineBotResult:
@@ -30,7 +33,8 @@ class SendInlineBotResult:
         result_id: str,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
-        message_thread_id: int = None
+        message_thread_id: int = None,
+        reply_to_message_id: int = None
     ) -> "raw.base.Updates":
         """Send an inline bot result.
         Bot results can be retrieved using :meth:`~pyrogram.Client.get_inline_bot_results`
@@ -68,7 +72,20 @@ class SendInlineBotResult:
                 await app.send_inline_bot_result(chat_id, query_id, result_id)
         """
 
-        reply_to = await utils.get_reply_head_fm(
+        if reply_to_message_id and reply_parameters:
+            raise ValueError(
+                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                "exclusive."
+            )
+        
+        if reply_to_message_id is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use reply_parameters instead"
+            )
+            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
+
+        reply_to = await utils._get_reply_message_parameters(
             self,
             message_thread_id,
             reply_parameters

@@ -16,12 +16,15 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from datetime import datetime
 from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils
 from pyrogram import types
+
+log = logging.getLogger(__name__)
 
 
 class SendLocation:
@@ -41,7 +44,8 @@ class SendLocation:
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+        reply_to_message_id: int = None
     ) -> "types.Message":
         """Send points on the map.
 
@@ -91,7 +95,20 @@ class SendLocation:
                 app.send_location("me", latitude, longitude)
         """
 
-        reply_to = await utils.get_reply_head_fm(
+        if reply_to_message_id and reply_parameters:
+            raise ValueError(
+                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                "exclusive."
+            )
+        
+        if reply_to_message_id is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use reply_parameters instead"
+            )
+            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
+
+        reply_to = await utils._get_reply_message_parameters(
             self,
             message_thread_id,
             reply_parameters

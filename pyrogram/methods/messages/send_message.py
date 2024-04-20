@@ -163,7 +163,7 @@ class SendMessage:
             )
             reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
 
-        reply_to = await utils.get_reply_head_fm(
+        reply_to = await utils._get_reply_message_parameters(
             self,
             message_thread_id,
             reply_parameters

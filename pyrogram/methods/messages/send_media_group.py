@@ -23,12 +23,9 @@ from datetime import datetime
 from typing import Union, List
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import raw, types, utils
 from pyrogram.file_id import FileType
 from .inline_session import get_session
-
 
 log = logging.getLogger(__name__)
 
@@ -49,7 +46,8 @@ class SendMediaGroup:
         message_thread_id: int = None,
         business_connection_id: str = None,
         schedule_date: datetime = None,
-        protect_content: bool = None
+        protect_content: bool = None,
+        reply_to_message_id: int = None
     ) -> List["types.Message"]:
         """Send a group of photos or videos as an album.
 
@@ -100,6 +98,20 @@ class SendMediaGroup:
                     ]
                 )
         """
+
+        if reply_to_message_id and reply_parameters:
+            raise ValueError(
+                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                "exclusive."
+            )
+        
+        if reply_to_message_id is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use reply_parameters instead"
+            )
+            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
+
         multi_media = []
 
         for i in media:
@@ -420,7 +432,7 @@ class SendMediaGroup:
                 )
             )
 
-        reply_to = await utils.get_reply_head_fm(
+        reply_to = await utils._get_reply_message_parameters(
             self,
             message_thread_id,
             reply_parameters

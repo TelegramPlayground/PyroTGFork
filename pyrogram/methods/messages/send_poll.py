@@ -16,12 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from datetime import datetime
 from typing import Union, List
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types, enums
+from pyrogram import raw, utils, types, enums
+
+log = logging.getLogger(__name__)
 
 
 class SendPoll:
@@ -51,7 +53,8 @@ class SendPoll:
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
-        ] = None
+        ] = None,
+        reply_to_message_id: int = None
     ) -> "types.Message":
         """Send a new poll.
 
@@ -141,11 +144,24 @@ class SendPoll:
                 await app.send_poll(chat_id, "Is this a poll question?", ["Yes", "No", "Maybe"])
         """
 
+        if reply_to_message_id and reply_parameters:
+            raise ValueError(
+                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                "exclusive."
+            )
+        
+        if reply_to_message_id is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use reply_parameters instead"
+            )
+            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
+
         solution, solution_entities = (await utils.parse_text_entities(
             self, explanation, explanation_parse_mode, explanation_entities
         )).values()
 
-        reply_to = await utils.get_reply_head_fm(
+        reply_to = await utils._get_reply_message_parameters(
             self,
             message_thread_id,
             reply_parameters

@@ -16,17 +16,19 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 import re
 from datetime import datetime
 from typing import List, Union, BinaryIO, Optional, Callable
 
 import pyrogram
-from pyrogram import StopTransmission
-from pyrogram import raw, types, utils
+from pyrogram import StopTransmission, raw, types, utils
 from pyrogram.errors import FilePartMissing
 from pyrogram.file_id import FileType
 from .inline_session import get_session
+
+log = logging.getLogger(__name__)
 
 
 class SendSticker:
@@ -49,6 +51,7 @@ class SendSticker:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        reply_to_message_id: int = None,
         schedule_date: datetime = None,
         progress: Callable = None,
         progress_args: tuple = ()
@@ -142,6 +145,20 @@ class SendSticker:
                 # Send sticker using file_id
                 await app.send_sticker("me", file_id)
         """
+
+        if reply_to_message_id and reply_parameters:
+            raise ValueError(
+                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                "exclusive."
+            )
+        
+        if reply_to_message_id is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use reply_parameters instead"
+            )
+            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
+
         file = None
 
         try:
@@ -171,7 +188,7 @@ class SendSticker:
                     ]
                 )
 
-            reply_to = await utils.get_reply_head_fm(
+            reply_to = await utils._get_reply_message_parameters(
                 self,
                 message_thread_id,
                 reply_parameters
