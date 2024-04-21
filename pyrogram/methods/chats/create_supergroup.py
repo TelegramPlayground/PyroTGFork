@@ -24,7 +24,9 @@ class CreateSupergroup:
     async def create_supergroup(
         self: "pyrogram.Client",
         title: str,
-        description: str = ""
+        description: str = "",
+        message_auto_delete_time: int = 0,
+        is_forum: bool = False
     ) -> "types.Chat":
         """Create a new supergroup.
 
@@ -41,6 +43,12 @@ class CreateSupergroup:
             description (``str``, *optional*):
                 The supergroup description.
 
+            message_auto_delete_time (``int``, *optional*):
+                Message auto-delete time value, in seconds; must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically.
+
+            is_forum (``bool``, *optional*):
+                Pass True to create a forum supergroup chat. Defaults to False.
+
         Returns:
             :obj:`~pyrogram.types.Chat`: On success, a chat object is returned.
 
@@ -53,7 +61,9 @@ class CreateSupergroup:
             raw.functions.channels.CreateChannel(
                 title=title,
                 about=description,
-                megagroup=True
+                megagroup=True,
+                ttl_period=message_auto_delete_time,
+                forum=is_forum
             )
         )
 
