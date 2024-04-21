@@ -377,6 +377,15 @@ class Chat(Object):
     def _parse_channel_chat(client, channel: raw.types.Channel) -> "Chat":
         peer_id = utils.get_channel_id(channel.id)
 
+        if isinstance(channel, raw.types.ChatForbidden):
+            return Chat(
+                id=peer_id,
+                type=enums.ChatType.GROUP,
+                title=channel.title,
+                client=client,
+                _raw=channel
+            )
+
         if isinstance(channel, raw.types.ChannelForbidden):
             return Chat(
                 id=peer_id,
