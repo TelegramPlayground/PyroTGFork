@@ -1836,7 +1836,8 @@ class Message(Object, Update):
         action: "enums.ChatAction",
         progress: int = 0,
         emoji: str = None,
-        emoji_message_id: int = None
+        emoji_message_id: int = None,
+        emoji_message_interaction: "raw.types.DataJSON" = None
     ) -> bool:
         """Bound method *reply_chat_action* of :obj:`~pyrogram.types.Message`.
 
@@ -1871,6 +1872,9 @@ class Message(Object, Update):
             emoji_message_id (``int``, *optional*):
                 Message identifier of the message containing the animated emoji. Only supported for :obj:`~pyrogram.enums.ChatAction.TRIGGER_EMOJI_ANIMATION`.
 
+            emoji_message_interaction (:obj:`raw.types.DataJSON`, *optional*):
+                Only supported for :obj:`~pyrogram.enums.ChatAction.TRIGGER_EMOJI_ANIMATION`.
+
         Returns:
             ``bool``: On success, True is returned.
 
@@ -1885,7 +1889,8 @@ class Message(Object, Update):
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             emoji=emoji,
-            emoji_message_id=emoji_message_id
+            emoji_message_id=emoji_message_id,
+            emoji_message_interaction=emoji_message_interaction
         )
 
     async def reply_contact(

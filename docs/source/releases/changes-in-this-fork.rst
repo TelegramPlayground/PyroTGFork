@@ -12,7 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 177 |
 +------------------------+
 
-- Updated :obj:
+- Added ``emoji_message_interaction`` parameter to :meth:`~pyrogram.Client.send_chat_action` and :meth:`~pyrogram.types.Message.reply_chat_action`.
 - **BOTS ONLY**: Updated :obj:`~pyrogram.handlers.ChatMemberUpdatedHandler` to handle updates when the bot is blocked or unblocked by a user.
 - Added missing parameters in :meth:`~pyrogram.Client.create_group`, :meth:`~pyrogram.Client.create_supergroup`, :meth:`~pyrogram.Client.create_channel`.
 - Try to return the service message (when applicable) in the methods :meth:`~pyrogram.Client.add_chat_members`, :meth:`~pyrogram.Client.promote_chat_member`

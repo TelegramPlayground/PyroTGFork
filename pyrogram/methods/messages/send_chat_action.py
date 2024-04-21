@@ -33,7 +33,8 @@ class SendChatAction:
         message_thread_id: int = None,
         business_connection_id: str = None,
         emoji: str = None,
-        emoji_message_id: int = None
+        emoji_message_id: int = None,
+        emoji_message_interaction: "raw.types.DataJSON" = None
     ) -> bool:
         """Use this method when you need to tell the user that something is happening on the bot's side.
         The status is set for 5 seconds or less (when a message arrives from your bot, Telegram clients clear its typing status).
@@ -65,6 +66,9 @@ class SendChatAction:
 
             emoji_message_id (``int``, *optional*):
                 Message identifier of the message containing the animated emoji. Only supported for :obj:`~pyrogram.enums.ChatAction.TRIGGER_EMOJI_ANIMATION`.
+
+            emoji_message_interaction (:obj:`raw.types.DataJSON`, *optional*):
+                Only supported for :obj:`~pyrogram.enums.ChatAction.TRIGGER_EMOJI_ANIMATION`.
 
         Returns:
             ``bool``: On success, True is returned.
@@ -111,13 +115,11 @@ class SendChatAction:
                 raise ValueError(
                     "Invalid Argument Provided"
                 )
-            _, sticker_set = await self._get_raw_stickers(
-                raw.types.InputStickerSetAnimatedEmojiAnimations()
-            )
-            action = action.value(
-                emoticon=emoji,
-                msg_id=emoji_message_id,
-                interaction=raw.types.DataJSON(
+            if emoji_message_interaction is None:
+                _, sticker_set = await self._get_raw_stickers(
+                    raw.types.InputStickerSetAnimatedEmojiAnimations()
+                )
+                emoji_message_interaction = raw.types.DataJSON(
                     data=dumps(
                         {
                             "v": 1,
@@ -133,6 +135,10 @@ class SendChatAction:
                         }
                     )
                 )
+            action = action.value(
+                emoticon=emoji,
+                msg_id=emoji_message_id,
+                interaction=emoji_message_interaction
             )
         else:
             action = action.value()
