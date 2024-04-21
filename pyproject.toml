@@ -42,7 +42,7 @@ path = "pyrogram/__init__.py"
 [project.urls]
 Homepage = "https://telegramplayground.github.io/pyrogram/releases/"
 Tracker = "https://github.com/TelegramPlayGround/Pyrogram/issues"
-Community = "https://t.me/Pyrogram"
+Community = "https://t.me/PyroTGFork"
 Source = "https://github.com/TelegramPlayGround/Pyrogram"
 Documentation = "https://telegramplayground.github.io/pyrogram/"
 
