@@ -19,7 +19,7 @@
 from typing import Union, List
 
 import pyrogram
-from pyrogram import raw
+from pyrogram import raw, types
 
 
 class AddChatMembers:
@@ -28,7 +28,7 @@ class AddChatMembers:
         chat_id: Union[int, str],
         user_ids: Union[Union[int, str], List[Union[int, str]]],
         forward_limit: int = 100
-    ) -> bool:
+    ) -> Union[List["types.Message"], "types.Message", bool]:
         """Add new chat members to a group, supergroup or channel
 
         .. include:: /_includes/usable-by/users.rst
@@ -48,7 +48,8 @@ class AddChatMembers:
                 Defaults to 100 (max amount).
 
         Returns:
-            ``bool``: On success, True is returned.
+            List[:obj:`~pyrogram.types.Message`] | :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
+            otherwise, in case a message object couldn't be returned, True is returned.
 
         Example:
             .. code-block:: python
@@ -67,24 +68,55 @@ class AddChatMembers:
         if not isinstance(user_ids, list):
             user_ids = [user_ids]
 
+        r = []
+
         if isinstance(peer, raw.types.InputPeerChat):
             for user_id in user_ids:
-                await self.invoke(
-                    raw.functions.messages.AddChatUser(
-                        chat_id=peer.chat_id,
-                        user_id=await self.resolve_peer(user_id),
-                        fwd_limit=forward_limit
+                r.append(
+                    await self.invoke(
+                        raw.functions.messages.AddChatUser(
+                            chat_id=peer.chat_id,
+                            user_id=await self.resolve_peer(user_id),
+                            fwd_limit=forward_limit
+                        )
                     )
                 )
         else:
-            await self.invoke(
-                raw.functions.channels.InviteToChannel(
-                    channel=peer,
-                    users=[
-                        await self.resolve_peer(user_id)
-                        for user_id in user_ids
-                    ]
+            r.append(
+                await self.invoke(
+                    raw.functions.channels.InviteToChannel(
+                        channel=peer,
+                        users=[
+                            await self.resolve_peer(user_id)
+                            for user_id in user_ids
+                        ]
+                    )
                 )
             )
 
-        return True  # TODO
+        _rc = []
+        for rr in r:
+            for i in rr.updates.updates:
+                if isinstance(
+                    i,
+                    (
+                        raw.types.UpdateNewMessage,
+                        raw.types.UpdateNewChannelMessage
+                    )
+                ):
+                    _rc.append(
+                        await types.Message._parse(
+                            self, i.message,
+                            {i.id: i for i in rr.updates.users},
+                            {i.id: i for i in rr.updates.chats},
+                        )
+                    )
+                    break
+
+        if len(_rc) > 0:
+            if len(_rc) == 1:
+                return _rc[0]
+            else:
+                return types.List(_rc)
+        else:
+            return True
