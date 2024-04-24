@@ -371,7 +371,7 @@ class Chat(Object):
             is_creator=getattr(chat, "creator", None),
             photo=types.ChatPhoto._parse(client, getattr(chat, "photo", None), peer_id, 0),
             permissions=types.ChatPermissions._parse(getattr(chat, "default_banned_rights", None)),
-            members_count=getattr(chat, "participants_count", None),
+            members_count=getattr(chat, "participants_count", 0),
             dc_id=getattr(getattr(chat, "photo", None), "dc_id", None),
             has_protected_content=getattr(chat, "noforwards", None),
             client=client,
@@ -436,7 +436,7 @@ class Chat(Object):
                 ]
             ) or None,
             permissions=types.ChatPermissions._parse(getattr(channel, "default_banned_rights", None)),
-            members_count=getattr(channel, "participants_count", None),
+            members_count=getattr(channel, "participants_count", 0),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
             is_forum=getattr(channel, "forum", None),
@@ -570,7 +570,7 @@ class Chat(Object):
 
                     parsed_chat.send_as_chat = Chat._parse_chat(client, send_as_raw)
 
-                parsed_chat.members_count = getattr(full_chat, "participants_count")                
+                parsed_chat.members_count = getattr(full_chat, "participants_count", 0)                
                 parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
                 parsed_chat.has_hidden_members = not getattr(full_chat, "participants_hidden", True)
                 parsed_chat.has_aggressive_anti_spam_enabled = getattr(full_chat, "antispam", False)

@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 178 |
 +------------------------+
 
+- Steal `d51eef3 <https://github.com/PyrogramMod/PyrogramMod/commit/d51eef31dc28724405ff473e45ca21b7d835d8b4>`_ without attribution.
 - Added ``limit`` to :obj:`~pyrogram.types.ChatReactions`.
 - Added ``personal_chat_message`` to :obj:`~pyrogram.types.Chat`.
 - Added ``is_channel`` parameter to :meth:`~pyrogram.Client.search_global` and :meth:`~pyrogram.Client.search_global_count`.
