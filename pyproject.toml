@@ -58,7 +58,10 @@ include = ["pyrogram/py.typed"]
 exclude = ["tests", "docs", "requirements.lock", "requirements-dev.lock", ".github", ".gitignore"]
 
 [tool.hatch.build.targets.sdist]
-include = ["pyrogram"]
+include = [
+    "compiler",
+    "pyrogram",
+]
 exclude = [
     ".github/",
     "docs/",
