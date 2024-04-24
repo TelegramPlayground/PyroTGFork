@@ -243,6 +243,7 @@ class Chat(Object):
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
         personal_chat: "types.Chat" = None,
+        personal_chat_message: "types.Message" = None,
         available_reactions: Optional["types.ChatReactions"] = None,
         accent_color: "types.ChatColor" = None,
         profile_color: "types.ChatColor" = None,
