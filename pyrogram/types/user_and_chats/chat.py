@@ -73,6 +73,9 @@ class Chat(Object):
         personal_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             For private chats, the personal channel of the user.
 
+        personal_chat_message (:obj:`~pyrogram.types.Message`, *optional*):
+            **TEMPORARY**: For private chats, the personal message_id in the ``personal_chat``.
+
         available_reactions (:obj:`~pyrogram.types.ChatReactions`, *optional*):
             Available reactions in the chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -309,6 +312,7 @@ class Chat(Object):
         self.join_by_request = join_by_request
         self.is_peak_preview = is_peak_preview
         self.personal_chat = personal_chat
+        self.personal_chat_message = personal_chat_message
         self.birthdate = birthdate
         self.business_intro = business_intro
         self.business_location = business_location
@@ -478,6 +482,7 @@ class Chat(Object):
         chats = {c.id: c for c in chat_full.chats}
 
         personal_chat = None
+        personal_chat_message = None
 
         if isinstance(chat_full, raw.types.users.UserFull):
             full_user = chat_full.full_user
@@ -489,6 +494,12 @@ class Chat(Object):
                 personal_chat = Chat._parse_channel_chat(
                     client,
                     chats[full_user.personal_channel_id]
+                )
+            # TODO:?|
+            if getattr(full_user, "personal_channel_message", None):
+                personal_chat_message = types.Message(
+                    client=client,
+                    id=full_user.personal_channel_message
                 )
 
             if full_user.pinned_msg_id:
@@ -592,10 +603,12 @@ class Chat(Object):
 
             parsed_chat.available_reactions = types.ChatReactions._parse(
                 client,
-                full_chat.available_reactions
+                full_chat.available_reactions,
+                reactions_limit=getattr(full_chat, "reactions_limit", None)
             )
 
         parsed_chat.personal_chat = personal_chat
+        parsed_chat.personal_chat_message = personal_chat_message
         parsed_chat._raw = chat_full
 
         return parsed_chat

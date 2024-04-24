@@ -34,6 +34,9 @@ class ChatReactions(Object):
 
         reactions (List of :obj:`~pyrogram.types.Reaction`, *optional*):
             Reactions available.
+        
+        limit (``int``, *optional*):
+            Limit of the number of different unique reactions that can be added to a message, including already published ones. Can have values between 1 and 11. Defaults to 11, if not specified. Only applicable for :obj:`~pyrogram.enums.ChatType.CHANNEL`.
     """
 
     def __init__(
@@ -43,20 +46,23 @@ class ChatReactions(Object):
         all_are_enabled: Optional[bool] = None,
         allow_custom_emoji: Optional[bool] = None,
         reactions: Optional[List["types.Reaction"]] = None,
+        limit: int = 11,
     ):
         super().__init__(client)
 
         self.all_are_enabled = all_are_enabled
         self.allow_custom_emoji = allow_custom_emoji
         self.reactions = reactions
+        self.limit = limit
 
     @staticmethod
-    def _parse(client, chat_reactions: "raw.base.ChatReactions") -> Optional["ChatReactions"]:
+    def _parse(client, chat_reactions: "raw.base.ChatReactions", reactions_limit: int = 11) -> Optional["ChatReactions"]:
         if isinstance(chat_reactions, raw.types.ChatReactionsAll):
             return ChatReactions(
                 client=client,
                 all_are_enabled=True,
-                allow_custom_emoji=chat_reactions.allow_custom
+                allow_custom_emoji=chat_reactions.allow_custom,
+                limit=reactions_limit
             )
 
         if isinstance(chat_reactions, raw.types.ChatReactionsSome):
@@ -65,7 +71,8 @@ class ChatReactions(Object):
                 reactions=[
                     types.ReactionType._parse(client, reaction)
                     for reaction in chat_reactions.reactions
-                ]
+                ],
+                limit=reactions_limit
             )
 
         if isinstance(chat_reactions, raw.types.ChatReactionsNone):
