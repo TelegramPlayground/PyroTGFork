@@ -20,6 +20,7 @@ from .copy_media_group import CopyMediaGroup
 from .copy_message import CopyMessage
 from .delete_messages import DeleteMessages
 from .download_media import DownloadMedia
+from .edit_cached_media import EditCachedMedia
 from .edit_inline_caption import EditInlineCaption
 from .edit_inline_media import EditInlineMedia
 from .edit_inline_reply_markup import EditInlineReplyMarkup
@@ -73,6 +74,7 @@ class Messages(
     CopyMessage,
     DeleteMessages,
     DownloadMedia,
+    EditCachedMedia,
     EditInlineCaption,
     EditInlineMedia,
     EditInlineReplyMarkup,

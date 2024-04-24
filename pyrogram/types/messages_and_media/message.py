@@ -3697,6 +3697,67 @@ class Message(Object, Update):
             reply_markup=reply_markup
         )
 
+    async def edit_cached_media(
+        file_id: str,
+        caption: str = "",
+        parse_mode: Optional["enums.ParseMode"] = None,
+        caption_entities: List["types.MessageEntity"] = None,
+        schedule_date: datetime = None,
+        has_spoiler: bool = None,
+        reply_markup: "types.InlineKeyboardMarkup" = None
+    ) -> "Message":
+        """Edit a media stored on the Telegram servers using a file_id.
+
+        This convenience method works with any valid file_id only.
+        It does the same as calling the relevant method for editing media using a file_id, thus saving you from the
+        hassle of using the correct :obj:`~pyrogram.types.InputMedia` for the media the file_id is pointing to.
+
+        .. include:: /_includes/usable-by/users-bots.rst
+
+        Parameters:
+            file_id (``str``):
+                Media to send.
+                Pass a file_id as string to send a media that exists on the Telegram servers.
+
+            caption (``str``, *optional*):
+                Media caption, 0-1024 characters.
+
+            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
+            has_spoiler (``bool``, *optional*):
+                True, if the message media is covered by a spoiler animation.
+
+            reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
+                An InlineKeyboardMarkup object.
+
+        Returns:
+            :obj:`~pyrogram.types.Message`: On success, the edited media message is returned.
+
+        Example:
+            .. code-block:: python
+
+                await message.edit_cached_media(file_id)
+        """
+        return await self._client.edit_cached_media(
+            chat_id=self.chat.id,
+            message_id=self.id,
+            file_id=file_id,
+            caption=caption,
+            parse_mode=parse_mode,
+            caption_entities=caption_entities,
+            schedule_date=schedule_date,
+            has_spoiler=has_spoiler,
+            reply_markup=reply_markup
+        )
+
     async def forward(
         self,
         chat_id: Union[int, str],

@@ -279,6 +279,7 @@ def pyrogram_api():
             copy_message
             delete_messages
             download_media
+            edit_cached_media
             edit_inline_caption
             edit_inline_media
             edit_inline_reply_markup
@@ -612,6 +613,7 @@ def pyrogram_api():
             Message.unpin
             Message.edit
             Message.edit_text
+            Message.edit_cached_media
             Message.edit_caption
             Message.edit_media
             Message.edit_reply_markup
