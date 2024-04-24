@@ -213,7 +213,7 @@ class EditInlineMedia:
                     file_reference=uploaded_media.photo.file_reference
                 ),
                 spoiler=getattr(media, "has_spoiler", None)
-            ) if isinstance(media, types.InputMediaPhoto) else raw.types.InputMediaDocument(
+            ) if isinstance(uploaded_media, raw.types.MessageMediaPhoto) else raw.types.InputMediaDocument(
                 id=raw.types.InputDocument(
                     id=uploaded_media.document.id,
                     access_hash=uploaded_media.document.access_hash,
