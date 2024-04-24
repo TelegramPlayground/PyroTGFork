@@ -31,6 +31,7 @@ class SearchGlobal:
         filter: "enums.MessagesFilter" = enums.MessagesFilter.EMPTY,
         limit: int = 0,
         chat_list: int = 0,
+        is_channel: bool = False,
     ) -> Optional[AsyncGenerator["types.Message", None]]:
         """Search messages globally from all of your chats.
 
@@ -58,6 +59,10 @@ class SearchGlobal:
 
             chat_list (``int``, *optional*):
                 Chat list in which to search messages; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
+
+            is_channel (``bool``, *optional*):
+                True, if should search only in joined channels.
+                Defaults to False. All available chats are searched.
 
         Returns:
             ``Generator``: A generator yielding :obj:`~pyrogram.types.Message` objects.
@@ -97,7 +102,8 @@ class SearchGlobal:
                         offset_peer=offset_peer,
                         offset_id=offset_id,
                         limit=limit,
-                        folder_id=chat_list
+                        folder_id=chat_list,
+                        broadcasts_only=is_channel
                     ),
                     sleep_threshold=60
                 ),
