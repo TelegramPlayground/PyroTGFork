@@ -40,7 +40,6 @@ class SetProfilePhoto:
         .. note::
 
             This method only works for Users.
-            Bots profile photos must be set using BotFather.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
