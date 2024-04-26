@@ -506,9 +506,9 @@ async def _get_reply_message_parameters(
         reply_to.quote_text = message
         reply_to.quote_entities = entities
     if reply_parameters.chat_id:
-        reply_to.reply_to_peer_id = await client.resolve_peer(chat_id)
+        reply_to.reply_to_peer_id = await client.resolve_peer(reply_parameters.chat_id)
     if reply_parameters.quote_position:
-        reply_to.quote_offset = quote_position
+        reply_to.quote_offset = reply_parameters.quote_position
     return reply_to
 
 
