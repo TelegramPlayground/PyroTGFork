@@ -42,6 +42,7 @@ from .mark_chat_unread import MarkChatUnread
 from .pin_chat_message import PinChatMessage
 from .promote_chat_member import PromoteChatMember
 from .restrict_chat_member import RestrictChatMember
+from .search_chats import SearchChats
 from .set_administrator_title import SetAdministratorTitle
 from .set_chat_description import SetChatDescription
 from .set_chat_permissions import SetChatPermissions
@@ -66,6 +67,7 @@ class Chats(
     BanChatMember,
     UnbanChatMember,
     RestrictChatMember,
+    SearchChats,
     PromoteChatMember,
     GetChatMembers,
     GetChatMember,

@@ -198,6 +198,7 @@ def pyrogram_api():
         Chats
             join_chat
             leave_chat
+            search_chats
             ban_chat_member
             unban_chat_member
             restrict_chat_member
