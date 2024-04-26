@@ -69,6 +69,7 @@ class StopPoll:
                     poll=raw.types.Poll(
                         id=int(poll.id),
                         closed=True,
+                        # TODO
                         question="",
                         answers=[]
                     )

@@ -171,8 +171,10 @@ class SendPoll:
             media=raw.types.InputMediaPoll(
                 poll=raw.types.Poll(
                     id=self.rnd_id(),
+                    # TODO
                     question=question,
                     answers=[
+                        # TODO
                         raw.types.PollAnswer(text=text, option=bytes([i]))
                         for i, text in enumerate(options)
                     ],
