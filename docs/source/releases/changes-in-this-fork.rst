@@ -12,6 +12,8 @@ it can take advantage of new goodies!
 | Scheme layer used: 179 |
 +------------------------+
 
+- `ℹ️ Blog Post <https://telegram.org/blog/my-profile-and-15-more>`_
+- `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/?from=176&to=178>`__.
 
 +------------------------+
 | Scheme layer used: 178 |
