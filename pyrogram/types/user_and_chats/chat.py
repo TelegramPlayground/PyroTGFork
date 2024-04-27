@@ -23,6 +23,7 @@ import pyrogram
 from pyrogram import raw, enums
 from pyrogram import types
 from pyrogram import utils
+from pyrogram.errors import MessageIdsEmpty
 from ..object import Object
 
 
@@ -433,10 +434,13 @@ class Chat(Object):
             parsed_chat.raw = full_user
 
             if full_user.pinned_msg_id:
-                parsed_chat.pinned_message = await client.get_messages(
-                    parsed_chat.id,
-                    message_ids=full_user.pinned_msg_id
-                )
+                try:
+                    parsed_chat.pinned_message = await client.get_messages(
+                        parsed_chat.id,
+                        message_ids=full_user.pinned_msg_id
+                    )
+                except MessageIdsEmpty:
+                    pass
 
             if full_user.personal_channel_id:
                 parsed_chat.personal_channel = Chat._parse_channel_chat(client, chats[full_user.personal_channel_id])
@@ -508,10 +512,13 @@ class Chat(Object):
                     parsed_chat.wallpaper = types.Document._parse(client, full_chat.wallpaper.document, "wallpaper.jpg")
 
             if full_chat.pinned_msg_id:
-                parsed_chat.pinned_message = await client.get_messages(
-                    parsed_chat.id,
-                    message_ids=full_chat.pinned_msg_id
-                )
+                try:
+                    parsed_chat.pinned_message = await client.get_messages(
+                        parsed_chat.id,
+                        message_ids=full_chat.pinned_msg_id
+                    )
+                except MessageIdsEmpty:
+                    pass
 
             if isinstance(full_chat.exported_invite, raw.types.ChatInviteExported):
                 parsed_chat.invite_link = full_chat.exported_invite.link
