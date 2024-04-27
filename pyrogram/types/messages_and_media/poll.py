@@ -24,6 +24,7 @@ from pyrogram import raw, enums, utils
 from pyrogram import types
 from ..object import Object
 from ..update import Update
+from .message import Str
 
 
 class Poll(Object, Update):
@@ -137,7 +138,7 @@ class Poll(Object, Update):
 
             options.append(
                 types.PollOption(
-                    text=answer.text,
+                    text=Str(answer.text.text).init(answer.text.entities),
                     voter_count=voter_count,
                     data=answer.option,
                     client=client
@@ -146,7 +147,7 @@ class Poll(Object, Update):
 
         return Poll(
             id=str(poll.id),
-            question=poll.question,
+            question=Str(poll.question.text).init(poll.question.entities),
             options=options,
             total_voter_count=media_poll.results.total_voters,
             is_closed=poll.closed,

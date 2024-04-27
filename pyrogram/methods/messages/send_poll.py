@@ -166,18 +166,37 @@ class SendPoll:
             message_thread_id,
             reply_parameters
         )
+
+        # TODO: wait for BOT API update?
+        question, question_entities = (await utils.parse_text_entities(self, question, None, None)).values()
+        if not question_entities:
+            question_entities = []
+
+        answers = []
+        for i, answer_ in enumerate(options):
+            answer, answer_entities = (await utils.parse_text_entities(self, answer_, None, None)).values()
+            if not answer_entities:
+                answer_entities = []
+            answers.append(
+                raw.types.PollAnswer(
+                    text=raw.types.TextWithEntities(
+                        text=answer,
+                        entities=answer_entities
+                    ),
+                    option=bytes([i])
+                )
+            )
+
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
             media=raw.types.InputMediaPoll(
                 poll=raw.types.Poll(
                     id=self.rnd_id(),
-                    # TODO
-                    question=question,
-                    answers=[
-                        # TODO
-                        raw.types.PollAnswer(text=text, option=bytes([i]))
-                        for i, text in enumerate(options)
-                    ],
+                    question=raw.types.TextWithEntities(
+                        text=question,
+                        entities=question_entities
+                    ),
+                    answers=answers,
                     closed=is_closed,
                     public_voters=not is_anonymous,
                     multiple_choice=allows_multiple_answers,
