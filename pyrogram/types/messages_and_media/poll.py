@@ -136,18 +136,38 @@ class Poll(Object, Update):
                 if result.correct:
                     correct_option_id = i
 
+            entities = [
+                types.MessageEntity._parse(
+                    client,
+                    entity,
+                    {}  # there isn't a TEXT_MENTION entity available yet
+                )
+                for entity in (answer.text.entities or [])
+            ]
+            entities = types.List(filter(lambda x: x is not None, entities))
+
             options.append(
                 types.PollOption(
-                    text=Str(answer.text.text).init(answer.text.entities),
+                    text=Str(answer.text.text).init(entities),
                     voter_count=voter_count,
                     data=answer.option,
                     client=client
                 )
             )
 
+        entities = [
+            types.MessageEntity._parse(
+                client,
+                entity,
+                {}  # there isn't a TEXT_MENTION entity available yet
+            )
+            for entity in (poll.question.entities or [])
+        ]
+        entities = types.List(filter(lambda x: x is not None, entities))
+
         return Poll(
             id=str(poll.id),
-            question=Str(poll.question.text).init(poll.question.entities),
+            question=Str(poll.question.text).init(entities),
             options=options,
             total_voter_count=media_poll.results.total_voters,
             is_closed=poll.closed,
