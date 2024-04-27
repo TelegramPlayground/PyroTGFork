@@ -361,8 +361,9 @@ def pyrogram_api():
             set_personal_chat
         """,
         business="""
-        Telegram Business
+        Telegram Business & Fragment
             get_business_connection
+            get_collectible_item_info
         """,   
     )
 
