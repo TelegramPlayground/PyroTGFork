@@ -99,17 +99,17 @@ class VideoNote(Object):
                 media_id=video_note.id,
                 access_hash=video_note.access_hash,
                 file_reference=video_note.file_reference
-            ).encode(),
+            ).encode() if video_note else None,
             file_unique_id=FileUniqueId(
                 file_unique_type=FileUniqueType.DOCUMENT,
                 media_id=video_note.id
-            ).encode(),
-            length=video_attributes.w,
-            duration=video_attributes.duration,
-            file_size=video_note.size,
-            mime_type=video_note.mime_type,
-            date=utils.timestamp_to_datetime(video_note.date),
+            ).encode() if video_note else None,
+            length=video_attributes.w if video_attributes else None,
+            duration=video_attributes.duration if video_attributes else None,
+            file_size=video_note.size if video_note else None,
+            mime_type=video_note.mime_type if video_note else None,
+            date=utils.timestamp_to_datetime(video_note.date) if video_note else None,
             ttl_seconds=ttl_seconds,
-            thumbs=types.Thumbnail._parse(client, video_note),
+            thumbs=types.Thumbnail._parse(client, video_note) if video_note else None,
             client=client
         )

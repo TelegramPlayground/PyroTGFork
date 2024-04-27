@@ -115,20 +115,20 @@ class Video(Object):
                 media_id=video.id,
                 access_hash=video.access_hash,
                 file_reference=video.file_reference
-            ).encode(),
+            ).encode() if video else None,
             file_unique_id=FileUniqueId(
                 file_unique_type=FileUniqueType.DOCUMENT,
                 media_id=video.id
-            ).encode(),
-            width=video_attributes.w,
-            height=video_attributes.h,
-            duration=video_attributes.duration,
+            ).encode() if video else None,
+            width=video_attributes.w if video_attributes else None,
+            height=video_attributes.h if video_attributes else None,
+            duration=video_attributes.duration if video_attributes else None,
             file_name=file_name,
-            mime_type=video.mime_type,
-            supports_streaming=video_attributes.supports_streaming,
-            file_size=video.size,
-            date=utils.timestamp_to_datetime(video.date),
+            mime_type=video.mime_type if video else None,
+            supports_streaming=video_attributes.supports_streaming if video_attributes else None,
+            file_size=video.size if video else None,
+            date=utils.timestamp_to_datetime(video.date) if video else None,
             ttl_seconds=ttl_seconds,
-            thumbs=types.Thumbnail._parse(client, video),
+            thumbs=types.Thumbnail._parse(client, video) if video else None,
             client=client
         )

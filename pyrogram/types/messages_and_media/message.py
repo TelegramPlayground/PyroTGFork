@@ -1052,6 +1052,19 @@ class Message(Object, Update):
                         else:
                             document = types.Document._parse(client, doc, file_name)
                             media_type = enums.MessageMediaType.DOCUMENT
+
+                    elif doc is None:
+                        has_media_spoiler = media.spoiler
+                        if media.video:
+                            video = types.Video._parse(client, doc, None, None, media.ttl_seconds)
+                            media_type = enums.MessageMediaType.VIDEO
+                        elif media.round:
+                            video_note = types.VideoNote._parse(client, doc, None, media.ttl_seconds)
+                            media_type = enums.MessageMediaType.VIDEO_NOTE
+                        elif media.voice:
+                            voice = types.Voice._parse(client, doc, None, media.ttl_seconds)
+                            media_type = enums.MessageMediaType.VOICE
+
                 elif isinstance(media, raw.types.MessageMediaWebPage):
                     if isinstance(media.webpage, raw.types.WebPage):
                         web_page = types.WebPage._parse(client, media.webpage)
