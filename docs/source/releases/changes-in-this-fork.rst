@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 179 |
 +------------------------+
 
+- Added ``reverse`` parameter to :meth:`~pyrogram.Client.get_chat_history`. (`855e69e <https://github.com/pyrogram/pyrogram/blob/855e69e3f881c8140781c1d5e42e3098b2134dd2/pyrogram/methods/messages/get_history.py>`_, `a086b49 <https://github.com/dyanashek/pyrogram/commit/a086b492039687dd1b807969f9202061ce5305da>`_)
 - `ℹ️ Blog Post <https://telegram.org/blog/my-profile-and-15-more>`_
 - `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/?from=176&to=178>`__.
 
