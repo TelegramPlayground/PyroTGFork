@@ -1240,7 +1240,7 @@ class Message(Object, Update):
         if business_connection_id:
             parsed_message.business_connection_id = business_connection_id
         if raw_reply_to_message:
-            parsed_message.reply_to_message = types.Message._parse(
+            parsed_message.reply_to_message = await types.Message._parse(
                 client,
                 raw_reply_to_message,
                 users,
