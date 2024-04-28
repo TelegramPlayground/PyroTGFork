@@ -372,6 +372,9 @@ class Message(Object, Update):
         boosts_applied (``int``, *optional*):
             Service message: how many boosts were applied.
 
+        join_request_approved (``bool``, *optional*):
+            Service message: user join request approved
+
         business_connection_id (``str``, *optional*):
             Unique identifier of the business connection from which the message was received.
             If non-empty, the message belongs to a chat of the corresponding business account that is independent from any potential bot chat which might share the same identifier.
@@ -489,6 +492,7 @@ class Message(Object, Update):
         giveaway_launched: bool = None,
         chat_ttl_period: int = None,
         boosts_applied: int = None,
+        join_request_approved: bool = None,
         business_connection_id: str = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -595,6 +599,7 @@ class Message(Object, Update):
         self.giveaway_launched = giveaway_launched
         self.chat_ttl_period = chat_ttl_period
         self.boosts_applied = boosts_applied
+        self.join_request_approved = join_request_approved
         self.reactions = reactions
         self.raw = raw
 
@@ -669,6 +674,7 @@ class Message(Object, Update):
             requested_chats = None
             chat_ttl_period = None
             boosts_applied = None
+            join_request_approved = None
 
             service_type = None
 
@@ -756,6 +762,9 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionBoostApply):
                 boosts_applied = action.boosts
                 service_type = enums.MessageServiceType.BOOST_APPLY
+            elif isinstance(action, raw.types.MessageActionChatJoinedByRequest):
+                join_request_approved = True
+                service_type = enums.MessageServiceType.JOIN_REQUEST_APPROVED
 
             from_user = types.User._parse(client, users.get(user_id, None))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
@@ -794,6 +803,7 @@ class Message(Object, Update):
                 requested_chats=requested_chats,
                 chat_ttl_period=chat_ttl_period,
                 boosts_applied=boosts_applied,
+                join_request_approved=join_request_approved,
                 business_connection_id=business_connection_id,
                 raw=message,
                 client=client
