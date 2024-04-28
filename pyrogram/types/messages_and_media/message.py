@@ -3984,7 +3984,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content,
                     reply_to_message_id=reply_to_message_id,
-                    reply_markup=reply_markup
+                    reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.location:
                 return await self._client.send_location(
@@ -3998,7 +3998,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content,
                     reply_to_message_id=reply_to_message_id,
-                    reply_markup=reply_markup
+                    reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.venue:
                 return await self._client.send_venue(
@@ -4016,13 +4016,15 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content,
                     reply_to_message_id=reply_to_message_id,
-                    reply_markup=reply_markup
+                    reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.poll:
-                return await self._client.send_poll(
+                oldpm = self._client.parse_mode
+                self._client.set_parse_mode(enums.ParseMode.HTML)
+                cm = await self._client.send_poll(
                     chat_id,
-                    question=self.poll.question,
-                    options=[opt.text for opt in self.poll.options],
+                    question=self.poll.question.html,
+                    options=[opt.text.html for opt in self.poll.options],
                     is_anonymous=self.poll.is_anonymous,
                     type=self.poll.type,
                     allows_multiple_answers=self.poll.allows_multiple_answers,
@@ -4038,8 +4040,10 @@ class Message(Object, Update):
                     business_connection_id=self.business_connection_id,
                     schedule_date=schedule_date,
                     reply_to_message_id=reply_to_message_id,
-                    reply_markup=reply_markup
+                    reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
+                self._client.set_parse_mode(oldpm)
+                return cm
             elif self.game:
                 return await self._client.send_game(
                     chat_id,
@@ -4050,7 +4054,7 @@ class Message(Object, Update):
                     business_connection_id=self.business_connection_id,
                     reply_parameters=reply_parameters,
                     reply_to_message_id=reply_to_message_id,
-                    reply_markup=reply_markup
+                    reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             else:
                 raise ValueError("Unknown media type")
