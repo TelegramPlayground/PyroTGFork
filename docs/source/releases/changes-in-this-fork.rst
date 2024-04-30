@@ -6,7 +6,7 @@ in reverse chronological order. You should read this when upgrading
 to this fork to know where your code can break, and where
 it can take advantage of new goodies!
 
-`For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/>`_
+`For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/commits/unknown_errors/>`_
 
 +------------------------+
 | Scheme layer used: 179 |
