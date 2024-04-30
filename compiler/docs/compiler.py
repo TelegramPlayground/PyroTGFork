@@ -315,6 +315,10 @@ def pyrogram_api():
         Payments
             check_gift_code
         """,
+        phone="""
+        Phone
+            get_call_members
+        """,
         password="""
         Password
             enable_cloud_password
@@ -461,6 +465,7 @@ def pyrogram_api():
             Restriction
             EmojiStatus
             Folder
+            GroupCallMember
             ChatColor
         """,
         messages_media="""
