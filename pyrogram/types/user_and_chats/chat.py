@@ -200,6 +200,9 @@ class Chat(Object):
         is_peak_preview (``bool``, *optional*):
             True, if this is a peak preview.
 
+        full_name (``str``, *property*):
+            Full name of the other party in a private chat, for private chats and bots.
+
     """
 
     def __init__(
@@ -648,6 +651,18 @@ class Chat(Object):
             is_peak_preview=True,
             client=client
         )
+
+    @property
+    def full_name(self) -> str:
+        return " ".join(
+            filter(
+                None,
+                [
+                    self.first_name,
+                    self.last_name
+                ]
+            )
+        ) or None
 
     async def archive(self):
         """Bound method *archive* of :obj:`~pyrogram.types.Chat`.

@@ -141,12 +141,6 @@ class User(Object, Update):
             The list of reasons why this bot might be unavailable to some users.
             This field is available only in case *is_restricted* is True.
 
-        mention (``str``, *property*):
-            Generate a text mention for this user.
-            You can use ``user.mention()`` to mention the user using their first name (styled using html), or
-            ``user.mention("another name")`` for a custom name. To choose a different style
-            ("HTML" or "MARKDOWN") use ``user.mention(style=ParseMode.MARKDOWN)``.
-        
         is_bot (``bool``, *optional*):
             True, if this user is a bot.
 
@@ -185,6 +179,16 @@ class User(Object, Update):
 
         profile_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
             Chat profile color.
+        
+        mention (``str``, *property*):
+            Generate a text mention for this user.
+            You can use ``user.mention()`` to mention the user using their first name (styled using html), or
+            ``user.mention("another name")`` for a custom name. To choose a different style
+            ("HTML" or "MARKDOWN") use ``user.mention(style=ParseMode.MARKDOWN)``.
+        
+        full_name (``str``, *property*):
+            Full name of the other party in a private chat, for private chats and bots.
+
     """
 
     def __init__(
@@ -280,6 +284,18 @@ class User(Object, Update):
             self.first_name or "Deleted Account",
             self._client.parse_mode
         )
+
+    @property
+    def full_name(self) -> str:
+        return " ".join(
+            filter(
+                None,
+                [
+                    self.first_name,
+                    self.last_name
+                ]
+            )
+        ) or None
 
     @staticmethod
     def _parse(client, user: "raw.base.User") -> Optional["User"]:
