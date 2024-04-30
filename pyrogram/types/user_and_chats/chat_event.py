@@ -406,12 +406,13 @@ class ChatEvent(Object):
         elif isinstance(action, raw.types.ChannelAdminLogEventActionUpdatePinned):
             message = action.message
 
-            if message.pinned:
-                pinned_message = await types.Message._parse(client, message, users, chats)
-                action = enums.ChatEventAction.MESSAGE_PINNED
-            else:
-                unpinned_message = await types.Message._parse(client, message, users, chats)
-                action = enums.ChatEventAction.MESSAGE_UNPINNED
+            if isinstance(action.message, raw.types.Message):
+                if message.pinned:
+                    pinned_message = await types.Message._parse(client, message, users, chats)
+                    action = enums.ChatEventAction.MESSAGE_PINNED
+                else:
+                    unpinned_message = await types.Message._parse(client, message, users, chats)
+                    action = enums.ChatEventAction.MESSAGE_UNPINNED
 
         elif isinstance(action, raw.types.ChannelAdminLogEventActionExportedInviteEdit):
             old_invite_link = types.ChatInviteLink._parse(client, action.prev_invite, users)
