@@ -137,7 +137,7 @@ class Poll(Object, Update):
 
             options.append(
                 types.PollOption(
-                    text=answer.text,
+                    text=answer.text.text,
                     voter_count=voter_count,
                     data=answer.option,
                     client=client
@@ -146,7 +146,7 @@ class Poll(Object, Update):
 
         return Poll(
             id=str(poll.id),
-            question=poll.question,
+            question=poll.question.text,
             options=options,
             total_voter_count=media_poll.results.total_voters,
             is_closed=poll.closed,

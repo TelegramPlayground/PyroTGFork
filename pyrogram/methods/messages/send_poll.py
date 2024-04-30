@@ -35,7 +35,6 @@ class SendPoll:
         allows_multiple_answers: bool = None,
         correct_option_id: int = None,
         explanation: str = None,
-        explanation_parse_mode: "enums.ParseMode" = None,
         explanation_entities: List["types.MessageEntity"] = None,
         open_period: int = None,
         close_date: datetime = None,
@@ -45,8 +44,8 @@ class SendPoll:
         message_thread_id: int = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
-        quote_text: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
+        quote_text: str = None,
         quote_entities: List["types.MessageEntity"] = None,
         quote_offset: int = None,
         schedule_date: datetime = None,
@@ -92,10 +91,6 @@ class SendPoll:
             explanation (``str``, *optional*):
                 Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style
                 poll, 0-200 characters with at most 2 line feeds after entities parsing.
-
-            explanation_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
 
             explanation_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the poll explanation, which can be specified instead of
@@ -163,10 +158,12 @@ class SendPoll:
                 await app.send_poll(chat_id, "Is this a poll question?", ["Yes", "No", "Maybe"])
         """
         solution, solution_entities = (await utils.parse_text_entities(
-            self, explanation, explanation_parse_mode, explanation_entities
+            self, explanation, parse_mode, explanation_entities
         )).values()
 
-        quote_text, quote_entities = (await utils.parse_text_entities(self, quote_text, parse_mode, quote_entities)).values()
+        quote_text, quote_entities = (await utils.parse_text_entities(
+            self, quote_text, parse_mode, quote_entities
+        )).values()
 
         r = await self.invoke(
             raw.functions.messages.SendMedia(
@@ -174,9 +171,15 @@ class SendPoll:
                 media=raw.types.InputMediaPoll(
                     poll=raw.types.Poll(
                         id=self.rnd_id(),
-                        question=question,
+                        question=raw.types.TextWithEntities(
+                            text=question,
+                            entities=[]
+                        ),
                         answers=[
-                            raw.types.PollAnswer(text=text, option=bytes([i]))
+                            raw.types.PollAnswer(
+                                text=raw.types.TextWithEntities(text=text, entities=[]),
+                                option=bytes([i]),
+                            )
                             for i, text in enumerate(options)
                         ],
                         closed=is_closed,
