@@ -37,7 +37,7 @@ class Str(str):
     def __init__(self, *args):
         super().__init__()
 
-        self.entities: list = None
+        self.entities: Optional[List["types.MessageEntity"]] = None
 
     def init(self, entities: list):
         self.entities = entities
@@ -2194,9 +2194,6 @@ class Message(Object, Update):
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.
 
-            business_connection_id (``str``, *optional*):
-                Unique identifier of the business connection on behalf of which the message will be sent.
-
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown automatically.
                 If not empty, the first button must launch the game.
@@ -2216,16 +2213,12 @@ class Message(Object, Update):
         if message_thread_id is None:
             message_thread_id = self.message_thread_id
 
-        if business_connection_id is None:
-            business_connection_id = self.business_connection_id
-
         return await self._client.send_game(
             chat_id=self.chat.id,
             game_short_name=game_short_name,
             disable_notification=disable_notification,
             message_thread_id=message_thread_id,
             reply_to_message_id=reply_to_message_id,
-            business_connection_id=business_connection_id,
             reply_markup=reply_markup
         )
 
@@ -2429,7 +2422,8 @@ class Message(Object, Update):
         reply_to_message_id: int = None,
         quote_text: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
-        quote_entities: List["types.MessageEntity"] = None
+        quote_entities: List["types.MessageEntity"] = None,
+        business_connection_id: str = None
     ) -> List["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
 
@@ -2479,6 +2473,9 @@ class Message(Object, Update):
             quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
+
         Returns:
             On success, a :obj:`~pyrogram.types.Messages` object is returned containing all the
             single messages sent.
@@ -2506,7 +2503,8 @@ class Message(Object, Update):
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             parse_mode=parse_mode,
-            quote_entities=quote_entities
+            quote_entities=quote_entities,
+            business_connection_id=business_connection_id
         )
 
     async def reply_photo(
