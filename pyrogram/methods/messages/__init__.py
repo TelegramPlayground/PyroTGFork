@@ -39,6 +39,7 @@ from .get_media_group import GetMediaGroup
 from .get_messages import GetMessages
 from .get_scheduled_messages import GetScheduledMessages
 from .get_stickers import GetStickers
+from .increment_message_views import IncrementMessageViews
 from .read_chat_history import ReadChatHistory
 from .read_mentions import ReadMentions
 from .read_reactions import ReadReactions
@@ -107,6 +108,7 @@ class Messages(
     GetChatHistory,
     SendCachedMedia,
     GetChatHistoryCount,
+    IncrementMessageViews,
     ReadChatHistory,
     ReadMentions,
     ReadReactions,

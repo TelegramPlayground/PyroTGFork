@@ -178,6 +178,7 @@ def pyrogram_api():
             get_messages
             get_scheduled_messages
             get_stickers
+            increment_message_views
             get_media_group
             get_chat_history
             get_chat_history_count
@@ -651,6 +652,8 @@ def pyrogram_api():
             Message.reply_web_page
             Message.get_media_group
             Message.react
+            Message.read
+            Message.view
         """,
         chat="""
         Chat

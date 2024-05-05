@@ -4664,3 +4664,59 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id
         )
+
+    async def read(self) -> bool:
+        """Bound method *read* of :obj:`~pyrogram.types.Message`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.read_chat_history(
+                chat_id=message.chat.id,
+                max_id=message_id
+            )
+
+        Example:
+            .. code-block:: python
+
+                await message.read()
+
+        Returns:
+            True on success.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+        """
+        return await self._client.read_chat_history(
+            chat_id=self.chat.id,
+            max_id=self.id
+        )
+
+    async def view(self) -> bool:
+        """Bound method *view* of :obj:`~pyrogram.types.Message`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.increment_message_views(
+                chat_id=message.chat.id,
+                message_id=message_id
+            )
+
+        Example:
+            .. code-block:: python
+
+                await message.view()
+
+        Returns:
+            True on success.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+        """
+        return await self._client.increment_message_views(
+            chat_id=self.chat.id,
+            message_id=self.id
+        )
