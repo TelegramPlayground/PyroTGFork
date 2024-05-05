@@ -1217,6 +1217,11 @@ class Message(Object, Update):
                 parsed_message.message_thread_id = message.reply_to.reply_to_top_id
                 if message.reply_to.forum_topic:
                     parsed_message.is_topic_message = True
+                    if message.reply_to.reply_to_top_id:
+                        parsed_message.message_thread_id = message.reply_to.reply_to_top_id
+                    else:
+                        parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
+                    # TODO
 
             if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
                 parsed_message.reply_to_story = await types.Story._parse(client, chats, None, message.reply_to)
