@@ -197,7 +197,8 @@ class SendMessage:
                     media=raw.types.InputMediaWebPage(
                         url=link_preview_options.url,
                         force_large_media=link_preview_options.prefer_large_media,
-                        force_small_media=link_preview_options.prefer_small_media
+                        force_small_media=link_preview_options.prefer_small_media,
+                        optional=True
                     ),
                     invert_media=link_preview_options.show_above_text,
                     entities=entities,
@@ -213,7 +214,7 @@ class SendMessage:
                     # await session.stop()
                 else:
                     r = await self.invoke(rpc)
-            except errors.WebpageNotFound:
+            except errors.MessageEmpty:
                 if not message:
                     raise ValueError(
                         "Bad Request: text is empty"
