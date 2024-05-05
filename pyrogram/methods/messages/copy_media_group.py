@@ -127,11 +127,13 @@ class CopyMediaGroup:
                 raw.types.InputSingleMedia(
                     media=media,
                     random_id=self.rnd_id(),
+                    # TODO
                     **await self.parser.parse(
-                        captions[i] if isinstance(captions, list) and i < len(captions) and captions[i] else
+                        captions[i] if isinstance(captions, list) and i < len(captions) and isinstance(captions[i], str) else
                         captions if isinstance(captions, str) and i == 0 else
                         message.caption if message.caption and message.caption != "None" and not type(
-                            captions) is str else "")
+                            captions) is str else ""
+                    )
                 )
             )
 
