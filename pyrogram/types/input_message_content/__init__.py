@@ -20,10 +20,12 @@ from .input_message_content import InputMessageContent
 from .input_text_message_content import InputTextMessageContent
 from .reply_parameters import ReplyParameters
 from .external_reply_info import ExternalReplyInfo
+from .text_quote import TextQuote
 
 __all__ = [
     "ExternalReplyInfo",
     "InputMessageContent",
     "InputTextMessageContent",
     "ReplyParameters",
+    "TextQuote",
 ]

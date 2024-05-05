@@ -109,7 +109,11 @@ class Message(Object, Update):
         external_reply (:obj:`~pyrogram.types.ExternalReplyInfo`, *optional*):
             Information about the message that is being replied to, which may come from another chat or forum topic
 
-        quote
+        quote (:obj:`~pyrogram.types.TextQuote`, *optional*):
+            For replies that quote part of the original message, the quoted part of the message
+
+        reply_to_story (:obj:`~pyrogram.types.Story`, *optional*):
+            For replies to a story, the original story
 
         via_bot (:obj:`~pyrogram.types.User`):
             The information of the bot that generated the message from an inline query of a user.
@@ -401,7 +405,7 @@ class Message(Object, Update):
         reply_to_message_id: int = None,
         reply_to_message: "Message" = None,
         external_reply: "types.ExternalReplyInfo" = None,
-
+        quote: "types.TextQuote" = None,
         reply_to_story: "types.Story" = None,
         via_bot: "types.User" = None,
         edit_date: datetime = None,
@@ -570,6 +574,7 @@ class Message(Object, Update):
         self.is_topic_message = is_topic_message
         self.sender_boost_count = sender_boost_count
         self.boost_added = boost_added
+        self.quote = quote
         self.story = story
         self.reply_to_story = reply_to_story
         self.giveaway = giveaway
@@ -1221,7 +1226,13 @@ class Message(Object, Update):
                         parsed_message.message_thread_id = message.reply_to.reply_to_top_id
                     else:
                         parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
-                    # TODO
+                if message.reply_to.quote:
+                    parsed_message.quote = types.TextQuote._parse(
+                        client,
+                        chats,
+                        users,
+                        message.reply_to
+                    )
 
             if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
                 parsed_message.reply_to_story = await types.Story._parse(client, chats, None, message.reply_to)

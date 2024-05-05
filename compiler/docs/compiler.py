@@ -495,6 +495,7 @@ def pyrogram_api():
             InputMessageContent
             InputTextMessageContent
             ReplyParameters
+            TextQuote
         """,
         messages_media="""
         Messages & Media
