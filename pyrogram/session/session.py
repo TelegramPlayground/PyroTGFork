@@ -59,6 +59,12 @@ class Session:
         444: "invalid DC"
     }
 
+    CUR_ALWD_INNR_QRYS = (
+        raw.functions.InvokeWithoutUpdates,
+        raw.functions.InvokeWithTakeout,
+        raw.functions.InvokeWithBusinessConnection,
+    )
+
     def __init__(
         self,
         client: "pyrogram.Client",
@@ -359,7 +365,7 @@ class Session:
                 raise TimeoutError("Request timed out")
 
             if isinstance(result, raw.types.RpcError):
-                if isinstance(data, (raw.functions.InvokeWithoutUpdates, raw.functions.InvokeWithTakeout)):
+                if isinstance(data, Session.CUR_ALWD_INNR_QRYS):
                     data = data.query
 
                 RPCError.raise_it(result, type(data))
@@ -385,7 +391,7 @@ class Session:
         except asyncio.TimeoutError:
             pass
 
-        if isinstance(query, (raw.functions.InvokeWithoutUpdates, raw.functions.InvokeWithTakeout)):
+        if isinstance(query, Session.CUR_ALWD_INNR_QRYS):
             inner_query = query.query
         else:
             inner_query = query
@@ -422,6 +428,6 @@ class Session:
                     query_name, str(e) or repr(e)
                 )
 
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(3)
 
                 return await self.invoke(query, retries - 1, timeout)
