@@ -35,7 +35,7 @@ class Str(str):
     def __init__(self, *args):
         super().__init__()
 
-        self.entities = None
+        self.entities: Optional[List["types.MessageEntity"]] = None
 
     def init(self, entities):
         self.entities = entities
