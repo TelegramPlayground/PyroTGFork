@@ -31,7 +31,9 @@ class SendPoll:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         question: str,
-        options: List[str],
+        options: List["types.InputPollOption"],
+        question_parse_mode: "enums.ParseMode" = None,
+        question_entities: List["types.MessageEntity"] = None,
         is_anonymous: bool = True,
         type: "enums.PollType" = enums.PollType.REGULAR,
         allows_multiple_answers: bool = None,
@@ -69,8 +71,15 @@ class SendPoll:
             question (``str``):
                 Poll question, 1-255 characters.
 
-            options (List of ``str``):
-                List of answer options, 2-10 strings 1-100 characters each.
+            options (List of :obj:`~pyrogram.types.InputPollOption`):
+                List of answer options, 2-10 answer options.
+
+            question_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            question_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in the poll question, which can be specified instead of *question_parse_mode*.
 
             is_anonymous (``bool``, *optional*):
                 True, if the poll needs to be anonymous.
@@ -97,7 +106,7 @@ class SendPoll:
 
             explanation_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the poll explanation, which can be specified instead of
-                *parse_mode*.
+                *explanation_parse_mode*.
 
             open_period (``int``, *optional*):
                 Amount of time in seconds the poll will be active after creation, 5-600.
@@ -167,14 +176,13 @@ class SendPoll:
             reply_parameters
         )
 
-        # TODO: wait for BOT API update?
-        question, question_entities = (await utils.parse_text_entities(self, question, None, None)).values()
+        question, question_entities = (await utils.parse_text_entities(self, question, question_parse_mode, question_entities)).values()
         if not question_entities:
             question_entities = []
 
         answers = []
         for i, answer_ in enumerate(options):
-            answer, answer_entities = (await utils.parse_text_entities(self, answer_, None, None)).values()
+            answer, answer_entities = (await utils.parse_text_entities(self, answer_.text, answer_.text_parse_mode, answer_.text_entities)).values()
             if not answer_entities:
                 answer_entities = []
             answers.append(

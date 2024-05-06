@@ -21,10 +21,12 @@ from .input_text_message_content import InputTextMessageContent
 from .reply_parameters import ReplyParameters
 from .external_reply_info import ExternalReplyInfo
 from .text_quote import TextQuote
+from .input_poll_option import InputPollOption
 
 __all__ = [
     "ExternalReplyInfo",
     "InputMessageContent",
+    "InputPollOption",
     "InputTextMessageContent",
     "ReplyParameters",
     "TextQuote",

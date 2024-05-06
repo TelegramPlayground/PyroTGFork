@@ -37,6 +37,9 @@ class Poll(Object, Update):
         question (``str``):
             Poll question, 1-255 characters.
 
+        question_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+            Special entities that appear in the question. Currently, only custom emoji entities are allowed in poll questions.
+
         options (List of :obj:`~pyrogram.types.PollOption`):
             List of poll options.
 
@@ -84,6 +87,7 @@ class Poll(Object, Update):
         id: str,
         question: str,
         options: List["types.PollOption"],
+        question_entities: List["types.MessageEntity"] = None,
         total_voter_count: int,
         is_closed: bool,
         is_anonymous: bool = None,
@@ -101,6 +105,7 @@ class Poll(Object, Update):
         self.id = id
         self.question = question
         self.options = options
+        self.question_entities = question_entities
         self.total_voter_count = total_voter_count
         self.is_closed = is_closed
         self.is_anonymous = is_anonymous
@@ -149,6 +154,7 @@ class Poll(Object, Update):
             options.append(
                 types.PollOption(
                     text=Str(answer.text.text).init(entities),
+                    text_entities=entities,
                     voter_count=voter_count,
                     data=answer.option,
                     client=client
@@ -169,6 +175,7 @@ class Poll(Object, Update):
             id=str(poll.id),
             question=Str(poll.question.text).init(entities),
             options=options,
+            question_entities=entities,
             total_voter_count=media_poll.results.total_voters,
             is_closed=poll.closed,
             is_anonymous=not poll.public_voters,
@@ -206,6 +213,7 @@ class Poll(Object, Update):
             options.append(
                 types.PollOption(
                     text="",
+                    text_entities=[],
                     voter_count=result.voters,
                     data=result.option,
                     client=client

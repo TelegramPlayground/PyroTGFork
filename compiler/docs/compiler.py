@@ -493,6 +493,7 @@ def pyrogram_api():
         InputMessageContent
             ExternalReplyInfo
             InputMessageContent
+            InputPollOption
             InputTextMessageContent
             ReplyParameters
             TextQuote

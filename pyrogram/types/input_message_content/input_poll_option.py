@@ -16,44 +16,40 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
+from typing import Union, List
 
 import pyrogram
-from pyrogram import types
+from pyrogram import raw, utils, types, enums
 
 from ..object import Object
 
 
-class PollOption(Object):
-    """Contains information about one answer option in a poll.
+class InputPollOption(Object):
+    """This object contains information about one answer option in a poll to send.
 
     Parameters:
         text (``str``):
-            Option text, 1-100 characters.
-        
+            Option text, 1-100 characters
+
+        text_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+            By default, texts are parsed using both Markdown and HTML styles.
+            You can combine both syntaxes together.
+            Currently, only custom emoji entities are allowed.
+
         text_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-            Special entities that appear in the option text. Currently, only custom emoji entities are allowed in poll option texts.
+            List of special entities that appear in the poll option text, which can be specified instead of *text_parse_mode*.
 
-        voter_count (``int``):
-            Number of users that voted for this option.
-            Equals to 0 until you vote.
-
-        data (``bytes``):
-            The data this poll option is holding.
     """
 
     def __init__(
         self,
         *,
-        client: "pyrogram.Client" = None,
         text: str,
-        text_entities: List["types.MessageEntity"],
-        voter_count: int,
-        data: bytes
+        text_parse_mode: "enums.ParseMode" = None,
+        text_entities: List["types.MessageEntity"] = None,
     ):
-        super().__init__(client)
+        super().__init__()
 
         self.text = text
+        self.text_parse_mode = text_parse_mode
         self.text_entities = text_entities
-        self.voter_count = voter_count
-        self.data = data

@@ -12,6 +12,10 @@ it can take advantage of new goodies!
 | Scheme layer used: 179 |
 +------------------------+
 
+- Added the field ``question_entities`` to the class :obj:`~pyrogram.types.Poll`.
+- Added the field ``text_entities`` to the class :obj:`~pyrogram.types.PollOption`.
+- Added the parameters ``question_parse_mode`` and ``question_entities`` to the method :meth:`~pyrogram.Client.send_poll`.
+- Added the class :obj:`~pyrogram.types.InputPollOption` and changed the type of the parameter ``options`` in the method :meth:`~pyrogram.Client.send_poll` to Array of :obj:`~pyrogram.types.InputPollOption`.
 - Added the field ``max_reaction_count`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the field ``via_join_request`` to the class :obj:`~pyrogram.types.ChatMemberUpdated`.
 - Added the class :obj:`~pyrogram.types.TextQuote` and the field ``quote`` of type :obj:`~pyrogram.types.TextQuote` to the class :obj:`~pyrogram.types.Message`, which contains the part of the replied message text or caption that is quoted in the current message.
