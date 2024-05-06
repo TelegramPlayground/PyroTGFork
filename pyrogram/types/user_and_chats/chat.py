@@ -52,6 +52,9 @@ class Chat(Object):
         is_forum (``bool``, *optional*):
             True, if the supergroup chat is a forum
 
+        max_reaction_count (``int``):
+            The maximum number of reactions that can be set on a message in the chat
+
         photo (:obj:`~pyrogram.types.ChatPhoto`, *optional*):
             Chat photo. Suitable for downloads only.
 
@@ -260,6 +263,7 @@ class Chat(Object):
         unrestrict_boost_count: int = None,
         is_forum: bool = None,
         is_peak_preview: bool = None,
+        max_reaction_count: int = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -610,6 +614,7 @@ class Chat(Object):
                 full_chat.available_reactions,
                 reactions_limit=getattr(full_chat, "reactions_limit", None)
             )
+            parsed_chat.max_reaction_count = getattr(full_chat, "reactions_limit", 11)
 
         parsed_chat.personal_chat = personal_chat
         parsed_chat.personal_chat_message = personal_chat_message

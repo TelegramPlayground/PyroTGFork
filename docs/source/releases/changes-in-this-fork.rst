@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 179 |
 +------------------------+
 
+- Added the field ``max_reaction_count`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the field ``via_join_request`` to the class :obj:`~pyrogram.types.ChatMemberUpdated`.
 - Added the class :obj:`~pyrogram.types.TextQuote` and the field ``quote`` of type :obj:`~pyrogram.types.TextQuote` to the class :obj:`~pyrogram.types.Message`, which contains the part of the replied message text or caption that is quoted in the current message.
 - Added ``full_name`` to :obj:`~pyrogram.types.Chat` and :obj:`~pyrogram.types.User` only for :obj:`~pyrogram.enums.ChatType.PRIVATE`.
