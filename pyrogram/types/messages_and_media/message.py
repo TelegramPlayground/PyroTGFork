@@ -4693,6 +4693,6 @@ class Message(Object, Update):
             "This property is deprecated. "
             "Please use forward_origin instead"
         )
-        return self.forward_origin.date
+        return getattr(self.forward_origin, "date", None)
 
     # END: the below properties were removed in `BOT API 7.0 <https://core.telegram.org/bots/api-changelog#december-29-2023>`_
