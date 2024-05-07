@@ -18,7 +18,7 @@ Installation
 
 .. code-block:: bash
 
-    $ pip3 install -U tgcrypto
+    $ pip3 install -U PyTgCrypto
 
 Usage
 ^^^^^
