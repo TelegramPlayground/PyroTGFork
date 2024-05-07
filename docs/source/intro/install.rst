@@ -17,13 +17,13 @@ You can install the development version from the git appropriate branch using th
 
     .. code-block:: text
 
-        $ pip uninstall -y pyrogram && pip install pyrotgfork
+        $ pip uninstall -y pyrogram && pip install pirogram
 
 -   or, with :doc:`TgCrypto <../topics/speedups>` as extra requirement (recommended):
 
     .. code-block:: text
 
-        $ pip install pyrotgfork[fast]
+        $ pip install pirogram[fast]
 
 Verifying
 ---------

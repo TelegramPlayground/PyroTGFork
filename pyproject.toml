@@ -1,5 +1,5 @@
 [project]
-name = "pyrotgfork"
+name = "pirogram"
 dynamic = ["version"]
 description = "Fork of Pyrogram. Elegant, modern and asynchronous Telegram MTProto API framework in Python for users and bots"
 authors = [{ name = "SpEcHIDe", email = "pyrogram@iamidiotareyoutoo.com" }]
@@ -42,7 +42,6 @@ path = "pyrogram/__init__.py"
 [project.urls]
 Homepage = "https://telegramplayground.github.io/pyrogram/releases/"
 Tracker = "https://github.com/TelegramPlayGround/Pyrogram/issues"
-Community = "https://t.me/PyroTGFork"
 Source = "https://github.com/TelegramPlayGround/Pyrogram"
 Documentation = "https://telegramplayground.github.io/pyrogram/"
 
@@ -99,6 +98,6 @@ docs = [
 ]
 
 fast = [
-    "TgCrypto==1.2.5",
+    "PyTgCrypto==1.2.6",
     "uvloop>0.18.0,<=0.19.0"
 ]

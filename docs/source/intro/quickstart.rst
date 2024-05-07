@@ -16,7 +16,7 @@ Get Pyrogram Real Fast
 
 0. Activate the Virtual Environment with ``source ./venv/bin/activate``.
 
-1. Install Pyrogram with ``pip uninstall -y pyrogram && pip install pyrotgfork``.
+1. Install Pyrogram with ``pip uninstall -y pyrogram && pip install pirogram``.
 
 2. Get your own Telegram API key from https://my.telegram.org/apps.
 

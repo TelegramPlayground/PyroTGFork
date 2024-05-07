@@ -58,7 +58,7 @@ it can take advantage of new goodies!
 - Added ``accent_color``, ``profile_color``, ``emoji_status``, ``is_close_friend`` to :obj:`~pyrogram.types.Chat` and :obj:`~pyrogram.types.User`.
 - Added the method :meth:`~pyrogram.Client.get_created_chats`.
 - Added the class :obj:`~pyrogram.types.ForumTopic` and the methods :meth:`~pyrogram.Client.get_forum_topics`, :meth:`~pyrogram.Client.get_forum_topic`.
-- Install the version, from PyPI, using ``pip uninstall -y pyrogram && pip install pyrotgfork==2.1.17``.
+- Install the version, from PyPI, using ``pip uninstall -y pyrogram && pip install pirogram==2.1.30``.
 - Added the classes :obj:`~pyrogram.types.BusinessOpeningHours` and :obj:`~pyrogram.types.BusinessOpeningHoursInterval` and the field       ``business_opening_hours`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the class :obj:`~pyrogram.types.BusinessLocation` and the field ``business_location`` to the class :obj:`~pyrogram.types.Chat`.
 - Added the class :obj:`~pyrogram.types.BusinessIntro` and the field ``business_intro`` to the class :obj:`~pyrogram.types.Chat`.
