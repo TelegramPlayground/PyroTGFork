@@ -26,7 +26,7 @@ class SearchGlobalCount:
         query: str = "",
         filter: "enums.MessagesFilter" = enums.MessagesFilter.EMPTY,
         chat_list: int = 0,
-        is_channel: bool = False,
+        only_in_channels: bool = False,
     ) -> int:
         """Get the count of messages resulting from a global search.
 
@@ -45,7 +45,7 @@ class SearchGlobalCount:
             chat_list (``int``, *optional*):
                 Chat list in which to search messages; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
 
-            is_channel (``bool``, *optional*):
+            only_in_channels (``bool``, *optional*):
                 True, if should search only in joined channels.
                 Defaults to False. All available chats are searched.
 
@@ -63,7 +63,7 @@ class SearchGlobalCount:
                 offset_id=0,
                 limit=1,
                 folder_id=chat_list,
-                broadcasts_only=is_channel
+                broadcasts_only=only_in_channels
             )
         )
 
