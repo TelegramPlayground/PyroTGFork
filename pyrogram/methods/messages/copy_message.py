@@ -44,6 +44,9 @@ class CopyMessage:
             "types.ForceReply"
         ] = None,
         schedule_date: datetime = None,
+        business_connection_id: str = None,
+        protect_content: bool = None,
+        message_thread_id: int = None,
         reply_to_message_id: int = None
     ) -> "types.Message":
         """Copy messages of any kind.
@@ -93,6 +96,15 @@ class CopyMessage:
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving
+
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the copied message is returned.
 
@@ -130,5 +142,8 @@ class CopyMessage:
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
-            schedule_date=schedule_date
+            schedule_date=schedule_date,
+            business_connection_id=business_connection_id,
+            protect_content=protect_content,
+            message_thread_id=message_thread_id
         )

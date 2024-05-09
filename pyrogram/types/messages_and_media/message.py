@@ -3871,8 +3871,11 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = object,
-        reply_to_message_id: int = None,
-        schedule_date: datetime = None
+        schedule_date: datetime = None,
+        business_connection_id: str = None,
+        protect_content: bool = None,
+        message_thread_id: int = None,
+        reply_to_message_id: int = None
     ) -> Union["types.Message", List["types.Message"]]:
         """Bound method *copy* of :obj:`~pyrogram.types.Message`.
 
@@ -3925,6 +3928,15 @@ class Message(Object, Update):
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving
+
+            message_thread_id (``int``, *optional*):
+                Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
+
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the copied message is returned.
 
@@ -3942,14 +3954,14 @@ class Message(Object, Update):
         elif self.text:
             return await self._client.send_message(
                 chat_id=chat_id,
-                message_thread_id=self.message_thread_id,
-                business_connection_id=self.business_connection_id,
+                message_thread_id=message_thread_id or self.message_thread_id,
+                business_connection_id=business_connection_id or self.business_connection_id,
                 text=self.text,
                 parse_mode=enums.ParseMode.DISABLED,
                 entities=self.entities,
                 link_preview_options=self.link_preview_options,
                 disable_notification=disable_notification,
-                protect_content=self.has_protected_content,
+                protect_content=protect_content or self.has_protected_content,
                 reply_parameters=reply_parameters,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup,
                 reply_to_message_id=reply_to_message_id,
@@ -3961,10 +3973,10 @@ class Message(Object, Update):
                 chat_id=chat_id,
                 disable_notification=disable_notification,
                 reply_parameters=reply_parameters,
-                message_thread_id=self.message_thread_id,
-                business_connection_id=self.business_connection_id,
+                message_thread_id=message_thread_id or self.message_thread_id,
+                business_connection_id=business_connection_id or self.business_connection_id,
                 schedule_date=schedule_date,
-                protect_content=self.has_protected_content,
+                protect_content=protect_content or self.has_protected_content,
                 has_spoiler=self.has_media_spoiler,
                 reply_to_message_id=reply_to_message_id,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -3995,10 +4007,10 @@ class Message(Object, Update):
                     vcard=self.contact.vcard,
                     disable_notification=disable_notification,
                     reply_parameters=reply_parameters,
-                    message_thread_id=self.message_thread_id,
-                    business_connection_id=self.business_connection_id,
+                    message_thread_id=message_thread_id or self.message_thread_id,
+                    business_connection_id=business_connection_id or self.business_connection_id,
                     schedule_date=schedule_date,
-                    protect_content=self.has_protected_content,
+                    protect_content=protect_content or self.has_protected_content,
                     reply_to_message_id=reply_to_message_id,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
@@ -4009,10 +4021,10 @@ class Message(Object, Update):
                     longitude=self.location.longitude,
                     disable_notification=disable_notification,
                     reply_parameters=reply_parameters,
-                    message_thread_id=self.message_thread_id,
-                    business_connection_id=self.business_connection_id,
+                    message_thread_id=message_thread_id or self.message_thread_id,
+                    business_connection_id=business_connection_id or self.business_connection_id,
                     schedule_date=schedule_date,
-                    protect_content=self.has_protected_content,
+                    protect_content=protect_content or self.has_protected_content,
                     reply_to_message_id=reply_to_message_id,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
@@ -4027,20 +4039,25 @@ class Message(Object, Update):
                     foursquare_type=self.venue.foursquare_type,
                     disable_notification=disable_notification,
                     reply_parameters=reply_parameters,
-                    message_thread_id=self.message_thread_id,
-                    business_connection_id=self.business_connection_id,
+                    message_thread_id=message_thread_id or self.message_thread_id,
+                    business_connection_id=business_connection_id or self.business_connection_id,
                     schedule_date=schedule_date,
-                    protect_content=self.has_protected_content,
+                    protect_content=protect_content or self.has_protected_content,
                     reply_to_message_id=reply_to_message_id,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.poll:
-                oldpm = self._client.parse_mode
-                self._client.set_parse_mode(enums.ParseMode.HTML)
-                cm = await self._client.send_poll(
+                # TODO
+                return await self._client.send_poll(
                     chat_id,
-                    question=self.poll.question.html,
-                    options=[opt.text.html for opt in self.poll.options],
+                    question=self.poll.question,
+                    question_entities=self.poll.question_entities,
+                    options=[
+                        types.InputPollOption(
+                            text=opt.text,
+                            text_entities=opt.text_entities
+                        ) for opt in self.poll.options
+                    ],
                     is_anonymous=self.poll.is_anonymous,
                     type=self.poll.type,
                     allows_multiple_answers=self.poll.allows_multiple_answers,
@@ -4050,24 +4067,22 @@ class Message(Object, Update):
                     open_period=self.poll.open_period,
                     close_date=self.poll.close_date,
                     disable_notification=disable_notification,
-                    protect_content=self.has_protected_content,
+                    protect_content=protect_content or self.has_protected_content,
                     reply_parameters=reply_parameters,
-                    message_thread_id=self.message_thread_id,
-                    business_connection_id=self.business_connection_id,
+                    message_thread_id=message_thread_id or self.message_thread_id,
+                    business_connection_id=business_connection_id or self.business_connection_id,
                     schedule_date=schedule_date,
                     reply_to_message_id=reply_to_message_id,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
-                self._client.set_parse_mode(oldpm)
-                return cm
             elif self.game:
                 return await self._client.send_game(
                     chat_id,
                     game_short_name=self.game.short_name,
                     disable_notification=disable_notification,
-                    protect_content=self.has_protected_content,
-                    message_thread_id=self.message_thread_id,
-                    business_connection_id=self.business_connection_id,
+                    protect_content=protect_content or self.has_protected_content,
+                    message_thread_id=message_thread_id or self.message_thread_id,
+                    business_connection_id=business_connection_id or self.business_connection_id,
                     reply_parameters=reply_parameters,
                     reply_to_message_id=reply_to_message_id,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
