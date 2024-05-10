@@ -4047,7 +4047,6 @@ class Message(Object, Update):
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.poll:
-                # TODO
                 return await self._client.send_poll(
                     chat_id,
                     question=self.poll.question,
@@ -4711,3 +4710,67 @@ class Message(Object, Update):
         return getattr(self.forward_origin, "date", None)
 
     # END: the below properties were removed in `BOT API 7.0 <https://core.telegram.org/bots/api-changelog#december-29-2023>`_
+
+    async def read(self) -> bool:
+        """Bound method *read* of :obj:`~pyrogram.types.Message`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.read_chat_history(
+                chat_id=message.chat.id,
+                max_id=message_id
+            )
+
+        Example:
+
+            .. code-block:: python
+
+                await message.read()
+
+        Returns:
+            True on success.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
+        """
+        return await self._client.read_chat_history(
+            chat_id=self.chat.id,
+            max_id=self.id
+        )
+
+    async def view(self, force_read: bool = True) -> bool:
+        """Bound method *view* of :obj:`~pyrogram.types.Message`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.view_messages(
+                chat_id=message.chat.id,
+                message_ids=message_id
+            )
+
+        Example:
+            .. code-block:: python
+
+                await message.view()
+
+        Parameters:
+            force_read (``bool``, *optional*):
+                Pass True to mark as read the specified messages and also increment the view counter.
+
+        Returns:
+            True on success.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
+        """
+        return await self._client.view_messages(
+            chat_id=self.chat.id,
+            message_ids=self.id,
+            force_read=force_read
+        )

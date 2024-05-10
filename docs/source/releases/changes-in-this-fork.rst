@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 179 |
 +------------------------+
 
+- Added :meth:`~pyrogram.Client.view_messages` and the bound methods :meth:`~pyrogram.types.Message.read` and :meth:`~pyrogram.types.Message.view`.
 - Added the field ``question_entities`` to the class :obj:`~pyrogram.types.Poll`.
 - Added the field ``text_entities`` to the class :obj:`~pyrogram.types.PollOption`.
 - Added the parameters ``question_parse_mode`` and ``question_entities`` to the method :meth:`~pyrogram.Client.send_poll`.

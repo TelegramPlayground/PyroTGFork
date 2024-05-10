@@ -330,6 +330,7 @@ def pyrogram_api():
             set_reaction
             stop_poll
             stream_media
+            view_messages
             vote_poll
         """,
         password="""
@@ -648,6 +649,8 @@ def pyrogram_api():
             Message.reply_voice
             Message.get_media_group
             Message.react
+            Message.read
+            Message.view
         """,
         chat="""
         Chat
