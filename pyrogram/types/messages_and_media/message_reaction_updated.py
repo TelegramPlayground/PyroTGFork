@@ -91,7 +91,7 @@ class MessageReactionUpdated(Object, Update):
         if peer_id > 0:
             chat = types.Chat._parse_user_chat(client, users[raw_peer_id])
         else:
-            chat = types.Chat._parse_chat_chat(client, chats[raw_peer_id])
+            chat = types.Chat._parse_chat(client, chats[raw_peer_id])
 
         user = None
         actor_chat = None
