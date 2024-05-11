@@ -37,10 +37,6 @@ class SetProfilePhoto:
         The ``photo`` and ``video`` arguments are mutually exclusive.
         Pass either one as named argument (see examples below).
 
-        .. note::
-
-            This method only works for Users.
-
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:

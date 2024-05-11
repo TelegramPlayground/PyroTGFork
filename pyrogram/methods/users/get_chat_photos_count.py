@@ -29,6 +29,10 @@ class GetChatPhotosCount:
     ) -> int:
         """Get the total count of photos for a chat.
 
+        .. note::
+
+            This method works for bot Clients only in :obj:`~pyrogram.enums.ChatType.PRIVATE` and :obj:`~pyrogram.enums.ChatType.GROUP`
+
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:

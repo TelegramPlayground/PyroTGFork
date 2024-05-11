@@ -32,7 +32,7 @@ class DeleteProfilePhotos:
     ) -> bool:
         """Delete your own profile photos.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
             photo_ids (``str`` | List of ``str``, *optional*):
@@ -80,8 +80,10 @@ class DeleteProfilePhotos:
         photo_ids = photo_ids if isinstance(photo_ids, list) else [photo_ids]
         input_photos = [utils.get_input_media_from_file_id(i, FileType.PHOTO).id for i in photo_ids]
 
-        return bool(await self.invoke(
-            raw.functions.photos.DeletePhotos(
-                id=input_photos
+        return bool(
+            await self.invoke(
+                raw.functions.photos.DeletePhotos(
+                    id=input_photos
+                )
             )
-        ))
+        )

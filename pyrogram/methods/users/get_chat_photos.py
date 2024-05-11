@@ -29,8 +29,12 @@ class GetChatPhotos:
         limit: int = 0,
     ) -> Optional[AsyncGenerator["types.Photo", None]]:
         """Get a chat or a user profile photos sequentially.
+        
+        .. note::
 
-        .. include:: /_includes/usable-by/users.rst
+            This method works for bot Clients only in :obj:`~pyrogram.enums.ChatType.PRIVATE` and :obj:`~pyrogram.enums.ChatType.GROUP`
+
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
