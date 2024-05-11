@@ -22,13 +22,13 @@ import pyrogram
 from pyrogram import raw
 
 
-class IncrementMessageViews:
-    async def increment_message_views(
+class ViewMessages:
+    async def view_messages(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_id: Union[int, List[int]],
     ) -> bool:
-        """Increment message views.
+        """Increment message views counter.
 
         .. include:: /_includes/usable-by/users.rst
 
@@ -46,7 +46,7 @@ class IncrementMessageViews:
             .. code-block:: python
 
                 # Increment message views
-                await app.increment_message_views(chat_id, 1)
+                await app.view_messages(chat_id, 1)
         """
         ids = [message_id] if not isinstance(message_id, list) else message_id
 

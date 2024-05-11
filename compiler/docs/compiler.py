@@ -178,12 +178,12 @@ def pyrogram_api():
             get_messages
             get_scheduled_messages
             get_stickers
-            increment_message_views
             get_media_group
             get_chat_history
             get_chat_history_count
             read_chat_history
             send_poll
+            view_messages
             vote_poll
             stop_poll
             retract_vote
