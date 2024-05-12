@@ -34,6 +34,7 @@ from .chat_reactions import ChatReactions
 from .chat_shared import ChatShared
 from .dialog import Dialog
 from .emoji_status import EmojiStatus
+from .group_call_participant import GroupCallParticipant
 from .invite_link_importer import InviteLinkImporter
 from .restriction import Restriction
 from .user import User
@@ -63,6 +64,7 @@ __all__ = [
     "ChatShared",
     "Dialog",
     "EmojiStatus",
+    "GroupCallParticipant",
     "InviteLinkImporter",
     "Restriction",
     "User",

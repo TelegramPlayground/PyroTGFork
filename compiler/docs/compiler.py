@@ -339,6 +339,10 @@ def pyrogram_api():
             change_cloud_password
             remove_cloud_password
         """,
+        phone="""
+        Phone
+            load_group_call_participants
+        """,
         stickers="""
         Stickers
             get_stickers
@@ -572,6 +576,7 @@ def pyrogram_api():
             ChatShared
             Dialog
             EmojiStatus
+            GroupCallParticipant
             InviteLinkImporter
             Restriction
             User

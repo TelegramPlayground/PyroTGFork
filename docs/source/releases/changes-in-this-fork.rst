@@ -12,6 +12,7 @@ it can take advantage of new goodies!
 | Scheme layer used: 179 |
 +------------------------+
 
+- Added :meth:`~pyrogram.Client.load_group_call_participants` and the type :obj:`~pyrogram.types.GroupCallParticipant`.
 - Added :meth:`~pyrogram.Client.view_messages` and the bound methods :meth:`~pyrogram.types.Message.read` and :meth:`~pyrogram.types.Message.view`.
 - Added the field ``question_entities`` to the class :obj:`~pyrogram.types.Poll`.
 - Added the field ``text_entities`` to the class :obj:`~pyrogram.types.PollOption`.

@@ -1,3 +1,4 @@
+
 #  Pyrogram - Telegram MTProto API Client Library for Python
 #  Copyright (C) 2017-present Dan <https://github.com/delivrance>
 #
@@ -16,38 +17,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .advanced import Advanced
-from .auth import Auth
-from .bots import Bots
-from .chats import Chats
-from .chat_topics import ChatTopics
-from .contacts import Contacts
-from .decorators import Decorators
-from .invite_links import InviteLinks
-from .messages import Messages
-from .password import Password
-from .phone import Phone
-from .stickers import Stickers
-from .users import Users
-from .utilities import Utilities
-from .business import TelegramBusiness
+from .load_group_call_participants import LoadGroupCallParticipants
 
 
-class Methods(
-    Decorators,
-    Advanced,
-    Auth,
-    Bots,
-    Chats,
-    ChatTopics,
-    Contacts,
-    InviteLinks,
-    Messages,
-    Password,
-    Phone,
-    Stickers,
-    TelegramBusiness,
-    Users,
-    Utilities,
+class Phone(
+    LoadGroupCallParticipants
 ):
     pass

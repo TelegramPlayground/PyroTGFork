@@ -164,6 +164,19 @@ Password
 
     {password}
 
+Phone
+--------
+
+.. autosummary::
+    :nosignatures:
+
+    {phone}
+
+.. toctree::
+    :hidden:
+
+    {phone}
+
 Bots
 ----
 
