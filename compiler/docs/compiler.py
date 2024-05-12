@@ -332,6 +332,7 @@ def pyrogram_api():
             stream_media
             view_messages
             vote_poll
+            get_chat_sponsored_messages
         """,
         password="""
         Password
@@ -539,6 +540,7 @@ def pyrogram_api():
             StrippedThumbnail
             Poll
             PollOption
+            SponsoredMessage
             Sticker
             Story
             Venue

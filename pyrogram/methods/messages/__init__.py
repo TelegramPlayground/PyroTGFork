@@ -68,6 +68,7 @@ from .stop_poll import StopPoll
 from .stream_media import StreamMedia
 from .view_messages import ViewMessages
 from .vote_poll import VotePoll
+from .get_chat_sponsored_messages import GetChatSponsoredMessages
 
 
 class Messages(
@@ -121,5 +122,6 @@ class Messages(
     StreamMedia,
     ViewMessages,
     VotePoll,
+    GetChatSponsoredMessages,
 ):
     pass

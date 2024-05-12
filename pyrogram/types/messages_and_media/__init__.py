@@ -35,6 +35,7 @@ from .reaction import (
     ReactionTypeCustomEmoji,
     ReactionCount
 )
+from .sponsored_message import SponsoredMessage
 from .sticker import Sticker
 from .stripped_thumbnail import StrippedThumbnail
 from .thumbnail import Thumbnail
@@ -84,6 +85,7 @@ __all__ = [
     "StrippedThumbnail",
     "Poll",
     "PollOption",
+    "SponsoredMessage",
     "Sticker",
     "Story",
     "Venue",
