@@ -12,8 +12,8 @@ it can take advantage of new goodies!
 | Scheme layer used: 179 |
 +------------------------+
 
-- Added :meth:`~pyrogram.Client.get_chat_sponsored_messages` and the type :obj:`~pyrogram.types.SponsoredMessage`.
-- Added :meth:`~pyrogram.Client.load_group_call_participants` and the type :obj:`~pyrogram.types.GroupCallParticipant`.
+- Added :meth:`~pyrogram.Client.get_chat_sponsored_messages` and the type :obj:`~pyrogram.types.SponsoredMessage`, by stealing unauthored changes from `KurimuzonAkuma/pyrogram#55 <https://github.com/KurimuzonAkuma/pyrogram/pull/55>`_.
+- Added :meth:`~pyrogram.Client.load_group_call_participants` and the type :obj:`~pyrogram.types.GroupCallParticipant`, by stealing unauthored changes from `6df467f <https://github.com/KurimuzonAkuma/pyrogram/commit/6df467f89c0f6fa513a3f56ff1b517574fd3d164>`_.
 - Added :meth:`~pyrogram.Client.view_messages` and the bound methods :meth:`~pyrogram.types.Message.read` and :meth:`~pyrogram.types.Message.view`.
 - Added the field ``question_entities`` to the class :obj:`~pyrogram.types.Poll`.
 - Added the field ``text_entities`` to the class :obj:`~pyrogram.types.PollOption`.
