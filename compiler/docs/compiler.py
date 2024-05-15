@@ -388,7 +388,7 @@ def pyrogram_api():
             get_stories_archive
             get_stories
             hide_stories
-            increment_story_views
+            view_stories
             pin_stories
             read_stories
             send_story
@@ -725,6 +725,7 @@ def pyrogram_api():
             Story.forward
             Story.download
             Story.read
+            Story.view
         """,
         folder="""
         Folder

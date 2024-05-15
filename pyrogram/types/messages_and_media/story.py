@@ -1835,3 +1835,25 @@ class Story(Object, Update):
             chat_id=self.chat.id,
             max_id=self.id
         )
+
+    async def view(self) -> List[int]:
+        """Bound method *view* of :obj:`~pyrogram.types.Story`.
+
+        Example:
+            .. code-block:: python
+
+                await story.view()
+
+        Returns:
+            True on success, False otherwise.
+
+        Example:
+            .. code-block:: python
+
+                # Read stories
+                await app.view_stories(chat_id)
+        """
+        return await self._client.view_stories(
+            chat_id=self.chat.id,
+            story_id=self.id
+        )

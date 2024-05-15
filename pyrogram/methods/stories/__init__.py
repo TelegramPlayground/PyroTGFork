@@ -29,7 +29,7 @@ from .get_pinned_stories import GetPinnedStories
 from .get_stories import GetStories
 from .get_stories_archive import GetStoriesArchive
 from .hide_stories import HideStories
-from .increment_story_views import IncrementStoryViews
+from .view_stories import ViewStories
 from .pin_stories import PinStories
 from .read_stories import ReadStories
 from .send_story import SendStory
@@ -48,7 +48,7 @@ class Stories(
     GetStories,
     GetStoriesArchive,
     HideStories,
-    IncrementStoryViews,
+    ViewStories,
     PinStories,
     ReadStories,
     SendStory,

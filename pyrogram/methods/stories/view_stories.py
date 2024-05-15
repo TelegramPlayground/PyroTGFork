@@ -22,8 +22,8 @@ import pyrogram
 from pyrogram import raw
 
 
-class IncrementStoryViews:
-    async def increment_story_views(
+class ViewStories:
+    async def view_stories(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         story_id: Union[int, List[int]],
@@ -47,7 +47,7 @@ class IncrementStoryViews:
             .. code-block:: python
 
                 # Increment story views
-                await app.increment_story_views(chat_id, 1)
+                await app.view_stories(chat_id, 1)
         """
         ids = [story_id] if not isinstance(story_id, list) else story_id
 
