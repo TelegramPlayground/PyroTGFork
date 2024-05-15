@@ -30,6 +30,7 @@ class CopyMediaGroup:
         from_chat_id: Union[int, str],
         message_id: int,
         captions: Union[List[str], str] = None,
+        has_spoilers: Union[List[bool], bool] = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
         reply_to_message_id: int = None,
@@ -137,7 +138,19 @@ class CopyMediaGroup:
             else:
                 raise ValueError("Message with this type can't be copied.")
 
-            media = utils.get_input_media_from_file_id(file_id=file_id)
+            media = utils.get_input_media_from_file_id(
+                file_id=file_id,
+                has_spoiler=(
+                    has_spoilers[i]
+                    if isinstance(has_spoilers, list)
+                    and i < len(has_spoilers)
+                    else (
+                        has_spoilers
+                        if isinstance(has_spoilers, bool)
+                        else message.has_media_spoiler
+                    )
+                ),
+            )
             multi_media.append(
                 raw.types.InputSingleMedia(
                     media=media,

@@ -4102,9 +4102,6 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
 
-            has_spoiler (``bool``, *optional*):
-                True, if the message media is covered by a spoiler animation.
-
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
 
@@ -4158,7 +4155,7 @@ class Message(Object, Update):
                 quote_entities=quote_entities,
                 schedule_date=schedule_date,
                 protect_content=protect_content,
-                has_spoiler=has_spoiler,
+                has_spoiler=self.has_media_spoiler if has_spoiler is None else has_spoiler,
                 business_connection_id=business_connection_id,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
