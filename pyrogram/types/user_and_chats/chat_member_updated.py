@@ -47,6 +47,9 @@ class ChatMemberUpdated(Object, Update):
 
         invite_link (:obj:`~pyrogram.types.ChatInviteLink`, *optional*):
             Chat invite link, which was used by the user to join the chat; for joining by invite link events only.
+
+        via_join_request (``bool``, *optional*):
+            True, if the user joined the chat after sending a join request and being approved by an administrator.
     """
 
     def __init__(
@@ -59,6 +62,7 @@ class ChatMemberUpdated(Object, Update):
         old_chat_member: "types.ChatMember",
         new_chat_member: "types.ChatMember",
         invite_link: "types.ChatInviteLink" = None,
+        via_join_request: bool = None
     ):
         super().__init__(client)
 
@@ -68,6 +72,7 @@ class ChatMemberUpdated(Object, Update):
         self.old_chat_member = old_chat_member
         self.new_chat_member = new_chat_member
         self.invite_link = invite_link
+        self.via_join_request = via_join_request
 
     @staticmethod
     def _parse(
@@ -81,6 +86,7 @@ class ChatMemberUpdated(Object, Update):
         old_chat_member = None
         new_chat_member = None
         invite_link = None
+        via_join_request = None
 
         if update.prev_participant:
             old_chat_member = types.ChatMember._parse(client, update.prev_participant, users, chats)
@@ -91,6 +97,9 @@ class ChatMemberUpdated(Object, Update):
         if update.invite:
             invite_link = types.ChatInviteLink._parse(client, update.invite, users)
 
+            if isinstance(update.invite, raw.types.ChatInvitePublicJoinRequests):
+                via_join_request = True
+
         return ChatMemberUpdated(
             chat=types.Chat._parse_chat(client, chats[chat_id]),
             from_user=types.User._parse(client, users[update.actor_id]),
@@ -98,5 +107,6 @@ class ChatMemberUpdated(Object, Update):
             old_chat_member=old_chat_member,
             new_chat_member=new_chat_member,
             invite_link=invite_link,
+            via_join_request=via_join_request,
             client=client
         )
