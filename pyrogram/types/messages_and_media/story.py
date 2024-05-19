@@ -828,6 +828,7 @@ class Story(Object, Update):
         caption_entities: List["types.MessageEntity"] = None,
         has_spoiler: bool = None,
         ttl_seconds: int = None,
+        view_once: bool = None,
         disable_notification: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -880,6 +881,10 @@ class Story(Object, Update):
                 If you set a timer, the photo will self-destruct in *ttl_seconds*
                 seconds after it was viewed.
 
+            view_once (``bool``, *optional*):
+                Self-Destruct Timer.
+                If True, the photo will self-destruct after it was viewed.
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
@@ -926,6 +931,7 @@ class Story(Object, Update):
             caption_entities=caption_entities,
             has_spoiler=has_spoiler,
             ttl_seconds=ttl_seconds,
+            view_once=view_once,
             disable_notification=disable_notification,
             reply_to_story_id=self.id,
             reply_markup=reply_markup,

@@ -2521,6 +2521,7 @@ class Message(Object, Update):
         reply_to_message_id: int = None,
         quote_text: str = None,
         quote_entities: List["types.MessageEntity"] = None,
+        view_once: bool = None,
         business_connection_id: str = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2594,6 +2595,10 @@ class Message(Object, Update):
             quote_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in quote text, which can be specified instead of *parse_mode*.
 
+            view_once (``bool``, *optional*):
+                Self-Destruct Timer.
+                If True, the photo will self-destruct after it was viewed.
+
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
 
@@ -2656,6 +2661,7 @@ class Message(Object, Update):
             reply_to_message_id=reply_to_message_id,
             quote_text=quote_text,
             quote_entities=quote_entities,
+            view_once=view_once,
             business_connection_id=business_connection_id,
             reply_markup=reply_markup,
             progress=progress,
