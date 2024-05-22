@@ -65,13 +65,10 @@ class TextQuote(Object):
         users: dict,
         reply_to: "raw.types.MessageReplyHeader"
     ) -> "TextQuote":
-        if not getattr(reply_to, "quote", None):
-            return None
-
         if isinstance(reply_to, raw.types.MessageReplyHeader):
             quote_text = reply_to.quote_text
             quote_entities = reply_to.quote_entities
-            position = reply_to.quote_offset
+            position = reply_to.quote_offset or 0
 
             entities = [
                 types.MessageEntity._parse(client, entity, users)
@@ -85,5 +82,5 @@ class TextQuote(Object):
                 text=Str(quote_text).init(entities) or None,
                 entities=entities,
                 position=position,
-                # TODO
+                is_manual=bool(reply_to.quote) or None
             )

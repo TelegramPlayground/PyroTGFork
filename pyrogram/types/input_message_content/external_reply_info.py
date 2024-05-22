@@ -169,7 +169,14 @@ class ExternalReplyInfo(Object):
                 users,
                 chats,
             )
+
             chat = None
+            if isinstance(reply_to.reply_to_peer_id, raw.types.PeerChannel):
+                raw_peer_id = utils.get_raw_peer_id(reply_to.reply_to_peer_id)
+                chat = types.Chat._parse_chat(
+                    client,
+                    chats[raw_peer_id],
+                )
 
             animation = None
             audio = None
