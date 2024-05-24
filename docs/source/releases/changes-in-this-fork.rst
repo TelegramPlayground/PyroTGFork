@@ -8,10 +8,14 @@ it can take advantage of new goodies!
 
 `For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/commits/unknown_errors/>`_
 
+If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
+
 +------------------------+
 | Scheme layer used: 179 |
 +------------------------+
 
+- Support for the updated Channel ID format. `#28 <https://github.com/TelegramPlayGround/pyrogram/pull/28>`_
+- Improvements to :meth:`~pyrogram.Client.save_file` and :meth:`~pyrogram.Client.get_file` to handle the new `FLOOD_PREMIUM_WAIT <https://t.me/swiftgram/72>`_ errors.
 - Added ``has_animation``, ``is_personal``, ``minithumbnail`` parameters to :obj:`~pyrogram.types.ChatPhoto`.
 - Changed return type of :meth:`~pyrogram.Client.get_chat_photos` to return :obj:`~pyrogram.types.Photo` or :obj:`~pyrogram.types.Animation`.
 - Added :meth:`~pyrogram.Client.get_chat_sponsored_messages` and the type :obj:`~pyrogram.types.SponsoredMessage`, by stealing unauthored changes from `KurimuzonAkuma/pyrogram#55 <https://github.com/KurimuzonAkuma/pyrogram/pull/55>`_.
