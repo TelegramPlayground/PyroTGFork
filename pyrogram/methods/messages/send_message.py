@@ -150,6 +150,8 @@ class SendMessage:
             )
             link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
+        link_preview_options = link_preview_options or self.link_preview_options
+
         if reply_to_message_id and reply_parameters:
             raise ValueError(
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "

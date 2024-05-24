@@ -211,6 +211,10 @@ class Client(Methods):
         client_platform (:obj:`~pyrogram.enums.ClientPlatform`, *optional*):
             The platform where this client is running.
             Defaults to 'other'
+        
+        link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
+            Set the global link preview options for the client. By default, no link preview option is set.
+
     """
 
     APP_VERSION = f"Pyrogram {__version__}"
@@ -272,6 +276,7 @@ class Client(Methods):
         storage_engine: Storage = None,
         no_joined_notifications: bool = False,
         client_platform: enums.ClientPlatform = enums.ClientPlatform.OTHER,
+        link_preview_options: "types.LinkPreviewOptions" = None,
         _un_docu_gnihts: List = []
     ):
         super().__init__()
@@ -309,6 +314,7 @@ class Client(Methods):
         self.no_joined_notifications = no_joined_notifications
         self.client_platform = client_platform
         self._un_docu_gnihts = _un_docu_gnihts
+        self.link_preview_options = link_preview_options
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 

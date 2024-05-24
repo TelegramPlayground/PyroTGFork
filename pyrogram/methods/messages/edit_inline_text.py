@@ -95,6 +95,8 @@ class EditInlineText:
             )
             link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
+        link_preview_options = link_preview_options or self.link_preview_options
+
         unpacked = utils.unpack_inline_message_id(inline_message_id)
         dc_id = unpacked.dc_id
 
