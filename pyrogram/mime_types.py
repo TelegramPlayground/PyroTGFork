@@ -18,6 +18,7 @@
 
 # From https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types.
 # Extended with extra mime types specific to Telegram.
+
 mime_types = """
 # This file maps Internet media types to unique file extension(s).
 # Although created for httpd, this file is used by many software systems
@@ -163,7 +164,7 @@ application/ipfix				ipfix
 application/java-archive			jar
 application/java-serialized-object		ser
 application/java-vm				class
-application/javascript				js
+# application/javascript
 # application/jose
 # application/jose+json
 # application/jrd+json
@@ -606,6 +607,7 @@ application/vnd.genomatix.tuxedo		txd
 # application/vnd.geo+json
 # application/vnd.geocube+xml
 application/vnd.geogebra.file			ggb
+application/vnd.geogebra.slides		ggs
 application/vnd.geogebra.tool			ggt
 application/vnd.geometry-explorer		gex gre
 application/vnd.geonext				gxt
@@ -1233,6 +1235,7 @@ application/vnd.zul				zir zirz
 application/vnd.zzazz.deck+xml			zaz
 application/voicexml+xml			vxml
 # application/vq-rtcpxr
+application/wasm				wasm
 # application/watcherinfo+xml
 # application/whoispp-query
 # application/whoispp-response
@@ -1457,10 +1460,10 @@ audio/mp4					m4a mp4a
 # audio/mp4a-latm
 # audio/mpa
 # audio/mpa-robust
-audio/mpeg					mp3 mpga mp2 mp2a m2a m3a
+audio/mpeg					mpga mp2 mp2a mp3 m2a m3a
 # audio/mpeg4-generic
 # audio/musepack
-audio/ogg					ogg oga spx
+audio/ogg					oga ogg spx opus
 # audio/opus
 # audio/parityfec
 # audio/pcma
@@ -1568,7 +1571,7 @@ image/gif					gif
 image/ief					ief
 # image/jls
 # image/jp2
-image/jpeg					jpg jpeg jpe
+image/jpeg					jpeg jpg jpe
 # image/jpm
 # image/jpx
 image/ktx					ktx
@@ -1664,7 +1667,7 @@ model/vnd.gdl					gdl
 # model/vnd.gs.gdl
 model/vnd.gtw					gtw
 # model/vnd.moml+xml
-model/vnd.mts					mts
+# model/vnd.mts
 # model/vnd.opengex
 # model/vnd.parasolid.transmit.binary
 # model/vnd.parasolid.transmit.text
@@ -1707,7 +1710,7 @@ text/csv					csv
 # text/fwdred
 # text/grammar-ref-list
 text/html					html htm
-# text/javascript
+text/javascript					js mjs
 # text/jcr-cnd
 # text/markdown
 # text/mizar
@@ -1803,7 +1806,7 @@ video/jpm					jpm jpgm
 video/mj2					mj2 mjp2
 # video/mp1s
 # video/mp2p
-# video/mp2t
+video/mp2t					ts m2t m2ts mts
 video/mp4					mp4 mp4v mpg4
 # video/mp4v-es
 video/mpeg					mpeg mpg mpe m1v m2v
