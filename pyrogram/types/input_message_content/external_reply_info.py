@@ -85,7 +85,8 @@ class ExternalReplyInfo(Object):
         giveaway_winners (:obj:`~pyrogram.types.GiveawayWinners`, *optional*):
             A giveaway with public winners was completed
 
-        invoice
+        invoice (:obj:`~pyrogram.types.Invoice`, *optional*):
+            Message is an invoice for a `payment <https://core.telegram.org/bots/api#payments>`_, information about the invoice. `More about payments » <https://core.telegram.org/bots/api#payments>`_
 
         location (:obj:`~pyrogram.types.Location`, *optional*):
             Message is a shared location, information about the location.
@@ -120,7 +121,7 @@ class ExternalReplyInfo(Object):
         game: "types.Game" = None,
         giveaway: "types.Giveaway" = None,
         giveaway_winners: "types.GiveawayWinners" = None,
-
+        invoice: "types.Invoice" = None,
         location: "types.Location" = None,
         poll: "types.Poll" = None,
         venue: "types.Venue" = None,
@@ -146,6 +147,7 @@ class ExternalReplyInfo(Object):
         self.game = game
         self.giveaway = giveaway
         self.giveaway_winners = giveaway_winners
+        self.invoice = invoice
         self.location = location
         self.poll = poll
         self.venue = venue
@@ -195,6 +197,7 @@ class ExternalReplyInfo(Object):
             game = None
             giveaway = None
             giveaway_winners = None
+            invoice = None
             location = None
             poll = None
             venue = None
@@ -296,6 +299,9 @@ class ExternalReplyInfo(Object):
                 elif isinstance(media, raw.types.MessageMediaGiveawayResults):
                     giveaway_winners = types.GiveawayWinners._parse(client, chats, users, media)
                     media_type = enums.MessageMediaType.GIVEAWAY_WINNERS
+                elif isinstance(media, raw.types.MessageMediaInvoice):
+                    invoice = types.Invoice._parse(client, media)
+                    media_type = enums.MessageMediaType.INVOICE
 
             return ExternalReplyInfo(
                 origin=origin,
@@ -317,6 +323,7 @@ class ExternalReplyInfo(Object):
                 game=game,
                 giveaway=giveaway,
                 giveaway_winners=giveaway_winners,
+                invoice=invoice,
                 location=location,
                 poll=poll,
                 venue=venue

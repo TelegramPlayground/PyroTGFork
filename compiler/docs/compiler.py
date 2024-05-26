@@ -557,6 +557,8 @@ def pyrogram_api():
             BusinessLocation
             BusinessOpeningHours
             BusinessOpeningHoursInterval
+            CollectibleItemInfo
+            Invoice
         """,
         users_chats="""
         Users & Chats

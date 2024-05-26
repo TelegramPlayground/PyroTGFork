@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 179 |
 +------------------------+
 
+- Add ``invoice`` to :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Add ``link_preview_options`` to :obj:`~pyrogram.Client`.
 - Support for the updated Channel ID format. `#28 <https://github.com/TelegramPlayGround/pyrogram/pull/28>`_
 - Improvements to :meth:`~pyrogram.Client.save_file` and :meth:`~pyrogram.Client.get_file` to handle the new `FLOOD_PREMIUM_WAIT <https://t.me/swiftgram/72>`_ errors.

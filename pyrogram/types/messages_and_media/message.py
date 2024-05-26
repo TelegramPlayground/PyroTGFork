@@ -254,6 +254,9 @@ class Message(Object, Update):
             Note that the Message object in this field will not contain further reply_to_message fields even if it
             is itself a reply.
 
+        invoice (:obj:`~pyrogram.types.Invoice`, *optional*):
+            Message is an invoice for a `payment <https://core.telegram.org/bots/api#payments>`_, information about the invoice. `More about payments » <https://core.telegram.org/bots/api#payments>`_
+
         users_shared (:obj:`~pyrogram.types.UsersShared`, *optional*):
             Service message: users were shared with the bot
 
@@ -446,7 +449,7 @@ class Message(Object, Update):
         migrate_to_chat_id: int = None,
         migrate_from_chat_id: int = None,
         pinned_message: "Message" = None,
-
+        invoice: "types.Invoice" = None,
 
         users_shared: "types.UsersShared" = None,
         chat_shared: "types.ChatShared" = None,
@@ -553,6 +556,7 @@ class Message(Object, Update):
         self.migrate_to_chat_id = migrate_to_chat_id
         self.migrate_from_chat_id = migrate_from_chat_id
         self.pinned_message = pinned_message
+        self.invoice = invoice
         self.game_high_score = game_high_score
         self.views = views
         self.forwards = forwards
@@ -990,6 +994,7 @@ class Message(Object, Update):
             dice = None
             giveaway = None
             giveaway_winners = None
+            invoice = None
 
             media = message.media
             media_type = None
@@ -1104,6 +1109,9 @@ class Message(Object, Update):
                 elif isinstance(media, raw.types.MessageMediaGiveawayResults):
                     giveaway_winners = types.GiveawayWinners._parse(client, chats, users, media)
                     media_type = enums.MessageMediaType.GIVEAWAY_WINNERS
+                elif isinstance(media, raw.types.MessageMediaInvoice):
+                    invoice = types.Invoice._parse(client, media)
+                    media_type = enums.MessageMediaType.INVOICE
                 else:
                     media = None
 
@@ -1191,6 +1199,7 @@ class Message(Object, Update):
                 dice=dice,
                 giveaway=giveaway,
                 giveaway_winners=giveaway_winners,
+                invoice=invoice,
                 views=message.views,
                 forwards=message.forwards,
                 via_bot=types.User._parse(client, users.get(message.via_bot_id, None)),
