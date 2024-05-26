@@ -65,6 +65,8 @@ class InputTextMessageContent(InputMessageContent):
             )
             link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
+        link_preview_options = link_preview_options or self.link_preview_options
+
         super().__init__()
 
         self.message_text = message_text

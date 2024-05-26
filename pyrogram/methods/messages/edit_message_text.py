@@ -101,6 +101,8 @@ class EditMessageText:
             )
             link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
+        link_preview_options = link_preview_options or self.link_preview_options
+
         media = None
         if (
             link_preview_options and
