@@ -146,6 +146,9 @@ class Message(Object, Update):
         link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
             Options used for link preview generation for the message, if it is a text message and link preview options were changed
 
+        effect_id (``str``, *optional*):
+            Unique identifier of the message effect added to the message.
+
         animation (:obj:`~pyrogram.types.Animation`, *optional*):
             Message is an animation, information about the animation.
 
@@ -419,6 +422,7 @@ class Message(Object, Update):
         text: Str = None,
         entities: List["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
+        effect_id: str = None,
         animation: "types.Animation" = None,
         audio: "types.Audio" = None,
         document: "types.Document" = None,
@@ -574,6 +578,7 @@ class Message(Object, Update):
         self.chat_ttl_period = chat_ttl_period
         self.chat_ttl_setting_from = chat_ttl_setting_from
         self.link_preview_options = link_preview_options
+        self.effect_id = effect_id
         self.external_reply = external_reply
         self.is_topic_message = is_topic_message
         self.sender_boost_count = sender_boost_count
@@ -1207,7 +1212,8 @@ class Message(Object, Update):
                 reply_markup=reply_markup,
                 reactions=reactions,
                 client=client,
-                link_preview_options=link_preview_options
+                link_preview_options=link_preview_options,
+                effect_id=getattr(message, "effect", None)
             )
 
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
