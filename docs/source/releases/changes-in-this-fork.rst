@@ -14,7 +14,9 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
-
+- Added support for :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entities in received messages.
+- Added support for :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entity parsing in :obj:`~pyrogram.enums.ParseMode.HTML` parse mode.
+- Allowed to explicitly specify :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entities in formatted texts.
 - `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/?from=178&to=181>`__.
 
 +------------------------+

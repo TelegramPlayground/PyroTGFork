@@ -16,7 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from enum import auto
+
 from pyrogram import raw
+
 from .auto_name import AutoName
 
 
@@ -59,14 +62,17 @@ class MessageEntityType(AutoName):
     SPOILER = raw.types.MessageEntitySpoiler
     "Spoiler text"
 
+    BLOCKQUOTE = auto()
+    "Block quotation"
+
+    EXPANDABLE_BLOCKQUOTE = auto()
+    "collapsed-by-default block quotation"
+
     CODE = raw.types.MessageEntityCode
     "Monowidth string"
 
     PRE = raw.types.MessageEntityPre
     "Monowidth block (see ``language``)"
-
-    BLOCKQUOTE = raw.types.MessageEntityBlockquote
-    "Blockquote text"
 
     TEXT_LINK = raw.types.MessageEntityTextUrl
     "For clickable text URLs"

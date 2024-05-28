@@ -19,8 +19,7 @@
 from typing import Optional
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
+from pyrogram import raw, enums, types
 from ..object import Object
 
 
@@ -82,6 +81,12 @@ class MessageEntity(Object):
         if isinstance(entity, raw.types.InputMessageEntityMentionName):
             entity_type = enums.MessageEntityType.TEXT_MENTION
             user_id = entity.user_id.user_id
+        elif isinstance(entity, raw.types.MessageEntityBlockquote):
+            if entity.collapsed:
+                entity_type = enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE
+            else:
+                entity_type = enums.MessageEntityType.BLOCKQUOTE
+            user_id = None
         else:
             entity_type = enums.MessageEntityType(entity.__class__)
             user_id = getattr(entity, "user_id", None)
@@ -115,6 +120,9 @@ class MessageEntity(Object):
         args.pop("custom_emoji_id")
         if self.custom_emoji_id is not None:
             args["document_id"] = self.custom_emoji_id
+
+        if self.type == enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE:
+            args["collapsed"] = True
 
         entity = self.type.value
 
