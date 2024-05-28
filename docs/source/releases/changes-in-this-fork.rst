@@ -14,7 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
-- Added the field ``effect_id`` to the class :obj:`~pyrogram.types.Message`.
+- Added the fields ``effect_id`` and ``show_caption_above_media`` to the class :obj:`~pyrogram.types.Message`.
 - Added support for :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entities in received messages.
 - Added support for :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entity parsing in :obj:`~pyrogram.enums.ParseMode.HTML` parse mode.
 - Allowed to explicitly specify :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entities in formatted texts.

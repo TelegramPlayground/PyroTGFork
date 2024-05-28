@@ -186,6 +186,9 @@ class Message(Object, Update):
             For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear
             in the caption.
 
+        show_caption_above_media (``bool``, *optional*):
+            True, if the caption must be shown above the message media.
+
         has_media_spoiler (``bool``, *optional*):
             True, if the message media is covered by a spoiler animation.
 
@@ -434,6 +437,7 @@ class Message(Object, Update):
         voice: "types.Voice" = None,
         caption: Str = None,
         caption_entities: List["types.MessageEntity"] = None,
+        show_caption_above_media: bool = None,
         has_media_spoiler: bool = None,
         contact: "types.Contact" = None,
         dice: "types.Dice" = None,
@@ -533,6 +537,7 @@ class Message(Object, Update):
         self.text = text
         self.entities = entities
         self.caption_entities = caption_entities
+        self.show_caption_above_media = show_caption_above_media
         self.audio = audio
         self.document = document
         self.photo = photo
@@ -1120,6 +1125,7 @@ class Message(Object, Update):
                 else:
                     media = None
 
+            show_caption_above_media = getattr(message, "invert_media", False)
             if (
                 not link_preview_options and
                 web_page_url
@@ -1128,7 +1134,7 @@ class Message(Object, Update):
                     client,
                     None,
                     web_page_url,
-                    getattr(message, "invert_media", False)
+                    show_caption_above_media
                 )
 
             reply_markup = message.reply_markup
@@ -1213,7 +1219,8 @@ class Message(Object, Update):
                 reactions=reactions,
                 client=client,
                 link_preview_options=link_preview_options,
-                effect_id=getattr(message, "effect", None)
+                effect_id=getattr(message, "effect", None),
+                show_caption_above_media=show_caption_above_media
             )
 
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
