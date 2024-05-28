@@ -1235,12 +1235,13 @@ class Message(Object, Update):
                         parsed_message.message_thread_id = message.reply_to.reply_to_top_id
                     else:
                         parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
-                parsed_message.quote = types.TextQuote._parse(
-                    client,
-                    chats,
-                    users,
-                    message.reply_to
-                )
+                if getattr(message.reply_to, "quote", False):
+                    parsed_message.quote = types.TextQuote._parse(
+                        client,
+                        chats,
+                        users,
+                        message.reply_to
+                    )
 
             if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
                 parsed_message.reply_to_story = await types.Story._parse(client, chats, None, message.reply_to)
