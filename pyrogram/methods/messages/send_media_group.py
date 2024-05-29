@@ -47,6 +47,7 @@ class SendMediaGroup:
         business_connection_id: str = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        message_effect_id: int = None,
         reply_to_message_id: int = None
     ) -> List["types.Message"]:
         """Send a group of photos or videos as an album.
@@ -80,6 +81,9 @@ class SendMediaGroup:
 
             protect_content (``bool``, *optional*):
                 Protects the contents of the sent message from forwarding and saving.
+
+            message_effect_id (``int`` ``64-bit``, *optional*):
+                Unique identifier of the message effect to be added to the message; for private chats only.
 
         Returns:
             List of :obj:`~pyrogram.types.Message`: On success, a list of the sent messages is returned.
@@ -447,6 +451,7 @@ class SendMediaGroup:
             reply_to=reply_to,
             schedule_date=utils.datetime_to_timestamp(schedule_date),
             noforwards=protect_content,
+            effect=message_effect_id,
             invert_media=any(show_caption_above_media)
         )
         session = None
