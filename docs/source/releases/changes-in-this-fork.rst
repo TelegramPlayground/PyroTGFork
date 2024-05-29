@@ -14,7 +14,8 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
-- Added the fields ``effect_id`` and ``show_caption_above_media`` to the class :obj:`~pyrogram.types.Message`.
+- Added the field ``effect_id`` to the class :obj:`~pyrogram.types.Message`.
+- Added the field ``show_caption_above_media`` to the classes :obj:`~pyrogram.types.Message`, :obj:`~pyrogram.types.InputMediaAnimation`, :obj:`~pyrogram.types.InputMediaPhoto`, :obj:`~pyrogram.types.InputMediaVideo`, :obj:`~pyrogram.types.InlineQueryResultAnimation`, :obj:`~pyrogram.types.InlineQueryResultCachedAnimation`,  :obj:`~pyrogram.types.InlineQueryResultPhoto`, :obj:`~pyrogram.types.InlineQueryResultCachedPhoto`, :obj:`~pyrogram.types.InlineQueryResultVideo`, :obj:`~pyrogram.types.InlineQueryResultCachedVideo`.
 - Added support for :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entities in received messages.
 - Added support for :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entity parsing in :obj:`~pyrogram.enums.ParseMode.HTML` parse mode.
 - Allowed to explicitly specify :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entities in formatted texts.

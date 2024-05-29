@@ -69,6 +69,9 @@ class InlineQueryResultAnimation(InlineQueryResult):
         caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
             List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+        show_caption_above_media (``bool``, *optional*):
+            Pass True, if the caption must be shown above the message media.
+
         reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
             An InlineKeyboardMarkup object.
 
@@ -90,6 +93,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         input_message_content: "types.InputMessageContent" = None
     ):
@@ -106,6 +110,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
         self.caption = caption
         self.parse_mode = parse_mode
         self.caption_entities = caption_entities
+        self.show_caption_above_media = show_caption_above_media
         self.reply_markup = reply_markup
         self.input_message_content = input_message_content
 
@@ -149,7 +154,8 @@ class InlineQueryResultAnimation(InlineQueryResult):
                 else raw.types.InputBotInlineMessageMediaAuto(
                     reply_markup=await self.reply_markup.write(client) if self.reply_markup else None,
                     message=message,
-                    entities=entities
+                    entities=entities,
+                    invert_media=self.show_caption_above_media
                 )
             )
         )

@@ -112,6 +112,7 @@ class SendMediaGroup:
             )
             reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
 
+        show_caption_above_media = []
         multi_media = []
 
         for i in media:
@@ -183,6 +184,7 @@ class SendMediaGroup:
                         ),
                         spoiler=i.has_spoiler
                     )
+                show_caption_above_media.append(i.show_caption_above_media)
             elif isinstance(i, types.InputMediaVideo):
                 if isinstance(i.media, str):
                     if os.path.isfile(i.media):
@@ -272,6 +274,7 @@ class SendMediaGroup:
                         ),
                         spoiler=i.has_spoiler
                     )
+                show_caption_above_media.append(i.show_caption_above_media)
             elif isinstance(i, types.InputMediaAudio):
                 if isinstance(i.media, str):
                     if os.path.isfile(i.media):
@@ -443,7 +446,8 @@ class SendMediaGroup:
             silent=disable_notification or None,
             reply_to=reply_to,
             schedule_date=utils.datetime_to_timestamp(schedule_date),
-            noforwards=protect_content
+            noforwards=protect_content,
+            invert_media=any(show_caption_above_media)
         )
         session = None
         business_connection = None

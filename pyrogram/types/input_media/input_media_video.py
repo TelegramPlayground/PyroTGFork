@@ -52,6 +52,9 @@ class InputMediaVideo(InputMedia):
         caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
             List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+        show_caption_above_media (``bool``, *optional*):
+            Pass True, if the caption must be shown above the message media.
+
         width (``int``, *optional*):
             Video width.
 
@@ -79,6 +82,7 @@ class InputMediaVideo(InputMedia):
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List[MessageEntity] = None,
+        show_caption_above_media: bool = None,
         width: int = 0,
         height: int = 0,
         duration: int = 0,
@@ -89,6 +93,7 @@ class InputMediaVideo(InputMedia):
         super().__init__(media, caption, parse_mode, caption_entities)
 
         self.thumb = thumb
+        self.show_caption_above_media = show_caption_above_media
         self.width = width
         self.height = height
         self.duration = duration
