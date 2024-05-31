@@ -45,6 +45,7 @@ class SendMediaGroup:
         ]],
         disable_notification: bool = None,
         message_thread_id: int = None,
+        effect_id: int = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
         reply_to_story_id: int = None,
@@ -77,6 +78,10 @@ class SendMediaGroup:
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum.
                 For supergroups only.
+
+            effect_id (``int``, *optional*):
+                Unique identifier of the message effect.
+                For private chats only.
 
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.
@@ -463,7 +468,8 @@ class SendMediaGroup:
                 ),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
-                invert_media=show_above_text
+                invert_media=show_above_text,
+                effect=effect_id,
             ),
             sleep_threshold=60,
             business_connection_id=business_connection_id

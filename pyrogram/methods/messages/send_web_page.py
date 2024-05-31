@@ -36,6 +36,7 @@ class SendWebPage:
         entities: List["types.MessageEntity"] = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
+        effect_id: int = None,
         show_above_text: bool = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
@@ -96,6 +97,10 @@ class SendWebPage:
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum.
                 for forum supergroups only.
+
+            effect_id (``int``, *optional*):
+                Unique identifier of the message effect.
+                For private chats only.
 
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.
@@ -183,7 +188,8 @@ class SendWebPage:
                 ),
                 invert_media=show_above_text,
                 entities=entities,
-                noforwards=protect_content
+                noforwards=protect_content,
+                effect=effect_id
             ),
             business_connection_id=business_connection_id
         )

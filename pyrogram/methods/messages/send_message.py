@@ -34,6 +34,7 @@ class SendMessage:
         disable_web_page_preview: bool = None,
         disable_notification: bool = None,
         message_thread_id: int = None,
+        effect_id: int = None,
         show_above_text: bool = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
@@ -81,6 +82,10 @@ class SendMessage:
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum.
                 For supergroups only.
+
+            effect_id (``int``, *optional*):
+                Unique identifier of the message effect.
+                For private chats only.
 
             show_above_text (``bool``, *optional*):
                 If True, link preview will be shown above the message text.
@@ -180,7 +185,8 @@ class SendMessage:
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 message=message,
                 entities=entities,
-                noforwards=protect_content
+                noforwards=protect_content,
+                effect=effect_id
             ),
             business_connection_id=business_connection_id
         )

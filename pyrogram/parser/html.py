@@ -57,6 +57,7 @@ class Parser(HTMLParser):
             entity = raw.types.MessageEntityStrike
         elif tag == "blockquote":
             entity = raw.types.MessageEntityBlockquote
+            extra["collapsed"] = "expandable" in attrs
         elif tag == "code":
             entity = raw.types.MessageEntityCode
         elif tag == "pre":
@@ -177,9 +178,13 @@ class HTML:
                 language = getattr(entity, "language", "") or ""
                 start_tag = f'<{name} language="{language}">' if language else f"<{name}>"
                 end_tag = f"</{name}>"
+            elif entity_type == MessageEntityType.BLOCKQUOTE:
+                name = entity_type.name.lower()
+                expandable = getattr(entity, "expandable", False)
+                start_tag = f'<{name}{" expandable" if expandable else ""}>'
+                end_tag = f"</{name}>"
             elif entity_type in (
                 MessageEntityType.CODE,
-                MessageEntityType.BLOCKQUOTE,
                 MessageEntityType.SPOILER,
             ):
                 name = entity_type.name.lower()

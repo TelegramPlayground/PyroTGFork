@@ -35,6 +35,7 @@ class SendVenue:
         foursquare_type: str = "",
         disable_notification: bool = None,
         message_thread_id: int = None,
+        effect_id: int = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
         quote_text: str = None,
@@ -87,6 +88,10 @@ class SendVenue:
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum.
                 For supergroups only.
+
+            effect_id (``int``, *optional*):
+                Unique identifier of the message effect.
+                For private chats only.
 
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message
@@ -159,7 +164,8 @@ class SendVenue:
                 random_id=self.rnd_id(),
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
-                reply_markup=await reply_markup.write(self) if reply_markup else None
+                reply_markup=await reply_markup.write(self) if reply_markup else None,
+                effect=effect_id
             ),
             business_connection_id=business_connection_id
         )

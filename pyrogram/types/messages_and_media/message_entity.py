@@ -26,7 +26,7 @@ from ..object import Object
 
 class MessageEntity(Object):
     """One special entity in a text message.
-    
+
     For example, hashtags, usernames, URLs, etc.
 
     Parameters:
@@ -51,6 +51,9 @@ class MessageEntity(Object):
         custom_emoji_id (``int``, *optional*):
             For :obj:`~pyrogram.enums.MessageEntityType.CUSTOM_EMOJI` only, unique identifier of the custom emoji.
             Use :meth:`~pyrogram.Client.get_custom_emoji_stickers` to get full information about the sticker.
+
+        expandable (``bool``, *optional*):
+            For :obj:`~pyrogram.enums.MessageEntityType.BLOCKQUOTE` only, whether the blockquote is expandable or not.
     """
 
     def __init__(
@@ -63,7 +66,8 @@ class MessageEntity(Object):
         url: str = None,
         user: "types.User" = None,
         language: str = None,
-        custom_emoji_id: int = None
+        custom_emoji_id: int = None,
+        expandable: bool = None
     ):
         super().__init__(client)
 
@@ -74,6 +78,7 @@ class MessageEntity(Object):
         self.user = user
         self.language = language
         self.custom_emoji_id = custom_emoji_id
+        self.expandable = expandable
 
     @staticmethod
     def _parse(client, entity: "raw.base.MessageEntity", users: dict) -> Optional["MessageEntity"]:
@@ -94,6 +99,7 @@ class MessageEntity(Object):
             user=types.User._parse(client, users.get(user_id, None)),
             language=getattr(entity, "language", None),
             custom_emoji_id=getattr(entity, "document_id", None),
+            expandable=getattr(entity, "collapsed", None),
             client=client
         )
 
@@ -115,6 +121,9 @@ class MessageEntity(Object):
         args.pop("custom_emoji_id")
         if self.custom_emoji_id is not None:
             args["document_id"] = self.custom_emoji_id
+
+        if self.type == enums.MessageEntityType.BLOCKQUOTE:
+            args["collapsed"] = self.expandable
 
         entity = self.type.value
 

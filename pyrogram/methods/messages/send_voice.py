@@ -41,6 +41,7 @@ class SendVoice:
         duration: int = 0,
         disable_notification: bool = None,
         message_thread_id: int = None,
+        effect_id: int = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
         reply_to_story_id: int = None,
@@ -97,6 +98,10 @@ class SendVoice:
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum.
                 For supergroups only.
+
+            effect_id (``int``, *optional*):
+                Unique identifier of the message effect.
+                For private chats only.
 
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message
@@ -240,6 +245,7 @@ class SendVoice:
                             schedule_date=utils.datetime_to_timestamp(schedule_date),
                             noforwards=protect_content,
                             reply_markup=await reply_markup.write(self) if reply_markup else None,
+                            effect=effect_id,
                             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
                         ),
                         business_connection_id=business_connection_id

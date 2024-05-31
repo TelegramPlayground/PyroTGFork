@@ -31,6 +31,7 @@ class SendGame:
         game_short_name: str,
         disable_notification: bool = None,
         message_thread_id: int = None,
+        effect_id: int = None,
         reply_to_message_id: int = None,
         reply_to_chat_id: Union[int, str] = None,
         protect_content: bool = None,
@@ -61,6 +62,10 @@ class SendGame:
             message_thread_id (``int``, *optional*):
                 Unique identifier of a message thread to which the message belongs.
                 For supergroups only.
+
+            effect_id (``int``, *optional*):
+                Unique identifier of the message effect.
+                For private chats only.
 
             reply_to_message_id (``int``, *optional*):
                 If the message is a reply, ID of the original message.
@@ -101,7 +106,8 @@ class SendGame:
                 ),
                 random_id=self.rnd_id(),
                 noforwards=protect_content,
-                reply_markup=await reply_markup.write(self) if reply_markup else None
+                reply_markup=await reply_markup.write(self) if reply_markup else None,
+                effect=effect_id
             )
         )
 
