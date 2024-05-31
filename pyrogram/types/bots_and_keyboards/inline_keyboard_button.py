@@ -161,6 +161,11 @@ class InlineKeyboardButton(Object):
                 )
             )
 
+        if isinstance(b, raw.types.KeyboardButtonBuy):
+            return InlineKeyboardButton(
+                text=b.text
+            )
+
     async def write(self, client: "pyrogram.Client"):
         if self.callback_data is not None:
             # Telegram only wants bytes, but we are allowed to pass strings too, for convenience.

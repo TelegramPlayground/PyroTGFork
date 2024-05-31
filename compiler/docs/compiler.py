@@ -506,6 +506,7 @@ def pyrogram_api():
             BoostsStatus
             Giveaway
             GiveawayResult
+            Invoice
             GiftCode
             CheckedGiftCode
             SuccessfulPayment
