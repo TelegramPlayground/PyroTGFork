@@ -26,41 +26,34 @@ from pyrogram import types
 log = logging.getLogger(__name__)
 
 
-class GetStickers:
-    async def get_stickers(
-        self: "pyrogram.Client",
-        short_name: str
-    ) -> List["types.Sticker"]:
-        """Get all stickers from set by short name.
+class GetAvailableEffects:
+    async def get_available_effects(
+        self: "pyrogram.Client"
+    ) -> List["types.AvailableEffect"]:
+        """Get all available effects.
 
         .. include:: /_includes/usable-by/users.rst
 
-        Parameters:
-            short_name (``str``):
-                Short name of the sticker set, serves as the unique identifier for the sticker set.
-
         Returns:
-            List of :obj:`~pyrogram.types.Sticker`: A list of stickers is returned.
+            List of :obj:`~pyrogram.types.AvailableEffect`: A list of available effects is returned.
 
         Example:
             .. code-block:: python
 
-                # Get all stickers by short name
-                await app.get_stickers("short_name")
-
-        Raises:
-            ValueError: In case of invalid arguments.
+                # Get all available effects
+                await app.get_available_effects()
         """
-        sticker_set = await self.invoke(
-            raw.functions.messages.GetStickerSet(
-                stickerset=raw.types.InputStickerSetShortName(short_name=short_name),
+        r = await self.invoke(
+            raw.functions.messages.GetAvailableEffects(
                 hash=0
             )
         )
 
+        documents = {d.id: d for d in r.documents}
+
         return types.List(
             [
-                await types.Sticker._parse(self, doc, {type(a): a for a in doc.attributes})
-                for doc in sticker_set.documents
+                await types.AvailableEffect._parse(self, effect, documents.get(effect.effect_sticker_id, None))
+                for effect in r.effects
             ]
         )

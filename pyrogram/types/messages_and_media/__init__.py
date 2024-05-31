@@ -18,6 +18,7 @@
 
 from .animation import Animation
 from .audio import Audio
+from .available_effect import AvailableEffect
 from .boosts_status import BoostsStatus
 from .business_message import BusinessMessage
 from .checked_gift_code import CheckedGiftCode
@@ -58,6 +59,7 @@ from .web_page import WebPage
 __all__ = [
     "Animation",
     "Audio",
+    "AvailableEffect",
     "BoostsStatus",
     "BusinessMessage",
     "CheckedGiftCode",
