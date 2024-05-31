@@ -367,6 +367,9 @@ class Message(Object, Update):
         requested_chats (:obj:`~pyrogram.types.RequestedChats`, *optional*):
             Service message: requested chats information.
 
+        successful_payment (:obj:`~pyrogram.types.SuccessfulPayment`, *optional*):
+            Service message: successful payment.
+
         giveaway_launched (``bool``, *optional*):
             Service message: giveaway launched.
 
@@ -494,6 +497,7 @@ class Message(Object, Update):
         web_app_data: "types.WebAppData" = None,
         gift_code: "types.GiftCode" = None,
         requested_chats: "types.RequestedChats" = None,
+        successful_payment: "types.SuccessfulPayment" = None,
         giveaway_launched: bool = None,
         chat_ttl_period: int = None,
         boosts_applied: int = None,
@@ -602,6 +606,7 @@ class Message(Object, Update):
         self.web_app_data = web_app_data
         self.gift_code = gift_code
         self.requested_chats = requested_chats
+        self.successful_payment = successful_payment
         self.giveaway_launched = giveaway_launched
         self.chat_ttl_period = chat_ttl_period
         self.boosts_applied = boosts_applied
@@ -678,6 +683,7 @@ class Message(Object, Update):
             gift_code = None
             giveaway_launched = None
             requested_chats = None
+            successful_payment = None
             chat_ttl_period = None
             boosts_applied = None
             join_request_approved = None
@@ -762,6 +768,9 @@ class Message(Object, Update):
             elif isinstance(action, (raw.types.MessageActionRequestedPeer, raw.types.MessageActionRequestedPeerSentMe)):
                 requested_chats = types.RequestedChats._parse(client, action)
                 service_type = enums.MessageServiceType.REQUESTED_CHAT
+            elif isinstance(action, (raw.types.MessageActionPaymentSent, raw.types.MessageActionPaymentSentMe)):
+                successful_payment = types.SuccessfulPayment._parse(client, action)
+                service_type = enums.MessageServiceType.SUCCESSFUL_PAYMENT
             elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
                 chat_ttl_period = action.period
                 service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
@@ -807,6 +816,7 @@ class Message(Object, Update):
                 giveaway_launched=giveaway_launched,
                 gift_code=gift_code,
                 requested_chats=requested_chats,
+                successful_payment=successful_payment,
                 chat_ttl_period=chat_ttl_period,
                 boosts_applied=boosts_applied,
                 join_request_approved=join_request_approved,
