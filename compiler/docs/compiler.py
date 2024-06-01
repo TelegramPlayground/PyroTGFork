@@ -346,6 +346,7 @@ def pyrogram_api():
         """,
         stickers="""
         Stickers
+            get_message_effects
             get_stickers
         """,
         users="""
@@ -520,6 +521,7 @@ def pyrogram_api():
             GiveawayWinners
             Location
             Message
+            MessageEffect
             MessageEntity
             MessageImportInfo
             MessageOrigin

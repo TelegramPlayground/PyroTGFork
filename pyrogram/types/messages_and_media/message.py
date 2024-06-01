@@ -147,7 +147,7 @@ class Message(Object, Update):
             Options used for link preview generation for the message, if it is a text message and link preview options were changed
 
         effect_id (``str``, *optional*):
-            Unique identifier of the message effect added to the message.
+            Unique identifier of the message effect added to the message. Use :meth:`~pyrogram.Client.get_message_effects` to get the list of available message effect ids.
 
         animation (:obj:`~pyrogram.types.Animation`, *optional*):
             Message is an animation, information about the animation.

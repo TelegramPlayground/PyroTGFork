@@ -55,6 +55,7 @@ from .giveaway_completed import GiveawayCompleted
 from .giveaway_winners import GiveawayWinners
 from .gift_code import GiftCode
 from .gifted_premium import GiftedPremium
+from .message_effect import MessageEffect
 
 __all__ = [
     "Animation",
@@ -71,6 +72,7 @@ __all__ = [
     "GiveawayWinners",
     "Location",
     "Message",
+    "MessageEffect",
     "MessageEntity",
     "MessageReactionCountUpdated",
     "MessageReactionUpdated",
