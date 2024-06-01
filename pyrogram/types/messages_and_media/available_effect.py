@@ -29,7 +29,7 @@ class AvailableEffect(Object):
         id (``int``):
             Unique effect identifier.
 
-        emoji (:py:obj:`~datetime.datetime`):
+        emoji (``str``):
             Emoji that represents the effect.
 
         effect_sticker_id (``int``):
