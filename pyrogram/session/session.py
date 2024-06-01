@@ -20,6 +20,7 @@ import asyncio
 import bisect
 import logging
 import os
+from datetime import datetime, timedelta
 from hashlib import sha1
 from io import BytesIO
 
@@ -54,6 +55,7 @@ class Session:
     ACKS_THRESHOLD = 10
     PING_INTERVAL = 5
     STORED_MSG_IDS_MAX_SIZE = 1000 * 2
+    RECONNECT_THRESHOLD = timedelta(seconds=10)
 
     TRANSPORT_ERRORS = {
         404: "auth key not found",
@@ -106,6 +108,8 @@ class Session:
         self.is_started = asyncio.Event()
 
         self.loop = asyncio.get_event_loop()
+
+        self.last_reconnect_attempt = None
 
     async def start(self):
         while True:
@@ -193,6 +197,16 @@ class Session:
         log.info("Session stopped")
 
     async def restart(self):
+        now = datetime.now()
+        if (
+            self.last_reconnect_attempt
+            and now - self.last_reconnect_attempt < self.RECONNECT_THRESHOLD
+        ):
+            log.info("Reconnecting too frequently, sleeping for a while")
+            await asyncio.sleep(5)
+
+        self.last_reconnect_attempt = now
+
         await self.stop()
         await self.start()
 
@@ -400,7 +414,7 @@ class Session:
 
         query_name = ".".join(inner_query.QUALNAME.split(".")[1:])
 
-        while True:
+        while retries > 0:
             try:
                 return await self.send(query, timeout=timeout)
             except (FloodWait, FloodPremiumWait) as e:
@@ -414,22 +428,26 @@ class Session:
 
                 await asyncio.sleep(amount)
             except (OSError, InternalServerError, ServiceUnavailable) as e:
-                if retries == 0 \
-                        or (
-                            isinstance(e, InternalServerError)
-                            and getattr(e, "code", 0) == 500
-                            and (e.ID or e.NAME) in [
-                                "HISTORY_GET_FAILED"
-                            ]
-                        ):
+                retries -= 1
+                if (
+                    retries == 0 or
+                    (
+                        isinstance(e, InternalServerError)
+                        and getattr(e, "code", 0) == 500
+                        and (e.ID or e.NAME) in [
+                            "HISTORY_GET_FAILED"
+                        ]
+                    )
+                ):
                     raise e from None
 
                 (log.warning if retries < 2 else log.info)(
                     '[%s] Retrying "%s" due to: %s',
-                    Session.MAX_RETRIES - retries + 1,
-                    query_name, str(e) or repr(e)
+                    Session.MAX_RETRIES - retries,
+                    query_name,
+                    str(e) or repr(e)
                 )
 
                 await asyncio.sleep(3)
 
-                return await self.invoke(query, retries - 1, timeout)
+        raise TimeoutError("Exceeded maximum number of retries")
