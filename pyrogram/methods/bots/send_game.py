@@ -135,7 +135,8 @@ class SendGame:
                 return await types.Message._parse(
                     self, i.message,
                     {i.id: i for i in r.users},
-                    {i.id: i for i in r.chats}
+                    {i.id: i for i in r.chats},
+                    replies=self.fetch_replies
                 )
             elif isinstance(
                 i,
@@ -149,5 +150,6 @@ class SendGame:
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
                     business_connection_id=i.connection_id,
-                    raw_reply_to_message=i.reply_to_message
+                    raw_reply_to_message=i.reply_to_message,
+                    replies=0
                 )

@@ -106,9 +106,11 @@ class AddChatMembers:
                 ):
                     _rc.append(
                         await types.Message._parse(
-                            self, i.message,
+                            self,
+                            i.message,
                             {i.id: i for i in rr.updates.users},
                             {i.id: i for i in rr.updates.chats},
+                            replies=self.fetch_replies
                         )
                     )
                     break

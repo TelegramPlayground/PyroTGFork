@@ -215,6 +215,10 @@ class Client(Methods):
         link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
             Set the global link preview options for the client. By default, no link preview option is set.
 
+        fetch_replies (``int``, *optional*):
+            Set the number of replies to be fetched when parsing the :obj:`~pyrogram.types.Message` object. Defaults to 1.
+            :doc:`More on Errors <../../api/errors/index>`
+
     """
 
     APP_VERSION = f"Pyrogram {__version__}"
@@ -277,6 +281,7 @@ class Client(Methods):
         no_joined_notifications: bool = False,
         client_platform: enums.ClientPlatform = enums.ClientPlatform.OTHER,
         link_preview_options: "types.LinkPreviewOptions" = None,
+        fetch_replies: int = 1,
         _un_docu_gnihts: List = []
     ):
         super().__init__()
@@ -315,6 +320,7 @@ class Client(Methods):
         self.client_platform = client_platform
         self._un_docu_gnihts = _un_docu_gnihts
         self.link_preview_options = link_preview_options
+        self.fetch_replies = fetch_replies
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 

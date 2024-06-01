@@ -76,7 +76,11 @@ class GetForumTopic:
         messages = {}
         for message in getattr(r, "messages", []):
             messages[message.id] = await types.Message._parse(
-                self, message, users, chats, replies=0
+                self,
+                message,
+                users,
+                chats,
+                replies=self.fetch_replies
             )
 
         topics = types.List()

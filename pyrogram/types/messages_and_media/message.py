@@ -1283,7 +1283,8 @@ class Message(Object, Update):
                 raw_reply_to_message,
                 users,
                 chats,
-                business_connection_id=business_connection_id
+                business_connection_id=business_connection_id,
+                replies=0
             )
 
         if not parsed_message.poll:  # Do not cache poll messages

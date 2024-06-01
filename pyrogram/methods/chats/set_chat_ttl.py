@@ -69,4 +69,5 @@ class SetChatTTL:
                     i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
+                    replies=self.fetch_replies
                 )
