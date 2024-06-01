@@ -65,8 +65,6 @@ class InputTextMessageContent(InputMessageContent):
             )
             link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
-        link_preview_options = link_preview_options or self.link_preview_options
-
         super().__init__()
 
         self.message_text = message_text
@@ -82,6 +80,9 @@ class InputTextMessageContent(InputMessageContent):
             self.parse_mode,
             self.entities
         )).values()
+
+        if self.link_preview_options is None:
+            self.link_preview_options = client.link_preview_options
 
         return raw.types.InputBotInlineMessageText(
             no_webpage=self.link_preview_options.is_disabled if self.link_preview_options else None,

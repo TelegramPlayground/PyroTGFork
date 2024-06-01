@@ -16,11 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import Union
 from typing import List
 
 import pyrogram
 from pyrogram import raw, types
+
+log = logging.getLogger(__name__)
 
 
 class SetReaction:
@@ -123,3 +126,28 @@ class SetReaction:
             return r
         else:
             raise ValueError("You need to pass one of message_id OR story_id!")
+
+
+    async def send_reaction(
+        self: "pyrogram.Client",
+        chat_id: Union[int, str],
+        message_id: int,
+        emoji: str = "",
+        big: bool = False,
+        add_to_recent: bool = True
+    ) -> bool:
+        log.warning(
+            "This property is deprecated. "
+            "Please use set_reaction instead"
+        )
+        return bool(
+            await self.invoke(
+                raw.functions.messages.SendReaction(
+                    reaction=[raw.types.ReactionEmoji(emoticon=emoji)] if emoji else None,
+                    big=big,
+                    peer=await self.resolve_peer(chat_id),
+                    msg_id=message_id,
+                    add_to_recent=add_to_recent
+                )
+            )
+        )

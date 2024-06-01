@@ -2103,6 +2103,7 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         reply_to_message_id: int = None,
+        force_document: bool = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -2236,6 +2237,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
+            force_document=force_document,
             progress=progress,
             progress_args=progress_args
         )

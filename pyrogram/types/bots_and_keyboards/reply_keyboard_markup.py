@@ -16,12 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import List, Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 from ..object import Object
+
+log = logging.getLogger(__name__)
 
 
 class ReplyKeyboardMarkup(Object):
@@ -63,8 +65,21 @@ class ReplyKeyboardMarkup(Object):
         resize_keyboard: bool = None,
         one_time_keyboard: bool = None,
         input_field_placeholder: str = None,
-        selective: bool = None
+        selective: bool = None,
+        placeholder: str = None,
     ):
+        if placeholder and input_field_placeholder:
+            raise ValueError(
+                "Parameters `placeholder` and `input_field_placeholder` are mutually exclusive."
+            )
+
+        if placeholder is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use input_field_placeholder instead"
+            )
+            input_field_placeholder = placeholder
+
         super().__init__()
 
         self.keyboard = keyboard
