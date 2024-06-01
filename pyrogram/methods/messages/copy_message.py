@@ -35,6 +35,7 @@ class CopyMessage:
         caption: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        show_caption_above_media: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -81,6 +82,9 @@ class CopyMessage:
 
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the new caption, which can be specified instead of *parse_mode*.
+
+            show_caption_above_media (``bool``, *optional*):
+                Pass True, if the caption must be shown above the message media. Ignored if a new caption isn't specified.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -139,6 +143,7 @@ class CopyMessage:
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
+            show_caption_above_media=show_caption_above_media,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,

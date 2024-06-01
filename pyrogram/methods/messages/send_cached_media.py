@@ -34,7 +34,9 @@ class SendCachedMedia:
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        show_caption_above_media: bool = None,
         disable_notification: bool = None,
+        message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
         business_connection_id: str = None,
@@ -77,9 +79,15 @@ class SendCachedMedia:
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+            show_caption_above_media (``bool``, *optional*):
+                Pass True, if the caption must be shown above the message media. Supported only for animation, photo and video messages.
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
+
+            message_effect_id (``int`` ``64-bit``, *optional*):
+                Unique identifier of the message effect to be added to the message; for private chats only.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -139,6 +147,8 @@ class SendCachedMedia:
             schedule_date=utils.datetime_to_timestamp(schedule_date),
             noforwards=protect_content,
             reply_markup=await reply_markup.write(self) if reply_markup else None,
+            effect=message_effect_id,
+            invert_media=show_caption_above_media,
             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
         )
 

@@ -31,6 +31,7 @@ class EditMessageCaption:
         caption: str,
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         schedule_date: datetime = None
     ) -> "types.Message":
@@ -57,6 +58,9 @@ class EditMessageCaption:
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+            show_caption_above_media (``bool``, *optional*):
+                Pass True, if the caption must be shown above the message media. Supported only for animation, photo and video messages.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
 
@@ -71,6 +75,12 @@ class EditMessageCaption:
 
                 await app.edit_message_caption(chat_id, message_id, "new media caption")
         """
+        link_preview_options = None
+        if show_caption_above_media:
+            link_preview_options = types.LinkPreviewOptions(
+                show_above_text=show_caption_above_media
+            )
+
         return await self.edit_message_text(
             chat_id=chat_id,
             message_id=message_id,
@@ -78,5 +88,6 @@ class EditMessageCaption:
             parse_mode=parse_mode,
             entities=caption_entities,
             reply_markup=reply_markup,
+            link_preview_options=link_preview_options,
             schedule_date=schedule_date
         )

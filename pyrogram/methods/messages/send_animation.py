@@ -39,6 +39,7 @@ class SendAnimation:
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        show_caption_above_media: bool = None,
         unsave: bool = False,
         has_spoiler: bool = None,
         duration: int = 0,
@@ -90,6 +91,9 @@ class SendAnimation:
 
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
+            show_caption_above_media (``bool``, *optional*):
+                Pass True, if the caption must be shown above the message media.
 
             unsave (``bool``, *optional*):
                 By default, the server will save into your own collection any new animation you send.
@@ -283,6 +287,7 @@ class SendAnimation:
                 noforwards=protect_content,
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 effect=message_effect_id,
+                invert_media=show_caption_above_media,
                 **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
             )
             session = None

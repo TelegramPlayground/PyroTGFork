@@ -35,6 +35,7 @@ class EditCachedMedia:
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        show_caption_above_media: bool = None,
         schedule_date: datetime = None,
         has_spoiler: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None
@@ -70,6 +71,9 @@ class EditCachedMedia:
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+            show_caption_above_media (``bool``, *optional*):
+                Pass True, if the caption must be shown above the message media. Supported only for animation, photo and video messages.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -94,6 +98,7 @@ class EditCachedMedia:
             media=utils.get_input_media_from_file_id(file_id, has_spoiler=has_spoiler),
             reply_markup=await reply_markup.write(self) if reply_markup else None,
             schedule_date=utils.datetime_to_timestamp(schedule_date),
+            invert_media=show_caption_above_media,
             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
         )
         r = await self.invoke(rpc)

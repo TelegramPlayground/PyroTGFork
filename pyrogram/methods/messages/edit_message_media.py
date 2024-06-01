@@ -287,6 +287,7 @@ class EditMessageMedia:
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 message=message,
                 entities=entities,
+                # TODO
                 schedule_date=utils.datetime_to_timestamp(schedule_date)
             )
         )
