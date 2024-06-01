@@ -191,6 +191,8 @@ def pyrogram_api():
             send_dice
             search_messages
             search_messages_count
+            search_posts
+            search_posts_count
             search_global
             search_global_count
             download_media

@@ -48,6 +48,8 @@ from .search_global import SearchGlobal
 from .search_global_count import SearchGlobalCount
 from .search_messages import SearchMessages
 from .search_messages_count import SearchMessagesCount
+from .search_posts import SearchPosts
+from .search_posts_count import SearchPostsCount
 from .send_animation import SendAnimation
 from .send_audio import SendAudio
 from .send_cached_media import SendCachedMedia
@@ -124,6 +126,8 @@ class Messages(
     CopyMessage,
     CopyMediaGroup,
     SearchMessagesCount,
+    SearchPosts,
+    SearchPostsCount,
     SearchGlobalCount,
     GetDiscussionMessage,
     SendReaction,
