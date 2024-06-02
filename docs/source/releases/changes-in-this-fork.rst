@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
+- Added the :meth:`~pyrogram.Client.search_public_hashtag_messages` and :meth:`~pyrogram.Client.search_public_hashtag_messages_count`.
 - Added the ``fetch_replies`` parameter to :obj:`~pyrogram.Client`.
 - Added the :meth:`~pyrogram.Client.get_message_effects`.
 - Added the parameter ``message_effect_id`` to the methods :meth:`~pyrogram.Client.send_message`, :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_animation`, :meth:`~pyrogram.Client.send_audio`, :meth:`~pyrogram.Client.send_document`, :meth:`~pyrogram.Client.send_sticker`, :meth:`~pyrogram.Client.send_video_note`, :meth:`~pyrogram.Client.send_voice`, :meth:`~pyrogram.Client.send_location`, :meth:`~pyrogram.Client.send_venue`, :meth:`~pyrogram.Client.send_contact`, :meth:`~pyrogram.Client.send_poll`, :meth:`~pyrogram.Client.send_dice`, :meth:`~pyrogram.Client.send_game`, and :meth:`~pyrogram.Client.send_media_group`, and the corresponding ``reply_*`` methods in the class :obj:`~pyrogram.types.Message`.

@@ -310,6 +310,8 @@ def pyrogram_api():
             search_global_count
             search_messages
             search_messages_count
+            search_public_hashtag_messages
+            search_public_hashtag_messages_count
             send_animation
             send_audio
             send_cached_media
