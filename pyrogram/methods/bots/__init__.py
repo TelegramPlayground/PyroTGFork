@@ -31,6 +31,7 @@ from .get_inline_bot_results import GetInlineBotResults
 from .request_callback_answer import RequestCallbackAnswer
 from .send_game import SendGame
 from .send_inline_bot_result import SendInlineBotResult
+from .send_web_app_custom_request import SendWebAppCustomRequest
 from .set_bot_commands import SetBotCommands
 from .set_bot_default_privileges import SetBotDefaultPrivileges
 from .set_bot_info_description import SetBotInfoDescription
@@ -44,6 +45,7 @@ class Bots(
     AnswerCallbackQuery,
     AnswerInlineQuery,
     AnswerWebAppQuery,
+    SendWebAppCustomRequest,
     GetInlineBotResults,
     RequestCallbackAnswer,
     SendInlineBotResult,

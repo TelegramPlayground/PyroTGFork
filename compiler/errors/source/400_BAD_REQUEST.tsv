@@ -417,6 +417,7 @@ STICKER_THUMB_TGS_NOTGS	Incorrect stickerset TGS thumb file provided.
 STICKER_VIDEO_BIG	The specified video sticker is too big.
 STICKER_VIDEO_NODOC	You must send the video sticker as a document.
 STICKER_VIDEO_NOWEBM	The specified video sticker is not in webm format.
+STORAGE_KEY_REQUIRED	A cloud storage key is required.
 STORIES_NEVER_CREATED	This peer hasn't ever posted any stories.
 STORIES_TOO_MUCH	You have hit the maximum active stories limit as specified by the [`story_expiring_limit_*` client configuration parameters](https://core.telegram.org/api/config#story-expiring-limit-default): you should buy a [Premium](/api/premium) subscription, delete an active story, or wait for the oldest story to expire.
 STORY_ID_EMPTY	You specified no story IDs.

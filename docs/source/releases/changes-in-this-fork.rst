@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
+- Added the :meth:`~pyrogram.Client.send_web_app_custom_request`.
 - Added the :meth:`~pyrogram.Client.search_public_hashtag_messages` and :meth:`~pyrogram.Client.search_public_hashtag_messages_count`.
 - Added the ``fetch_replies`` parameter to :obj:`~pyrogram.Client`.
 - Added the :meth:`~pyrogram.Client.get_message_effects`.

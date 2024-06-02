@@ -187,6 +187,7 @@ def pyrogram_api():
             set_chat_menu_button
             get_chat_menu_button
             answer_web_app_query
+            send_web_app_custom_request
             set_bot_name
             get_bot_name
             set_bot_info_description
