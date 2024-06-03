@@ -25,7 +25,7 @@ class SearchPublicHashtagMessagesCount:
         self: "pyrogram.Client",
         hashtag: str = "",
     ) -> int:
-        """Get the count of messages with the provided hashtag.
+        """Get the count of messages with the provided hashtag or cashtag.
 
         If you want to get the actual messages, see :meth:`~pyrogram.Client.search_public_hashtag_messages`.
 
@@ -33,7 +33,7 @@ class SearchPublicHashtagMessagesCount:
 
         Parameters:
             hashtag (``str``, *optional*):
-                Hashtag to search for.
+                Hashtag or cashtag to search for.
 
         Returns:
             ``int``: On success, the messages count is returned.

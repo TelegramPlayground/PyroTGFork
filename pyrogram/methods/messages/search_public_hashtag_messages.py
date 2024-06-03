@@ -31,7 +31,7 @@ class SearchPublicHashtagMessages:
         offset_date: datetime = utils.zero_datetime(),
         limit: int = 0,
     ) -> AsyncGenerator["types.Message", None]:
-        """Searches for public channel posts with the given hashtag. For optimal performance, the number of returned messages is chosen by Telegram Server and can be smaller than the specified limit.
+        """Searches for public channel posts with the given hashtag or cashtag. For optimal performance, the number of returned messages is chosen by Telegram Server and can be smaller than the specified limit.
 
         If you want to get the posts count only, see :meth:`~pyrogram.Client.search_public_hashtag_messages_count`.
 
@@ -39,7 +39,7 @@ class SearchPublicHashtagMessages:
 
         Parameters:
             hashtag (``str``, *optional*):
-                Hashtag to search for.
+                Hashtag or cashtag to search for.
 
             offset_id (``int``, *optional*):
                 Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results.
@@ -58,7 +58,7 @@ class SearchPublicHashtagMessages:
             .. code-block:: python
 
                 # Search for "#pyrogram". Get the first 50 results
-                async for message in app.search_public_hashtag_messages("#pyrogram"):
+                async for message in app.search_public_hashtag_messages("pyrogram", limit=50):
                     print(message.text)
                     
         """
