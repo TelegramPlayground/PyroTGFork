@@ -49,3 +49,9 @@ class SentCodeType(AutoName):
 
     SETUP_EMAIL_REQUIRED = raw.types.auth.SentCodeTypeSetUpEmailRequired
     "The user should add and verify an email address in order to login."
+
+    SMS_PHRASE = raw.types.auth.SentCodeTypeSmsPhrase
+    "The code was sent via SMS with a phrase."
+
+    SMS_WORD = raw.types.auth.SentCodeTypeSmsWord
+    "The code was sent via SMS with a word."
