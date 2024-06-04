@@ -34,7 +34,7 @@ class GetScheduledMessages:
     ) -> List["types.Message"]:
         """Get one or more scheduled messages from a chat.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
