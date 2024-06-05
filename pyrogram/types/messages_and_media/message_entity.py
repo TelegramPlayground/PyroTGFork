@@ -128,5 +128,10 @@ class MessageEntity(Object):
 
         if entity is raw.types.MessageEntityMentionName:
             entity = raw.types.InputMessageEntityMentionName
+        elif self.type in (
+            enums.MessageEntityType.BLOCKQUOTE,
+            enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE,
+        ):
+            entity = raw.types.MessageEntityBlockquote
 
         return entity(**args)
