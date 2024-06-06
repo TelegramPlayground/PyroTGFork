@@ -119,3 +119,6 @@ class MessageServiceType(AutoName):
 
     GENERAL_FORUM_TOPIC_UNHIDDEN = auto()
     "a forum general topic unhidden in the chat"
+
+    SUCCESSFUL_PAYMENT = auto()
+    "Successful payment"

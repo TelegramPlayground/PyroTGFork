@@ -14,6 +14,9 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
+- Added the types :obj:`~pyrogram.types.LabeledPrice`, :obj:`~pyrogram.types.OrderInfo`, :obj:`~pyrogram.types.PreCheckoutQuery`, :obj:`~pyrogram.types.ShippingAddress`, :obj:`~pyrogram.types.SuccessfulPayment`, :obj:`~pyrogram.types.`.
+- Added the ``successful_payment`` parameter to the :obj:`~pyrogram.types.Message`. Added the filter :obj:`~pyrogram.filters.successful_payment` to detect service messages of Successful Payment type.
+- Added the methods :meth:`~pyrogram.Client.send_invoice`, :meth:`~pyrogram.Client.answer_pre_checkout_query` (:meth:`~pyrogram.types.PreCheckoutQuery.answer`), :meth:`~pyrogram.Client.refund_star_payment`.
 - Added the :meth:`~pyrogram.Client.send_web_app_custom_request`.
 - Added the :meth:`~pyrogram.Client.search_public_hashtag_messages` and :meth:`~pyrogram.Client.search_public_hashtag_messages_count`.
 - Added the ``fetch_replies`` parameter to :obj:`~pyrogram.Client`.

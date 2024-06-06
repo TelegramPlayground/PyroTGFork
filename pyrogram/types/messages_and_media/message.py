@@ -263,6 +263,9 @@ class Message(Object, Update):
         invoice (:obj:`~pyrogram.types.Invoice`, *optional*):
             Message is an invoice for a `payment <https://core.telegram.org/bots/api#payments>`_, information about the invoice. `More about payments » <https://core.telegram.org/bots/api#payments>`_
 
+        successful_payment (:obj:`~pyrogram.types.SuccessfulPayment`, *optional*):
+            Message is a service message about a successful payment, information about the payment. `More about payments »<https://core.telegram.org/bots/api#payments>`_
+
         users_shared (:obj:`~pyrogram.types.UsersShared`, *optional*):
             Service message: users were shared with the bot
 
@@ -392,7 +395,7 @@ class Message(Object, Update):
 
     """
 
-    # TODO: Add game missing field. Also invoice, successful_payment, connected_website
+    # TODO: Add game missing field. Also connected_website
 
     def __init__(
         self,
@@ -458,7 +461,7 @@ class Message(Object, Update):
         migrate_from_chat_id: int = None,
         pinned_message: "Message" = None,
         invoice: "types.Invoice" = None,
-
+        successful_payment: "types.SuccessfulPayment" = None,
         users_shared: "types.UsersShared" = None,
         chat_shared: "types.ChatShared" = None,
 
@@ -608,6 +611,7 @@ class Message(Object, Update):
         self.custom_action = custom_action
         self.sender_business_bot = sender_business_bot
         self.business_connection_id = business_connection_id
+        self.successful_payment = successful_payment
         self._raw = _raw
 
     @staticmethod
@@ -689,6 +693,7 @@ class Message(Object, Update):
             forum_topic_reopened = None
             general_forum_topic_hidden = None
             general_forum_topic_unhidden = None
+            successful_payment = None
 
             service_type = None
 
@@ -878,6 +883,10 @@ class Message(Object, Update):
                 service_type = enums.MessageServiceType.FORUM_TOPIC_CREATED
                 forum_topic_created = types.ForumTopicCreated._parse(action)
 
+            elif isinstance(action, (raw.types.MessageActionPaymentSent, raw.types.MessageActionPaymentSentMe)):
+                successful_payment = types.SuccessfulPayment._parse(client, action)
+                service_type = enums.MessageServiceType.SUCCESSFUL_PAYMENT
+
             elif isinstance(action, raw.types.MessageActionTopicEdit):
                 title = getattr(action, "title", None)
                 icon_emoji_id = getattr(action, "icon_emoji_id", None)
@@ -932,6 +941,7 @@ class Message(Object, Update):
                 gifted_premium=gifted_premium,
                 users_shared=users_shared,
                 chat_shared=chat_shared,
+                successful_payment=successful_payment,
                 chat_ttl_period=chat_ttl_period,
                 chat_ttl_setting_from=chat_ttl_setting_from,
                 boost_added=boost_added,
@@ -3655,6 +3665,194 @@ class Message(Object, Update):
             reply_to_message_id=reply_to_message_id,
             progress=progress,
             progress_args=progress_args
+        )
+
+    async def reply_invoice(
+        self,
+        title: str,
+        description: str,
+        payload: Union[str, bytes],
+        currency: str,
+        prices: List["types.LabeledPrice"],
+        message_thread_id: int = None,
+        quote: bool = None,
+        provider_token: str = None,
+        max_tip_amount: int = None,
+        suggested_tip_amounts: List[int] = None,
+        start_parameter: str = None,
+        provider_data: str = None,
+        photo_url: str = "",
+        photo_size: int = None,
+        photo_width: int = None,
+        photo_height: int = None,
+        need_name: bool = None,
+        need_phone_number: bool = None,
+        need_email: bool = None,
+        need_shipping_address: bool = None,
+        send_phone_number_to_provider: bool = None,
+        send_email_to_provider: bool = None,
+        is_flexible: bool = None,
+        disable_notification: bool = None,
+        protect_content: bool = None,
+        message_effect_id: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
+        reply_markup: Union[
+            "types.InlineKeyboardMarkup",
+            "types.ReplyKeyboardMarkup",
+            "types.ReplyKeyboardRemove",
+            "types.ForceReply"
+        ] = None,
+        caption: str = "",
+        parse_mode: Optional["enums.ParseMode"] = None,
+        caption_entities: List["types.MessageEntity"] = None
+    ) -> "Message":
+        """Bound method *reply_invoice* of :obj:`~pyrogram.types.Message`.
+
+        Parameters:
+            title (``str``):
+                Product name, 1-32 characters.
+
+            description (``str``):
+                Product description, 1-255 characters
+
+            payload (``str`` | ``bytes``):
+                Bot-defined invoice payload, 1-128 bytes. This will not be displayed to the user, use for your internal processes.
+
+            currency (``str``):
+                Three-letter ISO 4217 currency code, see `more on currencies <https://core.telegram.org/bots/payments#supported-currencies>`_. Pass ``XTR`` for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            prices (List of :obj:`~pyrogram.types.LabeledPrice`):
+                Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.). Must contain exactly one item for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            quote (``bool``, *optional*):
+                If ``True``, the message will be sent as a reply to this message.
+                If *reply_to_message_id* is passed, this parameter will be ignored.
+                Defaults to ``True`` in group chats and ``False`` in private chats.
+
+            provider_token (``str``, *optional*):
+                Payment provider token, obtained via `@BotFather <https://t.me/botfather>`_. Pass an empty string for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            max_tip_amount (``int``, *optional*):
+                The maximum accepted amount for tips in the smallest units of the currency (integer, **not** float/double). For example, for a maximum tip of ``US$ 1.45`` pass ``max_tip_amount = 145``. See the exp parameter in `currencies.json <https://core.telegram.org/bots/payments/currencies.json>`_, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            suggested_tip_amounts (List of ``int``, *optional*):
+                An array of suggested amounts of tips in the smallest units of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed ``max_tip_amount``.
+
+            start_parameter (``str``, *optional*):
+                Unique deep-linking parameter. If left empty, **forwarded copies** of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter.
+
+            provider_data (``str``, *optional*):
+                JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
+
+            photo_url (``str``, *optional*):
+                URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for.
+
+            photo_size (``int``, *optional*):
+                Photo size in bytes
+
+            photo_width (``int``, *optional*):
+                Photo width
+
+            photo_height (``int``, *optional*):
+                Photo height
+
+            need_name (``bool``, *optional*):
+                Pass True if you require the user's full name to complete the order. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            need_phone_number (``bool``, *optional*):
+                Pass True if you require the user's phone number to complete the order. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            need_email (``bool``, *optional*):
+                Pass True if you require the user's email address to complete the order. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            need_shipping_address (``bool``, *optional*):
+                Pass True if you require the user's shipping address to complete the order. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            send_phone_number_to_provider (``bool``, *optional*):
+                Pass True if the user's phone number should be sent to the provider. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            send_email_to_provider (``bool``, *optional*):
+                Pass True if the user's email address should be sent to the provider. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            is_flexible (``bool``, *optional*):
+                Pass True if the final price depends on the shipping method. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
+
+            disable_notification (``bool``, *optional*):
+                Sends the message silently.
+                Users will receive a notification with no sound.
+
+            protect_content (``bool``, *optional*):
+                Protects the contents of the sent message from forwarding and saving.
+
+            message_effect_id (``int`` ``64-bit``, *optional*):
+                Unique identifier of the message effect to be added to the message; for private chats only.
+
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
+
+            reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
+                Additional interface options. An object for an inline keyboard, custom reply keyboard,
+                instructions to remove reply keyboard or to force a reply from the user.
+
+            caption (``str``, *optional*):
+                Document caption, 0-1024 characters.
+
+            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
+        Returns:
+            On success, the sent :obj:`~pyrogram.types.Message` is returned.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+        """
+        if quote is None:
+            quote = self.chat.type != enums.ChatType.PRIVATE
+
+        if not reply_parameters and quote:
+            reply_parameters = types.ReplyParameters(
+                message_id=self.id
+            )
+
+        return await self._client.send_invoice(
+            chat_id=self.chat.id,
+            title=title,
+            description=description,
+            payload=payload,
+            currency=currency,
+            prices=prices,
+            message_thread_id=message_thread_id or self.message_thread_id,
+            provider_token=provider_token,
+            max_tip_amount=max_tip_amount,
+            suggested_tip_amounts=suggested_tip_amounts,
+            start_parameter=start_parameter,
+            provider_data=provider_data,
+            photo_url=photo_url,
+            photo_size=photo_size,
+            photo_width=photo_width,
+            photo_height=photo_height,
+            need_name=need_name,
+            need_phone_number=need_phone_number,
+            need_email=need_email,
+            need_shipping_address=need_shipping_address,
+            send_phone_number_to_provider=send_phone_number_to_provider,
+            send_email_to_provider=send_email_to_provider,
+            is_flexible=is_flexible,
+            disable_notification=disable_notification,
+            protect_content=protect_content or self.has_protected_content,
+            message_effect_id=message_effect_id or self.effect_id,
+            reply_parameters=reply_parameters,
+            reply_markup=reply_markup,
+            caption=caption,
+            parse_mode=parse_mode,
+            caption_entities=caption_entities
         )
 
     async def edit_text(
