@@ -20,9 +20,7 @@ import logging
 from typing import Optional, List
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import raw, enums, types, utils
 from .inline_session import get_session
 
 log = logging.getLogger(__name__)

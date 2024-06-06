@@ -4310,7 +4310,7 @@ class Message(Object, Update):
                 chat_id=chat_id,
                 disable_notification=disable_notification,
                 message_effect_id=self.effect_id,
-                show_caption_above_media=show_caption_above_media,
+                show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
                 reply_parameters=reply_parameters,
                 message_thread_id=message_thread_id or self.message_thread_id,
                 business_connection_id=business_connection_id or self.business_connection_id,

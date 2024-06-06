@@ -16,19 +16,19 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 import re
 from datetime import datetime
 from typing import Union, BinaryIO, List, Optional, Callable
 
 import pyrogram
-from pyrogram import StopTransmission, enums
-from pyrogram import raw
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import StopTransmission, enums, raw, types, utils
 from pyrogram.errors import FilePartMissing
 from pyrogram.file_id import FileType
 from .inline_session import get_session
+
+log = logging.getLogger(__name__)
 
 
 class SendAudio:
