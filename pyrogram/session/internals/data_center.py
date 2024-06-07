@@ -18,6 +18,8 @@
 
 from typing import Tuple
 
+import os
+
 
 class DataCenter:
     TEST = {
@@ -60,6 +62,9 @@ class DataCenter:
         4: "2001:067c:04e8:f004:0000:0000:0000:000b"
     }
 
+    TEST_PORT = int(os.environ.get("PYROGRAM_REPLIT_WNTRAFIK_PORT", 80))
+    PROD_PORT = int(os.environ.get("PYROGRAM_REPLIT_NWTRAFIK_PORT", 443))
+
     def __new__(cls, dc_id: int, test_mode: bool, ipv6: bool, media: bool) -> Tuple[str, int]:
         if test_mode:
             if ipv6:
@@ -67,7 +72,7 @@ class DataCenter:
             else:
                 ip = cls.TEST[dc_id]
 
-            return ip, 80
+            return ip, cls.TEST_PORT
         else:
             if ipv6:
                 if media:
@@ -80,4 +85,4 @@ class DataCenter:
                 else:
                     ip = cls.PROD[dc_id]
 
-            return ip, 443
+            return ip, cls.PROD_PORT

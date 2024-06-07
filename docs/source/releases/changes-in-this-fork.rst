@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
+- Ability to run in `replit` environment without creating `a deployment <https://ask.replit.com/t/pyrogram-network-issue/33679/46>`_. Set the environment variable ``PYROGRAM_REPLIT_NWTRAFIK_PORT`` value to ``5222`` if you want to connect to Production Telegram Servers, **OR** Set the environment variable ``PYROGRAM_REPLIT_WNTRAFIK_PORT`` value to ``5223`` if you want to connect to Test Telegram Servers, before starting the :obj:`~pyrogram.Client`.
 - Added the :meth:`~pyrogram.Client.invite_group_call_participants` (`#35 <https://github.com/TelegramPlayGround/pyrogram/pull/35>`_).
 - Added the types :obj:`~pyrogram.types.LabeledPrice`, :obj:`~pyrogram.types.OrderInfo`, :obj:`~pyrogram.types.PreCheckoutQuery`, :obj:`~pyrogram.types.ShippingAddress`, :obj:`~pyrogram.types.SuccessfulPayment`, :obj:`~pyrogram.types.`.
 - Added the ``successful_payment`` parameter to the :obj:`~pyrogram.types.Message`. Added the filter :obj:`~pyrogram.filters.successful_payment` to detect service messages of Successful Payment type.
@@ -204,7 +205,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 - `Bug Fix for MIN_CHAT_ID <https://t.me/pyrogramchat/593090>`_.
 - Added new parameter ``no_joined_notifications`` to :obj:`~pyrogram.Client`.
 - Fix history TTL Service Message Parse.
-- Added environment variables ``PYROGRAM_DONOT_LOG_UNKNOWN_ERRORS``. Thanks to `... <https://t.me/pyrogramchat/607757>`_.
+- Thanks to `... <https://t.me/pyrogramchat/607757>`_. If you want to change the location of the ``unknown_errors.txt`` file that is created by :obj:`~pyrogram.Client`, set the environment variable ``PYROGRAM_LOG_UNKNOWN_ERRORS_FILENAME`` value to the path where the file should get created.
 - Renamed ``force_document`` to ``disable_content_type_detection`` in :meth:`~pyrogram.Client.send_document` and :meth:`~pyrogram.types.Message.reply_document`.
 - Added missing attributes ``added_to_attachment_menu``, ``can_be_added_to_attachment_menu``, ``can_join_groups``, ``can_read_all_group_messages``, ``supports_inline_queries``, ``restricts_new_chats`` to the :obj:`~pyrogram.types.User`.
 - Migrate project to ``pyproject.toml`` from ``setup.py``.
