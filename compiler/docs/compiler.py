@@ -345,6 +345,7 @@ def pyrogram_api():
         """,
         phone="""
         Phone
+            invite_group_call_participants
             load_group_call_participants
         """,
         stickers="""

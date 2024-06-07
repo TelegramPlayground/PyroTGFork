@@ -18,9 +18,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .load_group_call_participants import LoadGroupCallParticipants
+from .invite_group_call_participants import InviteGroupCallParticipants
 
 
 class Phone(
-    LoadGroupCallParticipants
+    InviteGroupCallParticipants,
+    LoadGroupCallParticipants,
 ):
     pass
