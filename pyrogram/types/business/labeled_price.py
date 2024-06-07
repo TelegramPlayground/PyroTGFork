@@ -37,7 +37,7 @@ class LabeledPrice(Object):
     def __init__(
         self,
         label: str,
-        amount: str
+        amount: int
     ):
         super().__init__()
 
