@@ -373,6 +373,7 @@ def pyrogram_api():
         business="""
         Telegram Business & Fragment
             answer_pre_checkout_query
+            create_invoice_link
             get_business_connection
             get_collectible_item_info
             refund_star_payment
