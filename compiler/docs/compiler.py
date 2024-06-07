@@ -536,7 +536,7 @@ def pyrogram_api():
             RequestChatInfo
             RequestUserInfo
             RequestPollInfo
-            PaymentInfo
+            OrderInfo
             PreCheckoutQuery
             ShippingAddress
         """,

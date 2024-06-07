@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Optional
+
 import pyrogram
 from pyrogram import raw
 
@@ -24,8 +26,8 @@ class AnswerPreCheckoutQuery:
     async def answer_pre_checkout_query(
         self: "pyrogram.Client",
         pre_checkout_query_id: str,
-        success: bool = None,
-        error: str = None
+        ok: Optional[bool] = None,
+        error_message: Optional[str] = None
     ):
         """Send answers to pre-checkout queries.
 
@@ -35,11 +37,11 @@ class AnswerPreCheckoutQuery:
             pre_checkout_query_id (``str``):
                 Unique identifier for the query to be answered.
 
-            success (``bool``, *optional*):
+            ok (``bool``, *optional*):
                 Set this flag if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order.
                 Otherwise do not set it, and set the error field, instead.
 
-            error (``str``, *optional*):
+            error_message (``str``, *optional*):
                 Error message in human readable form that explains the reason for failure to proceed with the checkout.
                 Required if ``success`` isn't set.
 
@@ -50,15 +52,15 @@ class AnswerPreCheckoutQuery:
             .. code-block:: python
 
                 # Proceed with the order
-                await app.answer_pre_checkout_query(query_id, success=True)
+                await app.answer_pre_checkout_query(query_id, ok=True)
 
                 # Answer with error message
-                await app.answer_pre_checkout_query(query_id, error=error)
+                await app.answer_pre_checkout_query(query_id, ok=False, error_message="Out of stock")
         """
         return await self.invoke(
             raw.functions.messages.SetBotPrecheckoutResults(
                 query_id=int(pre_checkout_query_id),
-                success=success or None,
-                error=error or None
+                success=ok,
+                error=error_message
             )
         )

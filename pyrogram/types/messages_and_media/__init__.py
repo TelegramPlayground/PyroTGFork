@@ -49,6 +49,7 @@ from .reaction import Reaction
 from .sticker import Sticker
 from .story import Story
 from .stripped_thumbnail import StrippedThumbnail
+from .successful_payment import SuccessfulPayment
 from .thumbnail import Thumbnail
 from .venue import Venue
 from .video import Video
@@ -91,6 +92,7 @@ __all__ = [
     "Sticker",
     "Story",
     "StrippedThumbnail",
+    "SuccessfulPayment",
     "Thumbnail",
     "Venue",
     "Video",

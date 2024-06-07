@@ -32,23 +32,23 @@ from .game_high_score import GameHighScore
 from .inline_keyboard_button import InlineKeyboardButton
 from .inline_keyboard_markup import InlineKeyboardMarkup
 from .keyboard_button import KeyboardButton
+from .labeled_price import LabeledPrice
 from .login_url import LoginUrl
 from .menu_button import MenuButton
 from .menu_button_commands import MenuButtonCommands
 from .menu_button_default import MenuButtonDefault
 from .menu_button_web_app import MenuButtonWebApp
-from .payment_info import PaymentInfo
+from .order_info import OrderInfo
 from .pre_checkout_query import PreCheckoutQuery
 from .reply_keyboard_markup import ReplyKeyboardMarkup
 from .reply_keyboard_remove import ReplyKeyboardRemove
 from .request_channel_info import RequestChannelInfo
 from .request_chat_info import RequestChatInfo
-from .request_user_info import RequestUserInfo
 from .request_poll_info import RequestPollInfo
+from .request_user_info import RequestUserInfo
 from .requested_chats import RequestedChats
 from .sent_web_app_message import SentWebAppMessage
 from .shipping_address import ShippingAddress
-from .successful_payment import SuccessfulPayment
 from .web_app_info import WebAppInfo
 
 __all__ = [
@@ -66,6 +66,7 @@ __all__ = [
     "RequestUserInfo",
     "RequestPollInfo",
     "RequestedChats",
+    "LabeledPrice",
     "LoginUrl",
     "BotCommand",
     "BotCommandScope",
@@ -80,10 +81,9 @@ __all__ = [
     "MenuButton",
     "MenuButtonCommands",
     "MenuButtonWebApp",
+    "OrderInfo",
+    "PreCheckoutQuery",
     "MenuButtonDefault",
     "SentWebAppMessage",
-    "ShippingAddress",
-    "PaymentInfo",
-    "PreCheckoutQuery",
-    "SuccessfulPayment"
+    "ShippingAddress"
 ]

@@ -16,32 +16,38 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Optional
+
+from pyrogram import types
+
 from ..object import Object
 
 
-class PaymentInfo(Object):
-    """Contains information about a payment.
+class OrderInfo(Object):
+    """This object represents information about an order.
 
     Parameters:
         name (``str``, *optional*):
-            User's name.
+            User name.
 
         phone_number (``str``, *optional*):
             User's phone number.
 
         email (``str``, *optional*):
-            User's email.
+            User email.
 
         shipping_address (:obj:`~pyrogram.types.ShippingAddress`, *optional*):
-            User's shipping address.
+            User shipping address.
+
     """
 
     def __init__(
-        self, *,
-        name: str = None,
-        phone_number: str = None,
-        email: str = None,
-        shipping_address: "types.ShippingAddress" = None
+        self,
+        *,
+        name: Optional[str] = None,
+        phone_number: Optional[str] = None,
+        email: Optional[str] = None,
+        shipping_address: Optional["types.ShippingAddress"] = None
     ):
         super().__init__()
 

@@ -405,7 +405,7 @@ class Message(Object, Update):
             Generate a link to this message, only for groups and channels.
     """
 
-    # TODO: Add game missing field. Also successful_payment, connected_website
+    # TODO: Add game missing field, connected_website
 
     def __init__(
         self,

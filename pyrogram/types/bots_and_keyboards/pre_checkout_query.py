@@ -16,18 +16,16 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, List, Match, Optional
+from typing import Union, Optional
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
+from pyrogram import types, raw
 from ..object import Object
 from ..update import Update
-from ... import utils
 
 
 class PreCheckoutQuery(Object, Update):
-    """An incoming pre-checkout query from a buy button in an inline keyboard.
+    """This object contains information about an incoming pre-checkout query.
 
     Parameters:
         id (``str``):
@@ -37,18 +35,18 @@ class PreCheckoutQuery(Object, Update):
             User who sent the query.
 
         currency (``str``):
-            Three-letter ISO 4217 currency code.
+            Three-letter ISO 4217 `currency <https://core.telegram.org/bots/payments#supported-currencies>`_ code, or ``XTR`` for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
 
         total_amount (``int``):
-            Total price in the smallest units of the currency.
+            Total price in the smallest units of the currency (integer, **not** float/double). For example, for a price of ``US$ 1.45`` pass ``amount = 145``. See the __exp__ parameter in `currencies.json <https://core.telegram.org/bots/payments/currencies.json>`_, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies).
 
-        payload (``str``):
+        invoice_payload (``str``):
             Bot specified invoice payload.
 
         shipping_option_id (``str``, *optional*):
             Identifier of the shipping option chosen by the user.
 
-        payment_info (:obj:`~pyrogram.types.PaymentInfo`, *optional*):
+        order_info (:obj:`~pyrogram.types.OrderInfo`, *optional*):
             Payment information provided by the user.
     """
 
@@ -60,9 +58,9 @@ class PreCheckoutQuery(Object, Update):
         from_user: "types.User",
         currency: str,
         total_amount: int,
-        payload: str,
-        shipping_option_id: str = None,
-        payment_info: "types.PaymentInfo" = None
+        invoice_payload: str,
+        shipping_option_id: Optional[str] = None,
+        order_info: Optional["types.OrderInfo"] = None
     ):
         super().__init__(client)
 
@@ -70,27 +68,31 @@ class PreCheckoutQuery(Object, Update):
         self.from_user = from_user
         self.currency = currency
         self.total_amount = total_amount
-        self.payload = payload
+        self.invoice_payload = invoice_payload
         self.shipping_option_id = shipping_option_id
-        self.payment_info = payment_info
+        self.order_info = order_info
 
     @staticmethod
-    async def _parse(client: "pyrogram.Client", pre_checkout_query, users) -> "PreCheckoutQuery":
+    async def _parse(
+        client: "pyrogram.Client",
+        pre_checkout_query: "raw.types.UpdateBotPrecheckoutQuery",
+        users: dict
+    ) -> "PreCheckoutQuery":
         # Try to decode pre-checkout query payload into string. If that fails, fallback to bytes instead of decoding by
         # ignoring/replacing errors, this way, button clicks will still work.
         try:
-            payload = pre_checkout_query.payload.decode()
+            invoice_payload = pre_checkout_query.payload.decode()
         except (UnicodeDecodeError, AttributeError):
-            payload = pre_checkout_query.payload
+            invoice_payload = pre_checkout_query.payload
 
         return PreCheckoutQuery(
             id=str(pre_checkout_query.query_id),
             from_user=types.User._parse(client, users[pre_checkout_query.user_id]),
             currency=pre_checkout_query.currency,
             total_amount=pre_checkout_query.total_amount,
-            payload=payload,
+            invoice_payload=invoice_payload,
             shipping_option_id=pre_checkout_query.shipping_option_id,
-            payment_info=types.PaymentInfo(
+            order_info=types.OrderInfo(
                 name=pre_checkout_query.info.name,
                 phone_number=pre_checkout_query.info.phone,
                 email=pre_checkout_query.info.email,
@@ -106,7 +108,7 @@ class PreCheckoutQuery(Object, Update):
             client=client
         )
 
-    async def answer(self, success: bool = None, error: str = None):
+    async def answer(self, ok: bool = None, error_message: str = None):
         """Bound method *answer* of :obj:`~pyrogram.types.PreCheckoutQuery`.
 
         Use this method as a shortcut for:
@@ -115,25 +117,26 @@ class PreCheckoutQuery(Object, Update):
 
             await client.answer_pre_checkout_query(
                 pre_checkout_query.id,
-                success=True
+                ok=True
             )
 
         Example:
             .. code-block:: python
 
-                await pre_checkout_query.answer(success=True)
+                await pre_checkout_query.answer(ok=True)
 
         Parameters:
-            success (``bool`` *optional*):
-                If true, an alert will be shown by the client instead of a notification at the top of the chat screen.
-                Defaults to False.
+            ok (``bool`` *optional*):
+                Specify True if everything is alright (goods are available, etc.) and the bot is ready to proceed with the order. Use False if there are any problems.
 
-            error (``bool`` *optional*):
-                If true, an alert will be shown by the client instead of a notification at the top of the chat screen.
-                Defaults to False.
+            error_message (``str`` *optional*):
+                Required if ok is False. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. "Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!"). Telegram will display this message to the user.
+
+        Returns:
+            ``bool``: True, on success.
         """
         return await self._client.answer_pre_checkout_query(
             pre_checkout_query_id=self.id,
-            success=success,
-            error=error
+            ok=ok,
+            error_message=error_message
         )
