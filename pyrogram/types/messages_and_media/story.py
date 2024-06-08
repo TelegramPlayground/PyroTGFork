@@ -138,7 +138,7 @@ class Story(Object, Update):
         chats: dict,
         story_media: "raw.types.MessageMediaStory",
         reply_story: "raw.types.MessageReplyStoryHeader"
-    ) -> "Video":
+    ) -> "Story":
         story_id = None
         chat = None
 
@@ -158,7 +158,6 @@ class Story(Object, Update):
         skipped = None
         deleted = None
 
-        # TODO: investigate a bug here
         if story_media:
             if story_media.peer:
                 raw_peer_id = utils.get_peer_id(story_media.peer)
@@ -166,8 +165,9 @@ class Story(Object, Update):
             story_id = getattr(story_media, "id", None)
         if reply_story:
             if reply_story.peer:
-                raw_peer_id = utils.get_peer_id(reply_story.peer)
-                chat = await client.get_chat(raw_peer_id, False)
+                raw_peer_id = utils.get_raw_peer_id(reply_story.peer)
+
+                chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
             story_id = getattr(reply_story, "story_id", None)
         if story_id and not client.me.is_bot:
             try:
@@ -179,7 +179,7 @@ class Story(Object, Update):
                         )
                     )
                 ).stories[0]
-            except (RPCError,IndexError):
+            except (RPCError, IndexError):
                 pass
             else:
                 if isinstance(story_item, raw.types.StoryItemDeleted):

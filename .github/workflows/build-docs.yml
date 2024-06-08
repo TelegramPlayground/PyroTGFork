@@ -22,9 +22,9 @@ jobs:
           make
           rm -rf .github compiler Pyrogram* pyrogram* tests .gitignore COPYING*
           rm -f MANIFEST* Makefile NOTICE README.md
-          rm -f pyproject.toml
+          rm -f pyproject.toml hatch_build.py setup.py
           mv docs/build/html/* .
-          rm -rf docs venv 
+          rm -rf docs venv __pycache__
           touch .nojekyll
           git checkout --orphan gh-pages
           git config user.email "14043624+delivrance@users.noreply.github.com"
