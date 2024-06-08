@@ -101,6 +101,19 @@ PreCheckoutQuery
 
     {pre_checkout_query_toctree}
 
+ShippingQuery
+-----------
+
+.. hlist::
+    :columns: 2
+
+    {shipping_query_hlist}
+
+.. toctree::
+    :hidden:
+
+    {shipping_query_toctree}
+
 ChatJoinRequest
 ---------------
 

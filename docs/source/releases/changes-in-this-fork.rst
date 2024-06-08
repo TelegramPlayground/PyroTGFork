@@ -16,9 +16,9 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 
 - Ability to run in `replit` environment without creating `a deployment <https://ask.replit.com/t/pyrogram-network-issue/33679/46>`_. Set the environment variable ``PYROGRAM_REPLIT_NWTRAFIK_PORT`` value to ``5222`` if you want to connect to Production Telegram Servers, **OR** Set the environment variable ``PYROGRAM_REPLIT_WNTRAFIK_PORT`` value to ``5223`` if you want to connect to Test Telegram Servers, before starting the :obj:`~pyrogram.Client`.
 - Added the :meth:`~pyrogram.Client.invite_group_call_participants` (`#35 <https://github.com/TelegramPlayGround/pyrogram/pull/35>`_).
-- Added the types :obj:`~pyrogram.types.LabeledPrice`, :obj:`~pyrogram.types.OrderInfo`, :obj:`~pyrogram.types.PreCheckoutQuery`, :obj:`~pyrogram.types.ShippingAddress`, :obj:`~pyrogram.types.SuccessfulPayment`, :obj:`~pyrogram.types.`.
+- Added the types :obj:`~pyrogram.types.LabeledPrice`, :obj:`~pyrogram.types.OrderInfo`, :obj:`~pyrogram.types.PreCheckoutQuery`, :obj:`~pyrogram.types.ShippingAddress`, :obj:`~pyrogram.types.ShippingOption`, :obj:`~pyrogram.types.ShippingQuery` and :obj:`~pyrogram.types.SuccessfulPayment`.
 - Added the ``successful_payment`` parameter to the :obj:`~pyrogram.types.Message`. Added the filter :obj:`~pyrogram.filters.successful_payment` to detect service messages of Successful Payment type.
-- Added the methods :meth:`~pyrogram.Client.send_invoice`, :meth:`~pyrogram.Client.answer_pre_checkout_query` (:meth:`~pyrogram.types.PreCheckoutQuery.answer`), :meth:`~pyrogram.Client.refund_star_payment`, :meth:`~pyrogram.Client.create_invoice_link`.
+- Added the methods :meth:`~pyrogram.Client.send_invoice`, :meth:`~pyrogram.Client.answer_pre_checkout_query` (:meth:`~pyrogram.types.PreCheckoutQuery.answer`), :meth:`~pyrogram.Client.answer_shipping_query` (:meth:`~pyrogram.types.ShippingQuery.answer`), :meth:`~pyrogram.Client.refund_star_payment` and :meth:`~pyrogram.Client.create_invoice_link`.
 - Added the :meth:`~pyrogram.Client.send_web_app_custom_request`.
 - Added the :meth:`~pyrogram.Client.search_public_hashtag_messages` and :meth:`~pyrogram.Client.search_public_hashtag_messages_count`.
 - Added the ``fetch_replies`` parameter to :obj:`~pyrogram.Client`.

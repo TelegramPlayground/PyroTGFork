@@ -31,3 +31,4 @@ from .user_status_handler import UserStatusHandler
 from .message_reaction_updated_handler import MessageReactionUpdatedHandler
 from .message_reaction_count_updated_handler import MessageReactionCountUpdatedHandler
 from .pre_checkout_query_handler import PreCheckoutQueryHandler
+from .shipping_query_handler import ShippingQueryHandler

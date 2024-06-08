@@ -68,8 +68,8 @@ Details
 .. autoclass:: InlineQueryHandler()
 .. autoclass:: ChosenInlineResultHandler()
 .. autoclass:: CallbackQueryHandler()
-
-
+.. autoclass:: ShippingQueryHandler()
+.. autoclass:: PreCheckoutQueryHandler()
 .. autoclass:: PollHandler()
 
 

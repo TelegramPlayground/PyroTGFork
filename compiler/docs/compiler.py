@@ -374,6 +374,7 @@ def pyrogram_api():
         business="""
         Telegram Business & Fragment
             answer_pre_checkout_query
+            answer_shipping_query
             create_invoice_link
             get_business_connection
             get_collectible_item_info
@@ -573,6 +574,8 @@ def pyrogram_api():
             OrderInfo
             PreCheckoutQuery
             ShippingAddress
+            ShippingOption
+            ShippingQuery
             SuccessfulPayment
         """,
         users_chats="""
@@ -718,6 +721,10 @@ def pyrogram_api():
         pre_checkout_query="""
         PreCheckoutQuery
             PreCheckoutQuery.answer
+        """,
+        shipping_query="""
+        ShippingQuery
+            ShippingQuery.answer
         """,
         chat_join_request="""
         ChatJoinRequest

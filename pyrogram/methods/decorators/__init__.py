@@ -31,6 +31,7 @@ from .on_user_status import OnUserStatus
 from .on_message_reaction_updated import OnMessageReactionUpdated
 from .on_message_reaction_count_updated import OnMessageReactionCountUpdated
 from .on_pre_checkout_query import OnPreCheckoutQuery
+from .on_shipping_query import OnShippingQuery
 
 
 class Decorators(
@@ -42,7 +43,7 @@ class Decorators(
     OnInlineQuery,
     OnChosenInlineResult,
     OnCallbackQuery,
-
+    OnShippingQuery,
     OnPreCheckoutQuery,
     OnPoll,
     
