@@ -16,30 +16,25 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import types, raw
 
 
-class InviteGroupCallParticipants:
-    async def invite_group_call_participants(
+class DiscardGroupCall:
+    async def discard_group_call(
+        # TODO
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        user_ids: Union[Union[int, str], List[Union[int, str]]],
     ) -> "types.Message":
-        """Invites users to an active group call. Sends a service message of type :obj:`~pyrogram.enums.MessageServiceType.VIDEO_CHAT_PARTICIPANTS_INVITED` for video chats.
+        """Terminate a group/channel call or livestream
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
-                Unique identifier (int) or username (str) of the target chat. A chat can be either a basic group or a supergroup.
-
-            user_ids (``int`` | ``str`` | List of ``int`` or ``str``):
-                Users identifiers to invite to group call in the chat.
-                You can pass an ID (int) or username (str).
-                At most 10 users can be invited simultaneously.
+                Unique identifier (int) or username (str) of the target chat. A chat can be either a basic group, supergroup or a channel.
 
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the sent service message is returned.
@@ -47,7 +42,7 @@ class InviteGroupCallParticipants:
         Example:
             .. code-block:: python
 
-                await app.invite_group_call_participants(chat_id, user_id)
+                await app.discard_group_call(chat_id)
 
         """
         peer = await self.resolve_peer(chat_id)
@@ -66,15 +61,9 @@ class InviteGroupCallParticipants:
         if call is None:
             raise ValueError("No active group call at this chat.")
 
-        user_ids = [user_ids] if not isinstance(user_ids, list) else user_ids
-
         r = await self.invoke(
-            raw.functions.phone.InviteToGroupCall(
-                call=call,
-                users=[
-                    await self.resolve_peer(i)
-                    for i in user_ids
-                ]
+            raw.functions.phone.DiscardGroupCall(
+                call=call
             )
         )
 
@@ -84,13 +73,13 @@ class InviteGroupCallParticipants:
                 (
                     raw.types.UpdateNewChannelMessage,
                     raw.types.UpdateNewMessage,
-                    raw.types.UpdateNewScheduledMessage
-                )
+                    raw.types.UpdateNewScheduledMessage,
+                ),
             ):
                 return await types.Message._parse(
                     self,
                     i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
-                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage)
+                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                 )

@@ -345,8 +345,12 @@ def pyrogram_api():
         """,
         phone="""
         Phone
+            create_video_chat
+            discard_group_call
+            get_video_chat_rtmp_url
             invite_group_call_participants
             load_group_call_participants
+
         """,
         stickers="""
         Stickers
@@ -608,6 +612,7 @@ def pyrogram_api():
             VideoChatParticipantsInvited
             VideoChatScheduled
             VideoChatStarted
+            RtmpUrl
         """,
     )
 
