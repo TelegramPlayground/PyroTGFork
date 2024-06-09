@@ -32,7 +32,7 @@ class TranslatedText(Object):
         text (``str``):
             Translated text.
 
-        entities (``str``, *optional*):
+        entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             Entities of the text.
     """
 

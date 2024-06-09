@@ -686,6 +686,7 @@ def pyrogram_api():
             Message.react
             Message.read
             Message.view
+            Message.translate
         """,
         chat="""
         Chat
