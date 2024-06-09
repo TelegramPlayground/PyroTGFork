@@ -336,6 +336,8 @@ def pyrogram_api():
             view_messages
             vote_poll
             get_chat_sponsored_messages
+            translate_text
+            translate_message_text
         """,
         password="""
         Password
@@ -552,6 +554,7 @@ def pyrogram_api():
             ReactionTypeEmoji
             ReactionTypeCustomEmoji
             Thumbnail
+            TranslatedText
             StrippedThumbnail
             Poll
             PollOption

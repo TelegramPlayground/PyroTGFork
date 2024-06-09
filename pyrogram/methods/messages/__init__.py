@@ -69,7 +69,7 @@ from .vote_poll import VotePoll
 from .get_chat_sponsored_messages import GetChatSponsoredMessages
 from .search_public_hashtag_messages import SearchPublicHashtagMessages
 from .search_public_hashtag_messages_count import SearchPublicHashtagMessagesCount
-
+from .translate_text import TranslateText
 
 class Messages(
     CopyMediaGroup,
@@ -125,5 +125,6 @@ class Messages(
     ViewMessages,
     VotePoll,
     GetChatSponsoredMessages,
+    TranslateText,
 ):
     pass
