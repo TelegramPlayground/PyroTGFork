@@ -31,8 +31,6 @@ class OnRawUpdate:
         This does the same thing as :meth:`~pyrogram.Client.add_handler` using the
         :obj:`~pyrogram.handlers.RawUpdateHandler`.
 
-        .. include:: /_includes/usable-by/users-bots.rst
-
         Parameters:
             group (``int``, *optional*):
                 The group identifier, defaults to 0.

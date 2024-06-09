@@ -51,6 +51,7 @@ Index
     - :meth:`~Client.on_deleted_messages`
     - :meth:`~Client.on_user_status`
     - :meth:`~Client.on_disconnect`
+    - :meth:`~Client.on_story`
     - :meth:`~Client.on_raw_update`
 
 -----
@@ -79,4 +80,5 @@ Details
 .. autodecorator:: pyrogram.Client.on_deleted_messages()
 .. autodecorator:: pyrogram.Client.on_user_status()
 .. autodecorator:: pyrogram.Client.on_disconnect()
+.. autodecorator:: pyrogram.Client.on_story()
 .. autodecorator:: pyrogram.Client.on_raw_update()

@@ -32,6 +32,7 @@ from .on_message_reaction_updated import OnMessageReactionUpdated
 from .on_message_reaction_count_updated import OnMessageReactionCountUpdated
 from .on_pre_checkout_query import OnPreCheckoutQuery
 from .on_shipping_query import OnShippingQuery
+from .on_story import OnStory
 
 
 class Decorators(
@@ -53,6 +54,7 @@ class Decorators(
 
     OnDisconnect,
     OnUserStatus,
+    OnStory,
     OnRawUpdate,
 ):
     pass

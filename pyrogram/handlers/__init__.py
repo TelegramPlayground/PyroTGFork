@@ -32,3 +32,4 @@ from .message_reaction_updated_handler import MessageReactionUpdatedHandler
 from .message_reaction_count_updated_handler import MessageReactionCountUpdatedHandler
 from .pre_checkout_query_handler import PreCheckoutQueryHandler
 from .shipping_query_handler import ShippingQueryHandler
+from .story_handler import StoryHandler

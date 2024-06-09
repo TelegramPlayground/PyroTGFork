@@ -52,6 +52,7 @@ Index
     - :class:`UserStatusHandler`
 
     - :class:`DisconnectHandler`
+    - :class:`StoryHandler`
     - :class:`RawUpdateHandler`
 
 -----
@@ -80,4 +81,5 @@ Details
 .. autoclass:: DeletedMessagesHandler()
 .. autoclass:: UserStatusHandler()
 .. autoclass:: DisconnectHandler()
+.. autoclass:: StoryHandler()
 .. autoclass:: RawUpdateHandler()

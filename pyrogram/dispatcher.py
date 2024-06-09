@@ -43,6 +43,7 @@ from pyrogram.handlers import (
 
     DeletedMessagesHandler,
     UserStatusHandler,
+    StoryHandler,
     RawUpdateHandler
 )
 from pyrogram.raw.types import (
@@ -60,6 +61,7 @@ from pyrogram.raw.types import (
     UpdateBotDeleteBusinessMessage,
     UpdateBotPrecheckoutQuery,
     UpdateBotShippingQuery,
+    UpdateStory,
 )
 
 log = logging.getLogger(__name__)
@@ -80,6 +82,7 @@ class Dispatcher:
     MESSAGE_BOT_A_REACTION_UPDATES = (UpdateBotMessageReactions,)
     PRE_CHECKOUT_QUERY_UPDATES = (UpdateBotPrecheckoutQuery,)
     SHIPPING_QUERY_UPDATES = (UpdateBotShippingQuery,)
+    NEW_STORY_UPDATES = (UpdateStory,)
 
     def __init__(self, client: "pyrogram.Client"):
         self.client = client
@@ -189,6 +192,18 @@ class Dispatcher:
                 PreCheckoutQueryHandler
             )
 
+        async def story_parser(update, users, chats):
+            return (
+                await pyrogram.types.Story._parse(
+                    self.client,
+                    users,
+                    chats,
+                    None, None,
+                    update
+                ),
+                StoryHandler
+            )
+
         self.update_parsers = {
             Dispatcher.NEW_MESSAGE_UPDATES: message_parser,
             Dispatcher.EDIT_MESSAGE_UPDATES: edited_message_parser,
@@ -202,8 +217,9 @@ class Dispatcher:
             Dispatcher.CHAT_JOIN_REQUEST_UPDATES: chat_join_request_parser,
             Dispatcher.MESSAGE_BOT_NA_REACTION_UPDATES: message_bot_na_reaction_parser,
             Dispatcher.MESSAGE_BOT_A_REACTION_UPDATES: message_bot_a_reaction_parser,
-            Dispatcher.PRE_CHECKOUT_QUERY_UPDATES: pre_checkout_query_parser,
             Dispatcher.SHIPPING_QUERY_UPDATES: shipping_query_parser,
+            Dispatcher.PRE_CHECKOUT_QUERY_UPDATES: pre_checkout_query_parser,
+            Dispatcher.NEW_STORY_UPDATES: story_parser,
         }
 
         self.update_parsers = {key: value for key_tuple, value in self.update_parsers.items() for key in key_tuple}

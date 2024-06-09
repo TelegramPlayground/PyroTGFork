@@ -131,16 +131,87 @@ class Story(Object, Update):
         self.deleted = deleted
         self._raw = _raw
 
+    @staticmethod
+    def _parse_story_item(
+        client,
+        story_item: "raw.types.StoryItem"
+    ):
+        date = None
+        expire_date = None
+        media = None
+        has_protected_content = None
+        photo = None
+        video = None
+        edited = None
+        pinned = None
+        caption = None
+        caption_entities = None
+        views = None
+        forwards = None
+        reactions = None
+        skipped = None
+        deleted = None
+
+        if isinstance(story_item, raw.types.StoryItemDeleted):
+            deleted = True
+        elif isinstance(story_item, raw.types.StoryItemSkipped):
+            skipped = True
+        else:
+            date = utils.timestamp_to_datetime(story_item.date)
+            expire_date = utils.timestamp_to_datetime(story_item.expire_date)
+            if isinstance(story_item.media, raw.types.MessageMediaPhoto):
+                photo = types.Photo._parse(client, story_item.media.photo, story_item.media.ttl_seconds)
+                media = enums.MessageMediaType.PHOTO
+            elif isinstance(story_item.media, raw.types.MessageMediaDocument):
+                doc = story_item.media.document
+                attributes = {type(i): i for i in doc.attributes}
+                video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
+                video = types.Video._parse(client, doc, video_attributes, None)
+                media = enums.MessageMediaType.VIDEO
+            has_protected_content = story_item.noforwards
+            edited = story_item.edited
+            pinned = story_item.pinned
+            entities = [e for e in (types.MessageEntity._parse(client, entity, {}) for entity in story_item.entities) if e]
+            caption = Str(story_item.caption or "").init(entities) or None
+            caption_entities = entities or None
+            if story_item.views:
+                views = getattr(story_item.views, "views_count", None)
+                forwards = getattr(story_item.views, "forwards_count", None)
+                reactions = [
+                    types.Reaction._parse_count(client, reaction)
+                    for reaction in getattr(story_item.views, "reactions", [])
+                ] or None
+        return (
+            date,
+            expire_date,
+            media,
+            has_protected_content,
+            photo,
+            video,
+            edited,
+            pinned,
+            caption,
+            caption_entities,
+            views,
+            forwards,
+            reactions,
+            skipped,
+            deleted
+        )
 
     @staticmethod
     async def _parse(
         client,
+        users: dict,
         chats: dict,
         story_media: "raw.types.MessageMediaStory",
-        reply_story: "raw.types.MessageReplyStoryHeader"
+        reply_story: "raw.types.MessageReplyStoryHeader",
+        story_update: "raw.types.UpdateStory"
     ) -> "Story":
         story_id = None
         chat = None
+
+        rawupdate = None
 
         date = None
         expire_date = None
@@ -159,16 +230,27 @@ class Story(Object, Update):
         deleted = None
 
         if story_media:
+            rawupdate = story_media
+
             if story_media.peer:
-                raw_peer_id = utils.get_peer_id(story_media.peer)
-                chat = await client.get_chat(raw_peer_id, False)
+                raw_peer_id = utils.get_raw_peer_id(story_media.peer)
+                if isinstance(story_media.peer, raw.types.PeerUser):
+                    chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
+                else:
+                    chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
             story_id = getattr(story_media, "id", None)
+        
         if reply_story:
+            rawupdate = reply_story
+
             if reply_story.peer:
                 raw_peer_id = utils.get_raw_peer_id(reply_story.peer)
-
-                chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
+                if isinstance(reply_story.peer, raw.types.PeerUser):
+                    chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
+                else:
+                    chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
             story_id = getattr(reply_story, "story_id", None)
+        
         if story_id and not client.me.is_bot:
             try:
                 story_item = (
@@ -182,38 +264,55 @@ class Story(Object, Update):
             except (RPCError, IndexError):
                 pass
             else:
-                if isinstance(story_item, raw.types.StoryItemDeleted):
-                    deleted = True
-                elif isinstance(story_item, raw.types.StoryItemSkipped):
-                    skipped = True
-                else:
-                    date = utils.timestamp_to_datetime(story_item.date)
-                    expire_date = utils.timestamp_to_datetime(story_item.expire_date)
-                    if isinstance(story_item.media, raw.types.MessageMediaPhoto):
-                        photo = types.Photo._parse(client, story_item.media.photo, story_item.media.ttl_seconds)
-                        media = enums.MessageMediaType.PHOTO
-                    elif isinstance(story_item.media, raw.types.MessageMediaDocument):
-                        doc = story_item.media.document
-                        attributes = {type(i): i for i in doc.attributes}
-                        video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
-                        video = types.Video._parse(client, doc, video_attributes, None)
-                        media = enums.MessageMediaType.VIDEO
-                    has_protected_content = story_item.noforwards
-                    edited = story_item.edited
-                    pinned = story_item.pinned
-                    entities = [e for e in (types.MessageEntity._parse(client, entity, {}) for entity in story_item.entities) if e]
-                    caption = Str(story_item.caption or "").init(entities) or None
-                    caption_entities = entities or None
-                    if story_item.views:
-                        views = getattr(story_item.views, "views_count", None)
-                        forwards = getattr(story_item.views, "forwards_count", None)
-                        reactions = [
-                            types.Reaction._parse_count(client, reaction)
-                            for reaction in getattr(story_item.views, "reactions", [])
-                        ] or None
+                (
+                    date,
+                    expire_date,
+                    media,
+                    has_protected_content,
+                    photo,
+                    video,
+                    edited,
+                    pinned,
+                    caption,
+                    caption_entities,
+                    views,
+                    forwards,
+                    reactions,
+                    skipped,
+                    deleted
+                ) = Story._parse_story_item(client, story_item)
+        
+        if story_update:
+            rawupdate = story_update
+
+            raw_peer_id = utils.get_raw_peer_id(story_update.peer)
+            if isinstance(story_update.peer, raw.types.PeerUser):
+                chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
+            else:
+                chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
+            
+            story_id = getattr(story_update.story, "id", None)
+            (
+                date,
+                expire_date,
+                media,
+                has_protected_content,
+                photo,
+                video,
+                edited,
+                pinned,
+                caption,
+                caption_entities,
+                views,
+                forwards,
+                reactions,
+                skipped,
+                deleted
+            ) = Story._parse_story_item(client, story_update.story)
+
         return Story(
             client=client,
-            _raw=story_media,
+            _raw=rawupdate,
             id=story_id,
             chat=chat,
             date=date,

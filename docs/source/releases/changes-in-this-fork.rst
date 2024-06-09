@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
+- Added :meth:`~Client.on_story` to listen to story updates.
 - Ability to run in `replit` environment without creating `a deployment <https://ask.replit.com/t/pyrogram-network-issue/33679/46>`_. Set the environment variable ``PYROGRAM_REPLIT_NWTRAFIK_PORT`` value to ``5222`` if you want to connect to Production Telegram Servers, **OR** Set the environment variable ``PYROGRAM_REPLIT_WNTRAFIK_PORT`` value to ``5223`` if you want to connect to Test Telegram Servers, before starting the :obj:`~pyrogram.Client`.
 - Added the :meth:`~pyrogram.Client.invite_group_call_participants` (`#35 <https://github.com/TelegramPlayGround/pyrogram/pull/35>`_).
 - Added the types :obj:`~pyrogram.types.LabeledPrice`, :obj:`~pyrogram.types.OrderInfo`, :obj:`~pyrogram.types.PreCheckoutQuery`, :obj:`~pyrogram.types.ShippingAddress`, :obj:`~pyrogram.types.ShippingOption`, :obj:`~pyrogram.types.ShippingQuery` and :obj:`~pyrogram.types.SuccessfulPayment`.
