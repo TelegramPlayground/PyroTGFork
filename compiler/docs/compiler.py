@@ -616,6 +616,7 @@ def pyrogram_api():
             VideoChatScheduled
             VideoChatStarted
             RtmpUrl
+            ChatBackground
         """,
     )
 
