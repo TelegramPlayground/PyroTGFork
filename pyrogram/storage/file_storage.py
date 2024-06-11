@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS usernames
     FOREIGN KEY (id) REFERENCES peers(id)
 );
 
-CREATE INDEX idx_usernames_username ON usernames (username);
+CREATE INDEX IF NOT EXISTS idx_usernames_username ON usernames (username);
 """
 
 UPDATE_STATE_SCHEMA = """
@@ -96,6 +96,12 @@ class FileStorage(SQLiteStorage):
         if version == 4:
             with self.conn:
                 self.conn.executescript(UPDATE_STATE_SCHEMA)
+
+            version += 1
+
+        if version == 5:
+            with self.conn:
+                self.conn.executescript("CREATE INDEX IF NOT EXISTS idx_usernames_id ON usernames (id);")
 
             version += 1
 

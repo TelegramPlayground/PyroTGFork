@@ -75,9 +75,10 @@ CREATE TABLE version
     number INTEGER PRIMARY KEY
 );
 
-CREATE INDEX idx_peers_id ON peers (id);
-CREATE INDEX idx_peers_phone_number ON peers (phone_number);
-CREATE INDEX idx_usernames_username ON usernames (username);
+CREATE INDEX IF NOT EXISTS idx_peers_id ON peers (id);
+CREATE INDEX IF NOT EXISTS idx_peers_phone_number ON peers (phone_number);
+CREATE INDEX IF NOT EXISTS idx_usernames_id ON usernames (id);
+CREATE INDEX IF NOT EXISTS idx_usernames_username ON usernames (username);
 
 CREATE TRIGGER trg_peers_last_update_on
     AFTER UPDATE
@@ -112,7 +113,7 @@ def get_input_peer(peer_id: int, access_hash: int, peer_type: str):
 
 
 class SQLiteStorage(Storage):
-    VERSION = 5
+    VERSION = 6
     USERNAME_TTL = 8 * 60 * 60
 
     def __init__(self, name: str):
@@ -158,23 +159,27 @@ class SQLiteStorage(Storage):
             peers_data = []
             usernames_data = []
             ids_to_delete = []
-            for peer_data in peers:
-                id, access_hash, type, usernames, phone_number = peer_data
+            for id, access_hash, type, usernames, phone_number in peers:
+                ids_to_delete.append((id,))
+                peers_data.append((id, access_hash, type, phone_number))
 
-                self.conn.execute(
-                    "REPLACE INTO peers (id, access_hash, type, phone_number)"
-                    "VALUES (?, ?, ?, ?)",
-                    (id, access_hash, type, phone_number)
-                )
+                if usernames:
+                    usernames_data.extend([(id, username) for username in usernames])
 
-                self.conn.execute(
-                    "DELETE FROM usernames WHERE id = ?",
-                    (id,)
-                )
+            self.conn.executemany(
+                "REPLACE INTO peers (id, access_hash, type, phone_number) VALUES (?, ?, ?, ?)",
+                peers_data
+            )
 
+            self.conn.executemany(
+                "DELETE FROM usernames WHERE id = ?",
+                ids_to_delete
+            )
+
+            if usernames_data:
                 self.conn.executemany(
                     "REPLACE INTO usernames (id, username) VALUES (?, ?)",
-                    [(id, username) for username in usernames] if usernames else [(id, None)]
+                    usernames_data
                 )
 
     async def update_peers(self, peers: List[Tuple[int, int, str, List[str], str]]):
