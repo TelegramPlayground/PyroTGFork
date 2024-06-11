@@ -70,6 +70,7 @@ CREATE TABLE version
 
 CREATE INDEX idx_peers_id ON peers (id);
 CREATE INDEX idx_peers_phone_number ON peers (phone_number);
+CREATE INDEX idx_usernames_id ON usernames (id);
 CREATE INDEX idx_usernames_username ON usernames (username);
 
 CREATE TRIGGER trg_peers_last_update_on
@@ -105,7 +106,7 @@ def get_input_peer(peer_id: int, access_hash: int, peer_type: str):
 
 
 class SQLiteStorage(Storage):
-    VERSION = 5
+    VERSION = 6
     USERNAME_TTL = 8 * 60 * 60
 
     def __init__(self, name: str):
@@ -154,16 +155,19 @@ class SQLiteStorage(Storage):
 
         self.conn.executemany(
             "REPLACE INTO peers (id, access_hash, type, phone_number) VALUES (?, ?, ?, ?)",
-            peers_data)
+            peers_data
+        )
 
         self.conn.executemany(
             "DELETE FROM usernames WHERE id = ?",
-            ids_to_delete)
+            ids_to_delete
+        )
 
         if usernames_data:
             self.conn.executemany(
                 "REPLACE INTO usernames (id, username) VALUES (?, ?)",
-                usernames_data)
+                usernames_data
+            )
 
     async def update_state(self, value: Tuple[int, int, int, int, int] = object):
         if value == object:

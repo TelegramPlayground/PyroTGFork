@@ -83,6 +83,12 @@ class FileStorage(SQLiteStorage):
 
             version += 1
 
+        if version == 5:
+            with self.conn:
+                self.conn.execute("CREATE INDEX idx_usernames_id ON usernames (id);")
+
+            version += 1
+
         self.version(version)
 
     async def open(self):
