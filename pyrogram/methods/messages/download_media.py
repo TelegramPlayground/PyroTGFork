@@ -155,7 +155,9 @@ class DownloadMedia:
                     media = None
 
         if not media:
-            raise ValueError("This message doesn't contain any downloadable media")
+            raise ValueError(
+                f"The message {message if isinstance(message, str) else message.id} doesn't contain any downloadable media"
+            )
 
         if isinstance(media, str):
             file_id_str = media

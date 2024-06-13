@@ -41,7 +41,7 @@ class SendDocument:
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
         file_name: str = None,
-        disable_content_type_detection: bool = None,
+        disable_content_type_detection: bool = True,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,

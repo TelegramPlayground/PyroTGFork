@@ -253,8 +253,7 @@ class SendMediaGroup:
                             media=raw.types.InputMediaUploadedDocument(
                                 file=await self.save_file(i.media),
                                 thumb=await self.save_file(i.thumb),
-                                nosound_video=i.disable_content_type_detection,
-                                force_file=not i.disable_content_type_detection or None,
+                                nosound_video=i.disable_content_type_detection or True,
                                 spoiler=i.has_spoiler,
                                 mime_type=self.guess_mime_type(getattr(i.media, "name", "video.mp4")) or "video/mp4",
                                 attributes=[

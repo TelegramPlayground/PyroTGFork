@@ -229,6 +229,7 @@ class SendVideo:
                         mime_type=self.guess_mime_type(video) or "video/mp4",
                         file=file,
                         ttl_seconds=ttl_seconds,
+                        nosound_video=True,
                         spoiler=has_spoiler,
                         thumb=thumb,
                         attributes=[
