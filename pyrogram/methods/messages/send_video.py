@@ -57,7 +57,7 @@ class SendVideo:
         quote_offset: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
-        no_sound: bool = None,
+        no_sound: bool = True,
         business_connection_id: str = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",

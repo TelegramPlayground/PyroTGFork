@@ -213,7 +213,7 @@ class SendMediaGroup:
                                     thumb=await self.save_file(i.thumb),
                                     spoiler=i.has_spoiler,
                                     mime_type=self.guess_mime_type(i.media) or "video/mp4",
-                                    nosound_video=i.no_sound,
+                                    nosound_video=True,
                                     attributes=[
                                         raw.types.DocumentAttributeVideo(
                                             supports_streaming=i.supports_streaming or None,
@@ -267,7 +267,7 @@ class SendMediaGroup:
                                 thumb=await self.save_file(i.thumb),
                                 spoiler=i.has_spoiler,
                                 mime_type=self.guess_mime_type(getattr(i.media, "name", "video.mp4")) or "video/mp4",
-                                nosound_video=i.no_sound,
+                                nosound_video=True,
                                 attributes=[
                                     raw.types.DocumentAttributeVideo(
                                         supports_streaming=i.supports_streaming or None,
