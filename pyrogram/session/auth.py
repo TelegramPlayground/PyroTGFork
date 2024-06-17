@@ -22,6 +22,7 @@ import time
 from hashlib import sha1
 from io import BytesIO
 from os import urandom
+from typing import Optional
 
 import pyrogram
 from pyrogram import raw
@@ -37,13 +38,20 @@ log = logging.getLogger(__name__)
 class Auth:
     MAX_RETRIES = 5
 
-    def __init__(self, client: "pyrogram.Client", dc_id: int, test_mode: bool):
+    def __init__(
+        self,
+        client: "pyrogram.Client",
+        dc_id: int,
+        test_mode: bool
+    ):
         self.dc_id = dc_id
         self.test_mode = test_mode
         self.ipv6 = client.ipv6
         self.proxy = client.proxy
+        self.connection_factory = client.connection_factory
+        self.protocol_factory = client.protocol_factory
 
-        self.connection = None
+        self.connection: Optional[Connection] = None
 
     @staticmethod
     def pack(data: TLObject) -> bytes:
@@ -76,7 +84,14 @@ class Auth:
         # The server may close the connection at any time, causing the auth key creation to fail.
         # If that happens, just try again up to MAX_RETRIES times.
         while True:
-            self.connection = Connection(self.dc_id, self.test_mode, self.ipv6, self.proxy)
+            self.connection = self.connection_factory(
+                dc_id=self.dc_id,
+                test_mode=self.test_mode,
+                ipv6=self.ipv6,
+                proxy=self.proxy,
+                media=False,
+                protocol_factory=self.protocol_factory
+            )
 
             try:
                 log.info("Start creating a new auth key on DC%s", self.dc_id)
