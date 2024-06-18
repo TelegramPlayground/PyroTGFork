@@ -11,6 +11,12 @@ it can take advantage of new goodies!
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
 +------------------------+
+| Scheme layer used: 182 |
++------------------------+
+
+- Added support for callback queries originating from a message sent on behalf of a business account.
+
++------------------------+
 | Scheme layer used: 181 |
 +------------------------+
 
