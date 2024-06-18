@@ -517,6 +517,10 @@ def pyrogram_api():
             InputMessageContent
             InputPollOption
             InputTextMessageContent
+            InputLocationMessageContent
+            InputVenueMessageContent
+            InputContactMessageContent
+            InputInvoiceMessageContent
             ReplyParameters
             TextQuote
         """,

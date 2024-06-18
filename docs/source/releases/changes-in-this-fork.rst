@@ -14,6 +14,8 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 181 |
 +------------------------+
 
+- Added the classes :obj:`~pyrogram.types.InputLocationMessageContent`, :obj:`~pyrogram.types.InputVenueMessageContent`, :obj:`~pyrogram.types.InputContactMessageContent`, :obj:`~pyrogram.types.InputInvoiceMessageContent`.`
+- Added ``background`` to :obj:`~pyrogram.types.Chat` (`#40 <https://github.com/TelegramPlayGround/pyrogram/pull/40>`_)
 - Added the methods :meth:`~pyrogram.Client.translate_text`, :meth:`~pyrogram.Client.translate_message_text`, :meth:`~pyrogram.types.Message.translate` and the type :obj:`~pyrogram.types.TranslatedText` (`#39 <https://github.com/TelegramPlayGround/pyrogram/pull/39>`_).
 - Added the methods :meth:`~pyrogram.Client.create_video_chat`, :meth:`~pyrogram.Client.discard_group_call`, :meth:`~pyrogram.Client.get_video_chat_rtmp_url` and the type :obj:`~pyrogram.types.RtmpUrl` (`#37 <https://github.com/TelegramPlayGround/pyrogram/pull/37>`_).
 - Added :meth:`~Client.on_story` to listen to story updates.

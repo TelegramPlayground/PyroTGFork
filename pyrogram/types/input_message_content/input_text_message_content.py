@@ -41,7 +41,7 @@ class InputTextMessageContent(InputMessageContent):
             List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
         link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
-                Link preview generation options for the message
+            Link preview generation options for the message
     """
 
     def __init__(

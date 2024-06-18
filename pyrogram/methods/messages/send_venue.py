@@ -36,6 +36,8 @@ class SendVenue:
         address: str,
         foursquare_id: str = "",
         foursquare_type: str = "",
+        google_place_id: str = "",
+        google_place_type: str = "",
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
@@ -145,7 +147,7 @@ class SendVenue:
                 ),
                 title=title,
                 address=address,
-                provider="",
+                provider="", # TODO
                 venue_id=foursquare_id,
                 venue_type=foursquare_type
             ),
