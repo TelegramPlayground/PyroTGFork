@@ -23,6 +23,8 @@ from typing import Union, List, Optional
 import pyrogram
 from pyrogram import raw, enums, types, utils
 
+from .inline_session import get_session
+
 log = logging.getLogger(__name__)
 
 
