@@ -238,7 +238,8 @@ class CallbackQuery(Object, Update):
                 entities=entities,
                 link_preview_options=link_preview_options,
                 reply_markup=reply_markup,
-                disable_web_page_preview=disable_web_page_preview
+                disable_web_page_preview=disable_web_page_preview,
+                business_connection_id=self.message.business_connection_id
             )
         else:
             return await self._client.edit_inline_text(
@@ -324,7 +325,8 @@ class CallbackQuery(Object, Update):
                 message_id=self.message.id,
                 media=media,
                 reply_markup=reply_markup,
-                file_name=file_name
+                file_name=file_name,
+                business_connection_id=self.message.business_connection_id
             )
         else:
             return await self._client.edit_inline_media(
@@ -356,7 +358,8 @@ class CallbackQuery(Object, Update):
             return await self._client.edit_message_reply_markup(
                 chat_id=self.message.chat.id,
                 message_id=self.message.id,
-                reply_markup=reply_markup
+                reply_markup=reply_markup,
+                business_connection_id=self.message.business_connection_id,
             )
         else:
             return await self._client.edit_inline_reply_markup(

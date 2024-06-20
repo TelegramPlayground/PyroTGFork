@@ -14,6 +14,9 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 182 |
 +------------------------+
 
+- Updated the parameter ``business_connection_id`` to the methods :meth:`~pyrogram.types.Message.edit_text`, :meth:`~pyrogram.types.Message.edit_media`, :meth:`~pyrogram.types.Message.edit_reply_markup`, :meth:`~pyrogram.types.CallbackQuery.edit_message_text`, :meth:`~pyrogram.types.CallbackQuery.edit_message_media`, :meth:`~pyrogram.types.CallbackQuery.edit_message_reply_markup`, :meth:`~pyrogram.types.Poll.stop`.
+- Added the parameter ``business_connection_id`` to the methods :meth:`~pyrogram.Client.edit_message_text`, :meth:`~pyrogram.Client.edit_message_media`, :meth:`~pyrogram.Client.edit_message_caption` and :meth:`~pyrogram.Client.edit_message_reply_markup`, allowing the bot to edit business messages.
+- Added the parameter ``business_connection_id`` to the method :meth:`~pyrogram.Client.stop_poll`, allowing the bot to stop polls it sent on behalf of a business account.
 - Added support for callback queries originating from a message sent on behalf of a business account.
 
 +------------------------+

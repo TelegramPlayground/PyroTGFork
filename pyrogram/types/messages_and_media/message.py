@@ -3922,6 +3922,7 @@ class Message(Object, Update):
             entities=entities,
             link_preview_options=link_preview_options,
             reply_markup=reply_markup,
+            business_connection_id=self.business_connection_id,
             disable_web_page_preview=disable_web_page_preview
         )
 
@@ -4027,7 +4028,8 @@ class Message(Object, Update):
             media=media,
             reply_markup=reply_markup,
             file_name=file_name,
-            schedule_date=self.date if self.scheduled else None
+            schedule_date=self.date if self.scheduled else None,
+            business_connection_id=self.business_connection_id
         )
 
     async def edit_reply_markup(self, reply_markup: "types.InlineKeyboardMarkup" = None) -> "Message":
@@ -4062,7 +4064,8 @@ class Message(Object, Update):
         return await self._client.edit_message_reply_markup(
             chat_id=self.chat.id,
             message_id=self.id,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            business_connection_id=self.business_connection_id
         )
 
     async def edit_cached_media(

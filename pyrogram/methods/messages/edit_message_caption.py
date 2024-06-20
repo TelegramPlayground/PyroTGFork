@@ -33,7 +33,8 @@ class EditMessageCaption:
         caption_entities: List["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        schedule_date: datetime = None
+        schedule_date: datetime = None,
+        business_connection_id: str = None
     ) -> "types.Message":
         """Edit the caption of media messages.
 
@@ -67,6 +68,9 @@ class EditMessageCaption:
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message to be edited was sent
+
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the edited message is returned.
 
@@ -89,5 +93,6 @@ class EditMessageCaption:
             entities=caption_entities,
             reply_markup=reply_markup,
             link_preview_options=link_preview_options,
-            schedule_date=schedule_date
+            schedule_date=schedule_date,
+            business_connection_id=business_connection_id
         )
