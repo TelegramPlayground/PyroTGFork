@@ -22,7 +22,7 @@ from datetime import datetime
 from importlib import import_module
 from typing import Type, Union
 
-from pyrogram import raw
+from pyrogram import __version__, raw
 from pyrogram.raw.core import TLObject
 from .exceptions.all import exceptions
 
@@ -50,12 +50,13 @@ class RPCError(Exception):
         is_signed: bool = False,
         _raw = None
     ):
-        super().__init__("Telegram says: [{}{} {}] - {} {}".format(
+        super().__init__("Telegram says: [{}{} {}] {} Pyrogram {} thinks: {}".format(
             "-" if is_signed else "",
             self.CODE,
             self.ID or self.NAME,
+            f'(caused by "{rpc_name}")' if rpc_name else "",
+            __version__,
             self.MESSAGE.format(value=value),
-            f'(caused by "{rpc_name}")' if rpc_name else ""
         ))
 
         self._raw = _raw

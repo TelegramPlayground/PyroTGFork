@@ -76,6 +76,8 @@ CHANNEL_PARICIPANT_MISSING	The current user is not in the channel.
 CHANNEL_PRIVATE	You haven't joined this channel/supergroup.
 CHANNEL_TOO_BIG	This channel has too many participants (>1000) to be deleted.
 CHANNEL_TOO_LARGE	Channel is too large to be deleted; this error is issued when trying to delete channels with more than 1000 members (subject to change).
+CHARGE_ALREADY_REFUNDED	The charge id was already used for a refund.
+CHARGE_NOT_FOUND	The charge id was not found.
 CHATLIST_EXCLUDE_INVALID	The specified `exclude_peers` are invalid.
 CHAT_ABOUT_NOT_MODIFIED	About text has not changed.
 CHAT_ABOUT_TOO_LONG	Chat about too long.
@@ -171,6 +173,7 @@ FILTER_TITLE_EMPTY	The title field of the filter is empty.
 FIRSTNAME_INVALID	The first name is invalid.
 FOLDER_ID_EMPTY	An empty folder ID was specified.
 FOLDER_ID_INVALID	Invalid folder ID.
+FORM_ID_EXPIRED	The specified id has expired.
 FORUM_ENABLED	You can't execute the specified action because the group is a [forum](https://core.telegram.org/api/forum), disable forum functionality to continue.
 FRESH_CHANGE_ADMINS_FORBIDDEN	You were just elected admin, you can't add or modify other admins yet.
 FROM_MESSAGE_BOT_DISABLED	Bots can't use fromMessage min constructors.
