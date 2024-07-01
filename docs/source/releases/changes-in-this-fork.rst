@@ -11,6 +11,12 @@ it can take advantage of new goodies!
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
 +------------------------+
+| Scheme layer used: 183 |
++------------------------+
+
+- `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=181&to=183>`__.
+
++------------------------+
 | Scheme layer used: 182 |
 +------------------------+
 
@@ -43,7 +49,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 - Added support for :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entities in received messages.
 - Added support for :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entity parsing in :obj:`~pyrogram.enums.ParseMode.HTML` parse mode.
 - Allowed to explicitly specify :obj:`~pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE` entities in formatted texts.
-- `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/?from=178&to=181>`__.
+- `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=178&to=181>`__.
 
 +------------------------+
 | Scheme layer used: 179 |
@@ -69,7 +75,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 - Added ``revoke_messages`` parameter to :meth:`~pyrogram.Client.ban_chat_member` and :meth:`~pyrogram.types.Chat.ban_member`.
 - Added :meth:`~pyrogram.Client.get_collectible_item_info`.
 - Added ``reverse`` parameter to :meth:`~pyrogram.Client.get_chat_history`. (`855e69e <https://github.com/pyrogram/pyrogram/blob/855e69e3f881c8140781c1d5e42e3098b2134dd2/pyrogram/methods/messages/get_history.py>`_, `a086b49 <https://github.com/dyanashek/pyrogram/commit/a086b492039687dd1b807969f9202061ce5305da>`_)
-- `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/?from=176&to=178>`__.
+- `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop?from=176&to=178>`__.
 
 +------------------------+
 | Scheme layer used: 178 |
