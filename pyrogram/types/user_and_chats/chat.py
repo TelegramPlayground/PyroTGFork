@@ -117,6 +117,9 @@ class Chat(Object):
         permissions (:obj:`~pyrogram.types.ChatPermissions` *optional*):
             Default chat member permissions, for groups and supergroups.
 
+        can_send_paid_media (``bool``, *optional*):
+            True, if paid media messages can be sent or forwarded to the channel chat. The field is available only for channel chats.
+
         slowmode_next_send_date (:py:obj:`~datetime.datetime`, *optional*):
             Indicates when the user will be allowed to send another message in the chat. For supergroups only.
 
@@ -268,6 +271,7 @@ class Chat(Object):
         is_forum: bool = None,
         is_peak_preview: bool = None,
         max_reaction_count: int = None,
+        can_send_paid_media: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -332,6 +336,7 @@ class Chat(Object):
         self.business_opening_hours = business_opening_hours
         self.active_usernames = active_usernames
         self.max_reaction_count = max_reaction_count
+        self.can_send_paid_media = can_send_paid_media
         self._raw = _raw
 
     @staticmethod
@@ -598,6 +603,8 @@ class Chat(Object):
                 parsed_chat.unrestrict_boost_count = getattr(full_chat, "boosts_unrestrict", None)
                 # TODO: Add EmojieStickerSet type
                 parsed_chat.custom_emoji_sticker_set_name = getattr(full_chat.emojiset, "short_name", None)
+
+                parsed_chat.can_send_paid_media = getattr(full_chat, "paid_media_allowed", None)
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
