@@ -32,6 +32,7 @@ class MenuButtonWebApp(MenuButton):
             Description of the Web App that will be launched when the user presses the button.
             The Web App will be able to send an arbitrary message on behalf of the user using the method
             :meth:`~pyrogram.Client.answer_web_app_query`.
+            Alternatively, a ``t.me`` link to a Web App of the bot can be specified in the object instead of the Web App's URL, in which case the Web App will be opened as if the user pressed the link.
     """
 
     def __init__(
