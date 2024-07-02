@@ -14,6 +14,8 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 183 |
 +------------------------+
 
+- Added the field ``can_send_paid_media`` to the class :obj:`~pyrogram.types.Chat`.
+- Added support for launching Web Apps via ``t.me`` link in the class :obj:`~pyrogram.types.MenuButtonWebApp`.
 - `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=181&to=183>`__.
 
 +------------------------+
