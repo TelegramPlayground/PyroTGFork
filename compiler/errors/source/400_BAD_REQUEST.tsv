@@ -146,7 +146,9 @@ ENTITY_MENTION_USER_INVALID	You mentioned an invalid user.
 ERROR_TEXT_EMPTY	The provided error message is empty.
 EXPIRE_DATE_INVALID	The specified expiration date is invalid.
 EXPORT_CARD_INVALID	Provided card is invalid.
-EXTENDED_MEDIA_TYPE_INVALID	The specified media type is invalid.
+EXTENDED_MEDIA_AMOUNT_INVALID	The maximum amount of `star_count` should be less than the `stars_paid_post_amount_max` [client configuration parameters](/api/config).
+EXTENDED_MEDIA_PEER_INVALID	The specified chat type is invalid.
+EXTENDED_MEDIA_TYPE_INVALID	The specified extended media type is unsupported.
 EXTERNAL_URL_INVALID	External URL invalid.
 FIELD_NAME_EMPTY	The field with the name FIELD_NAME is missing
 FIELD_NAME_INVALID	The field with the name FIELD_NAME is invalid

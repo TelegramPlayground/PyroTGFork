@@ -90,7 +90,7 @@ class Message(Object, Update):
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
             Conversation the message belongs to.
 
-        forward_origin (:obj:`~pyrogram.types.User`, *optional*):
+        forward_origin (:obj:`~pyrogram.types.MessageOrigin`, *optional*):
             Information about the original message for forwarded messages
 
         is_topic_message (``bool``, *optional*):
