@@ -20,14 +20,14 @@ import pyrogram
 from pyrogram import raw
 
 
-class SearchPublicHashtagMessagesCount:
-    async def search_public_hashtag_messages_count(
+class CountPublicMessagesByTag:
+    async def count_public_messages_by_tag(
         self: "pyrogram.Client",
-        hashtag: str = "",
+        tag: str = "",
     ) -> int:
         """Get the count of messages with the provided hashtag or cashtag.
 
-        If you want to get the actual messages, see :meth:`~pyrogram.Client.search_public_hashtag_messages`.
+        If you want to get the actual messages, see :meth:`~pyrogram.Client.search_public_messages_by_tag`.
 
         .. include:: /_includes/usable-by/users.rst
 
@@ -41,7 +41,7 @@ class SearchPublicHashtagMessagesCount:
         """
         r = await self.invoke(
             raw.functions.channels.SearchPosts(
-                hashtag=hashtag,
+                hashtag=tag,
                 offset_rate=0,
                 offset_peer=raw.types.InputPeerEmpty(),
                 offset_id=0,

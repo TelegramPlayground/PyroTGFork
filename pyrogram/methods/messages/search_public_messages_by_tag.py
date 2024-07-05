@@ -23,22 +23,22 @@ import pyrogram
 from pyrogram import raw, types, utils
 
 
-class SearchPublicHashtagMessages:
-    async def search_public_hashtag_messages(
+class SearchPublicMessagesByTag:
+    async def search_public_messages_by_tag(
         self: "pyrogram.Client",
-        hashtag: str = "",
+        tag: str = "",
         offset_id: int = 0,
         offset_date: datetime = utils.zero_datetime(),
         limit: int = 0,
     ) -> AsyncGenerator["types.Message", None]:
-        """Searches for public channel posts with the given hashtag or cashtag. For optimal performance, the number of returned messages is chosen by Telegram Server and can be smaller than the specified limit.
+        """Searches for public channel posts containing the given hashtag or cashtag. For optimal performance, the number of returned messages is chosen by Telegram Server and can be smaller than the specified limit.
 
-        If you want to get the posts count only, see :meth:`~pyrogram.Client.search_public_hashtag_messages_count`.
+        If you want to get the posts count only, see :meth:`~pyrogram.Client.count_public_messages_by_tag`.
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            hashtag (``str``, *optional*):
+            tag (``str``, *optional*):
                 Hashtag or cashtag to search for.
 
             offset_id (``int``, *optional*):
@@ -58,7 +58,7 @@ class SearchPublicHashtagMessages:
             .. code-block:: python
 
                 # Search for "#pyrogram". Get the first 50 results
-                async for message in app.search_public_hashtag_messages("pyrogram", limit=50):
+                async for message in app.search_public_messages_by_tag("pyrogram", limit=50):
                     print(message.text)
                     
         """
@@ -73,7 +73,7 @@ class SearchPublicHashtagMessages:
                 self,
                 await self.invoke(
                     raw.functions.channels.SearchPosts(
-                        hashtag=hashtag,
+                        hashtag=tag,
                         offset_rate=utils.datetime_to_timestamp(offset_date),
                         offset_peer=offset_peer,
                         offset_id=offset_id,
