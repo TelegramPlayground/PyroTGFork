@@ -359,6 +359,10 @@ def pyrogram_api():
             get_message_effects
             get_stickers
         """,
+        stories="""
+        Stories
+            get_stories
+        """,
         users="""
         Users
             get_me

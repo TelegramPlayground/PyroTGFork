@@ -151,6 +151,19 @@ Stickers
 
     {stickers}
 
+Stories
+--------
+
+.. autosummary::
+    :nosignatures:
+
+    {stories}
+
+.. toctree::
+    :hidden:
+
+    {stories}
+
 Password
 --------
 

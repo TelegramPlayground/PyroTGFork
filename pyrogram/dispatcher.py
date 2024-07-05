@@ -200,7 +200,8 @@ class Dispatcher:
                     users,
                     chats,
                     None, None,
-                    update
+                    update,
+                    None, None
                 ),
                 StoryHandler
             )

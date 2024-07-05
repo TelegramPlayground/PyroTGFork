@@ -16,40 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .advanced import Advanced
-from .auth import Auth
-from .bots import Bots
-from .chats import Chats
-from .chat_topics import ChatTopics
-from .contacts import Contacts
-from .decorators import Decorators
-from .invite_links import InviteLinks
-from .messages import Messages
-from .password import Password
-from .phone import Phone
-from .stickers import Stickers
-from .stories import Stories
-from .users import Users
-from .utilities import Utilities
-from .business import TelegramBusiness
 
+from .get_stories import GetStories
 
-class Methods(
-    Decorators,
-    Advanced,
-    Auth,
-    Bots,
-    Chats,
-    ChatTopics,
-    Contacts,
-    InviteLinks,
-    Messages,
-    Password,
-    Phone,
-    Stickers,
-    Stories,
-    TelegramBusiness,
-    Users,
-    Utilities,
+class Stories(
+    GetStories,
 ):
     pass

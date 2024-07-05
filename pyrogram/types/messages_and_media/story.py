@@ -206,7 +206,9 @@ class Story(Object, Update):
         chats: dict,
         story_media: "raw.types.MessageMediaStory",
         reply_story: "raw.types.MessageReplyStoryHeader",
-        story_update: "raw.types.UpdateStory"
+        story_update: "raw.types.UpdateStory",
+        story_item: "raw.types.StoryItem",
+        peer: "raw.base.peer"
     ) -> "Story":
         story_id = None
         chat = None
@@ -309,6 +311,33 @@ class Story(Object, Update):
                 skipped,
                 deleted
             ) = Story._parse_story_item(client, story_update.story)
+
+        if peer:
+            raw_peer_id = utils.get_raw_peer_id(peer)
+            if isinstance(peer, raw.types.PeerUser):
+                chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
+            else:
+                chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
+            
+        if story_item:
+            story_id = getattr(story_item, "id", None)
+            (
+                date,
+                expire_date,
+                media,
+                has_protected_content,
+                photo,
+                video,
+                edited,
+                pinned,
+                caption,
+                caption_entities,
+                views,
+                forwards,
+                reactions,
+                skipped,
+                deleted
+            ) = Story._parse_story_item(client, story_item)
 
         return Story(
             client=client,

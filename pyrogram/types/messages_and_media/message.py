@@ -1121,7 +1121,7 @@ class Message(Object, Update):
                     dice = types.Dice._parse(client, media)
                     media_type = enums.MessageMediaType.DICE
                 elif isinstance(media, raw.types.MessageMediaStory):
-                    story = await types.Story._parse(client, users, chats, media, None, None)
+                    story = await types.Story._parse(client, users, chats, media, None, None, None, None)
                     media_type = enums.MessageMediaType.STORY
                 elif isinstance(media, raw.types.MessageMediaGiveaway):
                     giveaway = types.Giveaway._parse(client, chats, media)
@@ -1267,7 +1267,7 @@ class Message(Object, Update):
                     )
 
             if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
-                parsed_message.reply_to_story = await types.Story._parse(client, users, chats, None, message.reply_to, None)
+                parsed_message.reply_to_story = await types.Story._parse(client, users, chats, None, message.reply_to, None, None, None)
 
             if replies:
                 try:
