@@ -1130,3 +1130,27 @@ class thread(Filter, set):
 
     async def __call__(self, _, message: Message):
         return message.message_thread_id and message.message_thread_id in self
+
+
+# region self_destruct_filter
+
+async def self_destruct_filter(_, __, m: Message):
+    return bool(
+        m.media and
+        getattr(
+            getattr(
+                m,
+                m.media.value,
+                None
+            ),
+            "ttl_seconds",
+            None
+        )
+    )
+
+
+self_destruct = create(self_destruct_filter)
+"""Filter self destruct media messages."""
+
+
+# endregion
