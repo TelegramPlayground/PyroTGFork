@@ -18,7 +18,7 @@
 
 import inspect
 import re
-from typing import Any, Callable, Literal, Union, List, Pattern
+from typing import Any, Callable, List, Literal, Optional, Pattern, Union
 
 import pyrogram
 from pyrogram import enums
@@ -990,7 +990,7 @@ def regex(pattern: Union[str, Pattern], flags: int = 0) -> Filter:
         elif isinstance(update, InlineQuery):
             value: str = update.query
         elif isinstance(update, PreCheckoutQuery):
-            value: str = update.payload
+            value: str = update.invoice_payload
         else:
             raise ValueError(f"Regex filter doesn't work with {type(update)}")
 
@@ -1023,7 +1023,7 @@ class user(Filter, set):
             Defaults to None (no users).
     """
 
-    def __init__(self, users: Union[int, str, List[Union[int, str]]] = None) -> None:
+    def __init__(self, users: Optional[Union[int, str, List[Union[int, str]]]] = None) -> None:
         users = [] if users is None else users if isinstance(users, list) else [users]
 
         super().__init__(
@@ -1060,7 +1060,7 @@ class chat(Filter, set):
             Defaults to None (no chats).
     """
 
-    def __init__(self, chats: Union[int, str, List[Union[int, str]]] = None) -> None:
+    def __init__(self, chats: Optional[Union[int, str, List[Union[int, str]]]] = None) -> None:
         chats = [] if chats is None else chats if isinstance(chats, list) else [chats]
 
         super().__init__(
