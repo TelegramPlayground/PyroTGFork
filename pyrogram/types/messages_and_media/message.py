@@ -269,6 +269,9 @@ class Message(Object, Update):
         successful_payment (:obj:`~pyrogram.types.SuccessfulPayment`, *optional*):
             Message is a service message about a successful payment, information about the payment. `More about payments »<https://core.telegram.org/bots/api#payments>`_
 
+        refunded_payment (:obj:`~pyrogram.types.RefundedPayment`, *optional*):
+            Message is a service message about a refunded payment, information about the payment. `More about payments »<https://core.telegram.org/bots/api#payments>`_
+
         users_shared (:obj:`~pyrogram.types.UsersShared`, *optional*):
             Service message: users were shared with the bot
 
@@ -466,6 +469,7 @@ class Message(Object, Update):
         pinned_message: "Message" = None,
         invoice: "types.Invoice" = None,
         successful_payment: "types.SuccessfulPayment" = None,
+        refunded_payment: "types.RefundedPayment" = None,
         users_shared: "types.UsersShared" = None,
         chat_shared: "types.ChatShared" = None,
 
@@ -617,6 +621,7 @@ class Message(Object, Update):
         self.business_connection_id = business_connection_id
         self.successful_payment = successful_payment
         self.paid_media = paid_media
+        self.refunded_payment = refunded_payment
         self._raw = _raw
 
     @staticmethod
@@ -699,6 +704,7 @@ class Message(Object, Update):
             general_forum_topic_hidden = None
             general_forum_topic_unhidden = None
             successful_payment = None
+            refunded_payment = None
 
             service_type = None
 
@@ -891,6 +897,10 @@ class Message(Object, Update):
             elif isinstance(action, (raw.types.MessageActionPaymentSent, raw.types.MessageActionPaymentSentMe)):
                 successful_payment = types.SuccessfulPayment._parse(client, action)
                 service_type = enums.MessageServiceType.SUCCESSFUL_PAYMENT
+            
+            elif isinstance(action, raw.types.MessageActionPaymentRefunded):
+                refunded_payment = types.RefundedPayment._parse(client, action)
+                service_type = enums.MessageServiceType.REFUNDED_PAYMENT
 
             elif isinstance(action, raw.types.MessageActionTopicEdit):
                 title = getattr(action, "title", None)

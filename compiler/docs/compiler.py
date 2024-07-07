@@ -604,6 +604,7 @@ def pyrogram_api():
             ShippingOption
             ShippingQuery
             SuccessfulPayment
+            RefundedPayment
         """,
         users_chats="""
         Users & Chats

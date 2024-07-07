@@ -134,7 +134,7 @@ class SuccessfulPayment(Object):
             total_amount=successful_payment.total_amount,
             invoice_payload=invoice_payload,
             telegram_payment_charge_id=telegram_payment_charge_id,
-            provider_payment_charge_id=shipping_option_id,
+            provider_payment_charge_id=provider_payment_charge_id,
             shipping_option_id=shipping_option_id,
             order_info=order_info,
             is_recurring=getattr(successful_payment, "recurring_used", None),

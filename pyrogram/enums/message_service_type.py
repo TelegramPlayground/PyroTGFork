@@ -122,3 +122,6 @@ class MessageServiceType(AutoName):
 
     SUCCESSFUL_PAYMENT = auto()
     "Successful payment"
+
+    REFUNDED_PAYMENT = auto()
+    "Refunded payment"

@@ -30,6 +30,7 @@ from .shipping_address import ShippingAddress
 from .shipping_option import ShippingOption
 from .shipping_query import ShippingQuery
 from .successful_payment import SuccessfulPayment
+from .refunded_payment import RefundedPayment
 
 __all__ = [
     "BusinessConnection",
@@ -46,4 +47,5 @@ __all__ = [
     "ShippingOption",
     "ShippingQuery",
     "SuccessfulPayment",
+    "RefundedPayment",
 ]
