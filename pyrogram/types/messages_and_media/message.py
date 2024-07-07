@@ -158,6 +158,9 @@ class Message(Object, Update):
         document (:obj:`~pyrogram.types.Document`, *optional*):
             Message is a general file, information about the file.
 
+        paid_media (:obj:`~pyrogram.types.PaidMediaInfo`, *optional*):
+            Message contains paid media; information about the paid media.
+
         photo (:obj:`~pyrogram.types.Photo`, *optional*):
             Message is a photo, information about the photo.
 
@@ -432,6 +435,7 @@ class Message(Object, Update):
         animation: "types.Animation" = None,
         audio: "types.Audio" = None,
         document: "types.Document" = None,
+        paid_media: "types.PaidMediaInfo" = None,
         photo: "types.Photo" = None,
         sticker: "types.Sticker" = None,
         story: "types.Story" = None,
@@ -612,6 +616,7 @@ class Message(Object, Update):
         self.sender_business_bot = sender_business_bot
         self.business_connection_id = business_connection_id
         self.successful_payment = successful_payment
+        self.paid_media = paid_media
         self._raw = _raw
 
     @staticmethod
@@ -1015,6 +1020,7 @@ class Message(Object, Update):
             giveaway = None
             giveaway_winners = None
             invoice = None
+            paid_media = None
 
             media = message.media
             media_type = None
@@ -1132,6 +1138,9 @@ class Message(Object, Update):
                 elif isinstance(media, raw.types.MessageMediaInvoice):
                     invoice = types.Invoice._parse(client, media)
                     media_type = enums.MessageMediaType.INVOICE
+                elif isinstance(media, raw.types.MessageMediaPaidMedia):
+                    paid_media = types.PaidMediaInfo._parse(client, media)
+                    media_type = enums.MessageMediaType.PAID_MEDIA
                 else:
                     media = None
 
@@ -1230,7 +1239,8 @@ class Message(Object, Update):
                 client=client,
                 link_preview_options=link_preview_options,
                 effect_id=getattr(message, "effect", None),
-                show_caption_above_media=show_caption_above_media
+                show_caption_above_media=show_caption_above_media,
+                paid_media=paid_media
             )
 
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(

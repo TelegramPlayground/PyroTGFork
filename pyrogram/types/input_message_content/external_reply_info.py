@@ -49,6 +49,9 @@ class ExternalReplyInfo(Object):
         document (:obj:`~pyrogram.types.Document`, *optional*):
             Message is a general file, information about the file.
 
+        paid_media (:obj:`~pyrogram.types.PaidMediaInfo`, *optional*):
+            Message contains paid media; information about the paid media.
+
         photo (:obj:`~pyrogram.types.Photo`, *optional*):
             Message is a photo, information about the photo.
 
@@ -109,6 +112,7 @@ class ExternalReplyInfo(Object):
         animation: "types.Animation" = None,
         audio: "types.Audio" = None,
         document: "types.Document" = None,
+        paid_media: "types.PaidMediaInfo" = None,
         photo: "types.Photo" = None,
         sticker: "types.Sticker" = None,
         story: "types.Story" = None,
@@ -135,6 +139,7 @@ class ExternalReplyInfo(Object):
         self.animation = animation
         self.audio = audio
         self.document = document
+        self.paid_media = paid_media
         self.photo = photo
         self.sticker = sticker
         self.story = story
@@ -183,6 +188,7 @@ class ExternalReplyInfo(Object):
             animation = None
             audio = None
             document = None
+            paid_media = None
             photo = None
             sticker = None
             story = None
@@ -302,6 +308,9 @@ class ExternalReplyInfo(Object):
                 elif isinstance(media, raw.types.MessageMediaInvoice):
                     invoice = types.Invoice._parse(client, media)
                     media_type = enums.MessageMediaType.INVOICE
+                elif isinstance(media, raw.types.MessageMediaPaidMedia):
+                    paid_media = types.PaidMediaInfo._parse(client, media)
+                    media_type = enums.MessageMediaType.PAID_MEDIA
 
             return ExternalReplyInfo(
                 origin=origin,
@@ -311,6 +320,7 @@ class ExternalReplyInfo(Object):
                 animation=animation,
                 audio=audio,
                 document=document,
+                paid_media=paid_media,
                 photo=photo,
                 sticker=sticker,
                 story=story,

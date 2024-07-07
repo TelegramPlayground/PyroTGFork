@@ -121,6 +121,7 @@ class ChatPhoto(Object):
             has_animation=chat_photo.has_video,
             is_personal=getattr(chat_photo, "personal", False),
             minithumbnail=types.StrippedThumbnail(
+                client=client,
                 data=chat_photo.stripped_thumb
             ) if chat_photo.stripped_thumb else None,
             client=client

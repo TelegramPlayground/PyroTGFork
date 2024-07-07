@@ -86,6 +86,19 @@ Input Media
 
     {input_media}
 
+Input Paid Media
+-----------
+
+.. autosummary::
+    :nosignatures:
+
+    {input_paid_media}
+
+.. toctree::
+    :hidden:
+
+    {input_paid_media}
+
 Inline Mode
 -----------
 

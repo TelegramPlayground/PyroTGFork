@@ -60,6 +60,9 @@ class Object:
         if isinstance(obj, datetime):
             return str(obj)
 
+        if not hasattr(obj, "__dict__"):
+            return obj.__class__.__name__
+
         return {
             "_": obj.__class__.__name__,
             **{

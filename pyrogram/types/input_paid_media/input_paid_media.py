@@ -16,17 +16,24 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .object import Object
-from .list import List
-from .update import *
-from .authorization import *
-from .bots_and_keyboards import *
-from .chat_topics import *
-from .inline_mode import *
-from .input_media import *
-from .input_paid_media import *
-from .input_message_content import *
-from .messages_and_media import *
-from .message_origin import *
-from .business import *
-from .user_and_chats import *
+from typing import Union, BinaryIO
+
+from ..object import Object
+
+
+class InputPaidMedia(Object):
+    """This object describes the paid media to be sent.
+
+    Currently, it can be one of:
+
+    - :obj:`~pyrogram.types.InputMediaPhoto`
+    - :obj:`~pyrogram.types.InputMediaVideo`
+    """
+
+    def __init__(
+        self,
+        media: Union[str, BinaryIO]
+    ):
+        super().__init__()
+
+        self.media = media

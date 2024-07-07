@@ -16,17 +16,22 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .object import Object
-from .list import List
-from .update import *
-from .authorization import *
-from .bots_and_keyboards import *
-from .chat_topics import *
-from .inline_mode import *
-from .input_media import *
-from .input_paid_media import *
-from .input_message_content import *
-from .messages_and_media import *
-from .message_origin import *
-from .business import *
-from .user_and_chats import *
+from .input_paid_media import InputPaidMedia
+from .input_paid_media_photo import InputPaidMediaPhoto
+from .input_paid_media_video import InputPaidMediaVideo
+from .paid_media_info import PaidMediaInfo
+from .paid_media import PaidMedia
+from .paid_media_preview import PaidMediaPreview
+from .paid_media_photo import PaidMediaPhoto
+from .paid_media_video import PaidMediaVideo
+
+__all__ = [
+    "InputPaidMedia",
+    "InputPaidMediaPhoto",
+    "InputPaidMediaVideo",
+    "PaidMediaInfo",
+    "PaidMedia",
+    "PaidMediaPreview",
+    "PaidMediaPhoto",
+    "PaidMediaVideo",
+]

@@ -16,17 +16,27 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .object import Object
-from .list import List
-from .update import *
-from .authorization import *
-from .bots_and_keyboards import *
-from .chat_topics import *
-from .inline_mode import *
-from .input_media import *
-from .input_paid_media import *
-from .input_message_content import *
-from .messages_and_media import *
-from .message_origin import *
-from .business import *
-from .user_and_chats import *
+import pyrogram
+from pyrogram import types
+
+from ..object import Object
+from .paid_media import PaidMedia
+
+
+class PaidMediaVideo(PaidMedia):
+    """The paid media is a video.
+
+    Parameters:
+        video (:obj:`~pyrogram.types.Video`):
+            The video.
+
+    """
+
+    def __init__(
+        self,
+        *,
+        video: "types.Video" = None
+    ):
+        super().__init__()
+
+        self.video = video
