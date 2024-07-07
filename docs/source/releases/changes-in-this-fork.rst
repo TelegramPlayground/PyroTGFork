@@ -11,6 +11,13 @@ it can take advantage of new goodies!
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
 +------------------------+
+| Scheme layer used: 184 |
++------------------------+
+
+- `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=183&to=184>`__.
+
+
++------------------------+
 | Scheme layer used: 183 |
 +------------------------+
 
