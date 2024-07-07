@@ -26,8 +26,8 @@ class InputPaidMedia(Object):
 
     Currently, it can be one of:
 
-    - :obj:`~pyrogram.types.InputMediaPhoto`
-    - :obj:`~pyrogram.types.InputMediaVideo`
+    - :obj:`~pyrogram.types.InputPaidMediaPhoto`
+    - :obj:`~pyrogram.types.InputPaidMediaVideo`
     """
 
     def __init__(
