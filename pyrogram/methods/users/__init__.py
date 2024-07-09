@@ -31,6 +31,8 @@ from .unblock_user import UnblockUser
 from .update_profile import UpdateProfile
 from .set_birthdate import SetBirthdate
 from .set_personal_chat import SetPersonalChat
+from .update_status import UpdateStatus
+from .delete_account import DeleteAccount
 
 
 class Users(
@@ -49,5 +51,7 @@ class Users(
     SetUsername,
     UnblockUser,
     UpdateProfile,
+    UpdateStatus,
+    DeleteAccount,
 ):
     pass

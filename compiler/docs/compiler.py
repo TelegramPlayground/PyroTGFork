@@ -382,6 +382,8 @@ def pyrogram_api():
             set_emoji_status
             set_birthdate
             set_personal_chat
+            delete_account
+            update_status
         """,
         business="""
         Telegram Business & Fragment

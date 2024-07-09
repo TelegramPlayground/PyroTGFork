@@ -14,7 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 184 |
 +------------------------+
 
-- Added the :meth:`~pyrogram.Client.transfer_chat_ownership` (`#49 <https://github.com/TelegramPlayGround/pyrogram/pull/49>`__)
+- Added the :meth:`~pyrogram.Client.delete_account`, :meth:`~pyrogram.Client.transfer_chat_ownership`, :meth:`~pyrogram.Client.update_status` (`#49 <https://github.com/TelegramPlayGround/pyrogram/pull/49>`__, `#51 <https://github.com/TelegramPlayGround/pyrogram/pull/51>`__)
 - Added the class :obj:`~pyrogram.types.RefundedPayment`, containing information about a refunded payment.
 - Added the field ``refunded_payment`` to the class :obj:`~pyrogram.types.Message`, describing a service message about a refunded payment.
 - `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=183&to=184>`__.
