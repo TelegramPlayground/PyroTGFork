@@ -418,8 +418,7 @@ class Message(Object, Update):
         chat: "types.Chat" = None,
         forward_origin: "types.MessageOrigin" = None,
         is_topic_message: bool = None,
-        
-
+        is_automatic_forward: bool = None,
         reply_to_message_id: int = None,
         reply_to_message: "Message" = None,
         external_reply: "types.ExternalReplyInfo" = None,
@@ -597,6 +596,7 @@ class Message(Object, Update):
         self.effect_id = effect_id
         self.external_reply = external_reply
         self.is_topic_message = is_topic_message
+        self.is_automatic_forward = is_automatic_forward
         self.sender_boost_count = sender_boost_count
         self.boost_added = boost_added
         self.quote = quote
@@ -1265,6 +1265,20 @@ class Message(Object, Update):
                 parsed_message.sender_business_bot = types.User._parse(client, users.get(message.via_business_bot_id, None))
 
             parsed_message.is_from_offline = getattr(message, "offline", None)
+
+            is_automatic_forward = None
+            if (
+                forward_header and
+                forward_header.saved_from_peer and
+                forward_header.saved_from_msg_id
+            ):
+                saved_from_peer_id = utils.get_raw_peer_id(forward_header.saved_from_peer)
+                saved_from_peer_chat = chats.get(saved_from_peer_id)
+                if (
+                    isinstance(saved_from_peer_chat, raw.types.Channel) and
+                    not saved_from_peer_chat.megagroup
+                ):
+                    parsed_message.is_automatic_forward = True
 
         if getattr(message, "reply_to", None):
             parsed_message.reply_to_message_id = None
