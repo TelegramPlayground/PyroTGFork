@@ -25,7 +25,7 @@ GROUPCALL_ALREADY_STARTED	The groupcall has already started, you can join direct
 GROUPCALL_FORBIDDEN	The group call has already ended.
 INLINE_BOT_REQUIRED	Only the inline bot can edit message.
 MESSAGE_AUTHOR_REQUIRED	Message author required.
-MESSAGE_DELETE_FORBIDDEN	You can't delete one of the messages you tried to delete, most likely because it is a service message.
+MESSAGE_DELETE_FORBIDDEN	You can't delete one of the messages you tried to delete.
 NOT_ELIGIBLE	You are not eligible to take part in Telegram's Premium for SMS initiative
 PARTICIPANT_JOIN_MISSING	Trying to enable a presentation, when the user hasn't joined the Video Chat with [phone.joinGroupCall](https://core.telegram.org/method/phone.joinGroupCall).
 POLL_VOTE_REQUIRED	Cast a vote in the poll before calling this method.
