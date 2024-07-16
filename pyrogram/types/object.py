@@ -60,6 +60,7 @@ class Object:
         if isinstance(obj, datetime):
             return str(obj)
 
+        # TODO: #20
         if not hasattr(obj, "__dict__"):
             return obj.__class__.__name__
 

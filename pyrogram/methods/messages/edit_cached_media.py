@@ -23,6 +23,8 @@ from typing import Union, List, Optional
 import pyrogram
 from pyrogram import raw, enums, types, utils
 
+from .inline_session import get_session
+
 log = logging.getLogger(__name__)
 
 
@@ -38,7 +40,8 @@ class EditCachedMedia:
         show_caption_above_media: bool = None,
         schedule_date: datetime = None,
         has_spoiler: bool = None,
-        reply_markup: "types.InlineKeyboardMarkup" = None
+        reply_markup: "types.InlineKeyboardMarkup" = None,
+        business_connection_id: str = None
     ) -> Optional["types.Message"]:
         """Edit a media stored on the Telegram servers using a file_id.
 
@@ -83,6 +86,9 @@ class EditCachedMedia:
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message to be edited was sent
+
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the edited media message is returned.
 
@@ -101,7 +107,26 @@ class EditCachedMedia:
             invert_media=show_caption_above_media,
             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
         )
-        r = await self.invoke(rpc)
+        session = None
+        business_connection = None
+        if business_connection_id:
+            business_connection = self.business_user_connection_cache[business_connection_id]
+            if not business_connection:
+                business_connection = await self.get_business_connection(business_connection_id)
+            session = await get_session(
+                self,
+                business_connection._raw.connection.dc_id
+            )
+        if business_connection_id:
+            r = await session.invoke(
+                raw.functions.InvokeWithBusinessConnection(
+                    query=rpc,
+                    connection_id=business_connection_id
+                )
+            )
+            # await session.stop()
+        else:
+            r = await self.invoke(rpc)
 
         for i in r.updates:
             if isinstance(
@@ -118,4 +143,19 @@ class EditCachedMedia:
                     {i.id: i for i in r.chats},
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                     replies=self.fetch_replies
+                )
+            elif isinstance(
+                i,
+                (
+                    raw.types.UpdateBotEditBusinessMessage
+                )
+            ):
+                return await types.Message._parse(
+                    self,
+                    i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    business_connection_id=getattr(i, "connection_id", business_connection_id),
+                    raw_reply_to_message=i.reply_to_message,
+                    replies=0
                 )

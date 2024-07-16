@@ -32,7 +32,7 @@ class SetPersonalChat:
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            chat_id (``int`` | ``str`, *optional*):
+            chat_id (``int`` | ``str``, *optional*):
                 Identifier of the new personal chat; pass None to remove the chat. Use :meth:`~pyrogram.Client.get_created_chats` with ``is_suitable_for_my_personal_chat`` to get suitable chats
 
         Returns:
