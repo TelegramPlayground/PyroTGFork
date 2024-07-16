@@ -274,6 +274,7 @@ def pyrogram_api():
             get_chat_photos
             get_chat_photos_count
             set_profile_photo
+            set_personal_channel
             delete_profile_photos
             set_username
             update_profile
@@ -285,7 +286,6 @@ def pyrogram_api():
             update_status
             check_username
             update_birthday
-            update_personal_channel
         """,
         invite_links="""
         Invite Links

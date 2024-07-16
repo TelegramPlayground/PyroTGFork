@@ -16,25 +16,27 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import raw
 
 
-class UpdatePersonalChannel:
-    async def update_personal_channel(
+class SetPersonalChannel:
+    async def set_personal_channel(
         self: "pyrogram.Client",
-        chat_id: Union[int, str] = None
+        chat_id: Optional[Union[int, str]] = None
     ) -> bool:
-        """Update your personal channel.
+        """Set a personal channel in bio.
 
         .. include:: /_includes/usable-by/users.rst
 
+        To get all available channels you can use
+        :meth:`~pyrogram.Client.get_personal_channels`.
+
         Parameters:
             chat_id (``int`` | ``str``):
-                Unique identifier (int) or username (str) of the target user.
-                Use :meth:`~pyrogram.Client.get_personal_channels` to get available channels.
+                Unique identifier (int) or username (str) of the target user or None to remove it.
 
         Returns:
             ``bool``: True on success.
@@ -42,18 +44,18 @@ class UpdatePersonalChannel:
         Example:
             .. code-block:: python
 
-                # Update your personal channel
-                await app.update_personal_channel(chat_id)
+                # Set your personal channel
+                await app.set_personal_channel(chat_id)
 
                 # Remove personal channel from your profile
-                await app.update_personal_channel()
+                await app.set_personal_channel()
         """
         if chat_id is None:
             peer = raw.types.InputChannelEmpty()
         else:
             peer = await self.resolve_peer(chat_id)
 
-            if not isinstance(peer, raw.types.InputChannel):
+            if not isinstance(peer, raw.types.InputPeerChannel):
                 return False
 
         return bool(
