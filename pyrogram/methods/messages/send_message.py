@@ -313,19 +313,21 @@ class SendMessage:
 
             return types.Message(
                 id=r.id,
+                outgoing=r.out,
+                date=utils.timestamp_to_datetime(r.date),
+                entities=[
+                    types.MessageEntity._parse(None, entity, {})
+                    for entity in r.entities
+                ] if r.entities else None,
+                chat_ttl_period=getattr(r, "ttl_period", None),
+                # TODO: #52 fix inconsistency
                 chat=types.Chat(
                     id=peer_id,
                     type=enums.ChatType.PRIVATE,
                     client=self
                 ),
                 text=message,
-                date=utils.timestamp_to_datetime(r.date),
-                outgoing=r.out,
                 reply_markup=reply_markup,
-                entities=[
-                    types.MessageEntity._parse(None, entity, {})
-                    for entity in entities
-                ] if entities else None,
                 client=self
             )
 
