@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 184 |
 +------------------------+
 
+- Added the parameters ``offset_id`` to the :meth:`~pyrogram.Client.search_messages` and the parameters ``min_date``, ``max_date``, ``min_id``, ``max_id``, ``saved_messages_topic_id`` to the :meth:`~pyrogram.Client.search_messages_count`.
 - Dynamic session ReStart + restart optimizations (`#56 <https://github.com/TelegramPlayGround/pyrogram/pull/56>`__)
 - Added the :meth:`~pyrogram.Client.delete_account`, :meth:`~pyrogram.Client.transfer_chat_ownership`, :meth:`~pyrogram.Client.update_status` (`#49 <https://github.com/TelegramPlayGround/pyrogram/pull/49>`__, `#51 <https://github.com/TelegramPlayGround/pyrogram/pull/51>`__)
 - Added the class :obj:`~pyrogram.types.RefundedPayment`, containing information about a refunded payment.
