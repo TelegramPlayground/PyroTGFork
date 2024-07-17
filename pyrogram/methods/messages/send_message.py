@@ -319,7 +319,9 @@ class SendMessage:
                     types.MessageEntity._parse(None, entity, {})
                     for entity in r.entities
                 ] if r.entities else None,
-                chat_ttl_period=getattr(r, "ttl_period", None),
+                message_auto_delete_timer_changed=types.MessageAutoDeleteTimerChanged(
+                    message_auto_delete_time=getattr(r, "ttl_period", None)
+                ),
                 # TODO: #52 fix inconsistency
                 chat=types.Chat(
                     id=peer_id,

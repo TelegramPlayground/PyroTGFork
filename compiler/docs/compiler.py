@@ -231,7 +231,7 @@ def pyrogram_api():
             delete_supergroup
             delete_user_history
             set_slow_mode
-            set_chat_ttl
+            set_chat_message_auto_delete_time
             mark_chat_unread
             get_chat_event_log
             get_chat_online_count
@@ -559,6 +559,7 @@ def pyrogram_api():
             GiveawayWinners
             Location
             Message
+            MessageAutoDeleteTimerChanged
             MessageEffect
             MessageEntity
             MessageImportInfo
@@ -732,6 +733,7 @@ def pyrogram_api():
             Chat.mark_unread
             Chat.set_protected_content
             Chat.unpin_all_messages
+            Chat.set_message_auto_delete_time
         """,
         user="""
         User

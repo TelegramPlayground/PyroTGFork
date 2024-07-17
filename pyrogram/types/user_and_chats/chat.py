@@ -869,29 +869,34 @@ class Chat(Object):
             video_start_ts=video_start_ts
         )
 
-    async def set_ttl(self, ttl_seconds: int) -> "types.Message":
-        """Bound method *set_ttl* of :obj:`~pyrogram.types.Chat`.
+    async def set_message_auto_delete_time(self, message_auto_delete_time: int) -> "types.Message":
+        """Bound method *set_message_auto_delete_time* of :obj:`~pyrogram.types.Chat`.
 
         Use as a shortcut for:
 
         .. code-block:: python
 
-            await client.set_chat_ttl(
+            await client.set_chat_message_auto_delete_time(
                 chat_id=chat_id,
-                ttl_seconds=ttl_seconds
+                message_auto_delete_time=ttl_seconds
             )
+
+        Parameters:
+            message_auto_delete_time (``int``):
+                New time value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically.
 
         Example:
             .. code-block:: python
 
-                await chat.set_ttl(86400)
+                await chat.set_message_auto_delete_time(86400)
 
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the generated service message is returned.
+
         """
-        return await self._client.set_chat_ttl(
+        return await self._client.set_chat_message_auto_delete_time(
             chat_id=self.id,
-            ttl_seconds=ttl_seconds
+            message_auto_delete_time=message_auto_delete_time
         )
 
     async def ban_member(

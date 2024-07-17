@@ -49,7 +49,7 @@ from .set_chat_permissions import SetChatPermissions
 from .set_chat_photo import SetChatPhoto
 from .set_chat_protected_content import SetChatProtectedContent
 from .set_chat_title import SetChatTitle
-from .set_chat_ttl import SetChatTTL
+from .set_chat_message_auto_delete_time import SetChatMessageAutoDeleteTime
 from .set_chat_username import SetChatUsername
 from .set_send_as_chat import SetSendAsChat
 from .set_slow_mode import SetSlowMode
@@ -76,7 +76,7 @@ class Chats(
     DeleteChatPhoto,
     SetChatTitle,
     SetChatDescription,
-    SetChatTTL,
+    SetChatMessageAutoDeleteTime,
     PinChatMessage,
     UnpinChatMessage,
     GetDialogs,

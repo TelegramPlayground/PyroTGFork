@@ -57,6 +57,7 @@ from .gift_code import GiftCode
 from .gifted_premium import GiftedPremium
 from .message_effect import MessageEffect
 from .translated_text import TranslatedText
+from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 
 __all__ = [
     "Animation",
@@ -73,6 +74,7 @@ __all__ = [
     "GiveawayWinners",
     "Location",
     "Message",
+    "MessageAutoDeleteTimerChanged",
     "MessageEffect",
     "MessageEntity",
     "MessageReactionCountUpdated",

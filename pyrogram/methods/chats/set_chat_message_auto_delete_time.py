@@ -19,25 +19,25 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 
 
-class SetChatTTL:
-    async def set_chat_ttl(
+class SetChatMessageAutoDeleteTime:
+    async def set_chat_message_auto_delete_time(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        ttl_seconds: int
+        message_auto_delete_time: int
     ) -> "types.Message":
-        """Set the time-to-live for the chat.
+        """Changes the message auto-delete or self-destruct (for secret chats) time in a chat.
+        
+        Requires change_info administrator right in basic groups, supergroups and channels.
 
         Parameters:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
 
-            ttl_seconds (``int``):
-                The time-to-live for the chat.
-                Either 86000 for 1 day, 604800 for 1 week or 0 (zero) to disable it.
+            message_auto_delete_time (``int``):
+                New time value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically.
 
         Returns:
             ``bool``: True on success.
@@ -45,19 +45,19 @@ class SetChatTTL:
         Example:
             .. code-block:: python
 
-                # Set TTL for a chat to 1 day
-                app.set_chat_ttl(chat_id, 86400)
+                # Set message auto delete for a chat to 1 day
+                app.set_chat_message_auto_delete_time(chat_id, 86400)
 
-                # Set TTL for a chat to 1 week
-                app.set_chat_ttl(chat_id, 604800)
+                # Set message auto delete for a chat to 1 week
+                app.set_chat_message_auto_delete_time(chat_id, 604800)
 
-                # Disable TTL for this chat
-                app.set_chat_ttl(chat_id, 0)
+                # Disable message auto delete for this chat
+                app.set_chat_message_auto_delete_time(chat_id, 0)
         """
         r = await self.invoke(
             raw.functions.messages.SetHistoryTTL(
                 peer=await self.resolve_peer(chat_id),
-                period=ttl_seconds,
+                period=message_auto_delete_time,
             )
         )
 

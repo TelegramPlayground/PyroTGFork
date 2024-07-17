@@ -93,8 +93,8 @@ class MessageServiceType(AutoName):
     CHAT_SHARED = auto()
     "Chat Shared"
 
-    CHAT_TTL_CHANGED = auto()
-    "Chat TTL changed"
+    AUTO_DELETE_TIMER_CHANGED = auto()
+    "Message Auto Delete Timer changed"
 
     CHAT_BOOST_ADDED = auto()
     "Chat Boost Added"

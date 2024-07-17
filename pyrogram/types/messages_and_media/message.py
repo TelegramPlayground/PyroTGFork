@@ -244,6 +244,9 @@ class Message(Object, Update):
             channel when it is created. It can only be found in reply_to_message if someone replies to a very
             first message in a channel.
 
+        message_auto_delete_timer_changed (:obj:`~pyrogram.types.MessageAutoDeleteTimerChanged`, *optional*):
+            Service message: auto-delete timer settings changed in the chat.
+
         migrate_to_chat_id (``int``, *optional*):
             The group has been migrated to a supergroup with the specified identifier.
             This number may be greater than 32 bits and some programming languages may have difficulty/silent defects
@@ -378,13 +381,6 @@ class Message(Object, Update):
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this message.
 
-        chat_ttl_period (``int``, *optional*):
-            New Time-To-Live of all messages sent in this chat.
-            if 0, autodeletion was disabled.
-
-        chat_ttl_setting_from (:obj:`~pyrogram.types.User`, *optional*):
-            if set, the chat TTL setting was set not due to a manual change by one of participants, but automatically because one of the participants has the default TTL settings enabled.
-
         custom_action (``str``, *optional*):
             Custom action (most likely not supported by the current layer, an upgrade might be needed)
 
@@ -460,7 +456,7 @@ class Message(Object, Update):
         group_chat_created: bool = None,
         supergroup_chat_created: bool = None,
         channel_chat_created: bool = None,
-
+        message_auto_delete_timer_changed: "types.MessageAutoDeleteTimerChanged" = None,
         migrate_to_chat_id: int = None,
         migrate_from_chat_id: int = None,
         pinned_message: "Message" = None,
@@ -499,8 +495,6 @@ class Message(Object, Update):
 
         gift_code: "types.GiftCode" = None,
         gifted_premium: "types.GiftedPremium" = None,
-        chat_ttl_period: int = None,
-        chat_ttl_setting_from: "types.User" = None,
         empty: bool = None,
         mentioned: bool = None,
         service: "enums.MessageServiceType" = None,
@@ -570,6 +564,7 @@ class Message(Object, Update):
         self.group_chat_created = group_chat_created
         self.supergroup_chat_created = supergroup_chat_created
         self.channel_chat_created = channel_chat_created
+        self.message_auto_delete_timer_changed = message_auto_delete_timer_changed
         self.migrate_to_chat_id = migrate_to_chat_id
         self.migrate_from_chat_id = migrate_from_chat_id
         self.pinned_message = pinned_message
@@ -588,8 +583,6 @@ class Message(Object, Update):
         self.video_chat_participants_invited = video_chat_participants_invited
         self.web_app_data = web_app_data
         self.reactions = reactions
-        self.chat_ttl_period = chat_ttl_period
-        self.chat_ttl_setting_from = chat_ttl_setting_from
         self.link_preview_options = link_preview_options
         self.effect_id = effect_id
         self.external_reply = external_reply
@@ -689,8 +682,7 @@ class Message(Object, Update):
             giveaway_created = None
             users_shared = None
             chat_shared = None
-            chat_ttl_period = None
-            chat_ttl_setting_from = None
+            message_auto_delete_timer_changed = None
             boost_added = None
             giveaway_completed = None
             custom_action = None
@@ -850,11 +842,13 @@ class Message(Object, Update):
                     )
 
             elif isinstance(action, raw.types.MessageActionSetMessagesTTL):
-                chat_ttl_period = action.period
-                service_type = enums.MessageServiceType.CHAT_TTL_CHANGED
+                message_auto_delete_timer_changed = types.MessageAutoDeleteTimerChanged(
+                    message_auto_delete_time=action.period
+                )
+                service_type = enums.MessageServiceType.AUTO_DELETE_TIMER_CHANGED
                 auto_setting_from = getattr(action, "auto_setting_from", None)
                 if auto_setting_from:
-                    chat_ttl_setting_from = types.User._parse(
+                    message_auto_delete_timer_changed.from_user = types.User._parse(
                         client,
                         users[auto_setting_from]
                     )
@@ -955,8 +949,7 @@ class Message(Object, Update):
                 users_shared=users_shared,
                 chat_shared=chat_shared,
                 successful_payment=successful_payment,
-                chat_ttl_period=chat_ttl_period,
-                chat_ttl_setting_from=chat_ttl_setting_from,
+                message_auto_delete_timer_changed=message_auto_delete_timer_changed,
                 boost_added=boost_added,
                 forum_topic_created=forum_topic_created,
                 forum_topic_edited=forum_topic_edited,
