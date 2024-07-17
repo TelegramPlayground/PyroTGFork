@@ -33,7 +33,8 @@ from pyrogram.errors import (
     RPCError, InternalServerError, AuthKeyDuplicated,
     FloodWait, FloodPremiumWait,
     ServiceUnavailable, BadMsgNotification,
-    SecurityCheckMismatch
+    SecurityCheckMismatch,
+    Unauthorized
 )
 from pyrogram.raw.all import layer
 from pyrogram.raw.core import TLObject, MsgContainer, Int, FutureSalts
@@ -58,6 +59,7 @@ class Session:
     PING_INTERVAL = 5
     STORED_MSG_IDS_MAX_SIZE = 1000 * 2
     RECONNECT_THRESHOLD = 13
+    STOP_RANGE = range(2)
 
     TRANSPORT_ERRORS = {
         404: "auth key not found",
@@ -197,7 +199,7 @@ class Session:
                 self.instant_stop = True  # tell all funcs that we want to stop
 
             self.ping_task_event.set()
-            for _ in range(2):
+            for _ in self.STOP_RANGE:
                 try:
                     if self.ping_task is not None:
                         await asyncio.wait_for(
@@ -216,7 +218,7 @@ class Session:
             except Exception as e:
                 log.exception(e)
 
-            for _ in range(2):
+            for _ in self.STOP_RANGE:
                 try:
                     if self.recv_task:
                         await asyncio.wait_for(
@@ -252,7 +254,7 @@ class Session:
                 self.last_reconnect_attempt
                 and (now - self.last_reconnect_attempt) < self.RECONNECT_THRESHOLD
             ):
-                to_wait = int(
+                to_wait = self.RECONNECT_THRESHOLD + int(
                     self.RECONNECT_THRESHOLD - (now - self.last_reconnect_attempt)
                 )
                 log.warning(
