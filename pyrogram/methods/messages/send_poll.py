@@ -86,7 +86,7 @@ class SendPoll:
                 True, if the poll needs to be anonymous.
                 Defaults to True.
 
-            type (:obj`~pyrogram.enums.PollType`, *optional*):
+            type (:obj:`~pyrogram.enums.PollType`, *optional*):
                 Poll type, :obj:`~pyrogram.enums.PollType.QUIZ` or :obj:`~pyrogram.enums.PollType.REGULAR`.
                 Defaults to :obj:`~pyrogram.enums.PollType.REGULAR`.
 

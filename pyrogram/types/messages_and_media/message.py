@@ -244,8 +244,6 @@ class Message(Object, Update):
             channel when it is created. It can only be found in reply_to_message if someone replies to a very
             first message in a channel.
 
-        message_auto_delete_timer_changed
-
         migrate_to_chat_id (``int``, *optional*):
             The group has been migrated to a supergroup with the specified identifier.
             This number may be greater than 32 bits and some programming languages may have difficulty/silent defects
@@ -267,10 +265,10 @@ class Message(Object, Update):
             Message is an invoice for a `payment <https://core.telegram.org/bots/api#payments>`_, information about the invoice. `More about payments » <https://core.telegram.org/bots/api#payments>`_
 
         successful_payment (:obj:`~pyrogram.types.SuccessfulPayment`, *optional*):
-            Message is a service message about a successful payment, information about the payment. `More about payments »<https://core.telegram.org/bots/api#payments>`_
+            Message is a service message about a successful payment, information about the payment. `More about payments <https://core.telegram.org/bots/api#payments>`_
 
         refunded_payment (:obj:`~pyrogram.types.RefundedPayment`, *optional*):
-            Message is a service message about a refunded payment, information about the payment. `More about payments »<https://core.telegram.org/bots/api#payments>`_
+            Message is a service message about a refunded payment, information about the payment. `More about payments <https://core.telegram.org/bots/api#payments>`_
 
         users_shared (:obj:`~pyrogram.types.UsersShared`, *optional*):
             Service message: users were shared with the bot
@@ -1266,7 +1264,6 @@ class Message(Object, Update):
 
             parsed_message.is_from_offline = getattr(message, "offline", None)
 
-            is_automatic_forward = None
             if (
                 forward_header and
                 forward_header.saved_from_peer and
@@ -2847,7 +2844,7 @@ class Message(Object, Update):
                 True, if the poll needs to be anonymous.
                 Defaults to True.
 
-            type (:obj`~pyrogram.enums.PollType`, *optional*):
+            type (:obj:`~pyrogram.enums.PollType`, *optional*):
                 Poll type, :obj:`~pyrogram.enums.PollType.QUIZ` or :obj:`~pyrogram.enums.PollType.REGULAR`.
                 Defaults to :obj:`~pyrogram.enums.PollType.REGULAR`.
 
