@@ -494,9 +494,6 @@ class Session:
         timeout: float = WAIT_TIMEOUT,
         sleep_threshold: float = SLEEP_THRESHOLD
     ):
-        if self.instant_stop:
-            return  # stop instantly
-
         if isinstance(query, Session.CUR_ALWD_INNR_QRYS):
             inner_query = query.query
         else:
@@ -505,15 +502,15 @@ class Session:
         query_name = ".".join(inner_query.QUALNAME.split(".")[1:])
 
         while retries > 0:
-            if self.instant_stop:
-                return  # stop instantly
-
             # sleep until the restart is performed
             if self.currently_restarting:
                 while self.currently_restarting:
                     if self.instant_stop:
                         return  # stop instantly
                     await asyncio.sleep(1)
+
+            if self.instant_stop:
+                return  # stop instantly
 
             if not self.is_started.is_set():
                 await self.is_started.wait()
