@@ -168,6 +168,7 @@ def pyrogram_api():
             recover_password
             accept_terms_of_service
             log_out
+            get_active_sessions
         """,
         bots="""
         Bots
@@ -435,6 +436,8 @@ def pyrogram_api():
     categories = dict(
         authorization="""
         Authorization
+            ActiveSession
+            ActiveSessions
             SentCode
             TermsOfService
         """,
