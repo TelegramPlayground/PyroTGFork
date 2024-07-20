@@ -77,6 +77,16 @@ In case Pyrogram does not know anything about a specific error yet, it raises a 
 for example, an unknown error with error code ``400``, will be raised as a ``BadRequest``. This way you can catch the
 whole category of errors and be sure to also handle these unknown errors.
 
+.. admonition :: RPC Errors
+    :class: tip
+    
+    There isn't any official list of all possible RPC errors, so the list of known errors is provided on a best-effort basis. When new methods are available, the list may be lacking since we simply don't know what errors can raise from them. Pyrogram creates an `unknown_errors.txt` file in the root directory from where the `Client` is run.
+
+.. admonition :: `... <https://t.me/pyrogramchat/607757>`__
+
+    If you want the file to be created in a different location, set the ``PYROGRAM_LOG_UNKNOWN_ERRORS_FILENAME`` to an absolute file path of your choice.
+
+
 Errors with Values
 ------------------
 

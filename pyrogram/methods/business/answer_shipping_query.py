@@ -30,7 +30,7 @@ class AnswerShippingQuery:
         shipping_options: List["types.ShippingOptions"] = None,
         error_message: str = None
     ):
-        """If you sent an invoice requesting a shipping address and the parameter is_flexible was specified, the API sends the confirmation in the form of an :obj:`~pyrogram.handlers.ShippingQueryHandler`.
+        """If you sent an invoice requesting a shipping address and the parameter ``is_flexible`` was specified, the API sends the confirmation in the form of an :obj:`~pyrogram.handlers.ShippingQueryHandler`.
         
         Use this method to reply to shipping queries.
 

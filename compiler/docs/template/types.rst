@@ -87,7 +87,7 @@ Input Media
     {input_media}
 
 Input Paid Media
------------
+-----------------
 
 .. autosummary::
     :nosignatures:
@@ -100,7 +100,7 @@ Input Paid Media
     {input_paid_media}
 
 Inline Mode
------------
+------------
 
 .. autosummary::
     :nosignatures:
@@ -139,7 +139,7 @@ Authorization
     {authorization}
 
 Chat Forum Topics
--------------
+------------------
 
 .. autosummary::
     :nosignatures:
@@ -152,7 +152,7 @@ Chat Forum Topics
     {chat_topics}
 
 Telegram Business
--------------
+------------------
 
 .. autosummary::
     :nosignatures:

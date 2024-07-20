@@ -40,10 +40,10 @@ path = "pyrogram/__init__.py"
 [tool.hatch.build.hooks.custom]
 
 [project.urls]
-Homepage = "https://telegramplayground.github.io/pyrogram/releases/"
+Homepage = "https://telegramplayground.github.io/pyrogram/"
 Tracker = "https://github.com/TelegramPlayGround/Pyrogram/issues"
 Source = "https://github.com/TelegramPlayGround/Pyrogram"
-Documentation = "https://telegramplayground.github.io/pyrogram/"
+Documentation = "https://telegramplayground.github.io/pyrogram/releases/changes-in-this-fork.html"
 
 [build-system]
 requires = ["hatchling"]

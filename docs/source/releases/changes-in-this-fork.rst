@@ -1,5 +1,5 @@
 Changes in this Fork
-=========
+=====================
 
 This page lists all the documented changes of this fork,
 in reverse chronological order. You should read this when upgrading
@@ -31,7 +31,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 - Added the method :meth:`~pyrogram.Client.send_paid_media` and the classes :obj:`~pyrogram.types.InputPaidMedia`, :obj:`~pyrogram.types.InputPaidMediaPhoto` and :obj:`~pyrogram.types.InputPaidMediaVideo`, to support sending paid media.
 - Added the field ``paid_media`` to the classes :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Added :meth:`~pyrogram.Client.get_stories`.
-- Added :obj:`~pyrogram.filters.thread` and :obj:`~pyrogram.filters.self_destruct`.
+- Added filters :obj:`~pyrogram.filters.thread` and :obj:`~pyrogram.filters.self_destruct`.
 - Added the field ``can_send_paid_media`` to the class :obj:`~pyrogram.types.Chat`.
 - Added support for launching Web Apps via ``t.me`` link in the class :obj:`~pyrogram.types.MenuButtonWebApp`.
 - `View new and changed raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=181&to=183>`__.
@@ -253,7 +253,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 - Bug fix for :meth:`~pyrogram.Client.send_audio` and :meth:`~pyrogram.Client.send_voice`. (Thanks to `... <https://t.me/c/1220993104/1360174>`_).
 - Add `waveform` parameter to :meth:`~pyrogram.Client.send_voice`.
 - Added `view_once` parameter to :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_video_note`, :meth:`~pyrogram.Client.send_voice`.
-- Add missing parameters to :obj:`~pyrogram.types.Message.reply_photo`, :obj:`~pyrogram.types.Message.reply_video`, :obj:`~pyrogram.types.Message.reply_video_note`, :obj:`~pyrogram.types.Message.reply_voice`.
+- Add missing parameters to :meth:`~pyrogram.types.Message.reply_photo`, :meth:`~pyrogram.types.Message.reply_video`, :meth:`~pyrogram.types.Message.reply_video_note`, :meth:`~pyrogram.types.Message.reply_voice`.
 
 +------------------------+
 | Scheme layer used: 170 |
@@ -276,7 +276,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 +------------------------+
 
 - Changed condition in :meth:`~pyrogram.Client.join_chat` and :meth:`~pyrogram.Client.get_chat`.
-- Added ``nosound_video`` parameter to :obj:`~pyrogram.types.InputMediaVideo`.
+- Added ``disable_content_type_detection`` parameter to :obj:`~pyrogram.types.InputMediaVideo`.
 - Added ``has_spoiler`` parameter to :meth:`~pyrogram.Client.copy_message`.
 - Improved :meth:`~pyrogram.Client.get_chat_history`: add ``min_id`` and ``max_id`` params.
 - `Prevent connection to dc every time in get_file <https://github.com/TelegramPlayGround/pyrogram/commit/f2581fd7ab84ada7685645a6f80475fbea5e743a>`_

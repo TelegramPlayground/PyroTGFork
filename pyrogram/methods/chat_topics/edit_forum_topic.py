@@ -49,7 +49,7 @@ class EditForumTopic:
                 New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept
 
             icon_custom_emoji_id (``str``, *optional*):
-                New unique identifier of the custom emoji shown as the topic icon. Use :meth:`~pyrogram.Client.getForumTopicIconStickers` to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept
+                New unique identifier of the custom emoji shown as the topic icon. Use :meth:`~pyrogram.Client.get_forum_topic_icon_stickers` to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept
 
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the edited message is returned.

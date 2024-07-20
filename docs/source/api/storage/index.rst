@@ -1,5 +1,5 @@
 Pyrogram Storage Engines
-===============
+=========================
 
 Storage Engines
 ===============
@@ -87,6 +87,36 @@ login using the same session; the storage used will still be in-memory:
 
 Session strings are useful when you want to run authorized Pyrogram clients on platforms where their ephemeral
 filesystems makes it harder for a file-based storage engine to properly work as intended.
+
+Custom Storages
+----------------
+
+If you want to use a custom storage engine, you can do so by implementing the :obj:`~pyrogram.storage.Storage` class. This class is an base class that defines the interface that all storage engines must implement.
+
+This class is a class that cannot be instantiated, but can be used to define a common interface for its subclasses. In this case, the :obj:`~pyrogram.storage.Storage` class defines the interface that all storage engines must implement.
+
+Custom Storage can be defined in :obj:`~pyrogram.Client` by passing ``storage_engine`` parameter with a :obj:`~pyrogram.storage.Storage` subclass. 
+
+How to use the ``AioSQLiteStorage`` Storage Engine is shown below
+^^^^^^^^^^^^^^
+
+``/path/to/your/file.session`` will be created if does not exist.
+
+.. code-block:: python
+    import asyncio
+    from pyrogram import Client
+    from pyrogram.storage.aio_sqlite_storage import AioSQLiteStorage
+    api_id = 12345
+    api_hash = "0123456789abcdef0123456789abcdef"
+    async def main():
+        async with Client(
+            "my_account",
+            api_id,
+            api_hash,
+            storage_engine=AioSQLiteStorage("/path/to/your/file.session")
+        ) as app:
+            await app.send_message(chat_id="me", text="Greetings from **Pyrogram**!")
+    asyncio.run(main())
 
 
 Details

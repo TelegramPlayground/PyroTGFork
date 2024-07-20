@@ -51,7 +51,7 @@ class CreateForumTopic:
                 Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)
 
             icon_custom_emoji_id (``str``, *optional*):
-                Unique identifier of the custom emoji shown as the topic icon. Use :meth:`~pyrogram.Client.getForumTopicIconStickers` to get all allowed custom emoji identifiers.
+                Unique identifier of the custom emoji shown as the topic icon. Use :meth:`~pyrogram.Client.get_forum_topic_icon_stickers` to get all allowed custom emoji identifiers.
 
             send_as (``int`` | ``str``, *optional*):
                 Unique identifier (int) or username (str) of the as chat.

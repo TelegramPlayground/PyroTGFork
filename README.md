@@ -1,3 +1,12 @@
+## [Fork Documentation](https://telegramplayground.github.io/pyrogram/)
+
+## Installing this Fork
+
+```bash
+pip install PyroTGFork
+```
+
+
 <p align="center">
     <a href="https://github.com/pyrogram/pyrogram">
         <img src="https://docs.pyrogram.org/_static/pyrogram.png" alt="Pyrogram" width="128">

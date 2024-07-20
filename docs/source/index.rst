@@ -1,4 +1,4 @@
-Welcome to Pyrogram
+Welcome to ``PyroTGFork``
 ===================
 
 .. admonition :: A Word of Warning
@@ -180,6 +180,8 @@ Meta
     :hidden:
     :caption: Telegram Raw API
 
+    TL Schema Explorer <https://telegramplayground.github.io/schema.tl/>
+    TL Diff <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html>
     telegram/functions/index
     telegram/types/index
     telegram/base/index
