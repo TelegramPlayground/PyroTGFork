@@ -33,6 +33,7 @@ SPOILER_DELIM = "||"
 CODE_DELIM = "`"
 PRE_DELIM = "```"
 BLOCKQUOTE_DELIM = ">"
+BLOCKQUOTE_EXPANDABLE_DELIM = "**>"
 
 MARKDOWN_RE = re.compile(r"({d})|(!?)\[(.+?)\]\((.+?)\)".format(
     d="|".join(
@@ -72,15 +73,27 @@ class Markdown:
             if line.startswith(BLOCKQUOTE_DELIM):
                 in_blockquote = True
                 current_blockquote.append(line[1:].strip())
+            elif line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+                in_blockquote = True
+                is_expandable_blockquote = True
+                current_blockquote.append(line[3:].strip())
             else:
                 if in_blockquote:
                     in_blockquote = False
-                    result.append(OPENING_TAG.format("blockquote") + '\n'.join(current_blockquote) + CLOSING_TAG.format("blockquote"))
+                    result.append(
+                        (f"<blockquote expandable>" if is_expandable_blockquote else OPENING_TAG.format("blockquote")) +
+                        '\n'.join(current_blockquote) +
+                        CLOSING_TAG.format("blockquote")
+                    )
                     current_blockquote = []
                 result.append(line)
 
         if in_blockquote:
-            result.append(OPENING_TAG.format("blockquote") + '\n'.join(current_blockquote) + CLOSING_TAG.format("blockquote"))
+            result.append(
+                (f"<blockquote expandable>" if is_expandable_blockquote else OPENING_TAG.format("blockquote")) +
+                '\n'.join(current_blockquote) +
+                CLOSING_TAG.format("blockquote")
+            )
 
         return '\n'.join(result)
 
