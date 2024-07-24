@@ -128,7 +128,7 @@ ChatJoinRequest
     {chat_join_request_toctree}
 
 Story
----------------
+------
 
 .. hlist::
     :columns: 2

@@ -135,89 +135,116 @@ def pyrogram_api():
     categories = dict(
         utilities="""
         Utilities
+            run
             start
             stop
             restart
-            run
+            export_session_string
             add_handler
             remove_handler
-            export_session_string
             stop_transmission
             set_parse_mode
         """,
-        advanced="""
-        Advanced
-            invoke
-            resolve_peer
-            save_file
-        """,
         authorization="""
         Authorization
-            connect
-            disconnect
             initialize
-            terminate
-            send_code
-            resend_code
+            sign_up
+            accept_terms_of_service
             sign_in
             sign_in_bot
-            sign_up
+            connect
+            send_code
+            resend_code
+            recover_password
+            send_recovery_code
             get_password_hint
             check_password
-            send_recovery_code
-            recover_password
-            accept_terms_of_service
             log_out
+            disconnect
+            terminate
+            get_me
             get_active_sessions
         """,
-        bots="""
-        Bots
-            get_inline_bot_results
-            send_inline_bot_result
-            answer_callback_query
-            answer_inline_query
-            request_callback_answer
-            send_game
-            set_game_score
-            get_game_high_scores
-            set_bot_commands
-            get_bot_commands
-            delete_bot_commands
-            set_bot_default_privileges
-            get_bot_default_privileges
-            set_chat_menu_button
-            get_chat_menu_button
-            answer_web_app_query
-            send_web_app_custom_request
-            set_bot_name
-            get_bot_name
-            set_bot_info_description
-            get_bot_info_description
-            set_bot_info_short_description
-            get_bot_info_short_description
+        messages="""
+        Messages
+            send_message
+            forward_messages
+            copy_message
+            send_photo
+            send_audio
+            send_document
+            send_video
+            send_animation
+            send_voice
+            send_video_note
+            send_cached_media
+            send_paid_media
+            send_media_group
+            get_media_group
+            copy_media_group
+            send_location
+            send_venue
+            send_contact
+            send_poll
+            send_dice
+            send_chat_action
+            set_reaction
+            download_media
+            stream_media
+            edit_message_text
+            edit_inline_text
+            edit_message_caption
+            edit_inline_caption
+            edit_message_media
+            edit_inline_media
+            edit_message_reply_markup
+            edit_inline_reply_markup
+            edit_cached_media
+            stop_poll
+            delete_messages
+            get_chat_sponsored_messages
+            get_chat_history
+            get_chat_history_count
+            read_chat_history
+            get_messages
+            view_messages
+            get_discussion_message
+            get_discussion_replies
+            get_discussion_replies_count
+            search_global
+            search_global_count
+            search_messages
+            search_messages_count
+            search_public_messages_by_tag
+            count_public_messages_by_tag
+            vote_poll
+            retract_vote
+            translate_text
+            translate_message_text
         """,
         chats="""
         Chats
-            join_chat
-            leave_chat
-            search_chats
             ban_chat_member
             unban_chat_member
             restrict_chat_member
             promote_chat_member
             set_administrator_title
+            set_chat_permissions
             set_chat_photo
             delete_chat_photo
             set_chat_title
             set_chat_description
-            set_chat_permissions
             pin_chat_message
             unpin_chat_message
             unpin_all_chat_messages
+            search_chats
+            join_chat
+            leave_chat
             get_chat
-            get_chat_member
             get_chat_members
             get_chat_members_count
+            get_chat_member
+            
             get_dialogs
             get_dialogs_count
             set_chat_username
@@ -242,136 +269,45 @@ def pyrogram_api():
             get_created_chats
             transfer_chat_ownership
         """,
-        chat_topics="""
-        Chat Forum Topics
-            close_forum_topic
-            create_forum_topic
-            delete_forum_topic
-            edit_forum_topic
-            get_forum_topic_icon_stickers
-            hide_forum_topic
-            reopen_forum_topic
-            unhide_forum_topic
-            get_forum_topics
-            get_forum_topic
-        """,
-        contacts="""
-        Contacts
-            add_contact
-            delete_contacts
-            import_contacts
-            get_contacts
-            get_contacts_count
-        """,
         invite_links="""
         Invite Links
-            get_chat_invite_link
             export_chat_invite_link
             create_chat_invite_link
             edit_chat_invite_link
             revoke_chat_invite_link
-            delete_chat_invite_link
-            get_chat_invite_link_joiners
-            get_chat_invite_link_joiners_count
             get_chat_admin_invite_links
             get_chat_admin_invite_links_count
             get_chat_admins_with_invite_links
-            get_chat_join_requests
+            get_chat_invite_link
+            get_chat_invite_link_joiners
+            get_chat_invite_link_joiners_count
+            delete_chat_invite_link
             delete_chat_admin_invite_links
+            get_chat_join_requests
             approve_chat_join_request
             approve_all_chat_join_requests
             decline_chat_join_request
-            decline_all_chat_join_requests
+            decline_all_chat_join_requests            
         """,
-        messages="""
-        Messages
-            copy_media_group
-            copy_message
-            delete_messages
-            download_media
-            edit_cached_media
-            edit_inline_caption
-            edit_inline_media
-            edit_inline_reply_markup
-            edit_inline_text
-            edit_message_caption
-            edit_message_media
-            edit_message_reply_markup
-            edit_message_text
-            forward_messages
-            get_chat_history
-            get_chat_history_count
-            get_custom_emoji_stickers
-            get_discussion_message
-            get_discussion_replies
-            get_discussion_replies_count
-            get_media_group
-            get_messages
-            read_chat_history
-            retract_vote
-            search_global
-            search_global_count
-            search_messages
-            search_messages_count
-            search_public_messages_by_tag
-            count_public_messages_by_tag
-            send_animation
-            send_audio
-            send_cached_media
-            send_chat_action
-            send_contact
-            send_dice
-            send_document
-            send_location
-            send_paid_media
-            send_media_group
-            send_message
-            send_photo
-            send_poll
-            send_sticker
-            send_venue
-            send_video
-            send_video_note
-            send_voice
-            set_reaction
-            stop_poll
-            stream_media
-            view_messages
-            vote_poll
-            get_chat_sponsored_messages
-            translate_text
-            translate_message_text
-        """,
-        password="""
-        Password
-            enable_cloud_password
-            change_cloud_password
-            remove_cloud_password
-        """,
-        phone="""
-        Phone
-            create_video_chat
-            discard_group_call
-            get_video_chat_rtmp_url
-            invite_group_call_participants
-            load_group_call_participants
-
-        """,
-        stickers="""
-        Stickers
-            get_message_effects
-            get_stickers
-        """,
-        stories="""
-        Stories
-            get_stories
+        chat_topics="""
+        Chat Forum Topics
+            get_forum_topic_icon_stickers
+            create_forum_topic
+            edit_forum_topic
+            close_forum_topic
+            reopen_forum_topic
+            delete_forum_topic
+            hide_forum_topic
+            unhide_forum_topic
+            get_forum_topics
+            get_forum_topic
         """,
         users="""
         Users
-            get_me
-            get_users
             get_chat_photos
             get_chat_photos_count
+            get_users
+            
             set_profile_photo
             delete_profile_photos
             set_username
@@ -386,16 +322,82 @@ def pyrogram_api():
             delete_account
             update_status
         """,
-        business="""
-        Telegram Business & Fragment
-            answer_pre_checkout_query
-            answer_shipping_query
+        contacts="""
+        Contacts
+            add_contact
+            delete_contacts
+            import_contacts
+            get_contacts
+            get_contacts_count
+        """,
+        password="""
+        Password
+            enable_cloud_password
+            change_cloud_password
+            remove_cloud_password
+        """,
+        bots="""
+        Bots
+            answer_callback_query
+            request_callback_answer
+            set_bot_commands
+            delete_bot_commands
+            get_bot_commands
+            set_bot_name
+            get_bot_name
+            set_bot_info_description
+            get_bot_info_description
+            set_bot_info_short_description
+            get_bot_info_short_description
+            set_chat_menu_button
+            get_chat_menu_button
+            set_bot_default_privileges
+            get_bot_default_privileges
+            send_game
+            set_game_score
+            get_game_high_scores
+            answer_inline_query
+            get_inline_bot_results
+            send_inline_bot_result
+            answer_web_app_query
+            send_web_app_custom_request
+        """,
+        phone="""
+        Phone
+            create_video_chat
+            discard_group_call
+            get_video_chat_rtmp_url
+            invite_group_call_participants
+            load_group_call_participants
+        """,
+        stickers="""
+        Stickers
+            send_sticker
+            get_custom_emoji_stickers
+            get_message_effects
+            get_stickers
+        """,
+        stories="""
+        Stories
+            get_stories
+        """,
+        payments="""
+        Payments
+            send_invoice
             create_invoice_link
+            answer_shipping_query
+            answer_pre_checkout_query
+            refund_star_payment
             get_business_connection
             get_collectible_item_info
-            refund_star_payment
-            send_invoice
-        """,   
+        """,
+        advanced="""
+        Advanced
+            invoke
+            resolve_peer
+            get_file
+            save_file
+        """
     )
 
     root = PYROGRAM_API_DEST + "/methods"
@@ -434,12 +436,106 @@ def pyrogram_api():
     # Types
 
     categories = dict(
-        authorization="""
-        Authorization
-            ActiveSession
-            ActiveSessions
-            SentCode
-            TermsOfService
+        users_chats="""
+        Users & Chats
+            Birthdate
+            User
+            Chat
+            Username
+            ChatShared
+            UsersShared
+            ChatAdminWithInviteLinks
+            ChatColor
+            ChatEvent
+            ChatEventFilter
+            ChatInviteLink
+            ChatJoiner
+            ChatJoinRequest
+            ChatMember
+            ChatMemberUpdated
+            ChatPermissions
+            ChatPhoto
+            ChatPrivileges
+            ChatReactions
+            VideoChatScheduled
+            VideoChatStarted
+            VideoChatEnded
+            VideoChatParticipantsInvited
+            Dialog
+            EmojiStatus
+            GroupCallParticipant
+            InviteLinkImporter
+            Restriction
+            RtmpUrl
+        """,
+        messages_media="""
+        Messages & Media
+            Message
+            MessageEntity
+            TextQuote
+            ExternalReplyInfo
+            ReplyParameters
+            MessageOrigin
+            MessageOriginUser
+            MessageOriginHiddenUser
+            MessageOriginChat
+            MessageOriginChannel
+            MessageImportInfo
+            Photo
+            Animation
+            Audio
+            Document
+            Story
+            Video
+            VideoNote
+            Voice
+            PaidMediaInfo
+            PaidMedia
+            PaidMediaPreview
+            PaidMediaPhoto
+            PaidMediaVideo
+            Contact
+            Dice
+            PollOption
+            InputPollOption
+            Poll
+            Location
+            Venue
+            WebAppData
+            MessageAutoDeleteTimerChanged
+            ChatBoostAdded
+            ChatBackground
+            Game
+            GiftCode
+            GiftedPremium
+            Giveaway
+            GiveawayCompleted
+            GiveawayWinners
+            MessageEffect
+            MessageReactionCountUpdated
+            MessageReactionUpdated
+            MessageReactions
+            Reaction
+            ReactionCount
+            ReactionType
+            ReactionTypeEmoji
+            ReactionTypeCustomEmoji
+            Thumbnail
+            TranslatedText
+            StrippedThumbnail
+            SponsoredMessage
+            Sticker
+            WebPage
+        """,
+        chat_topics="""
+        Chat Forum Topics
+            ForumTopic
+            ForumTopicCreated
+            ForumTopicClosed
+            ForumTopicEdited
+            ForumTopicReopened
+            GeneralForumTopicHidden
+            GeneralForumTopicUnhidden
         """,
         bot_commands="""
         Bot Commands
@@ -478,16 +574,6 @@ def pyrogram_api():
             SentWebAppMessage
             SwitchInlineQueryChosenChat
         """,
-        chat_topics="""
-        Chat Forum Topics
-            ForumTopic
-            ForumTopicClosed
-            ForumTopicCreated
-            ForumTopicEdited
-            ForumTopicReopened
-            GeneralForumTopicHidden
-            GeneralForumTopicUnhidden
-        """,
         inline_mode="""
         Inline Mode
             ChosenInlineResult
@@ -511,6 +597,13 @@ def pyrogram_api():
             InlineQueryResultLocation
             InlineQueryResultVenue
         """,
+        authorization="""
+        Authorization
+            ActiveSession
+            ActiveSessions
+            SentCode
+            TermsOfService
+        """,
         input_media="""
         Input Media
             InputMedia
@@ -527,125 +620,34 @@ def pyrogram_api():
             InputPaidMedia
             InputPaidMediaPhoto
             InputPaidMediaVideo
-            PaidMediaInfo
-            PaidMedia
-            PaidMediaPreview
-            PaidMediaPhoto
-            PaidMediaVideo
         """,
         input_message_content="""
         InputMessageContent
-            ExternalReplyInfo
             InputMessageContent
-            InputPollOption
             InputTextMessageContent
             InputLocationMessageContent
             InputVenueMessageContent
             InputContactMessageContent
             InputInvoiceMessageContent
-            ReplyParameters
-            TextQuote
         """,
-        messages_media="""
-        Messages & Media
-            Animation
-            Audio
-            ChatBoostAdded
-            Contact
-            Dice
-            Document
-            Game
-            GiftCode
-            GiftedPremium
-            Giveaway
-            GiveawayCompleted
-            GiveawayWinners
-            Location
-            Message
-            MessageAutoDeleteTimerChanged
-            MessageEffect
-            MessageEntity
-            MessageImportInfo
-            MessageOrigin
-            MessageOriginChannel
-            MessageOriginChat
-            MessageOriginHiddenUser
-            MessageOriginUser
-            MessageReactionCountUpdated
-            MessageReactionUpdated
-            MessageReactions
-            Photo
-            Reaction
-            ReactionCount
-            ReactionType
-            ReactionTypeEmoji
-            ReactionTypeCustomEmoji
-            Thumbnail
-            TranslatedText
-            StrippedThumbnail
-            Poll
-            PollOption
-            SponsoredMessage
-            Sticker
-            Story
-            Venue
-            Video
-            VideoNote
-            Voice
-            WebAppData
-            WebPage
-        """,
-        business="""
-        Telegram Business
+        payments="""
+        Payments
             BusinessConnection
             BusinessIntro
             BusinessLocation
             BusinessOpeningHours
             BusinessOpeningHoursInterval
             CollectibleItemInfo
-            Invoice
             LabeledPrice
-            OrderInfo
-            PreCheckoutQuery
+            Invoice
             ShippingAddress
+            OrderInfo
             ShippingOption
-            ShippingQuery
             SuccessfulPayment
             RefundedPayment
-        """,
-        users_chats="""
-        Users & Chats
-            Birthdate
-            Chat
-            ChatAdminWithInviteLinks
-            ChatColor
-            ChatEvent
-            ChatEventFilter
-            ChatInviteLink
-            ChatJoiner
-            ChatJoinRequest
-            ChatMember
-            ChatMemberUpdated
-            ChatPermissions
-            ChatPhoto
-            ChatPrivileges
-            ChatReactions
-            ChatShared
-            Dialog
-            EmojiStatus
-            GroupCallParticipant
-            InviteLinkImporter
-            Restriction
-            User
-            Username
-            UsersShared
-            VideoChatEnded
-            VideoChatParticipantsInvited
-            VideoChatScheduled
-            VideoChatStarted
-            RtmpUrl
-            ChatBackground
-        """,
+            ShippingQuery
+            PreCheckoutQuery
+        """
     )
 
     root = PYROGRAM_API_DEST + "/types"

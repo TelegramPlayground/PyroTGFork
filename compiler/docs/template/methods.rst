@@ -47,6 +47,19 @@ Utilities
 
 .. currentmodule:: pyrogram.Client
 
+Authorization
+-------------
+
+.. autosummary::
+    :nosignatures:
+
+    {authorization}
+
+.. toctree::
+    :hidden:
+
+    {authorization}
+
 Messages
 --------
 
@@ -73,6 +86,19 @@ Chats
 
     {chats}
 
+Invite Links
+------------
+
+.. autosummary::
+    :nosignatures:
+
+    {invite_links}
+
+.. toctree::
+    :hidden:
+
+    {invite_links}
+
 Chat Forum Topics
 -----
 
@@ -85,19 +111,6 @@ Chat Forum Topics
     :hidden:
 
     {chat_topics}
-
-Telegram Business
--------------
-
-.. autosummary::
-    :nosignatures:
-
-    {business}
-
-.. toctree::
-    :hidden:
-
-    {business}
 
 Users
 -----
@@ -112,19 +125,6 @@ Users
 
     {users}
 
-Invite Links
-------------
-
-.. autosummary::
-    :nosignatures:
-
-    {invite_links}
-
-.. toctree::
-    :hidden:
-
-    {invite_links}
-
 Contacts
 --------
 
@@ -137,6 +137,32 @@ Contacts
     :hidden:
 
     {contacts}
+
+Password
+--------
+
+.. autosummary::
+    :nosignatures:
+
+    {password}
+
+.. toctree::
+    :hidden:
+
+    {password}
+
+Bots
+----
+
+.. autosummary::
+    :nosignatures:
+
+    {bots}
+
+.. toctree::
+    :hidden:
+
+    {bots}
 
 Stickers
 --------
@@ -164,18 +190,18 @@ Stories
 
     {stories}
 
-Password
---------
+Payments
+---------
 
 .. autosummary::
     :nosignatures:
 
-    {password}
+    {payments}
 
 .. toctree::
     :hidden:
 
-    {password}
+    {payments}
 
 Phone
 --------
@@ -189,32 +215,6 @@ Phone
     :hidden:
 
     {phone}
-
-Bots
-----
-
-.. autosummary::
-    :nosignatures:
-
-    {bots}
-
-.. toctree::
-    :hidden:
-
-    {bots}
-
-Authorization
--------------
-
-.. autosummary::
-    :nosignatures:
-
-    {authorization}
-
-.. toctree::
-    :hidden:
-
-    {authorization}
 
 Advanced
 --------

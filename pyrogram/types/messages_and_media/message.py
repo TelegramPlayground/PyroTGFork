@@ -845,7 +845,7 @@ class Message(Object, Update):
                 message_auto_delete_timer_changed = types.MessageAutoDeleteTimerChanged(
                     message_auto_delete_time=action.period
                 )
-                service_type = enums.MessageServiceType.AUTO_DELETE_TIMER_CHANGED
+                service_type = enums.MessageServiceType.MESSAGE_AUTO_DELETE_TIMER_CHANGED
                 auto_setting_from = getattr(action, "auto_setting_from", None)
                 if auto_setting_from:
                     message_auto_delete_timer_changed.from_user = types.User._parse(
