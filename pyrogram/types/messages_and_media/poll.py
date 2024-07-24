@@ -20,8 +20,7 @@ from datetime import datetime
 from typing import List, Union, Optional
 
 import pyrogram
-from pyrogram import raw, enums, utils
-from pyrogram import types
+from pyrogram import enums, raw, types, utils
 from ..object import Object
 from ..update import Update
 from .message import Str
@@ -198,10 +197,12 @@ class Poll(Object, Update):
         if update.poll is not None:
             return Poll._parse(client, update)
 
+        # TODO: FIXME!
         results = update.results.results
         chosen_option_id = None
         correct_option_id = None
         options = []
+        question = ""
 
         for i, result in enumerate(results):
             if result.chosen:
@@ -222,7 +223,7 @@ class Poll(Object, Update):
 
         return Poll(
             id=str(update.poll_id),
-            question="",
+            question=question,
             options=options,
             total_voter_count=update.results.total_voters,
             is_closed=False,
