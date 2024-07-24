@@ -121,7 +121,7 @@ class Session:
     async def start(self):
         while True:
             if self.instant_stop:
-                log.info("session init stopped")
+                log.info("session init force stopped (loop)")
                 return  # stop instantly
 
             self.connection = self.client.connection_factory(
@@ -406,12 +406,11 @@ class Session:
                 if packet:
                     error_code = -Int.read(BytesIO(packet))
 
-                    if error_code == 404:
-                        raise Unauthorized(
-                            "Auth key not found in the system. You must delete your session file "
-                            "and log in again with your phone number or bot token."
-                        )
-
+                    # if error_code == 404:
+                    #     raise Unauthorized(
+                    #         "Auth key not found in the system. You must delete your session file "
+                    #         "and log in again with your phone number or bot token."
+                    #     )
                     log.warning(
                         "[%s] Server sent transport error: %s (%s)",
                         self.client.name,
