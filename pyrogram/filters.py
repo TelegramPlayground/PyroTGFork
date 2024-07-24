@@ -695,12 +695,36 @@ mentioned: Filter = create(mentioned_filter)
 
 
 # region via_bot_filter
-async def via_bot_filter(_, __, m: Message) -> bool:
-    return bool(m.via_bot)
+def via_bot_filter(flt, *args):
+    # https://t.me/c/1220993104/1379819
+    if isinstance(args[0], pyrogram.Client):
+        _, m, *__ = args
+        return bool(m.via_bot) and (
+            len(flt) == 0
+            or (
+                m.via_bot.id in flt or (
+                    m.via_bot.username and m.via_bot.username.lower() in flt
+                )
+            )
+        )
+    bots = args[0] if isinstance(args[0], list) else [args[0]]
+    flt = type(flt)(u.lower().lstrip("@") if isinstance(u, str) else u for u in bots)
+    return flt
 
+via_bot: Filter = type(
+    via_bot_filter.__name__,
+    (Filter, set),
+    dict(__call__=via_bot_filter),
+)()
+"""Filter messages sent via inline bots
 
-via_bot: Filter = create(via_bot_filter)
-"""Filter messages sent via inline bots"""
+    Parameters:
+        user_ids (``int`` | ``str`` | Iterable of ``int`` | Iterable of ``str``, *optional*):
+            Unique identifier (int) or username (str) of the target chat.
+            For your personal cloud (Saved Messages) you can simply use "me" or "self".
+            For a contact that exists in your Telegram address book you can use his phone number (str).
+            Defaults to None (all bots).
+"""
 
 
 # endregion

@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 184 |
 +------------------------+
 
+- Updated :obj:`~pyrogram.filters.via_bot`, to optionally support filtering invalid bot ``user_id``.
 - Added the :meth:`~pyrogram.Client.get_active_sessions`.
 - Added the ``is_automatic_forward`` to the :obj:`~pyrogram.types.Message`.
 - Added the parameters ``offset_id`` to the :meth:`~pyrogram.Client.search_messages` and the parameters ``min_date``, ``max_date``, ``min_id``, ``max_id``, ``saved_messages_topic_id`` to the :meth:`~pyrogram.Client.search_messages_count`.
