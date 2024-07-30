@@ -144,7 +144,7 @@ class SendInvoice:
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.

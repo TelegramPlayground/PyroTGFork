@@ -63,7 +63,7 @@ class ForwardMessages:
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             drop_author (``bool``, *optional*):
                 Whether to forward messages without quoting the original author.

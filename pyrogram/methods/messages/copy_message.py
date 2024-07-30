@@ -106,7 +106,7 @@ class CopyMessage:
                 Unique identifier of the business connection on behalf of which the message will be sent
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum; for forum supergroups only

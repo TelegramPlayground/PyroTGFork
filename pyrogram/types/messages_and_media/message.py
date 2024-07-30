@@ -1434,7 +1434,7 @@ class Message(Object, Update):
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -1595,7 +1595,7 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             ttl_seconds (``int``, *optional*):
                 Self-Destruct Timer.
@@ -1770,7 +1770,7 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2078,7 +2078,7 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2209,7 +2209,7 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2328,7 +2328,7 @@ class Message(Object, Update):
                 Description of the message to reply to
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown automatically.
@@ -2495,7 +2495,7 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2583,7 +2583,7 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
         Returns:
             On success, a :obj:`~pyrogram.types.Messages` object is returned containing all the
@@ -2702,7 +2702,7 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             view_once (``bool``, *optional*):
                 Pass True if the photo should be viewable only once.
@@ -2883,7 +2883,7 @@ class Message(Object, Update):
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -2989,7 +2989,7 @@ class Message(Object, Update):
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3133,7 +3133,7 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3278,7 +3278,7 @@ class Message(Object, Update):
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3444,7 +3444,7 @@ class Message(Object, Update):
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3611,7 +3611,7 @@ class Message(Object, Update):
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3816,7 +3816,7 @@ class Message(Object, Update):
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -4194,7 +4194,7 @@ class Message(Object, Update):
                 Users will receive a notification with no sound.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             drop_author (``bool``, *optional*):
                 Whether to forward messages without quoting the original author.
@@ -4302,7 +4302,7 @@ class Message(Object, Update):
                 Unique identifier of the business connection on behalf of which the message will be sent
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum; for forum supergroups only

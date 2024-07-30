@@ -115,7 +115,7 @@ class SendPhoto:
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             view_once (``bool``, *optional*):
                 Pass True if the photo should be viewable only once.

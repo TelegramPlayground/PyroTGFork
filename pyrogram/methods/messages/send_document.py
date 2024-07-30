@@ -123,7 +123,7 @@ class SendDocument:
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,

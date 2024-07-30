@@ -141,7 +141,7 @@ class SendAnimation:
                 Date when the message will be automatically sent.
 
             protect_content (``bool``, *optional*):
-                Protects the contents of the sent message from forwarding and saving.
+                Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             ttl_seconds (``int``, *optional*):
                 Self-Destruct Timer.
