@@ -31,20 +31,19 @@ commit_id = subprocess.check_output([
     "HEAD",
 ]).decode("UTF-8").strip()
 
-version = __version__
-
 project = "pyrotgfork"
 copyright = "2017-present, Dan"
 author = "Dan"
+version = __version__
 
 extensions = [
     "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",
+    # "sphinx.ext.viewcode",
     "sphinx_copybutton",
-    "sphinx.ext.coverage",
+    # "sphinx.ext.coverage",
 ]
 
 intersphinx_mapping = {
@@ -79,7 +78,8 @@ html_css_files = [
     "css/all.min.css",
     "css/custom.css",
 ]
-
+html_show_sourcelink = True
+html_show_copyright = False
 html_logo = html_static_path[0] + "/img/pyrogram.png"
 html_favicon = html_static_path[0] + "/img/favicon.ico"
 html_theme_options = {
