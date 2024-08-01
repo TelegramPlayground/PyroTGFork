@@ -89,7 +89,7 @@ InlineQuery
     {inline_query_toctree}
 
 PreCheckoutQuery
------------
+-----------------
 
 .. hlist::
     :columns: 2
@@ -102,7 +102,7 @@ PreCheckoutQuery
     {pre_checkout_query_toctree}
 
 ShippingQuery
------------
+--------------
 
 .. hlist::
     :columns: 2

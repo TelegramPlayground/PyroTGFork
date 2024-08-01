@@ -1,5 +1,5 @@
 Welcome to ``PyroTGFork``
-===================
+==========================
 
 .. admonition :: A Word of Warning
     :class: tip

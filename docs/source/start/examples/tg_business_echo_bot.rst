@@ -1,5 +1,5 @@
 business_echo_bot
-========
+==================
 
 This simple echo bot replies to every private business message.
 

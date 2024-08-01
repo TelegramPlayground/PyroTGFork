@@ -100,7 +100,7 @@ Invite Links
     {invite_links}
 
 Chat Forum Topics
------
+------------------
 
 .. autosummary::
     :nosignatures:
@@ -204,7 +204,7 @@ Payments
     {payments}
 
 Phone
---------
+------
 
 .. autosummary::
     :nosignatures:

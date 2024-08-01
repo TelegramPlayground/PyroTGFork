@@ -390,6 +390,9 @@ class Message(Object, Update):
         gifted_premium (:obj:`~pyrogram.types.GiftedPremium`, *optional*):
             Info about a gifted Telegram Premium subscription
 
+        gifted_stars (:obj:`~pyrogram.types.GiftedStars`, *optional*):
+            Info about gifted Telegram Stars
+
         link (``str``, *property*):
             Generate a link to this message, only for groups and channels.
 
@@ -495,6 +498,7 @@ class Message(Object, Update):
 
         gift_code: "types.GiftCode" = None,
         gifted_premium: "types.GiftedPremium" = None,
+        gifted_stars: "types.GiftedStars" = None,
         empty: bool = None,
         mentioned: bool = None,
         service: "enums.MessageServiceType" = None,
@@ -601,6 +605,7 @@ class Message(Object, Update):
         self.giveaway_winners = giveaway_winners
         self.gift_code = gift_code
         self.gifted_premium = gifted_premium
+        self.gifted_stars = gifted_stars
         self.forum_topic_created = forum_topic_created
         self.forum_topic_edited = forum_topic_edited
         self.forum_topic_closed = forum_topic_closed
@@ -679,6 +684,7 @@ class Message(Object, Update):
             web_app_data = None
             gift_code = None
             gifted_premium = None
+            gifted_stars = None
             giveaway_created = None
             users_shared = None
             chat_shared = None
@@ -760,6 +766,9 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionGiftPremium):
                 gifted_premium = await types.GiftedPremium._parse(client, action, from_user.id)
                 service_type = enums.MessageServiceType.GIFTED_PREMIUM
+            elif isinstance(action, raw.types.MessageActionGiftStars):
+                gifted_stars = await types.GiftedStars._parse(client, action, from_user.id, chat.id)
+                service_type = enums.MessageServiceType.GIFTED_STARS
 
             elif (
                 isinstance(action, raw.types.MessageActionRequestedPeer) or
@@ -946,6 +955,7 @@ class Message(Object, Update):
                 giveaway_completed=giveaway_completed,
                 gift_code=gift_code,
                 gifted_premium=gifted_premium,
+                gifted_stars=gifted_stars,
                 users_shared=users_shared,
                 chat_shared=chat_shared,
                 successful_payment=successful_payment,

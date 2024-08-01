@@ -11,6 +11,16 @@ it can take advantage of new goodies!
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
 +------------------------+
+| Scheme layer used: 185 |
++------------------------+
+
+- Added ``gifted_stars`` service message to the class :obj:`~pyrogram.types.Message`.
+- Added the fields ``have_access``, ``has_main_web_app``, ``active_user_count`` to the class :obj:`~pyrogram.types.User`, which is returned in response to  :meth:`~pyrogram.Client.get_me`.
+- Added the parameter ``business_connection_id`` to the methods :meth:`~pyrogram.Client.pin_chat_message` and :meth:`~pyrogram.Client.unpin_chat_message`, allowing bots to manage pinned messages on behalf of a business account.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=184&to=185>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=184&to=185>`__.
+
+
++------------------------+
 | Scheme layer used: 184 |
 +------------------------+
 
@@ -199,7 +209,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 - Add ``link`` parameter in :meth:`~pyrogram.Client.get_messages`
 - `fix(filters): add type hints in filters.py <https://github.com/TelegramPlayGround/pyrogram/pull/8>`_
 - Documentation Builder Fixes
-- `faster-pyrogram <https://github.com/cavallium/faster-pyrogram>`_ is not polished or documented for anyone else's use. We don't have the capacity to support `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`_ as an independent open-source project, nor any desire for it to become an alternative to Pyrogram. Our goal in making this code available is a unified faster Pyrogram. `... <https://github.com/cavallium/faster-pyrogram/blob/b781909/README.md#L28>`_
+- `faster-pyrogram <https://github.com/cavallium/faster-pyrogram>`__ is not polished or documented for anyone else's use. We don't have the capacity to support `faster-pyrogram <https://github.com/TelegramPlayGround/pyrogram/pull/6>`__ as an independent open-source project, nor any desire for it to become an alternative to Pyrogram. Our goal in making this code available is a unified faster Pyrogram. `... <https://github.com/cavallium/faster-pyrogram/blob/b781909/README.md#L28>`__
 
 +-----------------------------+
 |   Leaked Scheme Layers (2)  |

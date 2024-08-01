@@ -180,6 +180,15 @@ class User(Object, Update):
         profile_color (:obj:`~pyrogram.types.ChatColor`, *optional*):
             Chat profile color.
         
+        have_access (``bool``, *optional*):
+            If False, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method.
+
+        has_main_web_app (``bool``, *optional*):
+            True, if the bot has a main Web App. Returned only in get_me.
+
+        active_user_count (``int``, *optional*):
+            The number of recently active users of the bot.
+
         mention (``str``, *property*):
             Generate a text mention for this user.
             You can use ``user.mention()`` to mention the user using their first name (styled using html), or
@@ -233,6 +242,9 @@ class User(Object, Update):
         is_close_friend: bool = None,
         accent_color: "types.ChatColor" = None,
         profile_color: "types.ChatColor" = None,
+        have_access: bool = None,
+        has_main_web_app: bool = None,
+        active_user_count: int = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -275,6 +287,9 @@ class User(Object, Update):
         self.is_close_friend = is_close_friend
         self.accent_color = accent_color
         self.profile_color = profile_color
+        self.have_access = have_access
+        self.has_main_web_app = has_main_web_app
+        self.active_user_count = active_user_count
         self._raw = _raw
 
     @property
@@ -351,6 +366,7 @@ class User(Object, Update):
             is_close_friend=getattr(user, "close_friend", None),
             accent_color=types.ChatColor._parse(getattr(user, "color", None)),
             profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
+            have_access=not bool(getattr(user, "min", False)),  # apply_min_photo
             _raw=user
         )
         if parsed_user.is_bot:
@@ -368,6 +384,8 @@ class User(Object, Update):
             parsed_user.can_connect_to_business = bool(
                 getattr(user, "bot_business", None)
             )
+            parsed_user.has_main_web_app = bool(getattr(user, "bot_has_main_app", None))
+            parsed_user.active_user_count = getattr(user, "bot_active_users", None)
         if parsed_user.is_bot:
             parsed_user.can_be_edited = bool(
                 getattr(user, "bot_can_edit", None)

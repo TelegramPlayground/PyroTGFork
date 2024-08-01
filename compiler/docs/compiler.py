@@ -508,6 +508,7 @@ def pyrogram_api():
             Game
             GiftCode
             GiftedPremium
+            GiftedStars
             Giveaway
             GiveawayCompleted
             GiveawayWinners

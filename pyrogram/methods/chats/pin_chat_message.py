@@ -21,6 +21,8 @@ from typing import Union
 import pyrogram
 from pyrogram import raw, types
 
+from ..messages.inline_session import get_session
+
 
 class PinChatMessage:
     async def pin_chat_message(
@@ -29,6 +31,7 @@ class PinChatMessage:
         message_id: int,
         disable_notification: bool = False,
         both_sides: bool = False,
+        business_connection_id: str = None,
     ) -> "types.Message":
         """Pin a message in a group, channel or your own chat.
         You must be an administrator in the chat for this to work and must have the "can_pin_messages" admin right in
@@ -51,6 +54,9 @@ class PinChatMessage:
                 Pass True to pin the message for both sides (you and recipient).
                 Applicable to private chats only. Defaults to False.
 
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be pinned.
+
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the service message is returned.
 
@@ -63,25 +69,65 @@ class PinChatMessage:
                 # Pin without notification
                 await app.pin_chat_message(chat_id, message_id, disable_notification=True)
         """
-        r = await self.invoke(
-            raw.functions.messages.UpdatePinnedMessage(
-                peer=await self.resolve_peer(chat_id),
-                id=message_id,
-                silent=disable_notification or None,
-                pm_oneside=not both_sides or None
-            )
+        rpc = raw.functions.messages.UpdatePinnedMessage(
+            peer=await self.resolve_peer(chat_id),
+            id=message_id,
+            silent=disable_notification or None,
+            pm_oneside=not both_sides or None
         )
+
+        session = None
+        business_connection = None
+        if business_connection_id:
+            business_connection = self.business_user_connection_cache[business_connection_id]
+            if not business_connection:
+                business_connection = await self.get_business_connection(business_connection_id)
+            session = await get_session(
+                self,
+                business_connection._raw.connection.dc_id
+            )
+
+        if business_connection_id:
+            r = await session.invoke(
+                raw.functions.InvokeWithBusinessConnection(
+                    query=rpc,
+                    connection_id=business_connection_id
+                )
+            )
+            # await session.stop()
+        else:
+            r = await self.invoke(rpc)
 
         users = {u.id: u for u in r.users}
         chats = {c.id: c for c in r.chats}
 
         for i in r.updates:
-            if isinstance(i, (raw.types.UpdateNewMessage,
-                              raw.types.UpdateNewChannelMessage)):
+            if isinstance(
+                i,
+                (
+                    raw.types.UpdateNewMessage,
+                    raw.types.UpdateNewChannelMessage
+                )
+            ):
                 return await types.Message._parse(
                     self,
                     i.message,
                     users,
                     chats,
                     replies=self.fetch_replies
+                )
+            elif isinstance(
+                i,
+                (
+                    raw.types.UpdateBotNewBusinessMessage
+                )
+            ):
+                return await types.Message._parse(
+                    self,
+                    i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    business_connection_id=getattr(i, "connection_id", business_connection_id),
+                    raw_reply_to_message=i.reply_to_message,
+                    replies=0
                 )

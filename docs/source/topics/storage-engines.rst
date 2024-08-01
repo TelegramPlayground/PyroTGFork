@@ -95,7 +95,7 @@ This class is a class that cannot be instantiated, but can be used to define a c
 Custom Storage can be defined in :obj:`~pyrogram.Client` by passing ``storage_engine`` parameter with a :obj:`~pyrogram.storage.Storage` subclass.
 
 Example of File Storage (using ``aiosqlite==0.20.0``)
-^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 How to use this Storage Engine is shown below.
 
@@ -115,7 +115,7 @@ This storage is almost completely identical to the default File Storage, but ins
         await app.send_message(chat_id="me", text="Greetings from **Pyrogram**!")
 
 Example of Telethon Storage
-^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you want to use sessions from telethon in pyrogram (originally incompatible), you can use this `storage <https://gist.github.com/KurimuzonAkuma/3991606c259facef95d0c8afb676bd85>`_.
 

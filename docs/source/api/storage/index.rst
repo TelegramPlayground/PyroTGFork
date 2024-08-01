@@ -98,11 +98,12 @@ This class is a class that cannot be instantiated, but can be used to define a c
 Custom Storage can be defined in :obj:`~pyrogram.Client` by passing ``storage_engine`` parameter with a :obj:`~pyrogram.storage.Storage` subclass. 
 
 How to use the ``AioSQLiteStorage`` Storage Engine is shown below
-^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``/path/to/your/file.session`` will be created if does not exist.
 
 .. code-block:: python
+
     import asyncio
     from pyrogram import Client
     from pyrogram.storage.aio_sqlite_storage import AioSQLiteStorage

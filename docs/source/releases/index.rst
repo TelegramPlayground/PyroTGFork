@@ -1,6 +1,6 @@
-=========
+==============
 Release Notes
-=========
+==============
 
 Release notes for Pyrogram releases will describe what's new in each version, and will also make you aware of any backwards-incompatible changes made in that version.
 
