@@ -181,6 +181,9 @@ class Chat(Object):
         is_public (``bool``, *optional*):
             True, if this chat is public.
 
+        is_banned (``bool``, *optional*):
+            True, if you are banned in this chat.
+
         dc_id (``int``, *optional*):
             The chat assigned DC (data center). Available only in case the chat has a photo.
             Note that this information is approximate; it is based on where Telegram stores the current chat photo.
@@ -209,6 +212,12 @@ class Chat(Object):
         is_peak_preview (``bool``, *optional*):
             True, if this is a peak preview.
 
+        banned_until_date (:py:obj:`~datetime.datetime`, *optional*):
+            Date when the current user will be unbanned.
+
+        pending_join_request_count (``int``, *optional*):
+            Number of pending join requests in the current chat.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
 
@@ -227,6 +236,8 @@ class Chat(Object):
         is_fake: bool = None,
         is_support: bool = None,
         is_public: bool = None,
+        is_banned: bool = None,
+        banned_until_date: datetime = None,
         title: str = None,
         username: str = None,
         first_name: str = None,
@@ -272,6 +283,7 @@ class Chat(Object):
         is_peak_preview: bool = None,
         max_reaction_count: int = None,
         can_send_paid_media: bool = None,
+        pending_join_request_count: int = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -326,6 +338,8 @@ class Chat(Object):
         self.is_forum = is_forum
         self.unrestrict_boost_count = unrestrict_boost_count
         self.is_public = is_public
+        self.is_banned = is_banned
+        self.banned_until_date = banned_until_date
         self.join_by_request = join_by_request
         self.is_peak_preview = is_peak_preview
         self.personal_chat = personal_chat
@@ -337,6 +351,7 @@ class Chat(Object):
         self.active_usernames = active_usernames
         self.max_reaction_count = max_reaction_count
         self.can_send_paid_media = can_send_paid_media
+        self.pending_join_request_count = pending_join_request_count
         self._raw = _raw
 
     @staticmethod
@@ -403,6 +418,7 @@ class Chat(Object):
                 type=enums.ChatType.GROUP,
                 title=chat.title,
                 client=client,
+                is_banned=True,
                 _raw=chat
             )
 
@@ -430,6 +446,8 @@ class Chat(Object):
                 type=enums.ChatType.SUPERGROUP if channel.megagroup else enums.ChatType.CHANNEL,
                 title=channel.title,
                 client=client,
+                is_banned=True,
+                banned_until_date=utils.timestamp_to_datetime(getattr(channel, "until_date", None)),
                 _raw=channel
             )
 
@@ -645,6 +663,7 @@ class Chat(Object):
                 reactions_limit=getattr(full_chat, "reactions_limit", None)
             )
             parsed_chat.max_reaction_count = getattr(full_chat, "reactions_limit", 11)
+            parsed_chat.pending_join_request_count = getattr(full_chat, "requests_pending", None)
 
             if getattr(full_chat, "wallpaper", None):
                 parsed_chat.background = types.ChatBackground._parse(client, full_chat.wallpaper)
