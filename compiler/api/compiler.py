@@ -64,11 +64,15 @@ try:
     with open("docs.json") as f:
         docs = json.load(f)
 except FileNotFoundError:
-    docs = {
-        "type": {},
-        "constructor": {},
-        "method": {}
-    }
+    try:
+        with open(HOME_PATH / "docs.json") as f:
+            docs = json.load(f)
+    except FileNotFoundError:
+        docs = {
+            "type": {},
+            "constructor": {},
+            "method": {}
+        }
 
 
 class Combinator(NamedTuple):

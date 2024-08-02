@@ -28,8 +28,7 @@ jobs:
             .github Pyrogram* pyrogram* tests \
             .gitignore COPYING* MANIFEST* Makefile NOTICE \
             README.md pyproject.toml hatch_build.py setup.py \
-            venv __pycache__ \
-            compiler/errors compiler/docs compiler/api/template
+            venv __pycache__ compiler
           mv docs/build/html/* .
           rm -rf docs 
           touch .nojekyll
