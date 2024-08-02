@@ -164,6 +164,7 @@ def pyrogram_api():
             terminate
             get_me
             get_active_sessions
+            terminate_session
         """,
         messages="""
         Messages
@@ -777,6 +778,10 @@ def pyrogram_api():
         Story
             Story.react
             Story.download
+        """,
+        active_session="""
+        ActiveSession
+            ActiveSession.terminate
         """,
     )
 

@@ -148,3 +148,28 @@ class ActiveSession(Object):
             can_accept_calls=not getattr(session, "call_requests_disabled", False),
             is_official_application=getattr(session, "official_app", None)
         )
+
+    async def terminate(self):
+        """Bound method *reset* of :obj:`~pyrogram.types.ActiveSession`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.terminate_session(123456789)
+
+        Example:
+
+        .. code-block:: python
+
+            await session.reset()
+
+        Returns:
+            True on success.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
+        """
+
+        return await self._client.terminate_session(self.id)
