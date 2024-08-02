@@ -25,7 +25,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 +------------------------+
 
 - Updated :obj:`~pyrogram.filters.via_bot`, to optionally support filtering invalid bot ``user_id``.
-- Added the :meth:`~pyrogram.Client.get_active_sessions`, :meth:`~pyrogram.Client.terminate_session`, :meth:`~pyrogram.types.ActiveSession.terminate`.
+- Added the :meth:`~pyrogram.Client.get_active_sessions`, :meth:`~pyrogram.Client.terminate_session`, :meth:`~pyrogram.types.ActiveSession.terminate`, and :meth:`~pyrogram.Client.terminate_all_other_sessions`.
 - Added the ``is_automatic_forward`` to the :obj:`~pyrogram.types.Message`.
 - Added the parameters ``offset_id`` to the :meth:`~pyrogram.Client.search_messages` and the parameters ``min_date``, ``max_date``, ``min_id``, ``max_id``, ``saved_messages_topic_id`` to the :meth:`~pyrogram.Client.search_messages_count`.
 - Dynamic session ReStart + restart optimizations (`#56 <https://github.com/TelegramPlayGround/pyrogram/pull/56>`__)

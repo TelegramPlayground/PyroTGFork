@@ -165,6 +165,7 @@ def pyrogram_api():
             get_me
             get_active_sessions
             terminate_session
+            terminate_all_other_sessions
         """,
         messages="""
         Messages

@@ -32,6 +32,7 @@ from .sign_in import SignIn
 from .sign_in_bot import SignInBot
 from .sign_up import SignUp
 from .terminate import Terminate
+from .terminate_all_other_sessions import TerminateAllOtherSessions
 from .terminate_session import TerminateSession
 
 
@@ -52,6 +53,7 @@ class Auth(
     SignInBot,
     SignUp,
     Terminate,
+    TerminateAllOtherSessions,
     TerminateSession,
 ):
     pass
