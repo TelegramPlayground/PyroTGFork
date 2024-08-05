@@ -75,7 +75,7 @@ __all__ = [
     "GiveawayCompleted",
     "GiveawayWinners",
     "Location",
-    "Message",
+    "Message",  # TODO
     "MessageAutoDeleteTimerChanged",
     "MessageEffect",
     "MessageEntity",

@@ -21,7 +21,7 @@ from datetime import datetime
 from typing import Union, List
 
 import pyrogram
-from pyrogram import types, utils, raw
+from pyrogram import enums, raw, types, utils
 
 log = logging.getLogger(__name__)
 
@@ -124,17 +124,23 @@ class CopyMediaGroup:
                 raise ValueError("Message with this type can't be copied.")
 
             media = utils.get_input_media_from_file_id(file_id=file_id)
+
+            sent_message, sent_entities = None, None
+            if isinstance(captions, list) and i < len(captions) and isinstance(captions[i], str):
+                sent_message, sent_entities = (await utils.parse_text_entities(self, captions[i], self.parse_mode, None)).values()
+            elif isinstance(captions, str) and i == 0:
+                sent_message, sent_entities = (await utils.parse_text_entities(self, captions, self.parse_mode, None)).values()
+            elif message.caption and message.caption != "None" and not type(captions) is str:  # TODO
+                sent_message, sent_entities = (await utils.parse_text_entities(self, message.caption, None, message.caption_entities)).values()
+            else:
+                sent_message, sent_entities = "", None
+
             multi_media.append(
                 raw.types.InputSingleMedia(
                     media=media,
                     random_id=self.rnd_id(),
-                    # TODO
-                    **await self.parser.parse(
-                        captions[i] if isinstance(captions, list) and i < len(captions) and isinstance(captions[i], str) else
-                        captions if isinstance(captions, str) and i == 0 else
-                        message.caption if message.caption and message.caption != "None" and not type(
-                            captions) is str else ""
-                    )
+                    message=sent_message,
+                    entities=sent_entities
                 )
             )
             show_caption_above_media.append(message.show_caption_above_media)
