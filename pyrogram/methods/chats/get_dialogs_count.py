@@ -23,7 +23,8 @@ from pyrogram import raw
 class GetDialogsCount:
     async def get_dialogs_count(
         self: "pyrogram.Client",
-        pinned_only: bool = False
+        pinned_only: bool = False,
+        chat_list: int = 0
     ) -> int:
         """Get the total count of your dialogs.
 
@@ -33,6 +34,9 @@ class GetDialogsCount:
             pinned_only (``bool``, *optional*):
                 Pass True if you want to count only pinned dialogs.
                 Defaults to False.
+            
+            chat_list (``int``, *optional*):
+                Chat list in which to search messages; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
 
         Returns:
             ``int``: On success, the dialogs count is returned.
@@ -45,7 +49,7 @@ class GetDialogsCount:
         """
 
         if pinned_only:
-            return len((await self.invoke(raw.functions.messages.GetPinnedDialogs(folder_id=0))).dialogs)
+            return len((await self.invoke(raw.functions.messages.GetPinnedDialogs(folder_id=chat_list))).dialogs)
         else:
             r = await self.invoke(
                 raw.functions.messages.GetDialogs(
@@ -53,7 +57,8 @@ class GetDialogsCount:
                     offset_id=0,
                     offset_peer=raw.types.InputPeerEmpty(),
                     limit=1,
-                    hash=0
+                    hash=0,
+                    folder_id=chat_list
                 )
             )
 

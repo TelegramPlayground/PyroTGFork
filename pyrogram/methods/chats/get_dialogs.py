@@ -25,7 +25,8 @@ from pyrogram import types, raw, utils
 class GetDialogs:
     async def get_dialogs(
         self: "pyrogram.Client",
-        limit: int = 0
+        limit: int = 0,
+        chat_list: int = 0
     ) -> Optional[AsyncGenerator["types.Dialog", None]]:
         """Get a user's dialogs sequentially.
 
@@ -35,6 +36,9 @@ class GetDialogs:
             limit (``int``, *optional*):
                 Limits the number of dialogs to be retrieved.
                 By default, no limit is applied and all dialogs are returned.
+            
+            chat_list (``int``, *optional*):
+                Chat list in which to search messages; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
 
         Returns:
             ``Generator``: A generator yielding :obj:`~pyrogram.types.Dialog` objects.
@@ -61,7 +65,8 @@ class GetDialogs:
                     offset_id=offset_id,
                     offset_peer=offset_peer,
                     limit=limit,
-                    hash=0
+                    hash=0,
+                    folder_id=chat_list
                 ),
                 sleep_threshold=60
             )

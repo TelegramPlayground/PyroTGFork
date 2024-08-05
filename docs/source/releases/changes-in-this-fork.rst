@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 185 |
 +------------------------+
 
+- Added the parameter ``chat_list`` to the methods :meth:`~pyrogram.Client.get_dialogs` and :meth:`~pyrogram.Client.get_dialogs_count`.
 - Added ``gifted_stars`` service message to the class :obj:`~pyrogram.types.Message`.
 - Added the fields ``have_access``, ``has_main_web_app``, ``active_user_count`` to the class :obj:`~pyrogram.types.User`, which is returned in response to  :meth:`~pyrogram.Client.get_me`.
 - Added the parameter ``business_connection_id`` to the methods :meth:`~pyrogram.Client.pin_chat_message` and :meth:`~pyrogram.Client.unpin_chat_message`, allowing bots to manage pinned messages on behalf of a business account.
