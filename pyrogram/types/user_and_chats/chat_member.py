@@ -46,8 +46,9 @@ class ChatMember(Object):
             Creator (owner) and administrators only. Can be None in case there's no custom title set.
 
         until_date (:py:obj:`~datetime.datetime`, *optional*):
-            Restricted and banned only.
-            Date when restrictions will be lifted for this user.
+            Member, restricted, banned only.
+            If status is RESTRICTED or BANNED, Date when restrictions will be lifted for this user.
+            If status is MEMBER, Date when the user's subscription will expire.
 
         invited_by (:obj:`~pyrogram.types.User`, *optional*):
             Administrators and self member only. Information about the user who invited this member.
@@ -143,6 +144,7 @@ class ChatMember(Object):
                 status=enums.ChatMemberStatus.MEMBER,
                 user=types.User._parse(client, users[member.user_id]),
                 joined_date=utils.timestamp_to_datetime(member.date),
+                until_date=utils.timestamp_to_datetime(member.subscription_until_date),
                 client=client
             )
         elif isinstance(member, raw.types.ChannelParticipantAdmin):
@@ -223,5 +225,6 @@ class ChatMember(Object):
                 user=types.User._parse(client, users[member.user_id]),
                 joined_date=utils.timestamp_to_datetime(member.date),
                 invited_by=types.User._parse(client, users[member.inviter_id]),
+                until_date=utils.timestamp_to_datetime(member.subscription_until_date),
                 client=client
             )
