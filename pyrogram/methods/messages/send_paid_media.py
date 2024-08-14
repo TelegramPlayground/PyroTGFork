@@ -25,6 +25,7 @@ from typing import Union, List, Optional
 import pyrogram
 from pyrogram import enums, raw, types, utils
 from pyrogram.file_id import FileType
+from .inline_session import get_session
 
 
 class SendPaidMedia:
@@ -43,6 +44,7 @@ class SendPaidMedia:
         disable_notification: bool = None,
         protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        business_connection_id: str = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -51,7 +53,7 @@ class SendPaidMedia:
         ] = None,
         schedule_date: datetime = None
     ) -> "types.Message":
-        """Use this method to send paid media to channel chats.
+        """Use this method to send paid media.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
@@ -86,6 +88,9 @@ class SendPaidMedia:
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
+            
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -255,7 +260,26 @@ class SendPaidMedia:
             invert_media=show_caption_above_media,
             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
         )
-        r = await self.invoke(rpc, sleep_threshold=60)
+        session = None
+        business_connection = None
+        if business_connection_id:
+            business_connection = self.business_user_connection_cache[business_connection_id]
+            if not business_connection:
+                business_connection = await self.get_business_connection(business_connection_id)
+            session = await get_session(
+                self,
+                business_connection._raw.connection.dc_id
+            )
+        if business_connection_id:
+            r = await session.invoke(
+                raw.functions.InvokeWithBusinessConnection(
+                    query=rpc,
+                    connection_id=business_connection_id
+                )
+            )
+            # await session.stop()
+        else:
+            r = await self.invoke(rpc, sleep_threshold=60)
         for i in r.updates:
             if isinstance(
                 i,
@@ -271,4 +295,19 @@ class SendPaidMedia:
                     {i.id: i for i in r.chats},
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                     replies=self.fetch_replies
+                )
+            elif isinstance(
+                i,
+                (
+                    raw.types.UpdateBotNewBusinessMessage
+                )
+            ):
+                return await types.Message._parse(
+                    self,
+                    i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    business_connection_id=getattr(i, "connection_id", business_connection_id),
+                    raw_reply_to_message=i.reply_to_message,
+                    replies=0
                 )
