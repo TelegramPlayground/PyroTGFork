@@ -10,7 +10,7 @@ FRESH_CHANGE_ADMINS_FORBIDDEN	You were just elected admin, you can't add or modi
 FRESH_CHANGE_PHONE_FORBIDDEN	You can't change phone number right after logging in, please wait at least 24 hours.
 FRESH_RESET_AUTHORISATION_FORBIDDEN	You can't logout other sessions if less than 24 hours have passed since you logged on the current session.
 INVITE_HASH_EXPIRED	The invite link has expired.
-PAYMENT_UNSUPPORTED	A detailed description of the error will be received separately as described [here &raquo;](https://core.telegram.org/api/errors#406-not-acceptable).
+PAYMENT_UNSUPPORTED	A detailed description of the error will be received separately as described [here](https://core.telegram.org/api/errors#406-not-acceptable).
 PHONE_NUMBER_INVALID	The phone number is invalid.
 PHONE_PASSWORD_FLOOD	You have tried logging in too many times.
 PREVIOUS_CHAT_IMPORT_ACTIVE_WAIT_XMIN	Import for this chat is already in progress, wait {value} minutes before starting a new one.

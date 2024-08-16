@@ -5,7 +5,7 @@ CHANNEL_PUBLIC_GROUP_NA	channel/supergroup not available.
 CHAT_ADMIN_INVITE_REQUIRED	You do not have the rights to do this.
 CHAT_ADMIN_REQUIRED	You must be an admin in this chat to do this.
 CHAT_FORBIDDEN	You cannot write in this chat
-CHAT_GUEST_SEND_FORBIDDEN	You join the discussion group before commenting, see [here &raquo;](/api/discussion#requiring-users-to-join-the-group) for more info.
+CHAT_GUEST_SEND_FORBIDDEN	You join the discussion group before commenting, see [here](https://core.telegram.org/api/discussion#requiring-users-to-join-the-group) for more info.
 CHAT_SEND_AUDIOS_FORBIDDEN	You can't send audio messages in this chat.
 CHAT_SEND_DOCS_FORBIDDEN	You can't send documents in this chat.
 CHAT_SEND_GAME_FORBIDDEN	You can't send a game to this chat.
@@ -34,7 +34,7 @@ PRIVACY_PREMIUM_REQUIRED	You need a [Telegram Premium subscription](https://core
 PUBLIC_CHANNEL_MISSING	You can only export group call invite links for public chats or channels.
 RIGHT_FORBIDDEN	Your admin rights do not allow you to do this.
 SENSITIVE_CHANGE_FORBIDDEN	You can't change your sensitive content settings.
-TAKEOUT_REQUIRED	A [takeout](https://core.telegram.org/api/takeout) session needs to be initialized first, [see here &raquo; for more info](/api/takeout).
+TAKEOUT_REQUIRED	A [takeout](https://core.telegram.org/api/takeout) session needs to be initialized first, [see here for more info](https://core.telegram.org/api/takeout).
 USER_BOT_INVALID	User accounts must provide the `bot` method parameter when calling this method. If there is no such method parameter, this method can only be invoked by bot accounts.
 USER_CHANNELS_TOO_MUCH	One of the users you tried to add is already in too many channels/supergroups.
 USER_DELETED	You can't send this secret message because the other participant deleted their account.
