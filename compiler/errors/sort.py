@@ -66,7 +66,7 @@ elif sys.argv[1] == "scrape":
                 m = k.replace("_%d", "_X")
                 l = l.replace("%d", "{value}")
                 l = l.replace("&raquo;", "»")
-                l = l.replace("&raquo;", "«")
+                l = l.replace("&laquo;", "«")
                 l = l.replace("](/api/", f"]({b}/api/")
                 dct[m] = l
 

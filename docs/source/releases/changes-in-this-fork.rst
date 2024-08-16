@@ -10,9 +10,20 @@ it can take advantage of new goodies!
 
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
++------------------------+
+| Scheme layer used: 186 |
++------------------------+
+
+- Added the ability to send paid media to any chat and the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_paid_media`, allowing bots to send paid media on behalf of a business account.
+- Added the field ``until_date`` to the class :obj:`~pyrogram.types.ChatMember` for members with an active subscription.
+- Added :meth:`~pyrogram.Client.add_paid_message_reaction` and :obj:`~pyrogram.types.ReactionTypePaid`
+- Updated `errors list <https://core.telegram.org/api/errors>`__ and improved documentation of some of the methods.
 - Added missing parameters to :meth:`~pyrogram.Client.get_dialogs` and :obj:`~pyrogram.types.Dialog`.
-- Added :obj:`~pyrogram.enums.MessageServiceType.UNKNOWN`, :obj:`~pyrogram.enums.MessageServiceType.CONTACT_REGISTERED`, :obj:`~pyrogram.enums.MessageServiceType.SCREENSHOT_TAKEN` types of service messages `#1147 <https://github.com/pyrogram/pyrogram/issues/1147>`__.
+- Added :obj:`~pyrogram.enums.MessageServiceType.UNKNOWN` type of service message `#1147 <https://github.com/pyrogram/pyrogram/issues/1147>`__.
 - Added a :obj:`~pyrogram.enums.ChatJoinType` to distinguish the different types of :obj:`~pyrogram.enums.MessageServiceType.NEW_CHAT_MEMBERS`.
+- Added :obj:`~pyrogram.enums.MessageServiceType.CONTACT_REGISTERED` and :obj:`~pyrogram.enums.MessageServiceType.SCREENSHOT_TAKEN` types of service messages.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=185&to=186>`__ raw API methods.
+
 
 +------------------------+
 | Scheme layer used: 185 |
