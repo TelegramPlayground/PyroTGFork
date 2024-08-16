@@ -18,6 +18,7 @@
 
 from .chat_action import ChatAction
 from .chat_event_action import ChatEventAction
+from .chat_join_type import ChatJoinType
 from .chat_member_status import ChatMemberStatus
 from .chat_members_filter import ChatMembersFilter
 from .chat_type import ChatType
@@ -37,6 +38,7 @@ from .profile_color import ProfileColor
 __all__ = [
     'ChatAction', 
     'ChatEventAction', 
+    'ChatJoinType',
     'ChatMemberStatus', 
     'ChatMembersFilter', 
     'ChatType', 

@@ -531,6 +531,8 @@ def pyrogram_api():
             SponsoredMessage
             Sticker
             WebPage
+            ContactRegistered
+            ScreenshotTaken
         """,
         chat_topics="""
         Chat Forum Topics

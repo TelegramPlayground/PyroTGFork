@@ -128,3 +128,12 @@ class MessageServiceType(AutoName):
 
     REFUNDED_PAYMENT = auto()
     "Refunded payment"
+
+    CONTACT_REGISTERED = auto()
+    "A contact has registered with Telegram"
+
+    SCREENSHOT_TAKEN = auto()
+    "A screenshot of a message in the chat has been taken"
+
+    UNKNOWN = auto()
+    "This service message is unsupported by the current version of Pyrogram"

@@ -393,6 +393,16 @@ class Message(Object, Update):
         gifted_stars (:obj:`~pyrogram.types.GiftedStars`, *optional*):
             Info about gifted Telegram Stars
 
+        contact_registered (:obj:`~pyrogram.types.ContactRegistered`, *optional*):
+            A service message that a contact has registered with Telegram.
+
+        chat_join_type (:obj:`~pyrogram.enums.ChatJoinType`, *optional*):
+            The message is a service message of the type :obj:`~pyrogram.enums.MessageServiceType.NEW_CHAT_MEMBERS`.
+            This field will contain the enumeration type of how the user had joined the chat.
+
+        screenshot_taken (:obj:`~pyrogram.types.ScreenshotTaken`, *optional*):
+            A service message that a screenshot of a message in the chat has been taken.
+
         link (``str``, *property*):
             Generate a link to this message, only for groups and channels.
 
@@ -514,7 +524,9 @@ class Message(Object, Update):
         command: List[str] = None,
         reactions: List["types.Reaction"] = None,
         custom_action: str = None,
-
+        contact_registered: "types.ContactRegistered" = None,
+        chat_join_type: "enums.ChatJoinType" = None,
+        screenshot_taken: "types.ScreenshotTaken" = None,
         _raw = None
     ):
         super().__init__(client)
@@ -618,6 +630,9 @@ class Message(Object, Update):
         self.successful_payment = successful_payment
         self.paid_media = paid_media
         self.refunded_payment = refunded_payment
+        self.contact_registered = contact_registered
+        self.chat_join_type = chat_join_type
+        self.screenshot_taken = screenshot_taken
         self._raw = _raw
 
     @staticmethod
@@ -702,17 +717,24 @@ class Message(Object, Update):
             successful_payment = None
             refunded_payment = None
 
-            service_type = None
+            contact_registered = None
+            chat_join_type = None
+            screenshot_taken = None
+
+            service_type = enums.MessageServiceType.UNKNOWN
 
             if isinstance(action, raw.types.MessageActionChatAddUser):
                 new_chat_members = [types.User._parse(client, users[i]) for i in action.users]
                 service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
+                chat_join_type = enums.ChatJoinType.BY_ADD
             elif isinstance(action, raw.types.MessageActionChatJoinedByLink):
                 new_chat_members = [types.User._parse(client, users[utils.get_raw_peer_id(message.from_id)])]
                 service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
+                chat_join_type = enums.ChatJoinType.BY_LINK
             elif isinstance(action, raw.types.MessageActionChatJoinedByRequest):
                 new_chat_members = [types.User._parse(client, users[utils.get_raw_peer_id(message.from_id)])]
                 service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
+                chat_join_type = enums.ChatJoinType.BY_REQUEST
             elif isinstance(action, raw.types.MessageActionChatDeleteUser):
                 left_chat_member = types.User._parse(client, users[action.user_id])
                 service_type = enums.MessageServiceType.LEFT_CHAT_MEMBERS
@@ -887,6 +909,12 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionCustomAction):
                 service_type = enums.MessageServiceType.CUSTOM_ACTION
                 custom_action = action.message
+            elif isinstance(action, raw.types.MessageActionContactSignUp):
+                service_type = enums.MessageServiceType.CONTACT_REGISTERED
+                contact_registered = types.ContactRegistered()
+            elif isinstance(action, raw.types.MessageActionScreenshotTaken):
+                service_type = enums.MessageServiceType.SCREENSHOT_TAKEN
+                screenshot_taken = types.ScreenshotTaken()
 
             elif isinstance(action, raw.types.MessageActionTopicCreate):
                 title = action.title
@@ -968,6 +996,9 @@ class Message(Object, Update):
                 general_forum_topic_hidden=general_forum_topic_hidden,
                 general_forum_topic_unhidden=general_forum_topic_unhidden,
                 custom_action=custom_action,
+                contact_registered=contact_registered,
+                chat_join_type=chat_join_type,
+                screenshot_taken=screenshot_taken,
                 client=client
             )
 

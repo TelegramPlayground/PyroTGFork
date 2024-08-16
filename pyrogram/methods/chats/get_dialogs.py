@@ -26,6 +26,7 @@ class GetDialogs:
     async def get_dialogs(
         self: "pyrogram.Client",
         limit: int = 0,
+        pinned_only: bool = False,
         chat_list: int = 0
     ) -> Optional[AsyncGenerator["types.Dialog", None]]:
         """Get a user's dialogs sequentially.
@@ -37,8 +38,12 @@ class GetDialogs:
                 Limits the number of dialogs to be retrieved.
                 By default, no limit is applied and all dialogs are returned.
             
+            pinned_only (``bool``, *optional*):
+                Pass True if you want to get only pinned dialogs.
+                Defaults to False.
+            
             chat_list (``int``, *optional*):
-                Chat list in which to search messages; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
+                Chat list from which to get the dialogs; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
 
         Returns:
             ``Generator``: A generator yielding :obj:`~pyrogram.types.Dialog` objects.
@@ -66,6 +71,7 @@ class GetDialogs:
                     offset_peer=offset_peer,
                     limit=limit,
                     hash=0,
+                    exclude_pinned=not pinned_only,
                     folder_id=chat_list
                 ),
                 sleep_threshold=60

@@ -10,6 +10,10 @@ it can take advantage of new goodies!
 
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
+- Added missing parameters to :meth:`~pyrogram.Client.get_dialogs` and :obj:`~pyrogram.types.Dialog`.
+- Added :obj:`~pyrogram.enums.MessageServiceType.UNKNOWN`, :obj:`~pyrogram.enums.MessageServiceType.CONTACT_REGISTERED`, :obj:`~pyrogram.enums.MessageServiceType.SCREENSHOT_TAKEN` types of service messages `#1147 <https://github.com/pyrogram/pyrogram/issues/1147>`__.
+- Added a :obj:`~pyrogram.enums.ChatJoinType` to distinguish the different types of :obj:`~pyrogram.enums.MessageServiceType.NEW_CHAT_MEMBERS`.
+
 +------------------------+
 | Scheme layer used: 185 |
 +------------------------+

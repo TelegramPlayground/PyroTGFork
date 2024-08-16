@@ -36,7 +36,7 @@ class GetDialogsCount:
                 Defaults to False.
             
             chat_list (``int``, *optional*):
-                Chat list in which to search messages; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
+                Chat list from which to get the dialogs; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
 
         Returns:
             ``int``: On success, the dialogs count is returned.

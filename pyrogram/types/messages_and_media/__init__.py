@@ -19,6 +19,7 @@
 from .animation import Animation
 from .audio import Audio
 from .contact import Contact
+from .contact_registered import ContactRegistered
 from .dice import Dice
 from .document import Document
 from .game import Game
@@ -58,6 +59,7 @@ from .gift_code import GiftCode
 from .gifted_premium import GiftedPremium
 from .gifted_stars import GiftedStars
 from .message_effect import MessageEffect
+from .screenshot_taken import ScreenshotTaken
 from .translated_text import TranslatedText
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 
@@ -66,6 +68,7 @@ __all__ = [
     "Audio",
     "ChatBoostAdded",
     "Contact",
+    "ContactRegistered",
     "Dice",
     "Document",
     "Game",
@@ -103,5 +106,6 @@ __all__ = [
     "Voice",
     "WebAppData",
     "WebPage",
-    "TranslatedText"
+    "ScreenshotTaken",
+    "TranslatedText",
 ]
