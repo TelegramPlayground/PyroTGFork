@@ -91,6 +91,8 @@ class ReactionType(Object):
 
     - :obj:`~pyrogram.types.ReactionTypeEmoji`
     - :obj:`~pyrogram.types.ReactionTypeCustomEmoji`
+    - :obj:`~pyrogram.types.ReactionTypePaid`
+
     """
 
     def __init__(
@@ -120,6 +122,8 @@ class ReactionType(Object):
             return ReactionTypeCustomEmoji(
                 custom_emoji_id=update.document_id
             )
+        elif isinstance(update, raw.types.ReactionPaid):
+            return ReactionTypePaid()
 
     def write(self, client: "pyrogram.Client"):
         raise NotImplementedError
@@ -171,6 +175,18 @@ class ReactionTypeCustomEmoji(ReactionType):
         return raw.types.ReactionCustomEmoji(
             document_id=self.custom_emoji_id
         )
+
+
+class ReactionTypePaid(ReactionType):
+    """The paid reaction in a channel chat."""
+
+    def __init__(self):
+        super().__init__(
+            type="paid"
+        )
+    
+    def write(self, client: "pyrogram.Client") -> "raw.base.Reaction":
+        return raw.types.ReactionPaid()
 
 
 class ReactionCount(Object):

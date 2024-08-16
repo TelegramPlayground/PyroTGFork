@@ -38,8 +38,7 @@ class SetReaction:
     ) -> "types.MessageReactions":
         """Use this method to change the chosen reactions on a message.
         Service messages can't be reacted to.
-        Automatically forwarded messages from
-        a channel to its discussion group have the
+        Automatically forwarded messages from a channel to its discussion group have the
         same available reactions as messages in the channel.
 
         You must use exactly one of ``message_id`` OR ``story_id``.
@@ -74,6 +73,7 @@ class SetReaction:
                 Pass True if the reaction should appear in the recently used reactions.
                 This option is applicable only for users.
                 Defaults to True.
+
         Returns:
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 
@@ -89,15 +89,23 @@ class SetReaction:
                 # Retract a reaction
                 await app.set_reaction(chat_id, message_id=message_id)
         """
+
+        raw_reactions = []
+        if not reaction:
+            raw_reactions = [raw.types.ReactionEmpty()]
+        else:
+            for r in reaction:
+                if isinstance(r, types.ReactionTypePaid):
+                    raise ValueError("This type of reaction is not supported using this method")
+                else:
+                    raw_reactions.append(r.write(self))
+
         if message_id is not None:
             r = await self.invoke(
                 raw.functions.messages.SendReaction(
                     peer=await self.resolve_peer(chat_id),
                     msg_id=message_id,
-                    reaction=[
-                        r.write(self)
-                        for r in reaction
-                    ] if reaction else [raw.types.ReactionEmpty()],
+                    reaction=raw_reactions,
                     big=is_big,
                     add_to_recent=add_to_recent
                 )
@@ -105,25 +113,21 @@ class SetReaction:
             for i in r.updates:
                 if isinstance(i, raw.types.UpdateMessageReactions):
                     return types.MessageReactions._parse(self, i.reactions)
-        
+            # TODO
+            return r
+
         elif story_id is not None:
             r = await self.invoke(
                 raw.functions.stories.SendReaction(
                     peer=await self.resolve_peer(chat_id),
                     story_id=story_id,
-                    reaction=(
-                        [
-                            r.write(self)
-                            for r in reaction
-                        ] if reaction else [
-                            raw.types.ReactionEmpty()
-                        ]
-                    )[0],
+                    reaction=raw_reactions[0],
                     add_to_recent=add_to_recent
                 )
             )
             # TODO
             return r
+
         else:
             raise ValueError("You need to pass one of message_id OR story_id!")
 

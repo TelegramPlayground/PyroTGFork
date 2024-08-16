@@ -523,6 +523,7 @@ def pyrogram_api():
             ReactionType
             ReactionTypeEmoji
             ReactionTypeCustomEmoji
+            ReactionTypePaid
             Thumbnail
             TranslatedText
             StrippedThumbnail

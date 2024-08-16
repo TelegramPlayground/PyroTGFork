@@ -33,6 +33,7 @@ from .reaction import (
     ReactionType,
     ReactionTypeEmoji,
     ReactionTypeCustomEmoji,
+    ReactionTypePaid,
     ReactionCount
 )
 from .sponsored_message import SponsoredMessage
@@ -88,6 +89,7 @@ __all__ = [
     "ReactionType",
     "ReactionTypeEmoji",
     "ReactionTypeCustomEmoji",
+    "ReactionTypePaid",
     "Thumbnail",
     "StrippedThumbnail",
     "Poll",
