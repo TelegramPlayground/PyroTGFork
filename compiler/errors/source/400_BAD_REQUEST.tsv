@@ -354,6 +354,7 @@ RANDOM_ID_EMPTY	Random ID empty.
 RANDOM_ID_INVALID	A provided random ID is invalid.
 RANDOM_LENGTH_INVALID	Random length invalid.
 RANGES_INVALID	Invalid range provided.
+REACTIONS_COUNT_INVALID	The count of the reactions should be less than `stars_paid_reaction_amount_max` stars, you can't react with more number of stars, see [the docs for more info &raquo;](/api/config#client-configuration).
 REACTIONS_TOO_MANY	The message already has exactly `reactions_uniq_max` reaction emojis, you can't react with a new emoji, see [the docs for more info &raquo;](/api/config#client-configuration).
 REACTION_EMPTY	Empty reaction provided.
 REACTION_INVALID	The specified reaction is invalid.
