@@ -68,7 +68,7 @@ class Reaction(Object):
         if isinstance(reaction, raw.types.ReactionEmoji):
             return Reaction(
                 client=client,
-                type=ReactionEmoji(
+                type=ReactionTypeEmoji(
                     emoji=reaction.emoticon
                 )
             )
