@@ -65,6 +65,9 @@ elif sys.argv[1] == "scrape":
                 l = g.get(k)
                 m = k.replace("_%d", "_X")
                 l = l.replace("%d", "{value}")
+                l = l.replace("&raquo;", "»")
+                l = l.replace("&raquo;", "«")
+                l = l.replace("](/api/", f"]({b}/api/")
                 dct[m] = l
 
             for p in Path("source/").glob(f"{h}*.tsv"):
