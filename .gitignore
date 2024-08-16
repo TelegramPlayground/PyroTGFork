@@ -15,6 +15,7 @@ docs/source/telegram
 docs/source/api/methods/
 docs/source/api/bound-methods/
 docs/source/api/types/
+docs/source/api/enums/
 compiler/api/docs.json
 
 # PyCharm stuff
