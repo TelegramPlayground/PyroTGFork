@@ -57,6 +57,7 @@ from .send_message import SendMessage
 from .send_paid_media import SendPaidMedia
 from .send_photo import SendPhoto
 from .send_poll import SendPoll
+from .add_paid_message_reaction import AddPaidMessageReaction
 from .set_reaction import SetReaction
 from .send_sticker import SendSticker
 from .send_venue import SendVenue
@@ -121,6 +122,7 @@ class Messages(
     SendVideo,
     SendVideoNote,
     SendVoice,
+    AddPaidMessageReaction,
     SetReaction,
     StopPoll,
     StreamMedia,

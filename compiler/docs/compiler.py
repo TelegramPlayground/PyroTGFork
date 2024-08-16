@@ -190,6 +190,7 @@ def pyrogram_api():
             send_poll
             send_dice
             send_chat_action
+            add_paid_message_reaction
             set_reaction
             download_media
             stream_media
