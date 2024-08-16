@@ -40,6 +40,7 @@ class SetReaction:
         Service messages can't be reacted to.
         Automatically forwarded messages from a channel to its discussion group have the
         same available reactions as messages in the channel.
+        Bots can't use paid reactions.
 
         You must use exactly one of ``message_id`` OR ``story_id``.
 
@@ -64,6 +65,7 @@ class SetReaction:
             reaction (List of :obj:`~pyrogram.types.ReactionType`, *optional*):
                 New list of reaction types to set on the message.
                 Pass None as emoji (default) to retract the reaction.
+                Use :meth:`~pyrogram.Client.add_paid_message_reaction` instead to add a paid reaction.
 
             is_big (``bool``, *optional*):
                 Pass True to set the reaction with a big animation.

@@ -60,6 +60,7 @@ class SendPaidMedia:
         Parameters:
             chat_id (``int`` | ``str``):
                 Unique identifier for the target chat or username of the target channel (in the format @channelusername).
+                If the chat is a channel, all Telegram Star proceeds from this media will be credited to the chat's balance. Otherwise, they will be credited to the bot's balance.
 
             star_count (``int``):
                 The number of Telegram Stars that must be paid to buy access to the media.
