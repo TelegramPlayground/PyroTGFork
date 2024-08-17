@@ -58,6 +58,9 @@ class Dialog(Object):
         
         view_as_topics (``bool``):
             True, if the chat is a forum supergroup that must be shown in the "View as topics" mode, or Saved Messages chat that must be shown in the "View as chats".
+        
+        draft (:obj:`~pyrogram.types.DraftMessage`, *optional*):
+            Contains information about a message draft.
 
     """
 
@@ -75,6 +78,7 @@ class Dialog(Object):
         chat_list: int,
         message_auto_delete_time: int,
         view_as_topics: bool,
+        draft: "types.DraftMessage" = None,
         _raw: "raw.types.Dialog" = None
     ):
         super().__init__(client)
@@ -89,6 +93,7 @@ class Dialog(Object):
         self.chat_list = chat_list
         self.message_auto_delete_time = message_auto_delete_time
         self.view_as_topics = view_as_topics
+        self.draft = draft
         self._raw = _raw
 
     @staticmethod
@@ -105,5 +110,10 @@ class Dialog(Object):
             message_auto_delete_time=getattr(dialog, "ttl_period", 0),
             view_as_topics=not dialog.view_forum_as_messages,
             client=client,
+            draft=types.DraftMessage._parse(
+                client,
+                dialog.draft,
+                users, chats
+            ),
             _raw=dialog
         )

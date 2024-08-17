@@ -533,6 +533,7 @@ def pyrogram_api():
             WebPage
             ContactRegistered
             ScreenshotTaken
+            DraftMessage
         """,
         chat_topics="""
         Chat Forum Topics

@@ -523,7 +523,12 @@ def is_plain_domain(url):
     )
 
 
-def get_first_url(message: "raw.types.Message") -> str:
+def get_first_url(
+    message: Union[
+        "raw.types.Message",
+        "raw.types.DraftMessage"
+    ]
+) -> str:
     text = message.message
     entities = message.entities
     # duplicate code copied from parser.
