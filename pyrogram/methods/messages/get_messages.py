@@ -176,7 +176,7 @@ class GetMessages:
                     )
                 )
                 users = {i.id: i for i in r.users}
-                # chats = {i.id: i for i in r.chats}
+                chats = {i.id: i for i in r.chats}
                 entities = [
                     types.MessageEntity._parse(
                         self, entity, users
@@ -196,11 +196,11 @@ class GetMessages:
                 #     sender_chat = types.Chat._parse_channel_chat(
                 #         self, chats[cat_id]
                 #     )
-                return types.Message(
-                    id=0,  # TODO modify this later with a Draft type
+                return types.DraftMessage(
                     text=Str(r.message).init(entities) or None,
                     entities=entities or None,
-                    sender_chat=sender_chat,
+                    # sender_chat=sender_chat,
+                    _raw=r,
                 )
 
             elif len(linkps) == 5:
