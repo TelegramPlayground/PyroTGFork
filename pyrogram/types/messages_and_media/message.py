@@ -404,7 +404,7 @@ class Message(Object, Update):
             A service message that a screenshot of a message in the chat has been taken.
 
         link (``str``, *property*):
-            Generate a link to this message, only for groups and channels.
+            Generate a link to this message, only for supergroups and channels. Can be None if the message cannot have a link.
 
     """
 
@@ -1372,13 +1372,14 @@ class Message(Object, Update):
     @property
     def link(self) -> str:
         if (
-            self.chat.type in (
+            self.chat.type in {
                 enums.ChatType.SUPERGROUP,
                 enums.ChatType.CHANNEL
-            )
+            }
         ):
+            if self.chat.username:
+                return f"https://t.me/{self.chat.username}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
             return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
-        raise ValueError("This message-chat type does not have a link")
 
     async def get_media_group(self) -> List["types.Message"]:
         """Bound method *get_media_group* of :obj:`~pyrogram.types.Message`.
