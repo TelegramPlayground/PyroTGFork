@@ -85,6 +85,10 @@ class Story(Object, Update):
         deleted (``bool``, *optional*):
             The story is deleted.
             A story can be deleted in case it was deleted or you tried to retrieve a story that doesn't exist yet.
+        
+        link (``str``, *property*):
+            Generate a link to this story, only for Telegram Premium chats having usernames. Can be None if the story cannot have a link.
+
     """
 
     def __init__(
@@ -516,3 +520,8 @@ class Story(Object, Update):
             progress=progress,
             progress_args=progress_args,
         )
+
+    @property
+    def link(self) -> str:
+        if self.chat and self.chat.username:
+            return f"https://t.me/{self.chat.username}/s/{self.id}"
