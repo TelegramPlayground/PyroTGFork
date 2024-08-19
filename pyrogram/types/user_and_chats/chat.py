@@ -217,6 +217,9 @@ class Chat(Object):
 
         pending_join_request_count (``int``, *optional*):
             Number of pending join requests in the current chat.
+        
+        can_enable_paid_reaction (``bool``, *optional*):
+            True, if paid reaction can be enabled in the channel chat; for channels only.
 
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
@@ -284,6 +287,7 @@ class Chat(Object):
         max_reaction_count: int = None,
         can_send_paid_media: bool = None,
         pending_join_request_count: int = None,
+        can_enable_paid_reaction: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -352,6 +356,7 @@ class Chat(Object):
         self.max_reaction_count = max_reaction_count
         self.can_send_paid_media = can_send_paid_media
         self.pending_join_request_count = pending_join_request_count
+        self.can_enable_paid_reaction = can_enable_paid_reaction
         self._raw = _raw
 
     @staticmethod
@@ -638,6 +643,7 @@ class Chat(Object):
                 parsed_chat.custom_emoji_sticker_set_name = getattr(full_chat.emojiset, "short_name", None)
 
                 parsed_chat.can_send_paid_media = getattr(full_chat, "paid_media_allowed", None)
+                parsed_chat.can_enable_paid_reaction = full_chat.paid_reactions_available
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 

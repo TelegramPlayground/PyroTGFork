@@ -14,6 +14,9 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 186 |
 +------------------------+
 
+- Added the field ``can_enable_paid_reaction`` to the class :obj:`~pyrogram.types.Chat`.
+- Added ``link`` property to :obj:`~pyrogram.types.Story` and fixed the ``link`` property in :obj:`~pyrogram.types.Message`.
+- Introduced :obj:`~pyrogram.types.DraftMessage` type.
 - Added the ability to send paid media to any chat and the parameter ``business_connection_id`` to the :meth:`~pyrogram.Client.send_paid_media`, allowing bots to send paid media on behalf of a business account.
 - Added the field ``until_date`` to the class :obj:`~pyrogram.types.ChatMember` for members with an active subscription.
 - Added :meth:`~pyrogram.Client.add_paid_message_reaction` and :obj:`~pyrogram.types.ReactionTypePaid`
