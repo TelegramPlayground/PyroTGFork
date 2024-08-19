@@ -71,6 +71,9 @@ class DraftMessage(Object):
             The message is empty.
             A message can be empty in case it was deleted or you tried to retrieve a message that doesn't exist yet.
 
+        chat (:obj:`~pyrogram.types.Chat`, *optional*):
+            Conversation the message belongs to. Can be None if unknown.
+
     """
 
     def __init__(
@@ -88,6 +91,7 @@ class DraftMessage(Object):
         show_caption_above_media: bool = None,
         media: "enums.MessageMediaType" = None,
         empty: bool = None,
+        chat: "types.Chat" = None,
         
         _raw: "raw.types.DraftMessage" = None
 
@@ -106,6 +110,7 @@ class DraftMessage(Object):
         self.show_caption_above_media = show_caption_above_media
         self.media = media
         self.empty = empty
+        self.chat = chat
 
         self._raw = _raw
 

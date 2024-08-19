@@ -38,7 +38,11 @@ class GetMessages:
         replies: int = 1,
         is_scheduled: bool = False,
         link: str = None,
-    ) -> Union["types.Message", List["types.Message"]]:
+    ) -> Union[
+        "types.Message",
+        List["types.Message"],
+        "types.DraftMessage"
+    ]:
         """Get one or more messages from a chat by using message identifiers.
 
         You can retrieve up to 200 messages at once.
@@ -74,7 +78,7 @@ class GetMessages:
                 A link of the message, usually can be copied using ``Copy Link`` functionality OR obtained using :obj:`~pyrogram.raw.types.Message.link` OR  :obj:`~pyrogram.raw.functions.channels.ExportMessageLink`
 
         Returns:
-            :obj:`~pyrogram.types.Message` | List of :obj:`~pyrogram.types.Message`: In case *message_ids* was not
+            :obj:`~pyrogram.types.Message` | List of :obj:`~pyrogram.types.Message` | :obj:`~pyrogram.types.DraftMessage`: In case *message_ids* was not
             a list, a single message is returned, otherwise a list of messages is returned.
 
         Example:
@@ -186,20 +190,20 @@ class GetMessages:
                 entities = types.List(
                     filter(lambda x: x is not None, entities)
                 )
-                sender_chat = None
+                chat = None
                 cat_id = utils.get_raw_peer_id(r.peer)
                 if isinstance(r.peer, raw.types.PeerUser):
-                    sender_chat = types.Chat._parse_user_chat(self, users[cat_id])
+                    chat = types.Chat._parse_user_chat(self, users[cat_id])
                 # elif isinstance(r.peer, raw.types.PeerChat):
-                #     sender_chat = types.Chat._parse_chat_chat(self, chats[cat_id])
+                #     chat = types.Chat._parse_chat_chat(self, chats[cat_id])
                 # else:
-                #     sender_chat = types.Chat._parse_channel_chat(
+                #     chat = types.Chat._parse_channel_chat(
                 #         self, chats[cat_id]
                 #     )
                 return types.DraftMessage(
                     text=Str(r.message).init(entities) or None,
                     entities=entities or None,
-                    # sender_chat=sender_chat,
+                    chat=chat,
                     _raw=r,
                 )
 
