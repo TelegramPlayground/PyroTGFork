@@ -66,7 +66,17 @@ class ChatInviteLink(Object):
             Number of users that joined via this link and are currently member of the chat.
 
         pending_join_request_count (``int``, *optional*):
-            Number of pending join requests created using this link
+            Number of pending join requests created using this link.
+        
+        expired_member_count (``int``, *optional*):
+            Number of chat members, which joined the chat using the link, but have already left because of expired subscription; for subscription links only.
+
+        subscription_period (``int``, *optional*):
+            The number of seconds the subscription will be active for before the next payment.
+
+        subscription_price (``int``, *optional*):
+            The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat using the link.
+
     """
 
     def __init__(
@@ -82,7 +92,10 @@ class ChatInviteLink(Object):
         expire_date: datetime = None,
         member_limit: int = None,
         member_count: int = None,
-        pending_join_request_count: int = None
+        pending_join_request_count: int = None,
+        expired_member_count: int = None,
+        subscription_period: int = None,
+        subscription_price: int = None
     ):
         super().__init__()
 
@@ -98,6 +111,9 @@ class ChatInviteLink(Object):
         self.member_limit = member_limit
         self.member_count = member_count
         self.pending_join_request_count = pending_join_request_count
+        self.expired_member_count = expired_member_count
+        self.subscription_period = subscription_period
+        self.subscription_price = subscription_price
 
     @staticmethod
     def _parse(
@@ -114,7 +130,7 @@ class ChatInviteLink(Object):
             else None
         )
 
-        return ChatInviteLink(
+        chat_invite_link = ChatInviteLink(
             invite_link=invite.link,
             date=utils.timestamp_to_datetime(invite.date),
             is_primary=invite.permanent,
@@ -126,5 +142,10 @@ class ChatInviteLink(Object):
             expire_date=utils.timestamp_to_datetime(invite.expire_date),
             member_limit=invite.usage_limit,
             member_count=invite.usage,
-            pending_join_request_count=invite.requested
+            pending_join_request_count=invite.requested,
+            expired_member_count=invite.subscription_expired   
         )
+        if invite.subscription_pricing:
+            chat_invite_link.subscription_period = invite.subscription_pricing.period
+            chat_invite_link.subscription_price = invite.subscription_pricing.amount
+        return chat_invite_link

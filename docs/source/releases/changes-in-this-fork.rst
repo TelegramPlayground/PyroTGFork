@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 186 |
 +------------------------+
 
+- Added the fields ``expired_member_count``, ``subscription_period`` and ``subscription_price`` to the class :obj:`~pyrogram.types.ChatInviteLink`.
 - Added the field ``can_enable_paid_reaction`` to the class :obj:`~pyrogram.types.Chat`.
 - Added ``link`` property to :obj:`~pyrogram.types.Story` and fixed the ``link`` property in :obj:`~pyrogram.types.Message`.
 - Introduced :obj:`~pyrogram.types.DraftMessage` type.
