@@ -848,12 +848,21 @@ def pyrogram_api():
 
     root = PYROGRAM_API_DEST + "/enums"
 
-    # TODO
-    # shutil.rmtree(root, ignore_errors=True)
-    # os.mkdir(root)
+    shutil.rmtree(root, ignore_errors=True)
+    os.mkdir(root)
 
     with open(HOME + "/template/enums.rst") as f:
         template = f.read()
+
+    with open(root + "/cleanup.html", "w") as f:
+        f.write("""<script>
+  document
+    .querySelectorAll("em.property")
+    .forEach((elem, i) => i !== 0 ? elem.remove() : true)
+  document
+    .querySelectorAll("a.headerlink")
+    .forEach((elem, i) => [0, 1].includes(i) ? true : elem.remove())
+</script>""")
 
     with open(root + "/index.rst", "w") as f:
         fmt_keys = {}
