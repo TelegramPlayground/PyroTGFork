@@ -2161,7 +2161,7 @@ class Message(Object, Update):
         self,
         document: Union[str, BinaryIO],
         quote: bool = None,
-        thumb: str = None,
+        thumb: Union[str, BinaryIO] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
@@ -2211,7 +2211,7 @@ class Message(Object, Update):
                 If *reply_to_message_id* is passed, this parameter will be ignored.
                 Defaults to ``True`` in group chats and ``False`` in private chats.
 
-            thumb (``str``, *optional*):
+            thumb (``str`` | ``BinaryIO``, *optional*):
                 Thumbnail of the file sent.
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.
