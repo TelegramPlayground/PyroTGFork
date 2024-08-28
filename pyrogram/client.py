@@ -46,7 +46,7 @@ from pyrogram.errors import (
     VolumeLocNotFound, ChannelPrivate,
     BadRequest, AuthBytesInvalid,
     FloodWait, FloodPremiumWait,
-    ChannelInvalid
+    ChannelInvalid, PersistentTimestampInvalid, PersistentTimestampOutdated
 )
 from pyrogram.handlers.handler import Handler
 from pyrogram.methods import Methods
@@ -669,7 +669,7 @@ class Client(Methods):
                                     force=False
                                 )
                             )
-                        except ChannelPrivate:
+                        except (ChannelPrivate, PersistentTimestampOutdated, PersistentTimestampInvalid):
                             pass
                         else:
                             if not isinstance(diff, raw.types.updates.ChannelDifferenceEmpty):
@@ -746,7 +746,7 @@ class Client(Methods):
                             qts=0
                         )
                     )
-                except (ChannelPrivate, ChannelInvalid):
+                except (ChannelPrivate, ChannelInvalid, PersistentTimestampOutdated, PersistentTimestampInvalid):
                     break
 
                 if isinstance(diff, raw.types.updates.DifferenceEmpty):
