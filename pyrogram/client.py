@@ -770,6 +770,9 @@ class Client(Methods):
                 elif isinstance(diff, raw.types.updates.ChannelDifference):
                     local_pts = diff.pts
 
+                if not diff:
+                    break
+
                 users = {i.id: i for i in diff.users}
                 chats = {i.id: i for i in diff.chats}
 
