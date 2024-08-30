@@ -118,7 +118,7 @@ async def parse_messages(
                         users,
                         chats,
                         is_scheduled=isinstance(u, raw.types.UpdateNewScheduledMessage),
-                        replies=client.fetch_replies
+                        replies=replies
                     )
                 )
 
@@ -156,7 +156,7 @@ async def parse_messages(
                 users,
                 chats,
                 is_scheduled=is_scheduled,
-                replies=client.fetch_replies
+                replies=replies
             )
         )
 
