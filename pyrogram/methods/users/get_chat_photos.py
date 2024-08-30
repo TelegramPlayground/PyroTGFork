@@ -110,6 +110,9 @@ class GetChatPhotos:
             current = 0
 
             for photo in photos:
+                if not photo:
+                    continue
+
                 yield photo
 
                 current += 1
