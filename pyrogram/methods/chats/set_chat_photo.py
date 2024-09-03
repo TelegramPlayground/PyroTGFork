@@ -20,8 +20,7 @@ import os
 from typing import Union, BinaryIO
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import utils
+from pyrogram import raw, types, utils
 from pyrogram.file_id import FileType
 
 
@@ -33,7 +32,7 @@ class SetChatPhoto:
         photo: Union[str, BinaryIO] = None,
         video: Union[str, BinaryIO] = None,
         video_start_ts: float = None,
-    ) -> bool:
+    ) -> Union["types.Message", bool]:
         """Set a new chat photo or video (H.264/MPEG-4 AVC video, max 5 seconds).
 
         The ``photo`` and ``video`` arguments are mutually exclusive.
@@ -61,7 +60,8 @@ class SetChatPhoto:
                 The timestamp in seconds of the video frame to use as photo profile preview.
 
         Returns:
-            ``bool``: True on success.
+            :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
+            otherwise, in case a message object couldn't be returned, True is returned.
 
         Raises:
             ValueError: if a chat_id belongs to user.
@@ -102,14 +102,14 @@ class SetChatPhoto:
             )
 
         if isinstance(peer, raw.types.InputPeerChat):
-            await self.invoke(
+            r = await self.invoke(
                 raw.functions.messages.EditChatPhoto(
                     chat_id=peer.chat_id,
                     photo=photo,
                 )
             )
         elif isinstance(peer, raw.types.InputPeerChannel):
-            await self.invoke(
+            r = await self.invoke(
                 raw.functions.channels.EditPhoto(
                     channel=peer,
                     photo=photo
@@ -118,4 +118,14 @@ class SetChatPhoto:
         else:
             raise ValueError(f'The chat_id "{chat_id}" belongs to a user')
 
-        return True
+        for i in r.updates:
+            if isinstance(i, (raw.types.UpdateNewMessage, raw.types.UpdateNewChannelMessage)):
+                return await types.Message._parse(
+                    self,
+                    i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    replies=self.fetch_replies
+                )
+        else:
+            return True

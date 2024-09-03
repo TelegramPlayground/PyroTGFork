@@ -14,6 +14,8 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 186 |
 +------------------------+
 
+- Try to return the service message (when applicable) in the methods :meth:`~pyrogram.Client.set_chat_photo`, :meth:`~pyrogram.types.Chat.set_photo`.
+- Added the methods :meth:`~pyrogram.Client.get_payment_form` and :meth:`~pyrogram.Client.send_payment_form` `#89 <https://github.com/TelegramPlayGround/pyrogram/pull/89>`__.
 - Added the fields ``expired_member_count``, ``subscription_period`` and ``subscription_price`` to the class :obj:`~pyrogram.types.ChatInviteLink`.
 - Added the field ``can_enable_paid_reaction`` to the class :obj:`~pyrogram.types.Chat`.
 - Added ``link`` property to :obj:`~pyrogram.types.Story` and fixed the ``link`` property in :obj:`~pyrogram.types.Message`.
