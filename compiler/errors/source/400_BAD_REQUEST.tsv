@@ -21,6 +21,7 @@ AUTH_TOKEN_EXPIRED	The authorization token has expired.
 AUTH_TOKEN_INVALID	The specified auth token is invalid.
 AUTH_TOKEN_INVALIDX	The specified auth token is invalid.
 AUTOARCHIVE_NOT_AVAILABLE	The autoarchive setting is not available at this time: please check the value of the [autoarchive_setting_available field in client config](https://core.telegram.org/api/config#client-configuration) before calling this method.
+BALANCE_TOO_LOW	Your stars balance too low
 BANK_CARD_NUMBER_INVALID	The specified card number is invalid.
 BANNED_RIGHTS_INVALID	You provided some invalid flags in the banned rights.
 BASE_PORT_LOC_INVALID	The base port location is invalid

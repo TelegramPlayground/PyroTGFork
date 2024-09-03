@@ -78,7 +78,7 @@ class ShippingQuery(Object, Update):
             invoice_payload=payload,
             shipping_address=types.ShippingAddress(
                 country_code=shipping_query.shipping_address.country_iso2,
-                state=pshipping_query.shipping_address.state,
+                state=shipping_query.shipping_address.state,
                 city=shipping_query.shipping_address.city,
                 street_line1=shipping_query.shipping_address.street_line1,
                 street_line2=shipping_query.shipping_address.street_line2,

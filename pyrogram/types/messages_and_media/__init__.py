@@ -52,6 +52,7 @@ from .message_reaction_updated import MessageReactionUpdated
 from .message_reaction_count_updated import MessageReactionCountUpdated
 from .chat_boost_added import ChatBoostAdded
 from .story import Story
+from .payment_from import PaymentForm
 from .giveaway import Giveaway
 from .giveaway_completed import GiveawayCompleted
 from .giveaway_winners import GiveawayWinners
@@ -72,6 +73,7 @@ __all__ = [
     "Dice",
     "Document",
     "Game",
+    "PaymentForm",
     "GiftCode",
     "GiftedPremium",
     "GiftedStars",

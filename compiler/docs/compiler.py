@@ -393,6 +393,8 @@ def pyrogram_api():
             refund_star_payment
             get_business_connection
             get_collectible_item_info
+            get_payment_form
+            send_payment_form
         """,
         advanced="""
         Advanced
@@ -651,6 +653,7 @@ def pyrogram_api():
             ShippingAddress
             OrderInfo
             ShippingOption
+            PaymentForm
             SuccessfulPayment
             RefundedPayment
             ShippingQuery
@@ -726,6 +729,7 @@ def pyrogram_api():
             Message.read
             Message.view
             Message.translate
+            Message.pay
         """,
         chat="""
         Chat

@@ -5233,3 +5233,29 @@ class Message(Object, Update):
             message_ids=self.id,
             to_language_code=to_language_code
         )
+
+
+    async def pay(self) -> bool:
+        """Bound method *pay* of :obj:`~pyrogram.types.Message`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.send_payment_form(
+                chat_id=message.chat.id,
+                message_id=message_id
+            )
+
+        Example:
+            .. code-block:: python
+
+                await message.pay()
+
+        Returns:
+            True on success.
+        """
+        return await self._client.send_payment_form(
+            chat_id=self.chat.id,
+            message_id=self.id
+        )

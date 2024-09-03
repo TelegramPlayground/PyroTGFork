@@ -23,6 +23,8 @@ from .get_business_connection import GetBusinessConnection
 from .get_collectible_item_info import GetCollectibleItemInfo
 from .refund_star_payment import RefundStarPayment
 from .send_invoice import SendInvoice
+from .get_payment_from import GetPaymentForm
+from .send_payment_from import SendPaymentForm
 
 
 class TelegramBusiness(
@@ -33,5 +35,7 @@ class TelegramBusiness(
     GetCollectibleItemInfo,
     RefundStarPayment,
     SendInvoice,
+    GetPaymentForm,
+    SendPaymentForm,
 ):
     pass
