@@ -300,10 +300,8 @@ class Message(Object, Update):
         general_forum_topic_unhidden (:obj:`~pyrogram.types.GeneralForumTopicUnhidden`, *optional*):
             Service message: the 'General' forum topic unhidden
 
-        giveaway_created (``bool``, *optional*):
-            Service message: a scheduled giveaway was created.
-            This object represents a service message about the creation of a scheduled giveaway.
-            Currently holds no information.
+        giveaway_created (:obj:`~pyrogram.types.GiveawayCreated`, *optional*):
+            Service message: a scheduled giveaway was created
 
         giveaway (:obj:`~pyrogram.types.Giveaway`, *optional*):
             The message is a scheduled giveaway message
@@ -490,7 +488,7 @@ class Message(Object, Update):
         forum_topic_reopened: "types.ForumTopicReopened" = None,
         general_forum_topic_hidden: "types.GeneralForumTopicHidden" = None,
         general_forum_topic_unhidden: "types.GeneralForumTopicUnhidden" = None,
-        giveaway_created: bool = None,
+        giveaway_created: "types.GiveawayCreated" = None,
         giveaway: "types.Giveaway" = None,
         giveaway_winners: "types.GiveawayWinners" = None,
         giveaway_completed: "types.GiveawayCompleted" = None,
@@ -780,7 +778,9 @@ class Message(Object, Update):
                 web_app_data = types.WebAppData._parse(action)
                 service_type = enums.MessageServiceType.WEB_APP_DATA
             elif isinstance(action, raw.types.MessageActionGiveawayLaunch):
-                giveaway_created = True
+                giveaway_created = types.GiveawayCreated._parse(
+                    client, action
+                )
                 service_type = enums.MessageServiceType.GIVEAWAY_CREATED
             elif isinstance(action, raw.types.MessageActionGiftCode):
                 gift_code = types.GiftCode._parse(client, action, chats)

@@ -48,6 +48,9 @@ class GiveawayWinners(Object):
         additional_chat_count (``int``, *optional*):
             The number of other chats the user had to join in order to be eligible for the giveaway
 
+        prize_star_count (``int``, *optional*):
+            The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only
+
         premium_subscription_month_count (``int``, *optional*):
             The number of months the Telegram Premium subscription won from the giveaway will be active for
 
@@ -75,6 +78,7 @@ class GiveawayWinners(Object):
         winner_count: int,
         winners: List["types.User"],
         additional_chat_count: int = None,
+        prize_star_count: int = None,
         premium_subscription_month_count: int = None,
         unclaimed_prize_count: int = None,
         only_new_members: bool = None,
@@ -89,6 +93,7 @@ class GiveawayWinners(Object):
         self.winner_count = winner_count
         self.winners = winners
         self.additional_chat_count = additional_chat_count
+        self.prize_star_count = prize_star_count
         self.premium_subscription_month_count = premium_subscription_month_count
         self.unclaimed_prize_count = unclaimed_prize_count
         self.only_new_members = only_new_members
@@ -119,6 +124,7 @@ class GiveawayWinners(Object):
                     for user_id in giveaway_media.winners
                 ),
                 additional_chat_count=getattr(giveaway_media, "additional_peers_count", None),
+                prize_star_count=giveaway_media.stars,
                 premium_subscription_month_count=giveaway_media.months,
                 unclaimed_prize_count=getattr(giveaway_media, "unclaimed_count", None),
                 only_new_members=getattr(giveaway_media, "only_new_subscribers", None),

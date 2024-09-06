@@ -54,6 +54,7 @@ from .chat_boost_added import ChatBoostAdded
 from .story import Story
 from .payment_from import PaymentForm
 from .giveaway import Giveaway
+from .giveaway_created import GiveawayCreated
 from .giveaway_completed import GiveawayCompleted
 from .giveaway_winners import GiveawayWinners
 from .gift_code import GiftCode

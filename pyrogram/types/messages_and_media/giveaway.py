@@ -50,7 +50,10 @@ class Giveaway(Object):
         
         country_codes (``str``, *optional*):
             A list of two-letter `ISO 3166-1 alpha-2 <https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2>`_ country codes indicating the countries from which eligible users for the giveaway must come. If empty, then all users can participate in the giveaway. Users with a phone number that was bought on Fragment can always participate in giveaways.
-        
+
+        prize_star_count (``int``, *optional*):
+            The number of Telegram Stars to be split between giveaway winners; for Telegram Star giveaways only
+
         premium_subscription_month_count (``int``, *optional*):
             The number of months the Telegram Premium subscription won from the giveaway will be active for
 
@@ -67,6 +70,7 @@ class Giveaway(Object):
         has_public_winners: bool = None,
         prize_description: str = None,
         country_codes: List[str] = None,
+        prize_star_count: int = None,
         premium_subscription_month_count: int = None
     ):
         super().__init__(client)
@@ -78,6 +82,7 @@ class Giveaway(Object):
         self.has_public_winners = has_public_winners
         self.prize_description = prize_description
         self.country_codes = country_codes
+        self.prize_star_count = prize_star_count
         self.premium_subscription_month_count = premium_subscription_month_count
 
 
@@ -100,5 +105,6 @@ class Giveaway(Object):
                 has_public_winners=getattr(giveaway_media, "winners_are_visible", None),
                 prize_description=getattr(giveaway_media, "prize_description", None),
                 country_codes=giveaway_media.countries_iso2 or None,
+                prize_star_count=giveaway_media.stars,
                 premium_subscription_month_count=giveaway_media.months
             )
