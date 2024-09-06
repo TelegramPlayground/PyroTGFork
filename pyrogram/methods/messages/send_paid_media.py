@@ -37,6 +37,7 @@ class SendPaidMedia:
             "types.InputPaidMediaPhoto",
             "types.InputPaidMediaVideo"
         ]],
+        payload: str = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
@@ -67,7 +68,10 @@ class SendPaidMedia:
 
             media (List of :obj:`~pyrogram.types.InputPaidMedia`):
                 A list describing the media to be sent; up to 10 items.
-                
+            
+            payload (``str``, *optional*):
+                Bot-defined paid media payload, 0-128 bytes. This will not be displayed to the user, use it for your internal processes.
+
             caption (``str``, *optional*):
                 Media caption, 0-1024 characters after entities parsing.
 
@@ -252,7 +256,8 @@ class SendPaidMedia:
             peer=await self.resolve_peer(chat_id),
             media=raw.types.InputMediaPaidMedia(
                 stars_amount=star_count,
-                extended_media=multi_media
+                extended_media=multi_media,
+                payload=payload
             ),
             silent=disable_notification or None,
             random_id=self.rnd_id(),
