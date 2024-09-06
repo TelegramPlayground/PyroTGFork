@@ -79,6 +79,7 @@ __all__ = [
     "GiftedPremium",
     "GiftedStars",
     "Giveaway",
+    "GiveawayCreated",
     "GiveawayCompleted",
     "GiveawayWinners",
     "Location",

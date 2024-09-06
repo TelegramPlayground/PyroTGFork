@@ -515,6 +515,7 @@ def pyrogram_api():
             GiftedPremium
             GiftedStars
             Giveaway
+            GiveawayCreated
             GiveawayCompleted
             GiveawayWinners
             MessageEffect
