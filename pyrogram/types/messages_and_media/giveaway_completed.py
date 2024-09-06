@@ -39,6 +39,9 @@ class GiveawayCompleted(Object):
         giveaway_message (:obj:`~pyrogram.types.Message`, *optional*):
             Message with the giveaway that was completed, if it wasn't deleted
 
+        is_star_giveaway (``bool``, *optional*):
+            True, if the giveaway is a Telegram Star giveaway. Otherwise, currently, the giveaway is a Telegram Premium giveaway.
+
     """
 
     def __init__(
@@ -47,13 +50,15 @@ class GiveawayCompleted(Object):
         client: "pyrogram.Client" = None,
         winner_count: int,
         unclaimed_prize_count: int = None,
-        giveaway_message: "types.Message" = None
+        giveaway_message: "types.Message" = None,
+        is_star_giveaway: bool = None
     ):
         super().__init__(client)
 
         self.winner_count = winner_count
         self.unclaimed_prize_count = unclaimed_prize_count
         self.giveaway_message = giveaway_message
+        self.is_star_giveaway = is_star_giveaway
 
 
     @staticmethod
@@ -70,5 +75,6 @@ class GiveawayCompleted(Object):
                 giveaway_message=types.Message(
                     client=client,
                     id=message_id
-                ) if message_id else None
+                ) if message_id else None,
+                is_star_giveaway=getattr(giveaway_results, "stars", None),
             )

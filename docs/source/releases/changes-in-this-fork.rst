@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 187 |
 +------------------------+
 
+- Added the field ``is_star_giveaway`` to the class :obj:`~pyrogram.types.GiveawayCompleted`.
 - Added the ability to specify a payload in :meth:`~pyrogram.Client.send_paid_media` that is unused currently.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=186&to=187>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=186&to=187>`__.
 
