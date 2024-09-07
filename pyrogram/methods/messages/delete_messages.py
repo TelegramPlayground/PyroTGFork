@@ -93,7 +93,9 @@ class DeleteMessages:
             )
             for i in r.updates:
                 if isinstance(i, raw.types.UpdateDeleteScheduledMessages):
-                    return len(i.messages)
+                    return len(
+                        getattr(i, "messages", [])
+                    )
         else:
             if isinstance(peer, raw.types.InputPeerChannel):
                 r = await self.invoke(
@@ -110,4 +112,4 @@ class DeleteMessages:
                     )
                 )
 
-            return r.pts_count
+            return getattr(r, "pts_count", 0)
