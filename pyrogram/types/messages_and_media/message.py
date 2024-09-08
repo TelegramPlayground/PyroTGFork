@@ -5235,7 +5235,11 @@ class Message(Object, Update):
         )
 
 
-    async def pay(self) -> bool:
+    async def pay(self) -> Union[
+        bool,
+        List["types.PaidMediaPhoto"],
+        List["types.PaidMediaVideo"]
+    ]:
         """Bound method *pay* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -5253,7 +5257,8 @@ class Message(Object, Update):
                 await message.pay()
 
         Returns:
-            True on success.
+            ``bool`` | List of :obj:`~pyrogram.types.PaidMediaPhoto` | List of :obj:`~pyrogram.types.PaidMediaVideo`: On success, the list of bought photos and videos is returned.
+
         """
         return await self._client.send_payment_form(
             chat_id=self.chat.id,

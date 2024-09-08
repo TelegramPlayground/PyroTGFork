@@ -16,19 +16,24 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import List, Union
 
 import pyrogram
-from pyrogram import raw
+from pyrogram import raw, types
 
 
 class SendPaymentForm:
     async def send_payment_form(
-            self: "pyrogram.Client", *,
+            self: "pyrogram.Client",
+            *,
             chat_id: Union[int, str] = None,
             message_id: int = None,
             invoice_link: str = None
-    ) -> bool:
+    ) -> Union[
+        bool,
+        List["types.PaidMediaPhoto"],
+        List["types.PaidMediaVideo"]
+    ]:
         """Pay an invoice.
 
         .. note::
@@ -49,7 +54,7 @@ class SendPaymentForm:
                 Pass a invoice link in form of a *t.me/$...* link or slug itself to pay this invoice.
 
         Returns:
-            ``bool``: On success, True is returned.
+            ``bool`` | List of :obj:`~pyrogram.types.PaidMediaPhoto` | List of :obj:`~pyrogram.types.PaidMediaVideo`: On success, the list of bought photos and videos is returned.
 
         Example:
             .. code-block:: python
@@ -85,7 +90,7 @@ class SendPaymentForm:
         form = await self.get_payment_form(chat_id=chat_id, message_id=message_id, invoice_link=invoice_link)
 
         # if form.invoice.currency == "XTR":
-        await self.invoke(
+        r = await self.invoke(
             raw.functions.payments.SendStarsForm(
                 form_id=form.id,
                 invoice=invoice
@@ -101,4 +106,16 @@ class SendPaymentForm:
         #         )
         #     )
 
-        return True
+        medias = []
+        if isinstance(r, raw.types.payments.PaymentResult):
+            for i in r.updates.updates:
+                if isinstance(i, raw.types.UpdateMessageExtendedMedia):
+                    for ext_media in i.extended_media:
+                        paid_media = types.PaidMedia._parse(
+                            self,
+                            ext_media
+                        )
+                        if paid_media:
+                            medias.append(paid_media)
+
+        return types.List(medias) if medias else True

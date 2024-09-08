@@ -241,6 +241,7 @@ MAX_DATE_INVALID	The specified maximum date is invalid.
 MAX_ID_INVALID	The provided max ID is invalid.
 MAX_QTS_INVALID	The specified max_qts is invalid.
 MD5_CHECKSUM_INVALID	The MD5 checksums do not match.
+MEDIA_ALREADY_PAID	The specified paid media is already paid.
 MEDIA_CAPTION_TOO_LONG	The caption is too long.
 MEDIA_EMPTY	The provided media object is invalid.
 MEDIA_FILE_INVALID	The specified media file is invalid.
