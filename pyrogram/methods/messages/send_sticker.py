@@ -39,7 +39,7 @@ class SendSticker:
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
-        # emoji: str = None,
+        emoji: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         message_thread_id: int = None,
@@ -52,8 +52,8 @@ class SendSticker:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None,
         schedule_date: datetime = None,
+        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> Optional["types.Message"]:
@@ -84,7 +84,7 @@ class SendSticker:
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
-            emoji (``str``, *optional*):  // UNUSED CURRENTLY
+            emoji (``str``, *optional*):
                 Emoji associated with the sticker; only for just uploaded stickers
 
             disable_notification (``bool``, *optional*):
@@ -174,6 +174,10 @@ class SendSticker:
                         file=file,
                         attributes=[
                             raw.types.DocumentAttributeFilename(file_name=os.path.basename(sticker)),
+                            raw.types.DocumentAttributeSticker(
+                                alt=emoji,
+                                stickerset=raw.types.InputStickerSetEmpty()
+                            ),
                         ]
                     )
                 elif re.match("^https?://", sticker):
@@ -189,6 +193,10 @@ class SendSticker:
                     file=file,
                     attributes=[
                         raw.types.DocumentAttributeFilename(file_name=sticker.name),
+                        raw.types.DocumentAttributeSticker(
+                            alt=emoji,
+                            stickerset=raw.types.InputStickerSetEmpty()
+                        ),
                     ]
                 )
 

@@ -2983,6 +2983,10 @@ class Message(Object, Update):
         self,
         sticker: Union[str, BinaryIO],
         quote: bool = None,
+        caption: str = "",
+        parse_mode: Optional["enums.ParseMode"] = None,
+        caption_entities: List["types.MessageEntity"] = None,
+        emoji: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         message_effect_id: int = None,
@@ -3025,6 +3029,19 @@ class Message(Object, Update):
                 If ``True``, the message will be sent as a reply to this message.
                 If *reply_to_message_id* is passed, this parameter will be ignored.
                 Defaults to ``True`` in group chats and ``False`` in private chats.
+
+            caption (``str``, *optional*):
+                Photo caption, 0-1024 characters.
+
+            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
+            emoji (``str``, *optional*):
+                Emoji associated with the sticker; only for just uploaded stickers
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -3087,6 +3104,10 @@ class Message(Object, Update):
         return await self._client.send_sticker(
             chat_id=self.chat.id,
             sticker=sticker,
+            caption=caption,
+            parse_mode=parse_mode,
+            caption_entities=caption_entities,
+            emoji=emoji,
             disable_notification=disable_notification,
             protect_content=protect_content,
             message_thread_id=self.message_thread_id,

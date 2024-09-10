@@ -14,6 +14,8 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 187 |
 +------------------------+
 
+- Added the parameter ``emoji`` in :meth:`~pyrogram.Client.send_sticker` and :meth:`~pyrogram.types.Message.reply_sticker`. `#86 <https://github.com/KurimuzonAkuma/pyrogram/pull/86>`__.
+
 - Added the field ``prize_star_count`` to the classes :obj:`~pyrogram.types.GiveawayCreated`, :obj:`~pyrogram.types.Giveaway`, :obj:`~pyrogram.types.GiveawayWinners`.
 - Added the field ``is_star_giveaway`` to the class :obj:`~pyrogram.types.GiveawayCompleted`.
 - Added the ability to specify a payload in :meth:`~pyrogram.Client.send_paid_media` that is unused currently.
