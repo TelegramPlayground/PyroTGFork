@@ -644,17 +644,29 @@ class Message(Object, Update):
         business_connection_id: str = None,
         raw_reply_to_message: raw.base.Message = None
     ):
+        peer_id = utils.get_raw_peer_id(message.peer_id)
+
         if isinstance(message, raw.types.MessageEmpty):
+            sender_chat = None
+            if isinstance(message.peer_id, raw.types.PeerUser):
+                sender_chat = types.Chat._parse_user_chat(client, users[peer_id])
+
+            elif isinstance(message.peer_id, raw.types.PeerChat):
+                sender_chat = types.Chat._parse_chat_chat(client, chats[peer_id])
+
+            else:
+                sender_chat = types.Chat._parse_channel_chat(client, chats[peer_id])
+
             return Message(
                 id=message.id,
                 empty=True,
+                chat=sender_chat,
                 business_connection_id=business_connection_id if business_connection_id else None,
                 client=client,
                 _raw=message
             )
 
         from_id = utils.get_raw_peer_id(message.from_id)
-        peer_id = utils.get_raw_peer_id(message.peer_id)
         user_id = from_id or peer_id
 
         if isinstance(message.from_id, raw.types.PeerUser) and isinstance(message.peer_id, raw.types.PeerUser):
@@ -1372,6 +1384,7 @@ class Message(Object, Update):
     @property
     def link(self) -> str:
         if (
+            self.chat and
             self.chat.type in {
                 enums.ChatType.SUPERGROUP,
                 enums.ChatType.CHANNEL
