@@ -78,6 +78,9 @@ class InlineKeyboardButton(Object):
 
             **NOTE**: This type of button **must** always be the first button in the first row and can only be used in invoice messages.
 
+        copy_text (``str``, *optional*):
+            TODO, documentation
+
         callback_data_with_password (``bytes``, *optional*):
             A button that asks for the 2-step verification password of the current user and then sends a callback query to a bot Data to be sent to the bot via a callback query.
 
@@ -96,6 +99,7 @@ class InlineKeyboardButton(Object):
         switch_inline_query_chosen_chat: "types.SwitchInlineQueryChosenChat" = None,
         callback_game: "types.CallbackGame" = None,
         pay: bool = None,
+        copy_text: str = None,  # TODO: name might be changed in future
         callback_data_with_password: bytes = None
     ):
         super().__init__()
@@ -111,6 +115,7 @@ class InlineKeyboardButton(Object):
         self.switch_inline_query_chosen_chat = switch_inline_query_chosen_chat
         self.callback_game = callback_game
         self.pay = pay
+        self.copy_text = copy_text
         self.callback_data_with_password = callback_data_with_password
 
     @staticmethod
@@ -189,6 +194,12 @@ class InlineKeyboardButton(Object):
                 pay=True
             )
 
+        if isinstance(b, raw.types.KeyboardButtonCopy):
+            return InlineKeyboardButton(
+                text=b.text,
+                copy_text=b.copy_text
+            )
+
     async def write(self, client: "pyrogram.Client"):
         if self.callback_data_with_password is not None:
             if isinstance(self.callback_data_with_password, str):
@@ -264,4 +275,10 @@ class InlineKeyboardButton(Object):
         ):
             return raw.types.KeyboardButtonBuy(
                 text=self.text
+            )
+
+        if self.copy_text is not None:
+            return raw.types.KeyboardButtonCopy(
+                text=self.text,
+                copy_text=self.copy_text
             )
