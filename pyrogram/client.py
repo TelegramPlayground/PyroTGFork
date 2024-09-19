@@ -1095,7 +1095,8 @@ class Client(Methods):
                         location=location,
                         offset=offset_bytes,
                         limit=chunk_size
-                    )
+                    ),
+                    sleep_threshold=self.sleep_threshold
                 )
 
                 if isinstance(r, raw.types.upload.File):
