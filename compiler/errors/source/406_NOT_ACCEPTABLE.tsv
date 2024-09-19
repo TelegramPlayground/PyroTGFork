@@ -2,6 +2,7 @@ id	message
 AUTH_KEY_DUPLICATED	The same authorization key (session file) was used in more than one place simultaneously. You must delete your session file and log in again with your phone number or bot token
 BANNED_RIGHTS_INVALID	You provided some invalid flags in the banned rights.
 BOT_PRECHECKOUT_FAILED	Bot precheckout failed.
+BUSINESS_ADDRESS_ACTIVE	The user is currently advertising a [Business Location](https://core.telegram.org/api/business#location), the location may only be changed (or removed) using [account.updateBusinessLocation »](https://core.telegram.org/method/account.updateBusinessLocation).  .
 CALL_PROTOCOL_COMPAT_LAYER_INVALID	The other side of the call does not support any of the VoIP protocols supported by the local client, as specified by the `protocol.layer` and `protocol.library_versions` fields.
 CHANNEL_PRIVATE	You haven't joined this channel/supergroup.
 CHANNEL_TOO_LARGE	Channel is too large to be deleted; this error is issued when trying to delete channels with more than 1000 members (subject to change).
@@ -14,6 +15,7 @@ INVITE_HASH_EXPIRED	The invite link has expired.
 PAYMENT_UNSUPPORTED	A detailed description of the error will be received separately as described [here](https://core.telegram.org/api/errors#406-not-acceptable).
 PHONE_NUMBER_INVALID	The phone number is invalid.
 PHONE_PASSWORD_FLOOD	You have tried logging in too many times.
+PREMIUM_CURRENTLY_UNAVAILABLE	You cannot currently purchase a Premium subscription.
 PREVIOUS_CHAT_IMPORT_ACTIVE_WAIT_XMIN	Import for this chat is already in progress, wait {value} minutes before starting a new one.
 PRIVACY_PREMIUM_REQUIRED	You need a [Telegram Premium subscription](https://core.telegram.org/api/premium) to send a message to this user.
 SEND_CODE_UNAVAILABLE	Returned when all available options for this type of number were already used (e.g. flash-call, then SMS, then this error might be returned to trigger a second resend).
@@ -21,6 +23,7 @@ STICKERSET_INVALID	The provided sticker set is invalid.
 STICKERSET_OWNER_ANONYMOUS	Provided stickerset can't be installed as group stickerset to prevent admin deanonymization.
 TOPIC_CLOSED	This topic was closed, you can't send messages to it anymore.
 TOPIC_DELETED	The specified topic was deleted.
+UPDATE_APP_TO_LOGIN	Please update to the latest version of MadelineProto to login.
 USERPIC_PRIVACY_REQUIRED	You need to disable privacy settings for your profile picture in order to make your geolocation public.
 USERPIC_UPLOAD_REQUIRED	You must have a profile picture to publish your geolocation.
 USER_RESTRICTED	You're spamreported, you can't create channels or chats.

@@ -2,6 +2,7 @@ id	message
 ANONYMOUS_REACTIONS_DISABLED	Sorry, anonymous administrators cannot leave reactions or participate in polls.
 BROADCAST_FORBIDDEN	Channel poll voters and reactions cannot be fetched to prevent deanonymization.
 CHANNEL_PUBLIC_GROUP_NA	channel/supergroup not available.
+CHAT_ACTION_FORBIDDEN	You cannot execute this action.
 CHAT_ADMIN_INVITE_REQUIRED	You do not have the rights to do this.
 CHAT_ADMIN_REQUIRED	You must be an admin in this chat to do this.
 CHAT_FORBIDDEN	You cannot write in this chat
@@ -41,6 +42,8 @@ USER_DELETED	You can't send this secret message because the other participant de
 USER_INVALID	Invalid user provided.
 USER_IS_BLOCKED	You were blocked by this user.
 USER_NOT_MUTUAL_CONTACT	The provided user is not a mutual contact.
+USER_NOT_PARTICIPANT	You're not a member of this supergroup/channel.
 USER_PRIVACY_RESTRICTED	The user's privacy settings do not allow you to do this.
 USER_RESTRICTED	You're spamreported, you can't create channels or chats.
 VOICE_MESSAGES_FORBIDDEN	This user's privacy settings forbid you from sending voice messages.
+YOUR_PRIVACY_RESTRICTED	You cannot fetch the read date of this message because you have disallowed other users to do so for *your* messages; to fix, allow other users to see *your* exact last online date OR purchase a [Telegram Premium](https://core.telegram.org/api/premium) subscription.
