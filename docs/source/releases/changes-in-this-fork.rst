@@ -11,11 +11,20 @@ it can take advantage of new goodies!
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
 +------------------------+
+| Scheme layer used: 188 |
++------------------------+
+
+- Add ``copy_text`` to :obj:`~pyrogram.types.InlineKeyboardButton`.
+- Fix ``chat`` being None in some cases in the :obj:`~pyrogram.types.Message`.
+- Fix deleting messages does not return the count in some cases.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=187&to=188>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=187&to=188>`__.
+
++------------------------+
 | Scheme layer used: 187 |
 +------------------------+
 
 - Added the parameter ``emoji`` in :meth:`~pyrogram.Client.send_sticker` and :meth:`~pyrogram.types.Message.reply_sticker`. `#86 <https://github.com/KurimuzonAkuma/pyrogram/pull/86>`__.
-
+- `Return list of photos and videos instead of bool in send_payment_form <https://github.com/KurimuzonAkuma/pyrogram/commit/6684eaf4273b0f2084a8709e2e852486f17cb67c>`__.
 - Added the field ``prize_star_count`` to the classes :obj:`~pyrogram.types.GiveawayCreated`, :obj:`~pyrogram.types.Giveaway`, :obj:`~pyrogram.types.GiveawayWinners`.
 - Added the field ``is_star_giveaway`` to the class :obj:`~pyrogram.types.GiveawayCompleted`.
 - Added the ability to specify a payload in :meth:`~pyrogram.Client.send_paid_media` that is unused currently.
