@@ -64,6 +64,7 @@ class SendPoll:
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
+
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
@@ -154,7 +155,17 @@ class SendPoll:
         Example:
             .. code-block:: python
 
-                await app.send_poll(chat_id, "Is this a poll question?", ["Yes", "No", "Maybe"])
+                from pyrogram.types import InputPollOption
+                await app.send_poll(
+                    chat_id=chat_id,
+                    question="Is this a poll question?",
+                    options=[
+                        InputPollOption(text="Yes"),
+                        InputPollOption(text="No"),
+                        InputPollOption(text= "Maybe"),
+                    ]
+                )
+
         """
 
         if reply_to_message_id and reply_parameters:
@@ -186,9 +197,12 @@ class SendPoll:
 
         answers = []
         for i, answer_ in enumerate(options):
-            answer, answer_entities = (await utils.parse_text_entities(self, answer_.text, answer_.text_parse_mode, answer_.text_entities)).values()
-            if not answer_entities:
-                answer_entities = []
+            if isinstance(answer_, str):
+                answer, answer_entities = answer_, []
+            else:
+                answer, answer_entities = (await utils.parse_text_entities(self, answer_.text, answer_.text_parse_mode, answer_.text_entities)).values()
+                if not answer_entities:
+                    answer_entities = []
             answers.append(
                 raw.types.PollAnswer(
                     text=raw.types.TextWithEntities(

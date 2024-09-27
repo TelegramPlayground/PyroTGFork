@@ -2866,15 +2866,27 @@ class Message(Object, Update):
             await client.send_poll(
                 chat_id=message.chat.id,
                 question="This is a poll",
-                options=["A", "B", "C]
+                options=[
+                    InputPollOption(text="A"),
+                    InputPollOption(text="B"),
+                    InputPollOption(text= "C"),
+                ]
             )
 
         Example:
             .. code-block:: python
 
-                await message.reply_poll("This is a poll", ["A", "B", "C"])
+                await message.reply_poll(
+                    question="This is a poll",
+                    options=[
+                        InputPollOption(text="A"),
+                        InputPollOption(text="B"),
+                        InputPollOption(text= "C"),
+                    ]
+                )
 
         Parameters:
+
             question (``str``):
                 Poll question, 1-255 characters.
 
