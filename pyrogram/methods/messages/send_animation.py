@@ -144,9 +144,8 @@ class SendAnimation:
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the animation will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+                The message will be self-destructed in the specified time after its content was opened.
+                The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,

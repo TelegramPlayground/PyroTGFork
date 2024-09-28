@@ -122,7 +122,7 @@ class SendVoice:
                 seconds after it was viewed.
 
             view_once (``bool``, *optional*):
-                Pass True if the photo should be viewable only once.
+                Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
             waveform (``bytes``, *optional*):
                 no docs!

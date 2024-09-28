@@ -94,9 +94,8 @@ class SendPhoto:
                 Pass True if the photo needs to be covered with a spoiler animation.
 
             ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the photo will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+                The message will be self-destructed in the specified time after its content was opened.
+                The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -118,7 +117,7 @@ class SendPhoto:
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             view_once (``bool``, *optional*):
-                Pass True if the photo should be viewable only once.
+                Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.

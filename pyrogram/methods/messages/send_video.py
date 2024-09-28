@@ -142,12 +142,11 @@ class SendVideo:
                 instructions to remove reply keyboard or to force a reply from the user.
 
             ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the video will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+                The message will be self-destructed in the specified time after its content was opened.
+                The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
 
             view_once (``bool``, *optional*):
-                Pass True if the photo should be viewable only once.
+                Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
             file_name (``str``, *optional*):
                 File name of the video sent.

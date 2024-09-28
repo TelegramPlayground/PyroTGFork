@@ -79,7 +79,7 @@ class InlineKeyboardButton(Object):
             **NOTE**: This type of button **must** always be the first button in the first row and can only be used in invoice messages.
 
         copy_text (``str``, *optional*):
-            TODO, documentation
+            A button that copies the text to the clipboard. 1-255 bytes.
 
         callback_data_with_password (``bytes``, *optional*):
             A button that asks for the 2-step verification password of the current user and then sends a callback query to a bot Data to be sent to the bot via a callback query.
@@ -99,7 +99,7 @@ class InlineKeyboardButton(Object):
         switch_inline_query_chosen_chat: "types.SwitchInlineQueryChosenChat" = None,
         callback_game: "types.CallbackGame" = None,
         pay: bool = None,
-        copy_text: str = None,  # TODO: name might be changed in future
+        copy_text: str = None,
         callback_data_with_password: bytes = None
     ):
         super().__init__()

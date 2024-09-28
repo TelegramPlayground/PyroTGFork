@@ -1653,9 +1653,8 @@ class Message(Object, Update):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the animation will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+                The message will be self-destructed in the specified time after its content was opened.
+                The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -2739,9 +2738,8 @@ class Message(Object, Update):
                 Pass True if the photo needs to be covered with a spoiler animation.
 
             ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the photo will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+                The message will be self-destructed in the specified time after its content was opened.
+                The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -2760,7 +2758,7 @@ class Message(Object, Update):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
             view_once (``bool``, *optional*):
-                Pass True if the photo should be viewable only once.
+                Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -3379,12 +3377,11 @@ class Message(Object, Update):
                 instructions to remove reply keyboard or to force a reply from the user.
 
             ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the video will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+                The message will be self-destructed in the specified time after its content was opened.
+                The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
 
             view_once (``bool``, *optional*):
-                Pass True if the photo should be viewable only once.
+                Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
             file_name (``str``, *optional*):
                 File name of the video sent.
@@ -3558,12 +3555,11 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the video note will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+                The message will be self-destructed in the specified time after its content was opened.
+                The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
 
             view_once (``bool``, *optional*):
-                Pass True if the photo should be viewable only once.
+                Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -3715,12 +3711,11 @@ class Message(Object, Update):
                 Date when the message will be automatically sent.
 
             ttl_seconds (``int``, *optional*):
-                Self-Destruct Timer.
-                If you set a timer, the voice message will self-destruct in *ttl_seconds*
-                seconds after it was viewed.
+                The message will be self-destructed in the specified time after its content was opened.
+                The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
 
             view_once (``bool``, *optional*):
-                Pass True if the photo should be viewable only once.
+                Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
             waveform (``bytes``, *optional*):
                 no docs!
