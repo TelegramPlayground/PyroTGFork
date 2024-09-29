@@ -175,7 +175,7 @@ class SendSticker:
                         attributes=[
                             raw.types.DocumentAttributeFilename(file_name=os.path.basename(sticker)),
                             raw.types.DocumentAttributeSticker(
-                                alt=emoji,
+                                alt=emoji or "",
                                 stickerset=raw.types.InputStickerSetEmpty()
                             ),
                         ]
@@ -194,7 +194,7 @@ class SendSticker:
                     attributes=[
                         raw.types.DocumentAttributeFilename(file_name=sticker.name),
                         raw.types.DocumentAttributeSticker(
-                            alt=emoji,
+                            alt=emoji or "",
                             stickerset=raw.types.InputStickerSetEmpty()
                         ),
                     ]

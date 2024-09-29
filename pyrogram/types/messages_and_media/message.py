@@ -279,6 +279,12 @@ class Message(Object, Update):
         chat_shared (:obj:`~pyrogram.types.ChatShared`, *optional*):
             Service message: a chat was shared with the bot
 
+        connected_website (``str``, *optional*):
+            The domain name of the website on which the user has logged in. `More about Telegram Login <https://core.telegram.org/widgets/login>`__
+
+        write_access_allowed (:obj:`~pyrogram.types.WriteAccessAllowed`, *optional*):
+            Service message: the user allowed the bot to write messages after adding it to the attachment or side menu, launching a Web App from a link, or accepting an explicit request from a Web App sent by the method `requestWriteAccess <https://core.telegram.org/bots/webapps#initializing-mini-apps>`__
+
         boost_added (:obj:`~pyrogram.types.ChatBoostAdded`, *optional*):
             Service message: user boosted the chat
 
@@ -406,7 +412,7 @@ class Message(Object, Update):
 
     """
 
-    # TODO: Add game missing field. Also connected_website
+    # TODO: Add game missing field.
 
     def __init__(
         self,
@@ -476,9 +482,8 @@ class Message(Object, Update):
         refunded_payment: "types.RefundedPayment" = None,
         users_shared: "types.UsersShared" = None,
         chat_shared: "types.ChatShared" = None,
-
-
-
+        connected_website: str = None,
+        write_access_allowed: "types.WriteAccessAllowed" = None,
 
 
         boost_added: "types.ChatBoostAdded" = None,
@@ -611,6 +616,8 @@ class Message(Object, Update):
         self.giveaway_created = giveaway_created
         self.users_shared = users_shared
         self.chat_shared = chat_shared
+        self.connected_website = connected_website
+        self.write_access_allowed = write_access_allowed
         self.giveaway_completed = giveaway_completed
         self.giveaway_winners = giveaway_winners
         self.gift_code = gift_code
@@ -713,6 +720,8 @@ class Message(Object, Update):
             giveaway_created = None
             users_shared = None
             chat_shared = None
+            connected_website = None
+            write_access_allowed = None
             message_auto_delete_timer_changed = None
             boost_added = None
             giveaway_completed = None
@@ -969,6 +978,14 @@ class Message(Object, Update):
                         service_type = enums.MessageServiceType.FORUM_TOPIC_REOPENED
                         forum_topic_reopened = types.ForumTopicReopened()
 
+            elif isinstance(action, raw.types.MessageActionBotAllowed):
+                connected_website = getattr(action, "domain", None)
+                if connected_website:
+                    service_type = enums.MessageServiceType.CONNECTED_WEBSITE
+                else:
+                    write_access_allowed = types.WriteAccessAllowed._parse(action)
+                    service_type = enums.MessageServiceType.WRITE_ACCESS_ALLOWED
+
             parsed_message = Message(
                 id=message.id,
                 date=utils.timestamp_to_datetime(message.date),
@@ -998,6 +1015,8 @@ class Message(Object, Update):
                 gifted_stars=gifted_stars,
                 users_shared=users_shared,
                 chat_shared=chat_shared,
+                connected_website=connected_website,
+                write_access_allowed=write_access_allowed,
                 successful_payment=successful_payment,
                 message_auto_delete_timer_changed=message_auto_delete_timer_changed,
                 boost_added=boost_added,

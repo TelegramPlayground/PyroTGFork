@@ -64,6 +64,7 @@ from .message_effect import MessageEffect
 from .screenshot_taken import ScreenshotTaken
 from .translated_text import TranslatedText
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
+from .write_access_allowed import WriteAccessAllowed
 
 __all__ = [
     "Animation",
@@ -110,6 +111,7 @@ __all__ = [
     "Voice",
     "WebAppData",
     "WebPage",
+    "WriteAccessAllowed",
     "ScreenshotTaken",
     "TranslatedText",
 ]

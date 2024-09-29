@@ -448,6 +448,7 @@ def pyrogram_api():
             Chat
             Username
             ChatShared
+            WriteAccessAllowed
             UsersShared
             ChatAdminWithInviteLinks
             ChatColor

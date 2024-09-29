@@ -135,5 +135,11 @@ class MessageServiceType(AutoName):
     SCREENSHOT_TAKEN = auto()
     "A screenshot of a message in the chat has been taken"
 
+    CONNECTED_WEBSITE = auto()
+    "The user connected a website by logging in using Telegram Login Widget on it"
+
+    WRITE_ACCESS_ALLOWED = auto()
+    "The user accepted webapp bot's request to send messages"
+
     UNKNOWN = auto()
     "This service message is unsupported by the current version of Pyrogram"
