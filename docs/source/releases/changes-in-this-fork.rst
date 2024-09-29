@@ -11,14 +11,14 @@ it can take advantage of new goodies!
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
 +------------------------+
-| Scheme layer used: 188 |
+| Scheme layer used: 189 |
 +------------------------+
 
 - Added the fields ``connected_website`` and ``write_access_allowed`` to the :obj:`~pyrogram.types.Message`.
 - Add ``copy_text`` to :obj:`~pyrogram.types.InlineKeyboardButton`.
 - Fix ``chat`` being None in some cases in the :obj:`~pyrogram.types.Message`.
 - Fix deleting messages does not return the count in some cases.
-- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=187&to=188>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=187&to=188>`__.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=187&to=189>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=187&to=189>`__.
 
 +------------------------+
 | Scheme layer used: 187 |
