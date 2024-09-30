@@ -3000,6 +3000,8 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             question=question,
             options=options,
+            question_parse_mode=question_parse_mode,
+            question_entities=question_entities,
             is_anonymous=is_anonymous,
             type=type,
             allows_multiple_answers=allows_multiple_answers,
