@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 189 |
 +------------------------+
 
+- Added the field ``alternative_videos`` to the :obj:`~pyrogram.types.Message`.
 - Added the fields ``connected_website`` and ``write_access_allowed`` to the :obj:`~pyrogram.types.Message`.
 - Add ``copy_text`` to :obj:`~pyrogram.types.InlineKeyboardButton`.
 - Fix ``chat`` being None in some cases in the :obj:`~pyrogram.types.Message`.

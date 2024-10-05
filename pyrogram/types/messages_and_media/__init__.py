@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .alternative_video import AlternativeVideo
 from .animation import Animation
 from .audio import Audio
 from .contact import Contact
@@ -67,6 +68,7 @@ from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .write_access_allowed import WriteAccessAllowed
 
 __all__ = [
+    "AlternativeVideo",
     "Animation",
     "Audio",
     "ChatBoostAdded",

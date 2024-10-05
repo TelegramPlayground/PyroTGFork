@@ -488,6 +488,7 @@ def pyrogram_api():
             MessageOriginChannel
             MessageImportInfo
             Photo
+            AlternativeVideo
             Animation
             Audio
             Document
