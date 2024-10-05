@@ -27,7 +27,7 @@ class VideoChatScheduled(Object):
 
     Parameters:
         start_date (:py:obj:`~datetime.datetime`):
-            Point in time when the voice chat is supposed to be started by a chat administrator.
+            Point in time when the voice chat is expected to be started by a chat administrator.
     """
 
     def __init__(
