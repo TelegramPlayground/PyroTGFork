@@ -61,6 +61,7 @@ BUSINESS_PEER_INVALID	Messages can't be set to the specified peer through the cu
 BUSINESS_RECIPIENTS_EMPTY	You didn't set any flag in inputBusinessBotRecipients, thus the bot cannot work with *any* peer.
 BUSINESS_WORK_HOURS_EMPTY	No work hours were specified.
 BUSINESS_WORK_HOURS_PERIOD_INVALID	The specified work hours are invalid, see [here »](https://core.telegram.org/api/business#opening-hours) for the exact requirements.
+BUTTON_COPY_TEXT_INVALID	The `copy_text` of one or more of the buttons you provided is invalid.
 BUTTON_DATA_INVALID	The data of one or more of the buttons you provided is invalid.
 BUTTON_ID_INVALID	The button_id parameter is invalid
 BUTTON_POS_INVALID	The position of one of the keyboard buttons is invalid (i.e. a Game or Pay button not in the first position, and so on...).
