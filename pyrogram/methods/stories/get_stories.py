@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, Iterable
+from typing import Union, Iterable, List
 
 import pyrogram
 from pyrogram import raw, types
@@ -27,7 +27,7 @@ class GetStories:
         self: "pyrogram.Client",
         story_sender_chat_id: Union[int, str],
         story_ids: Union[int, Iterable[int]],
-    ) -> "types.Story":
+    ) -> Union["types.Story", List["types.Story"]] :
         """Get one or more stories from a chat by using stories identifiers.
 
         .. include:: /_includes/usable-by/users.rst
