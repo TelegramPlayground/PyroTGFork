@@ -5349,3 +5349,50 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id
         )
+
+    async def star(
+        self,
+        star_count: int = None,
+        is_anonymous: bool = False
+    ) -> "types.MessageReactions":
+        """Bound method *star* of :obj:`~pyrogram.types.Message`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.add_paid_message_reaction(
+                chat_id=chat_id,
+                message_id=message.id,
+                star_count=1
+            )
+
+        Example:
+            .. code-block:: python
+
+                # Add a paid reaction to a message
+                await message.star(1)
+
+                # Add an anonymous paid reaction to a message
+                await message.star(1, True)
+
+        Parameters:
+            star_count (``int``, *optional*):
+                Number of Telegram Stars to be used for the reaction; 1-2500.
+
+            is_anonymous (``bool``, *optional*):
+                Pass True to make paid reaction of the user on the message anonymous; pass False to make the user's profile visible among top reactors.
+                Defaults to False.
+
+        Returns:
+            On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+        """
+        return await self._client.add_paid_message_reaction(
+            chat_id=self.chat.id,
+            message_id=self.id,
+            star_count=star_count,
+            is_anonymous=is_anonymous
+        )

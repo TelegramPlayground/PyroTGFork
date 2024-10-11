@@ -733,6 +733,7 @@ def pyrogram_api():
             Message.view
             Message.translate
             Message.pay
+            Message.star
         """,
         chat="""
         Chat
