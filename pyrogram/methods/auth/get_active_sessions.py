@@ -37,4 +37,4 @@ class GetActiveSessions:
         r = await self.invoke(
             raw.functions.account.GetAuthorizations()
         )
-        return types.ActiveSessions._parse(r)
+        return types.ActiveSessions._parse(self, r)

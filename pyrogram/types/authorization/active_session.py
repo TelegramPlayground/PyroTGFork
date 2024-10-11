@@ -18,6 +18,7 @@
 
 from datetime import datetime
 
+import pyrogram
 from pyrogram import raw, utils
 
 from ..object import Object
@@ -86,6 +87,7 @@ class ActiveSession(Object):
     def __init__(
         self,
         *,
+        client: "pyrogram.Client" = None,
         id: int = None,
         device_model: str = None,
         platform: str = None,
@@ -105,7 +107,7 @@ class ActiveSession(Object):
         can_accept_calls: bool = None,
         is_official_application: bool = None
     ):
-        super().__init__()
+        super().__init__(client)
 
         self.id = id
         self.device_model = device_model
@@ -127,8 +129,12 @@ class ActiveSession(Object):
         self.is_official_application = is_official_application
 
     @staticmethod
-    def _parse(session: "raw.types.Authorization") -> "ActiveSession":        
+    def _parse(
+        client: "pyrogram.Client",
+        session: "raw.types.Authorization"
+    ) -> "ActiveSession":        
         return ActiveSession(
+            client=client,
             id=session.hash,
             device_model=session.device_model,
             platform=session.platform,
