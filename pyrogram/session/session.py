@@ -22,7 +22,6 @@ import logging
 import os
 from hashlib import sha1
 from io import BytesIO
-from typing import Optional
 
 import pyrogram
 from pyrogram import raw
@@ -33,7 +32,6 @@ from pyrogram.errors import (
     FloodWait, FloodPremiumWait,
     ServiceUnavailable, BadMsgNotification,
     SecurityCheckMismatch,
-    Unauthorized
 )
 from pyrogram.raw.all import layer
 from pyrogram.raw.core import TLObject, MsgContainer, Int, FutureSalts
@@ -49,11 +47,11 @@ class Result:
 
 
 class Session:
-    START_TIMEOUT = 5
+    START_TIMEOUT = 1
     WAIT_TIMEOUT = 15
     SLEEP_THRESHOLD = 10
-    MAX_RETRIES = 10
-    ACKS_THRESHOLD = 10
+    MAX_RETRIES = 5
+    ACKS_THRESHOLD = 8
     PING_INTERVAL = 5
     STORED_MSG_IDS_MAX_SIZE = 1000 * 2
 
@@ -85,7 +83,7 @@ class Session:
         self.is_media = is_media
         self.is_cdn = is_cdn
 
-        self.connection: Optional[Connection] = None
+        self.connection = None
 
         self.auth_key_id = sha1(auth_key).digest()[-8:]
 
@@ -103,28 +101,26 @@ class Session:
         self.ping_task = None
         self.ping_task_event = asyncio.Event()
 
-        self.recv_task = None
+        self.network_task = None
 
-        self.is_started = asyncio.Event()
-        self.restart_event = asyncio.Event()
+        self.is_connected = asyncio.Event()
 
         self.loop = asyncio.get_event_loop()
 
     async def start(self):
         while True:
-            self.connection = self.client.connection_factory(
-                dc_id=self.dc_id,
-                test_mode=self.test_mode,
-                ipv6=self.client.ipv6,
-                proxy=self.client.proxy,
-                media=self.is_media,
-                protocol_factory=self.client.protocol_factory
+            self.connection = Connection(
+                self.dc_id,
+                self.test_mode,
+                self.client.ipv6,
+                self.client.proxy,
+                self.is_media
             )
 
             try:
                 await self.connection.connect()
 
-                self.recv_task = self.loop.create_task(self.recv_worker())
+                self.network_task = self.loop.create_task(self.network_worker())
 
                 await self.send(raw.functions.Ping(ping_id=0), timeout=self.START_TIMEOUT)
 
@@ -153,13 +149,14 @@ class Session:
 
                 self.ping_task = self.loop.create_task(self.ping_worker())
 
-                log.info("Session initialized: Layer %s", layer)
-                log.info("Device: %s - %s", self.client.device_model, self.client.app_version)
-                log.info("System: %s (%s)", self.client.system_version, self.client.lang_code)
+                log.info(f"Session initialized: Layer {layer}")
+                log.info(f"Device: {self.client.device_model} - {self.client.app_version}")
+                log.info(f"System: {self.client.system_version} ({self.client.lang_code.upper()})")
+
             except AuthKeyDuplicated as e:
                 await self.stop()
                 raise e
-            except (OSError, RPCError):
+            except (OSError, TimeoutError, RPCError):
                 await self.stop()
             except Exception as e:
                 await self.stop()
@@ -167,14 +164,12 @@ class Session:
             else:
                 break
 
-        self.is_started.set()
+        self.is_connected.set()
 
         log.info("Session started")
 
     async def stop(self):
-        self.is_started.clear()
-
-        self.stored_msg_ids.clear()
+        self.is_connected.clear()
 
         self.ping_task_event.set()
 
@@ -183,24 +178,25 @@ class Session:
 
         self.ping_task_event.clear()
 
-        await self.connection.close()
+        self.connection.close()
 
-        if self.recv_task:
-            await self.recv_task
+        if self.network_task:
+            await self.network_task
+
+        for i in self.results.values():
+            i.event.set()
 
         if not self.is_media and callable(self.client.disconnect_handler):
             try:
                 await self.client.disconnect_handler(self.client)
             except Exception as e:
-                log.exception(e)
+                log.error(e, exc_info=True)
 
         log.info("Session stopped")
 
     async def restart(self):
-        self.restart_event.set()
         await self.stop()
         await self.start()
-        self.restart_event.clear()
 
     async def handle_packet(self, packet):
         try:
@@ -210,11 +206,10 @@ class Session:
                 BytesIO(packet),
                 self.session_id,
                 self.auth_key,
-                self.auth_key_id
+                self.auth_key_id,
+                # self.stored_msg_ids
             )
-        except ValueError as e:
-            log.debug(e)
-            self.loop.create_task(self.restart())
+        except SecurityCheckMismatch:
             return
 
         messages = (
@@ -223,9 +218,15 @@ class Session:
             else [data]
         )
 
-        log.debug("Received: %s", data)
+        # Call log.debug twice because calling it once by appending "data" to the previous string (i.e. f"Kind: {data}")
+        # will cause "data" to be evaluated as string every time instead of only when debug is actually enabled.
+        log.debug("Received:")
+        log.debug(data)
 
         for msg in messages:
+            # if msg.seq_no == 0:
+            #     MsgId.set_server_time(msg.msg_id / (2 ** 32))
+
             if msg.seq_no % 2 != 0:
                 if msg.msg_id in self.pending_acks:
                     continue
@@ -283,11 +284,11 @@ class Session:
                 self.results[msg_id].event.set()
 
         if len(self.pending_acks) >= self.ACKS_THRESHOLD:
-            log.debug("Sending %s acks", len(self.pending_acks))
+            log.debug(f"Send {len(self.pending_acks)} acks")
 
             try:
                 await self.send(raw.types.MsgsAck(msg_ids=list(self.pending_acks)), False)
-            except OSError:
+            except (OSError, TimeoutError):
                 pass
             else:
                 self.pending_acks.clear()
@@ -309,15 +310,12 @@ class Session:
                         ping_id=0, disconnect_delay=self.WAIT_TIMEOUT + 10
                     ), False
                 )
-            except OSError:
-                self.loop.create_task(self.restart())
-                break
-            except RPCError:
+            except (OSError, TimeoutError, RPCError):
                 pass
 
         log.info("PingTask stopped")
 
-    async def recv_worker(self):
+    async def network_worker(self):
         log.info("NetworkTask started")
 
         while True:
@@ -325,19 +323,9 @@ class Session:
 
             if packet is None or len(packet) == 4:
                 if packet:
-                    error_code = -Int.read(BytesIO(packet))
+                    log.warning(f'Server sent "{Int.read(BytesIO(packet))}"')
 
-                    # if error_code == 404:
-                    #     raise Unauthorized(
-                    #         "Auth key not found in the system. You must delete your session file "
-                    #         "and log in again with your phone number or bot token."
-                    #     )
-                    log.warning(
-                        "Server sent transport error: %s (%s)",
-                        error_code, Session.TRANSPORT_ERRORS.get(error_code, "unknown error")
-                    )
-
-                if self.is_started.is_set():
+                if self.is_connected.is_set():
                     self.loop.create_task(self.restart())
 
                 break
@@ -358,7 +346,10 @@ class Session:
         if wait_response:
             self.results[msg_id] = Result()
 
-        log.debug("Sent: %s", message)
+        # Call log.debug twice because calling it once by appending "data" to the previous string (i.e. f"Kind: {data}")
+        # will cause "data" to be evaluated as string every time instead of only when debug is actually enabled.
+        log.debug(f"Sent:")
+        log.debug(message)
 
         payload = await self.loop.run_in_executor(
             pyrogram.crypto_executor,
@@ -381,26 +372,23 @@ class Session:
                 await asyncio.wait_for(self.results[msg_id].event.wait(), timeout)
             except asyncio.TimeoutError:
                 pass
-
-            result = self.results.pop(msg_id).value
+            finally:
+                result = self.results.pop(msg_id).value
 
             if result is None:
-                raise TimeoutError("Request timed out")
-
-            if isinstance(result, raw.types.RpcError):
+                raise TimeoutError
+            elif isinstance(result, raw.types.RpcError):
                 if isinstance(data, Session.CUR_ALWD_INNR_QRYS):
                     data = data.query
 
                 RPCError.raise_it(result, type(data))
-
-            if isinstance(result, raw.types.BadMsgNotification):
-                log.warning("%s: %s", BadMsgNotification.__name__, BadMsgNotification(result.error_code))
-
-            if isinstance(result, raw.types.BadServerSalt):
+            elif isinstance(result, raw.types.BadMsgNotification):
+                raise BadMsgNotification(result.error_code)
+            elif isinstance(result, raw.types.BadServerSalt):
                 self.salt = result.new_server_salt
                 return await self.send(data, wait_response, timeout)
-
-            return result
+            else:
+                return result
 
     async def invoke(
         self,
@@ -410,7 +398,7 @@ class Session:
         sleep_threshold: float = SLEEP_THRESHOLD
     ):
         try:
-            await asyncio.wait_for(self.is_started.wait(), self.WAIT_TIMEOUT)
+            await asyncio.wait_for(self.is_connected.wait(), self.WAIT_TIMEOUT)
         except asyncio.TimeoutError:
             pass
 
@@ -430,46 +418,17 @@ class Session:
                 if amount > sleep_threshold >= 0:
                     raise
 
-                log.warning('[%s] Waiting for %s seconds before continuing (required by "%s")',
-                            self.client.name, amount, query_name)
+                log.warning(f'[{self.client.name}] Waiting for {amount} seconds before continuing '
+                            f'(required by "{query_name}")')
 
                 await asyncio.sleep(amount)
-            except (
-                OSError,
-                RuntimeError,
-                InternalServerError,
-                ServiceUnavailable,
-                TimeoutError,
-            ) as e:
-                retries -= 1
-                if (
-                    retries == 0 or
-                    (
-                        isinstance(e, InternalServerError)
-                        and getattr(e, "code", 0) == 500
-                        and (e.ID or e.NAME) in [
-                            "HISTORY_GET_FAILED"
-                        ]
-                    )
-                ):
+            except (OSError, TimeoutError, InternalServerError, ServiceUnavailable) as e:
+                if retries == 0:
                     raise e from None
 
                 (log.warning if retries < 2 else log.info)(
-                    '[%s] Retrying "%s" due to: %s',
-                    Session.MAX_RETRIES - retries + 1,
-                    query_name, str(e) or repr(e)
-                )
+                    f'[{Session.MAX_RETRIES - retries + 1}] Retrying "{query_name}" due to {str(e) or repr(e)}')
 
-                # restart was never being called after Exception block
-                if not self.restart_event.is_set():
-                    self.loop.create_task(self.restart())
-                else:
-                    # multiple Exceptions can be raised in a row, so we need to wait for the restart to finish
-                    try:
-                        await asyncio.wait_for(self.restart_event.wait(), self.WAIT_TIMEOUT)
-                    except asyncio.TimeoutError:
-                        pass
-                    
                 await asyncio.sleep(0.5)
 
                 return await self.invoke(query, retries - 1, timeout)
