@@ -255,7 +255,6 @@ class Session:
                                                     "Most likely the client time has to be synchronized.")
             except SecurityCheckMismatch as e:
                 log.info("Discarding packet: %s", e)
-                await self.connection.close()
                 return
             else:
                 bisect.insort(self.stored_msg_ids, msg.msg_id)
@@ -423,7 +422,17 @@ class Session:
 
                 await asyncio.sleep(amount)
             except (OSError, TimeoutError, InternalServerError, ServiceUnavailable) as e:
-                if retries == 0:
+                if (
+                    retries == 0 or
+                    (
+                        isinstance(e, InternalServerError) and
+                        e.code == 500 and
+                        (e.ID or e.NAME) in [
+                            "HISTORY_GET_FAILED",
+                            "PERSISTENT_TIMESTAMP_OUTDATED",
+                        ]
+                    )
+                ):
                     raise e from None
 
                 (log.warning if retries < 2 else log.info)(

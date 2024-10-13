@@ -338,15 +338,9 @@ class Client(Methods):
         else:
             self.storage = FileStorage(self.name, self.WORKDIR)
 
-        self.connection_factory = Connection
-        self.protocol_factory = TCPFull
-
         self.dispatcher = Dispatcher(self)
-
         self.rnd_id = MsgId
-
         self.parser = Parser(self)
-
         self.session = None
 
         self.media_sessions = {}
