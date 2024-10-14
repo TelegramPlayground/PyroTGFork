@@ -30,7 +30,7 @@ class GetNearbyChats:
         latitude: float,
         longitude: float
     ) -> List["types.Chat"]:
-        """Get nearby chats.
+        """Returns a list of users and location-based supergroups nearby. The method was disabled and returns an empty list of chats now.
 
         .. include:: /_includes/usable-by/users.rst
 
