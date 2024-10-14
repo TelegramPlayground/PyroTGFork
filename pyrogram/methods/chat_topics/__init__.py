@@ -26,6 +26,7 @@ from .unhide_forum_topic import UnhideForumTopic
 from .delete_forum_topic import DeleteForumTopic
 from .get_forum_topics import GetForumTopics
 from .get_forum_topic import GetForumTopic
+from .toggle_forum_topic_is_pinned import ToggleForumTopicIsPinned
 
 
 class ChatTopics(
@@ -39,5 +40,6 @@ class ChatTopics(
     HideForumTopic,
     ReopenForumTopic,
     UnhideForumTopic,
+    ToggleForumTopicIsPinned,
 ):
     pass

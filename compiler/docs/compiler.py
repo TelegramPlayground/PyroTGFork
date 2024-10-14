@@ -304,6 +304,7 @@ def pyrogram_api():
             unhide_forum_topic
             get_forum_topics
             get_forum_topic
+            toggle_forum_topic_is_pinned
         """,
         users="""
         Users

@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 189 |
 +------------------------+
 
+- Added :meth:`~pyrogram.Client.toggle_forum_topic_is_pinned` to pin / unpin a :obj:`~pyrogram.types.ForumTopic`.
 - Added :meth:`~pyrogram.types.Message.star` bound method to the :obj:`~pyrogram.types.Message`.
 - Added the field ``alternative_videos`` to the :obj:`~pyrogram.types.Message`.
 - Added the fields ``connected_website`` and ``write_access_allowed`` to the :obj:`~pyrogram.types.Message`.
