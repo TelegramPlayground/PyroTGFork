@@ -18,6 +18,7 @@
 
 from pyrogram import raw, types, utils
 from ..object import Object
+from .message import Str
 
 
 class GiftCode(Object):
@@ -42,6 +43,24 @@ class GiftCode(Object):
             You can combine it with `t.me/giftcode/{slug}`
             to get link for this gift.
 
+        currency (``str``):
+            Currency for the paid amount
+
+        amount (``int``):
+            The paid amount, in the smallest units of the currency
+
+        cryptocurrency (``str``):
+            Cryptocurrency used to pay for the gift; may be empty if none
+
+        cryptocurrency_amount (``int``):
+            The paid amount, in the smallest units of the cryptocurrency; 0 if none
+
+        caption (``str``, *optional*):
+            Text message chosen by the sender.
+
+        caption_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
+            Entities of the text message.
+
         link (``str``, *property*):
             Generate a link to this gift code.
     """
@@ -53,7 +72,13 @@ class GiftCode(Object):
         is_unclaimed: bool,
         boosted_chat: "types.Chat",
         premium_subscription_month_count: int,
-        slug: str
+        slug: str,
+        currency: str = None,
+        amount: int = None,
+        cryptocurrency: str = None,
+        cryptocurrency_amount: int = None,
+        caption: str = None,
+        caption_entities: List["types.MessageEntity"] = None
     ):
         super().__init__()
 
@@ -62,6 +87,12 @@ class GiftCode(Object):
         self.boosted_chat = boosted_chat
         self.premium_subscription_month_count = premium_subscription_month_count
         self.slug = slug
+        self.currency = currency
+        self.amount = amount
+        self.cryptocurrency = cryptocurrency
+        self.cryptocurrency_amount = cryptocurrency_amount
+        self.caption = caption
+        self.caption_entities = caption_entities
 
     @staticmethod
     def _parse(
@@ -73,6 +104,16 @@ class GiftCode(Object):
             utils.get_raw_peer_id(giftcode.boost_peer)
         )
 
+        caption = None
+        caption_entities = []
+        if giftcode.message:
+            caption_entities = [
+                types.MessageEntity._parse(client, entity, {})
+                for entity in giftcode.message.entities
+            ]
+            caption_entities = types.List(filter(lambda x: x is not None, caption_entities))
+            caption = Str(giftcode.message.text).init(caption_entities) or None
+
         return GiftCode(
             via_giveaway=giftcode.via_giveaway,
             is_unclaimed=giftcode.unclaimed,
@@ -80,7 +121,13 @@ class GiftCode(Object):
                 client, peer
             ) if peer else None,
             premium_subscription_month_count=giftcode.months,
-            slug=giftcode.slug
+            slug=giftcode.slug,
+            currency=giftcode.currency,
+            amount=giftcode.amount,
+            cryptocurrency=getattr(giftcode, "crypto_currency", None),
+            cryptocurrency_amount=getattr(giftcode, "crypto_amount", None),
+            caption=caption,
+            caption_entities=caption_entities
         )
 
     @property

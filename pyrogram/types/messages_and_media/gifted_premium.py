@@ -20,6 +20,7 @@ from random import choice
 
 from pyrogram import raw, types
 from ..object import Object
+from .message import Str
 
 
 class GiftedPremium(Object):
@@ -47,6 +48,12 @@ class GiftedPremium(Object):
         sticker (:obj:`~pyrogram.types.Sticker`):
             A sticker to be shown in the message; may be null if unknown
 
+        caption (``str``, *optional*):
+            Text message chosen by the sender.
+
+        caption_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
+            Entities of the text message.
+
     """
 
     def __init__(
@@ -59,6 +66,8 @@ class GiftedPremium(Object):
         cryptocurrency_amount: int = None,
         month_count: int = None,
         sticker: "types.Sticker" = None,
+        caption: str = None,
+        caption_entities: List["types.MessageEntity"] = None
     ):
         super().__init__()
 
@@ -69,7 +78,9 @@ class GiftedPremium(Object):
         self.cryptocurrency_amount = cryptocurrency_amount
         self.month_count = month_count
         self.sticker = sticker
-
+        self.caption = caption
+        self.caption_entities = caption_entities
+  
     @staticmethod
     async def _parse(
         client,
@@ -81,6 +92,17 @@ class GiftedPremium(Object):
             raw.types.InputStickerSetPremiumGifts()
         )
         sticker = choice(stickers)
+
+        caption = None
+        caption_entities = []
+        if gifted_premium.message:
+            caption_entities = [
+                types.MessageEntity._parse(client, entity, {})
+                for entity in gifted_premium.message.entities
+            ]
+            caption_entities = types.List(filter(lambda x: x is not None, caption_entities))
+            caption = Str(gifted_premium.message.text).init(caption_entities) or None
+
         return GiftedPremium(
             gifter_user_id=gifter_user_id,
             currency=gifted_premium.currency,
@@ -88,5 +110,7 @@ class GiftedPremium(Object):
             cryptocurrency=getattr(gifted_premium, "crypto_currency", None),
             cryptocurrency_amount=getattr(gifted_premium, "crypto_amount", None),
             month_count=gifted_premium.months,
-            sticker=sticker
+            sticker=sticker,
+            caption=caption,
+            caption_entities=caption_entities
         )
