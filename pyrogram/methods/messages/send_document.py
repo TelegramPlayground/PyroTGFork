@@ -202,8 +202,8 @@ class SendDocument:
         try:
             if isinstance(document, str):
                 if os.path.isfile(document):
-                    thumb = await self.save_file(thumb)
                     file = await self.save_file(document, progress=progress, progress_args=progress_args)
+                    thumb = await self.save_file(thumb)
                     media = raw.types.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(document) or "application/zip",
                         file=file,
@@ -220,8 +220,8 @@ class SendDocument:
                 else:
                     media = utils.get_input_media_from_file_id(document, FileType.DOCUMENT)
             else:
-                thumb = await self.save_file(thumb)
                 file = await self.save_file(document, progress=progress, progress_args=progress_args)
+                thumb = await self.save_file(thumb)
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(file_name or document.name) or "application/zip",
                     file=file,

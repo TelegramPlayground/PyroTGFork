@@ -218,8 +218,8 @@ class SendAnimation:
         try:
             if isinstance(animation, str):
                 if os.path.isfile(animation):
-                    thumb = await self.save_file(thumb)
                     file = await self.save_file(animation, progress=progress, progress_args=progress_args)
+                    thumb = await self.save_file(thumb)
                     media = raw.types.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(animation) or "video/mp4",
                         file=file,
@@ -250,8 +250,8 @@ class SendAnimation:
                         ttl_seconds=ttl_seconds
                     )
             else:
-                thumb = await self.save_file(thumb)
                 file = await self.save_file(animation, progress=progress, progress_args=progress_args)
+                thumb = await self.save_file(thumb)
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(file_name or animation.name) or "video/mp4",
                     file=file,

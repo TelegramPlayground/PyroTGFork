@@ -61,6 +61,10 @@ class InputMediaAudio(InputMedia):
 
         title (``str``, *optional*):
             Title of the audio
+
+        file_name (``str``, *optional*):
+            File name of the audio sent.
+            Defaults to file's path basename.
     """
 
     def __init__(
@@ -72,7 +76,8 @@ class InputMediaAudio(InputMedia):
         caption_entities: List[MessageEntity] = None,
         duration: int = 0,
         performer: str = "",
-        title: str = ""
+        title: str = "",
+        file_name: str = None
     ):
         super().__init__(media, caption, parse_mode, caption_entities)
 
@@ -80,3 +85,4 @@ class InputMediaAudio(InputMedia):
         self.duration = duration
         self.performer = performer
         self.title = title
+        self.file_name = file_name

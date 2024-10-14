@@ -194,8 +194,8 @@ class SendVideoNote:
         try:
             if isinstance(video_note, str):
                 if os.path.isfile(video_note):
-                    thumb = await self.save_file(thumb)
                     file = await self.save_file(video_note, progress=progress, progress_args=progress_args)
+                    thumb = await self.save_file(thumb)
                     media = raw.types.InputMediaUploadedDocument(
                         mime_type=self.guess_mime_type(video_note) or "video/mp4",
                         file=file,
@@ -217,8 +217,8 @@ class SendVideoNote:
                         ttl_seconds=ttl_seconds
                     )
             else:
-                thumb = await self.save_file(thumb)
                 file = await self.save_file(video_note, progress=progress, progress_args=progress_args)
+                thumb = await self.save_file(thumb)
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=self.guess_mime_type(video_note.name) or "video/mp4",
                     file=file,

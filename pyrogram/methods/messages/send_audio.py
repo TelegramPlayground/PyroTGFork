@@ -201,8 +201,8 @@ class SendAudio:
             if isinstance(audio, str):
                 if os.path.isfile(audio):
                     mime_type = utils.fix_up_voice_audio_uri(self, audio, 1)
-                    thumb = await self.save_file(thumb)
                     file = await self.save_file(audio, progress=progress, progress_args=progress_args)
+                    thumb = await self.save_file(thumb)
                     media = raw.types.InputMediaUploadedDocument(
                         mime_type=mime_type,
                         file=file,
@@ -224,8 +224,8 @@ class SendAudio:
                     media = utils.get_input_media_from_file_id(audio, FileType.AUDIO)
             else:
                 mime_type = utils.fix_up_voice_audio_uri(self, file_name or audio.name, 1)
-                thumb = await self.save_file(thumb)
                 file = await self.save_file(audio, progress=progress, progress_args=progress_args)
+                thumb = await self.save_file(thumb)
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=mime_type,
                     file=file,
