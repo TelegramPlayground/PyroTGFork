@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from random import choice
+from typing import List
 
 from pyrogram import raw, types
 from ..object import Object
