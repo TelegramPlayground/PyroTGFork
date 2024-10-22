@@ -426,7 +426,7 @@ class Session:
                     retries == 0 or
                     (
                         isinstance(e, InternalServerError) and
-                        e.code == 500 and
+                        getattr(e, "code", 0) == 500 and
                         (e.ID or e.NAME) in [
                             "HISTORY_GET_FAILED",
                             "PERSISTENT_TIMESTAMP_OUTDATED",
@@ -434,7 +434,7 @@ class Session:
                     )
                 ):
                     raise e from None
-
+                # TODO: fix conditions here
                 (log.warning if retries < 2 else log.info)(
                     f'[{Session.MAX_RETRIES - retries + 1}] Retrying "{query_name}" due to {str(e) or repr(e)}')
 
