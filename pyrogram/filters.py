@@ -897,7 +897,7 @@ def command(
     command_re: Pattern[str] = re.compile(pattern=r"([\"'])(.*?)(?<!\\)\1|(\S+)")
 
     async def func(flt, client: pyrogram.Client, message: Message) -> bool:
-        username: str = client.me.username or ""
+        username: str = (client.me and client.me.username) or ""
         text: Str = message.text or message.caption
         message.command = None
 

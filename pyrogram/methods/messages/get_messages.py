@@ -170,7 +170,7 @@ class GetMessages:
                     message_id = int(linkps[5])
 
             elif (
-                not self.me.is_bot and
+                not (self.me and self.me.is_bot) and
                 len(linkps) == 5 and
                 linkps[3] == "m"
             ):

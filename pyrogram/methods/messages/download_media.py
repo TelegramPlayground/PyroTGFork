@@ -127,7 +127,7 @@ class DownloadMedia:
                 media = message.new_chat_photo
 
             elif (
-                not self.me.is_bot and
+                not (self.me and self.me.is_bot) and
                 message.story or message.reply_to_story
             ):
                 story_media = message.story or message.reply_to_story or None
@@ -146,7 +146,7 @@ class DownloadMedia:
             media = message
 
         if isinstance(media, types.Story):
-            if self.me.is_bot:
+            if (self.me and self.me.is_bot):
                 raise ValueError("This method cannot be used by bots")
             else:
                 if media.media:

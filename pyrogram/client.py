@@ -356,6 +356,7 @@ class Client(Methods):
 
         self.disconnect_handler = None
 
+        # TODO: fix conditions here
         self.me: Optional[User] = None
 
         self.message_cache = Cache(self.max_message_cache_size)

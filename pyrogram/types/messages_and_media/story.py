@@ -257,7 +257,7 @@ class Story(Object, Update):
                     chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
             story_id = getattr(reply_story, "story_id", None)
         
-        if story_id and not client.me.is_bot:
+        if story_id and not (client.me and client.me.is_bot):
             try:
                 story_item = (
                     await client.invoke(
