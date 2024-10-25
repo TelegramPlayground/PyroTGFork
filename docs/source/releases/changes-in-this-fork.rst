@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 | Scheme layer used: 190 |
 +------------------------+
 
+- Added the methods :meth:`~pyrogram.Client.get_available_gifts`, :meth:`~pyrogram.Client.get_user_gifts`, :meth:`~pyrogram.Client.sell_gift`, :meth:`~pyrogram.Client.send_gift`, :meth:`~pyrogram.Client.toggle_gift_is_saved`, :meth:`~pyrogram.types.UserGift.toggle` and the types :obj:`~pyrogram.types.UserGift` and :obj:`~pyrogram.types.Gift`.
 - Added the parameter ``send_as`` in the appropriate methods and bound methods `PR 107 <https://github.com/TelegramPlayGround/pyrogram/pull/107>`_.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=189&to=190>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=189&to=190>`__.
 
