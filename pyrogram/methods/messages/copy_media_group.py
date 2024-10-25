@@ -36,6 +36,7 @@ class CopyMediaGroup:
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         reply_to_message_id: int = None
     ) -> List["types.Message"]:
@@ -75,6 +76,13 @@ class CopyMediaGroup:
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
+            
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -157,6 +165,7 @@ class CopyMediaGroup:
                 multi_media=multi_media,
                 silent=disable_notification or None,
                 reply_to=reply_to,
+                send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 invert_media=any(show_caption_above_media)
             ),

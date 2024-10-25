@@ -1482,6 +1482,7 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         disable_web_page_preview: bool = None,
         reply_to_message_id: int = None
@@ -1543,6 +1544,13 @@ class Message(Object, Update):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -1570,6 +1578,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
@@ -1607,6 +1616,7 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        send_as: Union[int, str] = None,
         reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
@@ -1688,6 +1698,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -1759,6 +1776,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
             ttl_seconds=ttl_seconds,
@@ -1783,6 +1801,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -1862,6 +1881,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -1926,6 +1952,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup,
@@ -1945,6 +1972,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2003,6 +2031,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2036,6 +2071,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=self.has_protected_content,
             has_spoiler=self.has_media_spoiler,
@@ -2115,6 +2151,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -2170,6 +2207,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2205,6 +2249,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup,
@@ -2224,6 +2269,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -2301,6 +2347,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2363,6 +2416,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup,
@@ -2380,6 +2434,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2423,6 +2478,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
@@ -2453,6 +2515,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id
         )
@@ -2464,6 +2527,7 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_inline_bot_result* of :obj:`~pyrogram.types.Message`.
@@ -2502,6 +2566,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
         Returns:
             On success, the sent Message is returned.
 
@@ -2522,6 +2593,7 @@ class Message(Object, Update):
             result_id=result_id,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
+            send_as=send_as,
             reply_to_message_id=reply_to_message_id
         )
 
@@ -2535,6 +2607,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -2587,6 +2660,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2621,6 +2701,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_markup=reply_markup,
@@ -2634,6 +2715,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_to_message_id: int = None
@@ -2675,6 +2757,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2704,6 +2793,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_to_message_id=reply_to_message_id
@@ -2722,6 +2812,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         view_once: bool = None,
@@ -2793,6 +2884,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -2858,6 +2956,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
             view_once=view_once,
@@ -2888,6 +2987,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2998,6 +3098,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -3041,6 +3148,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
@@ -3064,6 +3172,7 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         reply_to_message_id: int = None,
         progress: Callable = None,
@@ -3127,6 +3236,13 @@ class Message(Object, Update):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -3179,6 +3295,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
@@ -3201,6 +3318,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         reply_markup: Union[
@@ -3271,6 +3389,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -3302,6 +3427,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
             reply_to_message_id=reply_to_message_id,
@@ -3336,6 +3462,7 @@ class Message(Object, Update):
         view_once: bool = None,
         file_name: str = None,
         mime_type: str = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         reply_to_message_id: int = None,
         progress: Callable = None,
@@ -3435,6 +3562,13 @@ class Message(Object, Update):
             mime_type (``str``, *optional*):
                 no docs!
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -3493,6 +3627,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
@@ -3526,6 +3661,7 @@ class Message(Object, Update):
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         ttl_seconds: int = None,
         view_once: bool = None,
@@ -3600,6 +3736,13 @@ class Message(Object, Update):
             caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -3658,6 +3801,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
@@ -3690,6 +3834,7 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         ttl_seconds: int = None,
         view_once: bool = None,
@@ -3756,6 +3901,13 @@ class Message(Object, Update):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -3818,6 +3970,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
+            send_as=send_as,
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
@@ -3859,6 +4012,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        send_as: Union[int, str] = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3956,6 +4110,13 @@ class Message(Object, Update):
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -4012,6 +4173,7 @@ class Message(Object, Update):
             protect_content=self.has_protected_content if protect_content is None else protect_content,
             message_effect_id=message_effect_id or self.effect_id,
             reply_parameters=reply_parameters,
+            send_as=send_as,
             reply_markup=reply_markup,
             caption=caption,
             parse_mode=parse_mode,
@@ -4293,6 +4455,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         drop_author: bool = None,
         drop_media_captions: bool = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", List["types.Message"]]:
         """Bound method *forward* of :obj:`~pyrogram.types.Message`.
@@ -4334,6 +4497,13 @@ class Message(Object, Update):
             drop_media_captions (``bool``, *optional*):
                 Whether to strip captions from media.
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -4352,6 +4522,7 @@ class Message(Object, Update):
             protect_content=protect_content,
             drop_author=drop_author,
             drop_media_captions=drop_media_captions,
+            send_as=send_as,
             schedule_date=schedule_date
         )
 
@@ -4370,6 +4541,7 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = object,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         business_connection_id: str = None,
         protect_content: bool = None,
@@ -4427,6 +4599,13 @@ class Message(Object, Update):
                 If not specified, the original reply markup is kept.
                 Pass None to remove the reply markup.
 
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -4468,6 +4647,7 @@ class Message(Object, Update):
                 reply_parameters=reply_parameters,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup,
                 reply_to_message_id=reply_to_message_id,
+                send_as=send_as,
                 schedule_date=schedule_date
             )
         elif self.media:
@@ -4484,6 +4664,7 @@ class Message(Object, Update):
                 protect_content=self.has_protected_content if protect_content is None else protect_content,
                 has_spoiler=self.has_media_spoiler,
                 reply_to_message_id=reply_to_message_id,
+                send_as=send_as,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
 
@@ -4518,6 +4699,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     reply_to_message_id=reply_to_message_id,
+                    send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.location:
@@ -4533,6 +4715,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     reply_to_message_id=reply_to_message_id,
+                    send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.venue:
@@ -4552,6 +4735,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     reply_to_message_id=reply_to_message_id,
+                    send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.poll:
@@ -4581,6 +4765,7 @@ class Message(Object, Update):
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     schedule_date=schedule_date,
                     reply_to_message_id=reply_to_message_id,
+                    send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.game:
@@ -4594,6 +4779,7 @@ class Message(Object, Update):
                     message_effect_id=self.effect_id,
                     reply_parameters=reply_parameters,
                     reply_to_message_id=reply_to_message_id,
+                    send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             else:
@@ -4607,7 +4793,7 @@ class Message(Object, Update):
                 file_id=file_id,
                 caption=caption,
                 parse_mode=parse_mode,
-                caption_entities=caption_entities
+                caption_entities=caption_entities,
             )
         else:
             raise ValueError("Can't copy this message")

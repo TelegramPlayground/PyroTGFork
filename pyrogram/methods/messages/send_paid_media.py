@@ -46,6 +46,7 @@ class SendPaidMedia:
         protect_content: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         business_connection_id: str = None,
+        send_as: Union[int, str] = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -96,6 +97,13 @@ class SendPaidMedia:
             
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
+
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
@@ -261,7 +269,9 @@ class SendPaidMedia:
             ),
             silent=disable_notification or None,
             random_id=self.rnd_id(),
+            send_as=await self.resolve_peer(send_as) if send_as else None,
             schedule_date=utils.datetime_to_timestamp(schedule_date),
+            reply_markup=await reply_markup.write(self) if reply_markup else None,
             noforwards=protect_content,
             invert_media=show_caption_above_media,
             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
