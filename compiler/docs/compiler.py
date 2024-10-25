@@ -396,6 +396,11 @@ def pyrogram_api():
             get_collectible_item_info
             get_payment_form
             send_payment_form
+            get_available_gifts
+            get_user_gifts
+            sell_gift
+            send_gift
+            toggle_gift_is_saved
         """,
         advanced="""
         Advanced
@@ -509,6 +514,8 @@ def pyrogram_api():
             Poll
             Location
             Venue
+            Gift
+            UserGift
             WebAppData
             MessageAutoDeleteTimerChanged
             ChatBoostAdded
@@ -735,6 +742,7 @@ def pyrogram_api():
             Message.translate
             Message.pay
             Message.star
+            UserGift.toggle
         """,
         chat="""
         Chat

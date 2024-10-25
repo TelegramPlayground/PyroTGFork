@@ -39,6 +39,8 @@ from .reaction import (
     ReactionCount
 )
 from .sponsored_message import SponsoredMessage
+from .gift import Gift
+from .user_gift import UserGift
 from .sticker import Sticker
 from .stripped_thumbnail import StrippedThumbnail
 from .thumbnail import Thumbnail
@@ -53,7 +55,7 @@ from .message_reaction_updated import MessageReactionUpdated
 from .message_reaction_count_updated import MessageReactionCountUpdated
 from .chat_boost_added import ChatBoostAdded
 from .story import Story
-from .payment_from import PaymentForm
+from .payment_form import PaymentForm
 from .giveaway import Giveaway
 from .giveaway_created import GiveawayCreated
 from .giveaway_completed import GiveawayCompleted
@@ -105,6 +107,8 @@ __all__ = [
     "Poll",
     "PollOption",
     "SponsoredMessage",
+    "Gift",
+    "UserGift",
     "Sticker",
     "Story",
     "Venue",

@@ -24,11 +24,11 @@ from pyrogram import raw, types
 
 class SendPaymentForm:
     async def send_payment_form(
-            self: "pyrogram.Client",
-            *,
-            chat_id: Union[int, str] = None,
-            message_id: int = None,
-            invoice_link: str = None
+        self: "pyrogram.Client",
+        *,
+        chat_id: Union[int, str] = None,
+        message_id: int = None,
+        invoice_link: str = None
     ) -> Union[
         bool,
         List["types.PaidMediaPhoto"],

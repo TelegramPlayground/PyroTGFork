@@ -357,6 +357,7 @@ PHOTO_SAVE_FILE_INVALID	Internal issues, try again later.
 PHOTO_THUMB_URL_EMPTY	Photo thumbnail URL is empty.
 PHOTO_THUMB_URL_INVALID	The photo thumb URL is invalid
 PINNED_DIALOGS_TOO_MUCH	Too many pinned dialogs.
+PINNED_TOPIC_NOT_MODIFIED	The pinned topic was not modified.
 PIN_RESTRICTED	You can't pin messages.
 PLATFORM_INVALID	The provided platform is invalid. Allowed values are "android", "ios", "wp", "bb", "desktop", "web", "ubp", "other".
 POLL_ANSWERS_INVALID	Invalid poll answers were provided.

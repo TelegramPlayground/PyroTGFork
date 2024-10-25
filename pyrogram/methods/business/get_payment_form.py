@@ -24,10 +24,10 @@ from pyrogram import raw, types
 
 class GetPaymentForm:
     async def get_payment_form(
-            self: "pyrogram.Client", *,
-            chat_id: Union[int, str] = None,
-            message_id: int = None,
-            invoice_link: str = None
+        self: "pyrogram.Client", *,
+        chat_id: Union[int, str] = None,
+        message_id: int = None,
+        invoice_link: str = None
     ) -> "types.PaymentForm":
         """Get information about a invoice or paid media.
 

@@ -23,8 +23,13 @@ from .get_business_connection import GetBusinessConnection
 from .get_collectible_item_info import GetCollectibleItemInfo
 from .refund_star_payment import RefundStarPayment
 from .send_invoice import SendInvoice
-from .get_payment_from import GetPaymentForm
-from .send_payment_from import SendPaymentForm
+from .get_payment_form import GetPaymentForm
+from .send_payment_form import SendPaymentForm
+from .get_available_gifts import GetAvailableGifts
+from .get_user_gifts import GetUserGifts
+from .sell_gift import SellGift
+from .send_gift import SendGift
+from .toggle_gift_is_saved import ToggleGiftIsSaved
 
 
 class TelegramBusiness(
@@ -37,5 +42,10 @@ class TelegramBusiness(
     SendInvoice,
     GetPaymentForm,
     SendPaymentForm,
+    GetAvailableGifts,
+    GetUserGifts,
+    SellGift,
+    SendGift,
+    ToggleGiftIsSaved,
 ):
     pass
