@@ -46,6 +46,7 @@ class SendPhoto:
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
         business_connection_id: str = None,
+        send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
         view_once: bool = None,
@@ -109,6 +110,13 @@ class SendPhoto:
 
             business_connection_id (``str``, *optional*):
                 Unique identifier of the business connection on behalf of which the message will be sent.
+
+            send_as (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the chat or channel to send the message as.
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
+                This setting applies to the current message and will remain effective for future messages unless explicitly changed.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -225,6 +233,7 @@ class SendPhoto:
                 silent=disable_notification or None,
                 reply_to=reply_to,
                 random_id=self.rnd_id(),
+                send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
