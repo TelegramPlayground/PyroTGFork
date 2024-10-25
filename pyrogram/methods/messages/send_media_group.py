@@ -79,10 +79,10 @@ class SendMediaGroup:
 
             send_as (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the chat or channel to send the message as.
-                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions
-                (i.e., you are the owner or an anonymous admin).
+                You can use this to send the message on behalf of a chat or channel where you have appropriate permissions.
+                Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
                 This setting applies to the current message and will remain effective for future messages unless explicitly changed.
-                To set this behavior permanently for all messages, use `Client.set_send_as_chat`.
+                To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
