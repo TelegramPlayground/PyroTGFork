@@ -102,7 +102,6 @@ class UserGift(Object):
             is_private=getattr(user_star_gift, "name_hidden", None),
             is_saved=not user_star_gift.unsaved if getattr(user_star_gift, "unsaved", None) else None,
             sender_user=types.User._parse(client, users.get(user_star_gift.from_id)) if getattr(user_star_gift, "from_id", None) else None,
-            text=user_star_gift.message.text if getattr(user_star_gift, "message", None) else None,
             message_id=getattr(user_star_gift, "msg_id", None),
             sell_star_count=getattr(user_star_gift, "convert_stars", None),
             text=Str(text).init(entities) if text else None,
@@ -136,7 +135,7 @@ class UserGift(Object):
                 remaining_count=getattr(action.gift, "availability_remains", None),
                 total_count=getattr(action.gift, "availability_total", None),
                 is_limited=getattr(action.gift, "limited", None),
-            )
+            ),
             date=utils.timestamp_to_datetime(message.date),
             is_private=getattr(action, "name_hidden", None),
             is_saved=getattr(action, "saved", None),
