@@ -51,7 +51,8 @@ from pyrogram.raw.types import (
     UpdateEditMessage, UpdateEditChannelMessage,
     UpdateDeleteMessages, UpdateDeleteChannelMessages,
     UpdateBotCallbackQuery, UpdateInlineBotCallbackQuery,
-    UpdateUserStatus, UpdateBotInlineQuery, UpdateMessagePoll,
+    UpdateUserStatus, UpdateBotInlineQuery,
+    UpdateMessagePoll, UpdateMessagePollVote,
     UpdateBotInlineSend, UpdateChatParticipant, UpdateChannelParticipant, UpdateBotStopped,
     UpdateBotChatInviteRequester,
     UpdateBotMessageReaction,
@@ -76,7 +77,7 @@ class Dispatcher:
     CHAT_MEMBER_UPDATES = (UpdateChatParticipant, UpdateChannelParticipant, UpdateBotStopped,)
     USER_STATUS_UPDATES = (UpdateUserStatus,)
     BOT_INLINE_QUERY_UPDATES = (UpdateBotInlineQuery,)
-    POLL_UPDATES = (UpdateMessagePoll,)
+    POLL_UPDATES = (UpdateMessagePoll, UpdateMessagePollVote,)
     CHOSEN_INLINE_RESULT_UPDATES = (UpdateBotInlineSend,)
     CHAT_JOIN_REQUEST_UPDATES = (UpdateBotChatInviteRequester,)
     MESSAGE_BOT_NA_REACTION_UPDATES = (UpdateBotMessageReaction,)
@@ -146,7 +147,9 @@ class Dispatcher:
 
         async def poll_parser(update, users, chats):
             return (
-                pyrogram.types.Poll._parse_update(self.client, update),
+                pyrogram.types.Poll._parse_update(
+                    self.client, update, users, chats
+                ),
                 PollHandler
             )
 
