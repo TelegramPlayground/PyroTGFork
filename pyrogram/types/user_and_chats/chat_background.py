@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List
+from typing import List, Union
 
 import pyrogram
 from pyrogram import raw, utils
@@ -36,41 +36,41 @@ class ChatBackground(Object):
     """Describes a background set for a specific chat.
 
     Parameters:
-        file_id (``str``):
+        file_id (``str``, *optional*):
             Identifier for this file, which can be used to download the file.
 
-        file_unique_id (``str``):
+        file_unique_id (``str``, *optional*):
             Unique identifier for this file, which is supposed to be the same over time and for different accounts.
             Can't be used to download or reuse the file.
 
-        file_size (``int``):
+        file_size (``int``, *optional*):
             File size.
 
-        date (:py:obj:`~datetime.datetime`):
+        date (:py:obj:`~datetime.datetime`, *optional*):
             Date the background was setted.
 
-        slug (``str``):
+        slug (``str``, *optional*):
             Identifier of the background code.
-            You can combine it with `https://t.me/bg/{slug}`
-            to get link for this background.
 
         thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
             Available thumbnails of this background.
 
         link (``str``, *property*):
             Generate a link to this background code.
+
     """
 
     def __init__(
         self,
         *,
         client: "pyrogram.Client" = None,
-        file_id: str,
-        file_unique_id: str,
-        file_size: int,
-        date: datetime,
-        slug: str,
+        file_id: str = None,
+        file_unique_id: str = None,
+        file_size: int = None,
+        date: datetime = None,
+        slug: str = None,
         thumbs: List["types.Thumbnail"] = None,
+        _raw: "raw.base.WallPaper" = None,
     ):
         super().__init__(client)
 
@@ -80,34 +80,42 @@ class ChatBackground(Object):
         self.date = date
         self.slug = slug
         self.thumbs = thumbs
+        self._raw = _raw
 
     @property
     def link(self) -> str:
-        return f"https://t.me/bg/{self.slug}"
+        return f"https://t.me/bg/{self.slug}" if self.slug else None
 
     @staticmethod
     def _parse(
         client,
-        wallpaper: "raw.types.Wallpaper",
+        wallpaper: "raw.base.WallPaper",
     ) -> "ChatBackground":
-        return ChatBackground(
-            file_id=FileId(
-                dc_id=wallpaper.document.dc_id,
-                file_reference=wallpaper.document.file_reference,
-                access_hash=wallpaper.document.access_hash,
-                file_type=FileType.BACKGROUND,
-                media_id=wallpaper.document.id,
-                volume_id=0,
-                local_id=0,
-                thumbnail_source=ThumbnailSource.THUMBNAIL,
-                thumbnail_file_type=FileType.BACKGROUND,
-            ).encode(),
-            file_unique_id=FileUniqueId(
-                file_unique_type=FileUniqueType.DOCUMENT, media_id=wallpaper.document.id
-            ).encode(),
-            file_size=wallpaper.document.size,
-            slug=wallpaper.slug,
-            date=utils.timestamp_to_datetime(wallpaper.document.date),
-            thumbs=types.Thumbnail._parse(client, wallpaper.document),
-            client=client,
-        )
+        if isinstance(wallpaper, raw.types.WallPaperNoFile):
+            return ChatBackground(
+                _raw=wallpaper,
+                client=client,
+            )
+        if isinstance(wallpaper, raw.types.WallPaper):
+            return ChatBackground(
+                file_id=FileId(
+                    dc_id=wallpaper.document.dc_id,
+                    file_reference=wallpaper.document.file_reference,
+                    access_hash=wallpaper.document.access_hash,
+                    file_type=FileType.BACKGROUND,
+                    media_id=wallpaper.document.id,
+                    volume_id=0,
+                    local_id=0,
+                    thumbnail_source=ThumbnailSource.THUMBNAIL,
+                    thumbnail_file_type=FileType.BACKGROUND,
+                ).encode(),
+                file_unique_id=FileUniqueId(
+                    file_unique_type=FileUniqueType.DOCUMENT, media_id=wallpaper.document.id
+                ).encode(),
+                file_size=wallpaper.document.size,
+                slug=wallpaper.slug,
+                date=utils.timestamp_to_datetime(wallpaper.document.date),
+                thumbs=types.Thumbnail._parse(client, wallpaper.document),
+                _raw=wallpaper,
+                client=client,
+            )
