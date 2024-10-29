@@ -29,6 +29,7 @@ from .message import Message
 from .message_entity import MessageEntity
 from .photo import Photo
 from .poll import Poll
+from .poll_answer import PollAnswer
 from .poll_option import PollOption
 from .reaction import (
     Reaction,
@@ -105,6 +106,7 @@ __all__ = [
     "Thumbnail",
     "StrippedThumbnail",
     "Poll",
+    "PollAnswer",
     "PollOption",
     "SponsoredMessage",
     "Gift",

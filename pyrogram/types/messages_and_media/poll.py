@@ -77,12 +77,6 @@ class Poll(Object, Update):
 
         close_date (:py:obj:`~datetime.datetime`, *optional*):
             Point in time when the poll will be automatically closed.
-        
-        user (:obj:`~pyrogram.types.User`, *optional*):
-            The user that changed the answer to the poll, if the voter isn't anonymous.
-        
-        voter_chat (:obj:`~pyrogram.types.Chat`, *optional*):
-            The chat that changed the answer to the poll, if the voter is anonymous.
 
     """
 
@@ -105,8 +99,6 @@ class Poll(Object, Update):
         explanation_entities: Optional[List["types.MessageEntity"]] = None,
         open_period: Optional[int] = None,
         close_date: Optional[datetime] = None,
-        user: Optional["types.User"] = None,
-        voter_chat: Optional["types.Chat"] = None,
     ):
         super().__init__(client)
 
@@ -125,9 +117,6 @@ class Poll(Object, Update):
         self.explanation_entities = explanation_entities
         self.open_period = open_period
         self.close_date = close_date
-        # TODO: spit this out
-        self.user = user
-        self.voter_chat = voter_chat
 
     @staticmethod
     def _parse(client, media_poll: Union["raw.types.MessageMediaPoll", "raw.types.UpdateMessagePoll"]) -> "Poll":
@@ -247,37 +236,6 @@ class Poll(Object, Update):
                 is_closed=False,
                 chosen_option_id=chosen_option_id,
                 correct_option_id=correct_option_id,
-                client=client
-            )
-
-        if isinstance(update, raw.types.UpdateMessagePollVote):
-            user = None
-            voter_chat = None
-            if isinstance(update.peer, raw.types.PeerUser):
-                user = types.Chat._parse_user_chat(client, users[update.peer.user_id])
-
-            elif isinstance(update.peer, raw.types.PeerChat):
-                voter_chat = types.Chat._parse_chat_chat(client, chats[update.peer.chat_id])
-
-            else:
-                voter_chat = types.Chat._parse_channel_chat(client, chats[update.peer.channel_id])
-
-            return Poll(
-                id=str(update.poll_id),
-                question="",
-                options=[
-                    types.PollOption(
-                        text="",
-                        text_entities=[],
-                        voter_count=None,
-                        data=option,
-                        client=client
-                    ) for option in update.options
-                ],
-                total_voter_count=None,
-                is_closed=False,
-                user=user,
-                voter_chat=voter_chat,
                 client=client
             )
 

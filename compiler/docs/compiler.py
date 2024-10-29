@@ -512,6 +512,7 @@ def pyrogram_api():
             PollOption
             InputPollOption
             Poll
+            PollAnswer
             Location
             Venue
             Gift

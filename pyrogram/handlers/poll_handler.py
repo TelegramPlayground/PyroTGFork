@@ -42,8 +42,9 @@ class PollHandler(Handler):
         client (:obj:`~pyrogram.Client`):
             The Client itself, useful when you want to call other API methods inside the poll handler.
 
-        poll (:obj:`~pyrogram.types.Poll`):
-            The received poll.
+        poll (:obj:`~pyrogram.types.Poll` | :obj:`~pyrogram.types.PollAnswer`):
+            New poll state. Bots receive only updates about manually stopped polls and polls, which are sent by the bot.
+            A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
     """
 
     def __init__(self, callback: Callable, filters=None):
