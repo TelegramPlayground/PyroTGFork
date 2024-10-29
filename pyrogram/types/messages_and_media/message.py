@@ -4400,6 +4400,7 @@ class Message(Object, Update):
         )
 
     async def edit_cached_media(
+        self,
         file_id: str,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
