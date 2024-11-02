@@ -47,8 +47,8 @@ class GetChatSponsoredMessages:
 
         """
         r = await self.invoke(
-            raw.functions.channels.GetSponsoredMessages(
-                channel=await self.resolve_peer(chat_id)
+            raw.functions.messages.GetSponsoredMessages(
+                peer=await self.resolve_peer(chat_id)
             )
         )
 

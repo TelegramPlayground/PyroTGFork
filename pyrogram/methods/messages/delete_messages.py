@@ -95,6 +95,8 @@ class DeleteMessages:
                 if isinstance(i, raw.types.UpdateDeleteScheduledMessages):
                     return len(
                         getattr(i, "messages", [])
+                    ) + len(
+                        getattr(i, "sent_messages", [])
                     )
         else:
             if isinstance(peer, raw.types.InputPeerChannel):
