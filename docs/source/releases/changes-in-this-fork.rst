@@ -1,5 +1,6 @@
-Changes in this Fork
-=====================
+==============
+Release Notes
+==============
 
 This page lists all the documented changes of this fork,
 in reverse chronological order. You should read this when upgrading
@@ -9,6 +10,20 @@ it can take advantage of new goodies!
 `For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/commits/unknown_errors/>`_
 
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
+
+Breaking Changes
+=================
+
+- PR from upstream: `1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
+
+Changes in this Fork
+=====================
+
++------------------------+
+| Scheme layer used: 192 |
++------------------------+
+
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=190&to=192>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=190&to=192>`__.
 
 +------------------------+
 | Scheme layer used: 190 |
@@ -206,7 +221,6 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 - Added support for ``https://t.me/m/blah`` links in the ``link`` parameter of :meth:`~pyrogram.Client.get_messages`
 - Added the parameter ``message_thread_id`` to the :meth:`~pyrogram.Client.search_messages` and :meth:`~pyrogram.Client.search_messages_count`.
 - Added the parameter ``chat_list`` to :meth:`~pyrogram.Client.search_global` and :meth:`~pyrogram.Client.search_global_count`.
-- PR from upstream: `1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
 - **BOTS ONLY**: Handled the parameter ``business_connection_id`` to the update handlers :obj:`~pyrogram.handlers.MessageHandler`, :obj:`~pyrogram.handlers.EditedMessageHandler`, :obj:`~pyrogram.handlers.DeletedMessagesHandler`.
 - Added the field ``business_connection_id`` to the class :obj:`~pyrogram.types.Message`.
 - Bug fix for the ``users_shared``, ``chat_shared`` logic in :obj:`~pyrogram.types.Message`.
