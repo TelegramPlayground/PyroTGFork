@@ -575,6 +575,7 @@ def pyrogram_api():
         Bot keyboards
             CallbackGame
             CallbackQuery
+            CopyTextButton
             ForceReply
             GameHighScore
             InlineKeyboardButton

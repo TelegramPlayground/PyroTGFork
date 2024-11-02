@@ -16,11 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 from ..object import Object
 
 
@@ -33,11 +32,14 @@ class InlineKeyboardButton(Object):
         text (``str``):
             Label text on the button.
 
-        callback_data (``str`` | ``bytes``, *optional*):
-            Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes.
-
         url (``str``, *optional*):
             HTTP url to be opened when button is pressed.
+
+        user_id (``int``, *optional*):
+            User id, for links to the user profile.
+
+        callback_data (``str`` | ``bytes``, *optional*):
+            Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes.
 
         web_app (:obj:`~pyrogram.types.WebAppInfo`, *optional*):
             Description of the `Web App <https://core.telegram.org/bots/webapps>`_ that will be launched when the user
@@ -48,9 +50,6 @@ class InlineKeyboardButton(Object):
         login_url (:obj:`~pyrogram.types.LoginUrl`, *optional*):
              An HTTP URL used to automatically authorize the user. Can be used as a replacement for
              the `Telegram Login Widget <https://core.telegram.org/widgets/login>`_.
-
-        user_id (``int``, *optional*):
-            User id, for links to the user profile.
 
         switch_inline_query (``str``, *optional*):
             If set, pressing the button will prompt the user to select one of their chats, open that chat and insert
@@ -63,11 +62,14 @@ class InlineKeyboardButton(Object):
         switch_inline_query_current_chat (``str``, *optional*):
             If set, pressing the button will insert the bot's username and the specified inline query in the current
             chat's input field. Can be empty, in which case only the bot's username will be inserted.This offers a
-            quick way for the user to open your bot in inline mode in the same chat – good for selecting something
+            quick way for the user to open your bot in inline mode in the same chat - good for selecting something
             from multiple options.
 
         switch_inline_query_chosen_chat (:obj:`~pyrogram.types.SwitchInlineQueryChosenChat`, *optional*):
             If set, pressing the button will prompt the user to select one of their chats of the specified type, open that chat and insert the bot's username and the specified inline query in the input field
+
+        copy_text (:obj:`~pyrogram.types.CopyTextButton`, *optional*):
+            Description of the button that copies the specified text to the clipboard.
 
         callback_game (:obj:`~pyrogram.types.CallbackGame`, *optional*):
             Description of the game that will be launched when the user presses the button.
@@ -78,9 +80,6 @@ class InlineKeyboardButton(Object):
 
             **NOTE**: This type of button **must** always be the first button in the first row and can only be used in invoice messages.
 
-        copy_text (``str``, *optional*):
-            A button that copies specified text to clipboard. 1-255 bytes.
-
         callback_data_with_password (``bytes``, *optional*):
             A button that asks for the 2-step verification password of the current user and then sends a callback query to a bot Data to be sent to the bot via a callback query.
 
@@ -89,18 +88,18 @@ class InlineKeyboardButton(Object):
     def __init__(
         self,
         text: str,
-        callback_data: Union[str, bytes] = None,
-        url: str = None,
-        web_app: "types.WebAppInfo" = None,
-        login_url: "types.LoginUrl" = None,
-        user_id: int = None,
-        switch_inline_query: str = None,
-        switch_inline_query_current_chat: str = None,
-        switch_inline_query_chosen_chat: "types.SwitchInlineQueryChosenChat" = None,
-        callback_game: "types.CallbackGame" = None,
-        pay: bool = None,
-        copy_text: str = None,
-        callback_data_with_password: bytes = None
+        url: Optional[str] = None,
+        user_id: Optional[int] = None,
+        callback_data: Optional[Union[str, bytes]] = None,
+        web_app: Optional["types.WebAppInfo"] = None,
+        login_url: Optional["types.LoginUrl"] = None,
+        switch_inline_query: Optional[str] = None,
+        switch_inline_query_current_chat: Optional[str] = None,
+        switch_inline_query_chosen_chat: Optional["types.SwitchInlineQueryChosenChat"] = None,
+        copy_text: Optional["types.CopyTextButton"] = None,
+        callback_game: Optional["types.CallbackGame"] = None,
+        pay: Optional[bool] = None,
+        callback_data_with_password: Optional[bytes] = None
     ):
         super().__init__()
 
@@ -197,7 +196,9 @@ class InlineKeyboardButton(Object):
         if isinstance(b, raw.types.KeyboardButtonCopy):
             return InlineKeyboardButton(
                 text=b.text,
-                copy_text=b.copy_text
+                copy_text=types.CopyTextButton(
+                    text=b.copy_text
+                )
             )
 
     async def write(self, client: "pyrogram.Client"):
@@ -280,5 +281,5 @@ class InlineKeyboardButton(Object):
         if self.copy_text is not None:
             return raw.types.KeyboardButtonCopy(
                 text=self.text,
-                copy_text=self.copy_text
+                copy_text=self.copy_text.text
             )

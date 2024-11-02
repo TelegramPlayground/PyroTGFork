@@ -39,10 +39,9 @@ class EditInlineMedia:
         media: "types.InputMedia",
         reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> bool:
-        """Edit inline animation, audio, document, photo or video messages.
+        """Edit inline animation, audio, document, photo or video messages, or to add media to text messages.
 
-        When the inline message is edited, a new file can't be uploaded. Use a previously uploaded file via its file_id
-        or specify a URL.
+        When an inline message is edited, a new file can't be uploaded; use a previously uploaded file via its file_id or specify a URL.
 
         .. include:: /_includes/usable-by/bots.rst
 

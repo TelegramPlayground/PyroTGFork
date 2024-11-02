@@ -40,10 +40,12 @@ class EditMessageMedia:
         schedule_date: datetime = None,
         business_connection_id: str = None
     ) -> "types.Message":
-        """Edit animation, audio, document, photo or video messages.
+        """Edit animation, audio, document, photo or video messages, or to add media to text messages.
 
-        If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, the
+        If a message is part of a message album, then it can be edited only to an audio for audio albums, only to a document for document albums and to a photo or a video otherwise. Otherwise, the
         message type can be changed arbitrarily.
+
+        Note that business messages that were not sent by the bot and do not contain an inline keyboard can only be edited within 48 hours from the time they were sent.
 
         .. include:: /_includes/usable-by/users-bots.rst
 

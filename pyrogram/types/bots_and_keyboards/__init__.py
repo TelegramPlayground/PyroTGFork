@@ -27,6 +27,7 @@ from .bot_command_scope_chat_member import BotCommandScopeChatMember
 from .bot_command_scope_default import BotCommandScopeDefault
 from .callback_game import CallbackGame
 from .callback_query import CallbackQuery
+from .copy_text_button import CopyTextButton
 from .force_reply import ForceReply
 from .game_high_score import GameHighScore
 from .inline_keyboard_button import InlineKeyboardButton
@@ -54,6 +55,7 @@ from .web_app_info import WebAppInfo
 __all__ = [
     "CallbackGame",
     "CallbackQuery",
+    "CopyTextButton",
     "ForceReply",
     "GameHighScore",
     "InlineKeyboardButton",

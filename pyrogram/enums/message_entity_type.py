@@ -30,10 +30,10 @@ class MessageEntityType(AutoName):
     "``@username``"
 
     HASHTAG = raw.types.MessageEntityHashtag
-    "``#hashtag``"
+    "``#hashtag or #hashtag@PyrogramChat``"
 
     CASHTAG = raw.types.MessageEntityCashtag
-    "``$USD``"
+    "``$USD or $USD@PyrogramChat``"
 
     BOT_COMMAND = raw.types.MessageEntityBotCommand
     "``/start@pyrogrambot``"
@@ -80,11 +80,11 @@ class MessageEntityType(AutoName):
     TEXT_MENTION = raw.types.MessageEntityMentionName
     "for users without usernames (see ``user``)"
 
-    BANK_CARD = raw.types.MessageEntityBankCard
-    "Bank card text"
-
     CUSTOM_EMOJI = raw.types.MessageEntityCustomEmoji
     "Custom emoji"
+
+    BANK_CARD = raw.types.MessageEntityBankCard
+    "Bank card text"
 
     UNKNOWN = raw.types.MessageEntityUnknown
     "Unknown message entity type"
