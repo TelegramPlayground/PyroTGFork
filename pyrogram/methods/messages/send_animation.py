@@ -55,6 +55,7 @@ class SendAnimation:
         message_effect_id: int = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         ttl_seconds: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -150,6 +151,9 @@ class SendAnimation:
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
             ttl_seconds (``int``, *optional*):
                 The message will be self-destructed in the specified time after its content was opened.
@@ -293,6 +297,7 @@ class SendAnimation:
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
+                allow_paid_floodskip=allow_paid_broadcast,
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 effect=message_effect_id,
                 invert_media=show_caption_above_media,

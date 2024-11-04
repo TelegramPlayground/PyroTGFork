@@ -42,6 +42,7 @@ class SendVoice:
         duration: int = 0,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_thread_id: int = None,
         business_connection_id: str = None,
         send_as: Union[int, str] = None,
@@ -97,6 +98,9 @@ class SendVoice:
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
@@ -252,6 +256,7 @@ class SendVoice:
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
+                allow_paid_floodskip=allow_paid_broadcast,
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 effect=message_effect_id,
                 **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)

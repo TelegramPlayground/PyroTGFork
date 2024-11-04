@@ -48,6 +48,7 @@ class SendMediaGroup:
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_to_message_id: int = None
     ) -> List["types.Message"]:
@@ -89,6 +90,9 @@ class SendMediaGroup:
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -459,6 +463,7 @@ class SendMediaGroup:
             send_as=await self.resolve_peer(send_as) if send_as else None,
             schedule_date=utils.datetime_to_timestamp(schedule_date),
             noforwards=protect_content,
+            allow_paid_floodskip=allow_paid_broadcast,
             effect=message_effect_id,
             invert_media=any(show_caption_above_media)
         )

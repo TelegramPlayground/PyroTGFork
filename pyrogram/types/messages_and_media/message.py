@@ -1487,6 +1487,7 @@ class Message(Object, Update):
         link_preview_options: "types.LinkPreviewOptions" = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -1547,6 +1548,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -1589,6 +1593,7 @@ class Message(Object, Update):
             link_preview_options=link_preview_options,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -1622,6 +1627,7 @@ class Message(Object, Update):
         reply_parameters: "types.ReplyParameters" = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         ttl_seconds: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -1724,6 +1730,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             ttl_seconds (``int``, *optional*):
                 The message will be self-destructed in the specified time after its content was opened.
                 The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
@@ -1792,6 +1801,7 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             ttl_seconds=ttl_seconds,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
@@ -1817,6 +1827,7 @@ class Message(Object, Update):
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1907,6 +1918,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -1968,6 +1982,7 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
             progress=progress,
@@ -1984,6 +1999,7 @@ class Message(Object, Update):
         show_caption_above_media: bool = None,
         disable_notification: bool = None,
         message_effect_id: int = None,
+        allow_paid_broadcast: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
@@ -2041,6 +2057,9 @@ class Message(Object, Update):
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
@@ -2081,6 +2100,7 @@ class Message(Object, Update):
             show_caption_above_media=show_caption_above_media,
             disable_notification=disable_notification,
             message_effect_id=message_effect_id,
+            allow_paid_broadcast=allow_paid_broadcast,
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
@@ -2167,6 +2187,7 @@ class Message(Object, Update):
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2233,6 +2254,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2265,6 +2289,7 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id
         )
@@ -2285,6 +2310,7 @@ class Message(Object, Update):
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2373,6 +2399,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2432,6 +2461,7 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
             force_document=force_document,
@@ -2445,6 +2475,7 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -2501,6 +2532,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown automatically.
                 If not empty, the first button must launch the game.
@@ -2526,6 +2560,8 @@ class Message(Object, Update):
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -2623,6 +2659,7 @@ class Message(Object, Update):
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2686,6 +2723,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2717,6 +2757,7 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id
         )
@@ -2731,6 +2772,7 @@ class Message(Object, Update):
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         reply_to_message_id: int = None
     ) -> List["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
@@ -2783,6 +2825,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
         Returns:
             On success, a :obj:`~pyrogram.types.Messages` object is returned containing all the
             single messages sent.
@@ -2809,6 +2854,7 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             reply_to_message_id=reply_to_message_id
         )
 
@@ -2828,6 +2874,7 @@ class Message(Object, Update):
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         view_once: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2910,6 +2957,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             view_once (``bool``, *optional*):
                 Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
@@ -2972,6 +3022,7 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             view_once=view_once,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
@@ -2998,6 +3049,7 @@ class Message(Object, Update):
         quote: bool = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -3105,6 +3157,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -3157,6 +3212,7 @@ class Message(Object, Update):
             is_closed=is_closed,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
@@ -3177,6 +3233,7 @@ class Message(Object, Update):
         emoji: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3238,6 +3295,9 @@ class Message(Object, Update):
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3306,6 +3366,7 @@ class Message(Object, Update):
             emoji=emoji,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -3334,6 +3395,7 @@ class Message(Object, Update):
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3396,6 +3458,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -3443,6 +3508,7 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -3463,6 +3529,7 @@ class Message(Object, Update):
         supports_streaming: bool = True,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3551,6 +3618,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -3638,6 +3708,7 @@ class Message(Object, Update):
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -3663,6 +3734,7 @@ class Message(Object, Update):
         thumb: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3728,6 +3800,9 @@ class Message(Object, Update):
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3812,6 +3887,7 @@ class Message(Object, Update):
             thumb=thumb,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -3839,6 +3915,7 @@ class Message(Object, Update):
         duration: int = 0,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3903,6 +3980,9 @@ class Message(Object, Update):
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3981,6 +4061,7 @@ class Message(Object, Update):
             duration=duration,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -4023,6 +4104,7 @@ class Message(Object, Update):
         is_flexible: bool = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -4117,6 +4199,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -4184,6 +4269,7 @@ class Message(Object, Update):
             is_flexible=is_flexible,
             disable_notification=disable_notification,
             protect_content=self.has_protected_content if protect_content is None else protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             message_effect_id=message_effect_id or self.effect_id,
             reply_parameters=reply_parameters,
             send_as=send_as,
@@ -4467,6 +4553,7 @@ class Message(Object, Update):
         message_thread_id: int = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         drop_author: bool = None,
         drop_media_captions: bool = None,
         send_as: Union[int, str] = None,
@@ -4505,6 +4592,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a fee; for bots only
+
             drop_author (``bool``, *optional*):
                 Whether to forward messages without quoting the original author.
 
@@ -4534,6 +4624,7 @@ class Message(Object, Update):
             message_thread_id=message_thread_id,
             disable_notification=disable_notification,
             protect_content=protect_content,
+            allow_paid_broadcast=allow_paid_broadcast,
             drop_author=drop_author,
             drop_media_captions=drop_media_captions,
             send_as=send_as,
@@ -4559,6 +4650,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         business_connection_id: str = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         message_thread_id: int = None,
         reply_to_message_id: int = None
     ) -> Union["types.Message", List["types.Message"]]:
@@ -4629,6 +4721,9 @@ class Message(Object, Update):
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
 
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
 
@@ -4657,6 +4752,7 @@ class Message(Object, Update):
                 link_preview_options=self.link_preview_options,
                 disable_notification=disable_notification,
                 protect_content=self.has_protected_content if protect_content is None else protect_content,
+                allow_paid_broadcast=allow_paid_broadcast,
                 message_effect_id=self.effect_id,
                 reply_parameters=reply_parameters,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup,
@@ -4676,6 +4772,7 @@ class Message(Object, Update):
                 business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                 schedule_date=schedule_date,
                 protect_content=self.has_protected_content if protect_content is None else protect_content,
+                allow_paid_broadcast=allow_paid_broadcast,
                 has_spoiler=self.has_media_spoiler,
                 reply_to_message_id=reply_to_message_id,
                 send_as=send_as,
@@ -4712,6 +4809,7 @@ class Message(Object, Update):
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
+                    allow_paid_broadcast=allow_paid_broadcast,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -4728,6 +4826,7 @@ class Message(Object, Update):
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
+                    allow_paid_broadcast=allow_paid_broadcast,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -4748,6 +4847,7 @@ class Message(Object, Update):
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
+                    allow_paid_broadcast=allow_paid_broadcast,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -4773,6 +4873,7 @@ class Message(Object, Update):
                     close_date=self.poll.close_date,
                     disable_notification=disable_notification,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
+                    allow_paid_broadcast=allow_paid_broadcast,
                     message_effect_id=self.effect_id,
                     reply_parameters=reply_parameters,
                     message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
@@ -4788,6 +4889,7 @@ class Message(Object, Update):
                     game_short_name=self.game.short_name,
                     disable_notification=disable_notification,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
+                    allow_paid_broadcast=allow_paid_broadcast,
                     message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     message_effect_id=self.effect_id,

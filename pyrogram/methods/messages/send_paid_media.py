@@ -44,6 +44,7 @@ class SendPaidMedia:
         show_caption_above_media: bool = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         business_connection_id: str = None,
         send_as: Union[int, str] = None,
@@ -91,6 +92,9 @@ class SendPaidMedia:
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -273,6 +277,7 @@ class SendPaidMedia:
             schedule_date=utils.datetime_to_timestamp(schedule_date),
             reply_markup=await reply_markup.write(self) if reply_markup else None,
             noforwards=protect_content,
+            allow_paid_floodskip=allow_paid_broadcast,
             invert_media=show_caption_above_media,
             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
         )

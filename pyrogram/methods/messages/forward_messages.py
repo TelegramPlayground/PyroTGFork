@@ -33,6 +33,7 @@ class ForwardMessages:
         message_thread_id: int = None,
         disable_notification: bool = None,
         protect_content: bool = None,
+        allow_paid_broadcast: bool = None,
         drop_author: bool = None,
         drop_media_captions: bool = None,
         send_as: Union[int, str] = None,
@@ -65,6 +66,9 @@ class ForwardMessages:
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a fee; for bots only
 
             drop_author (``bool``, *optional*):
                 Whether to forward messages without quoting the original author.
@@ -109,6 +113,7 @@ class ForwardMessages:
                 drop_author=drop_author,
                 drop_media_captions=drop_media_captions,
                 noforwards=protect_content,
+                allow_paid_floodskip=allow_paid_broadcast,
                 random_id=[self.rnd_id() for _ in message_ids],
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
