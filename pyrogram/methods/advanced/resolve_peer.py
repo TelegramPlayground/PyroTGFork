@@ -78,9 +78,6 @@ class ResolvePeer:
                             )
                         )
 
-                        await self.fetch_peers(r.users)
-                        await self.fetch_peers(r.chats)
-
                         userid = getattr(
                             r.peer,
                             "user_id",
