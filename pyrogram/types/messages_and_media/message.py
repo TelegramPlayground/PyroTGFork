@@ -2561,7 +2561,6 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            allow_paid_broadcast=allow_paid_broadcast,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
