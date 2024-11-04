@@ -195,6 +195,7 @@ FILTER_INCLUDE_EMPTY	The include_peers vector of the filter is empty.
 FILTER_NOT_SUPPORTED	The specified filter cannot be used in this context.
 FILTER_TITLE_EMPTY	The title field of the filter is empty.
 FIRSTNAME_INVALID	The first name is invalid.
+FLOODSKIP_NOT_ALLOWED	You can't execute the specified action because in order to enable this feature [the following conditions](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) must be satisfied.
 FOLDER_ID_EMPTY	An empty folder ID was specified.
 FOLDER_ID_INVALID	Invalid folder ID.
 FORM_EXPIRED	The form was generated more than 10 minutes ago and has expired, please re-generate it using [payments.getPaymentForm](https://core.telegram.org/method/payments.getPaymentForm) and pass the new `form_id`.
