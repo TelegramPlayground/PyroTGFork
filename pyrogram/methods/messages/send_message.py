@@ -199,13 +199,15 @@ class SendMessage:
                 business_connection._raw.connection.dc_id
             )
 
+        peer = await self.resolve_peer(chat_id)
+
         if (
             link_preview_options and
             link_preview_options.url
         ):
             try:
                 rpc = raw.functions.messages.SendMedia(
-                    peer=await self.resolve_peer(chat_id),
+                    peer=peer,
                     silent=disable_notification or None,
                     reply_to=reply_to,
                     random_id=self.rnd_id(),
@@ -253,7 +255,7 @@ class SendMessage:
                 else:
                     entities = xe
                 rpc = raw.functions.messages.SendMessage(
-                    peer=await self.resolve_peer(chat_id),
+                    peer=peer,
                     no_webpage=link_preview_options.is_disabled if link_preview_options else None,
                     silent=disable_notification or None,
                     # TODO
@@ -285,7 +287,7 @@ class SendMessage:
 
         elif message:
             rpc = raw.functions.messages.SendMessage(
-                peer=await self.resolve_peer(chat_id),
+                peer=peer,
                 no_webpage=link_preview_options.is_disabled if link_preview_options else None,
                 silent=disable_notification or None,
                 # TODO
@@ -319,8 +321,6 @@ class SendMessage:
             raise ValueError("Invalid Arguments passed")
 
         if isinstance(r, raw.types.UpdateShortSentMessage):
-            peer = await self.resolve_peer(chat_id)
-
             peer_id = (
                 peer.user_id
                 if isinstance(peer, raw.types.InputPeerUser)
@@ -338,14 +338,12 @@ class SendMessage:
                 message_auto_delete_timer_changed=types.MessageAutoDeleteTimerChanged(
                     message_auto_delete_time=getattr(r, "ttl_period", None)
                 ),
-                # TODO: #52 fix inconsistency
                 chat=types.Chat(
                     id=peer_id,
                     type=enums.ChatType.PRIVATE,
                     client=self
                 ),
                 text=message,
-                reply_markup=reply_markup,
                 client=self
             )
 
