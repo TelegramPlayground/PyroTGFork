@@ -69,6 +69,15 @@ class ChatEventFilter(Object):
         video_chats (``bool``, *optional*):
             True, if video chats events should be returned.
             Defaults to False.
+        
+        forum_changes (``bool``, *optional*):
+            True, if forum-related actions need to be returned.
+            Defaults to False.
+
+        subscription_extensions (``bool``, *optional*):
+            True, if subscription extensions need to be returned.
+            Defaults to False.
+
     """
 
     def __init__(
@@ -83,7 +92,9 @@ class ChatEventFilter(Object):
         edited_messages: bool = False,
         pinned_messages: bool = False,
         leaving_members: bool = False,
-        video_chats: bool = False
+        video_chats: bool = False,
+        forum_changes: bool = False,
+        subscription_extensions: bool = False,
     ):
         super().__init__()
 
@@ -98,6 +109,8 @@ class ChatEventFilter(Object):
         self.pinned_messages = pinned_messages
         self.leaving_members = leaving_members
         self.video_chats = video_chats
+        self.forum_changes = forum_changes
+        self.subscription_extensions = subscription_extensions
 
     def write(self) -> "raw.base.ChannelAdminLogEventsFilter":
         join = False
@@ -116,6 +129,8 @@ class ChatEventFilter(Object):
         delete = False
         group_call = False
         invites = False
+        forum_changes = False
+        subscription_extensions = False
 
         if self.new_restrictions:
             ban = True
@@ -154,6 +169,12 @@ class ChatEventFilter(Object):
 
         if self.video_chats:
             group_call = True
+        
+        if self.forum_changes:
+            forum_changes = True
+        
+        if self.subscription_extensions:
+            subscription_extensions = True
 
         return raw.types.ChannelAdminLogEventsFilter(
             join=join,
@@ -171,5 +192,8 @@ class ChatEventFilter(Object):
             edit=edit,
             delete=delete,
             group_call=group_call,
-            invites=invites
+            invites=invites,
+            # send
+            forums=forum_changes.
+            sub_extend=subscription_extensions
         )
