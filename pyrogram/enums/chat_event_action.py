@@ -132,5 +132,17 @@ class ChatEventAction(AutoName):
     MEMBER_SUBSCRIPTION_EXTENDED = auto()
     "A chat member extended their subscription to the chat (``old_chat_member`` and ``new_chat_member``)"
 
+    SHOW_MESSAGE_SENDER_ENABLED = auto()
+    "the show message senders have been enabled or disabled (see ``show_message_sender_enabled``)"
+
+    AGGRESSIVE_ANTI_SPAM_TOGGLED = auto()
+    "The ``has_aggressive_anti_spam_enabled`` setting of a supergroup was toggled. (see ``has_aggressive_anti_spam_enabled``)"
+
+    PROTECTED_CONTENT_TOGGLED = auto()
+    "The ``has_protected_content`` setting of a channel was toggled (see ``has_protected_content``)"
+
+    CHAT_IS_FORUM_TOGGLED = auto()
+    "The ``is_forum`` setting of a channel was toggled. (see ``is_forum``)"
+
     UNKNOWN = auto()
     "Unknown chat event action"

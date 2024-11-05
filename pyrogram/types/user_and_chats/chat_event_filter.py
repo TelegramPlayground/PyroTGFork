@@ -194,6 +194,6 @@ class ChatEventFilter(Object):
             group_call=group_call,
             invites=invites,
             # send
-            forums=forum_changes.
-            sub_extend=subscription_extensions
+            forums=forum_changes,
+            sub_extend=subscription_extensions,
         )

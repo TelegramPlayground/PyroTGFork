@@ -150,6 +150,22 @@ class ChatEvent(Object):
             Affected chat member status of the user.
             For :obj:`~pyrogram.enums.ChatEventAction.MEMBER_SUBSCRIPTION_EXTENDED` action only.
 
+        show_message_sender_enabled (``bool``, *optional*):
+            The show_message_sender setting of a channel was toggled.
+            For :obj:`~pyrogram.enums.ChatEventAction.SHOW_MESSAGE_SENDER_ENABLED` action only.
+            
+        has_aggressive_anti_spam_enabled (``bool``, *optional*):
+            The ``has_aggressive_anti_spam_enabled`` setting of a supergroup was toggled.
+            For :obj:`~pyrogram.enums.ChatEventAction.AGGRESSIVE_ANTI_SPAM_TOGGLED` action only.
+
+        has_protected_content (``bool``, *optional*):
+            The ``has_protected_content`` setting of a channel was toggled.
+            For :obj:`~pyrogram.enums.ChatEventAction.PROTECTED_CONTENT_TOGGLED` action only.
+
+        is_forum (``bool``, *optional*):
+            The ``is_forum`` setting of a channel was toggled.
+            For :obj:`~pyrogram.enums.ChatEventAction.CHAT_IS_FORUM_TOGGLED` action only.
+
     """
 
     def __init__(
@@ -220,6 +236,11 @@ class ChatEvent(Object):
 
         old_chat_member: "types.ChatMember" = None,
         new_chat_member: "types.ChatMember" = None,
+
+        show_message_sender_enabled: bool = None,
+        has_aggressive_anti_spam_enabled: bool = None,
+        has_protected_content: bool = None,
+        is_forum: bool = None,
     ):
         super().__init__()
 
@@ -289,6 +310,11 @@ class ChatEvent(Object):
 
         self.old_chat_member = old_chat_member
         self.new_chat_member = new_chat_member
+
+        self.show_message_sender_enabled = show_message_sender_enabled
+        self.has_aggressive_anti_spam_enabled = has_aggressive_anti_spam_enabled
+        self.has_protected_content = has_protected_content
+        self.is_forum = is_forum
 
     @staticmethod
     async def _parse(
@@ -364,6 +390,11 @@ class ChatEvent(Object):
 
         old_chat_member: Optional[types.ChatMember] = None
         new_chat_member: Optional[types.ChatMember] = None
+
+        show_message_sender_enabled: Optional[bool] = None
+        has_aggressive_anti_spam_enabled: Optional[bool] = None
+        has_protected_content: Optional[bool] = None
+        is_forum: Optional[bool] = None
 
         if isinstance(action, raw.types.ChannelAdminLogEventActionChangeAbout):
             old_description = action.prev_value
@@ -509,6 +540,22 @@ class ChatEvent(Object):
             new_chat_member = types.ChatMember._parse(client, action.new_participant, users, chats)
             action = enums.ChatEventAction.MEMBER_SUBSCRIPTION_EXTENDED
 
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionToggleSignatureProfiles):
+            show_message_sender_enabled = action.new_value
+            action = enums.ChatEventAction.SHOW_MESSAGE_SENDER_ENABLED
+        
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionToggleAntiSpam):
+            has_aggressive_anti_spam_enabled = action.new_value
+            action = enums.ChatEventAction.AGGRESSIVE_ANTI_SPAM_TOGGLED
+        
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionToggleNoForwards):
+            has_protected_content = action.new_value
+            action = enums.ChatEventAction.PROTECTED_CONTENT_TOGGLED
+
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionToggleForum):
+            is_forum = action.new_value
+            action = enums.ChatEventAction.CHAT_IS_FORUM_TOGGLED
+
         else:
             action = f"{enums.ChatEventAction.UNKNOWN}-{action.QUALNAME}"
 
@@ -579,4 +626,9 @@ class ChatEvent(Object):
 
             old_chat_member=old_chat_member,
             new_chat_member=new_chat_member,
+
+            show_message_sender_enabled=show_message_sender_enabled,
+            has_aggressive_anti_spam_enabled=has_aggressive_anti_spam_enabled,
+            has_protected_content=has_protected_content,
+            is_forum=is_forum,
         )
