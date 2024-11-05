@@ -103,8 +103,25 @@ class EditMessageMedia:
         if caption is not None:
             message, entities = (await utils.parse_text_entities(self, caption, parse_mode, caption_entities)).values()
 
+        is_bytes_io = isinstance(media.media, io.BytesIO)
+        is_uploaded_file = is_bytes_io or os.path.isfile(media.media)
+
+        is_external_url = not is_uploaded_file and re.match("^https?://", media.media)
+
+        if is_bytes_io and not hasattr(media.media, "name"):
+            media.media.name = "media"
+
+        if is_uploaded_file:
+            filename_attribute = [
+                raw.types.DocumentAttributeFilename(
+                    file_name=file_name or (media.media.name if is_bytes_io else os.path.basename(media.media))
+                )
+            ]
+        else:
+            filename_attribute = []
+
         if isinstance(media, types.InputMediaPhoto):
-            if isinstance(media.media, io.BytesIO) or os.path.isfile(media.media):
+            if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         business_connection_id=None,  # TODO
@@ -124,7 +141,7 @@ class EditMessageMedia:
                     ),
                     spoiler=media.has_spoiler
                 )
-            elif re.match("^https?://", media.media):
+            elif is_external_url:
                 media = raw.types.InputMediaPhotoExternal(
                     url=media.media,
                     spoiler=media.has_spoiler
@@ -132,7 +149,7 @@ class EditMessageMedia:
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaVideo):
-            if isinstance(media.media, io.BytesIO) or os.path.isfile(media.media):
+            if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         business_connection_id=None,  # TODO
@@ -149,10 +166,7 @@ class EditMessageMedia:
                                     w=media.width,
                                     h=media.height
                                 ),
-                                raw.types.DocumentAttributeFilename(
-                                    file_name=file_name or os.path.basename(media.media)
-                                )
-                            ],
+                            ] + filename_attribute,
                             nosound_video=not media.disable_content_type_detection,
                             force_file=media.disable_content_type_detection or None,
                         )
@@ -167,15 +181,15 @@ class EditMessageMedia:
                     ),
                     spoiler=media.has_spoiler
                 )
-            elif re.match("^https?://", media.media):
+            elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(
                     url=media.media,
                     spoiler=media.has_spoiler
                 )
             else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.VIDEO)
+                media = utils.get_input_media_from_file_id(media.media, FileType.VIDEO, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaAudio):
-            if isinstance(media.media, io.BytesIO) or os.path.isfile(media.media):
+            if is_uploaded_file:
                 media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         business_connection_id=None,  # TODO
@@ -190,10 +204,7 @@ class EditMessageMedia:
                                     performer=media.performer,
                                     title=media.title
                                 ),
-                                raw.types.DocumentAttributeFilename(
-                                    file_name=file_name or os.path.basename(media.media)
-                                )
-                            ]
+                            ] + filename_attribute,
                         )
                     )
                 )
@@ -205,14 +216,14 @@ class EditMessageMedia:
                         file_reference=media.document.file_reference
                     )
                 )
-            elif re.match("^https?://", media.media):
+            elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(
                     url=media.media
                 )
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.AUDIO)
         elif isinstance(media, types.InputMediaAnimation):
-            if isinstance(media.media, io.BytesIO) or os.path.isfile(media.media):
+            if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         business_connection_id=None,  # TODO
@@ -229,11 +240,8 @@ class EditMessageMedia:
                                     w=media.width,
                                     h=media.height
                                 ),
-                                raw.types.DocumentAttributeFilename(
-                                    file_name=file_name or os.path.basename(media.media)
-                                ),
-                                raw.types.DocumentAttributeAnimated()
-                            ]
+                                raw.types.DocumentAttributeAnimated(),
+                            ] + filename_attribute,
                         )
                     )
                 )
@@ -246,15 +254,15 @@ class EditMessageMedia:
                     ),
                     spoiler=media.has_spoiler
                 )
-            elif re.match("^https?://", media.media):
+            elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(
                     url=media.media,
                     spoiler=media.has_spoiler
                 )
             else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.ANIMATION)
+                media = utils.get_input_media_from_file_id(media.media, FileType.ANIMATION, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaDocument):
-            if isinstance(media.media, io.BytesIO) or os.path.isfile(media.media):
+            if is_uploaded_file:
                 media = await self.invoke(
                     raw.functions.messages.UploadMedia(
                         business_connection_id=None,  # TODO
@@ -263,12 +271,8 @@ class EditMessageMedia:
                             mime_type=self.guess_mime_type(media.media) or "application/zip",
                             thumb=await self.save_file(media.thumb),
                             file=await self.save_file(media.media),
-                            attributes=[
-                                raw.types.DocumentAttributeFilename(
-                                    file_name=file_name or os.path.basename(media.media)
-                                )
-                            ],
-                            # force_file= #TODO
+                            attributes=filename_attribute,
+                            force_file=True
                         )
                     )
                 )
@@ -280,7 +284,7 @@ class EditMessageMedia:
                         file_reference=media.document.file_reference
                     )
                 )
-            elif re.match("^https?://", media.media):
+            elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(
                     url=media.media
                 )

@@ -108,7 +108,7 @@ class EditInlineMedia:
                     spoiler=media.has_spoiler
                 )
             else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO)
+                media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaVideo):
             if is_uploaded_file:
                 media = raw.types.InputMediaUploadedDocument(
@@ -117,13 +117,13 @@ class EditInlineMedia:
                     file=await self.save_file(media.media),
                     spoiler=media.has_spoiler,
                     attributes=[
-                                   raw.types.DocumentAttributeVideo(
-                                       supports_streaming=media.supports_streaming or None,
-                                       duration=media.duration,
-                                       w=media.width,
-                                       h=media.height
-                                   )
-                               ] + filename_attribute
+                        raw.types.DocumentAttributeVideo(
+                            supports_streaming=media.supports_streaming or None,
+                            duration=media.duration,
+                            w=media.width,
+                            h=media.height
+                        )
+                    ] + filename_attribute
                 )
             elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(
@@ -131,7 +131,7 @@ class EditInlineMedia:
                     spoiler=media.has_spoiler
                 )
             else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.VIDEO)
+                media = utils.get_input_media_from_file_id(media.media, FileType.VIDEO, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaAudio):
             if is_uploaded_file:
                 media = raw.types.InputMediaUploadedDocument(
@@ -139,12 +139,12 @@ class EditInlineMedia:
                     thumb=await self.save_file(media.thumb),
                     file=await self.save_file(media.media),
                     attributes=[
-                                   raw.types.DocumentAttributeAudio(
-                                       duration=media.duration,
-                                       performer=media.performer,
-                                       title=media.title
-                                   )
-                               ] + filename_attribute
+                        raw.types.DocumentAttributeAudio(
+                            duration=media.duration,
+                            performer=media.performer,
+                            title=media.title
+                        )
+                    ] + filename_attribute
                 )
             elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(
@@ -160,14 +160,14 @@ class EditInlineMedia:
                     file=await self.save_file(media.media),
                     spoiler=media.has_spoiler,
                     attributes=[
-                                   raw.types.DocumentAttributeVideo(
-                                       supports_streaming=True,
-                                       duration=media.duration,
-                                       w=media.width,
-                                       h=media.height
-                                   ),
-                                   raw.types.DocumentAttributeAnimated()
-                               ] + filename_attribute,
+                        raw.types.DocumentAttributeVideo(
+                            supports_streaming=True,
+                            duration=media.duration,
+                            w=media.width,
+                            h=media.height
+                        ),
+                        raw.types.DocumentAttributeAnimated()
+                    ] + filename_attribute,
                     nosound_video=True,
                     force_file=False
                 )
