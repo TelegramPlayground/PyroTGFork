@@ -75,8 +75,11 @@ class ChatEventAction(AutoName):
     MEMBER_JOINED = auto()
     "a member joined by themselves. (see ``user``)"
 
-    # MEMBER_JOINED_BY_LINK = auto()
-    ""
+    MEMBER_JOINED_BY_LINK = auto()
+    "a new member joined the chat via an invite link (see ``invite_link``)"
+
+    MEMBER_JOINED_BY_REQUEST = auto()
+    "a new member was accepted to the chat by an administrator (see ``invite_link`` and ``approver_user``)"
 
     MEMBER_LEFT = auto()
     "a member left by themselves. (see ``user``)"

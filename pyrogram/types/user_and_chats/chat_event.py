@@ -83,6 +83,18 @@ class ChatEvent(Object):
             New invited chat member.
             For :obj:`~pyrogram.enums.ChatEventAction.MEMBER_INVITED` action only.
 
+        invite_link (:obj:`~pyrogram.types.ChatInviteLink`, *optional*):
+            Invite link used to join the chat.
+            For :obj:`~pyrogram.enums.ChatEventAction.MEMBER_JOINED_BY_LINK` and :obj:`~pyrogram.enums.ChatEventAction.MEMBER_JOINED_BY_REQUEST` actions only.
+        
+        via_chat_folder_invite_link (``bool``, *optional*):
+            True, if the user has joined the chat using an invite link for a chat folder.
+            For :obj:`~pyrogram.enums.ChatEventAction.MEMBER_JOINED_BY_LINK` action only.
+
+        approver_user (:obj:`~pyrogram.types.User`, *optional*):
+            User identifier of the chat administrator who approved the user join request
+            For :obj:`~pyrogram.enums.ChatEventAction.MEMBER_JOINED_BY_REQUEST` action only.
+
         old_administrator_privileges, new_administrator_privileges (:obj:`~pyrogram.types.ChatMember`, *optional*):
             Previous and new administrator privileges.
             For :obj:`~pyrogram.enums.ChatEventAction.ADMINISTRATOR_PRIVILEGES_CHANGED` action only.
@@ -166,6 +178,9 @@ class ChatEvent(Object):
         new_message: "types.Message" = None,
 
         invited_member: "types.ChatMember" = None,
+        invite_link: "types.ChatInviteLink" = None,
+        via_chat_folder_invite_link: bool = None,
+        approver_user: "types.User" = None,
 
         old_administrator_privileges: "types.ChatMember" = None,
         new_administrator_privileges: "types.ChatMember" = None,
@@ -226,6 +241,9 @@ class ChatEvent(Object):
         self.new_message = new_message
 
         self.invited_member = invited_member
+        self.invite_link = invite_link
+        self.via_chat_folder_invite_link = via_chat_folder_invite_link
+        self.approver_user = approver_user
 
         self.old_administrator_privileges = old_administrator_privileges
         self.new_administrator_privileges = new_administrator_privileges
@@ -292,6 +310,9 @@ class ChatEvent(Object):
         new_message: Optional[types.Message] = None
 
         invited_member: Optional[types.ChatMember] = None
+        invite_link: Optional[types.ChatInviteLink] = None
+        via_chat_folder_invite_link: Optional[bool] = None
+        approver_user: Optional[types.User] = None
 
         old_administrator_privileges: Optional[types.ChatMember] = None
         new_administrator_privileges: Optional[types.ChatMember] = None
@@ -442,6 +463,16 @@ class ChatEvent(Object):
             deleted_invite_link = types.ChatInviteLink._parse(client, action.invite, users)
             action = enums.ChatEventAction.INVITE_LINK_DELETED
 
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionParticipantJoinByInvite):
+            invite_link = types.ChatInviteLink._parse(client, action.invite, users)
+            via_chat_folder_invite_link = getattr(action, "via_chatlist", None)
+            action = enums.ChatEventAction.MEMBER_JOINED_BY_LINK
+
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionParticipantJoinByRequest):
+            invite_link = types.ChatInviteLink._parse(client, action.invite, users)
+            approver_user = types.User._parse(client, users[action.approved_by])
+            action = enums.ChatEventAction.MEMBER_JOINED_BY_REQUEST
+
         else:
             action = f"{enums.ChatEventAction.UNKNOWN}-{action.QUALNAME}"
 
@@ -450,6 +481,7 @@ class ChatEvent(Object):
             date=utils.timestamp_to_datetime(event.date),
             user=user,
             action=action,
+
             old_description=old_description,
             new_description=new_description,
 
@@ -477,6 +509,9 @@ class ChatEvent(Object):
             new_message=new_message,
 
             invited_member=invited_member,
+            invite_link=invite_link,
+            via_chat_folder_invite_link=via_chat_folder_invite_link,
+            approver_user=approver_user,
 
             old_administrator_privileges=old_administrator_privileges,
             new_administrator_privileges=new_administrator_privileges,
@@ -501,5 +536,5 @@ class ChatEvent(Object):
             old_invite_link=old_invite_link,
             new_invite_link=new_invite_link,
             revoked_invite_link=revoked_invite_link,
-            deleted_invite_link=deleted_invite_link
+            deleted_invite_link=deleted_invite_link,
         )
