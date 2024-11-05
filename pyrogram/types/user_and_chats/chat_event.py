@@ -20,8 +20,7 @@ from datetime import datetime
 from typing import List, Optional
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types, utils, enums
+from pyrogram import raw, types, utils, enums
 from ..object import Object
 
 
@@ -66,6 +65,10 @@ class ChatEvent(Object):
         old_username, new_username (``str``, *optional*):
             Previous and new chat username.
             For :obj:`~pyrogram.enums.ChatEventAction.USERNAME_CHANGED` action only.
+        
+        old_usernames, new_usernames (List of :obj:`~pyrogram.types.Username`, *optional*):
+            Previous and new chat usernames.
+            For :obj:`~pyrogram.enums.ChatEventAction.USERNAMES_CHANGED` action only.
 
         old_chat_permissions, new_chat_permissions (:obj:`~pyrogram.types.ChatPermissions`, *optional*):
             Previous and new default chat permissions.
@@ -142,6 +145,11 @@ class ChatEvent(Object):
         deleted_invite_link (:obj:`~pyrogram.types.ChatInviteLink`, *optional*):
             Deleted invite link.
             For :obj:`~pyrogram.enums.ChatEventAction.INVITE_LINK_DELETED` action only.
+        
+        old_chat_member, new_chat_member (:obj:`~pyrogram.types.ChatMember`, *optional*):
+            Affected chat member status of the user.
+            For :obj:`~pyrogram.enums.ChatEventAction.MEMBER_SUBSCRIPTION_EXTENDED` action only.
+
     """
 
     def __init__(
@@ -168,6 +176,9 @@ class ChatEvent(Object):
 
         old_username: str = None,
         new_username: str = None,
+
+        old_usernames: List["types.Username"] = None,
+        new_usernames: List["types.Username"] = None,
 
         old_chat_permissions: "types.ChatPermissions" = None,
         new_chat_permissions: "types.ChatPermissions" = None,
@@ -205,7 +216,10 @@ class ChatEvent(Object):
         old_invite_link: "types.ChatInviteLink" = None,
         new_invite_link: "types.ChatInviteLink" = None,
         revoked_invite_link: "types.ChatInviteLink" = None,
-        deleted_invite_link: "types.ChatInviteLink" = None
+        deleted_invite_link: "types.ChatInviteLink" = None,
+
+        old_chat_member: "types.ChatMember" = None,
+        new_chat_member: "types.ChatMember" = None,
     ):
         super().__init__()
 
@@ -231,6 +245,9 @@ class ChatEvent(Object):
 
         self.old_username = old_username
         self.new_username = new_username
+
+        self.old_usernames = old_usernames
+        self.new_usernames = new_usernames
 
         self.old_chat_permissions = old_chat_permissions
         self.new_chat_permissions = new_chat_permissions
@@ -270,6 +287,9 @@ class ChatEvent(Object):
         self.revoked_invite_link = revoked_invite_link
         self.deleted_invite_link = deleted_invite_link
 
+        self.old_chat_member = old_chat_member
+        self.new_chat_member = new_chat_member
+
     @staticmethod
     async def _parse(
         client: "pyrogram.Client",
@@ -300,6 +320,9 @@ class ChatEvent(Object):
 
         old_username: Optional[str] = None
         new_username: Optional[str] = None
+
+        old_usernames: Optional[types.List[types.Username]] = None
+        new_usernames: Optional[types.List[types.Username]] = None
 
         old_chat_permissions: Optional[types.ChatPermissions] = None
         new_chat_permissions: Optional[types.ChatPermissions] = None
@@ -339,6 +362,9 @@ class ChatEvent(Object):
         revoked_invite_link: Optional[types.ChatInviteLink] = None
         deleted_invite_link: Optional[types.ChatInviteLink] = None
 
+        old_chat_member: Optional[types.ChatMember] = None
+        new_chat_member: Optional[types.ChatMember] = None
+
         if isinstance(action, raw.types.ChannelAdminLogEventActionChangeAbout):
             old_description = action.prev_value
             new_description = action.new_value
@@ -368,6 +394,11 @@ class ChatEvent(Object):
             old_username = action.prev_value
             new_username = action.new_value
             action = enums.ChatEventAction.USERNAME_CHANGED
+
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionChangeUsernames):
+            old_usernames = types.List([types.Username(username=p) for p in action.prev_value])
+            new_usernames = types.List([types.Username(username=n) for n in action.new_value])
+            action = enums.ChatEventAction.USERNAMES_CHANGED
 
         elif isinstance(action, raw.types.ChannelAdminLogEventActionDefaultBannedRights):
             old_chat_permissions = types.ChatPermissions._parse(action.prev_banned_rights)
@@ -473,6 +504,11 @@ class ChatEvent(Object):
             approver_user = types.User._parse(client, users[action.approved_by])
             action = enums.ChatEventAction.MEMBER_JOINED_BY_REQUEST
 
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionParticipantSubExtend):
+            old_chat_member = types.ChatMember._parse(client, action.prev_participant, users, chats)
+            new_chat_member = types.ChatMember._parse(client, action.new_participant, users, chats)
+            action = enums.ChatEventAction.MEMBER_SUBSCRIPTION_EXTENDED
+
         else:
             action = f"{enums.ChatEventAction.UNKNOWN}-{action.QUALNAME}"
 
@@ -499,6 +535,9 @@ class ChatEvent(Object):
 
             old_username=old_username,
             new_username=new_username,
+
+            old_usernames=old_usernames,
+            new_usernames=new_usernames,
 
             old_chat_permissions=old_chat_permissions,
             new_chat_permissions=new_chat_permissions,
@@ -537,4 +576,7 @@ class ChatEvent(Object):
             new_invite_link=new_invite_link,
             revoked_invite_link=revoked_invite_link,
             deleted_invite_link=deleted_invite_link,
+
+            old_chat_member=old_chat_member,
+            new_chat_member=new_chat_member,
         )

@@ -48,6 +48,9 @@ class ChatEventAction(AutoName):
     USERNAME_CHANGED = auto()
     "the chat username has been changed (see ``old_username`` and ``new_username``)"
 
+    USERNAMES_CHANGED = auto()
+    "the chat username has been changed (see ``old_usernames`` and ``new_usernames``)"
+
     CHAT_PERMISSIONS_CHANGED = auto()
     "the default chat permissions has been changed (see ``old_chat_permissions`` and ``new_chat_permissions``)"
 
@@ -125,6 +128,9 @@ class ChatEventAction(AutoName):
 
     MESSAGE_UNPINNED = auto()
     "a message has been unpinned (see ``unpinned_message``)"
+
+    MEMBER_SUBSCRIPTION_EXTENDED = auto()
+    "A chat member extended their subscription to the chat (``old_chat_member`` and ``new_chat_member``)"
 
     UNKNOWN = auto()
     "Unknown chat event action"
