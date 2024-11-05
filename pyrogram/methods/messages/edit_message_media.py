@@ -155,7 +155,7 @@ class EditMessageMedia:
                         business_connection_id=None,  # TODO
                         peer=await self.resolve_peer(chat_id),
                         media=raw.types.InputMediaUploadedDocument(
-                            mime_type=self.guess_mime_type(media.media) or "video/mp4",
+                            mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "video/mp4",
                             thumb=await self.save_file(media.thumb),
                             spoiler=media.has_spoiler,
                             file=await self.save_file(media.media),
@@ -195,7 +195,7 @@ class EditMessageMedia:
                         business_connection_id=None,  # TODO
                         peer=await self.resolve_peer(chat_id),
                         media=raw.types.InputMediaUploadedDocument(
-                            mime_type=self.guess_mime_type(media.media) or "audio/mpeg",
+                            mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "audio/mpeg",
                             thumb=await self.save_file(media.thumb),
                             file=await self.save_file(media.media),
                             attributes=[
@@ -229,7 +229,7 @@ class EditMessageMedia:
                         business_connection_id=None,  # TODO
                         peer=await self.resolve_peer(chat_id),
                         media=raw.types.InputMediaUploadedDocument(
-                            mime_type=self.guess_mime_type(media.media) or "video/mp4",
+                            mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "video/mp4",
                             thumb=await self.save_file(media.thumb),
                             spoiler=media.has_spoiler,
                             file=await self.save_file(media.media),
@@ -268,7 +268,7 @@ class EditMessageMedia:
                         business_connection_id=None,  # TODO
                         peer=await self.resolve_peer(chat_id),
                         media=raw.types.InputMediaUploadedDocument(
-                            mime_type=self.guess_mime_type(media.media) or "application/zip",
+                            mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "application/zip",
                             thumb=await self.save_file(media.thumb),
                             file=await self.save_file(media.media),
                             attributes=filename_attribute,
