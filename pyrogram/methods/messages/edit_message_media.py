@@ -123,6 +123,7 @@ class EditMessageMedia:
             filename_attribute = []
 
         if isinstance(media, types.InputMediaPhoto):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
@@ -150,8 +151,8 @@ class EditMessageMedia:
                 )
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
-            show_caption_above_media.append(media.show_caption_above_media)
         elif isinstance(media, types.InputMediaVideo):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
@@ -191,7 +192,6 @@ class EditMessageMedia:
                 )
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.VIDEO, has_spoiler=media.has_spoiler)
-            show_caption_above_media.append(media.show_caption_above_media)
         elif isinstance(media, types.InputMediaAudio):
             if is_uploaded_file:
                 media = await self.invoke(
@@ -227,6 +227,7 @@ class EditMessageMedia:
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.AUDIO)
         elif isinstance(media, types.InputMediaAnimation):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
@@ -265,7 +266,6 @@ class EditMessageMedia:
                 )
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.ANIMATION, has_spoiler=media.has_spoiler)
-            show_caption_above_media.append(media.show_caption_above_media)
         elif isinstance(media, types.InputMediaDocument):
             if is_uploaded_file:
                 media = await self.invoke(
