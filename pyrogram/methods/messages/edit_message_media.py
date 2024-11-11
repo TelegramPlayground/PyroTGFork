@@ -98,6 +98,8 @@ class EditMessageMedia:
         parse_mode = media.parse_mode
         caption_entities = media.caption_entities
 
+        show_caption_above_media = []
+
         message, entities = None, None
 
         if caption is not None:
@@ -148,6 +150,7 @@ class EditMessageMedia:
                 )
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
+            show_caption_above_media.append(media.show_caption_above_media)
         elif isinstance(media, types.InputMediaVideo):
             if is_uploaded_file:
                 uploaded_media = await self.invoke(
@@ -188,6 +191,7 @@ class EditMessageMedia:
                 )
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.VIDEO, has_spoiler=media.has_spoiler)
+            show_caption_above_media.append(media.show_caption_above_media)
         elif isinstance(media, types.InputMediaAudio):
             if is_uploaded_file:
                 media = await self.invoke(
@@ -261,6 +265,7 @@ class EditMessageMedia:
                 )
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.ANIMATION, has_spoiler=media.has_spoiler)
+            show_caption_above_media.append(media.show_caption_above_media)
         elif isinstance(media, types.InputMediaDocument):
             if is_uploaded_file:
                 media = await self.invoke(
@@ -298,7 +303,7 @@ class EditMessageMedia:
             reply_markup=await reply_markup.write(self) if reply_markup else None,
             message=message,
             entities=entities,
-            # TODO
+            invert_media=any(show_caption_above_media),
             schedule_date=utils.datetime_to_timestamp(schedule_date)
         )
         session = None
