@@ -666,14 +666,15 @@ class Message(Object, Update):
 
         if isinstance(message, raw.types.MessageEmpty):
             sender_chat = None
-            if isinstance(message.peer_id, raw.types.PeerUser):
-                sender_chat = types.Chat._parse_user_chat(client, users[peer_id])
+            if peer_id:
+                if isinstance(message.peer_id, raw.types.PeerUser):
+                    sender_chat = types.Chat._parse_user_chat(client, users[peer_id])
 
-            elif isinstance(message.peer_id, raw.types.PeerChat):
-                sender_chat = types.Chat._parse_chat_chat(client, chats[peer_id])
+                elif isinstance(message.peer_id, raw.types.PeerChat):
+                    sender_chat = types.Chat._parse_chat_chat(client, chats[peer_id])
 
-            else:
-                sender_chat = types.Chat._parse_channel_chat(client, chats[peer_id])
+                else:
+                    sender_chat = types.Chat._parse_channel_chat(client, chats[peer_id])
 
             return Message(
                 id=message.id,
