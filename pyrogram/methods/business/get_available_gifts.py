@@ -27,7 +27,7 @@ class GetAvailableGifts:
     ) -> List["types.Gift"]:
         """Get all gifts that can be sent to other users.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Returns:
             List of :obj:`~pyrogram.types.Gift`: On success, a list of star gifts is returned.

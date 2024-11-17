@@ -56,6 +56,9 @@ class UserGift(Object):
         sell_star_count (``int``, *optional*):
             Number of Telegram Stars that can be claimed by the receiver instead of the gift; only for the gift receiver.
 
+        was_converted (``bool``, *optional*):
+            True, if the gift was converted to Telegram Stars; only for the receiver of the gift.
+
     """
 
     def __init__(
@@ -70,7 +73,8 @@ class UserGift(Object):
         is_saved: Optional[bool] = None,
         gift: Optional["types.Gift"] = None,
         message_id: Optional[int] = None,
-        sell_star_count: Optional[int] = None
+        sell_star_count: Optional[int] = None,
+        was_converted: Optional[bool] = None,
     ):
         super().__init__(client)
 
@@ -83,6 +87,7 @@ class UserGift(Object):
         self.entities = entities
         self.message_id = message_id
         self.sell_star_count = sell_star_count
+        self.was_converted = was_converted
 
     @staticmethod
     async def _parse(
@@ -115,7 +120,7 @@ class UserGift(Object):
         message: "raw.base.Message",
         users: dict
     ) -> "UserGift":
-        action = message.action
+        action = message.action  # raw.types.MessageActionStarGift
 
         doc = action.gift.sticker
         attributes = {type(i): i for i in doc.attributes}
@@ -131,9 +136,9 @@ class UserGift(Object):
                 id=action.gift.id,
                 sticker=await types.Sticker._parse(client, doc, attributes),
                 star_count=action.gift.stars,
-                default_sell_star_count=action.gift.convert_stars,
-                remaining_count=getattr(action.gift, "availability_remains", None),
                 total_count=getattr(action.gift, "availability_total", None),
+                remaining_count=getattr(action.gift, "availability_remains", None),
+                default_sell_star_count=action.gift.convert_stars,
                 is_limited=getattr(action.gift, "limited", None),
             ),
             date=utils.timestamp_to_datetime(message.date),
@@ -143,6 +148,8 @@ class UserGift(Object):
             message_id=message.id,
             text=Str(text).init(entities) if text else None,
             entities=entities,
+            sell_star_count=getattr(action, "convert_stars", None),
+            was_converted=getattr(action, "converted", None),
             client=client
         )
 

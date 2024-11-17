@@ -20,6 +20,14 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 194 |
++------------------------+
+
+- Added the field ``subscription_expiration_date`` in the :obj:`~pyrogram.types.SuccessfulPayment`.
+- Added the parameter ``subscription_period`` in the :meth:`~pyrogram.Client.create_invoice_link`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=192&to=194>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=192&to=194>`__.
+
++------------------------+
 | Scheme layer used: 192 |
 +------------------------+
 

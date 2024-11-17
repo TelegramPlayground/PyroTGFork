@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from datetime import datetime
 from typing import Union
 
 import pyrogram
@@ -37,6 +38,15 @@ class SuccessfulPayment(Object):
         invoice_payload (``str``):
             Bot specified invoice payload. Only available to the bot that received the payment.
 
+        subscription_expiration_date (:py:obj:`~datetime.datetime`, *optional*):
+            Expiration date of the subscription, in Unix time; for recurring payments only.
+
+        is_recurring (``bool``, *optional*):
+            True, if the payment is a recurring payment for a subscription.
+
+        is_first_recurring (``bool``, *optional*):
+            True, if the payment is the first payment for a subscription.
+
         shipping_option_id (``str``, *optional*):
             Identifier of the shipping option chosen by the user. Only available to the bot that received the payment.
 
@@ -49,12 +59,6 @@ class SuccessfulPayment(Object):
         provider_payment_charge_id (``str``):
             Provider payment identifier. Only available to the bot that received the payment.
 
-        is_recurring (``bool``, *optional*):
-            True, if this is a recurring payment.
-
-        is_first_recurring (``bool``, *optional*):
-            True, if this is the first recurring payment.
-
         invoice_name (``str``, *optional*):
             Name of the invoice; may be empty if unknown
 
@@ -66,12 +70,13 @@ class SuccessfulPayment(Object):
         currency: str,
         total_amount: str,
         invoice_payload: str,
-        telegram_payment_charge_id: str,
-        provider_payment_charge_id: str,
-        shipping_option_id: str = None,
-        order_info: "types.OrderInfo" = None,
+        subscription_expiration_date: datetime = None,
         is_recurring: bool = None,
         is_first_recurring: bool = None,
+        shipping_option_id: str = None,
+        order_info: "types.OrderInfo" = None,
+        telegram_payment_charge_id: str,
+        provider_payment_charge_id: str,
         invoice_name: str = None
     ):
         super().__init__()
@@ -79,12 +84,13 @@ class SuccessfulPayment(Object):
         self.currency = currency
         self.total_amount = total_amount
         self.invoice_payload = invoice_payload
-        self.telegram_payment_charge_id = telegram_payment_charge_id
-        self.provider_payment_charge_id = provider_payment_charge_id
-        self.shipping_option_id = shipping_option_id
-        self.order_info = order_info
+        self.subscription_expiration_date = subscription_expiration_date
         self.is_recurring = is_recurring
         self.is_first_recurring = is_first_recurring
+        self.shipping_option_id = shipping_option_id
+        self.order_info = order_info
+        self.telegram_payment_charge_id = telegram_payment_charge_id
+        self.provider_payment_charge_id = provider_payment_charge_id
         self.invoice_name = invoice_name
 
     @staticmethod
@@ -139,5 +145,6 @@ class SuccessfulPayment(Object):
             order_info=order_info,
             is_recurring=getattr(successful_payment, "recurring_used", None),
             is_first_recurring=getattr(successful_payment, "recurring_init", None),
-            invoice_name=getattr(successful_payment, "invoice_slug", None)
+            invoice_name=getattr(successful_payment, "invoice_slug", None),
+            subscription_expiration_date=utils.timestamp_to_datetime(successful_payment.subscription_until_date),
         )

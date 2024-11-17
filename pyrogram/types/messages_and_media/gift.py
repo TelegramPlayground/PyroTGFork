@@ -37,14 +37,14 @@ class Gift(Object):
         star_count (``int``):
             Number of Telegram Stars that must be paid for the gift.
 
-        default_sell_star_count (``int``):
-            Number of Telegram Stars that can be claimed by the receiver instead of the gift by default. If the gift was paid with just bought Telegram Stars, then full value can be claimed.
+        total_count (``int``, *optional*):
+            Number of total times the gift can be purchased by all users; None if not limited.
 
         remaining_count (``int``, *optional*):
             Number of remaining times the gift can be purchased by all users; None if not limited or the gift was sold out.
 
-        total_count (``int``, *optional*):
-            Number of total times the gift can be purchased by all users; None if not limited.
+        default_sell_star_count (``int``):
+            Number of Telegram Stars that can be claimed by the receiver instead of the gift by default. If the gift was paid with just bought Telegram Stars, then full value can be claimed.
 
         first_send_date (:py:obj:`~datetime.datetime`, *optional*):
             Point in time (Unix timestamp) when the gift was send for the first time; for sold out gifts only.
@@ -67,9 +67,9 @@ class Gift(Object):
         id: int,
         sticker: "types.Sticker",
         star_count: int,
-        default_sell_star_count: int,
-        remaining_count: Optional[int] = None,
         total_count: Optional[int] = None,
+        remaining_count: Optional[int] = None,
+        default_sell_star_count: int,
         first_send_date: Optional[datetime] = None,
         last_send_date: Optional[datetime] = None,
         is_limited: Optional[bool] = None,
@@ -80,9 +80,9 @@ class Gift(Object):
         self.id = id
         self.sticker = sticker
         self.star_count = star_count
-        self.default_sell_star_count = default_sell_star_count
-        self.remaining_count = remaining_count
         self.total_count = total_count
+        self.remaining_count = remaining_count
+        self.default_sell_star_count = default_sell_star_count
         self.first_send_date = first_send_date
         self.last_send_date = last_send_date
         self.is_limited = is_limited
