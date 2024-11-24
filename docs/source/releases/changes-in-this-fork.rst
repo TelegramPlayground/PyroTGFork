@@ -23,6 +23,7 @@ Changes in this Fork
 | Scheme layer used: 194 |
 +------------------------+
 
+- Added the field ``schedule_date`` and changed the return type of the :meth:`~pyrogram.Client.send_inline_bot_result`.
 - Added the field ``subscription_expiration_date`` in the :obj:`~pyrogram.types.SuccessfulPayment`.
 - Added the parameter ``subscription_period`` in the :meth:`~pyrogram.Client.create_invoice_link`.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=192&to=194>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=192&to=194>`__.
