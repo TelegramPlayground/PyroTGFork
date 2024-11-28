@@ -454,7 +454,7 @@ def zero_datetime() -> datetime:
 
 
 def timestamp_to_datetime(ts: Optional[int]) -> Optional[datetime]:
-    return datetime.fromtimestamp(ts) if ts else None
+    return datetime.fromtimestamp(ts).replace(tzinfo=timezone.utc) if ts else None
 
 
 def datetime_to_timestamp(dt: Optional[datetime]) -> Optional[int]:
