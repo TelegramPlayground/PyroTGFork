@@ -5294,7 +5294,7 @@ class Message(Object, Update):
         block: bool = True,
         progress: Callable = None,
         progress_args: tuple = ()
-    ) -> str:
+    ) -> Union[str, BinaryIO]:
         """Bound method *download* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
