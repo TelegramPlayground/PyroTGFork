@@ -5347,11 +5347,15 @@ class Message(Object, Update):
                 You can either keep ``*args`` or add every single extra argument in your function signature.
 
         Returns:
-            On success, the absolute path of the downloaded file as string is returned, None otherwise.
+            ``str`` | ``None`` | ``BinaryIO``: On success, the absolute path of the downloaded file is returned,
+            otherwise, in case the download failed or was deliberately stopped with
+            :meth:`~pyrogram.Client.stop_transmission`, None is returned.
+            Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
-            ``ValueError``: If the message doesn't contain any downloadable media
+            ValueError: If the message doesn't contain any downloadable media.
+
         """
         return await self._client.download_media(
             message=self,
