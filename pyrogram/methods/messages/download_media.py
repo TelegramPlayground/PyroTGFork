@@ -91,7 +91,8 @@ class DownloadMedia:
             Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.
 
         Raises:
-            ValueError: if the message doesn't contain any downloadable media
+            RPCError: In case of a Telegram RPC error.
+            ValueError: If the message doesn't contain any downloadable media.
 
         Example:
             Download media to file

@@ -92,6 +92,9 @@ class GetForumTopics:
             messages = {}
 
             for message in getattr(r, "messages", []):
+                if isinstance(message, raw.types.MessageEmpty):
+                    continue
+
                 messages[message.id] = await types.Message._parse(
                     self,
                     message,

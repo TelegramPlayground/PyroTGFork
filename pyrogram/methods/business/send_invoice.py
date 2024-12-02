@@ -91,7 +91,7 @@ class SendInvoice:
                 Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.). Must contain exactly one item for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
 
             message_thread_id (``int``, *optional*):
-                If the message is in a thread, ID of the original message.
+                Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
 
             provider_token (``str``, *optional*):
                 Payment provider token, obtained via `@BotFather <https://t.me/botfather>`_. Pass an empty string for payments in `Telegram Stars <https://t.me/BotNews/90>`_.

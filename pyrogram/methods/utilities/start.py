@@ -61,7 +61,7 @@ class Start:
             if not is_authorized:
                 await self.authorize()
 
-            if not await self.storage.is_bot() and self.takeout:
+            if self.takeout and not await self.storage.is_bot():
                 self.takeout_id = (await self.invoke(raw.functions.account.InitTakeoutSession())).id
                 log.info("Takeout session %s initiated", self.takeout_id)
 

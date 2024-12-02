@@ -2903,11 +2903,15 @@ class Message(Object, Update):
                 await message.reply_photo(photo)
 
         Parameters:
-            photo (``str``):
+            photo (``str`` | ``BinaryIO``):
                 Photo to send.
                 Pass a file_id as string to send a photo that exists on the Telegram servers,
-                pass an HTTP URL as a string for Telegram to get a photo from the Internet, or
-                pass a file path as string to upload a new photo that exists on your local machine.
+                pass an HTTP URL as a string for Telegram to get a photo from the Internet,
+                pass a file path as string to upload a new photo that exists on your local machine, or
+                pass a binary file-like object with its attribute ".name" set for in-memory uploads.
+                The photo must be at most 10 MB in size.
+                The photo's width and height must not exceed 10000 in total.
+                The photo's width and height ratio must be at most 20.
 
             quote (``bool``, *optional*):
                 If ``True``, the message will be sent as a reply to this message.
@@ -5290,7 +5294,7 @@ class Message(Object, Update):
         block: bool = True,
         progress: Callable = None,
         progress_args: tuple = ()
-    ) -> str:
+    ) -> Union[str, BinaryIO]:
         """Bound method *download* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -5343,11 +5347,15 @@ class Message(Object, Update):
                 You can either keep ``*args`` or add every single extra argument in your function signature.
 
         Returns:
-            On success, the absolute path of the downloaded file as string is returned, None otherwise.
+            ``str`` | ``None`` | ``BinaryIO``: On success, the absolute path of the downloaded file is returned,
+            otherwise, in case the download failed or was deliberately stopped with
+            :meth:`~pyrogram.Client.stop_transmission`, None is returned.
+            Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
-            ``ValueError``: If the message doesn't contain any downloadable media
+            ValueError: If the message doesn't contain any downloadable media.
+
         """
         return await self._client.download_media(
             message=self,

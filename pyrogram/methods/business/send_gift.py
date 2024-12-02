@@ -44,10 +44,10 @@ class SendGift:
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
             gift_id (``int``):
-                Unique identifier of the gift to send.
+                Identifier of the gift.
 
             text (``str``, *optional*):
-                Text of the message to be sent. 0-``gift_text_length_max`` characters.
+                Text that will be shown along with the gift. 0-``gift_text_length_max`` characters.
 
             parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.
@@ -58,7 +58,7 @@ class SendGift:
                 Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed.
 
             is_private (``bool``, *optional*):
-                Pass True to show the current user as sender and gift text only to the gift receiver; otherwise, everyone will be able to see them.
+                For users only: Pass True to show the current user as sender and gift text only to the gift receiver; otherwise, everyone will be able to see them.
 
         Returns:
             ``bool``: On success, True is returned.

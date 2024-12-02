@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from datetime import datetime
 from typing import Union
 
 import pyrogram
@@ -35,8 +36,9 @@ class SendInlineBotResult:
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
         message_thread_id: int = None,
+        schedule_date: datetime = None,
         reply_to_message_id: int = None
-    ) -> "raw.base.Updates":
+    ) -> Union["types.Message", bool]:
         """Send an inline bot result.
         Bot results can be retrieved using :meth:`~pyrogram.Client.get_inline_bot_results`
 
@@ -71,8 +73,14 @@ class SendInlineBotResult:
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
 
+            schedule_date (:py:obj:`~datetime.datetime`, *optional*):
+                Date when the message will be automatically sent.
+
         Returns:
-            :obj:`~pyrogram.raw.base.Updates`: Currently, on success, a raw result is returned.
+            :obj:`~pyrogram.types.Message`: On success, the sent message is returned or False if no message was sent.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python
@@ -99,7 +107,7 @@ class SendInlineBotResult:
             reply_parameters
         )
 
-        return await self.invoke(
+        r = await self.invoke(
             raw.functions.messages.SendInlineBotResult(
                 peer=await self.resolve_peer(chat_id),
                 query_id=query_id,
@@ -107,6 +115,25 @@ class SendInlineBotResult:
                 random_id=self.rnd_id(),
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 silent=disable_notification or None,
-                reply_to=reply_to
+                reply_to=reply_to,
+                schedule_date=utils.datetime_to_timestamp(schedule_date),
             )
         )
+
+        for i in r.updates:
+            if isinstance(
+                i,
+                (
+                    raw.types.UpdateNewMessage,
+                    raw.types.UpdateNewChannelMessage,
+                    raw.types.UpdateNewScheduledMessage
+                )
+            ):
+                return await types.Message._parse(
+                    self, i.message,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
+                    replies=self.fetch_replies
+                )
+        return False

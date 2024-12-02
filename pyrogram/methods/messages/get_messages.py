@@ -32,6 +32,7 @@ log = logging.getLogger(__name__)
 class GetMessages:
     async def get_messages(
         self: "pyrogram.Client",
+        *,
         chat_id: Union[int, str] = None,
         message_ids: Union[int, Iterable[int]] = None,
         reply_to_message_ids: Union[int, Iterable[int]] = None,
@@ -49,10 +50,10 @@ class GetMessages:
 
         .. include:: /_includes/usable-by/users-bots.rst
 
-        You must use exactly one of ``chat_id`` OR ``link``.
+        You must use exactly one of ``message_ids`` OR (``chat_id``, ``message_ids``) OR (``chat_id``, ``reply_to_message_ids``) OR ``link``.
 
         Parameters:
-            chat_id (``int`` | ``str``):
+            chat_id (``int`` | ``str``, *optional*):
                 Unique identifier (int) or username (str) of the target chat.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
@@ -221,4 +222,4 @@ class GetMessages:
                 message_ids=message_id
             )
 
-        raise ValueError("No argument supplied. Either pass link OR (chat_id, message_ids or reply_to_message_ids)")
+        raise ValueError("No valid argument supplied. https://docs.pyrogram.org/api/methods/get_messages")
