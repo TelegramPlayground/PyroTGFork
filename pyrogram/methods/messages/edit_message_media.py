@@ -98,6 +98,8 @@ class EditMessageMedia:
         parse_mode = media.parse_mode
         caption_entities = media.caption_entities
 
+        show_caption_above_media = []
+
         message, entities = None, None
 
         if caption is not None:
@@ -121,6 +123,7 @@ class EditMessageMedia:
             filename_attribute = []
 
         if isinstance(media, types.InputMediaPhoto):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
@@ -149,6 +152,7 @@ class EditMessageMedia:
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaVideo):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
@@ -223,6 +227,7 @@ class EditMessageMedia:
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.AUDIO)
         elif isinstance(media, types.InputMediaAnimation):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
@@ -298,7 +303,7 @@ class EditMessageMedia:
             reply_markup=await reply_markup.write(self) if reply_markup else None,
             message=message,
             entities=entities,
-            # TODO
+            invert_media=any(show_caption_above_media),
             schedule_date=utils.datetime_to_timestamp(schedule_date)
         )
         session = None

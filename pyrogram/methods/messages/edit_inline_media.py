@@ -79,6 +79,8 @@ class EditInlineMedia:
         parse_mode = media.parse_mode
         caption_entities = media.caption_entities
 
+        show_caption_above_media = []
+
         is_bytes_io = isinstance(media.media, io.BytesIO)
         is_uploaded_file = is_bytes_io or os.path.isfile(media.media)
 
@@ -97,6 +99,7 @@ class EditInlineMedia:
             filename_attribute = []
 
         if isinstance(media, types.InputMediaPhoto):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 media = raw.types.InputMediaUploadedPhoto(
                     file=await self.save_file(media.media),
@@ -110,6 +113,7 @@ class EditInlineMedia:
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaVideo):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "video/mp4",
@@ -153,6 +157,7 @@ class EditInlineMedia:
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.AUDIO)
         elif isinstance(media, types.InputMediaAnimation):
+            show_caption_above_media.append(media.show_caption_above_media)
             if is_uploaded_file:
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "video/mp4",
@@ -232,6 +237,7 @@ class EditInlineMedia:
                     raw.functions.messages.EditInlineBotMessage(
                         id=unpacked,
                         media=actual_media,
+                        invert_media=any(show_caption_above_media),
                         reply_markup=await reply_markup.write(self) if reply_markup else None,
                         **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
                     ),

@@ -65,7 +65,8 @@ class ChatMemberUpdated(Object, Update):
         new_chat_member: "types.ChatMember",
         invite_link: "types.ChatInviteLink" = None,
         via_join_request: bool = None,
-        via_chat_folder_invite_link: bool = None
+        via_chat_folder_invite_link: bool = None,
+        _raw = None,
     ):
         super().__init__(client)
 
@@ -77,6 +78,7 @@ class ChatMemberUpdated(Object, Update):
         self.invite_link = invite_link
         self.via_join_request = via_join_request
         self.via_chat_folder_invite_link = via_chat_folder_invite_link
+        self._raw = _raw
 
     @staticmethod
     def _parse(
@@ -142,5 +144,6 @@ class ChatMemberUpdated(Object, Update):
             invite_link=invite_link,
             client=client,
             via_join_request=via_join_request,
-            via_chat_folder_invite_link=getattr(update, "via_chatlist", False)
+            via_chat_folder_invite_link=getattr(update, "via_chatlist", None),
+            _raw=update,
         )
