@@ -20,7 +20,7 @@ import asyncio
 import io
 import os
 from datetime import datetime
-from typing import Union, Optional, Callable
+from typing import Callable, List, Optional, Union 
 
 import pyrogram
 from pyrogram import types, enums
@@ -38,7 +38,7 @@ class DownloadMedia:
         block: bool = True,
         progress: Callable = None,
         progress_args: tuple = ()
-    ) -> Optional[Union[str, "io.BytesIO"]]:
+    ) -> Optional[Union[str, "io.BytesIO", List[str], List["io.BytesIO"]]]:
         """Download the media from a message.
 
         .. include:: /_includes/usable-by/users-bots.rst
@@ -122,11 +122,11 @@ class DownloadMedia:
                 file_bytes = bytes(file.getbuffer())
         """
 
-        media = [message]
+        medium = [message]
 
         if isinstance(message, types.Message):
             if message.new_chat_photo:
-                media = [message.new_chat_photo]
+                medium = [message.new_chat_photo]
 
             elif (
                 not (self.me and self.me.is_bot) and
@@ -134,92 +134,94 @@ class DownloadMedia:
             ):
                 story_media = message.story or message.reply_to_story or None
                 if story_media and story_media.media:
-                    media = [getattr(story_media, story_media.media.value, None)]
+                    medium = [getattr(story_media, story_media.media.value, None)]
                 else:
-                    media = []
+                    medium = []
 
             elif message.paid_media:
                 if any([isinstance(paid_media, (types.PaidMediaPhoto, types.PaidMediaVideo)) for paid_media in message.paid_media.paid_media]):
-                    media = [getattr(paid_media, "photo", (getattr(paid_media, "video", None))) for paid_media in message.paid_media.paid_media]
+                    medium = [getattr(paid_media, "photo", (getattr(paid_media, "video", None))) for paid_media in message.paid_media.paid_media]
                 else:
-                    media = []
+                    medium = []
 
             else:
                 if message.media:
-                    media = [getattr(message, message.media.value, None)]
+                    medium = [getattr(message, message.media.value, None)]
                 else:
-                    media = []
+                    medium = []
 
         elif isinstance(message, str):
-            media = [message]
+            medium = [message]
 
-        if isinstance(media, types.Story):
+        if isinstance(medium, types.Story):
             if (self.me and self.me.is_bot):
                 raise ValueError("This method cannot be used by bots")
             else:
-                if media.media:
-                    media = [getattr(message, message.media.value, None)]
+                if medium.media:
+                    medium = [getattr(message, message.media.value, None)]
                 else:
-                    media = []
+                    medium = []
 
-        media = types.List(filter(lambda x: x is not None, media))
+        medium = types.List(filter(lambda x: x is not None, medium))
 
-        if len(media) == 0:
+        if len(medium) == 0:
             raise ValueError(
                 f"The message {message if isinstance(message, str) else message.id} doesn't contain any downloadable media"
             )
 
-        media = media[0]
+        dledmedia = []
 
-        if isinstance(media, str):
-            file_id_str = media
-        else:
-            file_id_str = media.file_id
-
-        file_id_obj = FileId.decode(file_id_str)
-
-        file_type = file_id_obj.file_type
-        media_file_name = getattr(media, "file_name", "")  # TODO
-        file_size = getattr(media, "file_size", 0)
-        mime_type = getattr(media, "mime_type", "")
-        date = getattr(media, "date", None)
-
-        directory, file_name = os.path.split(file_name)
-        file_name = file_name or media_file_name or ""
-
-        if not os.path.isabs(file_name):
-            directory = self.WORKDIR / (directory or DEFAULT_DOWNLOAD_DIR)
-
-        if not file_name:
-            guessed_extension = self.guess_extension(mime_type)
-
-            if file_type in PHOTO_TYPES:
-                extension = ".jpg"
-            elif file_type == FileType.VOICE:
-                extension = guessed_extension or ".ogg"
-            elif file_type in (FileType.VIDEO, FileType.ANIMATION, FileType.VIDEO_NOTE):
-                extension = guessed_extension or ".mp4"
-            elif file_type == FileType.DOCUMENT:
-                extension = guessed_extension or ".zip"
-            elif file_type == FileType.STICKER:
-                extension = guessed_extension or ".webp"
-            elif file_type == FileType.AUDIO:
-                extension = guessed_extension or ".mp3"
+        for media in medium:
+            if isinstance(media, str):
+                file_id_str = media
             else:
-                extension = ".unknown"
+                file_id_str = media.file_id
 
-            file_name = "{}_{}_{}{}".format(
-                FileType(file_id_obj.file_type).name.lower(),
-                (date or datetime.now()).strftime("%Y-%m-%d_%H-%M-%S"),
-                self.rnd_id(),
-                extension
+            file_id_obj = FileId.decode(file_id_str)
+
+            file_type = file_id_obj.file_type
+            media_file_name = getattr(media, "file_name", "")  # TODO
+            file_size = getattr(media, "file_size", 0)
+            mime_type = getattr(media, "mime_type", "")
+            date = getattr(media, "date", None)
+
+            directory, file_name = os.path.split(file_name)
+            file_name = file_name or media_file_name or ""
+
+            if not os.path.isabs(file_name):
+                directory = self.WORKDIR / (directory or DEFAULT_DOWNLOAD_DIR)
+
+            if not file_name:
+                guessed_extension = self.guess_extension(mime_type)
+
+                if file_type in PHOTO_TYPES:
+                    extension = ".jpg"
+                elif file_type == FileType.VOICE:
+                    extension = guessed_extension or ".ogg"
+                elif file_type in (FileType.VIDEO, FileType.ANIMATION, FileType.VIDEO_NOTE):
+                    extension = guessed_extension or ".mp4"
+                elif file_type == FileType.DOCUMENT:
+                    extension = guessed_extension or ".zip"
+                elif file_type == FileType.STICKER:
+                    extension = guessed_extension or ".webp"
+                elif file_type == FileType.AUDIO:
+                    extension = guessed_extension or ".mp3"
+                else:
+                    extension = ".unknown"
+
+                file_name = "{}_{}_{}{}".format(
+                    FileType(file_id_obj.file_type).name.lower(),
+                    (date or datetime.now()).strftime("%Y-%m-%d_%H-%M-%S"),
+                    self.rnd_id(),
+                    extension
+                )
+
+            downloader = self.handle_download(
+                (file_id_obj, directory, file_name, in_memory, file_size, progress, progress_args)
             )
 
-        downloader = self.handle_download(
-            (file_id_obj, directory, file_name, in_memory, file_size, progress, progress_args)
-        )
-
-        if block:
-            return await downloader
-        else:
-            asyncio.get_event_loop().create_task(downloader)
+            if block:
+                dledmedia.append(await downloader)
+            else:
+                asyncio.get_event_loop().create_task(downloader)
+        return types.List(dledmedia) if block and len(dledmedia) > 1  else dledmedia[0] if block and len(dledmedia) == 1 else None
