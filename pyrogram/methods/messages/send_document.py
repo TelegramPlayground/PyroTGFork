@@ -17,10 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import io
 import os
 import re
 from datetime import datetime
-from typing import Union, BinaryIO, List, Optional, Callable
+from typing import Union, List, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, enums, raw, types, utils
@@ -35,8 +36,8 @@ class SendDocument:
     async def send_document(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        document: Union[str, BinaryIO],
-        thumb: Union[str, BinaryIO] = None,
+        document: Union[str, "io.BytesIO"],
+        thumb: Union[str, "io.BytesIO"] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
@@ -72,14 +73,14 @@ class SendDocument:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            document (``str`` | ``BinaryIO``):
+            document (``str`` | :obj:`io.BytesIO`):
                 File to send.
                 Pass a file_id as string to send a file that exists on the Telegram servers,
                 pass an HTTP URL as a string for Telegram to get a file from the Internet,
                 pass a file path as string to upload a new file that exists on your local machine, or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
-            thumb (``str`` | ``BinaryIO``, *optional*):
+            thumb (``str`` | :obj:`io.BytesIO`, *optional*):
                 Thumbnail of the file sent.
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.

@@ -16,10 +16,11 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
 import logging
 from datetime import datetime
 from functools import partial
-from typing import List, Match, Union, BinaryIO, Optional, Callable
+from typing import List, Match, Union, Optional, Callable
 
 import pyrogram
 from pyrogram import raw, enums, types, utils
@@ -1610,7 +1611,7 @@ class Message(Object, Update):
 
     async def reply_animation(
         self,
-        animation: Union[str, BinaryIO],
+        animation: Union[str, "io.BytesIO"],
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
@@ -1621,7 +1622,7 @@ class Message(Object, Update):
         duration: int = 0,
         width: int = 0,
         height: int = 0,
-        thumb: str = None,
+        thumb: Union[str, "io.BytesIO"] = None,
         file_name: str = None,
         disable_notification: bool = None,
         message_effect_id: int = None,
@@ -1812,7 +1813,7 @@ class Message(Object, Update):
 
     async def reply_audio(
         self,
-        audio: Union[str, BinaryIO],
+        audio: Union[str, "io.BytesIO"],
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
@@ -1820,7 +1821,7 @@ class Message(Object, Update):
         duration: int = 0,
         performer: str = None,
         title: str = None,
-        thumb: str = None,
+        thumb: Union[str, "io.BytesIO"] = None,
         file_name: str = None,
         disable_notification: bool = None,
         message_effect_id: int = None,
@@ -2297,9 +2298,9 @@ class Message(Object, Update):
 
     async def reply_document(
         self,
-        document: Union[str, BinaryIO],
+        document: Union[str, "io.BytesIO"],
         quote: bool = None,
-        thumb: Union[str, BinaryIO] = None,
+        thumb: Union[str, "io.BytesIO"] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
@@ -2351,7 +2352,7 @@ class Message(Object, Update):
                 If *reply_to_message_id* is passed, this parameter will be ignored.
                 Defaults to ``True`` in group chats and ``False`` in private chats.
 
-            thumb (``str`` | ``BinaryIO``, *optional*):
+            thumb (``str`` | :obj:`io.BytesIO`, *optional*):
                 Thumbnail of the file sent.
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.
@@ -2860,7 +2861,7 @@ class Message(Object, Update):
 
     async def reply_photo(
         self,
-        photo: Union[str, BinaryIO],
+        photo: Union[str, "io.BytesIO"],
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
@@ -2903,7 +2904,7 @@ class Message(Object, Update):
                 await message.reply_photo(photo)
 
         Parameters:
-            photo (``str`` | ``BinaryIO``):
+            photo (``str`` | :obj:`io.BytesIO`):
                 Photo to send.
                 Pass a file_id as string to send a photo that exists on the Telegram servers,
                 pass an HTTP URL as a string for Telegram to get a photo from the Internet,
@@ -3229,7 +3230,7 @@ class Message(Object, Update):
 
     async def reply_sticker(
         self,
-        sticker: Union[str, BinaryIO],
+        sticker: Union[str, "io.BytesIO"],
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
@@ -3519,7 +3520,7 @@ class Message(Object, Update):
 
     async def reply_video(
         self,
-        video: Union[str, BinaryIO],
+        video: Union[str, "io.BytesIO"],
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
@@ -3528,7 +3529,7 @@ class Message(Object, Update):
         duration: int = 0,
         width: int = 0,
         height: int = 0,
-        thumb: str = None,
+        thumb: Union[str, "io.BytesIO"] = None,
         has_spoiler: bool = None,
         supports_streaming: bool = True,
         disable_notification: bool = None,
@@ -3602,7 +3603,7 @@ class Message(Object, Update):
             height (``int``, *optional*):
                 Video height.
 
-            thumb (``str`` | ``BinaryIO``, *optional*):
+            thumb (``str`` | :obj:`io.BytesIO`, *optional*):
                 Thumbnail of the video sent.
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.
@@ -3731,11 +3732,11 @@ class Message(Object, Update):
 
     async def reply_video_note(
         self,
-        video_note: Union[str, BinaryIO],
+        video_note: Union[str, "io.BytesIO"],
         quote: bool = None,
         duration: int = 0,
         length: int = 1,
-        thumb: str = None,
+        thumb: Union[str, "io.BytesIO"] = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
@@ -3911,7 +3912,7 @@ class Message(Object, Update):
 
     async def reply_voice(
         self,
-        voice: Union[str, BinaryIO],
+        voice: Union[str, "io.BytesIO"],
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
@@ -5294,7 +5295,7 @@ class Message(Object, Update):
         block: bool = True,
         progress: Callable = None,
         progress_args: tuple = ()
-    ) -> Union[str, BinaryIO]:
+    ) -> Union[str, "io.BytesIO"]:
         """Bound method *download* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -5347,7 +5348,7 @@ class Message(Object, Update):
                 You can either keep ``*args`` or add every single extra argument in your function signature.
 
         Returns:
-            ``str`` | ``None`` | ``BinaryIO``: On success, the absolute path of the downloaded file is returned,
+            ``str`` | ``None`` | :obj:`io.BytesIO`: On success, the absolute path of the downloaded file is returned,
             otherwise, in case the download failed or was deliberately stopped with
             :meth:`~pyrogram.Client.stop_transmission`, None is returned.
             Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.

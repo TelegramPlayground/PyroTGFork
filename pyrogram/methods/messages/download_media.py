@@ -17,9 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import asyncio
+import io
 import os
 from datetime import datetime
-from typing import Union, Optional, Callable, BinaryIO
+from typing import Union, Optional, Callable
 
 import pyrogram
 from pyrogram import types, enums
@@ -37,7 +38,7 @@ class DownloadMedia:
         block: bool = True,
         progress: Callable = None,
         progress_args: tuple = ()
-    ) -> Optional[Union[str, BinaryIO]]:
+    ) -> Optional[Union[str, "io.BytesIO"]]:
         """Download the media from a message.
 
         .. include:: /_includes/usable-by/users-bots.rst
@@ -85,7 +86,7 @@ class DownloadMedia:
                 You can either keep ``*args`` or add every single extra argument in your function signature.
 
         Returns:
-            ``str`` | ``None`` | ``BinaryIO``: On success, the absolute path of the downloaded file is returned,
+            ``str`` | ``None`` | :obj:`io.BytesIO`: On success, the absolute path of the downloaded file is returned,
             otherwise, in case the download failed or was deliberately stopped with
             :meth:`~pyrogram.Client.stop_transmission`, None is returned.
             Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.

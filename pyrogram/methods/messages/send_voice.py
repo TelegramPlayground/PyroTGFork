@@ -17,10 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import io
 import os
 import re
 from datetime import datetime
-from typing import Union, BinaryIO, List, Optional, Callable
+from typing import Union, List, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, enums, raw, types, utils
@@ -35,7 +36,7 @@ class SendVoice:
     async def send_voice(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        voice: Union[str, BinaryIO],
+        voice: Union[str, "io.BytesIO"],
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
@@ -72,7 +73,7 @@ class SendVoice:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            voice (``str`` | ``BinaryIO``):
+            voice (``str`` | :obj:`io.BytesIO`):
                 Audio file to send.
                 Pass a file_id as string to send an audio that exists on the Telegram servers,
                 pass an HTTP URL as a string for Telegram to get an audio from the Internet,

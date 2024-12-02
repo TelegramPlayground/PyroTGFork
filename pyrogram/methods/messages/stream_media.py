@@ -16,8 +16,9 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
 import math
-from typing import Union, Optional, BinaryIO
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import types
@@ -30,7 +31,7 @@ class StreamMedia:
         message: Union["types.Message", str],
         limit: int = 0,
         offset: int = 0
-    ) -> Optional[Union[str, BinaryIO]]:
+    ) -> Optional[Union[str, "io.BytesIO"]]:
         """Stream the media from a message chunk by chunk.
 
         You can use this method to partially download a file into memory or to selectively download chunks of file.

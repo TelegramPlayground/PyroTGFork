@@ -25,7 +25,7 @@ import math
 import os
 from hashlib import md5
 from pathlib import PurePath
-from typing import Union, BinaryIO, Callable
+from typing import Union, Callable
 
 import pyrogram
 from pyrogram import StopTransmission
@@ -38,7 +38,7 @@ log = logging.getLogger(__name__)
 class SaveFile:
     async def save_file(
         self: "pyrogram.Client",
-        path: Union[str, BinaryIO],
+        path: Union[str, "io.BytesIO"],
         file_id: int = None,
         file_part: int = 0,
         progress: Callable = None,
@@ -54,7 +54,7 @@ class SaveFile:
             available yet in the Client class as an easy-to-use method).
 
         Parameters:
-            path (``str`` | ``BinaryIO``):
+            path (``str`` | :obj:`io.BytesIO`):
                 The path of the file you want to upload that exists on your local machine or a binary file-like object
                 with its attribute ".name" set for in-memory uploads.
 

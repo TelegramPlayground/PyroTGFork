@@ -16,7 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, BinaryIO
+import io
+from typing import Union
 
 import pyrogram
 from pyrogram import raw
@@ -26,8 +27,8 @@ class SetProfilePhoto:
     async def set_profile_photo(
         self: "pyrogram.Client",
         *,
-        photo: Union[str, BinaryIO] = None,
-        video: Union[str, BinaryIO] = None,
+        photo: Union[str, "io.BytesIO"] = None,
+        video: Union[str, "io.BytesIO"] = None,
         public: bool = False,
         for_my_bot: Union[int, str] = None,
         photo_frame_start_timestamp: float = None
@@ -40,12 +41,12 @@ class SetProfilePhoto:
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
-            photo (``str`` | ``BinaryIO``, *optional*):
+            photo (``str`` | :obj:`io.BytesIO`, *optional*):
                 Profile photo to set.
                 Pass a file path as string to upload a new photo that exists on your local machine or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.
 
-            video (``str`` | ``BinaryIO``, *optional*):
+            video (``str`` | :obj:`io.BytesIO`, *optional*):
                 Profile video to set.
                 Pass a file path as string to upload a new video that exists on your local machine or
                 pass a binary file-like object with its attribute ".name" set for in-memory uploads.

@@ -17,10 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import io
 import os
 import re
 from datetime import datetime
-from typing import Union, BinaryIO, List, Optional, Callable
+from typing import Union, List, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, enums, raw, types, utils
@@ -35,14 +36,14 @@ class SendAudio:
     async def send_audio(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        audio: Union[str, BinaryIO],
+        audio: Union[str, "io.BytesIO"],
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
         duration: int = 0,
         performer: str = None,
         title: str = None,
-        thumb: Union[str, BinaryIO] = None,
+        thumb: Union[str, "io.BytesIO"] = None,
         file_name: str = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
@@ -75,7 +76,7 @@ class SendAudio:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            audio (``str`` | ``BinaryIO``):
+            audio (``str`` | :obj:`io.BytesIO`):
                 Audio file to send.
                 Pass a file_id as string to send an audio file that exists on the Telegram servers,
                 pass an HTTP URL as a string for Telegram to get an audio file from the Internet,
@@ -101,7 +102,7 @@ class SendAudio:
             title (``str``, *optional*):
                 Track name.
 
-            thumb (``str`` | ``BinaryIO``, *optional*):
+            thumb (``str`` | :obj:`io.BytesIO`, *optional*):
                 Thumbnail of the music file album cover.
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.

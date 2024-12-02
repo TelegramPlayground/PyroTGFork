@@ -16,8 +16,9 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
 from datetime import datetime
-from typing import Union, List, Optional, AsyncGenerator, BinaryIO
+from typing import Union, List, Optional, AsyncGenerator
 
 import pyrogram
 from pyrogram import raw, enums
@@ -856,9 +857,9 @@ class Chat(Object):
     async def set_photo(
         self,
         *,
-        photo: Union[str, BinaryIO] = None,
-        video: Union[str, BinaryIO] = None,
-        video_start_ts: float = None,
+        photo: Union[str, "io.BytesIO"] = None,
+        video: Union[str, "io.BytesIO"] = None,
+        photo_frame_start_timestamp: float = None,
     ) -> Union["types.Message", bool]:
         """Bound method *set_photo* of :obj:`~pyrogram.types.Chat`.
 
@@ -888,18 +889,18 @@ class Chat(Object):
                 await chat.set_photo(video=video.file_id)
 
         Parameters:
-            photo (``str`` | ``BinaryIO``, *optional*):
+            photo (``str`` | :obj:`io.BytesIO`, *optional*):
                 New chat photo. You can pass a :obj:`~pyrogram.types.Photo` file_id, a file path to upload a new photo
                 from your local machine or a binary file-like object with its attribute
                 ".name" set for in-memory uploads.
 
-            video (``str`` | ``BinaryIO``, *optional*):
+            video (``str`` | :obj:`io.BytesIO`, *optional*):
                 New chat video. You can pass a :obj:`~pyrogram.types.Video` file_id, a file path to upload a new video
                 from your local machine or a binary file-like object with its attribute
                 ".name" set for in-memory uploads.
 
-            video_start_ts (``float``, *optional*):
-                The timestamp in seconds of the video frame to use as photo profile preview.
+            photo_frame_start_timestamp (``float``, *optional*):
+                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` or ``video_emoji_markup`` is set.
 
         Returns:
             :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
@@ -914,7 +915,7 @@ class Chat(Object):
             chat_id=self.id,
             photo=photo,
             video=video,
-            video_start_ts=video_start_ts
+            photo_frame_start_timestamp=photo_frame_start_timestamp
         )
 
     async def set_message_auto_delete_time(self, message_auto_delete_time: int) -> "types.Message":

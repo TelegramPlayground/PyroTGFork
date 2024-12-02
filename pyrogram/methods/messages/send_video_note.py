@@ -17,9 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import io
 import os
 from datetime import datetime
-from typing import List, Union, BinaryIO, Optional, Callable
+from typing import List, Union, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, raw, types, utils
@@ -34,10 +35,10 @@ class SendVideoNote:
     async def send_video_note(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        video_note: Union[str, BinaryIO],
+        video_note: Union[str, "io.BytesIO"],
         duration: int = 0,
         length: int = 1,
-        thumb: Union[str, BinaryIO] = None,
+        thumb: Union[str, "io.BytesIO"] = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
@@ -72,7 +73,7 @@ class SendVideoNote:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            video_note (``str`` | ``BinaryIO``):
+            video_note (``str`` | :obj:`io.BytesIO`):
                 Video note to send.
                 Pass a file_id as string to send a video note that exists on the Telegram servers,
                 pass a file path as string to upload a new video note that exists on your local machine, or
@@ -85,7 +86,7 @@ class SendVideoNote:
             length (``int``, *optional*):
                 Video width and height.
 
-            thumb (``str`` | ``BinaryIO``, *optional*):
+            thumb (``str`` | :obj:`io.BytesIO`, *optional*):
                 Thumbnail of the video sent.
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.
