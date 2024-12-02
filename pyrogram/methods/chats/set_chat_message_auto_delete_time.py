@@ -29,8 +29,10 @@ class SetChatMessageAutoDeleteTime:
         message_auto_delete_time: int
     ) -> "types.Message":
         """Changes the message auto-delete or self-destruct (for secret chats) time in a chat.
-        
+
         Requires change_info administrator right in basic groups, supergroups and channels.
+
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):

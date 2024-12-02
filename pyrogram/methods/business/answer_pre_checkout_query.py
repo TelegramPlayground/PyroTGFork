@@ -31,7 +31,9 @@ class AnswerPreCheckoutQuery:
         
         Use this method to respond to such pre-checkout queries.
 
-        **Note**: The API must receive an answer within 10 seconds after the pre-checkout query was sent.
+        .. note::
+
+            The API must receive an answer within 10 seconds after the pre-checkout query was sent.
 
         .. include:: /_includes/usable-by/bots.rst
 

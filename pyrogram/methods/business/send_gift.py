@@ -35,7 +35,7 @@ class SendGift:
     ) -> bool:
         """Sends a gift to another user.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
             user_id (``int`` | ``str``):

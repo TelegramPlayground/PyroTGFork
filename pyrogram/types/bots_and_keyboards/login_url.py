@@ -34,9 +34,10 @@ class LoginUrl(Object):
             be opened. The data added is the same as described in
             `Receiving authorization data <https://core.telegram.org/widgets/login#receiving-authorization-data>`.
 
-            **NOTE**: You **must** always check the hash of the received data to verify the authentication and the
-            integrity of the data as described in
-            `Checking authorization <https://core.telegram.org/widgets/login#checking-authorization>`_.
+            .. note::
+            
+                You **must** always check the hash of the received data to verify the authentication
+                and the integrity of the data as described in `Checking authorization <https://core.telegram.org/widgets/login#checking-authorization>`_.
 
         forward_text (``str``, *optional*):
             New text of the button in forwarded messages.
