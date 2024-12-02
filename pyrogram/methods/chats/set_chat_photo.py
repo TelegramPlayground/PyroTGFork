@@ -16,8 +16,9 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
 import os
-from typing import Union, BinaryIO
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -29,8 +30,8 @@ class SetChatPhoto:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         *,
-        photo: Union[str, BinaryIO] = None,
-        video: Union[str, BinaryIO] = None,
+        photo: Union[str, "io.BytesIO"] = None,
+        video: Union[str, "io.BytesIO"] = None,
         video_start_ts: float = None,
     ) -> Union["types.Message", bool]:
         """Set a new chat photo or video (H.264/MPEG-4 AVC video, max 5 seconds).
@@ -46,12 +47,12 @@ class SetChatPhoto:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
 
-            photo (``str`` | ``BinaryIO``, *optional*):
+            photo (``str`` | :obj:`io.BytesIO`, *optional*):
                 New chat photo. You can pass a :obj:`~pyrogram.types.Photo` file_id, a file path to upload a new photo
                 from your local machine or a binary file-like object with its attribute
                 ".name" set for in-memory uploads.
 
-            video (``str`` | ``BinaryIO``, *optional*):
+            video (``str`` | :obj:`io.BytesIO`, *optional*):
                 New chat video. You can pass a :obj:`~pyrogram.types.Video` file_id, a file path to upload a new video
                 from your local machine or a binary file-like object with its attribute
                 ".name" set for in-memory uploads.

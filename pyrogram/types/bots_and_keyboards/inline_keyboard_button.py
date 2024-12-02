@@ -73,12 +73,17 @@ class InlineKeyboardButton(Object):
 
         callback_game (:obj:`~pyrogram.types.CallbackGame`, *optional*):
             Description of the game that will be launched when the user presses the button.
-            **NOTE**: This type of button **must** always be the first button in the first row.
+
+            .. note::
+
+                This type of button **must** always be the first button in the first row.
         
         pay (``bool``, *optional*):
             Specify True, to send a Pay button. Substrings "⭐" and "XTR" in the buttons's text will be replaced with a Telegram Star icon.
 
-            **NOTE**: This type of button **must** always be the first button in the first row and can only be used in invoice messages.
+            .. note::
+            
+                This type of button **must** always be the first button in the first row and can only be used in invoice messages.
 
         callback_data_with_password (``bytes``, *optional*):
             A button that asks for the 2-step verification password of the current user and then sends a callback query to a bot Data to be sent to the bot via a callback query.

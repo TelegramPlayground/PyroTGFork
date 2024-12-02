@@ -27,17 +27,18 @@ class SetUsername:
         self: "pyrogram.Client",
         username: Optional[str]
     ) -> bool:
-        """Set your own username.
+        """Changes the editable username of the current user.
 
-        This method only works for users, not bots. Bot usernames must be changed via Bot Support or by recreating
-        them from scratch using BotFather. To set a channel or supergroup username you can use
-        :meth:`~pyrogram.Client.set_chat_username`.
+        This method only works for users, not bots.
+        Bot usernames must be changed via Bot Support or by recreating them from scratch using BotFather.
+        To set a channel or supergroup username you can use :meth:`~pyrogram.Client.set_chat_username`.
 
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             username (``str`` | ``None``):
                 Username to set. "" (empty string) or None to remove it.
+                The username can't be completely removed if there is another active or disabled username.
 
         Returns:
             ``bool``: True on success.

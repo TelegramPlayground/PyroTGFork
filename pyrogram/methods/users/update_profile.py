@@ -23,6 +23,7 @@ from pyrogram import raw
 class UpdateProfile:
     async def update_profile(
         self: "pyrogram.Client",
+        *,
         first_name: str = None,
         last_name: str = None,
         bio: str = None
@@ -35,14 +36,15 @@ class UpdateProfile:
 
         Parameters:
             first_name (``str``, *optional*):
-                The new first name.
+                The new first name; 1-64 characters.
 
             last_name (``str``, *optional*):
-                The new last name.
+                The new last name; 1-64 characters.
                 Pass "" (empty string) to remove it.
 
             bio (``str``, *optional*):
-                The new bio, also known as "about". Max 70 characters.
+                Changes the bio of the current user.
+                Max ``intro_description_length_limit`` characters without line feeds.
                 Pass "" (empty string) to remove it.
 
         Returns:

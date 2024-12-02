@@ -17,10 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+import io
 import os
 import re
 from datetime import datetime
-from typing import Union, BinaryIO, List, Optional, Callable
+from typing import Union, List, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, enums, raw, types, utils
@@ -35,7 +36,7 @@ class SendAnimation:
     async def send_animation(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        animation: Union[str, BinaryIO],
+        animation: Union[str, "io.BytesIO"],
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: List["types.MessageEntity"] = None,
@@ -45,7 +46,7 @@ class SendAnimation:
         duration: int = 0,
         width: int = 0,
         height: int = 0,
-        thumb: Union[str, BinaryIO] = None,
+        thumb: Union[str, "io.BytesIO"] = None,
         file_name: str = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
@@ -77,7 +78,7 @@ class SendAnimation:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            animation (``str`` | ``BinaryIO``):
+            animation (``str`` | :obj:`io.BytesIO`):
                 Animation to send.
                 Pass a file_id as string to send an animation that exists on the Telegram servers,
                 pass an HTTP URL as a string for Telegram to get an animation from the Internet,
@@ -113,7 +114,7 @@ class SendAnimation:
             height (``int``, *optional*):
                 Animation height.
 
-            thumb (``str`` | ``BinaryIO``, *optional*):
+            thumb (``str`` | :obj:`io.BytesIO`, *optional*):
                 Thumbnail of the animation file sent.
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.

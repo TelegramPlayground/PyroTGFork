@@ -29,7 +29,7 @@ class GetDefaultEmojiStatuses:
     ) -> List["types.EmojiStatus"]:
         """Get the default emoji statuses.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Returns:
             List of :obj:`~pyrogram.types.EmojiStatus`: On success, a list of emoji statuses is returned.
