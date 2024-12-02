@@ -94,7 +94,6 @@ class ResolvePeer:
                         if channelid:
                             return await self.storage.get_peer_by_id(utils.get_channel_id(channelid))
                         return await self.storage.get_peer_by_username(peer_id)
-
                 else:
                     try:
                         return await self.storage.get_peer_by_phone_number(peer_id)
