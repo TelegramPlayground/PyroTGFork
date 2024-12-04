@@ -44,9 +44,7 @@ class GetMessages:
         List["types.Message"],
         "types.DraftMessage"
     ]:
-        """Get one or more messages from a chat by using message identifiers.
-
-        You can retrieve up to 200 messages at once.
+        """Get one or more messages from a chat by using message identifiers. You can retrieve up to 200 messages at once.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
