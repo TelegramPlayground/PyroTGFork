@@ -25,6 +25,7 @@ Changes in this Fork
 | Scheme layer used: 195 |
 +------------------------+
 
+- Added the :meth:`~pyrogram.Client.get_owned_bots` to return the list of owned by the current user bots.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=194&to=195>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=194&to=195>`__.
 
 +------------------------+
