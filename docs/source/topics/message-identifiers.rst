@@ -110,5 +110,4 @@ Megagroups behave differently::
 The group has its own message counter.
 Each user won't get a copy of the message with their own identifier, but rather everyone sees the same message.
 
-For scheduled messages, the message counter instead belongs to the peer itself.
-Bots cannot schedule messages in Telegram, and only users can schedule messages.
+For scheduled messages, the ``message_id`` is equal to the ID of the message in the schedule queue for the current chat (each PM, chat, supergroup and channel has its own schedule queue and ID sequence). This counter is distinct from the message counter of the normal messages. Since December 1, 2024, scheduled messages can also have messages automatically scheduled by server, to generate alternative qualities for videos in **big** channels. You can distinguish the messages manually scheduled by the user and that automatically scheduled by the server using the :obj:`~pyrogram.raw.types.Message.video_processing_pending` parameter. `Read More <https://core.telegram.org/api/scheduled-messages>`__
