@@ -72,6 +72,10 @@ class SendVideo:
     ) -> Optional["types.Message"]:
         """Send video files.
 
+        .. note::
+
+            Starting December 1, 2024 messages with video that are sent, copied or forwarded to groups and channels with a sufficiently large audience can be automatically scheduled by the server until the respective video is reencoded. Such messages will have ``scheduled`` property set and beware of using the correct :doc:`Message Identifiers <../../topics/message-identifiers>` when using such :obj:`~pyrogram.types.Message` objects.
+
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
