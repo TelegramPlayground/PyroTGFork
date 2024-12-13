@@ -1,9 +1,9 @@
 id	message
 API_CALL_ERROR	API call error due to Telegram having internal problems. Please try again later
-AUTH_RESTART	Restart the authorization process.
-CALL_OCCUPY_FAILED	The call failed because the user is already making another call.
+AUTH_RESTART	User authorization must be restarted
+CALL_OCCUPY_FAILED	The call failed because the user is already making another call
 CDN_UPLOAD_TIMEOUT	A server-side timeout occurred while reuploading the file to the CDN DC.
-CHAT_ID_GENERATE_FAILED	Failure while generating the chat ID.
+CHAT_ID_GENERATE_FAILED	Failure while generating the chat ID due to Telegram having internal problems. Please try again later
 CHAT_INVALID	Invalid chat.
 CHAT_OCCUPY_LOC_FAILED	An internal error occurred while creating the chat
 CHAT_OCCUPY_USERNAME_FAILED	Failure to occupy chat username due to Telegram having internal problems. Please try again later
@@ -29,18 +29,18 @@ NEED_CHAT_INVALID	The provided chat is invalid
 NEED_MEMBER_INVALID	The provided member is invalid or does not exist
 No workers running	The Telegram server is restarting its workers. Try again later.
 PARTICIPANT_CALL_FAILED	Failure while making call due to Telegram having internal problems. Please try again later
-PERSISTENT_TIMESTAMP_OUTDATED	Channel internal replication issues, try again later (treat this like an RPC_CALL_FAIL).
+PERSISTENT_TIMESTAMP_OUTDATED	Channel internal replication issues, try again later (treat this like an ``RPC_CALL_FAIL``)
 PHOTO_CREATE_FAILED	The creation of the photo failed due to Telegram having internal problems. Please try again later
 POSTPONED_TIMEOUT	Telegram is having internal problems. Please try again later
 PTS_CHANGE_EMPTY	No PTS change
-RANDOM_ID_DUPLICATE	You provided a random ID that was already used.
+RANDOM_ID_DUPLICATE	You provided a random ID that was already used
 REG_ID_GENERATE_FAILED	The registration id failed to generate due to Telegram having internal problems. Please try again later
 RPC_CALL_FAIL	Telegram is having internal problems. Please try again later
 RPC_CONNECT_FAILED	Telegram is having internal problems. Please try again later
 RPC_MCGET_FAIL	Telegram is having internal problems. Please try again later
 RPC_SEND_FAIL	Telegram is having internal problems. Please try again later
 SEND_MEDIA_INVALID	The specified media is invalid.
-SIGN_IN_FAILED	Failure while signing in.
+SIGN_IN_FAILED	Failure while signing in due to Telegram having internal problems. Please try again later
 STORAGE_CHECK_FAILED	Server storage check failed due to Telegram having internal problems. Please try again later
 STORAGE_CHOOSE_VOLUME_FAILED	Storage choose volume failed due to Telegram having internal problems. Please try again later
 STORE_INVALID_SCALAR_TYPE	Telegram is having internal problems. Please try again later

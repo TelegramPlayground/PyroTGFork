@@ -7,23 +7,23 @@ CALL_PROTOCOL_COMPAT_LAYER_INVALID	The other side of the call does not support a
 CHANNEL_PRIVATE	You haven't joined this channel/supergroup.
 CHANNEL_TOO_LARGE	Channel is too large to be deleted; this error is issued when trying to delete channels with more than 1000 members (subject to change).
 CHAT_FORWARDS_RESTRICTED	You can't forward messages from a protected chat.
-FILEREF_UPGRADE_NEEDED	The client has to be updated in order to support [file references](https://core.telegram.org/api/file_reference).
-FRESH_CHANGE_ADMINS_FORBIDDEN	You were just elected admin, you can't add or modify other admins yet.
-FRESH_CHANGE_PHONE_FORBIDDEN	You can't change phone number right after logging in, please wait at least 24 hours.
-FRESH_RESET_AUTHORISATION_FORBIDDEN	You can't logout other sessions if less than 24 hours have passed since you logged on the current session.
+FILEREF_UPGRADE_NEEDED	The file reference has expired and you must use a refreshed one by obtaining the original media message. The client has to be updated in order to support [file references](https://core.telegram.org/api/file_reference).
+FRESH_CHANGE_ADMINS_FORBIDDEN	You were just elected admin, you can't add or modify other admins yet
+FRESH_CHANGE_PHONE_FORBIDDEN	You can't change your phone number because your session was logged-in recently
+FRESH_RESET_AUTHORISATION_FORBIDDEN	You can't terminate other authorized sessions because the current was logged-in recently
 INVITE_HASH_EXPIRED	The invite link has expired.
 PAYMENT_UNSUPPORTED	A detailed description of the error will be received separately as described [here](https://core.telegram.org/api/errors#406-not-acceptable).
-PHONE_NUMBER_INVALID	The phone number is invalid.
-PHONE_PASSWORD_FLOOD	You have tried logging in too many times.
+PHONE_NUMBER_INVALID	The phone number is invalid
+PHONE_PASSWORD_FLOOD	You have tried logging in too many times
 PREMIUM_CURRENTLY_UNAVAILABLE	You cannot currently purchase a Premium subscription.
 PREVIOUS_CHAT_IMPORT_ACTIVE_WAIT_XMIN	Import for this chat is already in progress, wait {value} minutes before starting a new one.
 PRIVACY_PREMIUM_REQUIRED	You need a [Telegram Premium subscription](https://core.telegram.org/api/premium) to send a message to this user.
 SEND_CODE_UNAVAILABLE	Returned when all available options for this type of number were already used (e.g. flash-call, then SMS, then this error might be returned to trigger a second resend).
 STICKERSET_INVALID	The provided sticker set is invalid.
-STICKERSET_OWNER_ANONYMOUS	Provided stickerset can't be installed as group stickerset to prevent admin deanonymization.
+STICKERSET_OWNER_ANONYMOUS	This sticker set can't be used as the group's sticker set to prevent admin deanonymization.
 TOPIC_CLOSED	This topic was closed, you can't send messages to it anymore.
 TOPIC_DELETED	The specified topic was deleted.
 UPDATE_APP_TO_LOGIN	Please update to the latest version of MadelineProto to login.
 USERPIC_PRIVACY_REQUIRED	You need to disable privacy settings for your profile picture in order to make your geolocation public.
-USERPIC_UPLOAD_REQUIRED	You must have a profile picture to publish your geolocation.
-USER_RESTRICTED	You're spamreported, you can't create channels or chats.
+USERPIC_UPLOAD_REQUIRED	You must have a profile picture to publish your geolocation
+USER_RESTRICTED	You are limited/restricted. You can't perform this action

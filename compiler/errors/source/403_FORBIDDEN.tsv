@@ -1,49 +1,50 @@
 id	message
 ANONYMOUS_REACTIONS_DISABLED	Sorry, anonymous administrators cannot leave reactions or participate in polls.
-BROADCAST_FORBIDDEN	Channel poll voters and reactions cannot be fetched to prevent deanonymization.
-CHANNEL_PUBLIC_GROUP_NA	channel/supergroup not available.
+BOT_OWNER_REQUIRED	You must be the owner of the bot to perform this action
+BROADCAST_FORBIDDEN	The request can't be used in channels
+CHANNEL_PUBLIC_GROUP_NA	The channel/supergroup is not available
 CHAT_ACTION_FORBIDDEN	You cannot execute this action.
-CHAT_ADMIN_INVITE_REQUIRED	You do not have the rights to do this.
-CHAT_ADMIN_REQUIRED	You must be an admin in this chat to do this.
+CHAT_ADMIN_INVITE_REQUIRED	You don't have rights to invite other users
+CHAT_ADMIN_REQUIRED	The method requires chat admin privileges
 CHAT_FORBIDDEN	You cannot write in this chat
-CHAT_GUEST_SEND_FORBIDDEN	You join the discussion group before commenting, see [here](https://core.telegram.org/api/discussion#requiring-users-to-join-the-group) for more info.
+CHAT_GUEST_SEND_FORBIDDEN	You join the discussion group before commenting, see [here »](https://core.telegram.org/api/discussion#requiring-users-to-join-the-group) for more info.
 CHAT_SEND_AUDIOS_FORBIDDEN	You can't send audio messages in this chat.
 CHAT_SEND_DOCS_FORBIDDEN	You can't send documents in this chat.
 CHAT_SEND_GAME_FORBIDDEN	You can't send a game to this chat.
-CHAT_SEND_GIFS_FORBIDDEN	You can't send gifs in this chat.
-CHAT_SEND_INLINE_FORBIDDEN	You can't send inline messages in this group.
-CHAT_SEND_MEDIA_FORBIDDEN	You can't send media in this chat.
+CHAT_SEND_GIFS_FORBIDDEN	You can't send animations in this chat
+CHAT_SEND_INLINE_FORBIDDEN	You cannot use inline bots to send messages in this chat
+CHAT_SEND_MEDIA_FORBIDDEN	You can't send media messages in this chat
 CHAT_SEND_PHOTOS_FORBIDDEN	You can't send photos in this chat.
 CHAT_SEND_PLAIN_FORBIDDEN	You can't send non-media (text) messages in this chat.
-CHAT_SEND_POLL_FORBIDDEN	You can't send polls in this chat.
-CHAT_SEND_ROUNDVIDEOS_FORBIDDEN	You cannot send video notes in this chat
-CHAT_SEND_STICKERS_FORBIDDEN	You can't send stickers in this chat.
+CHAT_SEND_POLL_FORBIDDEN	You can't send polls in this chat
+CHAT_SEND_ROUNDVIDEOS_FORBIDDEN	You can't send round videos to this chat.
+CHAT_SEND_STICKERS_FORBIDDEN	You can't send stickers in this chat
 CHAT_SEND_VIDEOS_FORBIDDEN	You can't send videos in this chat.
 CHAT_SEND_VOICES_FORBIDDEN	You can't send voice recordings in this chat.
-CHAT_WRITE_FORBIDDEN	You can't write in this chat.
-EDIT_BOT_INVITE_FORBIDDEN	Normal users can't edit invites that were created by bots.
+CHAT_WRITE_FORBIDDEN	You don't have rights to send messages in this chat
+EDIT_BOT_INVITE_FORBIDDEN	Bots' chat invite links can't be edited
 GROUPCALL_ALREADY_STARTED	The groupcall has already started, you can join directly using [phone.joinGroupCall](https://core.telegram.org/method/phone.joinGroupCall).
 GROUPCALL_FORBIDDEN	The group call has already ended.
-INLINE_BOT_REQUIRED	Only the inline bot can edit message.
-MESSAGE_AUTHOR_REQUIRED	Message author required.
-MESSAGE_DELETE_FORBIDDEN	You can't delete one of the messages you tried to delete.
-NOT_ELIGIBLE	You are not eligible to take part in Telegram's Premium for SMS initiative
+INLINE_BOT_REQUIRED	The action must be performed through an inline bot callback
+MESSAGE_AUTHOR_REQUIRED	You are not the author of this message
+MESSAGE_DELETE_FORBIDDEN	You don't have rights to delete messages in this chat, most likely because you are not the author of them
+NOT_ELIGIBLE	The current user is not eligible to join the Peer-to-Peer Login Program.
 PARTICIPANT_JOIN_MISSING	Trying to enable a presentation, when the user hasn't joined the Video Chat with [phone.joinGroupCall](https://core.telegram.org/method/phone.joinGroupCall).
-POLL_VOTE_REQUIRED	Cast a vote in the poll before calling this method.
-PREMIUM_ACCOUNT_REQUIRED	A premium account is required to execute this action.
+POLL_VOTE_REQUIRED	Cast a vote in the poll before calling this method
+PREMIUM_ACCOUNT_REQUIRED	This action requires a premium account
 PRIVACY_PREMIUM_REQUIRED	You need a [Telegram Premium subscription](https://core.telegram.org/api/premium) to send a message to this user.
 PUBLIC_CHANNEL_MISSING	You can only export group call invite links for public chats or channels.
-RIGHT_FORBIDDEN	Your admin rights do not allow you to do this.
-SENSITIVE_CHANGE_FORBIDDEN	You can't change your sensitive content settings.
-TAKEOUT_REQUIRED	A [takeout](https://core.telegram.org/api/takeout) session needs to be initialized first, [see here for more info](https://core.telegram.org/api/takeout).
-USER_BOT_INVALID	User accounts must provide the `bot` method parameter when calling this method. If there is no such method parameter, this method can only be invoked by bot accounts.
-USER_CHANNELS_TOO_MUCH	One of the users you tried to add is already in too many channels/supergroups.
+RIGHT_FORBIDDEN	You don't have enough rights for this action, or you tried to set one or more admin rights that can't be applied to this kind of chat (channel or supergroup)
+SENSITIVE_CHANGE_FORBIDDEN	Your sensitive content settings can't be changed at this time
+TAKEOUT_REQUIRED	The method must be invoked inside a takeout session
+USER_BOT_INVALID	This method can only be called by a bot
+USER_CHANNELS_TOO_MUCH	One of the users you tried to add is already in too many channels/supergroups
 USER_DELETED	You can't send this secret message because the other participant deleted their account.
-USER_INVALID	Invalid user provided.
-USER_IS_BLOCKED	You were blocked by this user.
-USER_NOT_MUTUAL_CONTACT	The provided user is not a mutual contact.
+USER_INVALID	The provided user is invalid
+USER_IS_BLOCKED	The user is blocked
+USER_NOT_MUTUAL_CONTACT	The provided user is not a mutual contact
 USER_NOT_PARTICIPANT	You're not a member of this supergroup/channel.
-USER_PRIVACY_RESTRICTED	The user's privacy settings do not allow you to do this.
-USER_RESTRICTED	You're spamreported, you can't create channels or chats.
+USER_PRIVACY_RESTRICTED	The user's privacy settings is preventing you to perform this action
+USER_RESTRICTED	You are limited/restricted. You can't perform this action
 VOICE_MESSAGES_FORBIDDEN	This user's privacy settings forbid you from sending voice messages.
 YOUR_PRIVACY_RESTRICTED	You cannot fetch the read date of this message because you have disallowed other users to do so for *your* messages; to fix, allow other users to see *your* exact last online date OR purchase a [Telegram Premium](https://core.telegram.org/api/premium) subscription.
