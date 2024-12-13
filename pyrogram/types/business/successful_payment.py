@@ -20,7 +20,7 @@ from datetime import datetime
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import raw, types, utils
 
 from ..object import Object
 
