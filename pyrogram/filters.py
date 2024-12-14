@@ -136,7 +136,7 @@ def create(func: Callable, name: str = None, **kwargs) -> Filter:
             The *filter* argument refers to the filter itself and can be used to access keyword arguments (read below).
             The *client* argument refers to the :obj:`~pyrogram.Client` that received the update.
             The *update* argument type will vary depending on which `Handler <handlers>`_ is coming from.
-            For example, in a :obj:`~pyrogram.handlers.MessageHandler` the *update* argument will be a :obj:`~pyrogram.types.Message`; in a :obj:`~pyrogram.handlers.CallbackQueryHandler` the *update* will be a :obj:`~pyrogram.types.CallbackQuery`.
+            For example, in a :obj:`~pyrogram.handlers.MessageHandler` the *update* argument will be a :obj:`~pyrogram.types.Message`; in a :obj:`~pyrogram.handlers.CallbackQueryHandler` the *update* will be a :obj:`~pyrogram.types.CallbackQuery`; in a :obj:`~pyrogram.handlers.RawUpdateHandler` the *update* will be a :obj:`~pyrogram.raw.base.Update`.
             Your function body can then access the incoming update attributes and decide whether to allow it or not.
 
         name (``str``, *optional*):
@@ -146,6 +146,7 @@ def create(func: Callable, name: str = None, **kwargs) -> Filter:
         **kwargs (``any``, *optional*):
             Any keyword argument you would like to pass. Useful when creating parameterized custom filters, such as
             :meth:`~pyrogram.filters.command` or :meth:`~pyrogram.filters.regex`.
+
     """
     return type(
         name or func.__name__ or CUSTOM_FILTER_NAME,

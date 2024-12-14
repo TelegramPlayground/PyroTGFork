@@ -65,6 +65,7 @@ elif sys.argv[1] == "scrape":
                 l = g.get(k)
                 m = k.replace("_%d", "_X")
                 l = l.replace("%d", "{value}")
+                l = l.replace("\"", "'")
                 l = l.replace("&raquo;", "»")
                 l = l.replace("&laquo;", "«")
                 l = l.replace("](/api/", f"]({b}/api/")
