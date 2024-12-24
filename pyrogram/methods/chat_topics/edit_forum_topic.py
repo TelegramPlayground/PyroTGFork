@@ -60,7 +60,7 @@ class EditForumTopic:
                 message = await app.create_forum_topic(chat, "Topic Title")
                 # Edit the Topic
                 await app.edit_forum_topic(chat, message.id, "New Topic Title")
-                # TODO: there is `a bug <https://github.com/pyrogram/pyrogram/issues/1280>`_ here!
+
         """
 
         r = await self.invoke(

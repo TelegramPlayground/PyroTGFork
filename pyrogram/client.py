@@ -812,8 +812,10 @@ class Client(Methods):
 
         if session_empty:
             if not self.api_id or not self.api_hash:
-                raise AttributeError("The API key is required for new authorizations. "
-                                     "More info: https://docs.pyrogram.org/start/auth")
+                raise AttributeError(
+                    "The API key is required for new authorizations. "
+                    "More info: https://telegramplayground.github.io/pyrogram/start/auth"
+                )
 
             await self.storage.api_id(self.api_id)
 

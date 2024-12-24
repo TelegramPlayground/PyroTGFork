@@ -38,7 +38,7 @@ list of the basic styles currently supported by Pyrogram.
       fixed-width
         code block
 - spoiler
-- `text URL <https://docs.pyrogram.org>`_
+- `text URL <https://telegramplayground.github.io/pyrogram/>`_
 - `user text mention <tg://user?id=123456789>`_
 
 
@@ -71,7 +71,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
 
     ||spoiler||
 
-    [text URL](https://docs.pyrogram.org/)
+    [text URL](https://telegramplayground.github.io/pyrogram/)
 
     [text user mention](tg://user?id=123456789)
 
@@ -90,7 +90,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
             "--underline--, "
             "~~strike~~, "
             "||spoiler||, "
-            "[URL](https://docs.pyrogram.org), "
+            "[URL](https://telegramplayground.github.io/pyrogram/), "
             "`code`, "
             "```"
             "for i in range(10):\n"
@@ -118,7 +118,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
 
     <spoiler>spoiler</spoiler>
 
-    <a href="https://docs.pyrogram.org">text URL</a>
+    <a href="https://telegramplayground.github.io/pyrogram/">text URL</a>
 
     <a href="tg://user?id=123456789">inline mention</a>
 
@@ -146,7 +146,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
             "<u>underline</u>, "
             "<s>strike</s>, "
             "<spoiler>spoiler</spoiler>, "
-            "<a href=\"https://docs.pyrogram.org\">URL</a>, "
+            "<a href=\"https://telegramplayground.github.io/pyrogram/\">URL</a>, "
             "<code>code</code>\n\n"
             "<pre language='py'>"
             "for i in range(10):\n"

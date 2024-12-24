@@ -123,7 +123,7 @@ class SendMessage:
 
                 # Disable web page previews
                 await app.send_message(
-                    chat_id="me", text="https://docs.pyrogram.org",
+                    chat_id="me", text="https://github.com/TelegramPlayground/pyrogram",
                     link_preview_options=types.LinkPreviewOptions(
                         is_disabled=True
                     )
@@ -149,8 +149,12 @@ class SendMessage:
                     chat_id=chat_id, text="These are inline buttons",
                     reply_markup=InlineKeyboardMarkup(
                         [
-                            [InlineKeyboardButton("Data", callback_data="callback_data")],
-                            [InlineKeyboardButton("Docs", url="https://docs.pyrogram.org")]
+                            [
+                                InlineKeyboardButton("Data", callback_data="callback_data")
+                            ],
+                            [
+                                InlineKeyboardButton("Docs", url="https://telegramplayground.github.io/pyrogram/")
+                            ]
                         ]))
         """
         if disable_web_page_preview and link_preview_options:

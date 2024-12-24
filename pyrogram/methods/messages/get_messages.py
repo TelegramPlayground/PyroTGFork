@@ -220,4 +220,4 @@ class GetMessages:
                 message_ids=message_id
             )
 
-        raise ValueError("No valid argument supplied. https://docs.pyrogram.org/api/methods/get_messages")
+        raise ValueError("No valid argument supplied. https://telegramplayground.github.io/pyrogram/api/methods/get_messages")
