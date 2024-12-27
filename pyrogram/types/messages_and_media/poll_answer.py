@@ -48,7 +48,7 @@ class PollAnswer(Object, Update):
         *,
         client: "pyrogram.Client" = None,
         poll_id: str,
-        option_ids: List[int],
+        option_ids: list[int],
         user: Optional["types.User"] = None,
         voter_chat: Optional["types.Chat"] = None,
     ):

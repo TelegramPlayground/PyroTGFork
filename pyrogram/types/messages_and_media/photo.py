@@ -68,7 +68,7 @@ class Photo(Object):
         date: datetime,
         ttl_seconds: int = None,
         has_spoiler: bool = None,
-        thumbs: List["types.Thumbnail"] = None
+        thumbs: list["types.Thumbnail"] = None
     ):
         super().__init__(client)
 
@@ -90,7 +90,7 @@ class Photo(Object):
         has_spoiler: bool = None,
     ) -> "Photo":
         if isinstance(photo, raw.types.Photo):
-            photos: List[raw.types.PhotoSize] = []
+            photos: list[raw.types.PhotoSize] = []
 
             for p in photo.sizes:
                 if isinstance(p, raw.types.PhotoSize):

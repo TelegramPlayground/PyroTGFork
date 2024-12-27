@@ -40,7 +40,7 @@ class TranslatedText(Object):
         self,
         *,
         text: str,
-        entities: List["types.MessageEntity"] = None
+        entities: list["types.MessageEntity"] = None
     ):
         self.text = text
         self.entities = entities

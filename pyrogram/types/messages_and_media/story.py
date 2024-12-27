@@ -106,10 +106,10 @@ class Story(Object, Update):
         edited: bool = None,
         pinned: bool = None,
         caption: Str = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         views: int = None,
         forwards: int = None,
-        reactions: List["types.Reaction"] = None,
+        reactions: list["types.Reaction"] = None,
         skipped: bool = None,
         deleted: bool = None,
         _raw = None

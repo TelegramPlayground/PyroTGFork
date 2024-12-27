@@ -75,7 +75,7 @@ class SponsoredMessage(Object):
         title: str,
         content: str,
         button_text: str,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         photo: "types.Photo" = None,
         is_recommended: bool = None,
         can_be_reported: bool = None,

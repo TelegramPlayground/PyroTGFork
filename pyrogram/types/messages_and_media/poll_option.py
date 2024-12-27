@@ -47,7 +47,7 @@ class PollOption(Object):
         *,
         client: "pyrogram.Client" = None,
         text: str,
-        text_entities: List["types.MessageEntity"],
+        text_entities: list["types.MessageEntity"],
         voter_count: int,
         data: bytes
     ):
