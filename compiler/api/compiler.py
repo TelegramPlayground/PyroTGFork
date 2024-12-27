@@ -22,7 +22,7 @@ import re
 import shutil
 from functools import partial
 from pathlib import Path
-from typing import NamedTuple, List, Tuple
+from typing import NamedTuple
 
 # from autoflake import fix_code
 # from black import format_str, FileMode
@@ -82,7 +82,7 @@ class Combinator(NamedTuple):
     name: str
     id: str
     has_flags: bool
-    args: List[Tuple[str, str]]
+    args: list[tuple[str, str]]
     qualtype: str
     typespace: str
     type: str
@@ -127,7 +127,7 @@ def get_type_hint(type: str) -> str:
         is_core = True
 
         sub_type = type.split("<")[1][:-1]
-        type = f"List[{get_type_hint(sub_type)}]"
+        type = f"list[{get_type_hint(sub_type)}]"
 
     if is_core:
         return f"Optional[{type}] = None" if is_flag else type

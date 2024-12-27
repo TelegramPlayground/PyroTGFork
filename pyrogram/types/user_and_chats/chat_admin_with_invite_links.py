@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Dict
 
 import pyrogram
 from pyrogram import raw
@@ -54,7 +53,7 @@ class ChatAdminWithInviteLinks(Object):
     def _parse(
         client: "pyrogram.Client",
         admin: "raw.types.ChatAdminWithInvites",
-        users: Dict[int, "raw.types.User"] = None
+        users: dict[int, "raw.types.User"] = None
     ) -> "ChatAdminWithInviteLinks":
         return ChatAdminWithInviteLinks(
             admin=types.User._parse(client, users[admin.admin_id]),
