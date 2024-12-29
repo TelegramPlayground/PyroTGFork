@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import io
-from typing import Optional, List, Union
+from typing import Optional, Union
 
 from .input_media import InputMedia
 from ..messages_and_media import MessageEntity
@@ -86,7 +86,7 @@ class InputMediaVideo(InputMedia):
         thumb: Union[str, "io.BytesIO"] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List[MessageEntity] = None,
+        caption_entities: list[MessageEntity] = None,
         show_caption_above_media: bool = None,
         width: int = 0,
         height: int = 0,

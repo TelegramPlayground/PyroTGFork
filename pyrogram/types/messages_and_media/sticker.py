@@ -17,7 +17,6 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Type
 
 import pyrogram
 from pyrogram import raw, utils
@@ -148,7 +147,7 @@ class Sticker(Object):
     async def _parse(
         client,
         sticker: "raw.types.Document",
-        document_attributes: dict[Type["raw.base.DocumentAttribute"], "raw.base.DocumentAttribute"],
+        document_attributes: dict[type["raw.base.DocumentAttribute"], "raw.base.DocumentAttribute"],
     ) -> "Sticker":
         sticker_attributes = (
             document_attributes[raw.types.DocumentAttributeSticker]

@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List, Union, Callable
+from typing import Union, Callable
 
 import pyrogram
 from pyrogram import raw, utils, types, enums
@@ -411,7 +411,7 @@ class Story(Object, Update):
         """
         sr = None
 
-        if isinstance(reaction, List):
+        if isinstance(reaction, list):
             sr = []
             for i in reaction:
                 if isinstance(i, types.ReactionType):

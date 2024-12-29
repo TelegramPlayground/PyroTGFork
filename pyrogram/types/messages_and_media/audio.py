@@ -17,7 +17,6 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List
 
 import pyrogram
 from pyrogram import raw, utils
@@ -75,7 +74,7 @@ class Audio(Object):
         mime_type: str = None,
         file_size: int = None,
         date: datetime = None,
-        thumbs: List["types.Thumbnail"] = None
+        thumbs: list["types.Thumbnail"] = None
     ):
         super().__init__(client)
 

@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List, Union, Optional
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
@@ -96,7 +96,7 @@ class Poll(Object, Update):
         chosen_option_id: Optional[int] = None,
         correct_option_id: Optional[int] = None,
         explanation: Optional[str] = None,
-        explanation_entities: Optional[List["types.MessageEntity"]] = None,
+        explanation_entities: Optional[list["types.MessageEntity"]] = None,
         open_period: Optional[int] = None,
         close_date: Optional[datetime] = None,
     ):
