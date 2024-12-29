@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
 from datetime import datetime
 
 import pyrogram
@@ -41,7 +40,7 @@ class BusinessOpeningHours(Object):
         self,
         *,
         time_zone_name: str = None,
-        opening_hours: List["types.BusinessOpeningHoursInterval"] = None,
+        opening_hours: list["types.BusinessOpeningHoursInterval"] = None,
         _raw: "raw.types.BusinessWorkHours" = None
     ):
         super().__init__()
