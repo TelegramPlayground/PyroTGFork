@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from typing import Optional, Union, List
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, enums, utils
@@ -30,7 +30,7 @@ class SendGift:
         gift_id: int,
         text: Optional[str] = None,
         parse_mode: Optional["enums.ParseMode"] = None,
-        entities: Optional[List["types.MessageEntity"]] = None,
+        entities: Optional[list["types.MessageEntity"]] = None,
         is_private: Optional[bool] = None,
     ) -> bool:
         """Sends a gift to another user.

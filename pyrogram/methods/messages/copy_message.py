@@ -18,7 +18,7 @@
 
 import logging
 from datetime import datetime
-from typing import Union, List, Optional
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import types, enums
@@ -34,7 +34,7 @@ class CopyMessage:
         message_id: int,
         caption: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,

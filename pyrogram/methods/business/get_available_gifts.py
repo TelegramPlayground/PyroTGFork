@@ -15,7 +15,6 @@
 #
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
-from typing import List
 
 import pyrogram
 from pyrogram import raw, types
@@ -24,7 +23,7 @@ from pyrogram import raw, types
 class GetAvailableGifts:
     async def get_available_gifts(
         self: "pyrogram.Client",
-    ) -> List["types.Gift"]:
+    ) -> list["types.Gift"]:
         """Get all gifts that can be sent to other users.
 
         .. include:: /_includes/usable-by/users-bots.rst
