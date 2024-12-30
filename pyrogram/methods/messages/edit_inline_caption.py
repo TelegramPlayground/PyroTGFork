@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, List
+from typing import Optional
 
 import pyrogram
 from pyrogram import types, enums
@@ -28,7 +28,7 @@ class EditInlineCaption:
         inline_message_id: str,
         caption: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> bool:

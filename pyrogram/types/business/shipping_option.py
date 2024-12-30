@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
-
 import pyrogram
 from pyrogram import raw, types
 
@@ -43,7 +41,7 @@ class ShippingOption(Object):
         self,
         id: str,
         title: str,
-        prices: "types.LabeledPrice"
+        prices: list["types.LabeledPrice"]
     ):
         super().__init__()
 

@@ -56,7 +56,7 @@ class GetCreatedChats:
                 True, if the chat can be used as a personal chat. Defaults to False.
 
         Returns:
-            List[:obj:`~pyrogram.types.Chat`]: The list of chats.
+            List of :obj:`~pyrogram.types.Chat`: The list of chats.
 
         Example:
             .. code-block:: python

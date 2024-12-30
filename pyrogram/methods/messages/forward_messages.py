@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Union, List, Iterable
+from typing import Union, Iterable
 
 import pyrogram
 from pyrogram import raw, utils
@@ -38,7 +38,7 @@ class ForwardMessages:
         drop_media_captions: bool = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None
-    ) -> Union["types.Message", List["types.Message"]]:
+    ) -> Union["types.Message", list["types.Message"]]:
         """Forward messages of any kind.
 
         .. include:: /_includes/usable-by/users-bots.rst

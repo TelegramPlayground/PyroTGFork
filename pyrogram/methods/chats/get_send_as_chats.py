@@ -37,7 +37,7 @@ class GetSendAsChats:
                 Unique identifier (int) or username (str) of the target chat.
 
         Returns:
-            List[:obj:`~pyrogram.types.Chat`]: The list of chats.
+            List of :obj:`~pyrogram.types.Chat`: The list of chats.
 
         Example:
             .. code-block:: python

@@ -26,7 +26,7 @@ import inspect
 import sqlite3
 import time
 from concurrent.futures import ThreadPoolExecutor
-from typing import List, Any
+from typing import Any
 
 from pyrogram import raw
 from .storage import Storage

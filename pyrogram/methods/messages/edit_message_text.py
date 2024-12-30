@@ -18,7 +18,7 @@
 
 import logging
 from datetime import datetime
-from typing import Union, List, Optional
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import raw, enums, types, utils
@@ -35,7 +35,7 @@ class EditMessageText:
         message_id: int,
         text: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         schedule_date: datetime = None,

@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
-
 import pyrogram
 from pyrogram import raw, types, utils
 
@@ -40,7 +38,7 @@ class ActiveSessions(Object):
         self,
         *,
         inactive_session_ttl_days: int = None,
-        active_sessions: List["types.ActiveSession"] = None
+        active_sessions: list["types.ActiveSession"] = None
     ):
         super().__init__()
 

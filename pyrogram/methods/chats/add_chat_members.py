@@ -48,7 +48,7 @@ class AddChatMembers:
                 Defaults to 100 (max amount).
 
         Returns:
-            List[:obj:`~pyrogram.types.Message`] | :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
+            List of :obj:`~pyrogram.types.Message` | :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
             otherwise, in case a message object couldn't be returned, True is returned.
 
         Example:

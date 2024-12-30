@@ -20,7 +20,7 @@ import inspect
 import aiosqlite  # aiosqlite==0.20.0
 import os
 import time
-from typing import List, Any
+from typing import Any
 
 from pyrogram import raw
 from .storage import Storage
