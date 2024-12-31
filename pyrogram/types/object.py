@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import typing
+import re
 from datetime import datetime
 from enum import Enum
 from json import dumps
@@ -49,9 +49,7 @@ class Object:
         if isinstance(obj, bytes):
             return repr(obj)
 
-        # https://t.me/pyrogramchat/167281
-        # Instead of re.Match, which breaks for python <=3.6
-        if isinstance(obj, typing.Match):
+        if isinstance(obj, re.Match):
             return repr(obj)
 
         if isinstance(obj, Enum):

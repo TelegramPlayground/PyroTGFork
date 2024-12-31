@@ -16,7 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, Match, Optional
+import re
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import raw, enums, types
@@ -73,7 +74,7 @@ class CallbackQuery(Object, Update):
         inline_message_id: str = None,
         data: Union[str, bytes] = None,
         game_short_name: str = None,
-        matches: list[Match] = None
+        matches: list[re.Match] = None
     ):
         super().__init__(client)
 

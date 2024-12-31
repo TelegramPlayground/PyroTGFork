@@ -18,9 +18,10 @@
 
 import io
 import logging
+import re
 from datetime import datetime
 from functools import partial
-from typing import Match, Union, Optional, Callable
+from typing import Union, Optional, Callable
 
 import pyrogram
 from pyrogram import raw, enums, types, utils
@@ -533,7 +534,7 @@ class Message(Object, Update):
         views: int = None,
         forwards: int = None,
         outgoing: bool = None,
-        matches: list[Match] = None,
+        matches: list[re.Match] = None,
         command: list[str] = None,
         reactions: list["types.Reaction"] = None,
         custom_action: str = None,
