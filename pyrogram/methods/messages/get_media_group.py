@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import types
@@ -30,7 +30,7 @@ class GetMediaGroup:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_id: int
-    ) -> List["types.Message"]:
+    ) -> list["types.Message"]:
         """Get the media group a message belongs to.
 
         .. include:: /_includes/usable-by/users-bots.rst

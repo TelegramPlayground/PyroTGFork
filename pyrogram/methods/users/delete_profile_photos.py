@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List, Union, Optional
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import raw, utils
@@ -26,7 +26,7 @@ from pyrogram.file_id import FileType
 class DeleteProfilePhotos:
     async def delete_profile_photos(
         self: "pyrogram.Client",
-        photo_ids: Union[str, List[str]] = None,
+        photo_ids: Union[str, list[str]] = None,
         public: bool = False,
         for_my_bot: Union[int, str] = None,
     ) -> bool:

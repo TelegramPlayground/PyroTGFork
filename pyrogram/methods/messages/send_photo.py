@@ -21,7 +21,7 @@ import io
 import os
 import re
 from datetime import datetime
-from typing import Union, List, Optional, Callable
+from typing import Union, Optional, Callable
 
 import pyrogram
 from pyrogram import raw, enums, types, utils
@@ -39,7 +39,7 @@ class SendPhoto:
         photo: Union[str, "io.BytesIO"],
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         has_spoiler: bool = None,
         ttl_seconds: int = None,

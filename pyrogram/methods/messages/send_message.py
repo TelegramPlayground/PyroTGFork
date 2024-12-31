@@ -18,7 +18,7 @@
 
 import logging
 from datetime import datetime
-from typing import Union, List, Optional
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import raw, utils, enums, types, errors
@@ -33,7 +33,7 @@ class SendMessage:
         chat_id: Union[int, str] = None,
         text: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         disable_notification: bool = None,
         protect_content: bool = None,

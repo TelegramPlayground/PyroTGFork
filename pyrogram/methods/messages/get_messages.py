@@ -17,16 +17,13 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Union, List, Iterable
+from typing import Union, Iterable
 
 import pyrogram
 from pyrogram import raw, types, utils
 from pyrogram.types.messages_and_media.message import Str
 
 log = logging.getLogger(__name__)
-
-
-# TODO: Rewrite using a flag for replied messages and have message_ids non-optional
 
 
 class GetMessages:
@@ -41,7 +38,7 @@ class GetMessages:
         link: str = None,
     ) -> Union[
         "types.Message",
-        List["types.Message"],
+        list["types.Message"],
         "types.DraftMessage"
     ]:
         """Get one or more messages from a chat by using message identifiers. You can retrieve up to 200 messages at once.
