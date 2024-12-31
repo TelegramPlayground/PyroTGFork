@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, List, Match, Optional
+from typing import Union, Match, Optional
 
 import pyrogram
 from pyrogram import raw, enums, types
@@ -73,7 +73,7 @@ class CallbackQuery(Object, Update):
         inline_message_id: str = None,
         data: Union[str, bytes] = None,
         game_short_name: str = None,
-        matches: List[Match] = None
+        matches: list[Match] = None
     ):
         super().__init__(client)
 
@@ -196,7 +196,7 @@ class CallbackQuery(Object, Update):
         self,
         text: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         disable_web_page_preview: bool = None
@@ -256,7 +256,7 @@ class CallbackQuery(Object, Update):
         self,
         caption: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> Union["types.Message", bool]:
         """Edit the caption of media messages attached to callback queries.

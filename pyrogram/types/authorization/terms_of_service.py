@@ -16,10 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
-
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 from ..object import Object
 
 
@@ -37,7 +34,7 @@ class TermsOfService(Object):
             Special entities like URLs that appear in the text.
     """
 
-    def __init__(self, *, id: str, text: str, entities: List["types.MessageEntity"]):
+    def __init__(self, *, id: str, text: str, entities: list["types.MessageEntity"]):
         super().__init__()
 
         self.id = id
