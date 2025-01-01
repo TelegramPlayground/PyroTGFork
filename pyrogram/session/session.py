@@ -396,6 +396,8 @@ class Session:
         timeout: float = WAIT_TIMEOUT,
         sleep_threshold: float = SLEEP_THRESHOLD
     ):
+        sleep_threshold = max(sleep_threshold, self.client.sleep_threshold)
+
         try:
             await asyncio.wait_for(self.is_connected.wait(), self.WAIT_TIMEOUT)
         except asyncio.TimeoutError:
