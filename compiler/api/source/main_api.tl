@@ -1969,6 +1969,9 @@ starGiftAttributeOriginalDetails#c02c4f4b flags:# sender_id:flags.0?long recipie
 
 payments.starGiftUpgradePreview#167bd90b sample_attributes:Vector<StarGiftAttribute> = payments.StarGiftUpgradePreview;
 
+users.users#62d706b8 users:Vector<User> = users.Users;
+users.usersSlice#315a4974 count:int users:Vector<User> = users.Users;
+
 ---functions---
 
 invokeAfterMsg#cb9f372d {X:Type} msg_id:long query:!X = X;
@@ -2513,6 +2516,7 @@ bots.checkDownloadFileParams#50077589 bot:InputUser file_name:string url:string 
 bots.getAdminedBots#b0711d83 = Vector<User>;
 bots.updateStarRefProgram#778b5ab3 flags:# bot:InputUser commission_permille:int duration_months:flags.0?int = StarRefProgram;
 bots.setCustomVerification#8b89dfbd flags:# enabled:flags.1?true bot:flags.0?InputUser peer:InputPeer custom_description:flags.2?string = Bool;
+bots.getBotRecommendations#2855be61 flags:# bot:InputUser = users.Users;
 
 payments.getPaymentForm#37148dbb flags:# invoice:InputInvoice theme_params:flags.0?DataJSON = payments.PaymentForm;
 payments.getPaymentReceipt#2478d1cc peer:InputPeer msg_id:int = payments.PaymentReceipt;
