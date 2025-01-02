@@ -41,6 +41,7 @@ path = "pyrogram/__init__.py"
 [project.urls]
 Homepage = "https://telegramplayground.github.io/pyrogram/"
 Tracker = "https://github.com/TelegramPlayGround/Pyrogram/issues"
+community = "https://t.me/PyroTGFork"
 Source = "https://github.com/TelegramPlayGround/Pyrogram"
 Documentation = "https://telegramplayground.github.io/pyrogram/releases/changes-in-this-fork.html"
 
@@ -97,6 +98,6 @@ docs = [
 ]
 
 fast = [
-    "PyTgCrypto==1.2.6",
+    "PyTgCrypto>1.2.9.2,<=1.4",
     "uvloop>0.18.0,<=0.19.0"
 ]
