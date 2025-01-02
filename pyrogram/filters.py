@@ -18,7 +18,7 @@
 
 import inspect
 import re
-from typing import Any, Callable, List, Literal, Optional, Pattern, Union
+from typing import Any, Callable, Literal, Optional, Pattern, Union
 
 import pyrogram
 from pyrogram import enums
@@ -804,7 +804,7 @@ video_chat_ended: Filter = create(video_chat_ended_filter)
 
 
 # region business message
-async def tg_business_filter(_, __, m: Union[Message, List[Message]]):
+async def tg_business_filter(_, __, m: Union[Message, list[Message]]):
     if (
         isinstance(m, list) and
         len(m) > 0
@@ -916,8 +916,8 @@ linked_channel: Filter = create(linked_channel_filter)
 
 # region command_filter
 def command(
-    commands: Union[str, List[str]],
-    prefixes: Union[str, List[str]] = "/",
+    commands: Union[str, list[str]],
+    prefixes: Union[str, list[str]] = "/",
     case_sensitive: bool = False,
 ) -> Filter:
     """Filter commands, i.e.: text messages starting with "/" or any other custom prefix.
@@ -1007,13 +1007,13 @@ def command(
 
 
 # region cq_data_filter
-def cq_data(data: Union[str, List[str]]):
+def cq_data(data: Union[str, list[str]]):
     """Filter callback query updates that match a given string or list of strings.
 
     Can be applied to handlers that receive :obj:`~pyrogram.types.CallbackQuery` updates.
 
     Parameters:
-        data (``str`` | ``List[str]``):
+        data (``str`` | ``list[str]``):
             The data or list of data strings to match against the callback query.
 
     Returns:
@@ -1096,7 +1096,7 @@ class user(Filter, set):
             Defaults to None (no users).
     """
 
-    def __init__(self, users: Optional[Union[int, str, List[Union[int, str]]]] = None) -> None:
+    def __init__(self, users: Optional[Union[int, str, list[Union[int, str]]]] = None) -> None:
         users = [] if users is None else users if isinstance(users, list) else [users]
 
         super().__init__(
@@ -1133,7 +1133,7 @@ class chat(Filter, set):
             Defaults to None (no chats).
     """
 
-    def __init__(self, chats: Optional[Union[int, str, List[Union[int, str]]]] = None) -> None:
+    def __init__(self, chats: Optional[Union[int, str, list[Union[int, str]]]] = None) -> None:
         chats = [] if chats is None else chats if isinstance(chats, list) else [chats]
 
         super().__init__(
@@ -1194,7 +1194,7 @@ class thread(Filter, set):
             Defaults to None (no threads).
     """
 
-    def __init__(self, message_thread_ids: Optional[Union[int, List[int]]] = None):
+    def __init__(self, message_thread_ids: Optional[Union[int, list[int]]] = None):
         message_thread_ids = [] if message_thread_ids is None else message_thread_ids if isinstance(message_thread_ids, list) else [message_thread_ids]
 
         super().__init__(

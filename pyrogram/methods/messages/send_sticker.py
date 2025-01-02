@@ -21,7 +21,7 @@ import io
 import os
 import re
 from datetime import datetime
-from typing import List, Union, Optional, Callable
+from typing import Union, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, raw, types, utils
@@ -39,7 +39,7 @@ class SendSticker:
         sticker: Union[str, "io.BytesIO"],
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         emoji: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,

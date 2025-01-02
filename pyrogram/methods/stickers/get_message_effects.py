@@ -17,7 +17,6 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import List
 
 import pyrogram
 from pyrogram import raw
@@ -29,7 +28,7 @@ log = logging.getLogger(__name__)
 class GetMessageEffects:
     async def get_message_effects(
         self: "pyrogram.Client"
-    ) -> List["types.MessageEffect"]:
+    ) -> list["types.MessageEffect"]:
         """Returns information about all available message effects.
 
         .. include:: /_includes/usable-by/users.rst

@@ -18,7 +18,7 @@
 
 import logging
 from datetime import datetime
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils, types, enums
@@ -31,16 +31,16 @@ class SendPoll:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         question: str,
-        options: List["types.InputPollOption"],
+        options: list["types.InputPollOption"],
         question_parse_mode: "enums.ParseMode" = None,
-        question_entities: List["types.MessageEntity"] = None,
+        question_entities: list["types.MessageEntity"] = None,
         is_anonymous: bool = True,
         type: "enums.PollType" = enums.PollType.REGULAR,
         allows_multiple_answers: bool = None,
         correct_option_id: int = None,
         explanation: str = None,
         explanation_parse_mode: "enums.ParseMode" = None,
-        explanation_entities: List["types.MessageEntity"] = None,
+        explanation_entities: list["types.MessageEntity"] = None,
         open_period: int = None,
         close_date: datetime = None,
         is_closed: bool = None,

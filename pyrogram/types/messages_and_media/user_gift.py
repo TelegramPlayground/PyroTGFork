@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional, List
+from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -67,7 +67,7 @@ class UserGift(Object):
         client: "pyrogram.Client" = None,
         sender_user: Optional["types.User"] = None,
         text: Optional[str] = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         date: datetime,
         is_private: Optional[bool] = None,
         is_saved: Optional[bool] = None,

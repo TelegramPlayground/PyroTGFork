@@ -18,7 +18,6 @@
 
 import logging
 from typing import Union
-from typing import List
 
 import pyrogram
 from pyrogram import raw, types
@@ -32,7 +31,7 @@ class SetReaction:
         chat_id: Union[int, str],
         message_id: int = None,
         story_id: int = None,
-        reaction: List["types.ReactionType"] = [],
+        reaction: list["types.ReactionType"] = [],
         is_big: bool = False,
         add_to_recent: bool = True
     ) -> "types.MessageReactions":

@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils, types, enums
@@ -46,7 +46,7 @@ class InputPollOption(Object):
         *,
         text: str,
         text_parse_mode: "enums.ParseMode" = None,
-        text_entities: List["types.MessageEntity"] = None,
+        text_entities: list["types.MessageEntity"] = None,
     ):
         super().__init__()
 

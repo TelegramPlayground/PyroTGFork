@@ -26,7 +26,7 @@ import struct
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import datetime, timezone
 from getpass import getpass
-from typing import Union, List, Dict, Optional
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import raw, enums
@@ -95,7 +95,7 @@ async def parse_messages(
     replies: int = 1,
     business_connection_id: str = "",
     r: "raw.base.Updates" = None
-) -> List["types.Message"]:
+) -> list["types.Message"]:
     parsed_messages = []
 
     if not messages and r:
@@ -383,8 +383,8 @@ async def parse_text_entities(
     client: "pyrogram.Client",
     text: str,
     parse_mode: Optional[enums.ParseMode],
-    entities: List["types.MessageEntity"]
-) -> Dict[str, Union[str, List[raw.base.MessageEntity]]]:
+    entities: list["types.MessageEntity"]
+) -> dict[str, Union[str, list[raw.base.MessageEntity]]]:
     if entities:
         # Inject the client instance because parsing user mentions requires it
         for entity in entities:
@@ -400,7 +400,7 @@ async def parse_text_entities(
     }
 
 
-async def parse_deleted_messages(client, update, users, chats) -> List["types.Message"]:
+async def parse_deleted_messages(client, update, users, chats) -> list["types.Message"]:
     messages = update.messages
     channel_id = getattr(update, "channel_id", None)
     business_connection_id = getattr(update, "connection_id", None)

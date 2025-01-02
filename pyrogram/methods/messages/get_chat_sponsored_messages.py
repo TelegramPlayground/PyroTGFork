@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Union, List
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types
@@ -26,7 +26,7 @@ class GetChatSponsoredMessages:
     async def get_chat_sponsored_messages(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-    ) -> Optional[List["types.SponsoredMessage"]]:
+    ) -> Optional[list["types.SponsoredMessage"]]:
         """Returns sponsored messages to be shown in a chat; for channel chats only.
 
         .. include:: /_includes/usable-by/users.rst

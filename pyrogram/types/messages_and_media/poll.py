@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List, Union, Optional
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
@@ -86,8 +86,8 @@ class Poll(Object, Update):
         client: "pyrogram.Client" = None,
         id: str,
         question: str,
-        options: List["types.PollOption"],
-        question_entities: List["types.MessageEntity"] = None,
+        options: list["types.PollOption"],
+        question_entities: list["types.MessageEntity"] = None,
         total_voter_count: int,
         is_closed: bool,
         is_anonymous: bool = None,
@@ -96,7 +96,7 @@ class Poll(Object, Update):
         chosen_option_id: Optional[int] = None,
         correct_option_id: Optional[int] = None,
         explanation: Optional[str] = None,
-        explanation_entities: Optional[List["types.MessageEntity"]] = None,
+        explanation_entities: Optional[list["types.MessageEntity"]] = None,
         open_period: Optional[int] = None,
         close_date: Optional[datetime] = None,
     ):
@@ -122,7 +122,7 @@ class Poll(Object, Update):
     def _parse(client, media_poll: Union["raw.types.MessageMediaPoll", "raw.types.UpdateMessagePoll"]) -> "Poll":
         poll: raw.types.Poll = media_poll.poll
         poll_results: raw.types.PollResults = media_poll.results
-        results: List[raw.types.PollAnswerVoters] = poll_results.results
+        results: list[raw.types.PollAnswerVoters] = poll_results.results
 
         chosen_option_id = None
         correct_option_id = None

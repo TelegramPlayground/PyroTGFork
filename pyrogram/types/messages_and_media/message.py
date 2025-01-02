@@ -18,9 +18,10 @@
 
 import io
 import logging
+import re
 from datetime import datetime
 from functools import partial
-from typing import List, Match, Union, Optional, Callable
+from typing import Union, Optional, Callable
 
 import pyrogram
 from pyrogram import raw, enums, types, utils
@@ -36,7 +37,7 @@ class Str(str):
     def __init__(self, *args):
         super().__init__()
 
-        self.entities: Optional[List["types.MessageEntity"]] = None
+        self.entities: Optional[list["types.MessageEntity"]] = None
 
     def init(self, entities):
         self.entities = entities
@@ -450,7 +451,7 @@ class Message(Object, Update):
         media_group_id: str = None,
         author_signature: str = None,
         text: Str = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         effect_id: str = None,
         animation: "types.Animation" = None,
@@ -461,11 +462,11 @@ class Message(Object, Update):
         sticker: "types.Sticker" = None,
         story: "types.Story" = None,
         video: "types.Video" = None,
-        alternative_videos: List["types.AlternativeVideo"] = None,
+        alternative_videos: list["types.AlternativeVideo"] = None,
         video_note: "types.VideoNote" = None,
         voice: "types.Voice" = None,
         caption: Str = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         has_media_spoiler: bool = None,
         contact: "types.Contact" = None,
@@ -474,7 +475,7 @@ class Message(Object, Update):
         poll: "types.Poll" = None,
         venue: "types.Venue" = None,
         location: "types.Location" = None,
-        new_chat_members: List["types.User"] = None,
+        new_chat_members: list["types.User"] = None,
         left_chat_member: "types.User" = None,
         new_chat_title: str = None,
         new_chat_photo: "types.Photo" = None,
@@ -533,9 +534,9 @@ class Message(Object, Update):
         views: int = None,
         forwards: int = None,
         outgoing: bool = None,
-        matches: List[Match] = None,
-        command: List[str] = None,
-        reactions: List["types.Reaction"] = None,
+        matches: list[re.Match] = None,
+        command: list[str] = None,
+        reactions: list["types.Reaction"] = None,
         custom_action: str = None,
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
@@ -1451,7 +1452,7 @@ class Message(Object, Update):
                 return f"https://t.me/{self.chat.username}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
             return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
 
-    async def get_media_group(self) -> List["types.Message"]:
+    async def get_media_group(self) -> list["types.Message"]:
         """Bound method *get_media_group* of :obj:`~pyrogram.types.Message`.
         
         Use as a shortcut for:
@@ -1485,7 +1486,7 @@ class Message(Object, Update):
         text: str = None,
         quote: bool = None,
         parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         disable_notification: bool = None,
         protect_content: bool = None,
@@ -1615,7 +1616,7 @@ class Message(Object, Update):
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         unsave: bool = False,
         has_spoiler: bool = None,
@@ -1817,7 +1818,7 @@ class Message(Object, Update):
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         duration: int = 0,
         performer: str = None,
         title: str = None,
@@ -1997,7 +1998,7 @@ class Message(Object, Update):
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         disable_notification: bool = None,
         message_effect_id: int = None,
@@ -2303,7 +2304,7 @@ class Message(Object, Update):
         thumb: Union[str, "io.BytesIO"] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         file_name: str = None,
         disable_content_type_detection: bool = None,
         disable_notification: bool = None,
@@ -2765,7 +2766,7 @@ class Message(Object, Update):
 
     async def reply_media_group(
         self,
-        media: List[Union["types.InputMediaPhoto", "types.InputMediaVideo"]],
+        media: list[Union["types.InputMediaPhoto", "types.InputMediaVideo"]],
         quote: bool = None,
         disable_notification: bool = None,
         message_effect_id: int = None,
@@ -2775,7 +2776,7 @@ class Message(Object, Update):
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
         reply_to_message_id: int = None
-    ) -> List["types.Message"]:
+    ) -> list["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -2865,7 +2866,7 @@ class Message(Object, Update):
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         has_spoiler: bool = None,
         ttl_seconds: int = None,
@@ -3038,16 +3039,16 @@ class Message(Object, Update):
     async def reply_poll(
         self,
         question: str,
-        options: List[str],
+        options: list[str],
         question_parse_mode: "enums.ParseMode" = None,
-        question_entities: List["types.MessageEntity"] = None,
+        question_entities: list["types.MessageEntity"] = None,
         is_anonymous: bool = True,
         type: "enums.PollType" = enums.PollType.REGULAR,
         allows_multiple_answers: bool = None,
         correct_option_id: int = None,
         explanation: str = None,
         explanation_parse_mode: "enums.ParseMode" = None,
-        explanation_entities: List["types.MessageEntity"] = None,
+        explanation_entities: list["types.MessageEntity"] = None,
         open_period: int = None,
         close_date: datetime = None,
         is_closed: bool = None,
@@ -3234,7 +3235,7 @@ class Message(Object, Update):
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         emoji: str = None,
         disable_notification: bool = None,
         protect_content: bool = None,
@@ -3524,7 +3525,7 @@ class Message(Object, Update):
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         duration: int = 0,
         width: int = 0,
@@ -3750,7 +3751,7 @@ class Message(Object, Update):
         ] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
         ttl_seconds: int = None,
@@ -3916,7 +3917,7 @@ class Message(Object, Update):
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         duration: int = 0,
         disable_notification: bool = None,
         protect_content: bool = None,
@@ -4088,12 +4089,12 @@ class Message(Object, Update):
         description: str,
         payload: Union[str, bytes],
         currency: str,
-        prices: List["types.LabeledPrice"],
+        prices: list["types.LabeledPrice"],
         message_thread_id: int = None,
         quote: bool = None,
         provider_token: str = None,
         max_tip_amount: int = None,
-        suggested_tip_amounts: List[int] = None,
+        suggested_tip_amounts: list[int] = None,
         start_parameter: str = None,
         provider_data: str = None,
         photo_url: str = "",
@@ -4121,7 +4122,7 @@ class Message(Object, Update):
         ] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None
+        caption_entities: list["types.MessageEntity"] = None
     ) -> "Message":
         """Bound method *reply_invoice* of :obj:`~pyrogram.types.Message`.
 
@@ -4288,7 +4289,7 @@ class Message(Object, Update):
         self,
         text: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         disable_web_page_preview: bool = None
@@ -4354,7 +4355,7 @@ class Message(Object, Update):
         self,
         caption: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> "Message":
         """Bound method *edit_caption* of :obj:`~pyrogram.types.Message`.
@@ -4495,7 +4496,7 @@ class Message(Object, Update):
         file_id: str,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         schedule_date: datetime = None,
         has_spoiler: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None
@@ -4563,7 +4564,7 @@ class Message(Object, Update):
         drop_media_captions: bool = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None
-    ) -> Union["types.Message", List["types.Message"]]:
+    ) -> Union["types.Message", list["types.Message"]]:
         """Bound method *forward* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -4641,7 +4642,7 @@ class Message(Object, Update):
         chat_id: Union[int, str],
         caption: str = None,
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
@@ -4658,7 +4659,7 @@ class Message(Object, Update):
         allow_paid_broadcast: bool = None,
         message_thread_id: int = None,
         reply_to_message_id: int = None
-    ) -> Union["types.Message", List["types.Message"]]:
+    ) -> Union["types.Message", list["types.Message"]]:
         """Bound method *copy* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -5174,7 +5175,7 @@ class Message(Object, Update):
         reaction: Union[
             int,
             str,
-            List[Union[int, str, "types.ReactionType"]]
+            list[Union[int, str, "types.ReactionType"]]
         ] = None,
         is_big: bool = False,
         add_to_recent: bool = True
@@ -5221,7 +5222,7 @@ class Message(Object, Update):
         """
         sr = None
 
-        if isinstance(reaction, List):
+        if isinstance(reaction, list):
             sr = []
             for i in reaction:
                 if isinstance(i, types.ReactionType):
@@ -5638,8 +5639,8 @@ class Message(Object, Update):
 
     async def pay(self) -> Union[
         bool,
-        List["types.PaidMediaPhoto"],
-        List["types.PaidMediaVideo"]
+        list["types.PaidMediaPhoto"],
+        list["types.PaidMediaVideo"]
     ]:
         """Bound method *pay* of :obj:`~pyrogram.types.Message`.
 

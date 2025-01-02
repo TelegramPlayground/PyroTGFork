@@ -17,7 +17,6 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List
 
 import pyrogram
 from pyrogram import raw, utils
@@ -68,7 +67,7 @@ class Photo(Object):
         date: datetime,
         ttl_seconds: int = None,
         has_spoiler: bool = None,
-        thumbs: List["types.Thumbnail"] = None
+        thumbs: list["types.Thumbnail"] = None
     ):
         super().__init__(client)
 
@@ -90,7 +89,7 @@ class Photo(Object):
         has_spoiler: bool = None,
     ) -> "Photo":
         if isinstance(photo, raw.types.Photo):
-            photos: List[raw.types.PhotoSize] = []
+            photos: list[raw.types.PhotoSize] = []
 
             for p in photo.sizes:
                 if isinstance(p, raw.types.PhotoSize):

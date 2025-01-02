@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, types
@@ -26,9 +26,9 @@ class AddChatMembers:
     async def add_chat_members(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        user_ids: Union[Union[int, str], List[Union[int, str]]],
+        user_ids: Union[Union[int, str], list[Union[int, str]]],
         forward_limit: int = 100
-    ) -> Union[List["types.Message"], "types.Message", bool]:
+    ) -> Union[list["types.Message"], "types.Message", bool]:
         """Add new chat members to a group, supergroup or channel
 
         .. include:: /_includes/usable-by/users.rst
@@ -48,7 +48,7 @@ class AddChatMembers:
                 Defaults to 100 (max amount).
 
         Returns:
-            List[:obj:`~pyrogram.types.Message`] | :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
+            List of :obj:`~pyrogram.types.Message` | :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
             otherwise, in case a message object couldn't be returned, True is returned.
 
         Example:

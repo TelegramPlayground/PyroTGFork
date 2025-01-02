@@ -26,7 +26,7 @@ class GetChatAdminsWithInviteLinks:
     async def get_chat_admins_with_invite_links(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-    ):
+    ) -> list["types.ChatAdminWithInviteLinks"]:
         """Get the list of the administrators that have exported invite links in a chat.
 
         You must be the owner of a chat for this to work.

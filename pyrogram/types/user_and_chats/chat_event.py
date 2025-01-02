@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
@@ -193,8 +193,8 @@ class ChatEvent(Object):
         old_username: str = None,
         new_username: str = None,
 
-        old_usernames: List["types.Username"] = None,
-        new_usernames: List["types.Username"] = None,
+        old_usernames: list["types.Username"] = None,
+        new_usernames: list["types.Username"] = None,
 
         old_chat_permissions: "types.ChatPermissions" = None,
         new_chat_permissions: "types.ChatPermissions" = None,
@@ -320,8 +320,8 @@ class ChatEvent(Object):
     async def _parse(
         client: "pyrogram.Client",
         event: "raw.base.ChannelAdminLogEvent",
-        users: List["raw.base.User"],
-        chats: List["raw.base.Chat"]
+        users: list["raw.base.User"],
+        chats: list["raw.base.Chat"]
     ):
         users = {i.id: i for i in users}
         chats = {i.id: i for i in chats}
@@ -347,8 +347,8 @@ class ChatEvent(Object):
         old_username: Optional[str] = None
         new_username: Optional[str] = None
 
-        old_usernames: Optional[types.List[types.Username]] = None
-        new_usernames: Optional[types.List[types.Username]] = None
+        old_usernames: Optional[types.list[types.Username]] = None
+        new_usernames: Optional[types.list[types.Username]] = None
 
         old_chat_permissions: Optional[types.ChatPermissions] = None
         new_chat_permissions: Optional[types.ChatPermissions] = None

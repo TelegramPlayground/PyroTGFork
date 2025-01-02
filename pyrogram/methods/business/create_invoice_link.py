@@ -18,7 +18,7 @@
 
 import logging
 from datetime import datetime
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import enums, raw, utils, types
@@ -33,11 +33,11 @@ class CreateInvoiceLink:
         description: str,
         payload: Union[str, bytes],
         currency: str,
-        prices: List["types.LabeledPrice"],
+        prices: list["types.LabeledPrice"],
         provider_token: str = None,
         subscription_period: datetime = None,
         max_tip_amount: int = None,
-        suggested_tip_amounts: List[int] = None,
+        suggested_tip_amounts: list[int] = None,
         start_parameter: str = None,
         provider_data: str = None,
         photo_url: str = None,

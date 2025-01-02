@@ -32,7 +32,7 @@ from importlib import import_module
 from io import StringIO, BytesIO
 from mimetypes import MimeTypes
 from pathlib import Path
-from typing import Union, List, Optional, Callable, AsyncGenerator, Type, Tuple
+from typing import Union, Optional, Callable, AsyncGenerator
 
 import pyrogram
 from pyrogram import __version__, __license__
@@ -287,7 +287,7 @@ class Client(Methods):
         client_platform: enums.ClientPlatform = enums.ClientPlatform.OTHER,
         link_preview_options: "types.LinkPreviewOptions" = None,
         fetch_replies: int = 1,
-        _un_docu_gnihts: List = []
+        _un_docu_gnihts: list = []
     ):
         super().__init__()
 
@@ -560,7 +560,7 @@ class Client(Methods):
 
         self.parse_mode = parse_mode
 
-    async def fetch_peers(self, peers: List[Union[raw.types.User, raw.types.Chat, raw.types.Channel]]) -> bool:
+    async def fetch_peers(self, peers: list[Union[raw.types.User, raw.types.Chat, raw.types.Channel]]) -> bool:
         is_min = False
         parsed_peers = []
 
@@ -711,7 +711,7 @@ class Client(Methods):
         elif isinstance(updates, raw.types.UpdatesTooLong):
             log.info(updates)
 
-    async def recover_gaps(self) -> Tuple[int, int]:
+    async def recover_gaps(self) -> tuple[int, int]:
         states = await self.storage.update_state()
 
         message_updates_counter = 0

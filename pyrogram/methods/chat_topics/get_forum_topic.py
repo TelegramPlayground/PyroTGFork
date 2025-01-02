@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Union, List, Iterable
+from typing import Union, Iterable
 
 import pyrogram
 from pyrogram import raw
@@ -31,7 +31,7 @@ class GetForumTopic:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_thread_ids: Union[int, Iterable[int]]
-    ) -> Union["types.ForumTopic", List["types.ForumTopic"]]:
+    ) -> Union["types.ForumTopic", list["types.ForumTopic"]]:
         """Get one or more topic from a chat by using topic identifiers.
 
         .. include:: /_includes/usable-by/users.rst

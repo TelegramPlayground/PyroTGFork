@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import raw
@@ -28,7 +28,7 @@ class VotePoll:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_id: int,
-        options: Union[int, List[int]]
+        options: Union[int, list[int]]
     ) -> "types.Poll":
         """Vote a poll.
 

@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional, List, Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
@@ -83,7 +83,7 @@ class DraftMessage(Object):
         reply_to_message: "types.Message" = None,
         date: datetime = None,
         text: Str = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         effect_id: str = None,
         video_note: "types.VideoNote" = None,

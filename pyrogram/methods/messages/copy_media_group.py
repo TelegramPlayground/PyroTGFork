@@ -18,7 +18,7 @@
 
 import logging
 from datetime import datetime
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
@@ -32,7 +32,7 @@ class CopyMediaGroup:
         chat_id: Union[int, str],
         from_chat_id: Union[int, str],
         message_id: int,
-        captions: Union[List[str], str] = None,
+        captions: Union[list[str], str] = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         message_thread_id: int = None,
@@ -42,7 +42,7 @@ class CopyMediaGroup:
         allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_to_message_id: int = None
-    ) -> List["types.Message"]:
+    ) -> list["types.Message"]:
         """Copy a media group by providing one of the message ids.
 
         .. include:: /_includes/usable-by/users-bots.rst

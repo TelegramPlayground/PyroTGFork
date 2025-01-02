@@ -20,7 +20,7 @@ import inspect
 import aiosqlite  # aiosqlite==0.20.0
 import os
 import time
-from typing import List, Tuple, Any
+from typing import Any
 
 from pyrogram import raw
 from .storage import Storage
@@ -184,7 +184,7 @@ class AioSQLiteStorage(Storage):
     async def delete(self):
         os.remove(self.name)
 
-    async def update_peers(self, peers: List[Tuple[int, int, str, List[str], str]]):
+    async def update_peers(self, peers: list[tuple[int, int, str, list[str], str]]):
         for peer_data in peers:
             id, access_hash, type, usernames, phone_number = peer_data
 
@@ -204,7 +204,7 @@ class AioSQLiteStorage(Storage):
                 [(id, username) for username in usernames] if usernames else [(id, None)]
             )
 
-    async def update_state(self, value: Tuple[int, int, int, int, int] = object):
+    async def update_state(self, value: tuple[int, int, int, int, int] = object):
         if value == object:
             q = await self.conn.execute(
                 "SELECT id, pts, qts, date, seq FROM update_state"

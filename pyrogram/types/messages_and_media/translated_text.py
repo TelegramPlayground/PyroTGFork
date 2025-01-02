@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
-
 import pyrogram
 from pyrogram import raw, types
 
@@ -40,7 +38,7 @@ class TranslatedText(Object):
         self,
         *,
         text: str,
-        entities: List["types.MessageEntity"] = None
+        entities: list["types.MessageEntity"] = None
     ):
         self.text = text
         self.entities = entities

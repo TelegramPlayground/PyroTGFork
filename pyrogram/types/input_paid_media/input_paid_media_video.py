@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import io
-from typing import Optional, List, Union
+from typing import Optional, Union
 
 from .input_paid_media import InputPaidMedia
 from ... import enums

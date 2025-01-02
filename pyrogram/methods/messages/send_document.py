@@ -21,7 +21,7 @@ import io
 import os
 import re
 from datetime import datetime
-from typing import Union, List, Optional, Callable
+from typing import Union, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, enums, raw, types, utils
@@ -40,7 +40,7 @@ class SendDocument:
         thumb: Union[str, "io.BytesIO"] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         file_name: str = None,
         disable_content_type_detection: bool = True,
         disable_notification: bool = None,

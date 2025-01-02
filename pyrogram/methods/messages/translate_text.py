@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
@@ -27,8 +27,8 @@ class TranslateText:
         self: "pyrogram.Client",
         to_language_code: str,
         chat_id: Union[int, str],
-        message_ids: Union[int, List[int]]
-    ) -> Union["types.TranslatedText", List["types.TranslatedText"]]:
+        message_ids: Union[int, list[int]]
+    ) -> Union["types.TranslatedText", list["types.TranslatedText"]]:
         """Extracts text or caption of the given message and translates it to the given language. If the current user is a Telegram Premium user, then text formatting is preserved.
 
         .. include:: /_includes/usable-by/users.rst
@@ -78,8 +78,8 @@ class TranslateText:
         to_language_code: str,
         text: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None
-    ) -> Union["types.TranslatedText", List["types.TranslatedText"]]:
+        entities: list["types.MessageEntity"] = None
+    ) -> Union["types.TranslatedText", list["types.TranslatedText"]]:
         """Translates a text to the given language. If the current user is a Telegram Premium user, then text formatting is preserved.
 
         .. include:: /_includes/usable-by/users.rst

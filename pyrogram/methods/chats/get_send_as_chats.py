@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List, Union
+from typing import Union
 
 import pyrogram
 from pyrogram import raw
@@ -27,7 +27,7 @@ class GetSendAsChats:
     async def get_send_as_chats(
         self: "pyrogram.Client",
         chat_id: Union[int, str]
-    ) -> List["types.Chat"]:
+    ) -> list["types.Chat"]:
         """Get the list of "send_as" chats available.
 
         .. include:: /_includes/usable-by/users.rst
@@ -37,7 +37,7 @@ class GetSendAsChats:
                 Unique identifier (int) or username (str) of the target chat.
 
         Returns:
-            List[:obj:`~pyrogram.types.Chat`]: The list of chats.
+            List of :obj:`~pyrogram.types.Chat`: The list of chats.
 
         Example:
             .. code-block:: python
