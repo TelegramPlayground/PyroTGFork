@@ -26,7 +26,7 @@ class SearchGlobalCount:
         query: str = "",
         filter: "enums.MessagesFilter" = enums.MessagesFilter.EMPTY,
         chat_list: int = 0,
-        only_in_channels: bool = False,
+        chat_type_filter: "enums.ChatType" = None,
     ) -> int:
         """Get the count of messages resulting from a global search.
 
@@ -45,9 +45,8 @@ class SearchGlobalCount:
             chat_list (``int``, *optional*):
                 Chat list in which to search messages; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
 
-            only_in_channels (``bool``, *optional*):
-                True, if should search only in joined channels.
-                Defaults to False. All available chats are searched.
+            chat_type_filter (:obj:`~pyrogram.enums.ChatType`, *optional*):
+                Additional filter for type of the chat (:obj:`~pyrogram.enums.ChatType.PRIVATE`, :obj:`~pyrogram.enums.ChatType.GROUP`, :obj:`~pyrogram.enums.ChatType.CHANNEL`) of the searched messages; pass None to search for messages in all chats.
 
         Returns:
             ``int``: On success, the messages count is returned.
@@ -63,7 +62,9 @@ class SearchGlobalCount:
                 offset_id=0,
                 limit=1,
                 folder_id=chat_list,
-                broadcasts_only=only_in_channels
+                broadcasts_only=(chat_type_filter == enums.ChatType.CHANNEL) if chat_type_filter else None,
+                groups_only=(chat_type_filter == enums.ChatType.GROUP) if chat_type_filter else None,
+                users_only=(chat_type_filter == enums.ChatType.PRIVATE) if chat_type_filter else None,
             )
         )
 

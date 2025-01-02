@@ -59,6 +59,15 @@ class UserGift(Object):
         was_converted (``bool``, *optional*):
             True, if the gift was converted to Telegram Stars; only for the receiver of the gift.
 
+        can_be_upgraded (``bool``, *optional*):
+            True, if the gift is a regular gift that can be upgraded to a unique gift; only for the receiver of the gift.
+
+        was_refunded (``bool``, *optional*):
+            True, if the gift was refunded and isn't available anymore.
+
+        prepaid_upgrade_star_count (``int``, *optional*):
+            Number of Telegram Stars that were paid by the sender for the ability to upgrade the gift.
+
     """
 
     def __init__(
@@ -75,6 +84,9 @@ class UserGift(Object):
         message_id: Optional[int] = None,
         sell_star_count: Optional[int] = None,
         was_converted: Optional[bool] = None,
+        can_be_upgraded: Optional[bool] = None,
+        was_refunded: Optional[bool] = None,
+        prepaid_upgrade_star_count: Optional[int] = None,
     ):
         super().__init__(client)
 
@@ -88,6 +100,9 @@ class UserGift(Object):
         self.message_id = message_id
         self.sell_star_count = sell_star_count
         self.was_converted = was_converted
+        self.can_be_upgraded = can_be_upgraded
+        self.was_refunded = was_refunded
+        self.prepaid_upgrade_star_count = prepaid_upgrade_star_count
 
     @staticmethod
     async def _parse(
@@ -150,6 +165,9 @@ class UserGift(Object):
             entities=entities,
             sell_star_count=getattr(action, "convert_stars", None),
             was_converted=getattr(action, "converted", None),
+            can_be_upgraded=getattr(action, "can_upgrade", None),
+            was_refunded=getattr(action, "refunded", None),
+            prepaid_upgrade_star_count=getattr(action, "upgrade_stars", None),
             client=client
         )
 

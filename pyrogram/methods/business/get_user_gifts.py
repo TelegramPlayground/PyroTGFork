@@ -70,7 +70,7 @@ class GetUserGifts:
                     offset=offset,
                     limit=limit
                 ),
-                sleep_threshold=max(60, self.sleep_threshold)
+                sleep_threshold=60
             )
 
             users = {u.id: u for u in r.users}
