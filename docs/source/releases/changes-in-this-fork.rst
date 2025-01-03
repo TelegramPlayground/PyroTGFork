@@ -25,6 +25,7 @@ Changes in this Fork
 | Scheme layer used: 196 |
 +------------------------+
 
+- Added the parameters ``upgrade_star_count`` and ``is_for_birthday`` in :obj:`~pyrogram.types.Gift`.
 - Added the :meth:`~pyrogram.Client.on_bot_purchased_paid_media` and :meth:`~pyrogram.Client.on_bot_business_connection`.
 - Added the parameters ``can_be_upgraded``, ``was_refunded``, ``prepaid_upgrade_star_count``, ``can_be_transferred``, ``transfer_star_count``, ``export_date`` in :obj:`~pyrogram.types.UserGift`.
 - Renamed the parameter ``only_in_channels`` to ``chat_type_filter`` in the :meth:`~pyrogram.Client.search_global_count` and :meth:`~pyrogram.Client.search_global`.

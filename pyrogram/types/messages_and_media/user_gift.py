@@ -171,7 +171,9 @@ class UserGift(Object):
                     total_count=getattr(action.gift, "availability_total", None),
                     remaining_count=getattr(action.gift, "availability_remains", None),
                     default_sell_star_count=action.gift.convert_stars,
-                    is_limited=getattr(action.gift, "limited", None),
+                    is_limited=getattr(action.gift, "limited", None),upgrade_star_count=getattr(star_gift, "upgrade_stars", 0),
+                    is_for_birthday=getattr(star_gift, "birthday", None),
+                    client=client
                 ),
                 date=utils.timestamp_to_datetime(message.date),
                 is_private=getattr(action, "name_hidden", None),
@@ -198,6 +200,9 @@ class UserGift(Object):
                     remaining_count=getattr(action.gift, "availability_remains", None),
                     default_sell_star_count=action.gift.convert_stars,
                     is_limited=getattr(action.gift, "limited", None),
+                    upgrade_star_count=getattr(star_gift, "upgrade_stars", 0),
+                    is_for_birthday=getattr(star_gift, "birthday", None),
+                    client=client
                 ),
                 date=utils.timestamp_to_datetime(message.date),
                 sender_user=types.User._parse(client, users.get(utils.get_raw_peer_id(message.peer_id))),
@@ -207,7 +212,7 @@ class UserGift(Object):
                 can_be_transferred=getattr(action, "transferred", None),
                 was_refunded=getattr(action, "refunded", None),
                 prepaid_upgrade_star_count=getattr(action, "upgrade_stars", None),
-                export_date=utils.timestamp_to_datetime(action.can_export_at) if action.can_export_at else None,
+                export_date=utils.timestamp_to_datetime(getattr(action, "can_export_at", None),
                 transfer_star_count=getattr(action, "transfer_stars", None),
                 client=client
             )
