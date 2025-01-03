@@ -1002,7 +1002,10 @@ class Message(Object, Update):
                     write_access_allowed = types.WriteAccessAllowed._parse(action)
                     service_type = enums.MessageServiceType.WRITE_ACCESS_ALLOWED
 
-            elif isinstance(action, raw.types.MessageActionStarGift):
+            elif (
+                isinstance(action, raw.types.MessageActionStarGift) or
+                isinstance(action, raw.types.MessageActionStarGiftUnique)
+            ):
                 user_gift = await types.UserGift._parse_action(client, message, users)
                 service_type = enums.MessageServiceType.USER_GIFT
 

@@ -26,7 +26,7 @@ Changes in this Fork
 +------------------------+
 
 - Added the :meth:`~pyrogram.Client.on_bot_purchased_paid_media` and :meth:`~pyrogram.Client.on_bot_business_connection`.
-- Added the parameters ``can_be_upgraded``, ``was_refunded``, ``prepaid_upgrade_star_count`` in :obj:`~pyrogram.types.UserGift`.
+- Added the parameters ``can_be_upgraded``, ``was_refunded``, ``prepaid_upgrade_star_count``, ``can_be_transferred``, ``transfer_star_count``, ``export_date`` in :obj:`~pyrogram.types.UserGift`.
 - Renamed the parameter ``only_in_channels`` to ``chat_type_filter`` in the :meth:`~pyrogram.Client.search_global_count` and :meth:`~pyrogram.Client.search_global`.
 - Removed ``sender_user_id`` parameter from :meth:`~pyrogram.Client.sell_gift` and :meth:`~pyrogram.Client.toggle_gift_is_saved`.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=195&to=196>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=195&to=196>`__.
