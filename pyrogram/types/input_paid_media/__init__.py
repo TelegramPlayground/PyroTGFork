@@ -24,6 +24,7 @@ from .paid_media import PaidMedia
 from .paid_media_preview import PaidMediaPreview
 from .paid_media_photo import PaidMediaPhoto
 from .paid_media_video import PaidMediaVideo
+from .paid_media_purchased import PaidMediaPurchased
 
 __all__ = [
     "InputPaidMedia",
@@ -34,4 +35,5 @@ __all__ = [
     "PaidMediaPreview",
     "PaidMediaPhoto",
     "PaidMediaVideo",
+    "PaidMediaPurchased",
 ]

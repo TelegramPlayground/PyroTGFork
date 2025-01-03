@@ -644,6 +644,7 @@ def pyrogram_api():
             InputPaidMedia
             InputPaidMediaPhoto
             InputPaidMediaVideo
+            PaidMediaPurchased
         """,
         input_message_content="""
         InputMessageContent

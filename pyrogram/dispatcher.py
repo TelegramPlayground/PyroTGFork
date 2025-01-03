@@ -230,7 +230,7 @@ class Dispatcher:
 
         async def purchased_paid_media_parser(update, users, chats):
             return (
-                pyrogram.types.PurchasedPaidMedia._parse(self.client, update, users),
+                pyrogram.types.PaidMediaPurchased._parse(self.client, update, users),
                 PurchasedPaidMediaHandler
             )
 
