@@ -25,6 +25,7 @@ Changes in this Fork
 | Scheme layer used: 196 |
 +------------------------+
 
+- Added the ``pay_for_upgrade`` in the :meth:`~pyrogram.Client.send_gift`.
 - Added the parameters ``upgrade_star_count`` and ``is_for_birthday`` in :obj:`~pyrogram.types.Gift`.
 - Added the :meth:`~pyrogram.Client.on_bot_purchased_paid_media` and :meth:`~pyrogram.Client.on_bot_business_connection`.
 - Added the parameters ``can_be_upgraded``, ``was_refunded``, ``prepaid_upgrade_star_count``, ``can_be_transferred``, ``transfer_star_count``, ``export_date`` in :obj:`~pyrogram.types.UserGift`.
