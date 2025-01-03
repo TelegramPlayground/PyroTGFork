@@ -25,8 +25,7 @@ import pyrogram
 from pyrogram import errors, utils, raw
 from pyrogram.handlers import (
     MessageHandler, EditedMessageHandler,
-
-    
+    BusinessBotConnectionHandler,
     MessageReactionUpdatedHandler,
     MessageReactionCountUpdatedHandler,
     InlineQueryHandler,
@@ -34,6 +33,7 @@ from pyrogram.handlers import (
     CallbackQueryHandler,
     ShippingQueryHandler,
     PreCheckoutQueryHandler,
+    PurchasedPaidMediaHandler,
     PollHandler,
 
 
@@ -231,7 +231,7 @@ class Dispatcher:
         async def purchased_paid_media_parser(update, users, chats):
             return (
                 pyrogram.types.PurchasedPaidMedia._parse(self.client, update, users),
-                ChatBoostHandler
+                PurchasedPaidMediaHandler
             )
 
         self.update_parsers = {

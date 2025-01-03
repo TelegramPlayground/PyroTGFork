@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .on_bot_business_connection import OnBotBusinessConnection
 from .on_callback_query import OnCallbackQuery
 from .on_chat_join_request import OnChatJoinRequest
 from .on_chat_member_updated import OnChatMemberUpdated
@@ -39,6 +40,7 @@ class Decorators(
     OnMessage,
     OnEditedMessage,
     OnDeletedMessages,
+    OnBotBusinessConnection,
     OnMessageReactionUpdated,
     OnMessageReactionCountUpdated,
     OnInlineQuery,
