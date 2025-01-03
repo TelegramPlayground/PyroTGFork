@@ -212,7 +212,7 @@ class UserGift(Object):
                 can_be_transferred=getattr(action, "transferred", None),
                 was_refunded=getattr(action, "refunded", None),
                 prepaid_upgrade_star_count=getattr(action, "upgrade_stars", None),
-                export_date=utils.timestamp_to_datetime(getattr(action, "can_export_at", None),
+                export_date=utils.timestamp_to_datetime(getattr(action, "can_export_at", None)),
                 transfer_star_count=getattr(action, "transfer_stars", None),
                 client=client
             )
