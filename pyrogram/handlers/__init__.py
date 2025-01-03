@@ -32,5 +32,6 @@ from .user_status_handler import UserStatusHandler
 from .message_reaction_updated_handler import MessageReactionUpdatedHandler
 from .message_reaction_count_updated_handler import MessageReactionCountUpdatedHandler
 from .pre_checkout_query_handler import PreCheckoutQueryHandler
+from .purchased_paid_media_handler import PurchasedPaidMediaHandler
 from .shipping_query_handler import ShippingQueryHandler
 from .story_handler import StoryHandler
