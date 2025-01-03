@@ -33,16 +33,16 @@ Index
 
     - :meth:`~Client.on_message`
     - :meth:`~Client.on_edited_message`
-
+    - :meth:`~Client.on_bot_business_connection`
     - :meth:`~Client.on_message_reaction_updated`
     - :meth:`~Client.on_message_reaction_count_updated`
     - :meth:`~Client.on_inline_query`
     - :meth:`~Client.on_chosen_inline_result`
     - :meth:`~Client.on_callback_query`
-
-
+    - :meth:`~Client.on_shipping_query`
+    - :meth:`~Client.on_pre_checkout_query`
+    - :meth:`~Client.on_bot_purchased_paid_media`
     - :meth:`~Client.on_poll`
-
 
     - :meth:`~Client.on_chat_member_updated`
     - :meth:`~Client.on_chat_join_request`
@@ -62,7 +62,7 @@ Details
 .. Decorators
 .. autodecorator:: pyrogram.Client.on_message()
 .. autodecorator:: pyrogram.Client.on_edited_message()
-
+.. autodecorator:: pyrogram.Client.on_bot_business_connection()
 .. autodecorator:: pyrogram.Client.on_message_reaction_updated()
 .. autodecorator:: pyrogram.Client.on_message_reaction_count_updated()
 .. autodecorator:: pyrogram.Client.on_inline_query()
@@ -70,8 +70,8 @@ Details
 .. autodecorator:: pyrogram.Client.on_callback_query()
 .. autodecorator:: pyrogram.Client.on_shipping_query()
 .. autodecorator:: pyrogram.Client.on_pre_checkout_query()
+.. autodecorator:: pyrogram.Client.on_bot_purchased_paid_media()
 .. autodecorator:: pyrogram.Client.on_poll()
-
 
 .. autodecorator:: pyrogram.Client.on_chat_member_updated()
 .. autodecorator:: pyrogram.Client.on_chat_join_request()

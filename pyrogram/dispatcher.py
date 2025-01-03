@@ -25,8 +25,7 @@ import pyrogram
 from pyrogram import errors, utils, raw
 from pyrogram.handlers import (
     MessageHandler, EditedMessageHandler,
-
-    
+    BusinessBotConnectionHandler,
     MessageReactionUpdatedHandler,
     MessageReactionCountUpdatedHandler,
     InlineQueryHandler,
@@ -34,6 +33,7 @@ from pyrogram.handlers import (
     CallbackQueryHandler,
     ShippingQueryHandler,
     PreCheckoutQueryHandler,
+    PurchasedPaidMediaHandler,
     PollHandler,
 
 
@@ -64,6 +64,8 @@ from pyrogram.raw.types import (
     UpdateBotShippingQuery,
     UpdateStory,
     UpdateBusinessBotCallbackQuery,
+    UpdateBotBusinessConnect,
+    UpdateBotPurchasedPaidMedia,
 )
 
 log = logging.getLogger(__name__)
@@ -86,6 +88,8 @@ class Dispatcher:
     PRE_CHECKOUT_QUERY_UPDATES = (UpdateBotPrecheckoutQuery,)
     SHIPPING_QUERY_UPDATES = (UpdateBotShippingQuery,)
     NEW_STORY_UPDATES = (UpdateStory,)
+    BOT_BUSINESS_CONNECT_UPDATES = (UpdateBotBusinessConnect,)
+    PURCHASED_PAID_MEDIA_UPDATES = (UpdateBotPurchasedPaidMedia,)
 
     def __init__(self, client: "pyrogram.Client"):
         self.client = client
@@ -218,6 +222,18 @@ class Dispatcher:
                 StoryHandler
             )
 
+        async def bot_business_connect_parser(update, users, chats):
+            return (
+                await pyrogram.types.BusinessConnection._parse(self.client, update, users, chats),
+                BusinessBotConnectionHandler
+            )
+
+        async def purchased_paid_media_parser(update, users, chats):
+            return (
+                pyrogram.types.PaidMediaPurchased._parse(self.client, update, users),
+                PurchasedPaidMediaHandler
+            )
+
         self.update_parsers = {
             Dispatcher.NEW_MESSAGE_UPDATES: message_parser,
             Dispatcher.EDIT_MESSAGE_UPDATES: edited_message_parser,
@@ -235,6 +251,8 @@ class Dispatcher:
             Dispatcher.SHIPPING_QUERY_UPDATES: shipping_query_parser,
             Dispatcher.PRE_CHECKOUT_QUERY_UPDATES: pre_checkout_query_parser,
             Dispatcher.NEW_STORY_UPDATES: story_parser,
+            Dispatcher.BOT_BUSINESS_CONNECT_UPDATES: bot_business_connect_parser,
+            Dispatcher.PURCHASED_PAID_MEDIA_UPDATES: purchased_paid_media_parser,
         }
 
         self.update_parsers = {key: value for key_tuple, value in self.update_parsers.items() for key in key_tuple}
