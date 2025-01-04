@@ -101,7 +101,7 @@ class Gift(Object):
     @staticmethod
     async def _parse(
         client,
-        star_gift: "raw.types.StarGift",
+        star_gift: "raw.base.StarGift",
     ) -> "Gift":
         doc = star_gift.sticker
         attributes = {type(i): i for i in doc.attributes}
