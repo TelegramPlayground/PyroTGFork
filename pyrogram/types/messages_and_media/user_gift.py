@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -47,7 +47,7 @@ class UserGift(Object):
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date when the gift was sent.
 
-        gift (:obj:`~pyrogram.types.Gift`, *optional*):
+        gift (:obj:`~pyrogram.types.Gift` | :obj:`~pyrogram.types.UpgradedGift`, *optional*):
             Information about the gift.
         
         message_id (``int``, *optional*):
@@ -89,7 +89,7 @@ class UserGift(Object):
         date: datetime,
         is_private: Optional[bool] = None,
         is_saved: Optional[bool] = None,
-        gift: Optional["types.Gift"] = None,
+        gift: Optional[Union["types.Gift", "types.UpgradedGift"]] = None,
         message_id: Optional[int] = None,
         sell_star_count: Optional[int] = None,
         was_converted: Optional[bool] = None,

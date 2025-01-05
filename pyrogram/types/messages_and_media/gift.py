@@ -102,7 +102,10 @@ class Gift(Object):
     async def _parse(
         client,
         star_gift: "raw.base.StarGift",
-    ) -> "Gift":
+    ) -> Union["Gift", "types.UpgradedGift"]:
+        if isinstance(star_gift, raw.types.StarGiftUnique):
+            return types.UpgradedGift._parse(client, star_gift)
+
         doc = star_gift.sticker
         attributes = {type(i): i for i in doc.attributes}
 
