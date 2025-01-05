@@ -1054,6 +1054,7 @@ class Message(Object, Update):
                 contact_registered=contact_registered,
                 chat_join_type=chat_join_type,
                 screenshot_taken=screenshot_taken,
+                reactions=types.MessageReactions._parse(client, message.reactions) if message.reactions else None,
                 client=client
             )
 
