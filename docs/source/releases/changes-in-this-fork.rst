@@ -25,6 +25,7 @@ Changes in this Fork
 | Scheme layer used: 196 |
 +------------------------+
 
+- Added the :obj:`~pyrogram.types.UpgradedGift` and changed return type :meth:`~pyrogram.Client.get_available_gifts` and :meth:`~pyrogram.Client.get_user_gifts`.
 - Added the ``pay_for_upgrade`` in the :meth:`~pyrogram.Client.send_gift`.
 - Added the parameters ``upgrade_star_count`` and ``is_for_birthday`` in :obj:`~pyrogram.types.Gift`.
 - Added the :meth:`~pyrogram.Client.on_bot_purchased_paid_media` and :meth:`~pyrogram.Client.on_bot_business_connection`.

@@ -518,6 +518,7 @@ def pyrogram_api():
             Venue
             Gift
             UserGift
+            UpgradedGift
             WebAppData
             MessageAutoDeleteTimerChanged
             ChatBoostAdded

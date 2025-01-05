@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -101,8 +101,11 @@ class Gift(Object):
     @staticmethod
     async def _parse(
         client,
-        star_gift: "raw.types.StarGift",
-    ) -> "Gift":
+        star_gift: "raw.base.StarGift",
+    ) -> Union["Gift", "types.UpgradedGift"]:
+        if isinstance(star_gift, raw.types.StarGiftUnique):
+            return types.UpgradedGift._parse(client, star_gift)
+
         doc = star_gift.sticker
         attributes = {type(i): i for i in doc.attributes}
 

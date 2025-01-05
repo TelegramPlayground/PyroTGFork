@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -47,7 +47,7 @@ class UserGift(Object):
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date when the gift was sent.
 
-        gift (:obj:`~pyrogram.types.Gift`, *optional*):
+        gift (:obj:`~pyrogram.types.Gift` | :obj:`~pyrogram.types.UpgradedGift`, *optional*):
             Information about the gift.
         
         message_id (``int``, *optional*):
@@ -89,7 +89,7 @@ class UserGift(Object):
         date: datetime,
         is_private: Optional[bool] = None,
         is_saved: Optional[bool] = None,
-        gift: Optional["types.Gift"] = None,
+        gift: Optional[Union["types.Gift", "types.UpgradedGift"]] = None,
         message_id: Optional[int] = None,
         sell_star_count: Optional[int] = None,
         was_converted: Optional[bool] = None,
@@ -153,9 +153,6 @@ class UserGift(Object):
     ) -> "UserGift":
         action = message.action
 
-        doc = action.gift.sticker
-        attributes = {type(i): i for i in doc.attributes}
-
         text, entities = None, None
         if getattr(action, "message", None):
             text = action.message.text or None
@@ -164,17 +161,7 @@ class UserGift(Object):
 
         if isinstance(action, raw.types.MessageActionStarGift):
             return UserGift(
-                gift=types.Gift(
-                    id=action.gift.id,
-                    sticker=await types.Sticker._parse(client, doc, attributes),
-                    star_count=action.gift.stars,
-                    total_count=getattr(action.gift, "availability_total", None),
-                    remaining_count=getattr(action.gift, "availability_remains", None),
-                    default_sell_star_count=action.gift.convert_stars,
-                    is_limited=getattr(action.gift, "limited", None),upgrade_star_count=getattr(star_gift, "upgrade_stars", 0),
-                    is_for_birthday=getattr(star_gift, "birthday", None),
-                    client=client
-                ),
+                gift=await types.Gift._parse(client, action.gift),
                 date=utils.timestamp_to_datetime(message.date),
                 is_private=getattr(action, "name_hidden", None),
                 is_saved=getattr(action, "saved", None),
@@ -192,18 +179,7 @@ class UserGift(Object):
 
         if isinstance(action, raw.types.MessageActionStarGiftUnique):
             return UserGift(
-                gift=types.Gift(
-                    id=action.gift.id,
-                    sticker=await types.Sticker._parse(client, doc, attributes),
-                    star_count=action.gift.stars,
-                    total_count=getattr(action.gift, "availability_total", None),
-                    remaining_count=getattr(action.gift, "availability_remains", None),
-                    default_sell_star_count=action.gift.convert_stars,
-                    is_limited=getattr(action.gift, "limited", None),
-                    upgrade_star_count=getattr(star_gift, "upgrade_stars", 0),
-                    is_for_birthday=getattr(star_gift, "birthday", None),
-                    client=client
-                ),
+                gift=await types.Gift._parse(client, action.gift),
                 date=utils.timestamp_to_datetime(message.date),
                 sender_user=types.User._parse(client, users.get(utils.get_raw_peer_id(message.peer_id))),
                 message_id=message.id,
@@ -225,7 +201,6 @@ class UserGift(Object):
         .. code-block:: python
 
             await client.toggle_gift_is_saved(
-                sender_user_id=user_id,
                 message_id=message_id
             )
 
@@ -243,7 +218,6 @@ class UserGift(Object):
 
         """
         return await self._client.toggle_gift_is_saved(
-            sender_user_id=self.sender_user.id,
             message_id=self.message_id,
             is_saved=is_saved
         )
