@@ -224,7 +224,7 @@ class Dispatcher:
 
         async def bot_business_connect_parser(update, users, chats):
             return (
-                await pyrogram.types.BusinessConnection._parse(self.client, update, users, chats),
+                pyrogram.types.BusinessConnection._parse(self.client, update, users, chats),
                 BusinessBotConnectionHandler
             )
 
