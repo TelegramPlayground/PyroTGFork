@@ -402,6 +402,7 @@ def pyrogram_api():
             sell_gift
             send_gift
             toggle_gift_is_saved
+            get_owned_star_count
         """,
         advanced="""
         Advanced
@@ -674,6 +675,7 @@ def pyrogram_api():
             RefundedPayment
             ShippingQuery
             PreCheckoutQuery
+            StarAmount
         """
     )
 
