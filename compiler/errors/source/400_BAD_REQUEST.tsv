@@ -464,6 +464,7 @@ STORY_NOT_MODIFIED	The new story information you passed is equal to the previous
 STORY_PERIOD_INVALID	The specified story period is invalid for this account.
 STORY_SEND_FLOOD_MONTHLY_X	You've hit the monthly story limit as specified by the [`stories_sent_monthly_limit_*` client configuration parameters](https://core.telegram.org/api/config#stories-sent-monthly-limit-default): wait for the specified number of seconds before posting a new story.
 STORY_SEND_FLOOD_WEEKLY_X	You've hit the weekly story limit as specified by the [`stories_sent_weekly_limit_*` client configuration parameters](https://core.telegram.org/api/config#stories-sent-weekly-limit-default): wait for the specified number of seconds before posting a new story.
+SUBSCRIPTION_PERIOD_INVALID	The subscription period is invalid.
 SWITCH_PM_TEXT_EMPTY	The switch_pm.text field was empty.
 SWITCH_WEBVIEW_URL_INVALID	The URL specified in switch_webview.url is invalid!
 TAKEOUT_INVALID	The takeout id is invalid

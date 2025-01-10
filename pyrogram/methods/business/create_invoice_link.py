@@ -17,11 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from datetime import datetime
+from datetime import timedelta
 from typing import Optional, Union
 
 import pyrogram
-from pyrogram import enums, raw, utils, types
+from pyrogram import raw, types
 
 log = logging.getLogger(__name__)
 
@@ -34,23 +34,23 @@ class CreateInvoiceLink:
         payload: Union[str, bytes],
         currency: str,
         prices: list["types.LabeledPrice"],
-        provider_token: str = None,
-        subscription_period: datetime = None,
-        max_tip_amount: int = None,
-        suggested_tip_amounts: list[int] = None,
-        start_parameter: str = None,
-        provider_data: str = None,
-        photo_url: str = None,
-        photo_size: int = None,
-        photo_width: int = None,
-        photo_height: int = None,
-        need_name: bool = None,
-        need_phone_number: bool = None,
-        need_email: bool = None,
-        need_shipping_address: bool = None,
-        send_phone_number_to_provider: bool = None,
-        send_email_to_provider: bool = None,
-        is_flexible: bool = None
+        provider_token: Optional[str] = None,
+        subscription_period: Optional[Union[int, timedelta]] = None,
+        max_tip_amount: Optional[int] = None,
+        suggested_tip_amounts: Optional[list[int]] = None,
+        start_parameter: Optional[str] = None,
+        provider_data: Optional[str] = None,
+        photo_url: Optional[str] = None,
+        photo_size: Optional[int] = None,
+        photo_width: Optional[int] = None,
+        photo_height: Optional[int] = None,
+        need_name: Optional[bool] = None,
+        need_phone_number: Optional[bool] = None,
+        need_email: Optional[bool] = None,
+        need_shipping_address: Optional[bool] = None,
+        send_phone_number_to_provider: Optional[bool] = None,
+        send_email_to_provider: Optional[bool] = None,
+        is_flexible: Optional[bool] = None
     ) -> str:
         """Use this method to create a link for an invoice.
 
@@ -75,7 +75,7 @@ class CreateInvoiceLink:
             provider_token (``str``, *optional*):
                 Payment provider token, obtained via `@BotFather <https://t.me/botfather>`_. Pass an empty string for payments in `Telegram Stars <https://t.me/BotNews/90>`_.
 
-            subscription_period (:py:obj:`~datetime.datetime`, *optional*):
+            subscription_period (``int`` | :py:obj:`~datetime.timedelta`, *optional*):
                 The number of seconds the subscription will be active for before the next payment. The currency must be set to "XTR" (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified. Any number of subscriptions can be active for a given bot at the same time, including multiple concurrent subscriptions from the same user. Subscription price must no exceed ``stars_paid_post_amount_max`` Telegram Stars.
 
             max_tip_amount (``int``, *optional*):
@@ -154,7 +154,11 @@ class CreateInvoiceLink:
                     flexible=is_flexible,
                     phone_to_provider=send_phone_number_to_provider,
                     email_to_provider=send_email_to_provider,
-                    subscription_period=utils.datetime_to_timestamp(subscription_period)
+                    subscription_period=int(
+                        subscription_period.total_seconds()
+                        if isinstance(subscription_period, timedelta)
+                        else subscription_period
+                    ) if subscription_period else None
                 ),
                 payload=payload.encode() if isinstance(payload, str) else payload,
                 provider=provider_token,
