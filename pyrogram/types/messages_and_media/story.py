@@ -18,7 +18,7 @@
 
 import io
 from datetime import datetime
-from typing import Union, Callable
+from typing import Callable, Optional, Union
 
 import pyrogram
 from pyrogram import raw, utils, types, enums

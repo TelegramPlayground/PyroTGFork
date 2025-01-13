@@ -5300,7 +5300,7 @@ class Message(Object, Update):
         block: bool = True,
         progress: Callable = None,
         progress_args: tuple = ()
-    ) -> Optional[Union[str, "io.BytesIO", List[str], List["io.BytesIO"]]]:
+    ) -> Optional[Union[str, "io.BytesIO", list[str], list["io.BytesIO"]]]:
         """Bound method *download* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -5357,6 +5357,7 @@ class Message(Object, Update):
             otherwise, in case the download failed or was deliberately stopped with
             :meth:`~pyrogram.Client.stop_transmission`, None is returned.
             Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.
+            If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media``, then a list of paths or binary file-like objects is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
