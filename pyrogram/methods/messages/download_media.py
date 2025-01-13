@@ -168,7 +168,7 @@ class DownloadMedia:
                 if any([isinstance(paid_media, (types.PaidMediaPhoto, types.PaidMediaVideo)) for paid_media in message.paid_media.paid_media]):
                     medium = [getattr(paid_media, "photo", (getattr(paid_media, "video", None))) for paid_media in message.paid_media.paid_media]
                 elif any([isinstance(paid_media, types.PaidMediaPreview) for paid_media in message.paid_media.paid_media]):
-                    medium = [paid_media.minithumbnail.data for paid_media in message.paid_media.paid_media]
+                    medium = [getattr(getattr(paid_media, "minithumbnail"), "data", None) for paid_media in message.paid_media.paid_media]
                 else:
                     medium = []
 
@@ -191,7 +191,7 @@ class DownloadMedia:
             if any([isinstance(paid_media, (types.PaidMediaPhoto, types.PaidMediaVideo)) for paid_media in message.paid_media]):
                 medium = [getattr(paid_media, "photo", (getattr(paid_media, "video", None))) for paid_media in message.paid_media]
             elif any([isinstance(paid_media, types.PaidMediaPreview) for paid_media in message.paid_media]):
-                medium = [paid_media.minithumbnail.data for paid_media in message.paid_media]
+                medium = [getattr(getattr(paid_media, "minithumbnail"), "data", None) for paid_media in message.paid_media]
             else:
                 medium = []
 
@@ -202,7 +202,7 @@ class DownloadMedia:
             medium = [message.video]
 
         elif isinstance(message, types.PaidMediaPreview):
-            medium = [message.minithumbnail.data]
+            medium = [getattr(getattr(message, "minithumbnail"), "data", None)]
             
         elif isinstance(message, types.StrippedThumbnail):
             medium = [message.data]
