@@ -14,6 +14,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 Breaking Changes in this Fork
 ==============================
 
+- In :meth:`~pyrogram.Client.download_media`, if the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` **and** ``idx`` was not specified, then a list of paths or binary file-like objects is returned.
 - Make :meth:`~pyrogram.Client.get_messages` accept only keyword-only arguments. `48d4230 <https://github.com/TelegramPlayGround/pyrogram/commit/48d42304f3ee51034d515919320634935e6b2c83>`_
 - PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
 - PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.

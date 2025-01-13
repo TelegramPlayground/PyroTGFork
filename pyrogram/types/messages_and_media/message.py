@@ -5298,6 +5298,7 @@ class Message(Object, Update):
         file_name: str = "",
         in_memory: bool = False,
         block: bool = True,
+        idx: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> Optional[Union[str, "io.BytesIO", list[str], list["io.BytesIO"]]]:
@@ -5330,6 +5331,9 @@ class Message(Object, Update):
                 Blocks the code execution until the file has been downloaded.
                 Defaults to True.
 
+            idx (``int``, *optional*):
+                In case of a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media``, the zero based index of the :obj:`~pyrogram.types.PaidMedia` to download. Raises ``IndexError`` if the index specified does not exist in the original ``message``.
+
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
                 The function must take *(current, total)* as positional arguments (look at Other Parameters below for a
@@ -5361,6 +5365,7 @@ class Message(Object, Update):
 
         Raises:
             RPCError: In case of a Telegram RPC error.
+            IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
 
         """
@@ -5369,6 +5374,7 @@ class Message(Object, Update):
             file_name=file_name,
             in_memory=in_memory,
             block=block,
+            idx=idx,
             progress=progress,
             progress_args=progress_args,
         )

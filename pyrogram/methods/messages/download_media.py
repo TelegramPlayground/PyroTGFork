@@ -56,6 +56,7 @@ class DownloadMedia:
         file_name: str = DEFAULT_DOWNLOAD_DIR,
         in_memory: bool = False,
         block: bool = True,
+        idx: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> Optional[Union[str, "io.BytesIO", list[str], list["io.BytesIO"]]]:
@@ -82,6 +83,9 @@ class DownloadMedia:
             block (``bool``, *optional*):
                 Blocks the code execution until the file has been downloaded.
                 Defaults to True.
+
+            idx (``int``, *optional*):
+                In case of a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media``, the zero based index of the :obj:`~pyrogram.types.PaidMedia` to download. Raises ``IndexError`` if the index specified does not exist in the original ``message``.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -114,6 +118,7 @@ class DownloadMedia:
 
         Raises:
             RPCError: In case of a Telegram RPC error.
+            IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
 
         Example:
@@ -214,6 +219,10 @@ class DownloadMedia:
             raise ValueError(
                 f"The message {message if isinstance(message, str) else message.id} doesn't contain any downloadable media"
             )
+
+        if idx is not None:
+            medium = [medium[idx]]
+
         dledmedia = []
 
         for media in medium:
