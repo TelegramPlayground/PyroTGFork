@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
-
 import pyrogram
 from pyrogram import raw, types, utils
 
@@ -28,7 +26,7 @@ class SearchChats:
         query: str,
         limit: int = 10,
         personalize_result: bool = False
-    ) -> bool:
+    ) -> list["types.Chat"]:
         """Searches for the specified query in the title and username of already known chats via request to the server.
 
         .. include:: /_includes/usable-by/users.rst
@@ -44,12 +42,13 @@ class SearchChats:
                 True, if should return personalized results, else would return all found user identifiers. Defaults to False.
 
         Returns:
-            List[:obj:`~pyrogram.types.Chat`]: Returns chats in the order seen in the main chat list
+            List of :obj:`~pyrogram.types.Chat`: Returns chats in the order seen in the main chat list
 
         Example:
             .. code-block:: python
 
                 chats = await app.search_chats("Pyrogram")
+
         """
         r = await self.invoke(
             raw.functions.contacts.Search(

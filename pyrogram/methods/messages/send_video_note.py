@@ -20,7 +20,7 @@ import logging
 import io
 import os
 from datetime import datetime
-from typing import List, Union, Optional, Callable
+from typing import Union, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, raw, types, utils
@@ -55,7 +55,7 @@ class SendVideoNote:
         ] = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         schedule_date: datetime = None,
         ttl_seconds: int = None,
         view_once: bool = None,

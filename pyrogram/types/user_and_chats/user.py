@@ -18,7 +18,7 @@
 
 import html
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 import pyrogram
 from pyrogram import enums, utils, raw, types
@@ -227,8 +227,8 @@ class User(Object, Update):
         dc_id: int = None,
         phone_number: str = None,
         photo: "types.ChatPhoto" = None,
-        active_usernames: List["types.Username"] = None,
-        restrictions: List["types.Restriction"] = None,
+        active_usernames: list["types.Username"] = None,
+        restrictions: list["types.Restriction"] = None,
         added_to_attachment_menu: bool = None,
         can_be_added_to_attachment_menu: bool = None,
         can_join_groups: bool = None,

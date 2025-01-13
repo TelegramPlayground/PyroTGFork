@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Union, List, Optional
+from typing import Union, Optional
 
 import pyrogram
 from pyrogram import types, enums
@@ -30,7 +30,7 @@ class EditMessageCaption:
         message_id: int,
         caption: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         schedule_date: datetime = None,

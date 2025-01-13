@@ -18,7 +18,6 @@
 
 import logging
 from typing import Union
-from typing import List
 
 import pyrogram
 from pyrogram import raw, types
@@ -32,14 +31,13 @@ class SetReaction:
         chat_id: Union[int, str],
         message_id: int = None,
         story_id: int = None,
-        reaction: List["types.ReactionType"] = [],
+        reaction: list["types.ReactionType"] = [],
         is_big: bool = False,
         add_to_recent: bool = True
     ) -> "types.MessageReactions":
         """Use this method to change the chosen reactions on a message.
-        Service messages can't be reacted to.
-        Automatically forwarded messages from a channel to its discussion group have the
-        same available reactions as messages in the channel.
+        Bots can't react to service messages.
+        Automatically forwarded messages from a channel to its discussion group have the same available reactions as messages in the channel.
         Bots can't use paid reactions.
 
         You must use exactly one of ``message_id`` OR ``story_id``.

@@ -17,7 +17,6 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List
 
 import pyrogram
 
@@ -63,13 +62,13 @@ class Giveaway(Object):
         self,
         *,
         client: "pyrogram.Client" = None,
-        chats: List["types.Chat"],
+        chats: list["types.Chat"],
         winners_selection_date: datetime,
         winner_count: int,
         only_new_members: bool = None,
         has_public_winners: bool = None,
         prize_description: str = None,
-        country_codes: List[str] = None,
+        country_codes: list[str] = None,
         prize_star_count: int = None,
         premium_subscription_month_count: int = None
     ):

@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .business_bot_connection_handler import BusinessBotConnectionHandler
 from .callback_query_handler import CallbackQueryHandler
 from .chat_join_request_handler import ChatJoinRequestHandler
 from .chat_member_updated_handler import ChatMemberUpdatedHandler
@@ -31,5 +32,6 @@ from .user_status_handler import UserStatusHandler
 from .message_reaction_updated_handler import MessageReactionUpdatedHandler
 from .message_reaction_count_updated_handler import MessageReactionCountUpdatedHandler
 from .pre_checkout_query_handler import PreCheckoutQueryHandler
+from .purchased_paid_media_handler import PurchasedPaidMediaHandler
 from .shipping_query_handler import ShippingQueryHandler
 from .story_handler import StoryHandler

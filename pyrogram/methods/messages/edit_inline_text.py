@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Optional, List
+from typing import Optional
 
 import pyrogram
 from pyrogram import raw, enums, types, utils
@@ -32,7 +32,7 @@ class EditInlineText:
         inline_message_id: str,
         text: str,
         parse_mode: Optional["enums.ParseMode"] = None,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         disable_web_page_preview: bool = None

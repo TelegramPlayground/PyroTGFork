@@ -20,7 +20,7 @@ import logging
 import os
 import re
 from datetime import datetime
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -35,7 +35,7 @@ class SendMediaGroup:
     async def send_media_group(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        media: List[Union[
+        media: list[Union[
             "types.InputMediaPhoto",
             "types.InputMediaVideo",
             "types.InputMediaAudio",
@@ -51,7 +51,7 @@ class SendMediaGroup:
         allow_paid_broadcast: bool = None,
         message_effect_id: int = None,
         reply_to_message_id: int = None
-    ) -> List["types.Message"]:
+    ) -> list["types.Message"]:
         """Send a group of photos or videos as an album.
 
         .. include:: /_includes/usable-by/users-bots.rst

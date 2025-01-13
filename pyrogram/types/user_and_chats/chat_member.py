@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Union, Dict
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
@@ -111,8 +111,8 @@ class ChatMember(Object):
     def _parse(
         client: "pyrogram.Client",
         member: Union["raw.base.ChatParticipant", "raw.base.ChannelParticipant"],
-        users: Dict[int, "raw.base.User"],
-        chats: Dict[int, "raw.base.Chat"]
+        users: dict[int, "raw.base.User"],
+        chats: dict[int, "raw.base.Chat"]
     ) -> "ChatMember":
         # Chat participants
         if isinstance(member, raw.types.ChatParticipant):

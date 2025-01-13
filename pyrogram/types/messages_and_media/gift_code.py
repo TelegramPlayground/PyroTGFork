@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
 from pyrogram import raw, types, utils
 from ..object import Object
 from .message import Str
@@ -79,7 +78,7 @@ class GiftCode(Object):
         cryptocurrency: str = None,
         cryptocurrency_amount: int = None,
         caption: str = None,
-        caption_entities: List["types.MessageEntity"] = None
+        caption_entities: list["types.MessageEntity"] = None
     ):
         super().__init__()
 

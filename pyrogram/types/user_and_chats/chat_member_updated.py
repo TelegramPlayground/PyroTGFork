@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Dict, Union
+from typing import Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
@@ -84,8 +84,8 @@ class ChatMemberUpdated(Object, Update):
     def _parse(
         client: "pyrogram.Client",
         update: Union["raw.types.UpdateChatParticipant", "raw.types.UpdateChannelParticipant", "raw.types.UpdateBotStopped"],
-        users: Dict[int, "raw.types.User"],
-        chats: Dict[int, "raw.types.Chat"]
+        users: dict[int, "raw.types.User"],
+        chats: dict[int, "raw.types.Chat"]
     ) -> "ChatMemberUpdated":
         if isinstance(update, raw.types.UpdateBotStopped):
             from_user = types.User._parse(client, users[update.user_id])

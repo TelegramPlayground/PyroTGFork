@@ -21,7 +21,7 @@ import io
 import os
 import re
 from datetime import datetime
-from typing import Union, List, Optional, Callable
+from typing import Union, Optional, Callable
 
 import pyrogram
 from pyrogram import StopTransmission, enums, raw, types, utils
@@ -39,7 +39,7 @@ class SendVoice:
         voice: Union[str, "io.BytesIO"],
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: List["types.MessageEntity"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         duration: int = 0,
         disable_notification: bool = None,
         protect_content: bool = None,

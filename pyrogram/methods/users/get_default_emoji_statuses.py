@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
-
 import pyrogram
 from pyrogram import raw
 from pyrogram import types
@@ -26,7 +24,7 @@ from pyrogram import types
 class GetDefaultEmojiStatuses:
     async def get_default_emoji_statuses(
         self: "pyrogram.Client",
-    ) -> List["types.EmojiStatus"]:
+    ) -> list["types.EmojiStatus"]:
         """Get the default emoji statuses.
 
         .. include:: /_includes/usable-by/users.rst

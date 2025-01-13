@@ -33,16 +33,16 @@ Index
 
     - :class:`MessageHandler`
     - :class:`EditedMessageHandler`
-
+    - :class:`BusinessBotConnectionHandler`
     - :class:`MessageReactionUpdatedHandler`
     - :class:`MessageReactionCountUpdatedHandler`
     - :class:`InlineQueryHandler`
     - :class:`ChosenInlineResultHandler`
     - :class:`CallbackQueryHandler`
-
-
+    - :class:`ShippingQueryHandler`
+    - :class:`PreCheckoutQueryHandler`
+    - :class:`PurchasedPaidMediaHandler`
     - :class:`PollHandler`
-
 
     - :class:`ChatMemberUpdatedHandler`
     - :class:`ChatJoinRequestHandler`
@@ -50,7 +50,6 @@ Index
 
     - :class:`DeletedMessagesHandler`
     - :class:`UserStatusHandler`
-
     - :class:`DisconnectHandler`
     - :class:`StoryHandler`
     - :class:`RawUpdateHandler`
@@ -63,7 +62,7 @@ Details
 .. Handlers
 .. autoclass:: MessageHandler()
 .. autoclass:: EditedMessageHandler()
-
+.. autoclass:: BusinessBotConnectionHandler()
 .. autoclass:: MessageReactionUpdatedHandler()
 .. autoclass:: MessageReactionCountUpdatedHandler()
 .. autoclass:: InlineQueryHandler()
@@ -71,8 +70,8 @@ Details
 .. autoclass:: CallbackQueryHandler()
 .. autoclass:: ShippingQueryHandler()
 .. autoclass:: PreCheckoutQueryHandler()
+.. autoclass:: PurchasedPaidMediaHandler()
 .. autoclass:: PollHandler()
-
 
 .. autoclass:: ChatMemberUpdatedHandler()
 .. autoclass:: ChatJoinRequestHandler()

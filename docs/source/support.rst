@@ -7,13 +7,13 @@ Support Pyrogram
 
     <div style="float: right; margin-bottom: 10px">
         <a class="github-button"
-           href="https://github.com/pyrogram/pyrogram"
+           href="https://github.com/TelegramPlayGround/pyrogram"
            data-color-scheme="no-preference: light; light: light; dark: dark;"
            data-icon="octicon-star" data-size="large" data-show-count="true"
-           aria-label="Star pyrogram/pyrogram on GitHub">Star</a>
+           aria-label="Star TelegramPlayGround/pyrogram on GitHub">Star</a>
 
         <a class="github-button"
-           href="https://github.com/pyrogram/pyrogram/fork"
+           href="https://github.com/TelegramPlayGround/pyrogram/fork"
            data-color-scheme="no-preference: light; light: light; dark: dark;"
            data-icon="octicon-repo-forked" data-size="large"
            data-show-count="true" aria-label="Fork pyrogram/pyrogram on GitHub">Fork</a>

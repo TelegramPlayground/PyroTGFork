@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -46,6 +46,12 @@ class Gift(Object):
         default_sell_star_count (``int``):
             Number of Telegram Stars that can be claimed by the receiver instead of the gift by default. If the gift was paid with just bought Telegram Stars, then full value can be claimed.
 
+        upgrade_star_count (``int``, *optional*):
+            Number of Telegram Stars that must be paid to upgrade the gift; 0 if upgrade isn't possible.
+
+        is_for_birthday (``bool``, *optional*):
+            True, if the gift is a birthday gift.
+
         first_send_date (:py:obj:`~datetime.datetime`, *optional*):
             Point in time (Unix timestamp) when the gift was send for the first time; for sold out gifts only.
 
@@ -70,6 +76,8 @@ class Gift(Object):
         total_count: Optional[int] = None,
         remaining_count: Optional[int] = None,
         default_sell_star_count: int,
+        upgrade_star_count: int,
+        is_for_birthday: Optional[bool] = None,
         first_send_date: Optional[datetime] = None,
         last_send_date: Optional[datetime] = None,
         is_limited: Optional[bool] = None,
@@ -83,6 +91,8 @@ class Gift(Object):
         self.total_count = total_count
         self.remaining_count = remaining_count
         self.default_sell_star_count = default_sell_star_count
+        self.upgrade_star_count = upgrade_star_count
+        self.is_for_birthday = is_for_birthday
         self.first_send_date = first_send_date
         self.last_send_date = last_send_date
         self.is_limited = is_limited
@@ -91,8 +101,11 @@ class Gift(Object):
     @staticmethod
     async def _parse(
         client,
-        star_gift: "raw.types.StarGift",
-    ) -> "Gift":
+        star_gift: "raw.base.StarGift",
+    ) -> Union["Gift", "types.UpgradedGift"]:
+        if isinstance(star_gift, raw.types.StarGiftUnique):
+            return types.UpgradedGift._parse(client, star_gift)
+
         doc = star_gift.sticker
         attributes = {type(i): i for i in doc.attributes}
 
@@ -107,5 +120,7 @@ class Gift(Object):
             last_send_date=utils.timestamp_to_datetime(getattr(star_gift, "last_sale_date", None)),
             is_limited=getattr(star_gift, "limited", None),
             is_sold_out=getattr(star_gift, "sold_out", None),
+            upgrade_star_count=getattr(star_gift, "upgrade_stars", 0),
+            is_for_birthday=getattr(star_gift, "birthday", None),
             client=client
         )

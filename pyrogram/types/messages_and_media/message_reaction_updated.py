@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional, Dict, List
+from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -65,8 +65,8 @@ class MessageReactionUpdated(Object, Update):
         user: "types.User",
         actor_chat: "types.Chat",
         date: datetime,
-        old_reaction: List["types.ReactionType"],
-        new_reaction: List["types.ReactionType"]
+        old_reaction: list["types.ReactionType"],
+        new_reaction: list["types.ReactionType"]
     ):
         super().__init__(client)
 
@@ -82,8 +82,8 @@ class MessageReactionUpdated(Object, Update):
     def _parse(
         client: "pyrogram.Client",
         update: "raw.types.UpdateBotMessageReaction",
-        users: Dict[int, "raw.types.User"],
-        chats: Dict[int, "raw.types.Chat"]
+        users: dict[int, "raw.types.User"],
+        chats: dict[int, "raw.types.Chat"]
     ) -> "MessageReactionUpdated":
         chat = None
         peer_id = utils.get_peer_id(update.peer)

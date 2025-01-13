@@ -402,6 +402,7 @@ def pyrogram_api():
             sell_gift
             send_gift
             toggle_gift_is_saved
+            get_owned_star_count
         """,
         advanced="""
         Advanced
@@ -518,6 +519,7 @@ def pyrogram_api():
             Venue
             Gift
             UserGift
+            UpgradedGift
             WebAppData
             MessageAutoDeleteTimerChanged
             ChatBoostAdded
@@ -644,6 +646,7 @@ def pyrogram_api():
             InputPaidMedia
             InputPaidMediaPhoto
             InputPaidMediaVideo
+            PaidMediaPurchased
         """,
         input_message_content="""
         InputMessageContent
@@ -672,6 +675,7 @@ def pyrogram_api():
             RefundedPayment
             ShippingQuery
             PreCheckoutQuery
+            StarAmount
         """
     )
 

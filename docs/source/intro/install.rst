@@ -37,4 +37,4 @@ If no error shows up you are good to go.
     >>> __version__
     '2.0.106-TL-158'
 
-.. _`Github repo`: http://github.com/pyrogram/pyrogram
+.. _`Github repo`: http://github.com/TelegramPlayGround/pyrogram

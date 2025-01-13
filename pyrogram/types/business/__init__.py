@@ -29,6 +29,7 @@ from .pre_checkout_query import PreCheckoutQuery
 from .shipping_address import ShippingAddress
 from .shipping_option import ShippingOption
 from .shipping_query import ShippingQuery
+from .star_amount import StarAmount
 from .successful_payment import SuccessfulPayment
 from .refunded_payment import RefundedPayment
 
@@ -46,6 +47,7 @@ __all__ = [
     "ShippingAddress",
     "ShippingOption",
     "ShippingQuery",
+    "StarAmount",
     "SuccessfulPayment",
     "RefundedPayment",
 ]

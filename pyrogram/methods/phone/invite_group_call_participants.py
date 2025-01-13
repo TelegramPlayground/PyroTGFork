@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, List
+from typing import Union
 
 import pyrogram
 from pyrogram import types, raw
@@ -26,7 +26,7 @@ class InviteGroupCallParticipants:
     async def invite_group_call_participants(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        user_ids: Union[Union[int, str], List[Union[int, str]]],
+        user_ids: Union[Union[int, str], list[Union[int, str]]],
     ) -> "types.Message":
         """Invites users to an active group call. Sends a service message of type :obj:`~pyrogram.enums.MessageServiceType.VIDEO_CHAT_PARTICIPANTS_INVITED` for video chats.
 

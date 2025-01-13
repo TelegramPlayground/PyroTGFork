@@ -80,5 +80,5 @@ The ``uvloop.install()`` call also needs to be placed before creating a Client i
 
     app.run()
 
-.. _TgCrypto: https://github.com/pyrogram/tgcrypto
+.. _TgCrypto: https://github.com/TelegramPlayGround/pyrogram-tgcrypto
 .. _uvloop: https://github.com/MagicStack/uvloop

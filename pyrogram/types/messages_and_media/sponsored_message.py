@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
-
 import pyrogram
 from pyrogram import raw, types
 
@@ -75,7 +73,7 @@ class SponsoredMessage(Object):
         title: str,
         content: str,
         button_text: str,
-        entities: List["types.MessageEntity"] = None,
+        entities: list["types.MessageEntity"] = None,
         photo: "types.Photo" = None,
         is_recommended: bool = None,
         can_be_reported: bool = None,

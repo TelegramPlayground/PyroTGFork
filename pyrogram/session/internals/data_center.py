@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Tuple
-
 import os
 
 
@@ -65,7 +63,7 @@ class DataCenter:
     TEST_PORT = int(os.environ.get("PYROGRAM_REPLIT_WNTRAFIK_PORT", 80))
     PROD_PORT = int(os.environ.get("PYROGRAM_REPLIT_NWTRAFIK_PORT", 443))
 
-    def __new__(cls, dc_id: int, test_mode: bool, ipv6: bool, media: bool) -> Tuple[str, int]:
+    def __new__(cls, dc_id: int, test_mode: bool, ipv6: bool, media: bool) -> tuple[str, int]:
         if test_mode:
             if ipv6:
                 ip = cls.TEST_IPV6[dc_id]

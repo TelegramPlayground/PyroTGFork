@@ -22,6 +22,20 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 196 |
++------------------------+
+
+- Added the :meth:`~pyrogram.Client.get_owned_star_count` and a possibly temporary :obj:`~pyrogram.types.StarAmount`.
+- Added the :obj:`~pyrogram.types.UpgradedGift` and changed return type :meth:`~pyrogram.Client.get_available_gifts` and :meth:`~pyrogram.Client.get_user_gifts`.
+- Added the ``pay_for_upgrade`` in the :meth:`~pyrogram.Client.send_gift`.
+- Added the parameters ``upgrade_star_count`` and ``is_for_birthday`` in :obj:`~pyrogram.types.Gift`.
+- Added the :meth:`~pyrogram.Client.on_bot_purchased_paid_media` and :meth:`~pyrogram.Client.on_bot_business_connection`.
+- Added the parameters ``can_be_upgraded``, ``was_refunded``, ``prepaid_upgrade_star_count``, ``can_be_transferred``, ``transfer_star_count``, ``export_date`` in :obj:`~pyrogram.types.UserGift`.
+- Renamed the parameter ``only_in_channels`` to ``chat_type_filter`` in the :meth:`~pyrogram.Client.search_global_count` and :meth:`~pyrogram.Client.search_global`.
+- Removed ``sender_user_id`` parameter from :meth:`~pyrogram.Client.sell_gift` and :meth:`~pyrogram.Client.toggle_gift_is_saved`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=195&to=196>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=195&to=196>`__.
+
++------------------------+
 | Scheme layer used: 195 |
 +------------------------+
 

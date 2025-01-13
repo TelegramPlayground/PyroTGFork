@@ -16,8 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List
-
 import pyrogram
 from pyrogram import types
 
@@ -47,7 +45,7 @@ class PollOption(Object):
         *,
         client: "pyrogram.Client" = None,
         text: str,
-        text_entities: List["types.MessageEntity"],
+        text_entities: list["types.MessageEntity"],
         voter_count: int,
         data: bytes
     ):

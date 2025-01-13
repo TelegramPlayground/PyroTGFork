@@ -17,7 +17,6 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Dict
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -119,8 +118,8 @@ class GroupCallParticipant(Object):
     def _parse(
         client: "pyrogram.Client",
         participant: "raw.types.GroupCallParticipant",
-        users: Dict[int, "raw.base.User"],
-        chats: Dict[int, "raw.base.Chat"]
+        users: dict[int, "raw.base.User"],
+        chats: dict[int, "raw.base.Chat"]
     ) -> "GroupCallParticipant":
         peer = participant.peer
         peer_id = utils.get_raw_peer_id(peer)

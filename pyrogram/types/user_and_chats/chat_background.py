@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List, Union
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils
@@ -69,7 +69,7 @@ class ChatBackground(Object):
         file_size: int = None,
         date: datetime = None,
         slug: str = None,
-        thumbs: List["types.Thumbnail"] = None,
+        thumbs: list["types.Thumbnail"] = None,
         _raw: "raw.base.WallPaper" = None,
     ):
         super().__init__(client)

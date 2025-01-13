@@ -5,7 +5,7 @@ TAG = v$(shell grep -E '__version__ = ".*"' pyrogram/__init__.py | cut -d\" -f2)
 
 RM := rm -rf
 
-.PHONY: venv clean-build clean-api clean api build clean-docs docs
+.PHONY: venv clean-build clean-api clean api build tag dtag clean-docs docs
 
 all: clean venv build
 	echo Done

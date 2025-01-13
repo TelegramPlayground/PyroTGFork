@@ -23,7 +23,6 @@ import struct
 import typing
 from enum import IntEnum
 from io import BytesIO
-from typing import List
 
 from pyrogram.raw.core import Bytes, String
 
@@ -64,7 +63,7 @@ def rle_encode(s: bytes) -> bytes:
     Returns:
         ``bytes``: The encoded bytes
     """
-    r: List[int] = []
+    r: list[int] = []
     n: int = 0
 
     for b in s:
@@ -92,7 +91,7 @@ def rle_decode(s: bytes) -> bytes:
     Returns:
         ``bytes``: The decoded bytes
     """
-    r: List[int] = []
+    r: list[int] = []
     z: bool = False
 
     for b in s:

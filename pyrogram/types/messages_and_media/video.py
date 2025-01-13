@@ -17,7 +17,6 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import List
 
 import pyrogram
 from pyrogram import raw, utils
@@ -83,7 +82,7 @@ class Video(Object):
         supports_streaming: bool = None,
         ttl_seconds: int = None,
         date: datetime = None,
-        thumbs: List["types.Thumbnail"] = None
+        thumbs: list["types.Thumbnail"] = None
     ):
         super().__init__(client)
 

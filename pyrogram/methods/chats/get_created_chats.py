@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import List, Union
+from typing import Union
 
 import pyrogram
 from pyrogram import raw
@@ -32,7 +32,7 @@ class GetCreatedChats:
         is_my_public_location_based: bool = False,
         check_created_my_public_chat_limit: bool = False,
         is_suitable_for_my_personal_chat: bool = False,
-    ) -> List["types.Chat"]:
+    ) -> list["types.Chat"]:
         """Get a list of chats of the specified type of the current user account
 
         .. include:: /_includes/usable-by/users.rst
@@ -56,7 +56,7 @@ class GetCreatedChats:
                 True, if the chat can be used as a personal chat. Defaults to False.
 
         Returns:
-            List[:obj:`~pyrogram.types.Chat`]: The list of chats.
+            List of :obj:`~pyrogram.types.Chat`: The list of chats.
 
         Example:
             .. code-block:: python

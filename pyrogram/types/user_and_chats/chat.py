@@ -18,7 +18,7 @@
 
 import io
 from datetime import datetime
-from typing import Union, List, Optional, AsyncGenerator
+from typing import Union, Optional, AsyncGenerator
 
 import pyrogram
 from pyrogram import raw, enums
@@ -247,7 +247,7 @@ class Chat(Object):
         first_name: str = None,
         last_name: str = None,
         photo: "types.ChatPhoto" = None,
-        active_usernames: List["types.Username"] = None,
+        active_usernames: list["types.Username"] = None,
         birthdate: "types.Birthdate" = None,
         business_intro: "types.BusinessIntro" = None,
         business_location: "types.BusinessLocation" = None,
@@ -262,9 +262,9 @@ class Chat(Object):
         sticker_set_name: str = None,
         custom_emoji_sticker_set_name: str = None,
         can_set_sticker_set: bool = None,
-        members: List["types.User"] = None,
+        members: list["types.User"] = None,
         members_count: int = None,
-        restrictions: List["types.Restriction"] = None,
+        restrictions: list["types.Restriction"] = None,
         permissions: "types.ChatPermissions" = None,
         distance: int = None,
         linked_chat: "types.Chat" = None,
@@ -1288,7 +1288,7 @@ class Chat(Object):
 
     async def add_members(
         self,
-        user_ids: Union[Union[int, str], List[Union[int, str]]],
+        user_ids: Union[Union[int, str], list[Union[int, str]]],
         forward_limit: int = 100
     ) -> bool:
         """Bound method *add_members* of :obj:`~pyrogram.types.Chat`.
