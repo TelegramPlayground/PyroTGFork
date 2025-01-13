@@ -5298,9 +5298,10 @@ class Message(Object, Update):
         file_name: str = "",
         in_memory: bool = False,
         block: bool = True,
+        idx: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
-    ) -> Union[str, "io.BytesIO"]:
+    ) -> Optional[Union[str, "io.BytesIO", list[str], list["io.BytesIO"]]]:
         """Bound method *download* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -5330,6 +5331,9 @@ class Message(Object, Update):
                 Blocks the code execution until the file has been downloaded.
                 Defaults to True.
 
+            idx (``int``, *optional*):
+                In case of a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media``, the zero based index of the :obj:`~pyrogram.types.PaidMedia` to download. Raises ``IndexError`` if the index specified does not exist in the original ``message``.
+
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
                 The function must take *(current, total)* as positional arguments (look at Other Parameters below for a
@@ -5357,9 +5361,11 @@ class Message(Object, Update):
             otherwise, in case the download failed or was deliberately stopped with
             :meth:`~pyrogram.Client.stop_transmission`, None is returned.
             Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.
+            If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` containing ``minithumbnail`` and ``idx`` is not specified, then a list of paths or binary file-like objects is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
+            IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
 
         """
@@ -5368,6 +5374,7 @@ class Message(Object, Update):
             file_name=file_name,
             in_memory=in_memory,
             block=block,
+            idx=idx,
             progress=progress,
             progress_args=progress_args,
         )
