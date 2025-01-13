@@ -114,7 +114,7 @@ class DownloadMedia:
             otherwise, in case the download failed or was deliberately stopped with
             :meth:`~pyrogram.Client.stop_transmission`, None is returned.
             Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.
-            If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media``, then a list of paths or binary file-like objects is returned.
+            If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` containing ``minithumbnail`` and ``idx`` is not specified, then a list of paths or binary file-like objects is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
