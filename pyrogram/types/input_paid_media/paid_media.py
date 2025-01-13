@@ -55,7 +55,7 @@ class PaidMedia(Object):
                 duration=getattr(extended_media, "video_duration", None),
                 minithumbnail=types.StrippedThumbnail(
                     client=client,
-                    data=extended_media.thumb
+                    data=extended_media.thumb.bytes
                 ) if getattr(extended_media, "thumb", None) else None
             )
         if isinstance(extended_media, raw.types.MessageExtendedMedia):
