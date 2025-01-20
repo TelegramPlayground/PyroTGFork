@@ -885,14 +885,14 @@ class Message(Object, Update):
                             _requested_users.append(
                                 types.Chat._parse_user_chat(
                                     client,
-                                    users.get(raw_peer_id)
+                                    users.get(raw_peer_id, raw_peer_id)
                                 )
                             )
                         else:
                             _requested_chats.append(
                                 types.Chat._parse_chat(
                                     client,
-                                    chats.get(raw_peer_id)
+                                    chats.get(raw_peer_id, raw_peer_id)
                                 )
                             )
 
