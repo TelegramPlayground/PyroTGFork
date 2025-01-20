@@ -446,6 +446,8 @@ SRP_A_INVALID	The specified inputCheckPasswordSRP.A value is invalid.
 SRP_ID_INVALID	Invalid SRP ID provided
 SRP_PASSWORD_CHANGED	The password has changed
 STARGIFT_INVALID	The passed [inputInvoiceStarGift](https://core.telegram.org/constructor/inputInvoiceStarGift) is invalid.
+STARGIFT_NOT_FOUND	The specified star gift was not found.
+STARGIFT_SLUG_INVALID	The provided star gift slug is invalid.
 STARGIFT_USAGE_LIMITED	The gift is sold out.
 STARREF_AWAITING_END	The previous referral program was terminated less than 24 hours ago: further changes can be made after the date specified in userFull.starref_program.end_date.
 STARREF_HASH_REVOKED	The specified affiliate link was already revoked.
