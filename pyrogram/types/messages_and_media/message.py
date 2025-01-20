@@ -888,9 +888,16 @@ class Message(Object, Update):
                                     users.get(raw_peer_id, raw_peer_id)
                                 )
                             )
+                        elif isinstance(requested_peer, raw.types.PeerChat):
+                            _requested_chats.append(
+                                types.Chat._parse_chat_chat(
+                                    client,
+                                    chats.get(raw_peer_id, raw_peer_id)
+                                )
+                            )
                         else:
                             _requested_chats.append(
-                                types.Chat._parse_chat(
+                                types.Chat._parse_channel_chat(
                                     client,
                                     chats.get(raw_peer_id, raw_peer_id)
                                 )

@@ -415,6 +415,13 @@ class Chat(Object):
 
     @staticmethod
     def _parse_chat_chat(client, chat: raw.types.Chat) -> "Chat":
+        if isinstance(chat, int):
+            return Chat(
+                id=-chat,
+                client=client,
+                _raw=None
+            )
+
         peer_id = -chat.id
 
         if isinstance(chat, raw.types.ChatEmpty):
@@ -451,6 +458,13 @@ class Chat(Object):
 
     @staticmethod
     def _parse_channel_chat(client, channel: raw.types.Channel) -> "Chat":
+        if isinstance(channel, int):
+            return Chat(
+                id=utils.get_channel_id(channel),
+                client=client,
+                _raw=None
+            )
+
         peer_id = utils.get_channel_id(channel.id)
 
         if isinstance(channel, raw.types.ChannelForbidden):
@@ -690,13 +704,6 @@ class Chat(Object):
 
     @staticmethod
     def _parse_chat(client, chat: Union[raw.types.Chat, raw.types.User, raw.types.Channel]) -> "Chat":
-        if isinstance(chat, int):
-            return Chat(
-                id=chat,
-                client=client,
-                _raw=None
-            )
-
         if (
             isinstance(chat, raw.types.Chat) or
             isinstance(chat, raw.types.ChatForbidden) or
