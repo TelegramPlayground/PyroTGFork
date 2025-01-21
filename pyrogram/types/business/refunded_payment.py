@@ -80,8 +80,8 @@ class RefundedPayment(Object):
         provider_payment_charge_id = refunded_payment.charge.provider_charge_id
 
         return RefundedPayment(
-            currency=successful_payment.currency,
-            total_amount=successful_payment.total_amount,
+            currency=refunded_payment.currency,
+            total_amount=refunded_payment.total_amount,
             invoice_payload=invoice_payload,
             telegram_payment_charge_id=telegram_payment_charge_id,
             provider_payment_charge_id=shipping_option_id
