@@ -84,5 +84,5 @@ class RefundedPayment(Object):
             total_amount=refunded_payment.total_amount,
             invoice_payload=invoice_payload,
             telegram_payment_charge_id=telegram_payment_charge_id,
-            provider_payment_charge_id=shipping_option_id
+            provider_payment_charge_id=provider_payment_charge_id
         )
