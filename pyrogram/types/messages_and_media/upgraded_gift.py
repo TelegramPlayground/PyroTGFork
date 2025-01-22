@@ -45,6 +45,9 @@ class UpgradedGift(Object):
         owner_user_id (``int``, *optional*):
             User identifier of the user that owns the upgraded gift.
 
+        owner_user_name (``str``, *optional*):
+            User name of the user that owns the upgraded gift.
+
     """
 
     def __init__(
@@ -57,6 +60,7 @@ class UpgradedGift(Object):
         total_upgraded_count: int,
         max_upgraded_count: int,
         owner_user_id: Optional[int] = None,
+        owner_user_name: Optional[str] = None,
         _raw: "raw.types.StarGiftUnique" = None,
     ):
         super().__init__(client)
@@ -67,6 +71,7 @@ class UpgradedGift(Object):
         self.total_upgraded_count = total_upgraded_count
         self.max_upgraded_count = max_upgraded_count
         self.owner_user_id = owner_user_id
+        self.owner_user_name = owner_user_name
         self._raw = _raw  # TODO
 
 
@@ -82,6 +87,7 @@ class UpgradedGift(Object):
             total_upgraded_count=star_gift.availability_issued,
             max_upgraded_count=star_gift.availability_total,
             owner_user_id=utils.get_raw_peer_id(getattr(star_gift, "owner_id", None)),
+            owner_user_name=getattr(star_gift, "owner_name", None),
             _raw=star_gift,
             client=client
         )
