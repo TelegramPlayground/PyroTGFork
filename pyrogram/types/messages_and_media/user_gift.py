@@ -123,23 +123,23 @@ class UserGift(Object):
     @staticmethod
     async def _parse(
         client,
-        user_star_gift: "raw.types.UserStarGift",
+        saved_star_gift: "raw.types.SavedStarGift",
         users: dict
     ) -> "UserGift":
         text, entities = None, None
-        if getattr(user_star_gift, "message", None):
-            text = user_star_gift.message.text or None
-            entities = [types.MessageEntity._parse(client, entity, users) for entity in user_star_gift.message.entities]
+        if getattr(saved_star_gift, "message", None):
+            text = saved_star_gift.message.text or None
+            entities = [types.MessageEntity._parse(client, entity, users) for entity in saved_star_gift.message.entities]
             entities = types.List(filter(lambda x: x is not None, entities))
-
+        # TODO refunded:flags.9?true can_upgrade:flags.10?true msg_id:flags.3?int saved_id:flags.11?long upgrade_stars:flags.6?long can_export_at:flags.7?int transfer_stars:flags.8?long
         return UserGift(
-            date=utils.timestamp_to_datetime(user_star_gift.date),
-            gift=await types.Gift._parse(client, user_star_gift.gift),
-            is_private=getattr(user_star_gift, "name_hidden", None),
-            is_saved=not user_star_gift.unsaved if getattr(user_star_gift, "unsaved", None) else None,
-            sender_user=types.User._parse(client, users.get(user_star_gift.from_id)) if getattr(user_star_gift, "from_id", None) else None,
-            message_id=getattr(user_star_gift, "msg_id", None),
-            sell_star_count=getattr(user_star_gift, "convert_stars", None),
+            date=utils.timestamp_to_datetime(saved_star_gift.date),
+            gift=await types.Gift._parse(client, saved_star_gift.gift),
+            is_private=getattr(saved_star_gift, "name_hidden", None),
+            is_saved=not saved_star_gift.unsaved if getattr(saved_star_gift, "unsaved", None) else None,
+            sender_user=types.User._parse(client, users.get(saved_star_gift.from_id)) if getattr(saved_star_gift, "from_id", None) else None,
+            message_id=getattr(saved_star_gift, "msg_id", None),
+            sell_star_count=getattr(saved_star_gift, "convert_stars", None),
             text=Str(text).init(entities) if text else None,
             entities=entities,
             client=client
@@ -158,7 +158,7 @@ class UserGift(Object):
             text = action.message.text or None
             entities = [types.MessageEntity._parse(client, entity, users) for entity in action.message.entities]
             entities = types.List(filter(lambda x: x is not None, entities))
-
+        # TODO 
         if isinstance(action, raw.types.MessageActionStarGift):
             return UserGift(
                 gift=await types.Gift._parse(client, action.gift),

@@ -25,7 +25,7 @@ from pyrogram import raw, types
 class GetUserGifts:
     async def get_user_gifts(
         self: "pyrogram.Client",
-        user_id: Union[int, str],
+        chat_id: Union[int, str],
         offset: str = "",
         limit: int = 0,
     ) -> Optional[AsyncGenerator["types.UserGift", None]]:
@@ -34,8 +34,8 @@ class GetUserGifts:
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            user_id (``int`` | ``str``):
-                Unique identifier (int) or username (str) of the target user.
+            chat_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
@@ -54,10 +54,7 @@ class GetUserGifts:
                 async for user_gift in app.get_user_gifts(user_id):
                     print(user_gift)
         """
-        peer = await self.resolve_peer(user_id)
-
-        if not isinstance(peer, (raw.types.InputPeerUser, raw.types.InputPeerSelf)):
-            raise ValueError("user_id must belong to a user.")
+        peer = await self.resolve_peer(chat_id)
 
         current = 0
         total = abs(limit) or (1 << 31) - 1
@@ -65,8 +62,9 @@ class GetUserGifts:
 
         while True:
             r = await self.invoke(
-                raw.functions.payments.GetUserStarGifts(
-                    user_id=peer,
+                raw.functions.payments.GetSavedStarGifts(
+                    # TODO
+                    peer=peer,
                     offset=offset,
                     limit=limit
                 ),
@@ -74,6 +72,7 @@ class GetUserGifts:
             )
 
             users = {u.id: u for u in r.users}
+            # TODO
 
             user_gifts = [
                 await types.UserGift._parse(self, gift, users)
