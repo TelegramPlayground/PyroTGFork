@@ -72,10 +72,10 @@ class GetUserGifts:
             )
 
             users = {u.id: u for u in r.users}
-            # TODO
+            chats = {c.id: c for c in r.chats}
 
             user_gifts = [
-                await types.UserGift._parse(self, gift, users)
+                await types.UserGift._parse(self, gift, users, chats)
                 for gift in r.gifts
             ]
 

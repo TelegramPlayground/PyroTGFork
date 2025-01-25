@@ -1013,7 +1013,7 @@ class Message(Object, Update):
                 isinstance(action, raw.types.MessageActionStarGift) or
                 isinstance(action, raw.types.MessageActionStarGiftUnique)
             ):
-                user_gift = await types.UserGift._parse_action(client, message, users)
+                user_gift = await types.UserGift._parse_action(client, message, users, chats)
                 service_type = enums.MessageServiceType.USER_GIFT
 
             parsed_message = Message(

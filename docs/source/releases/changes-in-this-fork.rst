@@ -26,6 +26,7 @@ Changes in this Fork
 | Scheme layer used: 198 |
 +------------------------+
 
+- Changed types in :obj:`~pyrogram.types.UpgradedGift`, :obj:`~pyrogram.types.UserGift`.
 - PR from upstream: `701 <https://github.com/pyrogram/pyrogram/pull/701>`_
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=196&to=198>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=196&to=198>`__.
 

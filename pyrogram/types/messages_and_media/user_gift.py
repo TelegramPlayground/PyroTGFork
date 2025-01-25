@@ -124,7 +124,8 @@ class UserGift(Object):
     async def _parse(
         client,
         saved_star_gift: "raw.types.SavedStarGift",
-        users: dict
+        users: dict,
+        chats: dict
     ) -> "UserGift":
         text, entities = None, None
         if getattr(saved_star_gift, "message", None):
@@ -132,12 +133,20 @@ class UserGift(Object):
             entities = [types.MessageEntity._parse(client, entity, users) for entity in saved_star_gift.message.entities]
             entities = types.List(filter(lambda x: x is not None, entities))
         # TODO refunded:flags.9?true can_upgrade:flags.10?true msg_id:flags.3?int saved_id:flags.11?long upgrade_stars:flags.6?long can_export_at:flags.7?int transfer_stars:flags.8?long
+        sender_user = utils.get_raw_peer_id(saved_star_gift.from_id)
         return UserGift(
             date=utils.timestamp_to_datetime(saved_star_gift.date),
-            gift=await types.Gift._parse(client, saved_star_gift.gift),
+            gift=await types.Gift._parse(
+                client,
+                saved_star_gift.gift,
+                users
+            ),
             is_private=getattr(saved_star_gift, "name_hidden", None),
             is_saved=not saved_star_gift.unsaved if getattr(saved_star_gift, "unsaved", None) else None,
-            sender_user=types.User._parse(client, users.get(saved_star_gift.from_id)) if getattr(saved_star_gift, "from_id", None) else None,
+            sender_user=types.User._parse(
+                client,
+                users.get(sender_user)
+            ) if sender_user else None,
             message_id=getattr(saved_star_gift, "msg_id", None),
             sell_star_count=getattr(saved_star_gift, "convert_stars", None),
             text=Str(text).init(entities) if text else None,
@@ -149,7 +158,8 @@ class UserGift(Object):
     async def _parse_action(
         client,
         message: "raw.base.Message",
-        users: dict
+        users: dict,
+        chats: dict
     ) -> "UserGift":
         action = message.action
 
@@ -161,7 +171,11 @@ class UserGift(Object):
         # TODO 
         if isinstance(action, raw.types.MessageActionStarGift):
             return UserGift(
-                gift=await types.Gift._parse(client, action.gift),
+                gift=await types.Gift._parse(
+                    client,
+                    action.gift,
+                    users
+                ),
                 date=utils.timestamp_to_datetime(message.date),
                 is_private=getattr(action, "name_hidden", None),
                 is_saved=getattr(action, "saved", None),
@@ -179,7 +193,11 @@ class UserGift(Object):
 
         if isinstance(action, raw.types.MessageActionStarGiftUnique):
             return UserGift(
-                gift=await types.Gift._parse(client, action.gift),
+                gift=await types.Gift._parse(
+                    client,
+                    action.gift,
+                    users
+                ),
                 date=utils.timestamp_to_datetime(message.date),
                 sender_user=types.User._parse(client, users.get(utils.get_raw_peer_id(message.peer_id))),
                 message_id=message.id,
