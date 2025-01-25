@@ -65,6 +65,8 @@ class SendVideo:
         view_once: bool = None,
         file_name: str = None,
         mime_type: str = None,
+        cover: Optional[Union[str, "io.BytesIO"]] = None,
+        start_timestamp: int = None,
         schedule_date: datetime = None,
         reply_to_message_id: int = None,
         progress: Callable = None,
@@ -173,6 +175,12 @@ class SendVideo:
             mime_type (``str``, *optional*):
                 no docs!
 
+            cover (``str`` | :obj:`io.BytesIO`, *optional*):
+                Cover of the video; pass None to skip cover uploading.
+            
+            start_timestamp (``int``, *optional*):
+                Timestamp from which the video playing must start, in seconds.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -260,13 +268,17 @@ class SendVideo:
                                 h=height
                             ),
                             raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(video))
-                        ]
+                        ],
+                        video_cover=await self.save_file(cover) if cover else None,
+                        video_timestamp=start_timestamp
                     )
                 elif re.match("^https?://", video):
                     media = raw.types.InputMediaDocumentExternal(
                         url=video,
                         ttl_seconds=ttl_seconds,
-                        spoiler=has_spoiler
+                        spoiler=has_spoiler,
+                        video_cover=await self.save_file(cover) if cover else None,
+                        video_timestamp=start_timestamp
                     )
                 else:
                     media = utils.get_input_media_from_file_id(
@@ -292,7 +304,9 @@ class SendVideo:
                             h=height
                         ),
                         raw.types.DocumentAttributeFilename(file_name=file_name or video.name)
-                    ]
+                    ],
+                    video_cover=await self.save_file(cover) if cover else None,
+                    video_timestamp=start_timestamp
                 )
 
             reply_to = await utils._get_reply_message_parameters(

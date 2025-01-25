@@ -54,6 +54,12 @@ class InputPaidMediaVideo(InputPaidMedia):
         supports_streaming (``bool``, *optional*):
             Pass True, if the uploaded video is suitable for streaming.
 
+        cover (``str`` | :obj:`io.BytesIO`, *optional*):
+            Cover of the video; pass None to skip cover uploading.
+        
+        start_timestamp (``int``, *optional*):
+            Timestamp from which the video playing must start, in seconds.
+
     """
 
     def __init__(
@@ -63,7 +69,9 @@ class InputPaidMediaVideo(InputPaidMedia):
         width: int = 0,
         height: int = 0,
         duration: int = 0,
-        supports_streaming: bool = True
+        supports_streaming: bool = True,
+        cover: Optional[Union[str, "io.BytesIO"]] = None,
+        start_timestamp: int = None
     ):
         super().__init__(media)
 
@@ -72,3 +80,5 @@ class InputPaidMediaVideo(InputPaidMedia):
         self.height = height
         self.duration = duration
         self.supports_streaming = supports_streaming
+        self.cover = cover
+        self.start_timestamp = start_timestamp

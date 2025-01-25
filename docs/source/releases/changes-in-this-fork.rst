@@ -26,6 +26,7 @@ Changes in this Fork
 | Scheme layer used: 198 |
 +------------------------+
 
+- Added the ``cover`` and ``start_timestamp`` parameters in :meth:`~pyrogram.Client.send_video` and :obj:`~pyrogram.types.InputPaidMediaVideo`.
 - Added the ``new_video_start_timestamp`` and renamed the ``send_copy`` and ``remove_caption`` parameters in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
 - Added the ``gift_count`` to the :obj:`~pyrogram.types.Chat`.
 - Added the :meth:`~pyrogram.Client.get_similar_bots`.

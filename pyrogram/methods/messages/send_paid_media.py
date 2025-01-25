@@ -179,9 +179,7 @@ class SendPaidMedia:
                             file_reference=media.photo.file_reference
                         )
                     )
-            elif (
-                isinstance(i, types.InputPaidMediaVideo)
-            ):
+            elif isinstance(i, types.InputPaidMediaVideo):
                 if isinstance(i.media, str):
                     if os.path.isfile(i.media):
                         attributes = [
@@ -201,7 +199,9 @@ class SendPaidMedia:
                                     thumb=await self.save_file(i.thumbnail),
                                     mime_type=self.guess_mime_type(i.media) or "video/mp4",
                                     nosound_video=True,
-                                    attributes=attributes
+                                    attributes=attributes,
+                                    video_cover=await self.save_file(i.cover),
+                                    video_timestamp=i.start_timestamp
                                 )
                             )
                         )
@@ -218,7 +218,9 @@ class SendPaidMedia:
                             raw.functions.messages.UploadMedia(
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaDocumentExternal(
-                                    url=i.media
+                                    url=i.media,
+                                    video_cover=await self.save_file(i.cover),
+                                    video_timestamp=i.start_timestamp
                                 )
                             )
                         )
@@ -248,7 +250,9 @@ class SendPaidMedia:
                                         h=i.height
                                     ),
                                     raw.types.DocumentAttributeFilename(file_name=getattr(i.media, "name", "video.mp4"))
-                                ]
+                                ],
+                                video_cover=await self.save_file(i.cover),
+                                video_timestamp=i.start_timestamp
                             )
                         )
                     )

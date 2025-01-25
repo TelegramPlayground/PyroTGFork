@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Optional
+
 import pyrogram
 from pyrogram import types
 
@@ -30,13 +32,23 @@ class PaidMediaVideo(PaidMedia):
         video (:obj:`~pyrogram.types.Video`):
             The video.
 
+        cover (:obj:`~pyrogram.types.Photo`, *optional*):
+            Cover of the video.
+        
+        start_timestamp (``int``, *optional*):
+            Timestamp from which the video playing must start, in seconds.
+
     """
 
     def __init__(
         self,
         *,
-        video: "types.Video" = None
+        video: "types.Video" = None,
+        cover: Optional["types.Photo"] = None,
+        start_timestamp: Optional[int] = None
     ):
         super().__init__()
 
         self.video = video
+        self.cover = cover
+        self.start_timestamp = start_timestamp
