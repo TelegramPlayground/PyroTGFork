@@ -16,15 +16,20 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Any, Callable, List
+from typing import Any, Callable
 
 import pyrogram
 from pyrogram.filters import Filter
 from pyrogram.types import Message
 from .handler import Handler
 
-CallbackFunc: Callable = Callable[["pyrogram.Client",
-                                   List[pyrogram.types.Message]], Any]
+CallbackFunc: Callable = Callable[
+    [
+        "pyrogram.Client",
+        list[Message]
+    ],
+    Any
+]
 
 
 class DeletedMessagesHandler(Handler):
@@ -49,6 +54,7 @@ class DeletedMessagesHandler(Handler):
 
         messages (List of :obj:`~pyrogram.types.Message`):
             The deleted messages, as list.
+
     """
 
     def __init__(self, callback: CallbackFunc, filters: Filter = None):

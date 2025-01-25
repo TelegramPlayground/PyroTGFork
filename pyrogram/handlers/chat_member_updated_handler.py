@@ -22,8 +22,13 @@ import pyrogram
 from pyrogram.filters import Filter
 from .handler import Handler
 
-CallbackFunc: Callable = Callable[["pyrogram.Client",
-                                   pyrogram.types.ChatMemberUpdated], Any]
+CallbackFunc: Callable = Callable[
+    [
+        "pyrogram.Client",
+        pyrogram.types.ChatMemberUpdated
+    ],
+    Any
+]
 
 
 class ChatMemberUpdatedHandler(Handler):
@@ -49,6 +54,7 @@ class ChatMemberUpdatedHandler(Handler):
 
         chat_member_updated (:obj:`~pyrogram.types.ChatMemberUpdated`):
             The received chat member update.
+
     """
 
     def __init__(self, callback: CallbackFunc, filters: Filter = None):

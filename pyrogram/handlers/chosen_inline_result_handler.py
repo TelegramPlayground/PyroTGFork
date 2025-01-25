@@ -22,8 +22,13 @@ import pyrogram
 from pyrogram.filters import Filter
 from .handler import Handler
 
-CallbackFunc: Callable = Callable[["pyrogram.Client",
-                                   pyrogram.types.ChosenInlineResult], Any]
+CallbackFunc: Callable = Callable[
+    [
+        "pyrogram.Client",
+        pyrogram.types.ChosenInlineResult
+    ],
+    Any
+]
 
 
 class ChosenInlineResultHandler(Handler):
@@ -54,6 +59,7 @@ class ChosenInlineResultHandler(Handler):
 
         chosen_inline_result (:obj:`~pyrogram.types.ChosenInlineResult`):
             The received chosen inline result.
+
     """
 
     def __init__(self, callback: CallbackFunc, filters: Filter = None):

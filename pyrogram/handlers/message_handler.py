@@ -22,8 +22,13 @@ import pyrogram
 from pyrogram.filters import Filter
 from .handler import Handler
 
-CallbackFunc: Callable = Callable[["pyrogram.Client",
-                                   pyrogram.types.Message], Any]
+CallbackFunc: Callable = Callable[
+    [
+        "pyrogram.Client",
+        pyrogram.types.Message
+    ],
+    Any
+]
 
 
 class MessageHandler(Handler):
@@ -48,6 +53,7 @@ class MessageHandler(Handler):
 
         message (:obj:`~pyrogram.types.Message`):
             The received message.
+
     """
 
     def __init__(self, callback: CallbackFunc, filters: Filter = None):

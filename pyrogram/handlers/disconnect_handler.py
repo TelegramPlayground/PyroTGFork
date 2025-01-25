@@ -40,6 +40,7 @@ class DisconnectHandler(Handler):
         client (:obj:`~pyrogram.Client`):
             The Client itself. Useful, for example, when you want to change the proxy before a new connection
             is established.
+
     """
 
     def __init__(self, callback: CallbackFunc):

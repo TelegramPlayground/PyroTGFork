@@ -19,10 +19,18 @@
 from typing import Any, Callable
 
 import pyrogram
+from pyrogram.filters import Filter
 from .handler import Handler
 
-CallbackFunc: Callable = Callable[["pyrogram.Client",
-                                   pyrogram.types.Update, Any, Any], Any]
+CallbackFunc: Callable = Callable[
+    [
+        "pyrogram.Client",
+        pyrogram.types.Update,
+        Any,
+        Any
+    ],
+    Any
+]
 
 
 class RawUpdateHandler(Handler):
