@@ -40,6 +40,7 @@ from .set_bot_name import SetBotName
 from .set_chat_menu_button import SetChatMenuButton
 from .set_game_score import SetGameScore
 from .get_owned_bots import GetOwnedBots
+from .get_similar_bots import GetSimilarBots
 
 
 class Bots(
@@ -67,5 +68,6 @@ class Bots(
     SetBotName,
     GetBotName,
     GetOwnedBots,
+    GetSimilarBots,
 ):
     pass

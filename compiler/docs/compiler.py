@@ -366,6 +366,7 @@ def pyrogram_api():
             answer_web_app_query
             send_web_app_custom_request
             get_owned_bots
+            get_similar_bots
         """,
         phone="""
         Phone
