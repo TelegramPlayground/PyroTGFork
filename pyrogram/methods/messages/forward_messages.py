@@ -34,8 +34,9 @@ class ForwardMessages:
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        drop_author: bool = None,
-        drop_media_captions: bool = None,
+        send_copy: bool = None,
+        remove_caption: bool = None,
+        new_video_start_timestamp: int = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", list["types.Message"]]:
@@ -70,11 +71,14 @@ class ForwardMessages:
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a fee; for bots only
 
-            drop_author (``bool``, *optional*):
-                Whether to forward messages without quoting the original author.
+            send_copy (``bool``, *optional*):
+                Pass True to copy content of the messages without reference to the original sender.
 
-            drop_media_captions (``bool``, *optional*):
-                Whether to strip captions from media.
+            remove_caption (``bool``, *optional*):
+                Pass True to remove media captions of message copies.
+
+            new_video_start_timestamp (``int``, *optional*):
+                The new video start timestamp. Pass time to replace video start timestamp in the forwarded message.
 
             send_as (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the chat or channel to send the message as.
@@ -110,16 +114,15 @@ class ForwardMessages:
                 id=message_ids,
                 silent=disable_notification or None,
                 # TODO
-                # TODO
-                drop_author=drop_author,
-                drop_media_captions=drop_media_captions,
+                video_timestamp=new_video_start_timestamp,
+                drop_author=send_copy,
+                drop_media_captions=remove_caption,
                 noforwards=protect_content,
                 allow_paid_floodskip=allow_paid_broadcast,
                 random_id=[self.rnd_id() for _ in message_ids],
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 top_msg_id=message_thread_id
-                # TODO
             )
         )
 
