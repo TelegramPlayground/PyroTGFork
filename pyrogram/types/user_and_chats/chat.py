@@ -222,6 +222,10 @@ class Chat(Object):
         can_enable_paid_reaction (``bool``, *optional*):
             True, if paid reaction can be enabled in the channel chat; for channels only.
 
+        gift_count (``int``, *optional*):
+            Number of saved to profile gifts for other users or the total number of received gifts for the current user.
+            Number of saved to profile gifts for channels without ``can_post_messages`` administrator right, otherwise, the total number of received gifts.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
 
@@ -289,6 +293,7 @@ class Chat(Object):
         can_send_paid_media: bool = None,
         pending_join_request_count: int = None,
         can_enable_paid_reaction: bool = None,
+        gift_count: int = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -358,6 +363,7 @@ class Chat(Object):
         self.can_send_paid_media = can_send_paid_media
         self.pending_join_request_count = pending_join_request_count
         self.can_enable_paid_reaction = can_enable_paid_reaction
+        self.gift_count = gift_count
         self._raw = _raw
 
     @staticmethod
@@ -617,6 +623,8 @@ class Chat(Object):
 
             if getattr(full_user, "wallpaper", None):
                 parsed_chat.background = types.ChatBackground._parse(client, full_user.wallpaper)
+            parsed_chat.gift_count = full_user.stargifts_count
+
         else:
             full_chat = chat_full.full_chat
             chat_raw = chats[full_chat.id]
@@ -666,6 +674,7 @@ class Chat(Object):
 
                 parsed_chat.can_send_paid_media = getattr(full_chat, "paid_media_allowed", None)
                 parsed_chat.can_enable_paid_reaction = full_chat.paid_reactions_available
+                parsed_chat.gift_count = full_chat.stargifts_count
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
