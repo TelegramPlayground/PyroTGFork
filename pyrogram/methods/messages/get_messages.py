@@ -33,6 +33,7 @@ class GetMessages:
         chat_id: Union[int, str] = None,
         message_ids: Union[int, Iterable[int]] = None,
         reply_to_message_ids: Union[int, Iterable[int]] = None,
+        pinned: bool = False,
         replies: int = 1,
         is_scheduled: bool = False,
         link: str = None,
@@ -45,7 +46,7 @@ class GetMessages:
 
         .. include:: /_includes/usable-by/users-bots.rst
 
-        You must use exactly one of ``message_ids`` OR (``chat_id``, ``message_ids``) OR (``chat_id``, ``reply_to_message_ids``) OR ``link``.
+        You must use exactly one of ``message_ids`` OR ``reply_to_message_ids`` OR (``chat_id``, ``message_ids``) OR (``chat_id``, ``reply_to_message_ids``) OR (``chat_id``, ``pinned``) OR ``link``.
 
         Parameters:
             chat_id (``int`` | ``str``, *optional*):
@@ -62,6 +63,10 @@ class GetMessages:
                 the previous message you replied to using this message.
                 If *message_ids* is set, this argument will be ignored.
 
+            pinned (``bool``, *optional*):
+                Returns information about the newest pinned message in the specified ``chat_id``.
+                Use :meth:`~pyrogram.Client.search_messages` to return all the pinned messages.
+
             replies (``int``, *optional*):
                 The number of subsequent replies to get for each message.
                 Pass 0 for no reply at all or -1 for unlimited replies.
@@ -69,6 +74,7 @@ class GetMessages:
 
             is_scheduled (``bool``, *optional*):
                 Whether to get scheduled messages. Defaults to False.
+                Only supported if both ``chat_id`` and ``message_ids`` are passed. Other parameters are ignored when this is set.
 
             link (``str``):
                 A link of the message, usually can be copied using ``Copy Link`` functionality OR obtained using :obj:`~pyrogram.raw.types.Message.link` OR  :obj:`~pyrogram.raw.functions.channels.ExportMessageLink`
@@ -113,7 +119,7 @@ class GetMessages:
             )
             return messages if is_iterable else messages[0] if messages else None
 
-        if chat_id:
+        if chat_id and (message_ids or reply_to_message_ids):
             ids, ids_type = (
                 (message_ids, raw.types.InputMessageID) if message_ids
                 else (reply_to_message_ids, raw.types.InputMessageReplyTo) if reply_to_message_ids
@@ -153,6 +159,18 @@ class GetMessages:
             )
 
             return messages if is_iterable else messages[0] if messages else None
+
+        if chat_id and pinned:
+            peer = await self.resolve_peer(chat_id)
+            rpc = raw.functions.channels.GetMessages(channel=peer, id=[raw.types.InputMessagePinned()])
+            r = await self.invoke(rpc, sleep_threshold=-1)
+            messages = await utils.parse_messages(
+                self,
+                r,
+                is_scheduled=False,
+                replies=replies
+            )
+            return messages[0] if messages else None
 
         if link:
             linkps = link.split("/")

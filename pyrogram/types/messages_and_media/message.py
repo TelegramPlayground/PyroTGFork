@@ -1069,7 +1069,7 @@ class Message(Object, Update):
                 try:
                     parsed_message.pinned_message = await client.get_messages(
                         chat_id=parsed_message.chat.id,
-                        reply_to_message_ids=message.id,
+                        pinned=True,
                         replies=0
                     )
                     parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
