@@ -1404,6 +1404,8 @@ class Message(Object, Update):
                         parsed_message.message_thread_id = message.reply_to.reply_to_top_id
                     else:
                         parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
+                    if not parsed_message.message_thread_id:
+                        parsed_message.message_thread_id = 1  # https://t.me/c/1279877202/31475
                 if getattr(message.reply_to, "quote", False):
                     parsed_message.quote = types.TextQuote._parse(
                         client,
