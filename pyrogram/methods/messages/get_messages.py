@@ -98,6 +98,21 @@ class GetMessages:
         Raises:
             ValueError: In case of invalid arguments.
         """
+
+        if not chat_id and message_ids:
+            is_iterable = not isinstance(message_ids, int)
+            ids = list(message_ids) if is_iterable else [message_ids]
+            ids = [raw.types.InputMessageID(id=i) for i in ids]
+            rpc = raw.functions.messages.GetMessages(id=ids)
+            r = await self.invoke(rpc, sleep_threshold=-1)
+            messages = await utils.parse_messages(
+                self,
+                r,
+                is_scheduled=is_scheduled,
+                replies=replies
+            )
+            return messages if is_iterable else messages[0] if messages else None
+
         if chat_id:
             ids, ids_type = (
                 (message_ids, raw.types.InputMessageID) if message_ids
