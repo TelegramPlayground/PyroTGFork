@@ -105,31 +105,12 @@ class GetMessages:
             ValueError: In case of invalid arguments.
         """
 
-        if not chat_id and message_ids:
-            is_iterable = not isinstance(message_ids, int)
-            ids = list(message_ids) if is_iterable else [message_ids]
-            ids = [raw.types.InputMessageID(id=i) for i in ids]
-            rpc = raw.functions.messages.GetMessages(id=ids)
-            r = await self.invoke(rpc, sleep_threshold=-1)
-            messages = await utils.parse_messages(
-                self,
-                r,
-                is_scheduled=is_scheduled,
-                replies=replies
-            )
-            return messages if is_iterable else messages[0] if messages else None
-
-        if chat_id and (message_ids or reply_to_message_ids):
+        if message_ids or reply_to_message_ids:
             ids, ids_type = (
                 (message_ids, raw.types.InputMessageID) if message_ids
                 else (reply_to_message_ids, raw.types.InputMessageReplyTo) if reply_to_message_ids
                 else (None, None)
             )
-
-            if ids is None:
-                raise ValueError("No argument supplied. Either pass message_ids or reply_to_message_ids")
-
-            peer = await self.resolve_peer(chat_id)
 
             is_iterable = not isinstance(ids, int)
             ids = list(ids) if is_iterable else [ids]
@@ -137,14 +118,16 @@ class GetMessages:
             if replies < 0:
                 replies = (1 << 31) - 1
 
-            if is_scheduled:
+            peer = await self.resolve_peer(chat_id) if chat_id else None
+
+            if chat_id and is_scheduled:
                 rpc = raw.functions.messages.GetScheduledMessages(
                     peer=peer,
                     id=ids
                 )
             else:
                 ids = [ids_type(id=i) for i in ids]
-                if isinstance(peer, raw.types.InputPeerChannel):
+                if chat_id and isinstance(peer, raw.types.InputPeerChannel):
                     rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
                 else:
                     rpc = raw.functions.messages.GetMessages(id=ids)
