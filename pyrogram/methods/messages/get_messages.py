@@ -61,16 +61,16 @@ class GetMessages:
             reply_to_message_ids (``int`` | Iterable of ``int``, *optional*):
                 Pass a single message identifier or an iterable of message ids (as integers) to get the content of
                 the previous message you replied to using this message.
-                If *message_ids* is set, this argument will be ignored.
 
             pinned (``bool``, *optional*):
-                Returns information about the newest pinned message in the specified ``chat_id``.
+                Returns information about the newest pinned message in the specified ``chat_id``. Other parameters are ignored when this is set.
                 Use :meth:`~pyrogram.Client.search_messages` to return all the pinned messages.
 
             replies (``int``, *optional*):
                 The number of subsequent replies to get for each message.
                 Pass 0 for no reply at all or -1 for unlimited replies.
                 Defaults to 1.
+                Is ignored if ``is_scheduled`` parameter is set.
 
             is_scheduled (``bool``, *optional*):
                 Whether to get scheduled messages. Defaults to False.
