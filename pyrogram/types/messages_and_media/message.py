@@ -1066,15 +1066,12 @@ class Message(Object, Update):
             )
 
             if isinstance(action, raw.types.MessageActionPinMessage):
-                try:
-                    parsed_message.pinned_message = await client.get_messages(
-                        chat_id=parsed_message.chat.id,
-                        reply_to_message_ids=message.id,
-                        replies=0
-                    )
-                    parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
-                except MessageIdsEmpty:
-                    pass
+                parsed_message.pinned_message = await client.get_messages(
+                    chat_id=parsed_message.chat.id,
+                    pinned=True,
+                    replies=0
+                )
+                parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
 
             if isinstance(action, raw.types.MessageActionGameScore):
                 parsed_message.game_high_score = types.GameHighScore._parse_action(client, message, users)

@@ -26,6 +26,7 @@ Changes in this Fork
 | Scheme layer used: 198 |
 +------------------------+
 
+- Added the parameter ``pinned`` and made the parameter ``chat_id`` optional in :meth:`~pyrogram.Client.get_messages`. **NOTE**: Please be aware about using the correct :doc:`Message Identifiers <../../topics/message-identifiers>`, when using this method.
 - Added the ``cover`` and ``start_timestamp`` parameters in :meth:`~pyrogram.Client.send_video` and :obj:`~pyrogram.types.InputPaidMediaVideo`.
 - Added the ``new_video_start_timestamp`` and renamed the ``send_copy`` and ``remove_caption`` parameters in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
 - Added the ``gift_count`` to the :obj:`~pyrogram.types.Chat`.
