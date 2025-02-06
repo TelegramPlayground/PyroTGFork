@@ -396,9 +396,6 @@ class Session:
         timeout: float = WAIT_TIMEOUT,
         sleep_threshold: float = SLEEP_THRESHOLD
     ):
-        if sleep_threshold < 0:
-            # TODO: remove this later
-            sleep_threshold = (1 << 31) - 1
         sleep_threshold = max(sleep_threshold, self.client.sleep_threshold)
 
         try:
