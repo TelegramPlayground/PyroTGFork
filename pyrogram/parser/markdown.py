@@ -17,12 +17,12 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import html
-import logging
 import re
 from typing import Optional
 
 import pyrogram
 from pyrogram.enums import MessageEntityType
+
 from . import utils
 from .html import HTML
 
@@ -34,28 +34,37 @@ SPOILER_DELIM = "||"
 CODE_DELIM = "`"
 PRE_DELIM = "```"
 BLOCKQUOTE_DELIM = ">"
+BLOCKQUOTE_ESCAPE_DELIM = "|>"
 BLOCKQUOTE_EXPANDABLE_DELIM = "**>"
+BLOCKQUOTE_EXPANDABLE_END_DELIM = "<**"
 
-MARKDOWN_RE = re.compile(r"({d})|(!?)\[(.+?)\]\((.+?)\)".format(
-    d="|".join(
-        ["".join(i) for i in [
-            [rf"\{j}" for j in i]
-            for i in [
-                PRE_DELIM,
-                CODE_DELIM,
-                STRIKE_DELIM,
-                UNDERLINE_DELIM,
-                ITALIC_DELIM,
-                BOLD_DELIM,
-                SPOILER_DELIM
+
+MARKDOWN_RE = re.compile(
+    r"({d})|(!?)\[(.+?)\]\((.+?)\)".format(
+        d="|".join(
+            [
+                "".join(i)
+                for i in [
+                    [rf"\{j}" for j in i]
+                    for i in [
+                        PRE_DELIM,
+                        CODE_DELIM,
+                        STRIKE_DELIM,
+                        UNDERLINE_DELIM,
+                        ITALIC_DELIM,
+                        BOLD_DELIM,
+                        SPOILER_DELIM,
+                    ]
+                ]
             ]
-        ]]
-    )))
+        )
+    )
+)
 
 OPENING_TAG = "<{}>"
 CLOSING_TAG = "</{}>"
 URL_MARKUP = '<a href="{}">{}</a>'
-EMOJI_MARKUP = '<emoji id={}>{}</emoji>'
+EMOJI_MARKUP = "<emoji id={}>{}</emoji>"
 FIXED_WIDTH_DELIMS = [CODE_DELIM, PRE_DELIM]
 
 
@@ -63,50 +72,105 @@ class Markdown:
     def __init__(self, client: Optional["pyrogram.Client"]):
         self.html = HTML(client)
 
-    def _parse_blockquotes(self, text: str):
-        text = html.unescape(text)
-        lines = text.split('\n')
-        result = []
-        in_blockquote = False
-        is_expandable_blockquote = False
-        current_blockquote = []
+    @staticmethod
+    def escape_and_create_quotes(text: str, strict: bool):
+        text_lines: list[str | None] = text.splitlines()
 
-        for line in lines:
-            if line.startswith(BLOCKQUOTE_DELIM):
-                in_blockquote = True
-                current_blockquote.append(line[1:].strip())
-            elif line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
-                in_blockquote = True
-                is_expandable_blockquote = True
-                current_blockquote.append(line[3:].strip())
-            else:
-                if in_blockquote:
-                    in_blockquote = False
-                    result.append(
-                        (f"<blockquote expandable>" if is_expandable_blockquote else OPENING_TAG.format("blockquote")) +
-                        '\n'.join(current_blockquote) +
-                        CLOSING_TAG.format("blockquote")
-                    )
-                    current_blockquote = []
-                result.append(line)
+        # Indexes of Already escaped lines
+        html_escaped_list: list[int] = []
 
-        if in_blockquote:
-            result.append(
-                (f"<blockquote expandable>" if is_expandable_blockquote else OPENING_TAG.format("blockquote")) +
-                '\n'.join(current_blockquote) +
-                CLOSING_TAG.format("blockquote")
+        # Temporary Queue to hold lines to be quoted
+        to_quote_list: list[tuple[int, str]] = []
+
+        def create_blockquote(quote_type: str = "") -> None:
+            """
+            Merges all lines in quote_queue into first line of queue
+            Encloses that line in html quote
+            Replaces rest of the lines with None placeholders to preserve indexes
+            """
+            if len(to_quote_list) == 0:
+                return
+
+            joined_lines = "\n".join([i[1] for i in to_quote_list])
+
+            first_line_index, _ = to_quote_list[0]
+            text_lines[first_line_index] = (
+                f"<blockquote{quote_type}>{joined_lines}</blockquote>"
             )
-        return '\n'.join(result)
+
+            for line_to_remove in to_quote_list[1:]:
+                text_lines[line_to_remove[0]] = None
+
+            to_quote_list.clear()
+
+        # Handle Expandable Quote
+        inside_blockquote = False
+        for index, line in enumerate(text_lines):
+            if line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+                delim_stripped_line = line[3:]
+                parsed_line = (
+                    html.escape(delim_stripped_line) if strict else delim_stripped_line
+                )
+
+                to_quote_list.append((index, parsed_line))
+                html_escaped_list.append(index)
+
+                inside_blockquote = True
+                continue
+
+            elif line.endswith(BLOCKQUOTE_EXPANDABLE_END_DELIM):
+                delim_stripped_line = line[:-3]
+                parsed_line = (
+                    html.escape(delim_stripped_line) if strict else delim_stripped_line
+                )
+
+                to_quote_list.append((index, parsed_line))
+                html_escaped_list.append(index)
+
+                inside_blockquote = False
+
+                create_blockquote(quote_type=" expandable")
+
+            if inside_blockquote:
+                parsed_line = html.escape(line) if strict else line
+                to_quote_list.append((index, parsed_line))
+                html_escaped_list.append(index)
+
+        # Handle Single line/Continued Quote
+        for index, line in enumerate(text_lines):
+            if line is None:
+                continue 
+
+            if line.startswith(BLOCKQUOTE_ESCAPE_DELIM):
+                text_lines[index] = line[1:]
+                create_blockquote()
+                continue
+
+            if line.startswith(BLOCKQUOTE_DELIM):
+                delim_stripped_line = line[1:]
+                parsed_line = (
+                    html.escape(delim_stripped_line) if strict else delim_stripped_line
+                )
+
+                to_quote_list.append((index, parsed_line))
+                html_escaped_list.append(index)
+
+            elif len(to_quote_list) > 0:
+                create_blockquote()
+        else:
+            create_blockquote()
+
+        if strict:
+            for idx, line in enumerate(text_lines):
+                if idx not in html_escaped_list:
+                    text_lines[idx] = html.escape(line)
+
+        return "\n".join(
+            [valid_line for valid_line in text_lines if valid_line is not None]
+        )
 
     async def parse(self, text: str, strict: bool = False):
-        if strict:
-            text = html.escape(text)
-        
-
-        text = self._parse_blockquotes(text)
-
-        text = self._parse_blockquotes(text)
-
+        text = self.escape_and_create_quotes(text, strict=strict)
         delims = set()
         is_fixed_width = False
 
@@ -122,13 +186,17 @@ class Markdown:
                 continue
 
             if not is_emoji and text_url:
-                text = utils.replace_once(text, full, URL_MARKUP.format(url, text_url), start)
+                text = utils.replace_once(
+                    text, full, URL_MARKUP.format(url, text_url), start
+                )
                 continue
 
             if is_emoji:
                 emoji = text_url
                 emoji_id = url.lstrip("tg://emoji?id=")
-                text = utils.replace_once(text, full, EMOJI_MARKUP.format(emoji_id, emoji), start)
+                text = utils.replace_once(
+                    text, full, EMOJI_MARKUP.format(emoji_id, emoji), start
+                )
                 continue
 
             if delim == BOLD_DELIM:
@@ -156,9 +224,11 @@ class Markdown:
                 tag = CLOSING_TAG.format(tag)
 
             if delim == PRE_DELIM and delim in delims:
-                delim_and_language = text[text.find(PRE_DELIM):].split("\n")[0]
-                language = delim_and_language[len(PRE_DELIM):]
-                text = utils.replace_once(text, delim_and_language, f'<pre language="{language}">', start)
+                delim_and_language = text[text.find(PRE_DELIM) :].split("\n")[0]
+                language = delim_and_language[len(PRE_DELIM) :]
+                text = utils.replace_once(
+                    text, delim_and_language, f'<pre language="{language}">', start
+                )
                 continue
 
             text = utils.replace_once(text, delim, tag, start)
@@ -199,12 +269,22 @@ class Markdown:
                 for line in lines:
                     if len(line) == 0 and last_length == end:
                         continue
-                    start_offset = start+last_length
-                    last_length = last_length+len(line)
-                    end_offset = start_offset+last_length
-                    entities_offsets.append((start_tag, start_offset,))
-                    entities_offsets.append((end_tag, end_offset,))
-                    last_length = last_length+1
+                    start_offset = start + last_length
+                    last_length = last_length + len(line)
+                    end_offset = start_offset + last_length
+                    entities_offsets.append(
+                        (
+                            start_tag,
+                            start_offset,
+                        )
+                    )
+                    entities_offsets.append(
+                        (
+                            end_tag,
+                            end_offset,
+                        )
+                    )
+                    last_length = last_length + 1
                 continue
             elif entity_type == MessageEntityType.SPOILER:
                 start_tag = end_tag = SPOILER_DELIM
@@ -223,16 +303,24 @@ class Markdown:
             else:
                 continue
 
-            entities_offsets.append((start_tag, start,))
-            entities_offsets.append((end_tag, end,))
+            entities_offsets.append(
+                (
+                    start_tag,
+                    start,
+                )
+            )
+            entities_offsets.append(
+                (
+                    end_tag,
+                    end,
+                )
+            )
 
         entities_offsets = map(
             lambda x: x[1],
             sorted(
-                enumerate(entities_offsets),
-                key=lambda x: (x[1][1], x[0]),
-                reverse=True
-            )
+                enumerate(entities_offsets), key=lambda x: (x[1][1], x[0]), reverse=True
+            ),
         )
 
         for entity, offset in entities_offsets:
