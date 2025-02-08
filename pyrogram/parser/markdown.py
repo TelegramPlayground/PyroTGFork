@@ -106,7 +106,7 @@ class Markdown:
         # Handle Expandable Quote
         inside_blockquote = False
         for index, line in enumerate(text_lines):
-            if line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+            if line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM) and not inside_blockquote:
                 delim_stripped_line = line[3:]
                 parsed_line = (
                     html.escape(delim_stripped_line) if strict else delim_stripped_line
@@ -118,7 +118,7 @@ class Markdown:
                 inside_blockquote = True
                 continue
 
-            elif line.endswith(BLOCKQUOTE_EXPANDABLE_END_DELIM):
+            elif line.endswith(BLOCKQUOTE_EXPANDABLE_END_DELIM) and inside_blockquote:
                 delim_stripped_line = line[:-3]
                 parsed_line = (
                     html.escape(delim_stripped_line) if strict else delim_stripped_line
