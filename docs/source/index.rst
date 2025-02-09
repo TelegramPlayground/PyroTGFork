@@ -184,6 +184,5 @@ Meta
     :hidden:
     :caption: External Links
 
-    version
     TL Schema Explorer <https://telegramplayground.github.io/schema.tl/>
     TL Diff <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html>

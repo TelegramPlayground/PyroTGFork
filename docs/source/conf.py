@@ -71,7 +71,7 @@ copybutton_prompt_text = "$ "
 
 suppress_warnings = ["image.not_readable"]
 
-html_title = f"PyroTGFork {version}"
+html_title = "" # f"PyroTGFork {version}"
 html_theme = "furo"
 html_static_path = [os.path.abspath("static")]
 print("ABSOLUTE PATH", os.path.abspath("static"))
@@ -102,11 +102,6 @@ html_theme_options = {
             "url": "https://pypi.org/project/pyrotgfork/",
             "class": "fa-brands fa-solid fa-python fa-2x",
         },
-        {
-            "name": "",
-            "url": "./releases/changes-in-this-fork.html",
-            "class": "fa-brands fa-solid fa-file-invoice fa-2x"
-        }
     ]
 }
 html_sidebars = {
