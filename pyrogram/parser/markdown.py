@@ -286,6 +286,9 @@ class Markdown:
                     )
                     last_length = last_length + 1
                 continue
+            elif entity_type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
+                start_tag = BLOCKQUOTE_EXPANDABLE_DELIM + " "
+                end_tag = " " + BLOCKQUOTE_EXPANDABLE_END_DELIM
             elif entity_type == MessageEntityType.SPOILER:
                 start_tag = end_tag = SPOILER_DELIM
             elif entity_type == MessageEntityType.TEXT_LINK:
