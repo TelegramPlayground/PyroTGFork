@@ -71,7 +71,7 @@ copybutton_prompt_text = "$ "
 
 suppress_warnings = ["image.not_readable"]
 
-html_title = "" # f"PyroTGFork {version}"
+html_title = f"PyroTGFork {version}"
 html_theme = "furo"
 html_static_path = [os.path.abspath("static")]
 print("ABSOLUTE PATH", os.path.abspath("static"))
@@ -106,12 +106,12 @@ html_theme_options = {
 }
 html_sidebars = {
     "**": [
+        "sidebar/brand.html",
         "sidebar/search.html",
         "sidebar/scroll-start.html",
         "sidebar/navigation.html",
         # "sidebar/ethical-ads.html",
         "sidebar/scroll-end.html",
-        "sidebar/brand.html",
     ]
 }
 latex_engine = "xelatex"
