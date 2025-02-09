@@ -206,6 +206,11 @@ class InlineKeyboardButton(Object):
                 )
             )
 
+        if isinstance(b, raw.types.KeyboardButton):
+            return InlineKeyboardButton(
+                text=b.text
+            )
+
     async def write(self, client: "pyrogram.Client"):
         if self.callback_data_with_password is not None:
             if isinstance(self.callback_data_with_password, str):
