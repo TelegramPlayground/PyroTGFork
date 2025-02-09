@@ -7,7 +7,7 @@ in reverse chronological order. You should read this when upgrading
 to this fork to know where your code can break, and where
 it can take advantage of new goodies!
 
-`For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/commits/unknown_errors/>`_
+`For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/commits/dev/>`_
 
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
 
@@ -26,7 +26,7 @@ Changes in this Fork
 | Scheme layer used: 198 |
 +------------------------+
 
-- Updated :doc:`Message Identifiers <../../topics/text-formatting>`.
+- Updated :doc:`Text Formatting <../../topics/text-formatting>` documentation.
 - Added ``message.content`` property.
 - Added the parameter ``pinned`` and made the parameter ``chat_id`` optional in :meth:`~pyrogram.Client.get_messages`. **NOTE**: Please be aware about using the correct :doc:`Message Identifiers <../../topics/message-identifiers>`, when using this method.
 - Added the ``cover`` and ``start_timestamp`` parameters in :meth:`~pyrogram.Client.send_video` and :obj:`~pyrogram.types.InputPaidMediaVideo`.
