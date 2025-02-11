@@ -33,7 +33,6 @@ class GetMessages:
         chat_id: Union[int, str] = None,
         message_ids: Union[int, Iterable[int]] = None,
         reply_to_message_ids: Union[int, Iterable[int]] = None,
-        pinned: bool = False,
         replies: int = 1,
         is_scheduled: bool = False,
         link: str = None,
@@ -46,7 +45,7 @@ class GetMessages:
 
         .. include:: /_includes/usable-by/users-bots.rst
 
-        You must use exactly one of ``message_ids`` OR ``reply_to_message_ids`` OR (``chat_id``, ``message_ids``) OR (``chat_id``, ``reply_to_message_ids``) OR (``chat_id``, ``pinned``) OR ``link``.
+        You must use exactly one of ``message_ids`` OR ``reply_to_message_ids`` OR (``chat_id``, ``message_ids``) OR (``chat_id``, ``reply_to_message_ids``) OR OR ``link``.
 
         Parameters:
             chat_id (``int`` | ``str``, *optional*):
@@ -61,10 +60,6 @@ class GetMessages:
             reply_to_message_ids (``int`` | Iterable of ``int``, *optional*):
                 Pass a single message identifier or an iterable of message ids (as integers) to get the content of
                 the previous message you replied to using this message.
-
-            pinned (``bool``, *optional*):
-                Returns information about the newest pinned message in the specified ``chat_id``. Other parameters are ignored when this is set.
-                Use :meth:`~pyrogram.Client.search_messages` to return all the pinned messages.
 
             replies (``int``, *optional*):
                 The number of subsequent replies to get for each message.
@@ -142,18 +137,6 @@ class GetMessages:
             )
 
             return messages if is_iterable else messages[0] if messages else None
-
-        if chat_id and pinned:
-            peer = await self.resolve_peer(chat_id)
-            rpc = raw.functions.channels.GetMessages(channel=peer, id=[raw.types.InputMessagePinned()])
-            r = await self.invoke(rpc, sleep_threshold=-1)
-            messages = await utils.parse_messages(
-                self,
-                r,
-                is_scheduled=False,
-                replies=replies
-            )
-            return messages[0] if messages else None
 
         if link:
             linkps = link.split("/")
@@ -234,3 +217,34 @@ class GetMessages:
             )
 
         raise ValueError("No valid argument supplied. https://telegramplayground.github.io/pyrogram/api/methods/get_messages")
+
+
+    async def get_chat_pinned_message(
+        self: "pyrogram.Client",
+        chat_id: Union[int, str]
+    ) -> Optional["types.Message"]:
+        """Returns information about a newest pinned message in the chat.
+        Use :meth:`~pyrogram.Client.search_messages` to return all the pinned messages.
+
+        .. include:: /_includes/usable-by/users-bots.rst
+        
+        Parameters:
+            chat_id (``int`` | ``str``, *optional*):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+        """
+
+        peer = await self.resolve_peer(chat_id)
+        if not isinstance(peer, raw.types.InputPeerChannel):
+            raise ValueError("chat_id must belong to a supergroup or channel.")
+        rpc = raw.functions.channels.GetMessages(channel=peer, id=[raw.types.InputMessagePinned()])
+        r = await self.invoke(rpc, sleep_threshold=-1)
+        messages = await utils.parse_messages(
+            self,
+            r,
+            is_scheduled=False,
+            replies=replies
+        )
+        return messages[0] if messages else None
