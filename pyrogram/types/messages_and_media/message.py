@@ -1072,11 +1072,18 @@ class Message(Object, Update):
             )
 
             if isinstance(action, raw.types.MessageActionPinMessage):
-                parsed_message.pinned_message = await client.get_messages(
-                    chat_id=parsed_message.chat.id,
-                    pinned=True,
-                    replies=0
-                )
+                try:
+                    parsed_message.pinned_message = await client.get_messages(
+                        chat_id=parsed_message.chat.id,
+                        reply_to_message_ids=message.id,
+                        replies=0
+                    )
+                except MessageIdsEmpty:
+                    parsed_message.pinned_message = types.Message(
+                        id=message.reply_to.reply_to_msg_id,
+                        empty=True,
+                        client=client
+                    )
                 parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
 
             if isinstance(action, raw.types.MessageActionGameScore):

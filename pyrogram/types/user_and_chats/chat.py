@@ -588,10 +588,17 @@ class Chat(Object):
                 )
 
             if full_user.pinned_msg_id:
-                parsed_chat.pinned_message = await client.get_messages(
-                    chat_id=parsed_chat.id,
-                    pinned=True
-                )
+                try:
+                    parsed_chat.pinned_message = await client.get_messages(
+                        chat_id=parsed_chat.id,
+                        message_ids=full_user.pinned_msg_id
+                    )
+                except MessageIdsEmpty:
+                    parsed_chat.pinned_message = types.Message(
+                        id=full_user.pinned_msg_id,
+                        empty=True,
+                        client=client
+                    )
 
             if getattr(full_user, "birthday", None):
                 parsed_chat.birthdate = types.Birthdate._parse(
@@ -672,10 +679,17 @@ class Chat(Object):
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
             if full_chat.pinned_msg_id:
-                parsed_chat.pinned_message = await client.get_messages(
-                    chat_id=parsed_chat.id,
-                    pinned=True
-                )
+                try:
+                    parsed_chat.pinned_message = await client.get_messages(
+                        chat_id=parsed_chat.id,
+                        message_ids=full_chat.pinned_msg_id
+                    )
+                except MessageIdsEmpty:
+                    parsed_chat.pinned_message = types.Message(
+                        id=full_chat.pinned_msg_id,
+                        empty=True,
+                        client=client
+                    )
 
             if isinstance(full_chat.exported_invite, raw.types.ChatInviteExported):
                 parsed_chat.invite_link = full_chat.exported_invite.link
