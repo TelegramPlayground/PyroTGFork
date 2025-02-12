@@ -23,6 +23,12 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 199 |
++------------------------+
+
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=198&to=199>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=198&to=199>`__.
+
++------------------------+
 | Scheme layer used: 198 |
 +------------------------+
 

@@ -54,6 +54,9 @@ class UpgradedGift(Object):
         owner_name (``str``, *optional*):
             Name of the owner for the case when owner identifier and address aren't known.
 
+        gift_address (``str``, *optional*):
+            Address of the gift NFT in TON blockchain.
+
         link (``str``, *property*):
             The link is a link to an upgraded gift.
 
@@ -72,6 +75,7 @@ class UpgradedGift(Object):
         owner_id: Optional["types.Chat"] = None,
         owner_address: Optional[str] = None,
         owner_name: Optional[str] = None,
+        gift_address: Optional[str] = None,
         _raw: "raw.types.StarGiftUnique" = None,
     ):
         super().__init__(client)
@@ -85,6 +89,7 @@ class UpgradedGift(Object):
         self.owner_id = owner_id
         self.owner_address = owner_address
         self.owner_name = owner_name
+        self.gift_address = gift_address
         self._raw = _raw  # TODO
 
 
@@ -108,6 +113,7 @@ class UpgradedGift(Object):
             ),
             owner_address=getattr(star_gift, "owner_address", None),
             owner_name=getattr(star_gift, "owner_name", None),
+            gift_address=getattr(star_gift, "gift_address", None),
             _raw=star_gift,
             client=client
         )

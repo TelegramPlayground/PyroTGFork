@@ -5702,7 +5702,7 @@ class Message(Object, Update):
     async def star(
         self,
         star_count: int = None,
-        is_anonymous: bool = False
+        paid_reaction_type: "types.PaidReactionType" = None
     ) -> "types.MessageReactions":
         """Bound method *star* of :obj:`~pyrogram.types.Message`.
 
@@ -5729,9 +5729,8 @@ class Message(Object, Update):
             star_count (``int``, *optional*):
                 Number of Telegram Stars to be used for the reaction; 1-2500.
 
-            is_anonymous (``bool``, *optional*):
-                Pass True to make paid reaction of the user on the message anonymous; pass False to make the user's profile visible among top reactors.
-                Defaults to False.
+            paid_reaction_type (:obj:`~pyrogram.types.PaidReactionType`, *optional*):
+                Type of the paid reaction; pass None if the user didn't choose reaction type explicitly, for example, the reaction is set from the message bubble.
 
         Returns:
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
@@ -5743,5 +5742,5 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id,
             star_count=star_count,
-            is_anonymous=is_anonymous
+            paid_reaction_type=paid_reaction_type
         )
