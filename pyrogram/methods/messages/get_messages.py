@@ -298,6 +298,7 @@ class GetMessages:
             is_scheduled=False,
             replies=replies
         )
+        log.info(messages)
         return messages[0] if messages else None
 
 
