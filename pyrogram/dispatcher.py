@@ -334,7 +334,6 @@ class Dispatcher:
                     if parser is not None
                     else (None, type(None))
                 )
-                log.info(parsed_update)
 
                 async with lock:
                     for group in self.groups.values():
