@@ -25,6 +25,12 @@ from .collectible_item_info import CollectibleItemInfo
 from .invoice import Invoice
 from .labeled_price import LabeledPrice
 from .order_info import OrderInfo
+from .paid_reaction_type import (
+    PaidReactionType,
+    PaidReactionTypeAnonymous,
+    PaidReactionTypeChat,
+    PaidReactionTypeRegular
+)
 from .pre_checkout_query import PreCheckoutQuery
 from .shipping_address import ShippingAddress
 from .shipping_option import ShippingOption
@@ -43,6 +49,10 @@ __all__ = [
     "Invoice",
     "LabeledPrice",
     "OrderInfo",
+    "PaidReactionType",
+    "PaidReactionTypeAnonymous",
+    "PaidReactionTypeChat",
+    "PaidReactionTypeRegular",
     "PreCheckoutQuery",
     "ShippingAddress",
     "ShippingOption",

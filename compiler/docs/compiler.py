@@ -677,6 +677,10 @@ def pyrogram_api():
             ShippingQuery
             PreCheckoutQuery
             StarAmount
+            PaidReactionType
+            PaidReactionTypeAnonymous
+            PaidReactionTypeChat
+            PaidReactionTypeRegular
         """
     )
 
