@@ -217,7 +217,7 @@ class GetMessages:
     async def get_chat_pinned_message(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        replies: int = self.fetch_replies
+        replies: int = 1#self.fetch_replies
     ) -> Optional["types.Message"]:
         """Returns information about a newest pinned message in the chat.
         Use :meth:`~pyrogram.Client.search_messages` to return all the pinned messages.
@@ -258,7 +258,7 @@ class GetMessages:
         chat_id: Union[int, str],
         message_id: int,
         callback_query_id: int,
-        replies: int = self.fetch_replies
+        replies: int = 1#self.fetch_replies
     ) -> Optional["types.Message"]:
         """Returns information about a message with the callback button that originated a callback query.
 
@@ -305,7 +305,7 @@ class GetMessages:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_ids: Union[int, Iterable[int]],
-        replies: int = self.fetch_replies
+        replies: int = 1#self.fetch_replies
     ) -> Optional["types.Message"]:
         """Returns information about a non-bundled message that is replied by a given message.
 
