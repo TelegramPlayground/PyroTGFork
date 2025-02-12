@@ -229,7 +229,7 @@ class GetMessages:
         .. include:: /_includes/usable-by/users-bots.rst
         
         Parameters:
-            chat_id (``int`` | ``str``, *optional*):
+            chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
@@ -240,6 +240,52 @@ class GetMessages:
         if not isinstance(peer, raw.types.InputPeerChannel):
             raise ValueError("chat_id must belong to a supergroup or channel.")
         rpc = raw.functions.channels.GetMessages(channel=peer, id=[raw.types.InputMessagePinned()])
+        r = await self.invoke(rpc, sleep_threshold=-1)
+        messages = await utils.parse_messages(
+            self,
+            r,
+            is_scheduled=False,
+            replies=replies
+        )
+        return messages[0] if messages else None
+
+
+    async def get_callback_query_message(
+        self: "pyrogram.Client",
+        chat_id: Union[int, str],
+        message_id: int,
+        callback_query_id: int,
+        replies: int = 1
+    ) -> Optional["types.Message"]:
+        """Returns information about a message with the callback button that originated a callback query.
+
+        .. include:: /_includes/usable-by/users-bots.rst
+
+        Parameters:
+            chat_id (``int`` | ``str``, *optional*):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            message_id (``int``):
+                Message identifier.
+
+            callback_query_id (``int``):
+                Identifier of the callback query.
+
+            replies (``int``, *optional*):
+                The number of subsequent replies to get for each message.
+                Pass 0 for no reply at all or -1 for unlimited replies.
+                Defaults to 1.
+
+        """
+
+        peer = await self.resolve_peer(chat_id)
+        ids = [raw.types.InputMessageCallbackQuery(id=message_id, query_id=callback_query_id)]
+        if isinstance(peer, raw.types.InputPeerChannel):
+            rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
+        else:
+            rpc = raw.functions.messages.GetMessages(id=ids)
         r = await self.invoke(rpc, sleep_threshold=-1)
         messages = await utils.parse_messages(
             self,
