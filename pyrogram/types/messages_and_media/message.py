@@ -1072,11 +1072,18 @@ class Message(Object, Update):
             )
 
             if isinstance(action, raw.types.MessageActionPinMessage):
-                parsed_message.pinned_message = await client.get_messages(
-                    chat_id=parsed_message.chat.id,
-                    pinned=True,
-                    replies=0
-                )
+                try:
+                    parsed_message.pinned_message = await client.get_replied_message(
+                        chat_id=parsed_message.chat.id,
+                        message_ids=message.id,
+                        replies=0
+                    )
+                except MessageIdsEmpty:
+                    parsed_message.pinned_message = types.Message(
+                        id=message.reply_to.reply_to_msg_id,
+                        empty=True,
+                        client=client
+                    )
                 parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
 
             if isinstance(action, raw.types.MessageActionGameScore):
@@ -1084,9 +1091,9 @@ class Message(Object, Update):
 
                 if message.reply_to and replies:
                     try:
-                        parsed_message.reply_to_message = await client.get_messages(
+                        parsed_message.reply_to_message = await client.get_replied_message(
                             chat_id=parsed_message.chat.id,
-                            reply_to_message_ids=message.id,
+                            message_ids=message.id,
                             replies=0
                         )
 
@@ -1426,9 +1433,9 @@ class Message(Object, Update):
                     reply_to_message = client.message_cache[key]
 
                     if not reply_to_message:
-                        reply_to_message = await client.get_messages(
+                        reply_to_message = await client.get_replied_message(
                             chat_id=parsed_message.chat.id,
-                            reply_to_message_ids=message.id,
+                            message_ids=message.id,
                             replies=replies - 1
                         )
 

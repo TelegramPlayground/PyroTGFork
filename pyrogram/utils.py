@@ -179,9 +179,9 @@ async def parse_messages(
             else:
                 chat_id = 0
 
-            reply_messages = await client.get_messages(
+            reply_messages = await client.get_replied_message(
                 chat_id=chat_id,
-                reply_to_message_ids=messages_with_replies.keys(),
+                message_ids=messages_with_replies.keys(),
                 replies=replies - 1
             )
 

@@ -17,7 +17,8 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Union, Iterable
+from collections.abc import Iterable
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -29,11 +30,8 @@ log = logging.getLogger(__name__)
 class GetMessages:
     async def get_messages(
         self: "pyrogram.Client",
-        *,
         chat_id: Union[int, str] = None,
         message_ids: Union[int, Iterable[int]] = None,
-        reply_to_message_ids: Union[int, Iterable[int]] = None,
-        pinned: bool = False,
         replies: int = 1,
         is_scheduled: bool = False,
         link: str = None,
@@ -46,7 +44,7 @@ class GetMessages:
 
         .. include:: /_includes/usable-by/users-bots.rst
 
-        You must use exactly one of ``message_ids`` OR ``reply_to_message_ids`` OR (``chat_id``, ``message_ids``) OR (``chat_id``, ``reply_to_message_ids``) OR (``chat_id``, ``pinned``) OR ``link``.
+        You must use exactly one of ``message_ids`` OR (``chat_id``, ``message_ids``) OR ``link``.
 
         Parameters:
             chat_id (``int`` | ``str``, *optional*):
@@ -57,14 +55,6 @@ class GetMessages:
             message_ids (``int`` | Iterable of ``int``, *optional*):
                 Pass a single message identifier or an iterable of message ids (as integers) to get the content of the
                 message themselves.
-
-            reply_to_message_ids (``int`` | Iterable of ``int``, *optional*):
-                Pass a single message identifier or an iterable of message ids (as integers) to get the content of
-                the previous message you replied to using this message.
-
-            pinned (``bool``, *optional*):
-                Returns information about the newest pinned message in the specified ``chat_id``. Other parameters are ignored when this is set.
-                Use :meth:`~pyrogram.Client.search_messages` to return all the pinned messages.
 
             replies (``int``, *optional*):
                 The number of subsequent replies to get for each message.
@@ -98,22 +88,13 @@ class GetMessages:
                 # Get message with all chained replied-to messages
                 await app.get_messages(chat_id=chat_id, message_ids=message_id, replies=-1)
 
-                # Get the replied-to message of a message
-                await app.get_messages(chat_id=chat_id, reply_to_message_ids=message_id)
-
         Raises:
             ValueError: In case of invalid arguments.
         """
 
-        if message_ids or reply_to_message_ids:
-            ids, ids_type = (
-                (message_ids, raw.types.InputMessageID) if message_ids
-                else (reply_to_message_ids, raw.types.InputMessageReplyTo) if reply_to_message_ids
-                else (None, None)
-            )
-
-            is_iterable = not isinstance(ids, int)
-            ids = list(ids) if is_iterable else [ids]
+        if message_ids:
+            is_iterable = isinstance(message_ids, Iterable)
+            ids = list(message_ids) if is_iterable else [message_ids]
 
             if replies < 0:
                 replies = (1 << 31) - 1
@@ -126,7 +107,7 @@ class GetMessages:
                     id=ids
                 )
             else:
-                ids = [ids_type(id=i) for i in ids]
+                ids = [raw.types.InputMessageID(id=i) for i in ids]
                 if chat_id and isinstance(peer, raw.types.InputPeerChannel):
                     rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
                 else:
@@ -142,18 +123,6 @@ class GetMessages:
             )
 
             return messages if is_iterable else messages[0] if messages else None
-
-        if chat_id and pinned:
-            peer = await self.resolve_peer(chat_id)
-            rpc = raw.functions.channels.GetMessages(channel=peer, id=[raw.types.InputMessagePinned()])
-            r = await self.invoke(rpc, sleep_threshold=-1)
-            messages = await utils.parse_messages(
-                self,
-                r,
-                is_scheduled=False,
-                replies=replies
-            )
-            return messages[0] if messages else None
 
         if link:
             linkps = link.split("/")
@@ -234,3 +203,148 @@ class GetMessages:
             )
 
         raise ValueError("No valid argument supplied. https://telegramplayground.github.io/pyrogram/api/methods/get_messages")
+
+
+    async def get_chat_pinned_message(
+        self: "pyrogram.Client",
+        chat_id: Union[int, str],
+        replies: int = 1
+    ) -> Optional["types.Message"]:
+        """Returns information about a newest pinned message in the chat.
+        Use :meth:`~pyrogram.Client.search_messages` to return all the pinned messages.
+
+        .. include:: /_includes/usable-by/users-bots.rst
+        
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            replies (``int``, *optional*):
+                The number of subsequent replies to get for each message.
+                Pass 0 for no reply at all or -1 for unlimited replies.
+                Defaults to 1.
+
+        """
+
+        peer = await self.resolve_peer(chat_id)
+        if not isinstance(peer, raw.types.InputPeerChannel):
+            raise ValueError("chat_id must belong to a supergroup or channel.")
+        rpc = raw.functions.channels.GetMessages(channel=peer, id=[raw.types.InputMessagePinned()])
+        r = await self.invoke(rpc, sleep_threshold=-1)
+        if replies < 0:
+            replies = (1 << 31) - 1
+        messages = await utils.parse_messages(
+            self,
+            r,
+            is_scheduled=False,
+            replies=replies
+        )
+        return messages[0] if messages else None
+
+
+    async def get_callback_query_message(
+        self: "pyrogram.Client",
+        chat_id: Union[int, str],
+        message_id: int,
+        callback_query_id: int,
+        replies: int = 1
+    ) -> Optional["types.Message"]:
+        """Returns information about a message with the callback button that originated a callback query.
+
+        .. include:: /_includes/usable-by/bots.rst
+
+        Parameters:
+            chat_id (``int`` | ``str``, *optional*):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            message_id (``int``):
+                Message identifier.
+
+            callback_query_id (``int``):
+                Identifier of the callback query.
+
+            replies (``int``, *optional*):
+                The number of subsequent replies to get for each message.
+                Pass 0 for no reply at all or -1 for unlimited replies.
+                Defaults to 1.
+
+        """
+
+        peer = await self.resolve_peer(chat_id)
+        ids = [raw.types.InputMessageCallbackQuery(id=message_id, query_id=callback_query_id)]
+        if isinstance(peer, raw.types.InputPeerChannel):
+            rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
+        else:
+            rpc = raw.functions.messages.GetMessages(id=ids)
+        r = await self.invoke(rpc, sleep_threshold=-1)
+        if replies < 0:
+            replies = (1 << 31) - 1
+        messages = await utils.parse_messages(
+            self,
+            r,
+            is_scheduled=False,
+            replies=replies
+        )
+        return messages[0] if messages else None
+
+
+    async def get_replied_message(
+        self: "pyrogram.Client",
+        chat_id: Union[int, str],
+        message_ids: Union[int, Iterable[int]],
+        replies: int = 1
+    ) -> Optional["types.Message"]:
+        """Returns information about a non-bundled message that is replied by a given message.
+
+        .. include:: /_includes/usable-by/users-bots.rst
+
+        Also, returns the pinned message, the game message, the invoice message,
+        the message with a previously set same background, the giveaway message, and the topic creation message for messages of the types
+        messagePinMessage, messageGameScore, messagePaymentSuccessful, messageChatSetBackground, messageGiveawayCompleted and topic messages
+        without non-bundled replied message respectively.
+
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            message_ids (``int`` | Iterable of ``int``):
+                Pass a single message identifier or an iterable of message ids (as integers) to get the content of
+                the previous message you replied to using this message.
+
+            replies (``int``, *optional*):
+                The number of subsequent replies to get for each message.
+                Pass 0 for no reply at all or -1 for unlimited replies.
+                Defaults to 1.
+
+        Example:
+            .. code-block:: python
+
+                # Get the replied-to message of a message
+                await app.get_replied_message(chat_id=chat_id, message_ids=message_id)
+
+        """
+
+        peer = await self.resolve_peer(chat_id)
+        is_iterable = isinstance(message_ids, Iterable)
+        ids = list(message_ids) if is_iterable else [message_ids]
+        ids = [raw.types.InputMessageReplyTo(id=i) for i in ids]
+        if isinstance(peer, raw.types.InputPeerChannel):
+            rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
+        else:
+            rpc = raw.functions.messages.GetMessages(id=ids)
+        r = await self.invoke(rpc, sleep_threshold=-1)
+        if replies < 0:
+            replies = (1 << 31) - 1
+        messages = await utils.parse_messages(
+            self,
+            r,
+            is_scheduled=False,
+            replies=replies
+        )
+        return messages if is_iterable else messages[0] if messages else None
