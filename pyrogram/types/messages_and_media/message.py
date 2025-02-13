@@ -3551,6 +3551,8 @@ class Message(Object, Update):
         width: int = 0,
         height: int = 0,
         thumb: Union[str, "io.BytesIO"] = None,
+        cover: Optional[Union[str, "io.BytesIO"]] = None,
+        start_timestamp: int = None,
         has_spoiler: bool = None,
         supports_streaming: bool = True,
         disable_notification: bool = None,
@@ -3629,6 +3631,12 @@ class Message(Object, Update):
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.
                 Thumbnails can't be reused and can be only uploaded as a new file.
+
+            cover (``str`` | :obj:`io.BytesIO`, *optional*):
+                Cover for the video in the message. Pass None to skip cover uploading.
+            
+            start_timestamp (``int``, *optional*):
+                Timestamp from which the video playing must start, in seconds.
 
             has_spoiler (``bool``, *optional*):
                 Pass True if the video needs to be covered with a spoiler animation.
@@ -3730,6 +3738,8 @@ class Message(Object, Update):
             width=width,
             height=height,
             thumb=thumb,
+            cover=cover,
+            start_timestamp=start_timestamp,
             has_spoiler=has_spoiler,
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
@@ -4582,7 +4592,7 @@ class Message(Object, Update):
         allow_paid_broadcast: bool = None,
         send_copy: bool = None,
         remove_caption: bool = None,
-        new_video_start_timestamp: int = None,
+        video_start_timestamp: int = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", list["types.Message"]]:
@@ -4628,8 +4638,8 @@ class Message(Object, Update):
             remove_caption (``bool``, *optional*):
                 Pass True to remove media captions of message copies.
 
-            new_video_start_timestamp (``int``, *optional*):
-                The new video start timestamp. Pass time to replace video start timestamp in the forwarded message.
+            video_start_timestamp (``int``, *optional*):
+                New start timestamp for the copied video in the message.
 
             send_as (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the chat or channel to send the message as.
@@ -4657,7 +4667,7 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             send_copy=send_copy,
             remove_caption=remove_caption,
-            new_video_start_timestamp=new_video_start_timestamp,
+            video_start_timestamp=video_start_timestamp,
             send_as=send_as,
             schedule_date=schedule_date
         )
