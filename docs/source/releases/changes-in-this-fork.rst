@@ -31,6 +31,7 @@ Changes in this Fork
 | Scheme layer used: 198 |
 +------------------------+
 
+- Splitted the :meth:`~pyrogram.Client.get_messages` into :meth:`~pyrogram.Client.get_chat_pinned_message`, :meth:`~pyrogram.Client.get_callback_query_message`, and :meth:`~pyrogram.Client.get_replied_message`.
 - Updated :doc:`Message Identifiers <../../topics/text-formatting>`.
 - Added ``message.content`` property.
 - Added the ``cover`` and ``start_timestamp`` parameters in :meth:`~pyrogram.Client.send_video` and :obj:`~pyrogram.types.InputPaidMediaVideo`.
