@@ -18,7 +18,7 @@
 
 import asyncio
 from collections.abc import Iterable
-from typing import Union, Iterable
+from typing import Union
 
 import pyrogram
 from pyrogram import raw

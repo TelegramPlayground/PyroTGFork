@@ -18,7 +18,7 @@
 
 from collections.abc import Iterable
 from datetime import datetime
-from typing import Union, Iterable
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils
