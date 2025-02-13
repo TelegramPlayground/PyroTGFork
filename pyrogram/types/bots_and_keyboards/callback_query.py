@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+
+import logging
 import re
 from typing import Union, Optional
 
@@ -25,6 +27,8 @@ from pyrogram.errors import ChannelPrivate
 from ..object import Object
 from ..update import Update
 from ... import utils
+
+log = logging.getLogger(__name__)
 
 
 class CallbackQuery(Object, Update):
