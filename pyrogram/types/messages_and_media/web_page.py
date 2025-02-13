@@ -160,7 +160,7 @@ class WebPage(Object):
 
             elif raw.types.DocumentAttributeVideo in attributes:
                 video_attributes = attributes[raw.types.DocumentAttributeVideo]
-                video = types.Video._parse(client, doc, video_attributes, file_name)
+                video = types.Video._parse(client, None, video_attributes, file_name, video=doc)
 
             else:
                 document = types.Document._parse(client, doc, file_name)

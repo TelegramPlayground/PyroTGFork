@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
+from typing import Optional
 
 import pyrogram
 from pyrogram import raw, utils
@@ -65,6 +66,13 @@ class Video(Object):
 
         thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
             Video thumbnails.
+
+        cover (:obj:`~pyrogram.types.Photo`, *optional*):
+            Cover of the video available in the message.
+
+        start_timestamp (``int``. *optional*):
+            Timestamp from which the video playing must start, in seconds.
+
     """
 
     def __init__(
@@ -82,7 +90,9 @@ class Video(Object):
         supports_streaming: bool = None,
         ttl_seconds: int = None,
         date: datetime = None,
-        thumbs: list["types.Thumbnail"] = None
+        thumbs: list["types.Thumbnail"] = None,
+        cover: Optional["types.Photo"] = None,
+        start_timestamp: Optional[int] = None
     ):
         super().__init__(client)
 
@@ -98,15 +108,20 @@ class Video(Object):
         self.ttl_seconds = ttl_seconds
         self.date = date
         self.thumbs = thumbs
+        self.cover = cover
+        self.start_timestamp = start_timestamp
 
     @staticmethod
     def _parse(
         client,
-        video: "raw.types.Document",
+        media: "raw.types.MessageMediaDocument",
         video_attributes: "raw.types.DocumentAttributeVideo",
         file_name: str,
-        ttl_seconds: int = None
+        ttl_seconds: int = None,
+        video: "raw.types.Document" = None
     ) -> "Video":
+        if not video:
+            video = media.document  # "raw.types.Document"
         return Video(
             file_id=FileId(
                 file_type=FileType.VIDEO,
@@ -129,5 +144,10 @@ class Video(Object):
             date=utils.timestamp_to_datetime(video.date) if video else None,
             ttl_seconds=ttl_seconds,
             thumbs=types.Thumbnail._parse(client, video) if video else None,
+            cover=types.Photo._parse(
+                client,
+                media.video_cover
+            ) if media.video_cover else None,
+            start_timestamp=media.video_timestamp,
             client=client
         )

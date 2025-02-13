@@ -88,15 +88,8 @@ class PaidMedia(Object):
                         video_attributes = attributes[raw.types.DocumentAttributeVideo]
 
                         if not video_attributes.round_message:
-                            video = types.Video._parse(client, doc, video_attributes, file_name, ttl_seconds)
+                            video = types.Video._parse(client, media, video_attributes, file_name, ttl_seconds)
 
                             return types.PaidMediaVideo(
-                                video=video,
-                                cover=types.Photo._parse(
-                                    client,
-                                    media.video_cover,
-                                    media.ttl_seconds,
-                                    media.spoiler
-                                ) if media.video_cover else None,
-                                start_timestamp=media.video_timestamp
+                                video=video
                             )

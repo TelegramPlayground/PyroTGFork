@@ -1179,10 +1179,10 @@ class Message(Object, Update):
                             video_attributes = attributes[raw.types.DocumentAttributeVideo]
 
                             if video_attributes.round_message:
-                                video_note = types.VideoNote._parse(client, doc, video_attributes, media.ttl_seconds)
+                                video_note = types.VideoNote._parse(client, media, video_attributes, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO_NOTE
                             else:
-                                video = types.Video._parse(client, doc, video_attributes, file_name, media.ttl_seconds)
+                                video = types.Video._parse(client, media, video_attributes, file_name, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO
                                 has_media_spoiler = media.spoiler
 
@@ -1217,7 +1217,7 @@ class Message(Object, Update):
                     elif doc is None:
                         has_media_spoiler = media.spoiler
                         if media.video:
-                            video = types.Video._parse(client, doc, None, None, media.ttl_seconds)
+                            video = types.Video._parse(client, media, None, None, media.ttl_seconds)
                             media_type = enums.MessageMediaType.VIDEO
                         elif media.round:
                             video_note = types.VideoNote._parse(client, doc, None, media.ttl_seconds)
