@@ -210,6 +210,9 @@ def pyrogram_api():
             get_chat_history_count
             read_chat_history
             get_messages
+            get_chat_pinned_message
+            get_callback_query_message
+            get_replied_message
             view_messages
             get_discussion_message
             get_discussion_replies

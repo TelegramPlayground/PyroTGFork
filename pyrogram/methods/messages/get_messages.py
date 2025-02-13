@@ -29,10 +29,8 @@ log = logging.getLogger(__name__)
 class GetMessages:
     async def get_messages(
         self: "pyrogram.Client",
-        *,
         chat_id: Union[int, str] = None,
         message_ids: Union[int, Iterable[int]] = None,
-        reply_to_message_ids: Union[int, Iterable[int]] = None,
         replies: int = 1,
         is_scheduled: bool = False,
         link: str = None,
@@ -45,7 +43,7 @@ class GetMessages:
 
         .. include:: /_includes/usable-by/users-bots.rst
 
-        You must use exactly one of ``message_ids`` OR ``reply_to_message_ids`` OR (``chat_id``, ``message_ids``) OR ``link``.
+        You must use exactly one of ``message_ids`` OR (``chat_id``, ``message_ids``) OR ``link``.
 
         Parameters:
             chat_id (``int`` | ``str``, *optional*):
@@ -95,15 +93,9 @@ class GetMessages:
             ValueError: In case of invalid arguments.
         """
 
-        if message_ids or reply_to_message_ids:
-            ids, ids_type = (
-                (message_ids, raw.types.InputMessageID) if message_ids
-                else (reply_to_message_ids, raw.types.InputMessageReplyTo) if reply_to_message_ids
-                else (None, None)
-            )
-
-            is_iterable = not isinstance(ids, int)
-            ids = list(ids) if is_iterable else [ids]
+        if message_ids:
+            is_iterable = not isinstance(message_ids, int)
+            ids = list(message_ids) if is_iterable else [message_ids]
 
             if replies < 0:
                 replies = (1 << 31) - 1
@@ -116,7 +108,7 @@ class GetMessages:
                     id=ids
                 )
             else:
-                ids = [ids_type(id=i) for i in ids]
+                ids = [raw.types.InputMessageID(id=i) for i in ids]
                 if chat_id and isinstance(peer, raw.types.InputPeerChannel):
                     rpc = raw.functions.channels.GetMessages(channel=peer, id=ids)
                 else:
@@ -217,7 +209,7 @@ class GetMessages:
     async def get_chat_pinned_message(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        replies: int = 1#self.fetch_replies
+        replies: int = 1
     ) -> Optional["types.Message"]:
         """Returns information about a newest pinned message in the chat.
         Use :meth:`~pyrogram.Client.search_messages` to return all the pinned messages.
@@ -233,7 +225,7 @@ class GetMessages:
             replies (``int``, *optional*):
                 The number of subsequent replies to get for each message.
                 Pass 0 for no reply at all or -1 for unlimited replies.
-                Defaults to :obj:`~pyrogram.Client.fetch_replies`.
+                Defaults to 1.
 
         """
 
@@ -258,11 +250,11 @@ class GetMessages:
         chat_id: Union[int, str],
         message_id: int,
         callback_query_id: int,
-        replies: int = 1#self.fetch_replies
+        replies: int = 1
     ) -> Optional["types.Message"]:
         """Returns information about a message with the callback button that originated a callback query.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/bots.rst
 
         Parameters:
             chat_id (``int`` | ``str``, *optional*):
@@ -279,7 +271,7 @@ class GetMessages:
             replies (``int``, *optional*):
                 The number of subsequent replies to get for each message.
                 Pass 0 for no reply at all or -1 for unlimited replies.
-                Defaults to :obj:`~pyrogram.Client.fetch_replies`.
+                Defaults to 1.
 
         """
 
@@ -305,7 +297,7 @@ class GetMessages:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_ids: Union[int, Iterable[int]],
-        replies: int = 1#self.fetch_replies
+        replies: int = 1
     ) -> Optional["types.Message"]:
         """Returns information about a non-bundled message that is replied by a given message.
 
@@ -329,7 +321,7 @@ class GetMessages:
             replies (``int``, *optional*):
                 The number of subsequent replies to get for each message.
                 Pass 0 for no reply at all or -1 for unlimited replies.
-                Defaults to :obj:`~pyrogram.Client.fetch_replies`.
+                Defaults to 1.
 
         Example:
             .. code-block:: python
