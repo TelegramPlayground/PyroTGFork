@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import io
 import os
 import re
 
@@ -180,6 +181,47 @@ class SendPaidMedia:
                         )
                     )
             elif isinstance(i, types.InputPaidMediaVideo):
+                video_cover_file = None
+                if i.cover:
+                    is_bytes_io = isinstance(i.cover, io.BytesIO)
+                    is_uploaded_file = is_bytes_io or os.path.isfile(i.cover)
+                    is_external_url = not is_uploaded_file and re.match("^https?://", i.cover)
+                    if is_bytes_io and not hasattr(i.cover, "name"):
+                        cover.name = "cover.jpg"
+
+                    if is_uploaded_file:
+                        video_cover_file = await self.invoke(
+                            raw.functions.messages.UploadMedia(
+                                business_connection_id=business_connection_id,
+                                peer=await self.resolve_peer(chat_id),
+                                media=raw.types.InputMediaUploadedPhoto(
+                                    file=await self.save_file(i.cover)
+                                )
+                            )
+                        )
+                        video_cover_file = raw.types.InputPhoto(
+                            id=video_cover_file.photo.id,
+                            access_hash=video_cover_file.photo.access_hash,
+                            file_reference=video_cover_file.photo.file_reference
+                        )
+                    elif is_external_url:
+                        video_cover_file = await self.invoke(
+                            raw.functions.messages.UploadMedia(
+                                business_connection_id=business_connection_id,
+                                peer=await self.resolve_peer(chat_id),
+                                media=raw.types.InputMediaPhotoExternal(
+                                    url=i.cover
+                                )
+                            )
+                        )
+                        video_cover_file = raw.types.InputPhoto(
+                            id=video_cover_file.photo.id,
+                            access_hash=video_cover_file.photo.access_hash,
+                            file_reference=video_cover_file.photo.file_reference
+                        )
+                    else:
+                        video_cover_file = (utils.get_input_media_from_file_id(i.cover, FileType.PHOTO)).id
+
                 if isinstance(i.media, str):
                     if os.path.isfile(i.media):
                         attributes = [
@@ -200,7 +242,7 @@ class SendPaidMedia:
                                     mime_type=self.guess_mime_type(i.media) or "video/mp4",
                                     nosound_video=True,
                                     attributes=attributes,
-                                    video_cover=await self.save_file(i.cover),
+                                    video_cover=video_cover_file,
                                     video_timestamp=i.start_timestamp
                                 )
                             )
@@ -219,7 +261,7 @@ class SendPaidMedia:
                                 peer=await self.resolve_peer(chat_id),
                                 media=raw.types.InputMediaDocumentExternal(
                                     url=i.media,
-                                    video_cover=await self.save_file(i.cover),
+                                    video_cover=video_cover_file,
                                     video_timestamp=i.start_timestamp
                                 )
                             )
@@ -234,6 +276,8 @@ class SendPaidMedia:
                         )
                     else:
                         media = utils.get_input_media_from_file_id(i.media, FileType.VIDEO)
+                        media.video_cover = video_cover_file
+                        media.video_timestamp = i.start_timestamp
                 else:
                     media = await self.invoke(
                         raw.functions.messages.UploadMedia(
@@ -251,7 +295,7 @@ class SendPaidMedia:
                                     ),
                                     raw.types.DocumentAttributeFilename(file_name=getattr(i.media, "name", "video.mp4"))
                                 ],
-                                video_cover=await self.save_file(i.cover),
+                                video_cover=video_cover_file,
                                 video_timestamp=i.start_timestamp
                             )
                         )
