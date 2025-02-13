@@ -1,15 +1,18 @@
-==============
-Release Notes
-==============
+
+.. admonition :: A Word of Warning
+    :class: tip
+    
+    We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable, **USE AT YOUR OWN RISK**.
+
 
 This page lists all the documented changes of this fork,
 in reverse chronological order. You should read this when upgrading
 to this fork to know where your code can break, and where
 it can take advantage of new goodies!
 
-`For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/commits/unknown_errors/>`_
+`For a more detailed description, please check the commits. <https://github.com/TelegramPlayGround/pyrogram/commits/dev/>`__
 
-If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`_ on github.
+If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`__ on github.
 
 Breaking Changes in this Fork
 ==============================
@@ -18,6 +21,7 @@ Breaking Changes in this Fork
 - PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
 - PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
 
+
 Changes in this Fork
 =====================
 
@@ -25,14 +29,17 @@ Changes in this Fork
 | Scheme layer used: 199 |
 +------------------------+
 
+- Added the parameters ``video_cover`` and ``video_start_timestamp`` to the method :meth:`~pyrogram.Client.copy_message`, allowing bots to change the start timestamp for copied videos.
+- Added ``for_paid_reactions`` in :meth:`~pyrogram.Client.get_send_as_chats`.
+- `Updated documentation and parameter names according to BOT API 8.3 <https://github.com/TelegramPlayGround/pyrogram/commit/7675b40>`__
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=198&to=199>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=198&to=199>`__.
 
 +------------------------+
 | Scheme layer used: 198 |
 +------------------------+
 
+- Updated :doc:`Text Formatting <../../topics/text-formatting>` documentation.
 - Splitted the :meth:`~pyrogram.Client.get_messages` into :meth:`~pyrogram.Client.get_chat_pinned_message`, :meth:`~pyrogram.Client.get_callback_query_message`, and :meth:`~pyrogram.Client.get_replied_message`.
-- Updated :doc:`Message Identifiers <../../topics/text-formatting>`.
 - Added ``message.content`` property.
 - Added the ``cover`` and ``start_timestamp`` parameters in :meth:`~pyrogram.Client.send_video` and :obj:`~pyrogram.types.InputPaidMediaVideo`.
 - Added the ``video_start_timestamp`` and renamed the ``send_copy`` and ``remove_caption`` parameters in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.

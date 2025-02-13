@@ -117,4 +117,4 @@ For example, given the ID *123456789*, here's how Pyrogram can tell entities apa
 So, every time you take a raw ID, make sure to translate it into the correct ID when you want to use it with an
 high-level method.
 
-.. _Community: https://t.me/Pyrogram
+.. _Community: https://PyroTGFork.t.me/2

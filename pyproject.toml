@@ -41,7 +41,7 @@ path = "pyrogram/__init__.py"
 [project.urls]
 Homepage = "https://telegramplayground.github.io/pyrogram/"
 Tracker = "https://github.com/TelegramPlayGround/Pyrogram/issues"
-community = "https://t.me/PyroTGFork"
+community = "https://PyroTGFork.t.me/2"
 Source = "https://github.com/TelegramPlayGround/Pyrogram"
 Documentation = "https://telegramplayground.github.io/pyrogram/releases/changes-in-this-fork.html"
 
