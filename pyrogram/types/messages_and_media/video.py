@@ -147,7 +147,7 @@ class Video(Object):
             cover=types.Photo._parse(
                 client,
                 media.video_cover
-            ) if media.video_cover else None,
-            start_timestamp=media.video_timestamp,
+            ) if media and media.video_cover else None,
+            start_timestamp=media.video_timestamp if media else None,
             client=client
         )
