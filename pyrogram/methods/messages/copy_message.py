@@ -36,6 +36,8 @@ class CopyMessage:
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
+        video_cover: Optional[Union[str, "io.BytesIO"]] = None,
+        video_start_timestamp: int = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -88,6 +90,12 @@ class CopyMessage:
 
             show_caption_above_media (``bool``, *optional*):
                 Pass True, if the caption must be shown above the message media. Ignored if a new caption isn't specified.
+
+            video_cover (``str`` | :obj:`io.BytesIO`, *optional*):
+                New cover for the copied video in the message. Pass None to skip cover uploading and use the existing cover.
+            
+            video_start_timestamp (``int``, *optional*):
+                New start timestamp, from which the video playing must start, in seconds for the copied video in the message.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -154,6 +162,8 @@ class CopyMessage:
             parse_mode=parse_mode,
             caption_entities=caption_entities,
             show_caption_above_media=show_caption_above_media,
+            video_cover=video_cover,
+            video_start_timestamp=video_start_timestamp,
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,

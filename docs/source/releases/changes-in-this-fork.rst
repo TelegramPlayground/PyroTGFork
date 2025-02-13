@@ -18,9 +18,9 @@ Breaking Changes in this Fork
 ==============================
 
 - In :meth:`~pyrogram.Client.download_media`, if the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` **and** ``idx`` was not specified, then a list of paths or binary file-like objects is returned.
-- Make :meth:`~pyrogram.Client.get_messages` accept only keyword-only arguments. `48d4230 <https://github.com/TelegramPlayGround/pyrogram/commit/48d42304f3ee51034d515919320634935e6b2c83>`__
-- PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`__ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`__ breaks some usages with offset-naive and offset-aware datetimes.
-- PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`__ without attribution.
+- PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
+- PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
+
 
 Changes in this Fork
 =====================
@@ -36,8 +36,8 @@ Changes in this Fork
 +------------------------+
 
 - Updated :doc:`Text Formatting <../../topics/text-formatting>` documentation.
+- Splitted the :meth:`~pyrogram.Client.get_messages` into :meth:`~pyrogram.Client.get_chat_pinned_message`, :meth:`~pyrogram.Client.get_callback_query_message`, and :meth:`~pyrogram.Client.get_replied_message`.
 - Added ``message.content`` property.
-- Added the parameter ``pinned`` and made the parameter ``chat_id`` optional in :meth:`~pyrogram.Client.get_messages`. **NOTE**: Please be aware about using the correct :doc:`Message Identifiers <../../topics/message-identifiers>`, when using this method.
 - Added the ``cover`` and ``start_timestamp`` parameters in :meth:`~pyrogram.Client.send_video` and :obj:`~pyrogram.types.InputPaidMediaVideo`.
 - Added the ``video_start_timestamp`` and renamed the ``send_copy`` and ``remove_caption`` parameters in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
 - Added the ``gift_count`` to the :obj:`~pyrogram.types.Chat`.
