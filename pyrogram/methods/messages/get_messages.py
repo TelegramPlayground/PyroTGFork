@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from collections.abc import Iterable
 from typing import Iterable, Optional, Union
 
 import pyrogram
@@ -87,14 +88,12 @@ class GetMessages:
                 # Get message with all chained replied-to messages
                 await app.get_messages(chat_id=chat_id, message_ids=message_id, replies=-1)
 
-                
-
         Raises:
             ValueError: In case of invalid arguments.
         """
 
         if message_ids:
-            is_iterable = not isinstance(message_ids, int)
+            is_iterable = isinstance(message_ids, Iterable)
             ids = list(message_ids) if is_iterable else [message_ids]
 
             if replies < 0:
@@ -332,7 +331,7 @@ class GetMessages:
         """
 
         peer = await self.resolve_peer(chat_id)
-        is_iterable = not isinstance(message_ids, int)
+        is_iterable = isinstance(message_ids, Iterable)
         ids = list(message_ids) if is_iterable else [message_ids]
         ids = [raw.types.InputMessageReplyTo(id=i) for i in ids]
         if isinstance(peer, raw.types.InputPeerChannel):
