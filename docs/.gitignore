@@ -1,0 +1,11 @@
+source/telegram
+source/api/methods/
+source/api/bound-methods/
+source/api/types/
+source/api/enums/
+
+resources/
+
+# Sphinx documentation
+_build/
+source/_build

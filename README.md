@@ -13,7 +13,7 @@
         Releases
     </a>
     •
-    <a href="https://t.me/PyroTGFork">
+    <a href="https://PyroTGFork.t.me/2">
         News
     </a>
 </p>
@@ -60,4 +60,4 @@ pip3 install pyrotgfork
 
 - Check out [the docs](https://telegramplayground.github.io/pyrogram) to learn more about Pyrogram, get started right
 away and discover more in-depth material for building your client applications.
-- Join the official channel at [PyroTGFork](https://t.me/PyroTGFork) and stay tuned for news, updates and announcements.
+- Join the official channel at [PyroTGFork](https://PyroTGFork.t.me/2) and stay tuned for news, updates and announcements.
