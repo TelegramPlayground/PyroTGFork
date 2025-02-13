@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+
 import re
 from typing import Union, Optional
 
@@ -98,14 +99,13 @@ class CallbackQuery(Object, Update):
             message_id = callback_query.msg_id
 
             message = client.message_cache[(chat_id, message_id)]
-
             if not message:
-                try:
-                    message = await client.get_messages(
-                        chat_id=chat_id,
-                        message_ids=message_id
-                    )
-                except ChannelPrivate:
+                message = await client.get_callback_query_message(
+                    chat_id=chat_id,
+                    message_id=message_id,
+                    callback_query_id=callback_query.query_id
+                )
+                if not message:
                     channel = chats.get(peer_id, None)
                     if channel:
                         message = types.Message(

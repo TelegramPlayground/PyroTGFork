@@ -17,7 +17,8 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Union, Iterable
+from collections.abc import Iterable
+from typing import Union
 
 import pyrogram
 from pyrogram import raw
@@ -59,7 +60,8 @@ class GetForumTopic:
         Raises:
             ValueError: In case of invalid arguments.
         """
-        is_iterable = not isinstance(message_thread_ids, int)
+
+        is_iterable = isinstance(message_thread_ids, Iterable)
         ids = list(message_thread_ids) if is_iterable else [message_thread_ids]
 
         r = await self.invoke(
