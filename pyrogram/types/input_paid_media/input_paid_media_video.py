@@ -55,7 +55,7 @@ class InputPaidMediaVideo(InputPaidMedia):
             Pass True, if the uploaded video is suitable for streaming.
 
         cover (``str`` | :obj:`io.BytesIO`, *optional*):
-            Cover of the video; pass None to skip cover uploading.
+            Cover for the video in the message. pass None to skip cover uploading.
         
         start_timestamp (``int``, *optional*):
             Timestamp from which the video playing must start, in seconds.

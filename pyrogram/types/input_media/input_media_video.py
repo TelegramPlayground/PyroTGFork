@@ -78,6 +78,13 @@ class InputMediaVideo(InputMedia):
         disable_content_type_detection (``bool``, *optional*):
             Pass True, if the uploaded video is a video message with no sound.
             Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always True, if the document is sent as part of an album.
+        
+        cover (``str`` | :obj:`io.BytesIO`, *optional*):
+            Cover for the video in the message. pass None to skip cover uploading.
+        
+        start_timestamp (``int``, *optional*):
+            Timestamp from which the video playing must start, in seconds.
+
     """
 
     def __init__(
@@ -95,6 +102,8 @@ class InputMediaVideo(InputMedia):
         supports_streaming: bool = True,
         has_spoiler: bool = None,
         disable_content_type_detection: bool = None,
+        cover: Optional[Union[str, "io.BytesIO"]] = None,
+        start_timestamp: int = None
     ):
         super().__init__(media, caption, parse_mode, caption_entities)
 
@@ -107,3 +116,5 @@ class InputMediaVideo(InputMedia):
         self.supports_streaming = supports_streaming
         self.has_spoiler = has_spoiler
         self.disable_content_type_detection = disable_content_type_detection
+        self.cover = cover
+        self.start_timestamp = start_timestamp
