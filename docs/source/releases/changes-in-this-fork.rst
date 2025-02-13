@@ -29,6 +29,9 @@ Changes in this Fork
 | Scheme layer used: 199 |
 +------------------------+
 
+- Added the parameters ``video_cover`` and ``video_start_timestamp`` to the method :meth:`~pyrogram.Client.copy_message`, allowing bots to change the start timestamp for copied videos.
+- Added ``for_paid_reactions`` in :meth:`~pyrogram.Client.get_send_as_chats`.
+- `Updated documentation and parameter names according to BOT API 8.3 <https://github.com/TelegramPlayGround/pyrogram/commit/7675b40>`__
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=198&to=199>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=198&to=199>`__.
 
 +------------------------+
