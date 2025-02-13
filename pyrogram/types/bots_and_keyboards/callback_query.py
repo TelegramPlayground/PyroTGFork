@@ -119,7 +119,7 @@ class CallbackQuery(Object, Update):
                                 channel
                             )
                         )
-                log.info(message)
+                log.debug(message)
         elif isinstance(callback_query, raw.types.UpdateInlineBotCallbackQuery):
             inline_message_id = utils.pack_inline_message_id(callback_query.msg_id)
         elif isinstance(callback_query, raw.types.UpdateBusinessBotCallbackQuery):
