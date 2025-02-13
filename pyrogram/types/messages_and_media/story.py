@@ -171,7 +171,7 @@ class Story(Object, Update):
                 doc = story_item.media.document
                 attributes = {type(i): i for i in doc.attributes}
                 video_attributes = attributes.get(raw.types.DocumentAttributeVideo, None)
-                video = types.Video._parse(client, doc, video_attributes, None)
+                video = types.Video._parse(client, story_item.media, video_attributes, None)
                 media = enums.MessageMediaType.VIDEO
             has_protected_content = story_item.noforwards
             edited = story_item.edited

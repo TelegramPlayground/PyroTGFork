@@ -22,13 +22,19 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 199 |
++------------------------+
+
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=198&to=199>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=198&to=199>`__.
+
++------------------------+
 | Scheme layer used: 198 |
 +------------------------+
 
 - Updated :doc:`Message Identifiers <../../topics/text-formatting>`.
 - Added ``message.content`` property.
 - Added the ``cover`` and ``start_timestamp`` parameters in :meth:`~pyrogram.Client.send_video` and :obj:`~pyrogram.types.InputPaidMediaVideo`.
-- Added the ``new_video_start_timestamp`` and renamed the ``send_copy`` and ``remove_caption`` parameters in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
+- Added the ``video_start_timestamp`` and renamed the ``send_copy`` and ``remove_caption`` parameters in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
 - Added the ``gift_count`` to the :obj:`~pyrogram.types.Chat`.
 - Added the :meth:`~pyrogram.Client.get_similar_bots`.
 - Changed types in :obj:`~pyrogram.types.UpgradedGift`, :obj:`~pyrogram.types.UserGift`.

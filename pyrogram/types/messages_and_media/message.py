@@ -1186,10 +1186,10 @@ class Message(Object, Update):
                             video_attributes = attributes[raw.types.DocumentAttributeVideo]
 
                             if video_attributes.round_message:
-                                video_note = types.VideoNote._parse(client, doc, video_attributes, media.ttl_seconds)
+                                video_note = types.VideoNote._parse(client, media, video_attributes, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO_NOTE
                             else:
-                                video = types.Video._parse(client, doc, video_attributes, file_name, media.ttl_seconds)
+                                video = types.Video._parse(client, media, video_attributes, file_name, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO
                                 has_media_spoiler = media.spoiler
 
@@ -1224,7 +1224,7 @@ class Message(Object, Update):
                     elif doc is None:
                         has_media_spoiler = media.spoiler
                         if media.video:
-                            video = types.Video._parse(client, doc, None, None, media.ttl_seconds)
+                            video = types.Video._parse(client, media, None, None, media.ttl_seconds)
                             media_type = enums.MessageMediaType.VIDEO
                         elif media.round:
                             video_note = types.VideoNote._parse(client, doc, None, media.ttl_seconds)
@@ -3558,6 +3558,8 @@ class Message(Object, Update):
         width: int = 0,
         height: int = 0,
         thumb: Union[str, "io.BytesIO"] = None,
+        cover: Optional[Union[str, "io.BytesIO"]] = None,
+        start_timestamp: int = None,
         has_spoiler: bool = None,
         supports_streaming: bool = True,
         disable_notification: bool = None,
@@ -3636,6 +3638,12 @@ class Message(Object, Update):
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.
                 Thumbnails can't be reused and can be only uploaded as a new file.
+
+            cover (``str`` | :obj:`io.BytesIO`, *optional*):
+                Cover for the video in the message. Pass None to skip cover uploading.
+            
+            start_timestamp (``int``, *optional*):
+                Timestamp from which the video playing must start, in seconds.
 
             has_spoiler (``bool``, *optional*):
                 Pass True if the video needs to be covered with a spoiler animation.
@@ -3737,6 +3745,8 @@ class Message(Object, Update):
             width=width,
             height=height,
             thumb=thumb,
+            cover=cover,
+            start_timestamp=start_timestamp,
             has_spoiler=has_spoiler,
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
@@ -4589,7 +4599,7 @@ class Message(Object, Update):
         allow_paid_broadcast: bool = None,
         send_copy: bool = None,
         remove_caption: bool = None,
-        new_video_start_timestamp: int = None,
+        video_start_timestamp: int = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", list["types.Message"]]:
@@ -4635,8 +4645,8 @@ class Message(Object, Update):
             remove_caption (``bool``, *optional*):
                 Pass True to remove media captions of message copies.
 
-            new_video_start_timestamp (``int``, *optional*):
-                The new video start timestamp. Pass time to replace video start timestamp in the forwarded message.
+            video_start_timestamp (``int``, *optional*):
+                New start timestamp for the copied video in the message.
 
             send_as (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the chat or channel to send the message as.
@@ -4664,7 +4674,7 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             send_copy=send_copy,
             remove_caption=remove_caption,
-            new_video_start_timestamp=new_video_start_timestamp,
+            video_start_timestamp=video_start_timestamp,
             send_as=send_as,
             schedule_date=schedule_date
         )
@@ -5709,7 +5719,7 @@ class Message(Object, Update):
     async def star(
         self,
         star_count: int = None,
-        is_anonymous: bool = False
+        paid_reaction_type: "types.PaidReactionType" = None
     ) -> "types.MessageReactions":
         """Bound method *star* of :obj:`~pyrogram.types.Message`.
 
@@ -5736,9 +5746,8 @@ class Message(Object, Update):
             star_count (``int``, *optional*):
                 Number of Telegram Stars to be used for the reaction; 1-2500.
 
-            is_anonymous (``bool``, *optional*):
-                Pass True to make paid reaction of the user on the message anonymous; pass False to make the user's profile visible among top reactors.
-                Defaults to False.
+            paid_reaction_type (:obj:`~pyrogram.types.PaidReactionType`, *optional*):
+                Type of the paid reaction; pass None if the user didn't choose reaction type explicitly, for example, the reaction is set from the message bubble.
 
         Returns:
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
@@ -5750,5 +5759,5 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id,
             star_count=star_count,
-            is_anonymous=is_anonymous
+            paid_reaction_type=paid_reaction_type
         )
