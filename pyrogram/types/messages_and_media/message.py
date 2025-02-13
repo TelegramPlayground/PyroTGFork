@@ -4686,6 +4686,8 @@ class Message(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
+        video_cover: Optional[Union[str, "io.BytesIO"]] = None,
+        video_start_timestamp: int = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -4739,6 +4741,12 @@ class Message(Object, Update):
 
             show_caption_above_media (``bool``, *optional*):
                 Pass True, if the caption must be shown above the message media. Ignored if a new caption isn't specified.
+
+            video_cover (``str`` | :obj:`io.BytesIO`, *optional*):
+                New cover for the copied video in the message. Pass None to skip cover uploading and use the existing cover.
+            
+            video_start_timestamp (``int``, *optional*):
+                New start timestamp, from which the video playing must start, in seconds for the copied video in the message.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -4834,7 +4842,29 @@ class Message(Object, Update):
             elif self.document:
                 file_id = self.document.file_id
             elif self.video:
-                file_id = self.video.file_id
+                return await self._client.send_video(
+                    chat_id,
+                    video=self.video.file_id,
+                    caption=caption,
+                    parse_mode=parse_mode,
+                    caption_entities=caption_entities,
+                    show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
+                    cover=video_cover,
+                    start_timestamp=video_start_timestamp,
+                    has_spoiler=self.has_media_spoiler,
+                    disable_notification=disable_notification,
+                    protect_content=self.has_protected_content if protect_content is None else protect_content,
+                    allow_paid_broadcast=allow_paid_broadcast,
+                    message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
+                    business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
+                    send_as=send_as,
+                    message_effect_id=self.effect_id,
+                    reply_parameters=reply_parameters,
+                    reply_markup=self.reply_markup if reply_markup is object else reply_markup,
+                    # TODO
+                    schedule_date=schedule_date,
+                    reply_to_message_id=reply_to_message_id
+                )
             elif self.animation:
                 file_id = self.animation.file_id
             elif self.voice:
