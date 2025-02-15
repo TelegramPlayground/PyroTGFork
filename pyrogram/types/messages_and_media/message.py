@@ -4834,7 +4834,9 @@ class Message(Object, Update):
                 send_as=send_as,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
-
+            if caption is None:
+                caption = self.caption or ""
+                caption_entities = self.caption_entities
             if self.photo:
                 file_id = self.photo.file_id
             elif self.audio:
@@ -4978,10 +4980,6 @@ class Message(Object, Update):
                 )
             else:
                 raise ValueError("Unknown media type")
-
-            if caption is None:
-                caption = self.caption or ""
-                caption_entities = self.caption_entities
 
             return await send_media(
                 file_id=file_id,
