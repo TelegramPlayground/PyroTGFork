@@ -16,13 +16,11 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from collections.abc import Iterable
 from datetime import datetime
-from typing import Union
+from typing import Union, Iterable
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
 
 
 class ForwardMessages:
@@ -105,7 +103,7 @@ class ForwardMessages:
                 await app.forward_messages(to_chat, from_chat, [1, 2, 3])
         """
 
-        is_iterable = isinstance(message_ids, Iterable)
+        is_iterable = utils.is_list_like(message_ids)
         message_ids = list(message_ids) if is_iterable else [message_ids]
 
         r = await self.invoke(

@@ -17,12 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import asyncio
-from collections.abc import Iterable
-from typing import Union
+from typing import Union, Iterable
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types, utils
 
 
 class GetUsers:
@@ -54,7 +52,7 @@ class GetUsers:
                 await app.get_users([user_id1, user_id2, user_id3])
         """
 
-        is_iterable = isinstance(user_ids, Iterable)
+        is_iterable = utils.is_list_like(user_ids)
         user_ids = list(user_ids) if is_iterable else [user_ids]
         user_ids = await asyncio.gather(*[self.resolve_peer(i) for i in user_ids])
 

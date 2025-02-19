@@ -648,3 +648,12 @@ def from_inline_bytes(data: bytes, file_name: str = None) -> BytesIO:
     b.write(data)
     b.name = file_name if file_name else f"photo_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.jpg"
     return b
+
+
+def is_list_like(obj):
+    """
+    Returns `True` if the given object looks like a list.
+
+    Ported from https://github.com/LonamiWebs/Telethon/blob/1cb5ff1dd54ecfad41711fc5a4ecf36d2ad8eaf6/telethon/utils.py#L902
+    """
+    return isinstance(obj, (list, tuple, set, dict, range))
