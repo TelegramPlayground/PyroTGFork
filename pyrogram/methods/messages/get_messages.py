@@ -17,8 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from collections.abc import Iterable
-from typing import Optional, Union
+from typing import Iterable, Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -93,7 +92,7 @@ class GetMessages:
         """
 
         if message_ids:
-            is_iterable = isinstance(message_ids, Iterable)
+            is_iterable = utils.is_list_like(message_ids)
             ids = list(message_ids) if is_iterable else [message_ids]
 
             if replies < 0:
@@ -331,7 +330,7 @@ class GetMessages:
         """
 
         peer = await self.resolve_peer(chat_id)
-        is_iterable = isinstance(message_ids, Iterable)
+        is_iterable = utils.is_list_like(message_ids)
         ids = list(message_ids) if is_iterable else [message_ids]
         ids = [raw.types.InputMessageReplyTo(id=i) for i in ids]
         if isinstance(peer, raw.types.InputPeerChannel):

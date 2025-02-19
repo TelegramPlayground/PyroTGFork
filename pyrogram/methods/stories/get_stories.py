@@ -16,11 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from collections.abc import Iterable
-from typing import Union
+from typing import Union, Iterable
 
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import raw, types, utils
 
 
 class GetStories:
@@ -58,7 +57,7 @@ class GetStories:
                     print(story)
         """
 
-        is_iterable = isinstance(story_ids, Iterable)
+        is_iterable = utils.is_list_like(story_ids)
         ids = list(story_ids) if is_iterable else [story_ids]
 
         peer = await self.resolve_peer(story_sender_chat_id)
