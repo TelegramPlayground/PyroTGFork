@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from datetime import datetime
 from typing import Union, Optional, AsyncGenerator
 
@@ -165,6 +166,7 @@ class GetChatHistory:
             offset_id = messages[-1].id + (1 if reverse else 0)
 
             for message in messages:
+                await sleep(0)
                 yield message
 
                 current += 1
