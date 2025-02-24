@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from datetime import datetime
 from typing import Union, AsyncGenerator
 
@@ -125,6 +126,7 @@ class GetForumTopics:
             offset_message_thread_id = last.message_thread_id
 
             for topic in topics:
+                await sleep(0)
                 yield topic
 
                 current += 1
