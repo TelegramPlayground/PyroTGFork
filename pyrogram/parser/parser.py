@@ -34,7 +34,7 @@ class Parser:
         text = str(text if text else "").strip()
 
         if mode is None:
-            if self.client:
+            if self.client and self.client.parse_mode:
                 mode = self.client.parse_mode
             else:
                 mode = enums.ParseMode.DEFAULT
