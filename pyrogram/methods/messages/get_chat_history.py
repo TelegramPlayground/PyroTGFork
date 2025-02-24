@@ -69,7 +69,7 @@ async def get_chunk(
             ),
             sleep_threshold=60
         )
-        messages =await utils.parse_messages(
+        messages = await utils.parse_messages(
             client,
             messages,
             is_scheduled=False,
