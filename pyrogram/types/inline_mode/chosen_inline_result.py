@@ -28,8 +28,9 @@ class ChosenInlineResult(Object, Update):
 
     .. note::
 
-        In order to receive these updates, your bot must have "inline feedback" enabled. You can enable this feature
-        with `@BotFather <https://t.me/botfather>`_.
+        In order to receive these updates:
+            1) your bot must have "inline feedback" enabled. You can enable this feature with `@BotFather <https://t.me/botfather>`_.
+            2) the :obj:`~pyrogram.types.InlineQueryResult` that you answer should have a ``reply_markup`` button.s
 
     Parameters:
         result_id (``str``):
@@ -83,5 +84,6 @@ class ChosenInlineResult(Object, Update):
                 latitude=chosen_inline_result.geo.lat,
                 client=client
             ) if chosen_inline_result.geo else None,
-            inline_message_id=inline_message_id
+            inline_message_id=inline_message_id,
+            client=client
         )
