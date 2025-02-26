@@ -28,7 +28,8 @@ class ChosenInlineResult(Object, Update):
 
     .. note::
 
-        In order to receive these updates, your bot must have "inline feedback" enabled. You can enable this feature with `@BotFather <https://t.me/botfather>`_.
+        In order to receive these updates, your bot must have "inline feedback" enabled.
+        You can enable this feature with `@BotFather <https://t.me/botfather>`_.
 
     Parameters:
         result_id (``str``):
