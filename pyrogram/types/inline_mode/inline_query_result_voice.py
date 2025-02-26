@@ -35,7 +35,7 @@ class InlineQueryResultVoice(InlineQueryResult):
             A valid URL for the voice recording.
             
         title (``str``):
-            Title for the result.
+            Recording title.
             
         id (``str``, *optional*):
             Unique identifier for this result, 1-64 bytes.
@@ -59,6 +59,15 @@ class InlineQueryResultVoice(InlineQueryResult):
             
         input_message_content (:obj:`~pyrogram.types.InputMessageContent`, *optional*):
             Content of the message to be sent instead of the audio.
+        
+        thumbnail_url (``str``, *optional*):
+            Url of the thumbnail for the result.
+
+        thumbnail_width (``int``, *optional*):
+            Thumbnail width.
+
+        thumbnail_height (``int``, *optional*):
+            Thumbnail height.
 
     """
 
@@ -72,7 +81,10 @@ class InlineQueryResultVoice(InlineQueryResult):
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: list["types.MessageEntity"] = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        input_message_content: "types.InputMessageContent" = None
+        input_message_content: "types.InputMessageContent" = None,
+        thumbnail_url: str = None,
+        thumbnail_width: int = 0,
+        thumbnail_height: int = 0
     ):
         super().__init__("voice", id, input_message_content, reply_markup)
 
@@ -82,6 +94,9 @@ class InlineQueryResultVoice(InlineQueryResult):
         self.caption = caption
         self.parse_mode = parse_mode
         self.caption_entities = caption_entities
+        self.thumbnail_url = thumbnail_url
+        self.thumbnail_width = thumbnail_width
+        self.thumbnail_height = thumbnail_height
 
     async def write(self, client: "pyrogram.Client"):
         audio = raw.types.InputWebDocument(
@@ -111,5 +126,16 @@ class InlineQueryResultVoice(InlineQueryResult):
                     message=message,
                     entities=entities
                 )
-            )
+            ),
+            thumb=raw.types.InputWebDocument(
+                url=self.thumbnail_url,
+                size=0,
+                mime_type="image/jpeg",
+                attributes=[
+                    raw.types.DocumentAttributeImageSize(
+                        w=self.thumbnail_width,
+                        h=self.thumbnail_height
+                    )
+                ]
+            ) if self.thumbnail_url else None
         )

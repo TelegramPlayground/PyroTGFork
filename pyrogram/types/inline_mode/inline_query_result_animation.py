@@ -38,13 +38,16 @@ class InlineQueryResultAnimation(InlineQueryResult):
             A valid URL for the animated GIF file.
             File size must not exceed 1 MB.
 
-        animation_width (``int``, *optional*)
+        animation_mime_type (``str``, *optional*):
+            MIME type of the video file. Must be one of "image/gif" and "video/mp4"
+
+        animation_width (``int``, *optional*):
             Width of the animation.
 
-        animation_height (``int``, *optional*)
+        animation_height (``int``, *optional*):
             Height of the animation.
 
-        animation_duration (``int``, *optional*)
+        animation_duration (``int``, *optional*):
             Duration of the animation in seconds.
 
         thumbnail_url (``str``, *optional*):
@@ -80,11 +83,13 @@ class InlineQueryResultAnimation(InlineQueryResult):
 
         input_message_content (:obj:`~pyrogram.types.InputMessageContent`):
             Content of the message to be sent instead of the photo.
+
     """
 
     def __init__(
         self,
         animation_url: str,
+        animation_mime_type: str = "image/gif",
         animation_width: int = 0,
         animation_height: int = 0,
         animation_duration: int = 0,
@@ -131,6 +136,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
         super().__init__("gif", id, input_message_content, reply_markup)
 
         self.animation_url = animation_url
+        self.animation_mime_type = animation_mime_type
         self.animation_width = animation_width
         self.animation_height = animation_height
         self.animation_duration = animation_duration
@@ -149,7 +155,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
         animation = raw.types.InputWebDocument(
             url=self.animation_url,
             size=0,
-            mime_type="image/gif",
+            mime_type=self.animation_mime_type,
             attributes=[
                 raw.types.DocumentAttributeVideo(
                     w=self.animation_width,

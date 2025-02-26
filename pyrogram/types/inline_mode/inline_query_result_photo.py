@@ -36,7 +36,8 @@ class InlineQueryResultPhoto(InlineQueryResult):
     Parameters:
         photo_url (``str``):
             A valid URL of the photo.
-            Photo must be in jpeg format an must not exceed 5 MB.
+            Photo must be in *JPEG* format.
+            Photo size must not exceed 5MB. 
 
         thumbnail_url (``str``, *optional*):
             URL of the thumbnail for the photo.

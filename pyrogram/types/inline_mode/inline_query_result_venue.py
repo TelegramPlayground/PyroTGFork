@@ -52,13 +52,13 @@ class InlineQueryResultVenue(InlineQueryResult):
             Foursquare identifier of the venue if known.
 
         foursquare_type (``str``, *optional*):
-            Foursquare type of the venue, if known.
+            Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
 
         google_place_id (``str``, *optional*):
             Google Places identifier of the venue.
 
         google_place_type (``str``, *optional*):
-            Google Places type of the venue.
+            Google Places type of the venue. (See `supported types <https://developers.google.com/places/web-service/supported_types>`_.)
 
         reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
             Inline keyboard attached to the message.

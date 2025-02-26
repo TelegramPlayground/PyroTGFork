@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import enums, raw, types
 from .inline_query_result import InlineQueryResult
 from ...file_id import FileId
 
@@ -36,6 +36,16 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
             Unique identifier for this result, 1-64 bytes.
             Defaults to a randomly generated UUID4.
 
+        caption (``str``, *optional*):
+            Caption of the audio to be sent, 0-1024 characters.
+            
+        parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+            By default, texts are parsed using both Markdown and HTML styles.
+            You can combine both syntaxes together.
+
+        caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+            List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
+
         reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
             An InlineKeyboardMarkup object.
 
@@ -47,17 +57,27 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
         self,
         sticker_file_id: str,
         id: str = None,
+        caption: str = "",
+        parse_mode: Optional["enums.ParseMode"] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         input_message_content: "types.InputMessageContent" = None
     ):
         super().__init__("sticker", id, input_message_content, reply_markup)
 
         self.sticker_file_id = sticker_file_id
+        self.caption = caption
+        self.parse_mode = parse_mode
+        self.caption_entities = caption_entities
         self.reply_markup = reply_markup
         self.input_message_content = input_message_content
 
     async def write(self, client: "pyrogram.Client"):
         file_id = FileId.decode(self.sticker_file_id)
+
+        message, entities = (await utils.parse_text_entities(
+            client, self.caption, self.parse_mode, self.caption_entities
+        )).values()
 
         return raw.types.InputBotInlineResultDocument(
             id=self.id,
@@ -72,7 +92,8 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
                 if self.input_message_content
                 else raw.types.InputBotInlineMessageMediaAuto(
                     reply_markup=await self.reply_markup.write(client) if self.reply_markup else None,
-                    message="",
+                    message=message,
+                    entities=entities
                 )
             )
         )

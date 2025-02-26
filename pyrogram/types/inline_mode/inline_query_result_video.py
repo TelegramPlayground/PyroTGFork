@@ -33,12 +33,18 @@ class InlineQueryResultVideo(InlineQueryResult):
     Alternatively, you can use *input_message_content* to send a message with the specified content instead of the
     video.
 
+    .. note::
+
+        If an InlineQueryResultVideo message contains an embedded video (e.g., YouTube),
+        you must replace its content using *input_message_content*.
+
+
     Parameters:
         video_url (``str``):
             A valid URL for the embedded video player or video file.
 
         thumbnail_url (``str``):
-            URL of the thumbnail (jpeg only) for the video.
+            URL of the thumbnail (JPEG only) for the video.
 
         title (``str``):
             Title for the result.

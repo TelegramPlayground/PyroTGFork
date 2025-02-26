@@ -47,7 +47,7 @@ class InlineQueryResult(Object):
 
     .. note::
 
-        All URLs passed in inline query results will be available to end users and therefore must be assumed to be **public**.
+        All URLs passed in inline query results will be available to end users and therefore must be assumed to be *public*.
 
     """
 

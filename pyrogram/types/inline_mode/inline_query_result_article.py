@@ -57,7 +57,7 @@ class InlineQueryResultArticle(InlineQueryResult):
             Thumbnail width.
 
         thumbnail_height (``int``, *optional*):
-            Thumbnail height
+            Thumbnail height.
     """
 
     def __init__(
