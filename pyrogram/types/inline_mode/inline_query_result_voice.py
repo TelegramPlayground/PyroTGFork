@@ -59,6 +59,7 @@ class InlineQueryResultVoice(InlineQueryResult):
             
         input_message_content (:obj:`~pyrogram.types.InputMessageContent`, *optional*):
             Content of the message to be sent instead of the audio.
+
     """
 
     def __init__(

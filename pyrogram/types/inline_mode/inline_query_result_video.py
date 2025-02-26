@@ -37,7 +37,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         video_url (``str``):
             A valid URL for the embedded video player or video file.
 
-        thumb_url (``str``):
+        thumbnail_url (``str``):
             URL of the thumbnail (jpeg only) for the video.
 
         title (``str``):
@@ -87,7 +87,7 @@ class InlineQueryResultVideo(InlineQueryResult):
     def __init__(
         self,
         video_url: str,
-        thumb_url: str,
+        thumbnail_url: str,
         title: str,
         id: str = None,
         mime_type: str = "video/mp4",
@@ -100,12 +100,26 @@ class InlineQueryResultVideo(InlineQueryResult):
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        input_message_content: "types.InputMessageContent" = None
+        input_message_content: "types.InputMessageContent" = None,
+        thumb_url: str = None,
     ):
+        if thumb_url and thumbnail_url:
+            raise ValueError(
+                "Parameters `thumb_url` and `thumbnail_url` are mutually "
+                "exclusive."
+            )
+        
+        if thumb_url is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use thumbnail_url instead"
+            )
+            thumbnail_url = thumb_url
+
         super().__init__("video", id, input_message_content, reply_markup)
 
         self.video_url = video_url
-        self.thumb_url = thumb_url
+        self.thumbnail_url = thumbnail_url
         self.title = title
         self.video_width = video_width
         self.video_height = video_height
@@ -130,7 +144,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         )
 
         thumb = raw.types.InputWebDocument(
-            url=self.thumb_url,
+            url=self.thumbnail_url,
             size=0,
             mime_type="image/jpeg",
             attributes=[]
