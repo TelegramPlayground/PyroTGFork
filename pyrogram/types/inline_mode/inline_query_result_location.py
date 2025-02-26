@@ -158,6 +158,7 @@ class InlineQueryResultLocation(InlineQueryResult):
                     geo_point=raw.types.InputGeoPoint(
                         lat=self.latitude,
                         long=self.longitude,
+                        accuracy_radius=self.horizontal_accuracy
                     ),
                     heading=self.heading,
                     period=self.live_period,

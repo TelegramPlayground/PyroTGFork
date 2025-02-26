@@ -160,7 +160,7 @@ class InlineQueryResultVenue(InlineQueryResult):
                 else raw.types.InputBotInlineMessageMediaVenue(
                     geo_point=raw.types.InputGeoPoint(
                         lat=self.latitude,
-                        long=self.longitude,
+                        long=self.longitude
                     ),
                     title=self.title,
                     address=self.address,
