@@ -28,9 +28,7 @@ class ChosenInlineResult(Object, Update):
 
     .. note::
 
-        In order to receive these updates:
-            1) your bot must have "inline feedback" enabled. You can enable this feature with `@BotFather <https://t.me/botfather>`_.
-            2) the :obj:`~pyrogram.types.InlineQueryResult` that you answer should have a ``reply_markup`` button.s
+        In order to receive these updates, your bot must have "inline feedback" enabled. You can enable this feature with `@BotFather <https://t.me/botfather>`_.
 
     Parameters:
         result_id (``str``):
