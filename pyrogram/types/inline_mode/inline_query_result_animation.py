@@ -16,11 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
 from .inline_query_result import InlineQueryResult
+
+log = logging.getLogger(__name__)
 
 
 class InlineQueryResultAnimation(InlineQueryResult):
@@ -44,11 +47,11 @@ class InlineQueryResultAnimation(InlineQueryResult):
         animation_duration (``int``, *optional*)
             Duration of the animation in seconds.
 
-        thumb_url (``str``, *optional*):
+        thumbnail_url (``str``, *optional*):
             URL of the static thumbnail for the result (jpeg or gif)
             Defaults to the value passed in *animation_url*.
 
-        thumb_mime_type (``str``, *optional*)
+        thumbnail_mime_type (``str``, *optional*)
             MIME type of the thumbnail, must be one of "image/jpeg", "image/gif", or "video/mp4".
             Defaults to "image/jpeg".
 
@@ -85,8 +88,8 @@ class InlineQueryResultAnimation(InlineQueryResult):
         animation_width: int = 0,
         animation_height: int = 0,
         animation_duration: int = 0,
-        thumb_url: str = None,
-        thumb_mime_type: str = "image/jpeg",
+        thumbnail_url: str = None,
+        thumbnail_mime_type: str = "image/jpeg",
         id: str = None,
         title: str = None,
         description: str = None,
@@ -95,16 +98,44 @@ class InlineQueryResultAnimation(InlineQueryResult):
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        input_message_content: "types.InputMessageContent" = None
+        input_message_content: "types.InputMessageContent" = None,
+        thumb_url: str = None,
+        thumb_mime_type: str = None,
     ):
+        if thumb_url and thumbnail_url:
+            raise ValueError(
+                "Parameters `thumb_url` and `thumbnail_url` are mutually "
+                "exclusive."
+            )
+        
+        if thumb_url is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use thumbnail_url instead"
+            )
+            thumbnail_url = thumb_url
+
+        if thumb_mime_type and thumbnail_mime_type:
+            raise ValueError(
+                "Parameters `thumb_mime_type` and `thumbnail_mime_type` are mutually "
+                "exclusive."
+            )
+        
+        if thumb_mime_type is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use thumbnail_mime_type instead"
+            )
+            thumbnail_mime_type = thumb_mime_type
+
         super().__init__("gif", id, input_message_content, reply_markup)
 
         self.animation_url = animation_url
         self.animation_width = animation_width
         self.animation_height = animation_height
         self.animation_duration = animation_duration
-        self.thumb_url = thumb_url
-        self.thumb_mime_type = thumb_mime_type
+        self.thumbnail_url = thumbnail_url
+        self.thumbnail_mime_type = thumbnail_mime_type
         self.title = title
         self.description = description
         self.caption = caption
@@ -128,13 +159,13 @@ class InlineQueryResultAnimation(InlineQueryResult):
             ]
         )
 
-        if self.thumb_url is None:
+        if self.thumbnail_url is None:
             thumb = animation
         else:
             thumb = raw.types.InputWebDocument(
-                url=self.thumb_url,
+                url=self.thumbnail_url,
                 size=0,
-                mime_type=self.thumb_mime_type,
+                mime_type=self.thumbnail_mime_type,
                 attributes=[]
             )
 
