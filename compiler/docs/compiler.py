@@ -795,6 +795,10 @@ def pyrogram_api():
             CallbackQuery.edit_message_caption
             CallbackQuery.edit_message_media
             CallbackQuery.edit_message_reply_markup
+            ChosenInlineResult.edit_message_text
+            ChosenInlineResult.edit_message_caption
+            ChosenInlineResult.edit_message_media
+            ChosenInlineResult.edit_message_reply_markup
         """,
         inline_query="""
         InlineQuery
