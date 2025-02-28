@@ -624,6 +624,7 @@ def pyrogram_api():
             InlineQueryResultVoice
             InlineQueryResultArticle
             InlineQueryResultContact
+            InlineQueryResultGame
             InlineQueryResultLocation
             InlineQueryResultVenue
         """,

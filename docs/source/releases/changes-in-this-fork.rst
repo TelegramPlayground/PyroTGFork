@@ -29,6 +29,7 @@ Changes in this Fork
 | Scheme layer used: 199 |
 +------------------------+
 
+- Added the class :obj:`~pyrogram.types.InlineQueryResultGame`.
 - Added the bound methods :meth:`~pyrogram.types.ChosenInlineResult.edit_message_text`, :meth:`~pyrogram.types.ChosenInlineResult.edit_message_caption`, :meth:`~pyrogram.types.ChosenInlineResult.edit_message_media` and :meth:`~pyrogram.types.ChosenInlineResult.edit_message_reply_markup`.
 - Renamed the fields ``thumb_url``, ``thumb_width``, and ``thumb_height`` in the classes :obj:`~pyrogram.types.InlineQueryResultArticle`, :obj:`~pyrogram.types.InlineQueryResultContact`, :obj:`~pyrogram.types.InlineQueryResultDocument`, :obj:`~pyrogram.types.InlineQueryResultLocation`, and :obj:`~pyrogram.types.InlineQueryResultVenue` to ``thumbnail_url``, ``thumbnail_width``, and ``thumbnail_height`` respectively.
 - Renamed the field ``thumb_url`` in the classes :obj:`~pyrogram.types.InlineQueryResultPhoto` and :obj:`~pyrogram.types.InlineQueryResultVideo` to ``thumbnail_url``.

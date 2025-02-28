@@ -36,7 +36,7 @@ class InlineQueryResult(Object):
     - :obj:`~pyrogram.types.InlineQueryResultArticle`
     - :obj:`~pyrogram.types.InlineQueryResultAudio`
     - :obj:`~pyrogram.types.InlineQueryResultContact`
-
+    - :obj:`~pyrogram.types.InlineQueryResultGame`
     - :obj:`~pyrogram.types.InlineQueryResultDocument`
     - :obj:`~pyrogram.types.InlineQueryResultAnimation`
     - :obj:`~pyrogram.types.InlineQueryResultLocation`
