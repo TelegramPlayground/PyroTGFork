@@ -117,7 +117,7 @@ class ForwardMessages:
                 drop_author=send_copy,
                 drop_media_captions=remove_caption,
                 noforwards=protect_content,
-                allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=allow_paid_broadcast,
                 random_id=[self.rnd_id() for _ in message_ids],
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),

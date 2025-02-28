@@ -228,7 +228,7 @@ class SendMessage:
                     invert_media=link_preview_options.show_above_text,
                     entities=entities,
                     noforwards=protect_content,
-                    allow_paid_floodskip=allow_paid_broadcast,
+                    allow_paid_stars=allow_paid_broadcast,
                     effect=message_effect_id
                 )
                 if business_connection_id:
@@ -265,7 +265,7 @@ class SendMessage:
                     # TODO
                     # TODO
                     noforwards=protect_content,
-                    allow_paid_floodskip=allow_paid_broadcast,
+                    allow_paid_stars=allow_paid_broadcast,
                     # TODO
                     invert_media=link_preview_options.show_above_text if link_preview_options else None,
                     reply_to=reply_to,
@@ -297,7 +297,7 @@ class SendMessage:
                 # TODO
                 # TODO
                 noforwards=protect_content,
-                allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=allow_paid_broadcast,
                 # TODO
                 invert_media=link_preview_options.show_above_text if link_preview_options else None,
                 reply_to=reply_to,

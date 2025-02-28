@@ -133,7 +133,7 @@ class SendGame:
             random_id=self.rnd_id(),
             send_as=await self.resolve_peer(send_as) if send_as else None,
             noforwards=protect_content,
-            allow_paid_floodskip=allow_paid_broadcast,
+            allow_paid_stars=allow_paid_broadcast,
             effect=message_effect_id,
             reply_markup=await reply_markup.write(self) if reply_markup else None
         )

@@ -223,7 +223,7 @@ class SendSticker:
                 
 
                 noforwards=protect_content,
-                allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=allow_paid_broadcast,
 
 
                 peer=await self.resolve_peer(chat_id),

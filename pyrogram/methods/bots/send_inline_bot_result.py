@@ -35,6 +35,7 @@ class SendInlineBotResult:
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
+        allow_paid_broadcast: bool = None,
         message_thread_id: int = None,
         schedule_date: datetime = None,
         reply_to_message_id: int = None
@@ -69,6 +70,9 @@ class SendInlineBotResult:
                 Use the :meth:`~pyrogram.Client.get_send_as_chats` to return the list of message sender identifiers, which can be used to send messages in the chat, 
                 This setting applies to the current message and will remain effective for future messages unless explicitly changed.
                 To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
+
+            allow_paid_broadcast (``bool``, *optional*):
+                Pass True to allow the message to ignore regular broadcast limits for a small fee.
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
@@ -116,6 +120,7 @@ class SendInlineBotResult:
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 silent=disable_notification or None,
                 reply_to=reply_to,
+                allow_paid_stars=allow_paid_broadcast,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
             )
         )
