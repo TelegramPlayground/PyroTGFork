@@ -111,10 +111,11 @@ class GetChatPhotos:
             current = 0
 
             for photo in photos:
+                await sleep(0)
+
                 if not photo:
                     continue
 
-                await sleep(0)
                 yield photo
 
                 current += 1
@@ -155,10 +156,11 @@ class GetChatPhotos:
                 offset += len(photos)
 
                 for photo in photos:
+                    await sleep(0)
+
                     if not photo:
                         continue
 
-                    await sleep(0)
                     yield photo
 
                     current += 1
