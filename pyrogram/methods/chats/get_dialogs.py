@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from typing import AsyncGenerator, Optional
 
 import pyrogram
@@ -113,6 +114,7 @@ class GetDialogs:
             offset_peer = await self.resolve_peer(last.chat.id)
 
             for dialog in dialogs:
+                await sleep(0)
                 yield dialog
 
                 current += 1

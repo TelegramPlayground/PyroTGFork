@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from datetime import datetime
 from typing import Union, Optional, AsyncGenerator
 
@@ -68,7 +69,7 @@ async def get_chunk(
             ),
             sleep_threshold=60
         )
-        messages =await utils.parse_messages(
+        messages = await utils.parse_messages(
             client,
             messages,
             is_scheduled=False,
@@ -165,6 +166,7 @@ class GetChatHistory:
             offset_id = messages[-1].id + (1 if reverse else 0)
 
             for message in messages:
+                await sleep(0)
                 yield message
 
                 current += 1
