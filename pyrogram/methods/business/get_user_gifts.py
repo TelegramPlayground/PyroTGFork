@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from typing import Union, Optional, AsyncGenerator
 
 import pyrogram
@@ -83,6 +84,7 @@ class GetUserGifts:
                 return
 
             for user_gift in user_gifts:
+                await sleep(0)
                 yield user_gift
 
                 current += 1
