@@ -24,7 +24,7 @@ from ..object import Object
 
 
 class InlineQueryResult(Object):
-    """One result of an inline query.
+    """This object represents one result of an inline query. Telegram clients currently support results of the following 20 types:
 
     - :obj:`~pyrogram.types.InlineQueryResultCachedAudio`
     - :obj:`~pyrogram.types.InlineQueryResultCachedDocument`
@@ -36,6 +36,7 @@ class InlineQueryResult(Object):
     - :obj:`~pyrogram.types.InlineQueryResultArticle`
     - :obj:`~pyrogram.types.InlineQueryResultAudio`
     - :obj:`~pyrogram.types.InlineQueryResultContact`
+    - :obj:`~pyrogram.types.InlineQueryResultGame`
     - :obj:`~pyrogram.types.InlineQueryResultDocument`
     - :obj:`~pyrogram.types.InlineQueryResultAnimation`
     - :obj:`~pyrogram.types.InlineQueryResultLocation`
@@ -43,6 +44,11 @@ class InlineQueryResult(Object):
     - :obj:`~pyrogram.types.InlineQueryResultVenue`
     - :obj:`~pyrogram.types.InlineQueryResultVideo`
     - :obj:`~pyrogram.types.InlineQueryResultVoice`
+
+    .. note::
+
+        All URLs passed in inline query results will be available to end users and therefore must be assumed to be *public*.
+
     """
 
     def __init__(
