@@ -89,7 +89,16 @@ class CallbackQuery(Object, Update):
         self.matches = matches
 
     @staticmethod
-    async def _parse(client: "pyrogram.Client", callback_query, users, chats) -> "CallbackQuery":
+    async def _parse(
+        client: "pyrogram.Client",
+        callback_query: Union[
+            "raw.types.UpdateBotCallbackQuery",
+            "raw.types.UpdateInlineBotCallbackQuery",
+            "raw.types.UpdateBusinessBotCallbackQuery",
+        ],
+        users: dict,
+        chats: dict,
+    ) -> "CallbackQuery":
         message = None
         inline_message_id = None
 
