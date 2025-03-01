@@ -36,7 +36,7 @@ Changes in this Fork
 - Added the bound methods :meth:`~pyrogram.types.ChosenInlineResult.edit_message_text`, :meth:`~pyrogram.types.ChosenInlineResult.edit_message_caption`, :meth:`~pyrogram.types.ChosenInlineResult.edit_message_media` and :meth:`~pyrogram.types.ChosenInlineResult.edit_message_reply_markup`.
 - Renamed the fields ``thumb_url``, ``thumb_width``, and ``thumb_height`` in the classes :obj:`~pyrogram.types.InlineQueryResultArticle`, :obj:`~pyrogram.types.InlineQueryResultContact`, :obj:`~pyrogram.types.InlineQueryResultDocument`, :obj:`~pyrogram.types.InlineQueryResultLocation`, and :obj:`~pyrogram.types.InlineQueryResultVenue` to ``thumbnail_url``, ``thumbnail_width``, and ``thumbnail_height`` respectively.
 - Renamed the field ``thumb_url`` in the classes :obj:`~pyrogram.types.InlineQueryResultPhoto` and :obj:`~pyrogram.types.InlineQueryResultVideo` to ``thumbnail_url``.
-- Renamed the fields ``thumb_url`` and ``thumb_mime_type`` in the classes :obj:`~pyrogram.types.InlineQueryResultAnimation` to ``thumbnail_url`` and ``thumbnail_mime_type`` respectively.
+- Added the field ``animation_mime_type`` and renamed the fields ``thumb_url`` and ``thumb_mime_type`` in the classes :obj:`~pyrogram.types.InlineQueryResultAnimation` to ``thumbnail_url`` and ``thumbnail_mime_type`` respectively.
 - Fixed a bug with ``_client`` being None in :obj:`~pyrogram.handlers.ChosenInlineResultHandler`.
 - Added the parameters ``video_cover`` and ``video_start_timestamp`` to the method :meth:`~pyrogram.Client.copy_message`, allowing bots to change the start timestamp for copied videos.
 - Added ``for_paid_reactions`` in :meth:`~pyrogram.Client.get_send_as_chats`.
