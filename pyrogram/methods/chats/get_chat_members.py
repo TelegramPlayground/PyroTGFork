@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from asyncio import sleep
 from typing import Union, Optional, AsyncGenerator
 
 import pyrogram
@@ -125,6 +126,7 @@ class GetChatMembers:
             users = {i.id: i for i in r.users}
 
             for member in members:
+                await sleep(0)
                 yield types.ChatMember._parse(self, member, users, {})
 
             return
@@ -150,6 +152,7 @@ class GetChatMembers:
             offset += len(members)
 
             for member in members:
+                await sleep(0)
                 yield member
 
                 current += 1

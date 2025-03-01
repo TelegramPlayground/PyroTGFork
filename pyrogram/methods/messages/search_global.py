@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from typing import AsyncGenerator, Optional
 
 import pyrogram
@@ -120,6 +121,7 @@ class SearchGlobal:
             offset_id = last.id
 
             for message in messages:
+                await sleep(0)
                 yield message
 
                 current += 1

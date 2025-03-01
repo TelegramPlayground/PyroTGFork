@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 import io
 import math
 from typing import Union, Optional
@@ -87,7 +88,7 @@ class StreamMedia:
                 raise ValueError("This message doesn't contain any downloadable media")
         else:
             media = message
-
+        # TODO
         if isinstance(media, str):
             file_id_str = media
         else:
@@ -104,4 +105,5 @@ class StreamMedia:
             offset += chunks
 
         async for chunk in self.get_file(file_id_obj, file_size, limit, offset):
+            await sleep(0)
             yield chunk
