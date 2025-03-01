@@ -73,7 +73,7 @@ class GetDiscussionReplies:
 
             users = {u.id: u for u in r.users}
             chats = {c.id: c for c in r.chats}
-            messages = r.messages
+            messages = r.messages  # TODO
 
             if not messages:
                 return
