@@ -61,7 +61,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
 
     >blockquote
 
-    |>escaped blockquote 
+    **>escaped blockquote 
 
     >Fist line of multi line blockquote 
     >Block quotation continued
@@ -69,13 +69,12 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
     >Block quotation continued
     >The last line of the block quotation
 
-    **>
-    The expandable block quotation started right after the previous block quotation
-    It is separated from the previous block quotation by expandable syntax 
-    Expandable block quotation continued
-    Hidden by default part of the expandable block quotation started
-    Expandable block quotation continued
-    The last line of the expandable block quotation with the expandability mark<**
+    **>The expandable block quotation started right after the previous block quotation
+    **>It is separated from the previous block quotation by expandable syntax 
+    **>Expandable block quotation continued
+    **>Hidden by default part of the expandable block quotation started
+    **>Expandable block quotation continued
+    **>The last line of the expandable block quotation with the expandability mark||
 
     `inline fixed-width code`
 
@@ -115,21 +114,19 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
 
             ">blockquote\n"
 
-            "|>escaped blockquote\n"
-
             ">Fist line of multi line blockquote\n"
             ">Block quotation continued\n"
             ">Block quotation continued\n"
             ">Block quotation continued\n"
             ">The last line of the block quotation"
 
-            "**>\n"
-            "The expandable block quotation started right after the previous block quotation\n"
-            "It is separated from the previous block quotation by expandable syntax\n"
-            "Expandable block quotation continued\n"
-            "Hidden by default part of the expandable block quotation started\n"
-            "Expandable block quotation continued\n"
-            "The last line of the expandable block quotation with the expandability mark<**"
+            "||\n"
+            "**>The expandable block quotation started right after the previous block quotation\n"
+            "**>It is separated from the previous block quotation by expandable syntax\n"
+            "**>Expandable block quotation continued\n"
+            "**>Hidden by default part of the expandable block quotation started\n"
+            "**>Expandable block quotation continued\n"
+            "**>The last line of the expandable block quotation with the expandability mark||"
 
         ),
         parse_mode=ParseMode.MARKDOWN
