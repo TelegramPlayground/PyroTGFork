@@ -181,6 +181,9 @@ class Markdown:
     @staticmethod
     def unparse(text: str, entities: list):
         """
+
+        https://github.com/LonamiWebs/Telethon/blob/141b620/telethon/extensions/markdown.py#L137-L193
+
         Performs the reverse operation to .parse(), effectively returning
         markdown-like syntax given a normal text and its MessageEntity's.
 
