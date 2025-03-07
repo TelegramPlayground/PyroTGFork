@@ -1,11 +1,5 @@
-Welcome to ``PyroTGFork``
-==========================
-
-.. admonition :: A Word of Warning
-    :class: tip
-    
-    We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable, **USE AT YOUR OWN RISK**.
-
+Welcome to PyroTGFork Pyrogram Fork
+=====================================
 
 .. raw:: html
 
@@ -34,7 +28,7 @@ Welcome to ``PyroTGFork``
             Releases
         </a>
         •
-        <a href="https://t.me/pyrogram">
+        <a href="https://PyroTGFork.t.me/2">
             News
         </a>
     </p>
@@ -64,11 +58,8 @@ It enables you to easily interact with the main Telegram API through a user acco
 Support
 -------
 
-If you'd like to support Pyrogram, you can consider:
+If you'd like to support this fork, you can consider reading `this message <https://PyroTGFork.t.me/2>`__.
 
-- `Become a GitHub sponsor <https://github.com/sponsors/delivrance>`_.
-- `Become a LiberaPay patron <https://liberapay.com/delivrance>`_.
-- `Become an OpenCollective backer <https://opencollective.com/pyrogram>`_.
 
 How the Documentation is Organized
 ----------------------------------
@@ -111,7 +102,7 @@ Meta
 
     - :doc:`Pyrogram FAQ <faq/index>`: Answers to common Pyrogram questions.
     - :doc:`Support Pyrogram <support>`: Ways to show your appreciation.
-    - :doc:`Release Notes <releases/index>`: Changes in this Fork.
+    - :doc:`Release Notes <releases/changes-in-this-fork>`: Changes in this Fork.
 
 .. toctree::
     :hidden:
@@ -173,15 +164,19 @@ Meta
     :caption: Meta
 
     faq/index
-    support
     releases/index
 
 .. toctree::
     :hidden:
     :caption: Telegram Raw API
 
-    TL Schema Explorer <https://telegramplayground.github.io/schema.tl/>
-    TL Diff <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html>
     telegram/functions/index
     telegram/types/index
     telegram/base/index
+
+.. toctree::
+    :hidden:
+    :caption: External Links
+
+    TL Schema Explorer <https://telegramplayground.github.io/schema.tl/>
+    TL Diff <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html>

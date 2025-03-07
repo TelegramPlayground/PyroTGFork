@@ -45,11 +45,14 @@ class SendVideo:
         width: int = 0,
         height: int = 0,
         thumb: Union[str, "io.BytesIO"] = None,
+        cover: Optional[Union[str, "io.BytesIO"]] = None,
+        start_timestamp: int = None,
         has_spoiler: bool = None,
         supports_streaming: bool = True,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_thread_id: int = None,
         business_connection_id: str = None,
         send_as: Union[int, str] = None,
@@ -65,8 +68,6 @@ class SendVideo:
         view_once: bool = None,
         file_name: str = None,
         mime_type: str = None,
-        cover: Optional[Union[str, "io.BytesIO"]] = None,
-        start_timestamp: int = None,
         schedule_date: datetime = None,
         reply_to_message_id: int = None,
         progress: Callable = None,
@@ -121,6 +122,12 @@ class SendVideo:
                 A thumbnail's width and height should not exceed 320 pixels.
                 Thumbnails can't be reused and can be only uploaded as a new file.
 
+            cover (``str`` | :obj:`io.BytesIO`, *optional*):
+                Cover for the video in the message. Pass None to skip cover uploading.
+            
+            start_timestamp (``int``, *optional*):
+                Timestamp from which the video playing must start, in seconds.
+
             has_spoiler (``bool``, *optional*):
                 Pass True if the video needs to be covered with a spoiler animation.
 
@@ -137,6 +144,9 @@ class SendVideo:
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
@@ -174,12 +184,6 @@ class SendVideo:
             
             mime_type (``str``, *optional*):
                 no docs!
-
-            cover (``str`` | :obj:`io.BytesIO`, *optional*):
-                Cover of the video; pass None to skip cover uploading.
-            
-            start_timestamp (``int``, *optional*):
-                Timestamp from which the video playing must start, in seconds.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
@@ -248,6 +252,47 @@ class SendVideo:
         file = None
         ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
 
+        coverfile = None
+        if cover:
+            is_bytes_io = isinstance(cover, io.BytesIO)
+            is_uploaded_file = is_bytes_io or os.path.isfile(cover)
+            is_external_url = not is_uploaded_file and re.match("^https?://", cover)
+
+            if is_bytes_io and not hasattr(cover, "name"):
+                cover.name = "cover.jpg"
+            if is_uploaded_file:
+                coverfile = await self.invoke(
+                    raw.functions.messages.UploadMedia(
+                        business_connection_id=business_connection_id,
+                        peer=await self.resolve_peer(chat_id),
+                        media=raw.types.InputMediaUploadedPhoto(
+                            file=await self.save_file(cover)
+                        )
+                    )
+                )
+                coverfile = raw.types.InputPhoto(
+                    id=coverfile.photo.id,
+                    access_hash=coverfile.photo.access_hash,
+                    file_reference=coverfile.photo.file_reference
+                )
+            elif is_external_url:
+                coverfile = await self.invoke(
+                    raw.functions.messages.UploadMedia(
+                        business_connection_id=business_connection_id,
+                        peer=await self.resolve_peer(chat_id),
+                        media=raw.types.InputMediaPhotoExternal(
+                            url=cover
+                        )
+                    )
+                )
+                coverfile = raw.types.InputPhoto(
+                    id=coverfile.photo.id,
+                    access_hash=coverfile.photo.access_hash,
+                    file_reference=coverfile.photo.file_reference
+                )
+            else:
+                coverfile = (utils.get_input_media_from_file_id(cover, FileType.PHOTO)).id
+
         try:
             if isinstance(video, str):
                 if os.path.isfile(video):
@@ -269,7 +314,7 @@ class SendVideo:
                             ),
                             raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(video))
                         ],
-                        video_cover=await self.save_file(cover) if cover else None,
+                        video_cover=coverfile,
                         video_timestamp=start_timestamp
                     )
                 elif re.match("^https?://", video):
@@ -277,7 +322,7 @@ class SendVideo:
                         url=video,
                         ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler,
-                        video_cover=await self.save_file(cover) if cover else None,
+                        video_cover=coverfile,
                         video_timestamp=start_timestamp
                     )
                 else:
@@ -287,6 +332,9 @@ class SendVideo:
                         ttl_seconds=ttl_seconds,
                         has_spoiler=has_spoiler
                     )
+                    media.video_cover = coverfile
+                    media.video_timestamp = start_timestamp
+                    
             else:
                 file = await self.save_file(video, progress=progress, progress_args=progress_args)
                 thumb = await self.save_file(thumb)
@@ -305,7 +353,7 @@ class SendVideo:
                         ),
                         raw.types.DocumentAttributeFilename(file_name=file_name or video.name)
                     ],
-                    video_cover=await self.save_file(cover) if cover else None,
+                    video_cover=coverfile,
                     video_timestamp=start_timestamp
                 )
 
@@ -324,6 +372,7 @@ class SendVideo:
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
                 allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=paid_message_star_count,
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 effect=message_effect_id,
                 invert_media=show_caption_above_media,

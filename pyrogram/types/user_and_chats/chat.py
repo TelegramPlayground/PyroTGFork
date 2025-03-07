@@ -226,6 +226,12 @@ class Chat(Object):
             Number of saved to profile gifts for other users or the total number of received gifts for the current user.
             Number of saved to profile gifts for channels without ``can_post_messages`` administrator right, otherwise, the total number of received gifts.
 
+        can_send_gift (``bool``, *optional*):
+            True, if gifts can be sent to the chat.
+
+        paid_message_star_count (``int``, *optional*):
+            Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
 
@@ -294,6 +300,8 @@ class Chat(Object):
         pending_join_request_count: int = None,
         can_enable_paid_reaction: bool = None,
         gift_count: int = None,
+        can_send_gift: bool = None,
+        paid_message_star_count: int = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -364,6 +372,8 @@ class Chat(Object):
         self.pending_join_request_count = pending_join_request_count
         self.can_enable_paid_reaction = can_enable_paid_reaction
         self.gift_count = gift_count
+        self.can_send_gift = can_send_gift
+        self.paid_message_star_count = paid_message_star_count
         self._raw = _raw
 
     @staticmethod
@@ -529,6 +539,7 @@ class Chat(Object):
             accent_color=types.ChatColor._parse(getattr(channel, "color", None)),
             profile_color=types.ChatColor._parse_profile_color(getattr(channel, "profile_color", None)),
             emoji_status=types.EmojiStatus._parse(client, channel.emoji_status),
+            paid_message_star_count=channel.send_paid_messages_stars,
             _raw=channel
         )
 
@@ -675,6 +686,8 @@ class Chat(Object):
                 parsed_chat.can_send_paid_media = getattr(full_chat, "paid_media_allowed", None)
                 parsed_chat.can_enable_paid_reaction = full_chat.paid_reactions_available
                 parsed_chat.gift_count = full_chat.stargifts_count
+
+                parsed_chat.can_send_gift = full_chat.stargifts_available
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 

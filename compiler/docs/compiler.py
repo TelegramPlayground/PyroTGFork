@@ -210,6 +210,9 @@ def pyrogram_api():
             get_chat_history_count
             read_chat_history
             get_messages
+            get_chat_pinned_message
+            get_callback_query_message
+            get_replied_message
             view_messages
             get_discussion_message
             get_discussion_replies
@@ -621,6 +624,7 @@ def pyrogram_api():
             InlineQueryResultVoice
             InlineQueryResultArticle
             InlineQueryResultContact
+            InlineQueryResultGame
             InlineQueryResultLocation
             InlineQueryResultVenue
         """,
@@ -677,6 +681,10 @@ def pyrogram_api():
             ShippingQuery
             PreCheckoutQuery
             StarAmount
+            PaidReactionType
+            PaidReactionTypeAnonymous
+            PaidReactionTypeChat
+            PaidReactionTypeRegular
         """
     )
 
@@ -789,6 +797,10 @@ def pyrogram_api():
             CallbackQuery.edit_message_caption
             CallbackQuery.edit_message_media
             CallbackQuery.edit_message_reply_markup
+            ChosenInlineResult.edit_message_text
+            ChosenInlineResult.edit_message_caption
+            ChosenInlineResult.edit_message_media
+            ChosenInlineResult.edit_message_reply_markup
         """,
         inline_query="""
         InlineQuery

@@ -16,11 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
 from .inline_query_result import InlineQueryResult
+
+log = logging.getLogger(__name__)
 
 
 class InlineQueryResultPhoto(InlineQueryResult):
@@ -33,9 +36,10 @@ class InlineQueryResultPhoto(InlineQueryResult):
     Parameters:
         photo_url (``str``):
             A valid URL of the photo.
-            Photo must be in jpeg format an must not exceed 5 MB.
+            Photo must be in *JPEG* format.
+            Photo size must not exceed 5MB. 
 
-        thumb_url (``str``, *optional*):
+        thumbnail_url (``str``, *optional*):
             URL of the thumbnail for the photo.
             Defaults to the value passed in *photo_url*.
 
@@ -78,7 +82,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
     def __init__(
         self,
         photo_url: str,
-        thumb_url: str = None,
+        thumbnail_url: str = None,
         photo_width: int = 0,
         photo_height: int = 0,
         id: str = None,
@@ -89,12 +93,26 @@ class InlineQueryResultPhoto(InlineQueryResult):
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        input_message_content: "types.InputMessageContent" = None
+        input_message_content: "types.InputMessageContent" = None,
+        thumb_url: str = None
     ):
+        if thumb_url and thumbnail_url:
+            raise ValueError(
+                "Parameters `thumb_url` and `thumbnail_url` are mutually "
+                "exclusive."
+            )
+        
+        if thumb_url is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use thumbnail_url instead"
+            )
+            thumbnail_url = thumb_url
+
         super().__init__("photo", id, input_message_content, reply_markup)
 
         self.photo_url = photo_url
-        self.thumb_url = thumb_url
+        self.thumbnail_url = thumbnail_url
         self.photo_width = photo_width
         self.photo_height = photo_height
         self.title = title
@@ -119,11 +137,11 @@ class InlineQueryResultPhoto(InlineQueryResult):
             ]
         )
 
-        if self.thumb_url is None:
+        if self.thumbnail_url is None:
             thumb = photo
         else:
             thumb = raw.types.InputWebDocument(
-                url=self.thumb_url,
+                url=self.thumbnail_url,
                 size=0,
                 mime_type="image/jpeg",
                 attributes=[]

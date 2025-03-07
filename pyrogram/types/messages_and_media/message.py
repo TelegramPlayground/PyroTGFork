@@ -416,8 +416,17 @@ class Message(Object, Update):
         screenshot_taken (:obj:`~pyrogram.types.ScreenshotTaken`, *optional*):
             A service message that a screenshot of a message in the chat has been taken.
 
+        paid_message_star_count (``int``, *optional*):
+            The number of Telegram Stars the sender paid to send the message.
+
         link (``str``, *property*):
             Generate a link to this message, only for supergroups and channels. Can be None if the message cannot have a link.
+
+        content (``str``, *property*):
+            The text or caption content of the message.
+            If the message contains entities (bold, italic, ...) you can access *content.markdown* or
+            *content.html* to get the marked up content. In case there is no caption entity, the fields
+            will contain the same text as *content*.
 
     """
 
@@ -541,6 +550,7 @@ class Message(Object, Update):
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
         screenshot_taken: "types.ScreenshotTaken" = None,
+        paid_message_star_count: int = None,
         _raw = None
     ):
         super().__init__(client)
@@ -651,6 +661,7 @@ class Message(Object, Update):
         self.contact_registered = contact_registered
         self.chat_join_type = chat_join_type
         self.screenshot_taken = screenshot_taken
+        self.paid_message_star_count = paid_message_star_count
         self._raw = _raw
 
     @staticmethod
@@ -1067,23 +1078,27 @@ class Message(Object, Update):
 
             if isinstance(action, raw.types.MessageActionPinMessage):
                 try:
-                    parsed_message.pinned_message = await client.get_messages(
+                    parsed_message.pinned_message = await client.get_replied_message(
                         chat_id=parsed_message.chat.id,
-                        reply_to_message_ids=message.id,
+                        message_ids=message.id,
                         replies=0
                     )
-                    parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
                 except MessageIdsEmpty:
-                    pass
+                    parsed_message.pinned_message = types.Message(
+                        id=message.reply_to.reply_to_msg_id,
+                        empty=True,
+                        client=client
+                    )
+                parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
 
             if isinstance(action, raw.types.MessageActionGameScore):
                 parsed_message.game_high_score = types.GameHighScore._parse_action(client, message, users)
 
                 if message.reply_to and replies:
                     try:
-                        parsed_message.reply_to_message = await client.get_messages(
+                        parsed_message.reply_to_message = await client.get_replied_message(
                             chat_id=parsed_message.chat.id,
-                            reply_to_message_ids=message.id,
+                            message_ids=message.id,
                             replies=0
                         )
 
@@ -1179,7 +1194,7 @@ class Message(Object, Update):
                                 video_note = types.VideoNote._parse(client, doc, video_attributes, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO_NOTE
                             else:
-                                video = types.Video._parse(client, doc, video_attributes, file_name, media.ttl_seconds)
+                                video = types.Video._parse(client, media, video_attributes, file_name, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO
                                 has_media_spoiler = media.spoiler
 
@@ -1214,7 +1229,7 @@ class Message(Object, Update):
                     elif doc is None:
                         has_media_spoiler = media.spoiler
                         if media.video:
-                            video = types.Video._parse(client, doc, None, None, media.ttl_seconds)
+                            video = types.Video._parse(client, media, None, None, media.ttl_seconds)
                             media_type = enums.MessageMediaType.VIDEO
                         elif media.round:
                             video_note = types.VideoNote._parse(client, doc, None, media.ttl_seconds)
@@ -1363,7 +1378,8 @@ class Message(Object, Update):
                 link_preview_options=link_preview_options,
                 effect_id=getattr(message, "effect", None),
                 show_caption_above_media=show_caption_above_media,
-                paid_media=paid_media
+                paid_media=paid_media,
+                paid_message_star_count=message.paid_message_stars
             )
 
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
@@ -1423,9 +1439,9 @@ class Message(Object, Update):
                     reply_to_message = client.message_cache[key]
 
                     if not reply_to_message:
-                        reply_to_message = await client.get_messages(
+                        reply_to_message = await client.get_replied_message(
                             chat_id=parsed_message.chat.id,
-                            reply_to_message_ids=message.id,
+                            message_ids=message.id,
                             replies=replies - 1
                         )
 
@@ -1464,6 +1480,10 @@ class Message(Object, Update):
             if self.chat.username:
                 return f"https://t.me/{self.chat.username}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
             return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
+
+    @property
+    def content(self) -> str:
+        return self.text or self.caption or Str("").init([])
 
     async def get_media_group(self) -> list["types.Message"]:
         """Bound method *get_media_group* of :obj:`~pyrogram.types.Message`.
@@ -1610,6 +1630,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -1818,6 +1839,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             ttl_seconds=ttl_seconds,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
@@ -1999,6 +2021,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
             progress=progress,
@@ -2117,6 +2140,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_effect_id=message_effect_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
@@ -2306,6 +2330,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id
         )
@@ -2478,6 +2503,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
             force_document=force_document,
@@ -2577,6 +2603,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -2773,6 +2800,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id
         )
@@ -2870,6 +2898,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_to_message_id=reply_to_message_id
         )
 
@@ -3042,6 +3071,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             view_once=view_once,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
@@ -3232,6 +3262,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
@@ -3386,6 +3417,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -3528,6 +3560,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -3544,6 +3577,8 @@ class Message(Object, Update):
         width: int = 0,
         height: int = 0,
         thumb: Union[str, "io.BytesIO"] = None,
+        cover: Optional[Union[str, "io.BytesIO"]] = None,
+        start_timestamp: int = None,
         has_spoiler: bool = None,
         supports_streaming: bool = True,
         disable_notification: bool = None,
@@ -3622,6 +3657,12 @@ class Message(Object, Update):
                 The thumbnail should be in JPEG format and less than 200 KB in size.
                 A thumbnail's width and height should not exceed 320 pixels.
                 Thumbnails can't be reused and can be only uploaded as a new file.
+
+            cover (``str`` | :obj:`io.BytesIO`, *optional*):
+                Cover for the video in the message. Pass None to skip cover uploading.
+            
+            start_timestamp (``int``, *optional*):
+                Timestamp from which the video playing must start, in seconds.
 
             has_spoiler (``bool``, *optional*):
                 Pass True if the video needs to be covered with a spoiler animation.
@@ -3723,11 +3764,14 @@ class Message(Object, Update):
             width=width,
             height=height,
             thumb=thumb,
+            cover=cover,
+            start_timestamp=start_timestamp,
             has_spoiler=has_spoiler,
             supports_streaming=supports_streaming,
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -3907,6 +3951,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -4081,6 +4126,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -4289,6 +4335,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=self.has_protected_content if protect_content is None else protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_effect_id=message_effect_id or self.effect_id,
             reply_parameters=reply_parameters,
             send_as=send_as,
@@ -4573,9 +4620,10 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         send_copy: bool = None,
         remove_caption: bool = None,
-        new_video_start_timestamp: int = None,
+        video_start_timestamp: int = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", list["types.Message"]]:
@@ -4615,14 +4663,17 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             send_copy (``bool``, *optional*):
                 Pass True to copy content of the messages without reference to the original sender.
 
             remove_caption (``bool``, *optional*):
                 Pass True to remove media captions of message copies.
 
-            new_video_start_timestamp (``int``, *optional*):
-                The new video start timestamp. Pass time to replace video start timestamp in the forwarded message.
+            video_start_timestamp (``int``, *optional*):
+                New start timestamp for the copied video in the message.
 
             send_as (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the chat or channel to send the message as.
@@ -4648,9 +4699,10 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count,
             send_copy=send_copy,
             remove_caption=remove_caption,
-            new_video_start_timestamp=new_video_start_timestamp,
+            video_start_timestamp=video_start_timestamp,
             send_as=send_as,
             schedule_date=schedule_date
         )
@@ -4662,6 +4714,8 @@ class Message(Object, Update):
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
+        video_cover: Optional[Union[str, "io.BytesIO"]] = None,
+        video_start_timestamp: int = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -4675,6 +4729,7 @@ class Message(Object, Update):
         business_connection_id: str = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_thread_id: int = None,
         reply_to_message_id: int = None
     ) -> Union["types.Message", list["types.Message"]]:
@@ -4716,6 +4771,12 @@ class Message(Object, Update):
             show_caption_above_media (``bool``, *optional*):
                 Pass True, if the caption must be shown above the message media. Ignored if a new caption isn't specified.
 
+            video_cover (``str`` | :obj:`io.BytesIO`, *optional*):
+                New cover for the copied video in the message. Pass None to skip cover uploading and use the existing cover.
+            
+            video_start_timestamp (``int``, *optional*):
+                New start timestamp, from which the video playing must start, in seconds for the copied video in the message.
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
@@ -4748,6 +4809,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum; for forum supergroups only
 
@@ -4777,6 +4841,7 @@ class Message(Object, Update):
                 disable_notification=disable_notification,
                 protect_content=self.has_protected_content if protect_content is None else protect_content,
                 allow_paid_broadcast=allow_paid_broadcast,
+                paid_message_star_count=paid_message_star_count,
                 message_effect_id=self.effect_id,
                 reply_parameters=reply_parameters,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup,
@@ -4797,12 +4862,15 @@ class Message(Object, Update):
                 schedule_date=schedule_date,
                 protect_content=self.has_protected_content if protect_content is None else protect_content,
                 allow_paid_broadcast=allow_paid_broadcast,
+                paid_message_star_count=paid_message_star_count,
                 has_spoiler=self.has_media_spoiler,
                 reply_to_message_id=reply_to_message_id,
                 send_as=send_as,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
-
+            if caption is None:
+                caption = self.caption or ""
+                caption_entities = self.caption_entities
             if self.photo:
                 file_id = self.photo.file_id
             elif self.audio:
@@ -4810,7 +4878,59 @@ class Message(Object, Update):
             elif self.document:
                 file_id = self.document.file_id
             elif self.video:
-                file_id = self.video.file_id
+                riom = None
+                try:
+                    riom = await self._client.send_video(
+                        chat_id,
+                        video=self.video.file_id,
+                        caption=caption,
+                        parse_mode=parse_mode,
+                        caption_entities=caption_entities,
+                        show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
+                        cover=video_cover,
+                        start_timestamp=video_start_timestamp,
+                        has_spoiler=self.has_media_spoiler,
+                        disable_notification=disable_notification,
+                        protect_content=self.has_protected_content if protect_content is None else protect_content,
+                        allow_paid_broadcast=allow_paid_broadcast,
+                        paid_message_star_count=paid_message_star_count,
+                        message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
+                        business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
+                        send_as=send_as,
+                        message_effect_id=self.effect_id,
+                        reply_parameters=reply_parameters,
+                        reply_markup=self.reply_markup if reply_markup is object else reply_markup,
+                        # TODO
+                        schedule_date=schedule_date,
+                        reply_to_message_id=reply_to_message_id
+                    )
+                except FileReferenceExpired:
+                    ohm = await self._client.get_messages(self.chat.id, self.id)
+                    riom = await self._client.send_video(
+                        chat_id,
+                        video=ohm.video.file_id,
+                        caption=caption,
+                        parse_mode=parse_mode,
+                        caption_entities=caption_entities,
+                        show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
+                        cover=video_cover,
+                        start_timestamp=video_start_timestamp,
+                        has_spoiler=self.has_media_spoiler,
+                        disable_notification=disable_notification,
+                        protect_content=self.has_protected_content if protect_content is None else protect_content,
+                        allow_paid_broadcast=allow_paid_broadcast,
+                        paid_message_star_count=paid_message_star_count,
+                        message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
+                        business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
+                        send_as=send_as,
+                        message_effect_id=self.effect_id,
+                        reply_parameters=reply_parameters,
+                        reply_markup=self.reply_markup if reply_markup is object else reply_markup,
+                        # TODO
+                        schedule_date=schedule_date,
+                        reply_to_message_id=reply_to_message_id
+                    )
+                return riom
             elif self.animation:
                 file_id = self.animation.file_id
             elif self.voice:
@@ -4834,6 +4954,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -4851,6 +4972,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -4872,6 +4994,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -4898,6 +5021,7 @@ class Message(Object, Update):
                     disable_notification=disable_notification,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     message_effect_id=self.effect_id,
                     reply_parameters=reply_parameters,
                     message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
@@ -4914,6 +5038,7 @@ class Message(Object, Update):
                     disable_notification=disable_notification,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     message_effect_id=self.effect_id,
@@ -4924,10 +5049,6 @@ class Message(Object, Update):
                 )
             else:
                 raise ValueError("Unknown media type")
-
-            if caption is None:
-                caption = self.caption or ""
-                caption_entities = self.caption_entities
 
             return await send_media(
                 file_id=file_id,
@@ -5695,7 +5816,7 @@ class Message(Object, Update):
     async def star(
         self,
         star_count: int = None,
-        is_anonymous: bool = False
+        paid_reaction_type: "types.PaidReactionType" = None
     ) -> "types.MessageReactions":
         """Bound method *star* of :obj:`~pyrogram.types.Message`.
 
@@ -5722,9 +5843,8 @@ class Message(Object, Update):
             star_count (``int``, *optional*):
                 Number of Telegram Stars to be used for the reaction; 1-2500.
 
-            is_anonymous (``bool``, *optional*):
-                Pass True to make paid reaction of the user on the message anonymous; pass False to make the user's profile visible among top reactors.
-                Defaults to False.
+            paid_reaction_type (:obj:`~pyrogram.types.PaidReactionType`, *optional*):
+                Type of the paid reaction; pass None if the user didn't choose reaction type explicitly, for example, the reaction is set from the message bubble.
 
         Returns:
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
@@ -5736,5 +5856,5 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             message_id=self.id,
             star_count=star_count,
-            is_anonymous=is_anonymous
+            paid_reaction_type=paid_reaction_type
         )

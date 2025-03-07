@@ -44,6 +44,9 @@ class UserGift(Object):
         is_saved (``bool``, *optional*):
             True, if the gift is displayed on the user's profile page; may be False only for the receiver of the gift.
 
+        is_pinned (``bool``, *optional*):
+            True, if the gift is pinned to the top of the chat's profile page.
+
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date when the gift was sent.
 
@@ -89,6 +92,7 @@ class UserGift(Object):
         date: datetime,
         is_private: Optional[bool] = None,
         is_saved: Optional[bool] = None,
+        is_pinned: Optional[bool] = None,
         gift: Optional[Union["types.Gift", "types.UpgradedGift"]] = None,
         message_id: Optional[int] = None,
         sell_star_count: Optional[int] = None,
@@ -106,6 +110,7 @@ class UserGift(Object):
         self.gift = gift
         self.is_private = is_private
         self.is_saved = is_saved
+        self.is_pinned = is_pinned
         self.sender_user = sender_user
         self.text = text
         self.entities = entities
@@ -143,6 +148,7 @@ class UserGift(Object):
             ),
             is_private=getattr(saved_star_gift, "name_hidden", None),
             is_saved=not saved_star_gift.unsaved if getattr(saved_star_gift, "unsaved", None) else None,
+            is_pinned=saved_star_gift.pinned_to_top,
             sender_user=types.User._parse(
                 client,
                 users.get(sender_user)

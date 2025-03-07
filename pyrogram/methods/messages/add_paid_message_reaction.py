@@ -16,13 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 from typing import Union
 
 import pyrogram
 from pyrogram import raw, types
-
-log = logging.getLogger(__name__)
 
 
 class AddPaidMessageReaction:
@@ -31,7 +28,7 @@ class AddPaidMessageReaction:
         chat_id: Union[int, str],
         message_id: int,
         star_count: int = None,
-        is_anonymous: bool = False
+        paid_reaction_type: "types.PaidReactionType" = None
     ) -> "types.MessageReactions":
         """Adds the paid message reaction to a message.
 
@@ -47,9 +44,8 @@ class AddPaidMessageReaction:
             star_count (``int``, *optional*):
                 Number of Telegram Stars to be used for the reaction; 1-2500.
 
-            is_anonymous (``bool``, *optional*):
-                Pass True to make paid reaction of the user on the message anonymous; pass False to make the user's profile visible among top reactors.
-                Defaults to False.
+            paid_reaction_type (:obj:`~pyrogram.types.PaidReactionType`, *optional*):
+                Type of the paid reaction; pass None if the user didn't choose reaction type explicitly, for example, the reaction is set from the message bubble.
 
         Returns:
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
@@ -58,7 +54,7 @@ class AddPaidMessageReaction:
             .. code-block:: python
 
                 # Add a paid reaction to a message
-                await app.add_paid_message_reaction(chat_id, message_id, 1, False)
+                await app.add_paid_message_reaction(chat_id, message_id, 1)
 
         """
 
@@ -68,7 +64,7 @@ class AddPaidMessageReaction:
                 msg_id=message_id,
                 random_id=self.rnd_id(),
                 count=star_count,
-                private=is_anonymous
+                private=await paid_reaction_type.write(self) if paid_reaction_type else None
             )
         )
         for i in r.updates:
