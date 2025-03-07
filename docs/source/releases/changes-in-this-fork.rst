@@ -23,10 +23,19 @@ Breaking Changes in this Fork
 - In :meth:`~pyrogram.Client.download_media`, if the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` **and** ``idx`` was not specified, then a list of paths or binary file-like objects is returned.
 - PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
 - PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
+- If you relied on internal types like ``import pyrogram.file_id`` OR ``import pyrogram.utils``, Then read this full document to know where `else <https://t.me/PyrogramChat/42497>`_ your code will break.
 
 
 Changes in this Fork
 =====================
+
++------------------------+
+| Scheme layer used: 200 |
++------------------------+
+
+- Added the field ``paid_message_star_count`` to the classes :obj:`~pyrogram.types.Chat`, :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.User`.
+- Added the parameter ``paid_message_star_count`` to the methods :meth:`~pyrogram.Client.copy_media_group`, :meth:`~pyrogram.Client.send_game`, :meth:`~pyrogram.Client.send_invoice`, :meth:`~pyrogram.Client.forward_messages`, :meth:`~pyrogram.Client.send_animation`, :meth:`~pyrogram.Client.send_audio`, :meth:`~pyrogram.Client.send_cached_media`, :meth:`~pyrogram.Client.send_contact`, :meth:`~pyrogram.Client.send_dice`, :meth:`~pyrogram.Client.send_document`, :meth:`~pyrogram.Client.send_location`, :meth:`~pyrogram.Client.send_media_group`, :meth:`~pyrogram.Client.send_message`, :meth:`~pyrogram.Client.send_paid_media`, :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_poll`, :meth:`~pyrogram.Client.send_sticker`, :meth:`~pyrogram.Client.send_venue`, :meth:`~pyrogram.Client.send_video_note`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_voice` and the bound methods :meth:`~pyrogram.types.Message.forward` and :meth:`~pyrogram.types.Message.copy`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=199&to=200>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=199&to=200>`__.
 
 +------------------------+
 | Scheme layer used: 199 |

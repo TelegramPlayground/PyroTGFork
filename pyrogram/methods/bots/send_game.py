@@ -33,6 +33,7 @@ class SendGame:
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_thread_id: int = None,
         business_connection_id: str = None,
         send_as: Union[int, str] = None,
@@ -68,6 +69,9 @@ class SendGame:
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+            
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_thread_id (``int``, *optional*):
                 If the message is in a thread, ID of the original message.
@@ -134,6 +138,7 @@ class SendGame:
             send_as=await self.resolve_peer(send_as) if send_as else None,
             noforwards=protect_content,
             allow_paid_floodskip=allow_paid_broadcast,
+            allow_paid_stars=paid_message_star_count,
             effect=message_effect_id,
             reply_markup=await reply_markup.write(self) if reply_markup else None
         )

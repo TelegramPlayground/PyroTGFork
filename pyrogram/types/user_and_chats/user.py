@@ -188,6 +188,9 @@ class User(Object, Update):
 
         active_user_count (``int``, *optional*):
             The number of recently active users of the bot.
+        
+        paid_message_star_count (``int``, *optional*):
+            Number of Telegram Stars that must be paid by general user for each sent message to the user. If positive and userFullInfo is unknown, use ``canSendMessageToUser`` to check whether the current user must pay.
 
         mention (``str``, *property*):
             Generate a text mention for this user.
@@ -245,6 +248,7 @@ class User(Object, Update):
         have_access: bool = None,
         has_main_web_app: bool = None,
         active_user_count: int = None,
+        paid_message_star_count: int = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -290,6 +294,7 @@ class User(Object, Update):
         self.have_access = have_access
         self.has_main_web_app = has_main_web_app
         self.active_user_count = active_user_count
+        self.paid_message_star_count = paid_message_star_count
         self._raw = _raw
 
     @property
@@ -367,6 +372,7 @@ class User(Object, Update):
             accent_color=types.ChatColor._parse(getattr(user, "color", None)),
             profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
             have_access=not bool(getattr(user, "min", False)),  # apply_min_photo
+            paid_message_star_count=user.send_paid_messages_stars,
             _raw=user
         )
         if parsed_user.is_bot:
