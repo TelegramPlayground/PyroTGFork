@@ -40,6 +40,7 @@ class CopyMediaGroup:
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_to_message_id: int = None
     ) -> list["types.Message"]:
@@ -95,6 +96,9 @@ class CopyMediaGroup:
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -180,7 +184,8 @@ class CopyMediaGroup:
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 noforwards=protect_content,
-                allow_paid_stars=allow_paid_broadcast,
+                allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=paid_message_star_count,
                 effect=message_effect_id,
                 invert_media=any(show_caption_above_media)
             ),

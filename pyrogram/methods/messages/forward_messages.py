@@ -33,6 +33,7 @@ class ForwardMessages:
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         send_copy: bool = None,
         remove_caption: bool = None,
         video_start_timestamp: int = None,
@@ -69,6 +70,9 @@ class ForwardMessages:
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             send_copy (``bool``, *optional*):
                 Pass True to copy content of the messages without reference to the original sender.
@@ -117,7 +121,8 @@ class ForwardMessages:
                 drop_author=send_copy,
                 drop_media_captions=remove_caption,
                 noforwards=protect_content,
-                allow_paid_stars=allow_paid_broadcast,
+                allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=paid_message_star_count,
                 random_id=[self.rnd_id() for _ in message_ids],
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),

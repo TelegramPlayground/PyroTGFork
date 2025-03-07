@@ -1518,6 +1518,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -1581,6 +1582,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -1624,6 +1628,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            # TODO: paid_message_star_count=paid_message_star_count,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -1658,6 +1663,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         ttl_seconds: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -1763,6 +1769,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             ttl_seconds (``int``, *optional*):
                 The message will be self-destructed in the specified time after its content was opened.
                 The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
@@ -1858,6 +1867,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1951,6 +1961,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2030,6 +2043,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
@@ -2089,6 +2103,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
@@ -2218,6 +2235,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2287,6 +2305,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2341,6 +2362,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2432,6 +2454,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2506,6 +2531,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -2564,6 +2590,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown automatically.
@@ -2689,6 +2718,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2755,6 +2785,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2802,6 +2835,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_to_message_id: int = None
     ) -> list["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
@@ -2857,6 +2891,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
         Returns:
             On success, a :obj:`~pyrogram.types.Messages` object is returned containing all the
             single messages sent.
@@ -2904,6 +2941,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         view_once: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -2992,6 +3030,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             view_once (``bool``, *optional*):
                 Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
@@ -3083,6 +3124,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -3193,6 +3235,9 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -3267,6 +3312,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3331,6 +3377,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3429,6 +3478,7 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3493,6 +3543,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3565,6 +3618,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3661,6 +3715,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3778,6 +3835,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3846,6 +3904,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3959,6 +4020,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -4026,6 +4088,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -4148,6 +4213,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -4244,6 +4310,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -4597,6 +4666,7 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         send_copy: bool = None,
         remove_caption: bool = None,
         video_start_timestamp: int = None,
@@ -4638,6 +4708,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             send_copy (``bool``, *optional*):
                 Pass True to copy content of the messages without reference to the original sender.
@@ -4701,6 +4774,7 @@ class Message(Object, Update):
         business_connection_id: str = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         message_thread_id: int = None,
         reply_to_message_id: int = None
     ) -> Union["types.Message", list["types.Message"]]:
@@ -4779,6 +4853,9 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
+
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_thread_id (``int``, *optional*):
                 Unique identifier for the target message thread (topic) of the forum; for forum supergroups only

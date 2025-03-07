@@ -44,6 +44,7 @@ class SendCachedMedia:
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
+        paid_message_star_count: int = None,
         has_spoiler: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -116,6 +117,9 @@ class SendCachedMedia:
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
+
             has_spoiler (``bool``, *optional*):
                 True, if the message media is covered by a spoiler animation.
 
@@ -159,7 +163,8 @@ class SendCachedMedia:
             send_as=await self.resolve_peer(send_as) if send_as else None,
             schedule_date=utils.datetime_to_timestamp(schedule_date),
             noforwards=protect_content,
-            allow_paid_stars=allow_paid_broadcast,
+            allow_paid_floodskip=allow_paid_broadcast,
+            allow_paid_stars=paid_message_star_count,
             reply_markup=await reply_markup.write(self) if reply_markup else None,
             effect=message_effect_id,
             invert_media=show_caption_above_media,
