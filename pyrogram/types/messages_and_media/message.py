@@ -1518,7 +1518,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -1582,9 +1581,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -1628,7 +1624,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
-            # TODO: paid_message_star_count=paid_message_star_count,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -1663,7 +1659,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         ttl_seconds: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -1769,9 +1764,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             ttl_seconds (``int``, *optional*):
                 The message will be self-destructed in the specified time after its content was opened.
                 The message's self-destruct time, in seconds; must be between 0 and 60 in private chats.
@@ -1841,6 +1833,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             ttl_seconds=ttl_seconds,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
@@ -1867,7 +1860,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -1961,9 +1953,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2026,6 +2015,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
             progress=progress,
@@ -2043,7 +2033,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         message_effect_id: int = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
@@ -2104,9 +2093,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
 
@@ -2148,6 +2134,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             message_effect_id=message_effect_id,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
@@ -2235,7 +2222,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2305,9 +2291,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2341,6 +2324,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id
         )
@@ -2362,7 +2346,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2454,9 +2437,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2517,6 +2497,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
             force_document=force_document,
@@ -2531,7 +2512,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -2591,9 +2571,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown automatically.
                 If not empty, the first button must launch the game.
@@ -2620,6 +2597,7 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -2718,7 +2696,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -2785,9 +2762,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -2820,6 +2794,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id
         )
@@ -2835,7 +2810,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         reply_to_message_id: int = None
     ) -> list["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
@@ -2891,9 +2865,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
         Returns:
             On success, a :obj:`~pyrogram.types.Messages` object is returned containing all the
             single messages sent.
@@ -2921,6 +2892,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_to_message_id=reply_to_message_id
         )
 
@@ -2941,7 +2913,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         view_once: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
@@ -3031,9 +3002,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             view_once (``bool``, *optional*):
                 Pass True if the message should be opened only once and should be self-destructed once closed; private chats only.
 
@@ -3097,6 +3065,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             view_once=view_once,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
@@ -3124,7 +3093,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -3235,9 +3203,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -3291,6 +3256,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
@@ -3312,7 +3278,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3377,9 +3342,6 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
-
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3449,6 +3411,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -3478,7 +3441,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3544,9 +3506,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -3595,6 +3554,7 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
@@ -3618,7 +3578,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3716,9 +3675,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -3809,6 +3765,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -3835,7 +3792,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -3904,9 +3860,6 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
-
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -3992,6 +3945,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -4020,7 +3974,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
@@ -4088,9 +4041,6 @@ class Message(Object, Update):
 
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
-
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -4170,6 +4120,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
@@ -4213,7 +4164,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        paid_message_star_count: int = None,
         message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
@@ -4311,9 +4261,6 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            paid_message_star_count (``int``, *optional*):
-                The number of Telegram Stars the user agreed to pay to send the messages.
-
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
@@ -4382,6 +4329,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=self.has_protected_content if protect_content is None else protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             message_effect_id=message_effect_id or self.effect_id,
             reply_parameters=reply_parameters,
             send_as=send_as,
@@ -4745,6 +4693,7 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
+            paid_message_star_count=paid_message_star_count,
             send_copy=send_copy,
             remove_caption=remove_caption,
             video_start_timestamp=video_start_timestamp,
@@ -4886,6 +4835,7 @@ class Message(Object, Update):
                 disable_notification=disable_notification,
                 protect_content=self.has_protected_content if protect_content is None else protect_content,
                 allow_paid_broadcast=allow_paid_broadcast,
+                paid_message_star_count=paid_message_star_count,
                 message_effect_id=self.effect_id,
                 reply_parameters=reply_parameters,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup,
@@ -4906,6 +4856,7 @@ class Message(Object, Update):
                 schedule_date=schedule_date,
                 protect_content=self.has_protected_content if protect_content is None else protect_content,
                 allow_paid_broadcast=allow_paid_broadcast,
+                paid_message_star_count=paid_message_star_count,
                 has_spoiler=self.has_media_spoiler,
                 reply_to_message_id=reply_to_message_id,
                 send_as=send_as,
@@ -4921,29 +4872,57 @@ class Message(Object, Update):
             elif self.document:
                 file_id = self.document.file_id
             elif self.video:
-                return await self._client.send_video(
-                    chat_id,
-                    video=self.video.file_id,
-                    caption=caption,
-                    parse_mode=parse_mode,
-                    caption_entities=caption_entities,
-                    show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
-                    cover=video_cover,
-                    start_timestamp=video_start_timestamp,
-                    has_spoiler=self.has_media_spoiler,
-                    disable_notification=disable_notification,
-                    protect_content=self.has_protected_content if protect_content is None else protect_content,
-                    allow_paid_broadcast=allow_paid_broadcast,
-                    message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
-                    business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
-                    send_as=send_as,
-                    message_effect_id=self.effect_id,
-                    reply_parameters=reply_parameters,
-                    reply_markup=self.reply_markup if reply_markup is object else reply_markup,
-                    # TODO
-                    schedule_date=schedule_date,
-                    reply_to_message_id=reply_to_message_id
-                )
+                try:
+                    riom = await self._client.send_video(
+                        chat_id,
+                        video=self.video.file_id,
+                        caption=caption,
+                        parse_mode=parse_mode,
+                        caption_entities=caption_entities,
+                        show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
+                        cover=video_cover,
+                        start_timestamp=video_start_timestamp,
+                        has_spoiler=self.has_media_spoiler,
+                        disable_notification=disable_notification,
+                        protect_content=self.has_protected_content if protect_content is None else protect_content,
+                        allow_paid_broadcast=allow_paid_broadcast,
+                        paid_message_star_count=paid_message_star_count,
+                        message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
+                        business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
+                        send_as=send_as,
+                        message_effect_id=self.effect_id,
+                        reply_parameters=reply_parameters,
+                        reply_markup=self.reply_markup if reply_markup is object else reply_markup,
+                        # TODO
+                        schedule_date=schedule_date,
+                        reply_to_message_id=reply_to_message_id
+                    )
+                except FileReferenceExpired:
+                    ohm = await self._client.get_messages(self.chat.id, self.id)
+                    riom = await self._client.send_video(
+                        chat_id,
+                        video=ohm.video.file_id,
+                        caption=caption,
+                        parse_mode=parse_mode,
+                        caption_entities=caption_entities,
+                        show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
+                        cover=video_cover,
+                        start_timestamp=video_start_timestamp,
+                        has_spoiler=self.has_media_spoiler,
+                        disable_notification=disable_notification,
+                        protect_content=self.has_protected_content if protect_content is None else protect_content,
+                        allow_paid_broadcast=allow_paid_broadcast,
+                        paid_message_star_count=paid_message_star_count,
+                        message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
+                        business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
+                        send_as=send_as,
+                        message_effect_id=self.effect_id,
+                        reply_parameters=reply_parameters,
+                        reply_markup=self.reply_markup if reply_markup is object else reply_markup,
+                        # TODO
+                        schedule_date=schedule_date,
+                        reply_to_message_id=reply_to_message_id
+                    )
             elif self.animation:
                 file_id = self.animation.file_id
             elif self.voice:
@@ -4967,6 +4946,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -4984,6 +4964,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -5005,6 +4986,7 @@ class Message(Object, Update):
                     schedule_date=schedule_date,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
@@ -5031,6 +5013,7 @@ class Message(Object, Update):
                     disable_notification=disable_notification,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     message_effect_id=self.effect_id,
                     reply_parameters=reply_parameters,
                     message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
@@ -5047,6 +5030,7 @@ class Message(Object, Update):
                     disable_notification=disable_notification,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
                     message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     message_effect_id=self.effect_id,
