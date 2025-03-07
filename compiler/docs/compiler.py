@@ -760,6 +760,7 @@ def pyrogram_api():
             Message.pay
             Message.star
             UserGift.toggle
+            ExternalReplyInfo.download
         """,
         chat="""
         Chat
