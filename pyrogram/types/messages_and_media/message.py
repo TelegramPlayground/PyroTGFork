@@ -4872,6 +4872,7 @@ class Message(Object, Update):
             elif self.document:
                 file_id = self.document.file_id
             elif self.video:
+                riom = None
                 try:
                     riom = await self._client.send_video(
                         chat_id,
@@ -4923,6 +4924,7 @@ class Message(Object, Update):
                         schedule_date=schedule_date,
                         reply_to_message_id=reply_to_message_id
                     )
+                return riom
             elif self.animation:
                 file_id = self.animation.file_id
             elif self.voice:
