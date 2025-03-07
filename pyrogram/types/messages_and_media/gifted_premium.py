@@ -46,7 +46,7 @@ class GiftedPremium(Object):
             Number of months the Telegram Premium subscription will be active
 
         sticker (:obj:`~pyrogram.types.Sticker`):
-            A sticker to be shown in the message; may be null if unknown
+            A sticker to be shown in the transaction information; may be None if unknown
 
         caption (``str``, *optional*):
             Text message chosen by the sender.
