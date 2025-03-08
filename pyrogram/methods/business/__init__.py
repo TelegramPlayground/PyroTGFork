@@ -27,7 +27,7 @@ from .get_payment_form import GetPaymentForm
 from .send_payment_form import SendPaymentForm
 from .get_available_gifts import GetAvailableGifts
 from .get_owned_star_count import GetOwnedStarCount
-from .get_user_gifts import GetUserGifts
+from .get_received_gifts import GetReceivedGifts
 from .sell_gift import SellGift
 from .send_gift import SendGift
 from .toggle_gift_is_saved import ToggleGiftIsSaved
@@ -45,7 +45,7 @@ class TelegramBusiness(
     SendPaymentForm,
     GetAvailableGifts,
     GetOwnedStarCount,
-    GetUserGifts,
+    GetReceivedGifts,
     SellGift,
     SendGift,
     ToggleGiftIsSaved,

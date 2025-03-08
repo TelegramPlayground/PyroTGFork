@@ -41,7 +41,7 @@ from .reaction import (
 )
 from .sponsored_message import SponsoredMessage
 from .gift import Gift
-from .user_gift import UserGift
+from .received_gift import ReceivedGift
 from .upgraded_gift import UpgradedGift
 from .sticker import Sticker
 from .stripped_thumbnail import StrippedThumbnail
@@ -111,7 +111,7 @@ __all__ = [
     "PollOption",
     "SponsoredMessage",
     "Gift",
-    "UserGift",
+    "ReceivedGift",
     "UpgradedGift",
     "Sticker",
     "Story",
