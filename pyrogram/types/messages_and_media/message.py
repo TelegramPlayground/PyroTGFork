@@ -403,7 +403,7 @@ class Message(Object, Update):
         gifted_stars (:obj:`~pyrogram.types.GiftedStars`, *optional*):
             Info about gifted Telegram Stars
 
-        user_gift (:obj:`~pyrogram.types.UserGift`, *optional*):
+        received_gift (:obj:`~pyrogram.types.ReceivedGift`, *optional*):
             Service message: Represents a gift received by a user.
 
         contact_registered (:obj:`~pyrogram.types.ContactRegistered`, *optional*):
@@ -531,7 +531,7 @@ class Message(Object, Update):
         gift_code: "types.GiftCode" = None,
         gifted_premium: "types.GiftedPremium" = None,
         gifted_stars: "types.GiftedStars" = None,
-        user_gift: "types.UserGift" = None,
+        received_gift: "types.ReceivedGift" = None,
         empty: bool = None,
         mentioned: bool = None,
         service: "enums.MessageServiceType" = None,
@@ -654,7 +654,7 @@ class Message(Object, Update):
         self.custom_action = custom_action
         self.sender_business_bot = sender_business_bot
         self.business_connection_id = business_connection_id
-        self.user_gift = user_gift
+        self.received_gift = received_gift
         self.successful_payment = successful_payment
         self.paid_media = paid_media
         self.refunded_payment = refunded_payment
@@ -765,7 +765,7 @@ class Message(Object, Update):
             chat_join_type = None
             screenshot_taken = None
 
-            user_gift = None
+            received_gift = None
 
             service_type = enums.MessageServiceType.UNKNOWN
 
@@ -1024,8 +1024,8 @@ class Message(Object, Update):
                 isinstance(action, raw.types.MessageActionStarGift) or
                 isinstance(action, raw.types.MessageActionStarGiftUnique)
             ):
-                user_gift = await types.UserGift._parse_action(client, message, users, chats)
-                service_type = enums.MessageServiceType.USER_GIFT
+                received_gift = await types.ReceivedGift._parse_action(client, message, users, chats)
+                service_type = enums.MessageServiceType.RECEIVED_GIFT
 
             parsed_message = Message(
                 id=message.id,
@@ -1058,7 +1058,7 @@ class Message(Object, Update):
                 chat_shared=chat_shared,
                 connected_website=connected_website,
                 write_access_allowed=write_access_allowed,
-                user_gift=user_gift,
+                received_gift=received_gift,
                 successful_payment=successful_payment,
                 message_auto_delete_timer_changed=message_auto_delete_timer_changed,
                 boost_added=boost_added,
