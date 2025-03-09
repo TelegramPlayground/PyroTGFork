@@ -33,6 +33,7 @@ Changes in this Fork
 | Scheme layer used: 200 |
 +------------------------+
 
+- Added :meth:`~pyrogram.Client.delete_chat_history`.
 - Rename ``UserGift`` to :obj:`~pyrogram.types.ReceivedGift`, ``get_user_gifts`` to :meth:`~pyrogram.Client.get_received_gifts` and the corresponding fields appropriately.
 - Added the field ``paid_message_star_count`` to the classes :obj:`~pyrogram.types.Chat`, :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.User`.
 - Added the parameter ``paid_message_star_count`` to the methods :meth:`~pyrogram.Client.copy_media_group`, :meth:`~pyrogram.Client.send_game`, :meth:`~pyrogram.Client.send_invoice`, :meth:`~pyrogram.Client.forward_messages`, :meth:`~pyrogram.Client.send_animation`, :meth:`~pyrogram.Client.send_audio`, :meth:`~pyrogram.Client.send_cached_media`, :meth:`~pyrogram.Client.send_contact`, :meth:`~pyrogram.Client.send_dice`, :meth:`~pyrogram.Client.send_document`, :meth:`~pyrogram.Client.send_location`, :meth:`~pyrogram.Client.send_media_group`, :meth:`~pyrogram.Client.send_message`, :meth:`~pyrogram.Client.send_paid_media`, :meth:`~pyrogram.Client.send_photo`, :meth:`~pyrogram.Client.send_poll`, :meth:`~pyrogram.Client.send_sticker`, :meth:`~pyrogram.Client.send_venue`, :meth:`~pyrogram.Client.send_video_note`, :meth:`~pyrogram.Client.send_video`, :meth:`~pyrogram.Client.send_voice` and the bound methods :meth:`~pyrogram.types.Message.forward` and :meth:`~pyrogram.types.Message.copy`.
