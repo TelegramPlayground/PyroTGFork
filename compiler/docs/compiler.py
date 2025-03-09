@@ -402,7 +402,7 @@ def pyrogram_api():
             get_payment_form
             send_payment_form
             get_available_gifts
-            get_user_gifts
+            get_received_gifts
             sell_gift
             send_gift
             toggle_gift_is_saved
@@ -522,7 +522,7 @@ def pyrogram_api():
             Location
             Venue
             Gift
-            UserGift
+            ReceivedGift
             UpgradedGift
             WebAppData
             MessageAutoDeleteTimerChanged
@@ -759,7 +759,8 @@ def pyrogram_api():
             Message.translate
             Message.pay
             Message.star
-            UserGift.toggle
+            ReceivedGift.toggle
+            ExternalReplyInfo.download
         """,
         chat="""
         Chat

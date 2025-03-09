@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -25,8 +25,8 @@ from .message import Str
 from ..object import Object
 
 
-class UserGift(Object):
-    """Represents a gift received by a user.
+class ReceivedGift(Object):
+    """Represents a gift received by a user or a chat.
 
     Parameters:
         sender_user (:obj:`~pyrogram.types.User`, *optional*):
@@ -38,14 +38,17 @@ class UserGift(Object):
         entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text.
 
+        date (:py:obj:`~datetime.datetime`, *optional*):
+            Date when the gift was sent.
+
         is_private (``bool``, *optional*):
             True, if the sender and gift text are shown only to the gift receiver; otherwise, everyone are able to see them.
 
         is_saved (``bool``, *optional*):
             True, if the gift is displayed on the user's profile page; may be False only for the receiver of the gift.
 
-        date (:py:obj:`~datetime.datetime`, *optional*):
-            Date when the gift was sent.
+        is_pinned (``bool``, *optional*):
+            True, if the gift is pinned to the top of the chat's profile page.
 
         gift (:obj:`~pyrogram.types.Gift` | :obj:`~pyrogram.types.UpgradedGift`, *optional*):
             Information about the gift.
@@ -54,7 +57,7 @@ class UserGift(Object):
             Identifier of the message with the gift in the chat with the sender of the gift; can be None or an identifier of a deleted message; only for the gift receiver.
 
         sell_star_count (``int``, *optional*):
-            Number of Telegram Stars that can be claimed by the receiver instead of the gift; only for the gift receiver.
+            Number of Telegram Stars that can be claimed by the receiver instead of the regular gift; 0 if the gift can't be sold by the current user.
 
         was_converted (``bool``, *optional*):
             True, if the gift was converted to Telegram Stars; only for the receiver of the gift.
@@ -89,6 +92,7 @@ class UserGift(Object):
         date: datetime,
         is_private: Optional[bool] = None,
         is_saved: Optional[bool] = None,
+        is_pinned: Optional[bool] = None,
         gift: Optional[Union["types.Gift", "types.UpgradedGift"]] = None,
         message_id: Optional[int] = None,
         sell_star_count: Optional[int] = None,
@@ -102,13 +106,14 @@ class UserGift(Object):
     ):
         super().__init__(client)
 
-        self.date = date
-        self.gift = gift
-        self.is_private = is_private
-        self.is_saved = is_saved
         self.sender_user = sender_user
         self.text = text
         self.entities = entities
+        self.date = date
+        self.is_private = is_private
+        self.is_saved = is_saved
+        self.is_pinned = is_pinned
+        self.gift = gift
         self.message_id = message_id
         self.sell_star_count = sell_star_count
         self.was_converted = was_converted
@@ -126,31 +131,38 @@ class UserGift(Object):
         saved_star_gift: "raw.types.SavedStarGift",
         users: dict,
         chats: dict
-    ) -> "UserGift":
+    ) -> "ReceivedGift":
         text, entities = None, None
         if getattr(saved_star_gift, "message", None):
             text = saved_star_gift.message.text or None
             entities = [types.MessageEntity._parse(client, entity, users) for entity in saved_star_gift.message.entities]
             entities = types.List(filter(lambda x: x is not None, entities))
-        # TODO refunded:flags.9?true can_upgrade:flags.10?true msg_id:flags.3?int saved_id:flags.11?long upgrade_stars:flags.6?long can_export_at:flags.7?int transfer_stars:flags.8?long
         sender_user = utils.get_raw_peer_id(saved_star_gift.from_id)
-        return UserGift(
+        return ReceivedGift(
+            sender_user=types.User._parse(
+                client,
+                users.get(sender_user)
+            ) if sender_user else None,
+            text=Str(text).init(entities) if text else None,
+            entities=entities,
             date=utils.timestamp_to_datetime(saved_star_gift.date),
+            is_private=getattr(saved_star_gift, "name_hidden", None),
+            is_saved=not saved_star_gift.unsaved if getattr(saved_star_gift, "unsaved", False) else None,
+            is_pinned=saved_star_gift.pinned_to_top,
             gift=await types.Gift._parse(
                 client,
                 saved_star_gift.gift,
                 users
             ),
-            is_private=getattr(saved_star_gift, "name_hidden", None),
-            is_saved=not saved_star_gift.unsaved if getattr(saved_star_gift, "unsaved", None) else None,
-            sender_user=types.User._parse(
-                client,
-                users.get(sender_user)
-            ) if sender_user else None,
             message_id=getattr(saved_star_gift, "msg_id", None),
-            sell_star_count=getattr(saved_star_gift, "convert_stars", None),
-            text=Str(text).init(entities) if text else None,
-            entities=entities,
+            sell_star_count=getattr(saved_star_gift, "convert_stars", 0),
+            was_converted=bool(getattr(saved_star_gift, "saved_id", None)),
+            can_be_upgraded=getattr(saved_star_gift, "can_upgrade", None),
+            was_refunded=getattr(saved_star_gift, "refunded", None),
+            prepaid_upgrade_star_count=getattr(saved_star_gift, "upgrade_stars", None),
+            can_be_transferred=bool(getattr(saved_star_gift, "transfer_stars", None)),
+            transfer_star_count=getattr(saved_star_gift, "transfer_stars", None),
+            export_date=utils.timestamp_to_datetime(saved_star_gift.can_export_at),
             client=client
         )
 
@@ -160,7 +172,7 @@ class UserGift(Object):
         message: "raw.base.Message",
         users: dict,
         chats: dict
-    ) -> "UserGift":
+    ) -> "ReceivedGift":
         action = message.action
 
         text, entities = None, None
@@ -170,7 +182,7 @@ class UserGift(Object):
             entities = types.List(filter(lambda x: x is not None, entities))
         # TODO 
         if isinstance(action, raw.types.MessageActionStarGift):
-            return UserGift(
+            return ReceivedGift(
                 gift=await types.Gift._parse(
                     client,
                     action.gift,
@@ -192,7 +204,7 @@ class UserGift(Object):
             )
 
         if isinstance(action, raw.types.MessageActionStarGiftUnique):
-            return UserGift(
+            return ReceivedGift(
                 gift=await types.Gift._parse(
                     client,
                     action.gift,
@@ -212,7 +224,7 @@ class UserGift(Object):
             )
 
     async def toggle(self, is_saved: bool) -> bool:
-        """Bound method *toggle* of :obj:`~pyrogram.types.UserGift`.
+        """Bound method *toggle* of :obj:`~pyrogram.types.ReceivedGift`.
 
         Use as a shortcut for:
 
@@ -229,7 +241,7 @@ class UserGift(Object):
         Example:
             .. code-block:: python
 
-                await user_gift.toggle(is_saved=False)
+                await received_gift.toggle(is_saved=False)
 
         Returns:
             ``bool``: On success, True is returned.
