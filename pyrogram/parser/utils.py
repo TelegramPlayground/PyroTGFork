@@ -43,7 +43,6 @@ def replace_once(source: str, old: str, new: str, start: int):
 
 def within_surrogate(text, index, *, length=None):
     """
-    
     https://github.com/LonamiWebs/Telethon/blob/63d9b26/telethon/helpers.py#L52-L63
 
     `True` if ``index`` is within a surrogate (before and after it, not at!).
