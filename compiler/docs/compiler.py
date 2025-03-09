@@ -227,6 +227,7 @@ def pyrogram_api():
             retract_vote
             translate_text
             translate_message_text
+            delete_chat_history
         """,
         chats="""
         Chats

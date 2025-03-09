@@ -1,6 +1,6 @@
 id	message
 FILE_MIGRATE_X	The file to be accessed is currently stored in DC{value}
-NETWORK_MIGRATE_X	The source IP address is associated with DC{value} (for registration)
-PHONE_MIGRATE_X	The phone number a user is trying to use for authorization is associated with DC{value}
-STATS_MIGRATE_X	The statistics of the group/channel are stored in DC{value}
-USER_MIGRATE_X	The user whose identity is being used to execute queries is associated with DC{value} (for registration)
+NETWORK_MIGRATE_X	Your IP address is associated to DC {value}, please re-send the query to that DC.
+PHONE_MIGRATE_X	Your phone number is associated to DC {value}, please re-send the query to that DC.
+STATS_MIGRATE_X	Channel statistics for the specified channel are stored on DC {value}, please re-send the query to that DC.
+USER_MIGRATE_X	Your account is associated to DC {value}, please re-send the query to that DC.
