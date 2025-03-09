@@ -4878,59 +4878,30 @@ class Message(Object, Update):
             elif self.document:
                 file_id = self.document.file_id
             elif self.video:
-                riom = None
-                try:
-                    riom = await self._client.send_video(
-                        chat_id,
-                        video=self.video.file_id,
-                        caption=caption,
-                        parse_mode=parse_mode,
-                        caption_entities=caption_entities,
-                        show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
-                        cover=video_cover,
-                        start_timestamp=video_start_timestamp,
-                        has_spoiler=self.has_media_spoiler,
-                        disable_notification=disable_notification,
-                        protect_content=self.has_protected_content if protect_content is None else protect_content,
-                        allow_paid_broadcast=allow_paid_broadcast,
-                        paid_message_star_count=paid_message_star_count,
-                        message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
-                        business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
-                        send_as=send_as,
-                        message_effect_id=self.effect_id,
-                        reply_parameters=reply_parameters,
-                        reply_markup=self.reply_markup if reply_markup is object else reply_markup,
-                        # TODO
-                        schedule_date=schedule_date,
-                        reply_to_message_id=reply_to_message_id
-                    )
-                except FileReferenceExpired:
-                    ohm = await self._client.get_messages(self.chat.id, self.id)
-                    riom = await self._client.send_video(
-                        chat_id,
-                        video=ohm.video.file_id,
-                        caption=caption,
-                        parse_mode=parse_mode,
-                        caption_entities=caption_entities,
-                        show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
-                        cover=video_cover,
-                        start_timestamp=video_start_timestamp,
-                        has_spoiler=self.has_media_spoiler,
-                        disable_notification=disable_notification,
-                        protect_content=self.has_protected_content if protect_content is None else protect_content,
-                        allow_paid_broadcast=allow_paid_broadcast,
-                        paid_message_star_count=paid_message_star_count,
-                        message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
-                        business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
-                        send_as=send_as,
-                        message_effect_id=self.effect_id,
-                        reply_parameters=reply_parameters,
-                        reply_markup=self.reply_markup if reply_markup is object else reply_markup,
-                        # TODO
-                        schedule_date=schedule_date,
-                        reply_to_message_id=reply_to_message_id
-                    )
-                return riom
+                return await self._client.send_video(
+                    chat_id,
+                    video=self.video.file_id,
+                    caption=caption,
+                    parse_mode=parse_mode,
+                    caption_entities=caption_entities,
+                    show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
+                    cover=video_cover,
+                    start_timestamp=video_start_timestamp,
+                    has_spoiler=self.has_media_spoiler,
+                    disable_notification=disable_notification,
+                    protect_content=self.has_protected_content if protect_content is None else protect_content,
+                    allow_paid_broadcast=allow_paid_broadcast,
+                    paid_message_star_count=paid_message_star_count,
+                    message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
+                    business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
+                    send_as=send_as,
+                    message_effect_id=self.effect_id,
+                    reply_parameters=reply_parameters,
+                    reply_markup=self.reply_markup if reply_markup is object else reply_markup,
+                    # TODO
+                    schedule_date=schedule_date,
+                    reply_to_message_id=reply_to_message_id
+                )
             elif self.animation:
                 file_id = self.animation.file_id
             elif self.voice:
