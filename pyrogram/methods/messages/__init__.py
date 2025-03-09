@@ -18,6 +18,7 @@
 
 from .copy_media_group import CopyMediaGroup
 from .copy_message import CopyMessage
+from .delete_chat_history import DeleteChatHistory
 from .delete_messages import DeleteMessages
 from .download_media import DownloadMedia
 from .edit_cached_media import EditCachedMedia
@@ -76,6 +77,7 @@ from .translate_text import TranslateText
 class Messages(
     CopyMediaGroup,
     CopyMessage,
+    DeleteChatHistory,
     DeleteMessages,
     DownloadMedia,
     EditCachedMedia,
