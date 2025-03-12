@@ -1534,8 +1534,6 @@ class Message(Object, Update):
         ] = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
-        disable_web_page_preview: bool = None,
-        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_text* of :obj:`~pyrogram.types.Message`.
 
@@ -1673,7 +1671,6 @@ class Message(Object, Update):
             "types.ForceReply"
         ] = None,
         send_as: Union[int, str] = None,
-        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":

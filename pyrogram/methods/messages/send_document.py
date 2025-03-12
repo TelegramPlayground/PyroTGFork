@@ -59,8 +59,6 @@ class SendDocument:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None,
-        force_document: bool = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> Optional["types.Message"]:
@@ -187,32 +185,6 @@ class SendDocument:
 
                 await app.send_document("me", "document.zip", progress=progress)
         """
-
-        if reply_to_message_id and reply_parameters:
-            raise ValueError(
-                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
-                "exclusive."
-            )
-        
-        if reply_to_message_id is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use reply_parameters instead"
-            )
-            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
-
-        if force_document and disable_content_type_detection:
-            raise ValueError(
-                "Parameters `force_document` and `disable_content_type_detection` "
-                "are mutually exclusive."
-            )
-
-        if force_document is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use disable_content_type_detection instead"
-            )
-            disable_content_type_detection = force_document
 
         file = None
 
