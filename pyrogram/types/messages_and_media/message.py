@@ -1636,8 +1636,6 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             schedule_date=schedule_date,
-            disable_web_page_preview=disable_web_page_preview,
-            reply_to_message_id=reply_to_message_id
         )
 
     reply = reply_text
@@ -1839,7 +1837,6 @@ class Message(Object, Update):
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             ttl_seconds=ttl_seconds,
             reply_markup=reply_markup,
-            reply_to_message_id=reply_to_message_id,
             progress=progress,
             progress_args=progress_args
         )
@@ -1869,7 +1866,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -2020,7 +2016,6 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
-            reply_to_message_id=reply_to_message_id,
             progress=progress,
             progress_args=progress_args
         )
@@ -2045,7 +2040,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_cached_media* of :obj:`~pyrogram.types.Message`.
 
@@ -2146,7 +2140,6 @@ class Message(Object, Update):
             protect_content=self.has_protected_content,
             has_spoiler=self.has_media_spoiler,
             reply_markup=reply_markup,
-            reply_to_message_id=reply_to_message_id
         )
 
     async def reply_chat_action(
@@ -2231,7 +2224,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_contact* of :obj:`~pyrogram.types.Message`.
 
@@ -2329,7 +2321,6 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
-            reply_to_message_id=reply_to_message_id
         )
 
     async def reply_document(
@@ -2355,8 +2346,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None,
-        force_document: bool = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -2502,8 +2491,6 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
-            reply_to_message_id=reply_to_message_id,
-            force_document=force_document,
             progress=progress,
             progress_args=progress_args
         )
@@ -2524,7 +2511,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_game* of :obj:`~pyrogram.types.Message`.
 
@@ -2605,7 +2591,6 @@ class Message(Object, Update):
             business_connection_id=self.business_connection_id,
             send_as=send_as,
             reply_markup=reply_markup,
-            reply_to_message_id=reply_to_message_id
         )
 
     async def reply_inline_bot_result(
@@ -2616,7 +2601,6 @@ class Message(Object, Update):
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
         send_as: Union[int, str] = None,
-        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_inline_bot_result* of :obj:`~pyrogram.types.Message`.
 
@@ -2682,7 +2666,6 @@ class Message(Object, Update):
             disable_notification=disable_notification,
             reply_parameters=reply_parameters,
             send_as=send_as,
-            reply_to_message_id=reply_to_message_id
         )
 
     async def reply_location(
@@ -2705,7 +2688,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_location* of :obj:`~pyrogram.types.Message`.
 
@@ -2799,7 +2781,6 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
-            reply_to_message_id=reply_to_message_id
         )
 
     async def reply_media_group(
@@ -2813,7 +2794,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        reply_to_message_id: int = None
     ) -> list["types.Message"]:
         """Bound method *reply_media_group* of :obj:`~pyrogram.types.Message`.
 
@@ -2896,7 +2876,6 @@ class Message(Object, Update):
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
-            reply_to_message_id=reply_to_message_id
         )
 
     async def reply_photo(
@@ -2923,7 +2902,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -3071,7 +3049,6 @@ class Message(Object, Update):
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             view_once=view_once,
             reply_markup=reply_markup,
-            reply_to_message_id=reply_to_message_id,
             progress=progress,
             progress_args=progress_args
         )
@@ -3106,7 +3083,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_poll* of :obj:`~pyrogram.types.Message`.
 
@@ -3266,7 +3242,6 @@ class Message(Object, Update):
             business_connection_id=self.business_connection_id,
             send_as=send_as,
             schedule_date=schedule_date,
-            reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
 
@@ -3291,7 +3266,6 @@ class Message(Object, Update):
         ] = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
-        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -3422,7 +3396,6 @@ class Message(Object, Update):
             reply_parameters=reply_parameters,
             reply_markup=reply_markup,
             schedule_date=schedule_date,
-            reply_to_message_id=reply_to_message_id,
             progress=progress,
             progress_args=progress_args
         )
@@ -3450,7 +3423,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_venue* of :obj:`~pyrogram.types.Message`.
 
@@ -3558,7 +3530,6 @@ class Message(Object, Update):
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
-            reply_to_message_id=reply_to_message_id,
             reply_markup=reply_markup
         )
 
@@ -3595,7 +3566,6 @@ class Message(Object, Update):
         mime_type: str = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
-        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -3780,7 +3750,6 @@ class Message(Object, Update):
             file_name=file_name,
             mime_type=mime_type,
             schedule_date=schedule_date,
-            reply_to_message_id=reply_to_message_id,
             progress=progress,
             progress_args=progress_args
         )
@@ -3810,7 +3779,6 @@ class Message(Object, Update):
         schedule_date: datetime = None,
         ttl_seconds: int = None,
         view_once: bool = None,
-        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -3961,7 +3929,6 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             ttl_seconds=ttl_seconds,
             view_once=view_once,
-            reply_to_message_id=reply_to_message_id,
             progress=progress,
             progress_args=progress_args
         )
@@ -3990,7 +3957,6 @@ class Message(Object, Update):
         ttl_seconds: int = None,
         view_once: bool = None,
         waveform: bytes = None,
-        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> "Message":
@@ -4134,7 +4100,6 @@ class Message(Object, Update):
             ttl_seconds=ttl_seconds,
             view_once=view_once,
             waveform=waveform,
-            reply_to_message_id=reply_to_message_id,
             progress=progress,
             progress_args=progress_args
         )
@@ -4349,7 +4314,6 @@ class Message(Object, Update):
         entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        disable_web_page_preview: bool = None
     ) -> "Message":
         """Bound method *edit_text* of :obj:`~pyrogram.types.Message`.
 
@@ -4403,7 +4367,6 @@ class Message(Object, Update):
             link_preview_options=link_preview_options,
             reply_markup=reply_markup,
             business_connection_id=self.business_connection_id,
-            disable_web_page_preview=disable_web_page_preview
         )
 
     edit = edit_text
@@ -4728,7 +4691,6 @@ class Message(Object, Update):
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
         message_thread_id: int = None,
-        reply_to_message_id: int = None
     ) -> Union["types.Message", list["types.Message"]]:
         """Bound method *copy* of :obj:`~pyrogram.types.Message`.
 
@@ -4842,7 +4804,6 @@ class Message(Object, Update):
                 message_effect_id=self.effect_id,
                 reply_parameters=reply_parameters,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup,
-                reply_to_message_id=reply_to_message_id,
                 send_as=send_as,
                 schedule_date=schedule_date
             )
@@ -4861,7 +4822,6 @@ class Message(Object, Update):
                 allow_paid_broadcast=allow_paid_broadcast,
                 paid_message_star_count=paid_message_star_count,
                 has_spoiler=self.has_media_spoiler,
-                reply_to_message_id=reply_to_message_id,
                 send_as=send_as,
                 reply_markup=self.reply_markup if reply_markup is object else reply_markup
             )
@@ -4897,7 +4857,6 @@ class Message(Object, Update):
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup,
                     # TODO
                     schedule_date=schedule_date,
-                    reply_to_message_id=reply_to_message_id
                 )
             elif self.animation:
                 file_id = self.animation.file_id
@@ -4923,7 +4882,6 @@ class Message(Object, Update):
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
                     paid_message_star_count=paid_message_star_count,
-                    reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
@@ -4941,7 +4899,6 @@ class Message(Object, Update):
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
                     paid_message_star_count=paid_message_star_count,
-                    reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
@@ -4963,7 +4920,6 @@ class Message(Object, Update):
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
                     allow_paid_broadcast=allow_paid_broadcast,
                     paid_message_star_count=paid_message_star_count,
-                    reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
@@ -4995,7 +4951,6 @@ class Message(Object, Update):
                     message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     schedule_date=schedule_date,
-                    reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
@@ -5011,7 +4966,6 @@ class Message(Object, Update):
                     business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     message_effect_id=self.effect_id,
                     reply_parameters=reply_parameters,
-                    reply_to_message_id=reply_to_message_id,
                     send_as=send_as,
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
