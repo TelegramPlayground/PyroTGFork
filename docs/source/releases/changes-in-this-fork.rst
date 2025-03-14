@@ -33,6 +33,7 @@ Changes in this Fork
 | Scheme layer used: 200 |
 +------------------------+
 
+- Try to return the service message (when applicable) in the method :meth:`~pyrogram.Client.set_chat_title`.
 - Added :meth:`~pyrogram.Client.delete_chat_history`.
 - Rename ``UserGift`` to :obj:`~pyrogram.types.ReceivedGift`, ``get_user_gifts`` to :meth:`~pyrogram.Client.get_received_gifts` and the corresponding fields appropriately.
 - Added the field ``paid_message_star_count`` to the classes :obj:`~pyrogram.types.Chat`, :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.User`.

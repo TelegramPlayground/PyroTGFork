@@ -27,7 +27,7 @@ class SetChatMessageAutoDeleteTime:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_auto_delete_time: int
-    ) -> "types.Message":
+    ) -> Union["types.Message", bool]:
         """Changes the message auto-delete or self-destruct (for secret chats) time in a chat.
 
         Requires change_info administrator right in basic groups, supergroups and channels.
@@ -42,7 +42,8 @@ class SetChatMessageAutoDeleteTime:
                 New time value, in seconds; unless the chat is secret, it must be from 0 up to 365 * 86400 and be divisible by 86400. If 0, then messages aren't deleted automatically.
 
         Returns:
-            ``bool``: True on success.
+            :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
+            otherwise, in case a message object couldn't be returned, True is returned.
 
         Example:
             .. code-block:: python
@@ -73,3 +74,4 @@ class SetChatMessageAutoDeleteTime:
                     {i.id: i for i in r.chats},
                     replies=self.fetch_replies
                 )
+        return True
