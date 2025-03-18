@@ -23,6 +23,7 @@ from .authorization import *
 from .bots_and_keyboards import *
 from .chat_drafts import *
 from .chat_topics import *
+from .client_configuration import *
 from .inline_mode import *
 from .input_media import *
 from .input_paid_media import *
