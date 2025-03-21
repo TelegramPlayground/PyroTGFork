@@ -99,6 +99,12 @@ class ExternalReplyInfo(Object):
 
         venue (:obj:`~pyrogram.types.Venue`, *optional*):
             Message is a venue, information about the venue.
+        
+        media (:obj:`~pyrogram.enums.MessageMediaType`, *optional*):
+            The message is a media message.
+            This field will contain the enumeration type of the media message.
+            You can use ``media = getattr(message, message.media.value)`` to access the media message.
+
     """
 
     def __init__(
@@ -129,6 +135,7 @@ class ExternalReplyInfo(Object):
         location: "types.Location" = None,
         poll: "types.Poll" = None,
         venue: "types.Venue" = None,
+        media: "enums.MessageMediaType" = None,
     ):
         super().__init__(client)
 
@@ -156,6 +163,7 @@ class ExternalReplyInfo(Object):
         self.location = location
         self.poll = poll
         self.venue = venue
+        self.media = media
 
     @staticmethod
     async def _parse(
@@ -336,7 +344,8 @@ class ExternalReplyInfo(Object):
                 invoice=invoice,
                 location=location,
                 poll=poll,
-                venue=venue
+                venue=venue,
+                media=media_type
             )
 
 
