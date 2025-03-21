@@ -130,6 +130,9 @@ class CopyMessage:
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the copied message is returned.
 
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 

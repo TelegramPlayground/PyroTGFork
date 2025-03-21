@@ -4820,6 +4820,7 @@ class Message(Object, Update):
 
         Raises:
             RPCError: In case of a Telegram RPC error.
+
         """
         if self.service:
             log.warning("Service messages cannot be copied. chat_id: %s, message_id: %s",
