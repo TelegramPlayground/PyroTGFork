@@ -18,7 +18,7 @@
 
 import html
 import re
-from typing import Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram.enums import MessageEntityType
@@ -74,7 +74,7 @@ class Markdown:
 
     @staticmethod
     def escape_and_create_quotes(text: str, strict: bool):
-        text_lines: list[str | None] = text.splitlines()
+        text_lines: list[Union[str, None]] = text.splitlines()
 
         # Indexes of Already escaped lines
         html_escaped_list: list[int] = []
