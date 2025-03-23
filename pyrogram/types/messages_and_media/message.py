@@ -4820,6 +4820,7 @@ class Message(Object, Update):
 
         Raises:
             RPCError: In case of a Telegram RPC error.
+            ValueError: In case if an invalid message was provided.
 
         """
         if self.service:
