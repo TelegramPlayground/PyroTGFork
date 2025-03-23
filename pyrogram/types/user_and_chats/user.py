@@ -486,7 +486,7 @@ class User(Object, Update):
 
         return await self._client.unarchive_chats(self.id)
 
-    def block(self):
+    async def block(self):
         """Bound method *block* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -507,21 +507,21 @@ class User(Object, Update):
             RPCError: In case of a Telegram RPC error.
         """
 
-        return self._client.block_user(self.id)
+        return await self._client.block_user(self.id)
 
-    def unblock(self):
+    async def unblock(self):
         """Bound method *unblock* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
 
         .. code-block:: python
 
-            client.unblock_user(123456789)
+            await client.unblock_user(123456789)
 
         Example:
             .. code-block:: python
 
-                user.unblock()
+                await user.unblock()
 
         Returns:
             True on success.
@@ -530,21 +530,21 @@ class User(Object, Update):
             RPCError: In case of a Telegram RPC error.
         """
 
-        return self._client.unblock_user(self.id)
+        return await self._client.unblock_user(self.id)
 
-    def get_common_chats(self):
+    async def get_common_chats(self):
         """Bound method *get_common_chats* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
 
         .. code-block:: python
 
-            client.get_common_chats(123456789)
+            await client.get_common_chats(123456789)
 
         Example:
             .. code-block:: python
 
-                user.get_common_chats()
+                await user.get_common_chats()
 
         Returns:
             True on success.
@@ -553,4 +553,4 @@ class User(Object, Update):
             RPCError: In case of a Telegram RPC error.
         """
 
-        return self._client.get_common_chats(self.id)
+        return await self._client.get_common_chats(self.id)
