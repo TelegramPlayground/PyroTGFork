@@ -316,22 +316,23 @@ class Markdown:
                             insert_at.append((line_start, i, BLOCKQUOTE_EXPANDABLE_DELIM))
                         else:
                             insert_at.append((line_start, i, BLOCKQUOTE_DELIM))
-                    # No closing delimiter for blockquotes
-                    url = None
-                    is_emoji = False
-                    if entity.type == MessageEntityType.TEXT_LINK:
-                        url = entity.url
-                    elif entity.type == MessageEntityType.TEXT_MENTION:
-                        url = f'tg://user?id={entity.user.id}'
-                    elif entity.type == MessageEntityType.CUSTOM_EMOJI:
-                        url = f"tg://emoji?id={entity.custom_emoji_id}"
-                        is_emoji = True
-                    if url:
-                        if is_emoji:
-                            insert_at.append((s, i, '!['))
-                        else:
-                            insert_at.append((s, i, '['))
-                        insert_at.append((e, -i, f']({url})'))
+            # No closing delimiter for blockquotes
+            else:
+                url = None
+                is_emoji = False
+                if entity.type == MessageEntityType.TEXT_LINK:
+                    url = entity.url
+                elif entity.type == MessageEntityType.TEXT_MENTION:
+                    url = f'tg://user?id={entity.user.id}'
+                elif entity.type == MessageEntityType.CUSTOM_EMOJI:
+                    url = f"tg://emoji?id={entity.custom_emoji_id}"
+                    is_emoji = True
+                if url:
+                    if is_emoji:
+                        insert_at.append((s, i, '!['))
+                    else:
+                        insert_at.append((s, i, '['))
+                    insert_at.append((e, -i, f']({url})'))
 
         insert_at.sort(key=lambda t: (t[0], t[1]))
         while insert_at:
