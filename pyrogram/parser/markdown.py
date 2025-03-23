@@ -346,14 +346,4 @@ class Markdown:
 
             text = text[:at] + what + text[at:]
 
-        entities_offsets = map(
-            lambda x: x[1],
-            sorted(
-                enumerate(entities_offsets), key=lambda x: (x[1][1], x[0]), reverse=True
-            ),
-        )
-
-        for entity, offset in entities_offsets:
-            text = text[:offset] + entity + text[offset:]
-
         return utils.remove_surrogates(text)
