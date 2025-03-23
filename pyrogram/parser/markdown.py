@@ -22,6 +22,7 @@ from typing import Optional, Union
 
 import pyrogram
 from pyrogram.enums import MessageEntityType
+
 from . import utils
 from .html import HTML
 
