@@ -1422,13 +1422,12 @@ class Message(Object, Update):
                         parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
                     if not parsed_message.message_thread_id:
                         parsed_message.message_thread_id = 1  # https://t.me/c/1279877202/31475
-                if getattr(message.reply_to, "quote", False):
-                    parsed_message.quote = types.TextQuote._parse(
-                        client,
-                        chats,
-                        users,
-                        message.reply_to
-                    )
+                parsed_message.quote = types.TextQuote._parse(
+                    client,
+                    chats,
+                    users,
+                    message.reply_to
+                )
 
             if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
                 parsed_message.reply_to_story = await types.Story._parse(client, users, chats, None, message.reply_to, None, None, None)
