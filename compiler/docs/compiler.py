@@ -227,6 +227,7 @@ def pyrogram_api():
             retract_vote
             translate_text
             translate_message_text
+            delete_chat_history
         """,
         chats="""
         Chats
@@ -873,6 +874,7 @@ def pyrogram_api():
             ClientPlatform
             MessageEntityType
             MessageMediaType
+            MessageOriginType
             MessageServiceType
             MessagesFilter
             ParseMode

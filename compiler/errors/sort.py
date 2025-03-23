@@ -57,6 +57,13 @@ elif sys.argv[1] == "scrape":
         for h in e:
             dct = {}
 
+            for p in Path("source/").glob(f"{h}*.tsv"):
+                with open(p) as f:
+                    reader = csv.reader(f, delimiter="\t")
+                    for k, v in reader:
+                        if k != "id":
+                            dct[k] = v
+
             j = d.get("errors").get(h)
             for k in j:
                 if k.endswith("_*"):
@@ -68,15 +75,9 @@ elif sys.argv[1] == "scrape":
                 l = l.replace("\"", "'")
                 l = l.replace("&raquo;", "»")
                 l = l.replace("&laquo;", "«")
+                l = l.replace(" »", "")
                 l = l.replace("](/api/", f"]({b}/api/")
                 dct[m] = l
-
-            for p in Path("source/").glob(f"{h}*.tsv"):
-                with open(p) as f:
-                    reader = csv.reader(f, delimiter="\t")
-                    for k, v in reader:
-                        if k != "id":
-                            dct[k] = v
 
             keys = sorted(dct)
             

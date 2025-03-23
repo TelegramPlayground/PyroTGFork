@@ -1,10 +1,10 @@
 id	message
 ACTIVE_USER_REQUIRED	The method is only available to already activated users
-AUTH_KEY_INVALID	The key is invalid
-AUTH_KEY_PERM_EMPTY	The method is unavailable for temporary authorization key, not bound to permanent
-AUTH_KEY_UNREGISTERED	The key is not registered in the system. Delete your session file and login again
-SESSION_EXPIRED	The authorization has expired
-SESSION_PASSWORD_NEEDED	The two-step verification is enabled and a password is required
-SESSION_REVOKED	The authorization has been invalidated, because of the user terminating all sessions
-USER_DEACTIVATED	The user has been deleted/deactivated
-USER_DEACTIVATED_BAN	The user has been deleted/deactivated
+AUTH_KEY_INVALID	The specified auth key is invalid.
+AUTH_KEY_PERM_EMPTY	The method is unavailable for temporary authorization keys, not bound to a permanent authorization key.
+AUTH_KEY_UNREGISTERED	The specified authorization key is not registered in the system (for example, a PFS temporary key has expired).
+SESSION_EXPIRED	The session has expired.
+SESSION_PASSWORD_NEEDED	2FA is enabled, use a password to login.
+SESSION_REVOKED	The session was revoked by the user.
+USER_DEACTIVATED	The current account was deleted by the user.
+USER_DEACTIVATED_BAN	The current account was deleted and banned by Telegram's antispam system.

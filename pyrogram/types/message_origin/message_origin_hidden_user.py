@@ -21,7 +21,7 @@ from datetime import datetime
 from .message_origin import MessageOrigin
 
 import pyrogram
-from pyrogram import types
+from pyrogram import types, enums
 
 
 class MessageOriginHiddenUser(MessageOrigin):
@@ -43,7 +43,7 @@ class MessageOriginHiddenUser(MessageOrigin):
         sender_user_name: str = None
     ):
         super().__init__(
-            type="hidden_user",
+            type=enums.MessageOriginType.HIDDEN_USER,
             date=date
         )
 

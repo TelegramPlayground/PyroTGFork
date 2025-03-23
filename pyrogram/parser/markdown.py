@@ -18,7 +18,7 @@
 
 import html
 import re
-from typing import Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram.enums import MessageEntityType
