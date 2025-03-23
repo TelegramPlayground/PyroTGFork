@@ -874,6 +874,7 @@ def pyrogram_api():
             ClientPlatform
             MessageEntityType
             MessageMediaType
+            MessageOriginType
             MessageServiceType
             MessagesFilter
             ParseMode

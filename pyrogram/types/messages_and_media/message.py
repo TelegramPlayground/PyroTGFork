@@ -1422,13 +1422,12 @@ class Message(Object, Update):
                         parsed_message.message_thread_id = message.reply_to.reply_to_msg_id
                     if not parsed_message.message_thread_id:
                         parsed_message.message_thread_id = 1  # https://t.me/c/1279877202/31475
-                if getattr(message.reply_to, "quote", False):
-                    parsed_message.quote = types.TextQuote._parse(
-                        client,
-                        chats,
-                        users,
-                        message.reply_to
-                    )
+                parsed_message.quote = types.TextQuote._parse(
+                    client,
+                    chats,
+                    users,
+                    message.reply_to
+                )
 
             if isinstance(message.reply_to, raw.types.MessageReplyStoryHeader):
                 parsed_message.reply_to_story = await types.Story._parse(client, users, chats, None, message.reply_to, None, None, None)
@@ -4820,15 +4819,21 @@ class Message(Object, Update):
 
         Raises:
             RPCError: In case of a Telegram RPC error.
+            ValueError: In case if an invalid message was provided.
+
         """
         if self.service:
-            log.warning("Service messages cannot be copied. chat_id: %s, message_id: %s",
-                        self.chat.id, self.id)
+            raise ValueError(
+                "Service messages cannot be copied. chat_id: %s, message_id: %s",
+                self.chat.id, self.id
+            )
         elif self.game and not (self._client.me and self._client.me.is_bot):
-            log.warning("Users cannot send messages with Game media type. chat_id: %s, message_id: %s",
-                        self.chat.id, self.id)
+            raise ValueError(
+                "Users cannot send messages with Game media type. chat_id: %s, message_id: %s",
+                self.chat.id, self.id
+            )
         elif self.empty:
-            log.warning("Empty messages cannot be copied.")
+            raise ValueError("Empty messages cannot be copied.")
         elif self.text:
             return await self._client.send_message(
                 chat_id=chat_id,
