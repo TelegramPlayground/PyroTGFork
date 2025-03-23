@@ -440,7 +440,7 @@ class User(Object, Update):
             client=client
         )
 
-    async def archive(self):
+    async def archive(self) -> bool:
         """Bound method *archive* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -463,7 +463,7 @@ class User(Object, Update):
 
         return await self._client.archive_chats(self.id)
 
-    async def unarchive(self):
+    async def unarchive(self) -> bool:
         """Bound method *unarchive* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -486,7 +486,7 @@ class User(Object, Update):
 
         return await self._client.unarchive_chats(self.id)
 
-    async def block(self):
+    async def block(self) -> bool:
         """Bound method *block* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -509,7 +509,7 @@ class User(Object, Update):
 
         return await self._client.block_user(self.id)
 
-    async def unblock(self):
+    async def unblock(self) -> bool:
         """Bound method *unblock* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -532,7 +532,7 @@ class User(Object, Update):
 
         return await self._client.unblock_user(self.id)
 
-    async def get_common_chats(self):
+    async def get_common_chats(self) -> list["types.Chat"]:
         """Bound method *get_common_chats* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -547,7 +547,7 @@ class User(Object, Update):
                 await user.get_common_chats()
 
         Returns:
-            True on success.
+            List of :obj:`~pyrogram.types.Chat`: On success, a list of the common chats is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
