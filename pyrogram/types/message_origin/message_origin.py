@@ -33,6 +33,8 @@ class MessageOrigin(Object):
     - :obj:`~pyrogram.types.MessageOriginHiddenUser`
     - :obj:`~pyrogram.types.MessageOriginChat`
     - :obj:`~pyrogram.types.MessageOriginChannel`
+    - :obj:`~pyrogram.types.MessageImportInfo`
+
     """
 
     def __init__(
