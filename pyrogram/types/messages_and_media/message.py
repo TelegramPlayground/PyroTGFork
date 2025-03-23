@@ -4823,13 +4823,17 @@ class Message(Object, Update):
 
         """
         if self.service:
-            log.warning("Service messages cannot be copied. chat_id: %s, message_id: %s",
-                        self.chat.id, self.id)
+            raise ValueError(
+                "Service messages cannot be copied. chat_id: %s, message_id: %s",
+                self.chat.id, self.id
+            )
         elif self.game and not (self._client.me and self._client.me.is_bot):
-            log.warning("Users cannot send messages with Game media type. chat_id: %s, message_id: %s",
-                        self.chat.id, self.id)
+            raise ValueError(
+                "Users cannot send messages with Game media type. chat_id: %s, message_id: %s",
+                self.chat.id, self.id
+            )
         elif self.empty:
-            log.warning("Empty messages cannot be copied.")
+            raise ValueError("Empty messages cannot be copied.")
         elif self.text:
             return await self._client.send_message(
                 chat_id=chat_id,
