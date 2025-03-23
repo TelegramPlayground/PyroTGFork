@@ -101,9 +101,9 @@ class ExternalReplyInfo(Object):
             Message is a venue, information about the venue.
         
         media (:obj:`~pyrogram.enums.MessageMediaType`, *optional*):
-            The message is a media message.
+            The external reply is a media message.
             This field will contain the enumeration type of the media message.
-            You can use ``media = getattr(message, message.media.value)`` to access the media message.
+            You can use ``media = getattr(external_reply, external_reply.media.value)`` to access the media message.
 
     """
 
