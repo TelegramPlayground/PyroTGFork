@@ -332,7 +332,7 @@ class Markdown:
                     is_emoji = True
                 if url:
                     if is_emoji:
-                        insert_at.append((s, i, '!'))
+                        insert_at.append((s, i, '!['))
                     else:
                         insert_at.append((s, i, '['))
                     insert_at.append((e, -i, f']({url})'))
