@@ -281,7 +281,7 @@ class Markdown:
                         blk_entity.offset < e <= blk_entity.offset + blk_entity.length and
                         blk_entity.collapsed
                         for blk_entity in entities
-                        if blk_entity.type == MessageEntityType.BLOCKQUOTE
+                        if blk_entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE
                     )
                     if inside_blockquote:
                         if is_expandable:
@@ -297,7 +297,10 @@ class Markdown:
                                 open_delimiter = f"{delimiter}\n>"
                             close_delimiter = f"\n>{delimiter}"
                     else:
-                        open_delimiter = delimiter
+                        if entity.language:
+                            open_delimiter = f"{delimiter}{entity.language}"
+                        else:
+                            open_delimiter = delimiter
                         close_delimiter = delimiter
                     insert_at.append((s, i, open_delimiter))
                     insert_at.append((e, -i, close_delimiter))
@@ -329,10 +332,10 @@ class Markdown:
                     is_emoji = True
                 if url:
                     if is_emoji:
-                        insert_at.append((s, i, '!['))
+                        insert_at.append((s, i, '!'))
                     else:
                         insert_at.append((s, i, '['))
-                    insert_at.append((e, -i, f']({url})'))
+                    insert_at.append((e, -i, f''))
 
         insert_at.sort(key=lambda t: (t[0], t[1]))
         while insert_at:
