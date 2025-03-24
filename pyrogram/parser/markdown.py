@@ -298,7 +298,7 @@ class Markdown:
                             close_delimiter = f"\n>{delimiter}"
                     else:
                         if entity.language:
-                            open_delimiter = f"{delimiter}{entity.language}"
+                            open_delimiter = f"{delimiter}{entity.language}\n"
                         else:
                             open_delimiter = delimiter
                         close_delimiter = delimiter
