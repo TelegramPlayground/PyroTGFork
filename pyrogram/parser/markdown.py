@@ -335,7 +335,7 @@ class Markdown:
                         insert_at.append((s, i, '!'))
                     else:
                         insert_at.append((s, i, '['))
-                    insert_at.append((e, -i, f''))
+                    insert_at.append((e, -i, f']({url})'))
 
         insert_at.sort(key=lambda t: (t[0], t[1]))
         while insert_at:
