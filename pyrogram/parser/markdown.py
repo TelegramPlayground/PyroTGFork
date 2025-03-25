@@ -36,8 +36,7 @@ PRE_DELIM = "```"
 BLOCKQUOTE_DELIM = ">"
 BLOCKQUOTE_ESCAPE_DELIM = "|>"
 BLOCKQUOTE_EXPANDABLE_DELIM = "**>"
-BLOCKQUOTE_EXPANDABLE_END_DELIM = "<**"
-
+BLOCKQUOTE_EXPANDABLE_OPTIONAL_END_DELIM = "<**"
 
 MARKDOWN_RE = re.compile(
     r"({d})|(!?)\[(.+?)\]\((.+?)\)".format(
@@ -82,6 +81,7 @@ class Markdown:
         html_escaped_list: list[int] = []
 
         # Temporary Queue to hold lines to be quoted
+        # Index and Line
         to_quote_list: list[tuple[int, str]] = []
 
         def create_blockquote(quote_type: str = "") -> None:
@@ -93,83 +93,84 @@ class Markdown:
             if len(to_quote_list) == 0:
                 return
 
-            joined_lines = "\n".join([i[1] for i in to_quote_list])
+            # Create quoted text block
+            joined_lines = "\n".join([text for _, text in to_quote_list])
 
             first_line_index, _ = to_quote_list[0]
-            text_lines[first_line_index] = (
-                f"<blockquote{quote_type}>{joined_lines}</blockquote>"
-            )
 
-            for line_to_remove in to_quote_list[1:]:
-                text_lines[line_to_remove[0]] = None
+            # Enclose the block in html quote
+            # and add to starting index of quoted line
+            text_lines[first_line_index] = f"<blockquote{quote_type}>{joined_lines}</blockquote>"
 
+            # Set None Placeholders for preserving indexes
+            for idx, line_to_remove in to_quote_list[1:]:
+                text_lines[idx] = None
+
+            # clear queue
             to_quote_list.clear()
 
-        # Handle Expandable Quote
-        inside_blockquote = False
-        for index, line in enumerate(text_lines):
-            if line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM) and not inside_blockquote:
-                delim_stripped_line = line[3:]
-                parsed_line = (
-                    html.escape(delim_stripped_line) if strict else delim_stripped_line
-                )
+        def process_text(start_delimiter, end_delimiter: str = "", quote_type: str = ""):
+            for index, line in enumerate(text_lines):
+                # Ignore None placeholders from previous runs
+                if line is None:
+                    continue
 
-                to_quote_list.append((index, parsed_line))
-                html_escaped_list.append(index)
+                # Ignore Escaped >
+                if line.startswith(BLOCKQUOTE_ESCAPE_DELIM):
+                    text_lines[index] = line[1:]
+                    create_blockquote(quote_type=quote_type)
+                    continue
 
-                inside_blockquote = True
-                continue
+                # Parse lines starting with delimiter
+                if line.startswith(start_delimiter):
+                    endswith_delimiter = end_delimiter and line.endswith(end_delimiter)
 
-            elif line.endswith(BLOCKQUOTE_EXPANDABLE_END_DELIM) and inside_blockquote:
-                delim_stripped_line = line[:-3]
-                parsed_line = (
-                    html.escape(delim_stripped_line) if strict else delim_stripped_line
-                )
+                    # Indexes to skip in line
+                    start_index = len(start_delimiter)
+                    end_index = end_index = len(line) - len(end_delimiter) if endswith_delimiter else len(line)
 
-                to_quote_list.append((index, parsed_line))
-                html_escaped_list.append(index)
+                    # Strip delimiters
+                    delimiter_stripped_line = line[start_index:end_index]
 
-                inside_blockquote = False
+                    # Escape if strict
+                    parsed_line = html.escape(delimiter_stripped_line) if strict else delimiter_stripped_line
+                    
+                    # add to queue
+                    to_quote_list.append((index, parsed_line))
 
-                create_blockquote(quote_type=" expandable")
+                    # save line index
+                    html_escaped_list.append(index)
 
-            if inside_blockquote:
-                parsed_line = html.escape(line) if strict else line
-                to_quote_list.append((index, parsed_line))
-                html_escaped_list.append(index)
+                    # if line doesn't end with delimiter continue loop
+                    if not endswith_delimiter:
+                        continue
 
-        # Handle Single line/Continued Quote
-        for index, line in enumerate(text_lines):
-            if line is None:
-                continue 
+                # If line doesn't start with a delimiter
+                # or has ended with delimiter
+                # it means the block quote has ended
+                # create pending quotes if any
+                create_blockquote(quote_type=quote_type)
 
-            if line.startswith(BLOCKQUOTE_ESCAPE_DELIM):
-                text_lines[index] = line[1:]
-                create_blockquote()
-                continue
+            else:
+                # is triggered when there's only one line of text
+                # the line above won't be triggered
+                # because loop will exit after first iteration
+                # so try to create quote if any in queue
+                create_blockquote(quote_type=quote_type)
 
-            if line.startswith(BLOCKQUOTE_DELIM):
-                delim_stripped_line = line[1:]
-                parsed_line = (
-                    html.escape(delim_stripped_line) if strict else delim_stripped_line
-                )
-
-                to_quote_list.append((index, parsed_line))
-                html_escaped_list.append(index)
-
-            elif len(to_quote_list) > 0:
-                create_blockquote()
-        else:
-            create_blockquote()
+        process_text(
+            start_delimiter=BLOCKQUOTE_EXPANDABLE_DELIM,
+            end_delimiter=BLOCKQUOTE_EXPANDABLE_OPTIONAL_END_DELIM,
+            quote_type=" expandable",
+        )
+        process_text(start_delimiter=BLOCKQUOTE_DELIM)
 
         if strict:
             for idx, line in enumerate(text_lines):
                 if idx not in html_escaped_list:
                     text_lines[idx] = html.escape(line)
 
-        return "\n".join(
-            [valid_line for valid_line in text_lines if valid_line is not None]
-        )
+        return "\n".join(filter(lambda x: x is not None, text_lines))
 
     async def parse(self, text: str, strict: bool = False):
         text = self.escape_and_create_quotes(text, strict=strict)
@@ -188,17 +189,13 @@ class Markdown:
                 continue
 
             if not is_emoji and text_url:
-                text = utils.replace_once(
-                    text, full, URL_MARKUP.format(url, text_url), start
-                )
+                text = utils.replace_once(text, full, URL_MARKUP.format(url, text_url), start)
                 continue
 
             if is_emoji:
                 emoji = text_url
                 emoji_id = url.lstrip("tg://emoji?id=")
-                text = utils.replace_once(
-                    text, full, EMOJI_MARKUP.format(emoji_id, emoji), start
-                )
+                text = utils.replace_once(text, full, EMOJI_MARKUP.format(emoji_id, emoji), start)
                 continue
 
             if delim == BOLD_DELIM:
@@ -258,7 +255,7 @@ class Markdown:
             MessageEntityType.PRE: PRE_DELIM,
             MessageEntityType.BLOCKQUOTE: BLOCKQUOTE_DELIM,
             MessageEntityType.EXPANDABLE_BLOCKQUOTE: BLOCKQUOTE_EXPANDABLE_DELIM,
-            MessageEntityType.SPOILER: SPOILER_DELIM
+            MessageEntityType.SPOILER: SPOILER_DELIM,
         }
 
         text = utils.add_surrogates(text)
@@ -271,15 +268,15 @@ class Markdown:
             if delimiter:
                 if entity.type == MessageEntityType.PRE:
                     inside_blockquote = any(
-                        blk_entity.offset <= s < blk_entity.offset + blk_entity.length and
-                        blk_entity.offset < e <= blk_entity.offset + blk_entity.length
+                        blk_entity.offset <= s < blk_entity.offset + blk_entity.length
+                        and blk_entity.offset < e <= blk_entity.offset + blk_entity.length
                         for blk_entity in entities
                         if blk_entity.type == MessageEntityType.BLOCKQUOTE
                     )
                     is_expandable = any(
-                        blk_entity.offset <= s < blk_entity.offset + blk_entity.length and
-                        blk_entity.offset < e <= blk_entity.offset + blk_entity.length and
-                        blk_entity.collapsed
+                        blk_entity.offset <= s < blk_entity.offset + blk_entity.length
+                        and blk_entity.offset < e <= blk_entity.offset + blk_entity.length
+                        and blk_entity.collapsed
                         for blk_entity in entities
                         if blk_entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE
                     )
@@ -304,7 +301,10 @@ class Markdown:
                         close_delimiter = delimiter
                     insert_at.append((s, i, open_delimiter))
                     insert_at.append((e, -i, close_delimiter))
-                elif entity.type != MessageEntityType.BLOCKQUOTE and entity.type != MessageEntityType.EXPANDABLE_BLOCKQUOTE:
+                elif (
+                    entity.type != MessageEntityType.BLOCKQUOTE
+                    and entity.type != MessageEntityType.EXPANDABLE_BLOCKQUOTE
+                ):
                     open_delimiter = delimiter
                     close_delimiter = delimiter
                     insert_at.append((s, i, open_delimiter))
@@ -326,16 +326,16 @@ class Markdown:
                 if entity.type == MessageEntityType.TEXT_LINK:
                     url = entity.url
                 elif entity.type == MessageEntityType.TEXT_MENTION:
-                    url = f'tg://user?id={entity.user.id}'
+                    url = f"tg://user?id={entity.user.id}"
                 elif entity.type == MessageEntityType.CUSTOM_EMOJI:
                     url = f"tg://emoji?id={entity.custom_emoji_id}"
                     is_emoji = True
                 if url:
                     if is_emoji:
-                        insert_at.append((s, i, '!['))
+                        insert_at.append((s, i, "!["))
                     else:
-                        insert_at.append((s, i, '['))
-                    insert_at.append((e, -i, f']({url})'))
+                        insert_at.append((s, i, "["))
+                    insert_at.append((e, -i, f"]({url})"))
 
         insert_at.sort(key=lambda t: (t[0], t[1]))
         while insert_at:
