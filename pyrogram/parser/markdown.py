@@ -276,7 +276,7 @@ class Markdown:
                     is_expandable = any(
                         blk_entity.offset <= s < blk_entity.offset + blk_entity.length
                         and blk_entity.offset < e <= blk_entity.offset + blk_entity.length
-                        and blk_entity.collapsed
+                        # and blk_entity.collapsed
                         for blk_entity in entities
                         if blk_entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE
                     )
@@ -297,7 +297,7 @@ class Markdown:
                         if entity.language:
                             open_delimiter = f"{delimiter}{entity.language}\n"
                         else:
-                            open_delimiter = delimiter
+                            open_delimiter = f"{delimiter}\n"
                         close_delimiter = delimiter
                     insert_at.append((s, i, open_delimiter))
                     insert_at.append((e, -i, close_delimiter))
