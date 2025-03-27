@@ -110,9 +110,11 @@ class SetReaction:
                     add_to_recent=add_to_recent
                 )
             )
+            users = {i.id: i for i in getattr(r, "users", [])}
+            chats = {i.id: i for i in getattr(r, "chats", [])}
             for i in r.updates:
                 if isinstance(i, raw.types.UpdateMessageReactions):
-                    return types.MessageReactions._parse(self, i.reactions)
+                    return types.MessageReactions._parse(self, i.reactions, users, chats)
             # TODO
             return r
 

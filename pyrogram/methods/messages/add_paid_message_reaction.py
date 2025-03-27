@@ -67,8 +67,10 @@ class AddPaidMessageReaction:
                 private=await paid_reaction_type.write(self) if paid_reaction_type else None
             )
         )
+        users = {i.id: i for i in getattr(r, "users", [])}
+        chats = {i.id: i for i in getattr(r, "chats", [])}
         for i in r.updates:
             if isinstance(i, raw.types.UpdateMessageReactions):
-                return types.MessageReactions._parse(self, i.reactions)
+                return types.MessageReactions._parse(self, i.reactions, users, chats)
         # TODO
         return r

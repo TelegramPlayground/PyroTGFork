@@ -63,7 +63,9 @@ class Reaction(Object):
     @staticmethod
     def _parse(
         client: "pyrogram.Client",
-        reaction: "raw.base.Reaction"
+        reaction: "raw.base.Reaction",
+        users,
+        chats
     ) -> "Reaction":
         if isinstance(reaction, raw.types.ReactionEmoji):
             return Reaction(
