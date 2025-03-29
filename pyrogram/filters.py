@@ -903,7 +903,7 @@ from_scheduled: Filter = create(from_scheduled_filter)
 async def linked_channel_filter(_, __, m: Message) -> bool:
     return bool(
         m.forward_origin and
-        m.forward_origin.type == "channel" and
+        m.forward_origin.type == enums.MessageOriginType.CHANNEL and
         m.forward_origin.chat == m.sender_chat
     )
 

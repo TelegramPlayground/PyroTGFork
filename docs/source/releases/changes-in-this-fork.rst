@@ -20,6 +20,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 Breaking Changes in this Fork
 ==============================
 
+- In :meth:`~pyrogram.Client.copy_message`, ``ValueError`` is raised instead of ``logging`` it.
 - In :meth:`~pyrogram.Client.download_media`, if the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` **and** ``idx`` was not specified, then a list of paths or binary file-like objects is returned.
 - PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
 - PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
@@ -33,6 +34,11 @@ Changes in this Fork
 | Scheme layer used: 200 |
 +------------------------+
 
+- Add ``media`` in :obj:`~pyrogram.types.ExternalReplyInfo`.
+- Add :obj:`~pyrogram.enums.MessageOriginType` as enum instead of str, and updated the appropriate filters.
+- Document about `the issue #161 <https://github.com/TelegramPlayGround/pyrogram/issues/161>`__.
+- Make `User.block/unblock/get_common_chats async <https://github.com/KurimuzonAkuma/pyrogram/commit/7cab86a9eee4bd57ac96a1713f9bd37a7fc0ac09>`__, `Fix examples <https://github.com/KurimuzonAkuma/pyrogram/commit/f7f83de4331d6358332dbd0458755e28d59ec0f0>`__ and `Fix docs <https://github.com/KurimuzonAkuma/pyrogram/commit/f98b92765634f862310b21783b186fce66877a24>`__.
+- Try to return the service message (when applicable) in the method :meth:`~pyrogram.Client.set_chat_title`.
 - Added :meth:`~pyrogram.Client.delete_chat_history`.
 - Rename ``UserGift`` to :obj:`~pyrogram.types.ReceivedGift`, ``get_user_gifts`` to :meth:`~pyrogram.Client.get_received_gifts` and the corresponding fields appropriately.
 - Added the field ``paid_message_star_count`` to the classes :obj:`~pyrogram.types.Chat`, :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.User`.

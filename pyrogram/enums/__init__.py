@@ -24,6 +24,7 @@ from .chat_members_filter import ChatMembersFilter
 from .chat_type import ChatType
 from .message_entity_type import MessageEntityType
 from .message_media_type import MessageMediaType
+from .message_origin_type import MessageOriginType
 from .message_service_type import MessageServiceType
 from .messages_filter import MessagesFilter
 from .next_code_type import NextCodeType
@@ -43,7 +44,8 @@ __all__ = [
     'ChatMembersFilter', 
     'ChatType', 
     'MessageEntityType', 
-    'MessageMediaType', 
+    'MessageMediaType',
+    'MessageOriginType',
     'MessageServiceType', 
     'MessagesFilter', 
     'NextCodeType', 

@@ -21,7 +21,7 @@ from datetime import datetime
 from .message_origin import MessageOrigin
 
 import pyrogram
-from pyrogram import types
+from pyrogram import types, enums
 
 
 class MessageOriginChannel(MessageOrigin):
@@ -51,7 +51,7 @@ class MessageOriginChannel(MessageOrigin):
         author_signature: str = None
     ):
         super().__init__(
-            type="channel",
+            type=enums.MessageOriginType.CHANNEL,
             date=date
         )
 
