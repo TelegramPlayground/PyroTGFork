@@ -77,49 +77,7 @@ class InlineQueryResultContact(InlineQueryResult):
         thumbnail_url: str = None,
         thumbnail_width: int = 0,
         thumbnail_height: int = 0,
-        thumb_url: str = None,
-        thumb_width: int = None,
-        thumb_height: int = None
     ):
-        if thumb_url and thumbnail_url:
-            raise ValueError(
-                "Parameters `thumb_url` and `thumbnail_url` are mutually "
-                "exclusive."
-            )
-        
-        if thumb_url is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use thumbnail_url instead"
-            )
-            thumbnail_url = thumb_url
-        
-        if thumb_width and thumbnail_width:
-            raise ValueError(
-                "Parameters `thumb_width` and `thumbnail_width` are mutually "
-                "exclusive."
-            )
-        
-        if thumb_width is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use thumbnail_width instead"
-            )
-            thumbnail_width = thumb_width
-        
-        if thumb_height and thumbnail_height:
-            raise ValueError(
-                "Parameters `thumb_height` and `thumbnail_height` are mutually "
-                "exclusive."
-            )
-        
-        if thumb_height is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use thumbnail_height instead"
-            )
-            thumbnail_height = thumb_height
-
         super().__init__("contact", id, input_message_content, reply_markup)
 
         self.phone_number = phone_number

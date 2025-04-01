@@ -104,35 +104,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
-        thumb_url: str = None,
-        thumb_mime_type: str = None,
     ):
-        if thumb_url and thumbnail_url:
-            raise ValueError(
-                "Parameters `thumb_url` and `thumbnail_url` are mutually "
-                "exclusive."
-            )
-        
-        if thumb_url is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use thumbnail_url instead"
-            )
-            thumbnail_url = thumb_url
-
-        if thumb_mime_type and thumbnail_mime_type:
-            raise ValueError(
-                "Parameters `thumb_mime_type` and `thumbnail_mime_type` are mutually "
-                "exclusive."
-            )
-        
-        if thumb_mime_type is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use thumbnail_mime_type instead"
-            )
-            thumbnail_mime_type = thumb_mime_type
-
         super().__init__("gif", id, input_message_content, reply_markup)
 
         self.animation_url = animation_url
