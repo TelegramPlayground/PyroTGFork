@@ -5546,66 +5546,6 @@ class Message(Object, Update):
             message_id=self.id
         )
 
-    # BEGIN: the below properties were removed in `BOT API 7.0 <https://core.telegram.org/bots/api-changelog#december-29-2023>`_
-
-    @property
-    def forward_from(self) -> "types.User":
-        log.warning(
-            "This property is deprecated. "
-            "Please use forward_origin instead"
-        )
-        return getattr(self.forward_origin, "sender_user", None)
-    
-    @property
-    def forward_sender_name(self) -> str:
-        log.warning(
-            "This property is deprecated. "
-            "Please use forward_origin instead"
-        )
-        return getattr(self.forward_origin, "sender_user_name", None)
-
-    @property
-    def forward_from_chat(self) -> "types.Chat":
-        log.warning(
-            "This property is deprecated. "
-            "Please use forward_origin instead"
-        )
-        return getattr(
-            self.forward_origin,
-            "chat",
-            getattr(
-                self.forward_origin,
-                "sender_chat",
-                None
-            )
-        )
-
-    @property
-    def forward_from_message_id(self) -> int:
-        log.warning(
-            "This property is deprecated. "
-            "Please use forward_origin instead"
-        )
-        return getattr(self.forward_origin, "message_id", None)
-
-    @property
-    def forward_signature(self) -> str:
-        log.warning(
-            "This property is deprecated. "
-            "Please use forward_origin instead"
-        )
-        return getattr(self.forward_origin, "author_signature", None)
-        
-    @property
-    def forward_date(self) -> datetime:
-        log.warning(
-            "This property is deprecated. "
-            "Please use forward_origin instead"
-        )
-        return getattr(self.forward_origin, "date", None)
-
-    # END: the below properties were removed in `BOT API 7.0 <https://core.telegram.org/bots/api-changelog#december-29-2023>`_
-
     async def read(self) -> bool:
         """Bound method *read* of :obj:`~pyrogram.types.Message`.
 
