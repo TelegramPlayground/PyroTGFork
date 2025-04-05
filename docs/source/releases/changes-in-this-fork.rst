@@ -20,6 +20,7 @@ If you found any issue or have any suggestions, feel free to make `an issue <htt
 Breaking Changes in this Fork
 ==============================
 
+- :obj:`~pyrogram.types.Photo` no longer has ``file_id`` attribute, similar to **BOT API**.
 - In :meth:`~pyrogram.Client.copy_message`, ``ValueError`` is raised instead of ``logging`` it.
 - In :meth:`~pyrogram.Client.download_media`, if the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` **and** ``idx`` was not specified, then a list of paths or binary file-like objects is returned.
 - PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
