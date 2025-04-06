@@ -228,6 +228,7 @@ def pyrogram_api():
             translate_text
             translate_message_text
             delete_chat_history
+            send_screenshot_notification
         """,
         chats="""
         Chats
