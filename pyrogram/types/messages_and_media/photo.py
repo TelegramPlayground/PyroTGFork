@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 from datetime import datetime
 
 import pyrogram
@@ -24,8 +23,6 @@ from pyrogram import raw, utils
 from pyrogram import types
 from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType, ThumbnailSource
 from ..object import Object
-
-log = logging.getLogger(__name__)
 
 
 class Photo(Object):
@@ -121,53 +118,3 @@ class Photo(Object):
                 thumbs=types.Thumbnail._parse(client, photo),
                 client=client
             )
-
-    @property
-    def file_id(self) -> str:
-        log.warning(
-            "This property is deprecated. "
-            "Please use sizes instead"
-        )
-        if len(self.sizes) > 0:
-            return self.sizes[-1].file_id
-        return None
-
-    @property
-    def file_unique_id(self) -> str:
-        log.warning(
-            "This property is deprecated. "
-            "Please use sizes instead"
-        )
-        if len(self.sizes) > 0:
-            return self.sizes[-1].file_unique_id
-        return None
-
-    @property
-    def width(self) -> int:
-        log.warning(
-            "This property is deprecated. "
-            "Please use sizes instead"
-        )
-        if len(self.sizes) > 0:
-            return self.sizes[-1].width
-        return None
-
-    @property
-    def height(self) -> int:
-        log.warning(
-            "This property is deprecated. "
-            "Please use sizes instead"
-        )
-        if len(self.sizes) > 0:
-            return self.sizes[-1].height
-        return None
-
-    @property
-    def file_size(self) -> int:
-        log.warning(
-            "This property is deprecated. "
-            "Please use sizes instead"
-        )
-        if len(self.sizes) > 0:
-            return self.sizes[-1].file_size
-        return None
