@@ -176,7 +176,7 @@ class DownloadMedia:
                 if message.media:
                     if message.photo:
                         medium = [
-                            getattr(message, message.media.value, None).photos[-1]
+                            getattr(message, message.media.value, None).sizes[-1]
                         ]
                     else:
                         medium = [getattr(message, message.media.value, None)]

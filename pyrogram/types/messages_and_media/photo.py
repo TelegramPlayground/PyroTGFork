@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from datetime import datetime
 
 import pyrogram
@@ -24,13 +25,15 @@ from pyrogram import types
 from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType, ThumbnailSource
 from ..object import Object
 
+log = logging.getLogger(__name__)
+
 
 class Photo(Object):
     """A Photo.
 
     Parameters:
-        photos (List of :obj:`~pyrogram.types.Thumbnail`):
-            Available sizes of the photo.
+        sizes (List of :obj:`~pyrogram.types.Thumbnail`):
+            Available variants of the photo, in different sizes.
 
         date (:py:obj:`~datetime.datetime`):
             Date the photo was sent.
@@ -47,7 +50,7 @@ class Photo(Object):
         self,
         *,
         client: "pyrogram.Client" = None,
-        photos: list["types.Thumbnail"],
+        sizes: list["types.Thumbnail"],
         date: datetime,
         ttl_seconds: int = None,
         has_spoiler: bool = None,
@@ -55,7 +58,7 @@ class Photo(Object):
     ):
         super().__init__(client)
 
-        self.photos = photos
+        self.sizes = sizes
         self.date = date
         self.ttl_seconds = ttl_seconds
         self.has_spoiler = has_spoiler
@@ -88,7 +91,7 @@ class Photo(Object):
             photos.sort(key=lambda p: p.size)
 
             return Photo(
-                photos=[
+                sizes=[
                     types.Thumbnail(
                         file_id=FileId(
                             file_type=FileType.PHOTO,
@@ -118,3 +121,53 @@ class Photo(Object):
                 thumbs=types.Thumbnail._parse(client, photo),
                 client=client
             )
+
+    @property
+    def file_id(self) -> str:
+        log.warning(
+            "This property is deprecated. "
+            "Please use sizes instead"
+        )
+        if len(self.sizes) > 0:
+            return self.sizes[-1].file_id
+        return None
+
+    @property
+    def file_unique_id(self) -> str:
+        log.warning(
+            "This property is deprecated. "
+            "Please use sizes instead"
+        )
+        if len(self.sizes) > 0:
+            return self.sizes[-1].file_unique_id
+        return None
+
+    @property
+    def width(self) -> int:
+        log.warning(
+            "This property is deprecated. "
+            "Please use sizes instead"
+        )
+        if len(self.sizes) > 0:
+            return self.sizes[-1].width
+        return None
+
+    @property
+    def height(self) -> int:
+        log.warning(
+            "This property is deprecated. "
+            "Please use sizes instead"
+        )
+        if len(self.sizes) > 0:
+            return self.sizes[-1].height
+        return None
+
+    @property
+    def file_size(self) -> int:
+        log.warning(
+            "This property is deprecated. "
+            "Please use sizes instead"
+        )
+        if len(self.sizes) > 0:
+            return self.sizes[-1].file_size
+        return None
