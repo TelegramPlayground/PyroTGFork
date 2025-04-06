@@ -40,6 +40,7 @@ Changes in this Fork
 | Scheme layer used: 200 |
 +------------------------+
 
+- Added ``sizes`` to :obj:`~pyrogram.types.Photo` to return all available sizes.
 - Add :meth:`~pyrogram.Client.send_screenshot_notification`.
 - Add ``media`` in :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Add :obj:`~pyrogram.enums.MessageOriginType` as enum instead of str, and updated the appropriate filters.

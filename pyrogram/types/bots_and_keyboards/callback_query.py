@@ -109,11 +109,13 @@ class CallbackQuery(Object, Update):
 
             message = client.message_cache[(chat_id, message_id)]
             if not message:
-                message = await client.get_callback_query_message(
-                    chat_id=chat_id,
-                    message_id=message_id,
-                    callback_query_id=callback_query.query_id
-                )
+                try:
+                    message = await client.get_messages(
+                        chat_id=chat_id,
+                        message_ids=message_id
+                    )
+                except ChannelPrivate:
+                    message = None
                 if not message:
                     channel = chats.get(peer_id, None)
                     if channel:
