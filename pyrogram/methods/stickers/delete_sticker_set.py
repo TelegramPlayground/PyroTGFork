@@ -41,12 +41,6 @@ class DeleteStickerSet:
         Returns:
             ``bool``: True on success.
 
-        Example:
-            .. code-block:: python
-
-                # Get all stickers by short name
-                await app.get_stickers("short_name")
-
         Raises:
             RPCError: In case of Telegram RPCError.
 
