@@ -387,6 +387,7 @@ def pyrogram_api():
             get_custom_emoji_stickers
             get_message_effects
             get_stickers
+            delete_sticker_set
         """,
         stories="""
         Stories

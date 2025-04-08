@@ -16,11 +16,13 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .delete_sticker_set import DeleteStickerSet
 from .get_message_effects import GetMessageEffects
 from .get_stickers import GetStickers
 
 
 class Stickers(
+    DeleteStickerSet,
     GetMessageEffects,
     GetStickers,
 ):
