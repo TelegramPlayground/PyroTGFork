@@ -37,6 +37,7 @@ class Sticker(Object):
             Unique identifier for this file, which is supposed to be the same over time and for different accounts.
             Can't be used to download or reuse the file.
 
+
         width (``int``):
             Sticker width.
 
@@ -49,26 +50,28 @@ class Sticker(Object):
         is_video (``bool``):
             True, if the sticker is a video sticker
 
+        thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
+            Sticker thumbnails in the .webp or .jpg format.
+
+        emoji (``str``, *optional*):
+            Emoji associated with the sticker.
+        
+        set_name (``str``, *optional*):
+            Name of the sticker set to which the sticker belongs.
+
+
+        file_size (``int``, *optional*):
+            File size in bytes.
+
         file_name (``str``, *optional*):
             Sticker file name.
 
         mime_type (``str``, *optional*):
             MIME type of the file as defined by sender.
 
-        file_size (``int``, *optional*):
-            File size.
-
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the sticker was sent.
 
-        emoji (``str``, *optional*):
-            Emoji associated with the sticker.
-
-        set_name (``str``, *optional*):
-            Name of the sticker set to which the sticker belongs.
-
-        thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
-            Sticker thumbnails in the .webp or .jpg format.
     """
 
     # TODO: Add mask position
