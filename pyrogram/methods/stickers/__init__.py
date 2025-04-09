@@ -17,13 +17,17 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .delete_sticker_set import DeleteStickerSet
+from .get_custom_emoji_stickers import GetCustomEmojiStickers
 from .get_message_effects import GetMessageEffects
 from .get_stickers import GetStickers
+from .upload_sticker_file import UploadStickerFile
 
 
 class Stickers(
     DeleteStickerSet,
+    GetCustomEmojiStickers,
     GetMessageEffects,
     GetStickers,
+    UploadStickerFile,
 ):
     pass
