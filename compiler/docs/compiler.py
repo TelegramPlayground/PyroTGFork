@@ -386,6 +386,7 @@ def pyrogram_api():
             send_sticker
             get_custom_emoji_stickers
             get_message_effects
+            upload_sticker_file
             get_stickers
             delete_sticker_set
         """,
@@ -884,6 +885,7 @@ def pyrogram_api():
             ProfileColor
             AccentColor
             SentCodeType
+            StickerFormat
             NextCodeType
             UserStatus
         """,
