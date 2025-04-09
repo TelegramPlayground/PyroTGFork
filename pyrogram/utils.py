@@ -657,3 +657,44 @@ def is_list_like(obj):
     Ported from https://github.com/LonamiWebs/Telethon/blob/1cb5ff1dd54ecfad41711fc5a4ecf36d2ad8eaf6/telethon/utils.py#L902
     """
     return isinstance(obj, (list, tuple, set, dict, range))
+
+
+def _raise_cast_fail(entity, target):
+    """Ported from https://github.com/LonamiWebs/Telethon/blob/3921914a96101fba990dee39ac7b9e29375b8b33/telethon/utils.py#L130-L132
+    """
+    raise TypeError(
+        'Cannot cast {} to any kind of {}.'.format(
+            type(entity).__name__,
+            target
+        )
+    )
+
+
+def get_input_document(document):
+    """Similar to ``get_input_peer``, but for documents.
+    
+    Ported from https://github.com/LonamiWebs/Telethon/blob/3921914a96101fba990dee39ac7b9e29375b8b33/telethon/utils.py#L317-L339
+    """
+    try:
+        if isinstance(document, raw.types.InputDocument):
+            return document
+    except AttributeError:
+        _raise_cast_fail(document, "InputDocument")
+
+    if isinstance(document, raw.types.Document):
+        return raw.types.InputDocument(
+            id=document.id,
+            access_hash=document.access_hash,
+            file_reference=document.file_reference
+        )
+
+    if isinstance(document, raw.types.DocumentEmpty):
+        return raw.types.InputDocumentEmpty()
+
+    if isinstance(document, raw.types.MessageMediaDocument):
+        return get_input_document(document.document)
+
+    if isinstance(document, raw.types.Message):
+        return get_input_document(document.media)
+
+    _raise_cast_fail(document, "InputDocument")
