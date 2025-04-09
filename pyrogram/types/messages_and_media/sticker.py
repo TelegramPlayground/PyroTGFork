@@ -124,13 +124,24 @@ class Sticker(Object):
             if name is not None:
                 return name
 
-            _, _sticker_set = await client._get_raw_stickers(
-                raw.types.InputStickerSetID(
-                    id=set_id,
-                    access_hash=set_access_hash
+            # _, _sticker_set = await client._get_raw_stickers(
+            #     raw.types.InputStickerSetID(
+            #         id=set_id,
+            #         access_hash=set_access_hash
+            #     )
+            # )
+            # name = _sticker_set.short_name
+            # TODO: FIXME!
+            sticker_set = await client.invoke(
+                raw.functions.messages.GetStickerSet(
+                    stickerset=raw.types.InputStickerSetID(
+                        id=set_id,
+                        access_hash=set_access_hash
+                    ),
+                    hash=0
                 )
             )
-            name = _sticker_set.short_name
+            name = sticker_set.set.short_name
 
             Sticker.cache[(set_id, set_access_hash)] = name
 
@@ -163,6 +174,13 @@ class Sticker(Object):
         if isinstance(sticker_set, raw.types.InputStickerSetID):
             input_sticker_set_id = (sticker_set.id, sticker_set.access_hash)
             # TODO: FIXME!
+            # _, _sticker_set = await client._get_raw_stickers(
+            #     raw.types.InputStickerSetID(
+            #         id=input_sticker_set_id[0],
+            #         access_hash=input_sticker_set_id[1]
+            #     )
+            # )
+            # set_name = _sticker_set.short_name
             set_name = await Sticker._get_sticker_set_name(client, input_sticker_set_id)
         else:
             set_name = None
