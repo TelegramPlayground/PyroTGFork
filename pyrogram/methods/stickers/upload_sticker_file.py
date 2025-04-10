@@ -20,7 +20,8 @@ import logging
 import os
 
 import pyrogram
-from pyrogram import enums, raw, types, utils
+from pyrogram import enums, raw, types
+from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType
 
 log = logging.getLogger(__name__)
 
@@ -49,7 +50,7 @@ class UploadStickerFile:
                 Format of the sticker.
 
         Returns:
-            :obj:`~pyrogram.raw.types.InputDocument`: Returns the uploaded :obj:`~pyrogram.types.File` on success. TODO
+            :obj:`~pyrogram.types.File`: Returns the uploaded file on success.
 
         Raises:
             RPCError: In case of Telegram RPCError.
@@ -80,10 +81,39 @@ class UploadStickerFile:
                 ),
             ]
         )
-        uploaded_media = await self.invoke(
+        media = await self.invoke(
             raw.functions.messages.UploadMedia(
                 peer=peer,
                 media=media
             )
         )
-        return utils.get_input_document(uploaded_media)
+        media = raw.types.InputMediaDocument(
+            id=raw.types.InputDocument(
+                id=media.document.id,
+                access_hash=media.document.access_hash,
+                file_reference=media.document.file_reference
+            )
+        )
+        sticker = media.document
+        document_attributes = sticker.attributes
+        sticker_attributes = (
+            document_attributes[raw.types.DocumentAttributeSticker]
+            if raw.types.DocumentAttributeSticker in document_attributes
+            else document_attributes[raw.types.DocumentAttributeCustomEmoji]
+        )
+        file_name = getattr(document_attributes.get(raw.types.DocumentAttributeFilename, None), "file_name", None)
+        return types.File(
+            file_id=FileId(
+                file_type=FileType.STICKER,
+                dc_id=sticker.dc_id,
+                media_id=sticker.id,
+                access_hash=sticker.access_hash,
+                file_reference=sticker.file_reference
+            ).encode(),
+            file_unique_id=FileUniqueId(
+                file_unique_type=FileUniqueType.DOCUMENT,
+                media_id=sticker.id
+            ).encode(),
+            file_name=file_name,
+            file_size=sticker.size,
+        )

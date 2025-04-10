@@ -23,6 +23,7 @@ from .contact import Contact
 from .contact_registered import ContactRegistered
 from .dice import Dice
 from .document import Document
+from .file import File
 from .game import Game
 from .location import Location
 from .message import Message
@@ -80,6 +81,7 @@ __all__ = [
     "ContactRegistered",
     "Dice",
     "Document",
+    "File",
     "Game",
     "PaymentForm",
     "GiftCode",

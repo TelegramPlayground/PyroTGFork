@@ -508,6 +508,7 @@ def pyrogram_api():
             Animation
             Audio
             Document
+            File
             Story
             Video
             VideoNote
