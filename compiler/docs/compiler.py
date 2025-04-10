@@ -666,6 +666,7 @@ def pyrogram_api():
         """,
         payments="""
         Payments
+            BusinessBotRights
             BusinessConnection
             BusinessIntro
             BusinessLocation

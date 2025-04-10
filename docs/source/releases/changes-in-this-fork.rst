@@ -34,6 +34,7 @@ Changes in this Fork
 | Scheme layer used: 201 |
 +------------------------+
 
+- Added :obj:`~pyrogram.types.BusinessBotRights`.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=200&to=201>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=200&to=201>`__.
 
 +------------------------+

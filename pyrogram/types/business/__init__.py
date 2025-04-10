@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .business_bot_rights import BusinessBotRights
 from .business_connection import BusinessConnection
 from .business_intro import BusinessIntro
 from .business_location import BusinessLocation
@@ -40,6 +41,7 @@ from .successful_payment import SuccessfulPayment
 from .refunded_payment import RefundedPayment
 
 __all__ = [
+    "BusinessBotRights",
     "BusinessConnection",
     "BusinessIntro",
     "BusinessLocation",

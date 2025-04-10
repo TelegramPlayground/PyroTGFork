@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -40,8 +40,8 @@ class BusinessConnection(Object):
         date (:py:obj:`~datetime.datetime`):
             Date the connection was established in Unix time
 
-        can_reply (``bool``):
-            True, if the bot can act on behalf of the business account in chats that were active in the last 24 hours
+        rights (:obj:`~pyrogram.types.BusinessBotRights`):
+            
 
         is_enabled (``bool``):
             True, if the connection is active
@@ -55,9 +55,9 @@ class BusinessConnection(Object):
         user: "types.User" = None,
         user_chat_id: int = None,
         date: datetime,
-        can_reply: bool = None,
+        rights: "types.BusinessBotRights" = None,
         is_enabled: bool = None,
-        _raw: "raw.types.UpdateBotBusinessConnect" = None
+        _raw: "raw.types.UpdateBotBusinessConnect" = None,
     ):
         super().__init__()
 
@@ -65,7 +65,7 @@ class BusinessConnection(Object):
         self.user = user
         self.user_chat_id = user_chat_id
         self.date = date
-        self.can_reply = can_reply
+        self.rights = rights
         self.is_enabled = is_enabled
         self._raw = _raw
 
@@ -88,6 +88,20 @@ class BusinessConnection(Object):
             ),
             user_chat_id=business_connect_update.connection.user_id,
             date=utils.timestamp_to_datetime(business_connect_update.connection.date),
-            can_reply=getattr(business_connect_update.connection, "can_reply", False),
+            rights=types.BusinessBotRights._parse(
+                client,
+                business_connect_update.connection.rights
+            ),
             is_enabled=not bool(getattr(business_connect_update.connection, "disabled", None))
         )
+
+
+    @property
+    def can_reply(self) -> str:
+        log.warning(
+            "This property is deprecated. "
+            "Please use rights instead"
+        )
+        if self.rights:
+            return self.rights.can_reply
+        return False
