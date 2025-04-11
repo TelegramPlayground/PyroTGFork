@@ -409,6 +409,7 @@ def pyrogram_api():
             send_gift
             toggle_gift_is_saved
             get_owned_star_count
+            get_business_account_star_balance
         """,
         advanced="""
         Advanced
