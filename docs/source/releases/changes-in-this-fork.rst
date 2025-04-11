@@ -34,6 +34,7 @@ Changes in this Fork
 | Scheme layer used: 201 |
 +------------------------+
 
+- Added the :obj:`~pyrogram.types.PaidMessagePriceChanged` and the field ``paid_message_price_changed`` to the :obj:`~pyrogram.types.Message`, describing a service message about a price change for paid messages sent to the chat.
 - Added :meth:`~pyrogram.Client.get_business_account_star_balance`.
 - Added :obj:`~pyrogram.types.BusinessBotRights`.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=200&to=201>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=200&to=201>`__.

@@ -144,5 +144,8 @@ class MessageServiceType(AutoName):
     RECEIVED_GIFT = auto()
     "Owner Received gift"
 
+    PAID_MESSAGE_PRICE_CHANGED = auto()
+    "The price for paid messages has changed in the chat"
+
     UNKNOWN = auto()
     "This service message is unsupported by the current version of Pyrogram"

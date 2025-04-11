@@ -323,6 +323,9 @@ class Message(Object, Update):
         giveaway_completed (:obj:`~pyrogram.types.GiveawayCompleted`, *optional*):
             Service message: a giveaway without public winners was completed
 
+        paid_message_price_changed (:obj:`~pyrogram.types.PaidMessagePriceChanged`, *optional*):
+            Service message: the price for paid messages has changed in the chat.
+
         video_chat_scheduled (:obj:`~pyrogram.types.VideoChatScheduled`, *optional*):
             Service message: voice chat scheduled.
 
@@ -516,6 +519,7 @@ class Message(Object, Update):
         giveaway: "types.Giveaway" = None,
         giveaway_winners: "types.GiveawayWinners" = None,
         giveaway_completed: "types.GiveawayCompleted" = None,
+        paid_message_price_changed: "types.PaidMessagePriceChanged" = None,
         video_chat_scheduled: "types.VideoChatScheduled" = None,
         video_chat_started: "types.VideoChatStarted" = None,
         video_chat_ended: "types.VideoChatEnded" = None,
@@ -641,6 +645,7 @@ class Message(Object, Update):
         self.connected_website = connected_website
         self.write_access_allowed = write_access_allowed
         self.giveaway_completed = giveaway_completed
+        self.paid_message_price_changed = paid_message_price_changed
         self.giveaway_winners = giveaway_winners
         self.gift_code = gift_code
         self.gifted_premium = gifted_premium
@@ -751,6 +756,7 @@ class Message(Object, Update):
             boost_added = None
             giveaway_completed = None
             custom_action = None
+            paid_message_price_changed = None
 
             forum_topic_created = None
             forum_topic_edited = None
@@ -1026,6 +1032,12 @@ class Message(Object, Update):
             ):
                 received_gift = await types.ReceivedGift._parse_action(client, message, users, chats)
                 service_type = enums.MessageServiceType.RECEIVED_GIFT
+            
+            elif isinstance(action, raw.types.MessageActionPaidMessagesPrice):
+                paid_message_price_changed = types.PaidMessagePriceChanged._parse_action(
+                    client, message.action
+                )
+                service_type = enums.MessageServiceType.PAID_MESSAGE_PRICE_CHANGED
 
             parsed_message = Message(
                 id=message.id,
@@ -1051,6 +1063,7 @@ class Message(Object, Update):
                 web_app_data=web_app_data,
                 giveaway_created=giveaway_created,
                 giveaway_completed=giveaway_completed,
+                paid_message_price_changed=paid_message_price_changed,
                 gift_code=gift_code,
                 gifted_premium=gifted_premium,
                 gifted_stars=gifted_stars,
