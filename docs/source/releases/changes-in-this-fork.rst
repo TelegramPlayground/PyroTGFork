@@ -34,6 +34,7 @@ Changes in this Fork
 | Scheme layer used: 201 |
 +------------------------+
 
+- Added the field ``paid_star_count`` to the :obj:`~pyrogram.types.Message`, containing the number of Telegram Stars that were paid to send the message.
 - Added the :obj:`~pyrogram.types.PaidMessagePriceChanged` and the field ``paid_message_price_changed`` to the :obj:`~pyrogram.types.Message`, describing a service message about a price change for paid messages sent to the chat.
 - Added :meth:`~pyrogram.Client.get_business_account_star_balance`.
 - Added :obj:`~pyrogram.types.BusinessBotRights`.

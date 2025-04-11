@@ -136,6 +136,9 @@ class Message(Object, Update):
             Signature of the post author for messages in channels, or the custom title of an anonymous group
             administrator.
 
+        paid_star_count (``int``, *optional*):
+            The number of Telegram Stars that were paid by the sender of the message to send it.
+
         text (``str``, *optional*):
             For text messages, the actual UTF-8 text of the message, 0-4096 characters.
             If the message contains entities (bold, italic, ...) you can access *text.markdown* or
@@ -419,9 +422,6 @@ class Message(Object, Update):
         screenshot_taken (:obj:`~pyrogram.types.ScreenshotTaken`, *optional*):
             A service message that a screenshot of a message in the chat has been taken.
 
-        paid_message_star_count (``int``, *optional*):
-            The number of Telegram Stars the sender paid to send the message.
-
         link (``str``, *property*):
             Generate a link to this message, only for supergroups and channels. Can be None if the message cannot have a link.
 
@@ -462,6 +462,7 @@ class Message(Object, Update):
         is_from_offline: bool = None,
         media_group_id: str = None,
         author_signature: str = None,
+        paid_star_count: int = None,
         text: Str = None,
         entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
@@ -554,7 +555,6 @@ class Message(Object, Update):
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
         screenshot_taken: "types.ScreenshotTaken" = None,
-        paid_message_star_count: int = None,
         _raw = None
     ):
         super().__init__(client)
@@ -666,7 +666,7 @@ class Message(Object, Update):
         self.contact_registered = contact_registered
         self.chat_join_type = chat_join_type
         self.screenshot_taken = screenshot_taken
-        self.paid_message_star_count = paid_message_star_count
+        self.paid_star_count = paid_star_count
         self._raw = _raw
 
     @staticmethod
@@ -1392,7 +1392,7 @@ class Message(Object, Update):
                 effect_id=getattr(message, "effect", None),
                 show_caption_above_media=show_caption_above_media,
                 paid_media=paid_media,
-                paid_message_star_count=message.paid_message_stars
+                paid_star_count=message.paid_message_stars
             )
 
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(
