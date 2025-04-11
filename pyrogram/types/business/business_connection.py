@@ -16,12 +16,17 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from datetime import datetime
+from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types, utils
 
 from ..object import Object
+
+
+log = logging.getLogger(__name__)
 
 
 class BusinessConnection(Object):
@@ -40,8 +45,8 @@ class BusinessConnection(Object):
         date (:py:obj:`~datetime.datetime`):
             Date the connection was established in Unix time
 
-        rights (:obj:`~pyrogram.types.BusinessBotRights`):
-            
+        rights (:obj:`~pyrogram.types.BusinessBotRights`, *optional*):
+            Rights of the business bot.
 
         is_enabled (``bool``):
             True, if the connection is active
@@ -55,7 +60,7 @@ class BusinessConnection(Object):
         user: "types.User" = None,
         user_chat_id: int = None,
         date: datetime,
-        rights: "types.BusinessBotRights" = None,
+        rights: Optional["types.BusinessBotRights"] = None,
         is_enabled: bool = None,
         _raw: "raw.types.UpdateBotBusinessConnect" = None,
     ):
