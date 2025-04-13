@@ -31,6 +31,16 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 201 |
++------------------------+
+
+- Renamed the field ``paid_message_star_count`` to ``paid_star_count`` in the :obj:`~pyrogram.types.Message`, containing the number of Telegram Stars that were paid to send the message.
+- Added the classes :obj:`~pyrogram.types.PaidMessagePriceChanged` and :obj:`~pyrogram.types.PaidMessagesRefunded` and the fields ``paid_message_price_changed`` and ``paid_messages_refunded`` to the :obj:`~pyrogram.types.Message`, describing the appropriate service message.
+- Added the :meth:`~pyrogram.Client.get_business_account_star_balance`, allowing bots to check the current Telegram Star balance of a managed business account.
+- Added the :obj:`~pyrogram.types.BusinessBotRights` and replaced the field ``can_reply`` with the field ``rights`` of the type :obj:`~pyrogram.types.BusinessBotRights` in the :obj:`~pyrogram.types.BusinessConnection`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=200&to=201>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=200&to=201>`__.
+
++------------------------+
 | Scheme layer used: 200 |
 +------------------------+
 
