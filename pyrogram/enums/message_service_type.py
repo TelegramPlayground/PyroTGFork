@@ -147,5 +147,8 @@ class MessageServiceType(AutoName):
     PAID_MESSAGE_PRICE_CHANGED = auto()
     "The price for paid messages has changed in the chat"
 
+    PAID_MESSAGES_REFUNDED = auto()
+    "Refunded paid messages"
+
     UNKNOWN = auto()
     "This service message is unsupported by the current version of Pyrogram"

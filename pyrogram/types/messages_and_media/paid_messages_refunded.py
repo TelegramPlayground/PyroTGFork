@@ -22,12 +22,15 @@ from pyrogram import raw, types
 from ..object import Object
 
 
-class PaidMessagePriceChanged(Object):
-    """Describes a service message about a change in the price of paid messages within a chat.
+class PaidMessagesRefunded(Object):
+    """Describes a service message about refunded paid messages.
 
     Parameters:
-        paid_message_star_count (``int``):
-            The new number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
+        message_count (``int``):
+            The number of refunded messages.
+
+        star_count (``int``):
+            The number of refunded Telegram Stars.
 
     """
 
@@ -35,20 +38,23 @@ class PaidMessagePriceChanged(Object):
         self,
         *,
         client: "pyrogram.Client" = None,
-        paid_message_star_count: int = None
+        message_count: int = None,
+        star_count: int = None
     ):
         super().__init__(client)
 
-        self.paid_message_star_count = paid_message_star_count
+        self.message_count = message_count
+        self.star_count = star_count
 
 
     @staticmethod
     def _parse_action(
         client,
-        action: "raw.types.MessageActionPaidMessagesPrice"
-    ) -> "PaidMessagePriceChanged":
-        if isinstance(action, raw.types.MessageActionPaidMessagesPrice):
-            return PaidMessagePriceChanged(
+        action: "raw.types.MessageActionPaidMessagesRefunded"
+    ) -> "PaidMessagesRefunded":
+        if isinstance(action, raw.types.MessageActionPaidMessagesRefunded):
+            return PaidMessagesRefunded(
                 client=client,
-                paid_message_star_count=action.stars
+                message_count=action.count,
+                star_count=action.stars
             )

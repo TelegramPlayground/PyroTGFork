@@ -71,6 +71,7 @@ from .translated_text import TranslatedText
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .write_access_allowed import WriteAccessAllowed
 from .paid_message_price_changed import PaidMessagePriceChanged
+from .paid_messages_refunded import PaidMessagesRefunded
 
 __all__ = [
     "AlternativeVideo",
@@ -126,4 +127,5 @@ __all__ = [
     "ScreenshotTaken",
     "TranslatedText",
     "PaidMessagePriceChanged",
+    "PaidMessagesRefunded",
 ]

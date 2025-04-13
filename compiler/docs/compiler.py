@@ -482,6 +482,8 @@ def pyrogram_api():
             VideoChatStarted
             VideoChatEnded
             VideoChatParticipantsInvited
+            PaidMessagePriceChanged
+            PaidMessagesRefunded
             Dialog
             EmojiStatus
             GroupCallParticipant
