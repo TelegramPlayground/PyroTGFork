@@ -26,6 +26,7 @@ from pyrogram.file_id import FileType
 
 
 class SetChatPhoto:
+    # TODO: FIXME!
     async def set_chat_photo(
         self: "pyrogram.Client",
         chat_id: Union[int, str],

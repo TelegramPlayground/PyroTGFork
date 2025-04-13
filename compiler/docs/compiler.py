@@ -411,6 +411,7 @@ def pyrogram_api():
             send_gift
             toggle_gift_is_saved
             get_owned_star_count
+            get_business_account_star_balance
         """,
         advanced="""
         Advanced
@@ -483,6 +484,8 @@ def pyrogram_api():
             VideoChatStarted
             VideoChatEnded
             VideoChatParticipantsInvited
+            PaidMessagePriceChanged
+            PaidMessagesRefunded
             Dialog
             EmojiStatus
             GroupCallParticipant
@@ -669,6 +672,7 @@ def pyrogram_api():
         """,
         payments="""
         Payments
+            BusinessBotRights
             BusinessConnection
             BusinessIntro
             BusinessLocation
