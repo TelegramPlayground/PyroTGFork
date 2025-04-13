@@ -99,14 +99,3 @@ class BusinessConnection(Object):
             ),
             is_enabled=not bool(getattr(business_connect_update.connection, "disabled", None))
         )
-
-
-    @property
-    def can_reply(self) -> str:
-        log.warning(
-            "This property is deprecated. "
-            "Please use rights instead"
-        )
-        if self.rights:
-            return self.rights.can_reply
-        return False
