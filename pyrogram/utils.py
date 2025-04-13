@@ -463,14 +463,16 @@ def datetime_to_timestamp(dt: Optional[datetime]) -> Optional[int]:
 
 
 async def _get_reply_message_parameters(
-    client: "pyroram.Client",
+    client: "pyrogram.Client",
     message_thread_id: int = None,
     reply_parameters: "types.ReplyParameters" = None
 ) -> Union[
     raw.types.InputReplyToStory,
     raw.types.InputReplyToMessage
 ]:
-    reply_to = None
+    reply_to = raw.types.InputReplyToMessage(
+        reply_to_msg_id=0
+    )
     if not reply_parameters:
         if message_thread_id:
             reply_to = raw.types.InputReplyToMessage(
@@ -575,7 +577,7 @@ def get_first_url(
 
 
 def fix_up_voice_audio_uri(
-    client: "pyroram.Client",
+    client: "pyrogram.Client",
     file_name: str,
     dinxe: int
 ) -> str:
