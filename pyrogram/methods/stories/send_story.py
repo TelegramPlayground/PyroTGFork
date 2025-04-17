@@ -126,24 +126,38 @@ class SendStory:
 
         message, entities = (await utils.parse_text_entities(self, caption, parse_mode, caption_entities)).values()
 
+        media = None
+        thumb = None
+        mime_type = None
+        if isinstance(content, types.InputStoryContentPhoto):
+            media = content.photo
+            thumb = content.thumbnail
+            mime_type = "image/jpg"
+        elif isinstance(content, types.InputStoryContentVideo):
+            media = content.video
+            thumb = content.thumbnail
+            mime_type = "video/mp4"
+        else:
+            raise ValueError("invalid content")
+
         try:
             if isinstance(media, str):
                 if os.path.isfile(media):
-                    thumb = await self.save_file(thumb)
                     file = await self.save_file(media, progress=progress, progress_args=progress_args)
-                    mime_type = self.guess_mime_type(file.name)
-                    if mime_type == "video/mp4":
+                    thumb = await self.save_file(thumb) if thumb else None
+                    if isinstance(content, types.InputStoryContentVideo):
                         media = raw.types.InputMediaUploadedDocument(
                             mime_type=mime_type,
                             file=file,
                             thumb=thumb,
                             attributes=[
                                 raw.types.DocumentAttributeVideo(
-                                    duration=duration,
-                                    w=width,
-                                    h=height,
+                                    supports_streaming=content.supports_streaming or None,
+                                    duration=content.duration,
+                                    w=content.width,
+                                    h=content.height,
                                 ),
-                                raw.types.DocumentAttributeFilename(file_name=file_name or os.path.basename(media))
+                                raw.types.DocumentAttributeFilename(file_name=content.file_name or os.path.basename(media))
                             ]
                         )
                     else:
@@ -153,22 +167,21 @@ class SendStory:
                 else:
                     media = utils.get_input_media_from_file_id(media)
             else:
-                thumb = await self.save_file(thumb)
                 file = await self.save_file(media, progress=progress, progress_args=progress_args)
-                mime_type = self.guess_mime_type(file.name)
-                if mime_type == "video/mp4":
+                thumb = await self.save_file(thumb) if thumb else None
+                if isinstance(content, types.InputStoryContentVideo):
                     media = raw.types.InputMediaUploadedDocument(
                         mime_type=mime_type,
                         file=file,
                         thumb=thumb,
                         attributes=[
                             raw.types.DocumentAttributeVideo(
-                                supports_streaming=supports_streaming or None,
-                                duration=duration,
-                                w=width,
-                                h=height,
+                                supports_streaming=content.supports_streaming or None,
+                                duration=content.duration,
+                                w=content.width,
+                                h=content.height,
                             ),
-                            raw.types.DocumentAttributeFilename(file_name=file_name or media.name)
+                            raw.types.DocumentAttributeFilename(file_name=content.file_name or media.name)
                         ]
                     )
                 else:
@@ -224,12 +237,12 @@ class SendStory:
                             media=media,
                             privacy_rules=privacy_rules,
                             random_id=self.rnd_id(),
-                            pinned=pinned,
+                            pinned=post_to_chat_page,
                             noforwards=protect_content,
                             media_areas=[await area.write(self) for area in (media_areas or [])] or None,
                             caption=message,
                             entities=entities,
-                            period=period,
+                            period=active_period,
                         )
                     )
                 except FilePartMissing as e:
@@ -239,10 +252,12 @@ class SendStory:
                         if isinstance(i, raw.types.UpdateStory):
                             return await types.Story._parse(
                                 self,
-                                i.story,
-                                i.peer,
                                 {i.id: i for i in r.users},
-                                {i.id: i for i in r.chats}
+                                {i.id: i for i in r.chats},
+                                None, None,
+                                i,
+                                i.story,
+                                i.peer
                             )
         except StopTransmission:
             return None
@@ -437,12 +452,12 @@ class SendStory:
                             media=media,
                             privacy_rules=privacy_rules,
                             random_id=self.rnd_id(),
-                            pinned=pinned,
+                            pinned=post_to_chat_page,
                             noforwards=protect_content,
                             media_areas=[await area.write(self) for area in (media_areas or [])] or None,
                             caption=message,
                             entities=entities,
-                            period=period,
+                            period=active_period,
                         )
                     )
                 except FilePartMissing as e:
@@ -452,10 +467,12 @@ class SendStory:
                         if isinstance(i, raw.types.UpdateStory):
                             return await types.Story._parse(
                                 self,
-                                i.story,
-                                i.peer,
                                 {i.id: i for i in r.users},
-                                {i.id: i for i in r.chats}
+                                {i.id: i for i in r.chats},
+                                None, None,
+                                i,
+                                i.story,
+                                i.peer
                             )
         except StopTransmission:
             return None
