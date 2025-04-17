@@ -45,6 +45,25 @@ class InputStoryContentVideo(InputStoryContent):
         is_animation (``bool``, *optional*):
             Pass True if the video has no sound.
 
+        width (``int``, *optional*):
+            Video width.
+
+        height (``int``, *optional*):
+            Video height.
+
+        thumbnail (``str`` | :obj:`io.BytesIO`):
+            Thumbnail of the video sent.
+            The thumbnail should be in JPEG format and less than 200 KB in size.
+            A thumbnail's width and height should not exceed 320 pixels.
+            Thumbnails can't be reused and can be only uploaded as a new file.
+
+        supports_streaming (``bool``, *optional*):
+            Pass True, if the uploaded video is suitable for streaming.
+
+        file_name (``str``, *optional*):
+            File name of the video sent.
+            Defaults to file's path basename.
+
     """
 
     def __init__(
@@ -52,7 +71,12 @@ class InputStoryContentVideo(InputStoryContent):
         video: Union[str, "io.BytesIO"],
         duration: int = 0,
         cover_frame_timestamp: int = None,
-        is_animation: bool = None
+        is_animation: bool = None,
+        width: int = 0,
+        height: int = 0,
+        thumbnail: Union[str, "io.BytesIO"] = None,
+        supports_streaming: bool = True,
+        file_name: str = None,
     ):
         super().__init__()
 
@@ -60,3 +84,9 @@ class InputStoryContentVideo(InputStoryContent):
         self.duration = duration
         self.cover_frame_timestamp = cover_frame_timestamp
         self.is_animation = is_animation
+        self.duration = duration
+        self.width = width
+        self.height = height
+        self.thumbnail = thumbnail
+        self.supports_streaming = supports_streaming
+        self.file_name = file_name

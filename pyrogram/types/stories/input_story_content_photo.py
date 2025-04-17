@@ -35,12 +35,20 @@ class InputStoryContentPhoto(InputStoryContent):
             pass a binary file-like object with its attribute “.name” set for in-memory uploads or
             pass an HTTP URL as a string for Telegram to get a video from the Internet.
 
+        thumbnail (``str`` | :obj:`io.BytesIO`):
+            Thumbnail of the photo sent.
+            The thumbnail should be in JPEG format and less than 200 KB in size.
+            A thumbnail's width and height should not exceed 320 pixels.
+            Thumbnails can't be reused and can be only uploaded as a new file.
+
     """
 
     def __init__(
         self,
-        photo: Union[str, "io.BytesIO"]
+        photo: Union[str, "io.BytesIO"],
+        thumbnail: Union[str, "io.BytesIO"] = None,
     ):
         super().__init__()
 
         self.photo = photo
+        self.thumbnail = thumbnail
