@@ -18,8 +18,10 @@
 
 
 from .get_stories import GetStories
+from .send_story import SendStory
 
 class Stories(
     GetStories,
+    SendStory,
 ):
     pass
