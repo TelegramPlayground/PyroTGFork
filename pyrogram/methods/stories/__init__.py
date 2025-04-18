@@ -19,9 +19,11 @@
 
 from .get_stories import GetStories
 from .send_story import SendStory
+from .delete_stories import DeleteStories
 
 class Stories(
     GetStories,
     SendStory,
+    DeleteStories,
 ):
     pass
