@@ -17,23 +17,20 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from .input_story_content import InputStoryContent
-from .input_story_content_photo import InputStoryContentPhoto
-from .input_story_content_video import InputStoryContentVideo
+import pyrogram
+from pyrogram import raw
+
 from .story_privacy_settings import StoryPrivacySettings
-from .story_privacy_settings_everyone import StoryPrivacySettingsEveryone
-from .story_privacy_settings_contacts import StoryPrivacySettingsContacts
-from .story_privacy_settings_close_friends import StoryPrivacySettingsCloseFriends
-from .story_privacy_settings_selected_users import StoryPrivacySettingsSelectedUsers
 
 
-__all__ = [
-    "InputStoryContent",
-    "InputStoryContentPhoto",
-    "InputStoryContentVideo",
-    "StoryPrivacySettings",
-    "StoryPrivacySettingsEveryone",
-    "StoryPrivacySettingsContacts",
-    "StoryPrivacySettingsCloseFriends",
-    "StoryPrivacySettingsSelectedUsers",
-]
+class StoryPrivacySettingsCloseFriends(StoryPrivacySettings):
+    """The story can be viewed by all close friends.
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    async def write(self, client: "pyrogram.Client"):
+        privacy_rules = []
+        privacy_rules.append(raw.types.InputPrivacyValueAllowCloseFriends())
+        return privacy_rules

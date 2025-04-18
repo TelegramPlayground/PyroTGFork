@@ -76,7 +76,10 @@ class SendStory:
             protect_content (``bool``, *optional*):
                 Pass True if the content of the story must be protected from forwarding and screenshotting.
 
-            privacy_settings: "types.StoryPrivacySettings" = None,
+            privacy_settings (:obj:`~pyrogram.types.StoryPrivacySettings`, *optional*):
+                The privacy settings for the story; ignored for stories sent to supergroup and channel chats.
+                Defaults to :obj:`~pyrogram.types.StoryPrivacySettingsEveryone`.
+
             from_story_chat_id: Union[int, str],
             from_story_id: int = None,
 
@@ -174,7 +177,12 @@ class SendStory:
                         file=file,
                     )
 
-            privacy_rules = [raw.types.InputPrivacyValueAllowAll()]
+            privacy_rules = []
+            if privacy_settings:
+                for privacy_rule in (privacy_settings or []):
+                    privacy_rules += (await privacy_rule.write(self))
+            else:
+                privacy_rules += (await (types.StoryPrivacySettingsEveryone()).write(self))
 
             while True:
                 try:

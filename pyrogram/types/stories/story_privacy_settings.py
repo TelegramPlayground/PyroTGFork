@@ -20,13 +20,16 @@
 from ..object import Object
 
 
-class InputStoryContent(Object):
-    """This object describes the content of a story to post.
+class StoryPrivacySettings(Object):
+    """This object describes privacy settings of a story.
 
     Currently, it can be one of:
 
-    - :obj:`~pyrogram.types.InputStoryContentPhoto`
-    - :obj:`~pyrogram.types.InputStoryContentVideo`
+    - :obj:`~pyrogram.types.StoryPrivacySettingsEveryone`
+    - :obj:`~pyrogram.types.StoryPrivacySettingsContacts`
+    - :obj:`~pyrogram.types.StoryPrivacySettingsCloseFriends`
+    - :obj:`~pyrogram.types.StoryPrivacySettingsSelectedUsers`
+
     """
 
     def __init__(self):
