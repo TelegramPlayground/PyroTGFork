@@ -68,7 +68,7 @@ class DeleteStories:
         self: "pyrogram.Client",
         business_connection_id: str,
         story_id: int,
-    ) -> int:
+    ) -> list[int]:
         """Deletes a story previously posted by the bot on behalf of a managed business account.
         
         Requires the can_manage_stories business bot right.
