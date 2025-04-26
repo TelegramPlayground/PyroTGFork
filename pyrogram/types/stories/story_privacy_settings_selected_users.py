@@ -50,8 +50,10 @@ class StoryPrivacySettingsSelectedUsers(StoryPrivacySettings):
                 peer = await client.resolve_peer(user)
                 if isinstance(peer, raw.types.InputPeerUser):
                     _allowed_users.append(peer)
-                elif isinstance(peer, (raw.types.InputPeerChat, raw.types.InputPeerChannel)):
-                    _allowed_chats.append(peer)
+                elif isinstance(peer, raw.types.InputPeerChat):
+                    _allowed_chats.append(peer.chat_id)
+                elif isinstance(peer, raw.types.InputPeerChannel):
+                    _allowed_chats.append(peer.channel_id)
         else:
             privacy_rules.append(raw.types.InputPrivacyValueAllowUsers(users=[raw.types.InputPeerEmpty()]))
 
