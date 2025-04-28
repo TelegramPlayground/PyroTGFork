@@ -187,17 +187,20 @@ class SendStory:
             while True:
                 try:
                     r = await self.invoke(
-                        raw.functions.stories.SendStory(
+                        raw.functions.stories.SendStory( 
                             peer=await self.resolve_peer(chat_id),
                             media=media,
                             privacy_rules=privacy_rules,
                             random_id=self.rnd_id(),
                             pinned=post_to_chat_page,
                             noforwards=protect_content,
-                            media_areas=None, #[await area.write(self) for area in (areas or [])] or None,
+                            media_areas=[area.write(self) for area in (areas or [])] or None,
                             caption=message,
                             entities=entities,
                             period=active_period,
+                            # fwd_modified:flags.7?true
+                            # fwd_from_id:flags.6?InputPeer
+                            # fwd_from_story:flags.6?int
                         )
                     )
                 except FilePartMissing as e:

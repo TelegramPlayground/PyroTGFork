@@ -24,26 +24,26 @@ class LocationAddress(Object):
     """This object describes the physical address of a location.
 
     Parameters:
-        country_code (``float``):
+        country_code (``str``):
             The two-letter ISO 3166-1 alpha-2 country code of the country where the location is located.
 
-        state (``float``, *optional*):
+        state (``str``, *optional*):
             State of the location.
 
-        city (``float``, *optional*):
+        city (``str``, *optional*):
             City of the location.
         
-        street (``float``, *optional*):
+        street (``str``, *optional*):
             Street address of the location.
 
     """
 
     def __init__(
         self,
-        country_code: float = None,
-        state: float = None,
-        city: float = None,
-        street: float = None,
+        country_code: str = None,
+        state: str = None,
+        city: str = None,
+        street: str = None,
     ):
         super().__init__()
 

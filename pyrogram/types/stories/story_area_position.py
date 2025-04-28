@@ -16,6 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Optional
+
+import pyrogram
+from pyrogram import raw
 
 from ..object import Object
 
@@ -39,7 +43,7 @@ class StoryAreaPosition(Object):
         rotation_angle (``float``):
             The clockwise rotation angle of the rectangle, in degrees; 0-360.
         
-        corner_radius_percentage (``float``):
+        corner_radius_percentage (``float``, *optional*):
             The radius of the rectangle corner rounding, as a percentage of the media width.
 
     """
@@ -51,7 +55,7 @@ class StoryAreaPosition(Object):
         width_percentage: float = None,
         height_percentage: float = None,
         rotation_angle: float = None,
-        corner_radius_percentage: float = None,
+        corner_radius_percentage: Optional[float] = None,
     ):
         super().__init__()
 
@@ -61,3 +65,13 @@ class StoryAreaPosition(Object):
         self.height_percentage = height_percentage
         self.rotation_angle = rotation_angle
         self.corner_radius_percentage = corner_radius_percentage
+
+    def write(self):
+        return raw.types.MediaAreaCoordinates(
+            x=self.x_percentage,
+            y=self.y_percentage,
+            w=self.width_percentage,
+            h=self.height_percentage,
+            rotation=self.rotation_angle,
+            radius=self.corner_radius_percentage
+        )

@@ -17,35 +17,24 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import pyrogram
-from pyrogram import types, raw
-
 from ..object import Object
 
 
-class StoryArea(Object):
-    """This object describes a clickable area on a story media.
+class StoryAreaType(Object):
+    """This object describes the type of a clickable area on a story.
 
-    Parameters:
-        position (:obj:`~pyrogram.types.StoryAreaPosition`):
-            Position of the area.
-        
-        type (:obj:`~pyrogram.types.StoryAreaType`):
-            Type of the area.
+    Currently, it can be one of:
+
+    - :obj:`~pyrogram.types.StoryAreaTypeLocation`
+    - :obj:`~pyrogram.types.StoryAreaTypeSuggestedReaction`
+    - :obj:`~pyrogram.types.StoryAreaTypeLink`
+    - :obj:`~pyrogram.types.StoryAreaTypeWeather`
+    - :obj:`~pyrogram.types.StoryAreaTypeUniqueGift`
+
+    TODO: inputMediaAreaVenue#b282217f
+    TODO: inputMediaAreaChannelPost#2271f2bf
 
     """
 
-    def __init__(
-        self,
-        position: "types.StoryAreaPosition" = None,
-        type: "types.StoryAreaType" = None,
-    ):
+    def __init__(self):
         super().__init__()
-
-        self.position = position
-        self.type = type
-
-
-    def write(self, client: "pyrogram.Client"):
-        coordinates = self.position.write()
-        return self.type.write(client, coordinates)
