@@ -391,6 +391,10 @@ def pyrogram_api():
         stories="""
         Stories
             get_stories
+            send_story
+            post_story
+            delete_stories
+            delete_story
         """,
         payments="""
         Payments
@@ -675,15 +679,6 @@ def pyrogram_api():
             BusinessLocation
             BusinessOpeningHours
             BusinessOpeningHoursInterval
-            StoryAreaPosition
-            LocationAddress
-            StoryAreaType
-            StoryAreaTypeLocation
-            StoryAreaTypeSuggestedReaction
-            StoryAreaTypeLink
-            StoryAreaTypeWeather
-            StoryAreaTypeUniqueGift
-            StoryArea
             CollectibleItemInfo
             LabeledPrice
             Invoice
@@ -700,7 +695,27 @@ def pyrogram_api():
             PaidReactionTypeAnonymous
             PaidReactionTypeChat
             PaidReactionTypeRegular
-        """
+        """,
+        stories="""
+        Stories
+            InputStoryContent
+            InputStoryContentPhoto
+            InputStoryContentVideo
+            StoryAreaPosition
+            LocationAddress
+            StoryAreaType
+            StoryAreaTypeLocation
+            StoryAreaTypeSuggestedReaction
+            StoryAreaTypeLink
+            StoryAreaTypeWeather
+            StoryAreaTypeUniqueGift
+            StoryArea
+            StoryPrivacySettings
+            StoryPrivacySettingsEveryone
+            StoryPrivacySettingsContacts
+            StoryPrivacySettingsCloseFriends
+            StoryPrivacySettingsSelectedUsers
+        """,
     )
 
     root = PYROGRAM_API_DEST + "/types"
