@@ -20,6 +20,9 @@
 from .input_story_content import InputStoryContent
 from .input_story_content_photo import InputStoryContentPhoto
 from .input_story_content_video import InputStoryContentVideo
+from .location_address import LocationAddress
+from .story_area import StoryArea
+from .story_area_position import StoryAreaPosition
 from .story_privacy_settings import StoryPrivacySettings
 from .story_privacy_settings_everyone import StoryPrivacySettingsEveryone
 from .story_privacy_settings_contacts import StoryPrivacySettingsContacts
@@ -31,6 +34,9 @@ __all__ = [
     "InputStoryContent",
     "InputStoryContentPhoto",
     "InputStoryContentVideo",
+    "LocationAddress",
+    "StoryArea",
+    "StoryAreaPosition",
     "StoryPrivacySettings",
     "StoryPrivacySettingsEveryone",
     "StoryPrivacySettingsContacts",

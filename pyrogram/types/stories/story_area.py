@@ -24,7 +24,7 @@ from ..object import Object
 
 
 class StoryArea(Object):
-    """This object describes a clickable area on a story media..
+    """This object describes a clickable area on a story media.
 
     Parameters:
         position (:obj:`~pyrogram.types.StoryAreaPosition`):
