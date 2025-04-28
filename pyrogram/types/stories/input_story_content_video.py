@@ -84,7 +84,6 @@ class InputStoryContentVideo(InputStoryContent):
         self.duration = duration
         self.cover_frame_timestamp = cover_frame_timestamp
         self.is_animation = is_animation
-        self.duration = duration
         self.width = width
         self.height = height
         self.thumbnail = thumbnail
