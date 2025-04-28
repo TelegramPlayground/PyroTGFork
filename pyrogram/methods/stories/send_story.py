@@ -203,7 +203,7 @@ class SendStory:
                             caption=message,
                             entities=entities,
                             period=active_period,
-                            # TODO: fwd_modified:flags.7?true
+                            # fwd_modified=True if from_story_id else None,
                             fwd_from_id=await self.resolve_peer(from_story_chat_id) if from_story_chat_id else None,
                             fwd_from_story=from_story_id,
                         )
