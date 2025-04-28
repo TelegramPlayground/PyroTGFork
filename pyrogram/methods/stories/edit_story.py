@@ -24,21 +24,17 @@ from pyrogram import StopTransmission, enums, raw, types, utils
 from pyrogram.errors import FilePartMissing
 
 
-class SendStory:
-    async def send_story(
+class EditStory:
+    async def edit_story(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
+        story_id: int,
         content: "types.InputStoryContent",
-        active_period: int = None,
         caption: str = None,
         parse_mode: "enums.ParseMode" = None,
         caption_entities: list["types.MessageEntity"] = None,
         areas: list["types.StoryArea"] = None,
-        post_to_chat_page: bool = None,
-        protect_content: bool = None,
         privacy_settings: "types.StoryPrivacySettings" = None,
-        from_story_chat_id: Union[int, str] = None,
-        from_story_id: int = None,
         progress: Callable = None,
         progress_args: tuple = (),
     ) -> "types.Story":
@@ -51,11 +47,11 @@ class SendStory:
                 Unique identifier (int) or username (str) of the target chat.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
 
+            story_id (``int``):
+                Unique identifier of the story to edit.
+
             content (:obj:`~pyrogram.types.InputStoryContent`):
                 Content of the story.
-
-            active_period (``int``, *optional*):
-                Period after which the story is moved to the archive, in seconds; must be one of 6 * 3600, 12 * 3600, 86400, or 2 * 86400.
 
             caption (``str``, *optional*):
                 Caption of the story, 0-2048 characters after entities parsing.
@@ -70,23 +66,9 @@ class SendStory:
             areas (List of :obj:`~pyrogram.types.StoryArea`, *optional*):
                 List of of clickable areas to be shown on the story.
 
-            post_to_chat_page (``bool``, *optional*):
-                Pass True to keep the story accessible after it expires.
-            
-            protect_content (``bool``, *optional*):
-                Pass True if the content of the story must be protected from forwarding and screenshotting.
-
             privacy_settings (:obj:`~pyrogram.types.StoryPrivacySettings`, *optional*):
                 The privacy settings for the story; ignored for stories sent to supergroup and channel chats.
                 Defaults to :obj:`~pyrogram.types.StoryPrivacySettingsEveryone`.
-
-            from_story_chat_id (``int`` | ``str``, *optional*):
-                Full identifier of the original story, which content was used to create the story; pass None if the story isn't repost of another story.
-                Identifier of the chat that posted the story.
-
-            from_story_id (``int``, *optional*):
-                Full identifier of the original story, which content was used to create the story; pass None if the story isn't repost of another story.
-                Unique story identifier among stories of the given sender.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -106,10 +88,10 @@ class SendStory:
             .. code-block:: python
 
                 # Post story to your profile
-                await app.send_story("me", "story.png", caption='My new story!')
+                await app.edit_story("me", 7, "story.png", caption='My new story!')
 
                 # Post story to channel
-                await app.send_story(123456, "story.png", caption='My new story!')
+                await app.send_story(123456, 3, "story.png", caption='My new story!')
 
         Raises:
             ValueError: In case of invalid arguments.
@@ -192,20 +174,14 @@ class SendStory:
             while True:
                 try:
                     r = await self.invoke(
-                        raw.functions.stories.SendStory( 
+                        raw.functions.stories.EditStory( 
                             peer=await self.resolve_peer(chat_id),
+                            id=story_id,
                             media=media,
-                            privacy_rules=privacy_rules,
-                            random_id=self.rnd_id(),
-                            pinned=post_to_chat_page,
-                            noforwards=protect_content,
                             media_areas=[area.write(self) for area in (areas or [])] or None,
                             caption=message,
                             entities=entities,
-                            period=active_period,
-                            # fwd_modified=True if from_story_id else None,
-                            fwd_from_id=await self.resolve_peer(from_story_chat_id) if from_story_chat_id else None,
-                            fwd_from_story=from_story_id,
+                            privacy_rules=privacy_rules,
                         )
                     )
                 except FilePartMissing as e:
@@ -226,21 +202,16 @@ class SendStory:
             return None
 
 
-    async def post_story(
+    async def edit_business_story(
         self: "pyrogram.Client",
         business_connection_id: str,
+        story_id: int,
         content: "types.InputStoryContent",
-        active_period: int = None,
         caption: str = None,
         parse_mode: "enums.ParseMode" = None,
         caption_entities: list["types.MessageEntity"] = None,
         areas: list["types.StoryArea"] = None,
-        post_to_chat_page: bool = None,
-        protect_content: bool = None,
-        # TODO: test
         privacy_settings: "types.StoryPrivacySettings" = None,
-        from_story_chat_id: Union[int, str] = None,
-        from_story_id: int = None,
         progress: Callable = None,
         progress_args: tuple = (),
     ) -> "types.Story":
@@ -252,11 +223,11 @@ class SendStory:
             business_connection_id (``str``):
                 Unique identifier of the business connection.
 
+            story_id (``int``):
+                Unique identifier of the story to edit.
+
             content (:obj:`~pyrogram.types.InputStoryContent`):
                 Content of the story.
-
-            active_period (``int``, *optional*):
-                Period after which the story is moved to the archive, in seconds; must be one of 6 * 3600, 12 * 3600, 86400, or 2 * 86400.
 
             caption (``str``, *optional*):
                 Caption of the story, 0-2048 characters after entities parsing.
@@ -270,12 +241,6 @@ class SendStory:
 
             areas (List of :obj:`~pyrogram.types.StoryArea`, *optional*):
                 List of of clickable areas to be shown on the story.
-
-            post_to_chat_page (``bool``, *optional*):
-                Pass True to keep the story accessible after it expires.
-            
-            protect_content (``bool``, *optional*):
-                Pass True if the content of the story must be protected from forwarding and screenshotting.
 
             TODO: test
 
@@ -305,19 +270,15 @@ class SendStory:
         if not business_connection:
             business_connection = await self.get_business_connection(business_connection_id)
         
-        return await self.send_story(
+        return await self.edit_story(
             chat_id=business_connection.user_chat_id,
+            story_id=story_id,
             content=content,
-            active_period=active_period,
             caption=caption,
             parse_mode=parse_mode,
             caption_entities=caption_entities,
             areas=areas,
-            post_to_chat_page=post_to_chat_page,
-            protect_content=protect_content,
             privacy_settings=privacy_settings,
-            from_story_chat_id=from_story_chat_id,
-            from_story_id=from_story_id,
             progress=progress,
             progress_args=progress_args
         )

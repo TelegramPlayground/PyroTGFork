@@ -393,6 +393,8 @@ def pyrogram_api():
             get_stories
             send_story
             post_story
+            edit_story
+            edit_business_story
             delete_stories
             delete_story
         """,

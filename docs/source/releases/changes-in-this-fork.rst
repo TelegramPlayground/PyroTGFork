@@ -35,6 +35,7 @@ Changes in this Fork
 +------------------------+
 
 - Added the method :meth:`~pyrogram.Client.send_story` and :meth:`~pyrogram.Client.post_story`, allowing bots to post a story on behalf of a managed business account.
+- Added the method :meth:`~pyrogram.Client.edit_story` and :meth:`~pyrogram.Client.edit_business_story`, allowing bots to edit stories they had previously posted on behalf of a managed business account.
 - Added the methods :meth:`~pyrogram.Client.delete_stories` and :meth:`~pyrogram.Client.delete_story`, allowing bots to delete stories they had previously posted on behalf of a managed business account.
 - Renamed the field ``paid_message_star_count`` to ``paid_star_count`` in the :obj:`~pyrogram.types.Message`, containing the number of Telegram Stars that were paid to send the message.
 - Added the classes :obj:`~pyrogram.types.PaidMessagePriceChanged` and :obj:`~pyrogram.types.PaidMessagesRefunded` and the fields ``paid_message_price_changed`` and ``paid_messages_refunded`` to the :obj:`~pyrogram.types.Message`, describing the appropriate service message.
