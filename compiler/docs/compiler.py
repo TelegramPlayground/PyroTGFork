@@ -675,6 +675,15 @@ def pyrogram_api():
             BusinessLocation
             BusinessOpeningHours
             BusinessOpeningHoursInterval
+            StoryAreaPosition
+            LocationAddress
+            StoryAreaType
+            StoryAreaTypeLocation
+            StoryAreaTypeSuggestedReaction
+            StoryAreaTypeLink
+            StoryAreaTypeWeather
+            StoryAreaTypeUniqueGift
+            StoryArea
             CollectibleItemInfo
             LabeledPrice
             Invoice
