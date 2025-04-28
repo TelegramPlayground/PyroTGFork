@@ -32,7 +32,7 @@ class UploadStickerFile:
         user_id: int,
         sticker: str,
         sticker_format: "enums.StickerFormat"
-    ) -> bool:
+    ) -> "types.File":
         """Use this method to upload a file with a sticker for later use in the :meth:`~pyrogram.Client.create_new_sticker_set`, :meth:`~pyrogram.Client.add_sticker_to_set`, or :meth:`~pyrogram.Client.replace_sticker_in_set` methods (the file can be used multiple times).
 
         .. include:: /_includes/usable-by/users-bots.rst
