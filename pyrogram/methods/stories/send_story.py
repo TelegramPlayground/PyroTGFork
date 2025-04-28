@@ -80,8 +80,13 @@ class SendStory:
                 The privacy settings for the story; ignored for stories sent to supergroup and channel chats.
                 Defaults to :obj:`~pyrogram.types.StoryPrivacySettingsEveryone`.
 
-            from_story_chat_id: Union[int, str],
-            from_story_id: int = None,
+            from_story_chat_id (``int`` | ``str``, *optional*):
+                Full identifier of the original story, which content was used to create the story; pass None if the story isn't repost of another story.
+                Identifier of the chat that posted the story.
+
+            from_story_id (``int``, *optional*):
+                Full identifier of the original story, which content was used to create the story; pass None if the story isn't repost of another story.
+                Unique story identifier among stories of the given sender.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -198,9 +203,9 @@ class SendStory:
                             caption=message,
                             entities=entities,
                             period=active_period,
-                            # fwd_modified:flags.7?true
-                            # fwd_from_id:flags.6?InputPeer
-                            # fwd_from_story:flags.6?int
+                            # TODO: fwd_modified:flags.7?true
+                            fwd_from_id=await self.resolve_peer(from_story_chat_id) if from_story_chat_id else None,
+                            fwd_from_story=from_story_id,
                         )
                     )
                 except FilePartMissing as e:
@@ -232,6 +237,9 @@ class SendStory:
         areas: list["types.StoryArea"] = None,
         post_to_chat_page: bool = None,
         protect_content: bool = None,
+        privacy_settings: "types.StoryPrivacySettings" = None,
+        from_story_chat_id: Union[int, str] = None,
+        from_story_id: int = None,
         progress: Callable = None,
         progress_args: tuple = (),
     ) -> "types.Story":
@@ -267,6 +275,8 @@ class SendStory:
             
             protect_content (``bool``, *optional*):
                 Pass True if the content of the story must be protected from forwarding and screenshotting.
+
+            TODO: test
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -304,6 +314,9 @@ class SendStory:
             areas=areas,
             post_to_chat_page=post_to_chat_page,
             protect_content=protect_content,
+            privacy_settings=privacy_settings,
+            from_story_chat_id=from_story_chat_id,
+            from_story_id=from_story_id,
             progress=progress,
             progress_args=progress_args
         )
