@@ -66,6 +66,17 @@ class StoryAreaPosition(Object):
         self.rotation_angle = rotation_angle
         self.corner_radius_percentage = corner_radius_percentage
 
+    @staticmethod
+    def _parse(coordinates: "raw.types.MediaAreaCoordinates") -> "StoryAreaPosition":
+        return StoryAreaPosition(
+            x_percentage=coordinates.x,
+            y_percentage=coordinates.y,
+            width_percentage=coordinates.w,
+            height_percentage=coordinates.h,
+            rotation_angle=coordinates.rotation,
+            corner_radius_percentage=coordinates.radius
+        )
+
     def write(self):
         return raw.types.MediaAreaCoordinates(
             x=self.x_percentage,

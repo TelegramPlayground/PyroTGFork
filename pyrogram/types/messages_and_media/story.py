@@ -195,6 +195,7 @@ class Story(Object, Update):
         skipped = None
         deleted = None
         is_visible_only_for_self = None
+        areas = None
 
         if isinstance(story_item, raw.types.StoryItemDeleted):
             deleted = True
@@ -215,7 +216,6 @@ class Story(Object, Update):
             # out:flags.16?true
             # from_id:flags.18?Peer
             # fwd_from:flags.17?StoryFwdHeader 
-            # media_areas:flags.14?Vector<MediaArea>
             # privacy:flags.2?Vector<PrivacyRule>
             # sent_reaction:flags.15?Reaction = StoryItem;
 
@@ -241,6 +241,15 @@ class Story(Object, Update):
                     types.Reaction._parse_count(client, reaction)
                     for reaction in getattr(story_item.views, "reactions", [])
                 ] or None
+            
+            if story_item.media_areas:
+                areas = [
+                    types.StoryArea._parse(
+                        client,
+                        area,
+                    ) for area in story_item.media_areas
+                ]
+                
         return (
             date,
             expire_date,
@@ -257,7 +266,8 @@ class Story(Object, Update):
             reactions,
             skipped,
             deleted,
-            is_visible_only_for_self
+            is_visible_only_for_self,
+            areas,
         )
 
     @staticmethod
@@ -292,6 +302,7 @@ class Story(Object, Update):
         reactions = None
         skipped = None
         deleted = None
+        areas = None
 
         if story_media:
             rawupdate = story_media
@@ -344,7 +355,8 @@ class Story(Object, Update):
                     reactions,
                     skipped,
                     deleted,
-                    is_visible_only_for_self
+                    is_visible_only_for_self,
+                    areas,
                 ) = Story._parse_story_item(client, story_item)
         
         if story_update:
@@ -373,7 +385,8 @@ class Story(Object, Update):
                 reactions,
                 skipped,
                 deleted,
-                is_visible_only_for_self
+                is_visible_only_for_self,
+                areas,
             ) = Story._parse_story_item(client, story_update.story)
 
         if peer:
@@ -401,7 +414,8 @@ class Story(Object, Update):
                 reactions,
                 skipped,
                 deleted,
-                is_visible_only_for_self
+                is_visible_only_for_self,
+                areas,
             ) = Story._parse_story_item(client, story_item)
 
         return Story(
@@ -424,7 +438,8 @@ class Story(Object, Update):
             forwards=forwards,
             reactions=reactions,
             skipped=skipped,
-            deleted=deleted
+            deleted=deleted,
+            areas=areas,
         )
 
     async def react(

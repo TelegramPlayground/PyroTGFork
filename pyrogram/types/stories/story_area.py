@@ -45,6 +45,24 @@ class StoryArea(Object):
         self.position = position
         self.type = type
 
+    @staticmethod
+    def _parse(
+        client: "pyrogram.Client",
+        area: "raw.base.MediaArea",
+    ) -> "StoryArea":
+        story_area_type = None
+        # if isinstance(area, raw.types.)
+        # mediaAreaVenue#be82db9c coordinates:MediaAreaCoordinates geo:GeoPoint title:string address:string provider:string venue_id:string venue_type:string = MediaArea;
+        # mediaAreaGeoPoint#cad5452d flags:# coordinates:MediaAreaCoordinates geo:GeoPoint address:flags.0?GeoPointAddress = MediaArea;
+        # mediaAreaSuggestedReaction#14455871 flags:# dark:flags.0?true flipped:flags.1?true coordinates:MediaAreaCoordinates reaction:Reaction = MediaArea;
+        # mediaAreaChannelPost#770416af coordinates:MediaAreaCoordinates channel_id:long msg_id:int = MediaArea;
+        # mediaAreaUrl#37381085 coordinates:MediaAreaCoordinates url:string = MediaArea;
+        # mediaAreaWeather#49a6549c coordinates:MediaAreaCoordinates emoji:string temperature_c:double color:int = MediaArea;
+        # mediaAreaStarGift#5787686d coordinates:MediaAreaCoordinates slug:string = MediaArea;
+        return StoryArea(
+            position=types.StoryAreaPosition._parse(area.coordinates),
+            type=story_area_type,
+        )
 
     def write(self, client: "pyrogram.Client"):
         coordinates = self.position.write()
