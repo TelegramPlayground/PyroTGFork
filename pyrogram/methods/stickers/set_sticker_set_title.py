@@ -24,18 +24,22 @@ from pyrogram import raw
 log = logging.getLogger(__name__)
 
 
-class DeleteStickerSet:
-    async def delete_sticker_set(
+class SetStickerSetTitle:
+    async def set_sticker_set_title(
         self: "pyrogram.Client",
-        name: str
+        name: str,
+        title: str
     ) -> bool:
-        """Use this method to delete a sticker set that was created by the current user.
+        """Use this method to set the title of a created sticker set.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
             name (``str``):
                 Sticker set name.
+            
+            title (``str``):
+                Sticker set title, 1-64 characters.
 
         Returns:
             ``bool``: True on success.
@@ -45,10 +49,11 @@ class DeleteStickerSet:
 
         """
         r = await self.invoke(
-            raw.functions.stickers.DeleteStickerSet(
+            raw.functions.stickers.RenameStickerSet(
                 stickerset=raw.types.InputStickerSetShortName(
                     short_name=name
-                )
+                ),
+                title=title
             )
         )
         return r

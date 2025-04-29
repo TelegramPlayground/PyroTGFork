@@ -387,6 +387,7 @@ def pyrogram_api():
             get_custom_emoji_stickers
             get_message_effects
             upload_sticker_file
+            set_sticker_set_title
             get_stickers
             delete_sticker_set
         """,
