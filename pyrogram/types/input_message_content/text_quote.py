@@ -16,12 +16,12 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
-from ..object import Object
+from pyrogram import raw, types
+
 from ..messages_and_media.message import Str
+from ..object import Object
 
 
 class TextQuote(Object):
@@ -77,7 +77,7 @@ class TextQuote(Object):
             entities = types.List(
                 filter(lambda x: x is not None, entities)
             )
-            
+
             return TextQuote(
                 text=Str(quote_text).init(entities) or None,
                 entities=entities,

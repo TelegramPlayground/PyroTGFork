@@ -21,8 +21,7 @@ from datetime import datetime
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
 
 log = logging.getLogger(__name__)
 
@@ -125,7 +124,7 @@ class SendLocation:
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
                 "exclusive."
             )
-        
+
         if reply_to_message_id is not None:
             log.warning(
                 "This property is deprecated. "
@@ -185,7 +184,7 @@ class SendLocation:
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotNewBusinessMessage

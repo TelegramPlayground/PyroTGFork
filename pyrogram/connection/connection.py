@@ -20,8 +20,8 @@ import asyncio
 import logging
 from typing import Optional
 
-from .transport import *
 from ..session.internals import DataCenter
+from .transport import *
 
 log = logging.getLogger(__name__)
 

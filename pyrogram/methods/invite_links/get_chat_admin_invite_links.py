@@ -17,11 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from asyncio import sleep
-from typing import Union, Optional, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 
 
 class GetChatAdminInviteLinks:

@@ -25,11 +25,10 @@ import math
 import os
 from hashlib import md5
 from pathlib import PurePath
-from typing import Union, Callable
+from typing import Callable, Union
 
 import pyrogram
-from pyrogram import StopTransmission
-from pyrogram import raw
+from pyrogram import StopTransmission, raw
 from pyrogram.session import Session
 
 log = logging.getLogger(__name__)
@@ -160,7 +159,7 @@ class SaveFile:
 
                 if not chunk:
                     if not is_big and not is_missing_part:
-                        md5_sum = "".join([hex(i)[2:].zfill(2) for i in md5_sum.digest()])
+                        md5_sum = "".join([f"{i:x}".zfill(2) for i in md5_sum.digest()])
                     break
 
                 if is_big:
@@ -180,7 +179,7 @@ class SaveFile:
                 await queue.put(rpc)
 
                 if is_missing_part:
-                    return
+                    return None
 
                 if not is_big and not is_missing_part:
                     md5_sum.update(chunk)
@@ -211,13 +210,12 @@ class SaveFile:
                     name=file_name,
 
                 )
-            else:
-                return raw.types.InputFile(
-                    id=file_id,
-                    parts=file_total_parts,
-                    name=file_name,
-                    md5_checksum=md5_sum
-                )
+            return raw.types.InputFile(
+                id=file_id,
+                parts=file_total_parts,
+                name=file_name,
+                md5_checksum=md5_sum
+            )
         finally:
             for _ in workers:
                 await queue.put(None)

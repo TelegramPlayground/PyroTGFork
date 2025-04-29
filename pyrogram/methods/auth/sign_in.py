@@ -20,8 +20,7 @@ import logging
 from typing import Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 
 log = logging.getLogger(__name__)
 
@@ -73,8 +72,7 @@ class SignIn:
                 return types.TermsOfService._parse(terms_of_service=r.terms_of_service)
 
             return False
-        else:
-            await self.storage.user_id(r.user.id)
-            await self.storage.is_bot(False)
+        await self.storage.user_id(r.user.id)
+        await self.storage.is_bot(False)
 
-            return types.User._parse(self, r.user)
+        return types.User._parse(self, r.user)

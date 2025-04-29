@@ -17,12 +17,13 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional, Union
+from typing import Union
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
-from ..object import Object
+from pyrogram import enums, raw, types, utils
+
 from ..messages_and_media.message import Str
+from ..object import Object
 
 
 class DraftMessage(Object):
@@ -92,7 +93,7 @@ class DraftMessage(Object):
         media: "enums.MessageMediaType" = None,
         empty: bool = None,
         chat: "types.Chat" = None,
-        
+
         _raw: "raw.types.DraftMessage" = None
 
     ):
@@ -114,7 +115,6 @@ class DraftMessage(Object):
 
         self._raw = _raw
 
-
     @staticmethod
     def _parse(
         client: "pyrogram.Client",
@@ -122,8 +122,8 @@ class DraftMessage(Object):
             "raw.types.DraftMessage",
             "raw.types.DraftMessageEmpty",
         ],
-        users: dict, # raw
-        chats: dict, # raw 
+        users: dict,  # raw
+        chats: dict,  # raw
     ) -> "DraftMessage":
         if not raw_draft_message:
             return None
@@ -216,6 +216,6 @@ class DraftMessage(Object):
         # if raw_draft_message.reply_to:
         #     # TODO reply_to:flags.4?InputReplyTo
         #     draft_message.reply_to_message_id
-        #     draft_message.reply_to_message 
+        #     draft_message.reply_to_message
 
         return draft_message

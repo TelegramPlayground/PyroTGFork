@@ -17,7 +17,8 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import asyncio
-from typing import Union, Iterable
+from collections.abc import Iterable
+from typing import Union
 
 import pyrogram
 from pyrogram import raw, types, utils

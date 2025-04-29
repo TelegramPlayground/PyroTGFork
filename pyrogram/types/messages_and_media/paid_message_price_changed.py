@@ -17,8 +17,8 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import pyrogram
+from pyrogram import raw
 
-from pyrogram import raw, types
 from ..object import Object
 
 
@@ -40,7 +40,6 @@ class PaidMessagePriceChanged(Object):
         super().__init__(client)
 
         self.paid_message_star_count = paid_message_star_count
-
 
     @staticmethod
     def _parse_action(

@@ -21,11 +21,12 @@ from datetime import datetime
 from typing import Callable, Optional, Union
 
 import pyrogram
-from pyrogram import raw, utils, types, enums
+from pyrogram import enums, raw, types, utils
+from pyrogram.errors import RPCError
+
 from ..object import Object
 from ..update import Update
 from .message import Str
-from pyrogram.errors import RPCError
 
 
 class Story(Object, Update):
@@ -113,7 +114,7 @@ class Story(Object, Update):
         reactions: list["types.Reaction"] = None,
         skipped: bool = None,
         deleted: bool = None,
-        _raw = None
+        _raw=None
     ):
         super().__init__(client)
 
@@ -246,7 +247,7 @@ class Story(Object, Update):
                 else:
                     chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
             story_id = getattr(story_media, "id", None)
-        
+
         if reply_story:
             rawupdate = reply_story
 
@@ -257,7 +258,7 @@ class Story(Object, Update):
                 else:
                     chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
             story_id = getattr(reply_story, "story_id", None)
-        
+
         if story_id and not (client.me and client.me.is_bot):
             try:
                 story_item = (
@@ -288,7 +289,7 @@ class Story(Object, Update):
                     skipped,
                     deleted
                 ) = Story._parse_story_item(client, story_item)
-        
+
         if story_update:
             rawupdate = story_update
 
@@ -297,7 +298,7 @@ class Story(Object, Update):
                 chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
             else:
                 chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
-            
+
             story_id = getattr(story_update.story, "id", None)
             (
                 date,
@@ -323,7 +324,7 @@ class Story(Object, Update):
                 chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
             else:
                 chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
-            
+
         if story_item:
             story_id = getattr(story_item, "id", None)
             (

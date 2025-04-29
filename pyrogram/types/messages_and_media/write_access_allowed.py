@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from pyrogram import raw
+
 from ..object import Object
 
 
@@ -51,7 +52,7 @@ class WriteAccessAllowed(Object):
     @staticmethod
     def _parse(action: "raw.types.MessageActionBotAllowed"):
         return WriteAccessAllowed(
-            from_request=action.from_request if action.from_request else None,
+            from_request=action.from_request or None,
             web_app_name=action.app.short_name if action.app is not None else None,
-            from_attachment_menu=action.attach_menu if action.attach_menu else None,
+            from_attachment_menu=action.attach_menu or None,
         )

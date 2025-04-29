@@ -16,5 +16,5 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .auth import Auth
-from .session import Session
+from .auth import Auth as Auth
+from .session import Session as Session

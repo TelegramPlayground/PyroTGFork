@@ -28,14 +28,19 @@ from pyrogram import raw
 from pyrogram.connection import Connection
 from pyrogram.crypto import mtproto
 from pyrogram.errors import (
-    RPCError, InternalServerError, AuthKeyDuplicated,
-    FloodWait, FloodPremiumWait,
-    ServiceUnavailable, BadMsgNotification,
+    AuthKeyDuplicated,
+    BadMsgNotification,
+    FloodPremiumWait,
+    FloodWait,
+    InternalServerError,
+    RPCError,
     SecurityCheckMismatch,
+    ServiceUnavailable,
 )
 from pyrogram.raw.all import layer
-from pyrogram.raw.core import TLObject, MsgContainer, Int, FutureSalts
-from .internals import MsgId, MsgFactory
+from pyrogram.raw.core import FutureSalts, Int, MsgContainer, TLObject
+
+from .internals import MsgFactory, MsgId
 
 log = logging.getLogger(__name__)
 
@@ -230,8 +235,7 @@ class Session:
             if msg.seq_no % 2 != 0:
                 if msg.msg_id in self.pending_acks:
                     continue
-                else:
-                    self.pending_acks.add(msg.msg_id)
+                self.pending_acks.add(msg.msg_id)
 
             try:
                 if len(self.stored_msg_ids) > Session.STORED_MSG_IDS_MAX_SIZE:
@@ -274,9 +278,8 @@ class Session:
                 msg_id = msg.body.req_msg_id
             elif isinstance(msg.body, raw.types.Pong):
                 msg_id = msg.body.msg_id
-            else:
-                if self.client is not None:
-                    self.loop.create_task(self.client.handle_updates(msg.body))
+            elif self.client is not None:
+                self.loop.create_task(self.client.handle_updates(msg.body))
 
             if msg_id in self.results:
                 self.results[msg_id].value = getattr(msg.body, "result", msg.body)
@@ -347,7 +350,7 @@ class Session:
 
         # Call log.debug twice because calling it once by appending "data" to the previous string (i.e. f"Kind: {data}")
         # will cause "data" to be evaluated as string every time instead of only when debug is actually enabled.
-        log.debug(f"Sent:")
+        log.debug("Sent:")
         log.debug(message)
 
         payload = await self.loop.run_in_executor(
@@ -376,7 +379,7 @@ class Session:
 
             if result is None:
                 raise TimeoutError
-            elif isinstance(result, raw.types.RpcError):
+            if isinstance(result, raw.types.RpcError):
                 if isinstance(data, Session.CUR_ALWD_INNR_QRYS):
                     data = data.query
 

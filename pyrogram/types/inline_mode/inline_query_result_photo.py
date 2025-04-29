@@ -20,7 +20,8 @@ import logging
 from typing import Optional
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
+from pyrogram import enums, raw, types, utils
+
 from .inline_query_result import InlineQueryResult
 
 log = logging.getLogger(__name__)
@@ -101,7 +102,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
                 "Parameters `thumb_url` and `thumbnail_url` are mutually "
                 "exclusive."
             )
-        
+
         if thumb_url is not None:
             log.warning(
                 "This property is deprecated. "

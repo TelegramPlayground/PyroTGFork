@@ -22,6 +22,7 @@ from typing import Optional
 
 import pyrogram
 from pyrogram.crypto import aes
+
 from .tcp import TCP
 
 log = logging.getLogger(__name__)

@@ -19,7 +19,7 @@
 from typing import Optional
 
 import pyrogram
-from pyrogram import types, enums
+from pyrogram import enums, types
 
 
 class EditInlineCaption:

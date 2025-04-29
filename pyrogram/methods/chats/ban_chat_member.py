@@ -20,8 +20,7 @@ from datetime import datetime
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
 
 
 class BanChatMember:
@@ -115,5 +114,4 @@ class BanChatMember:
                     {i.id: i for i in r.chats},
                     replies=self.fetch_replies
                 )
-        else:
-            return True
+        return True

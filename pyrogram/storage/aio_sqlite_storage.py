@@ -17,15 +17,17 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import inspect
-import aiosqlite  # aiosqlite==0.20.0
 import os
 import time
+from pathlib import Path
 from typing import Any
 
+import aiosqlite  # aiosqlite==0.20.0
+
 from pyrogram import raw
-from .storage import Storage
+
 from .. import utils
-from pathlib import Path
+from .storage import Storage
 
 # language=SQLite
 SCHEMA = """
@@ -210,18 +212,17 @@ class AioSQLiteStorage(Storage):
                 "SELECT id, pts, qts, date, seq FROM update_state"
             )
             return await q.fetchall()
-        else:
-            if value is None:
-                await self.conn.execute(
-                    "DELETE FROM update_state"
-                )
-            else:
-                await self.conn.execute(
-                "REPLACE INTO update_state (id, pts, qts, date, seq)"
-                "VALUES (?, ?, ?, ?, ?)",
-                value
+        if value is None:
+            await self.conn.execute(
+                "DELETE FROM update_state"
             )
-            await self.conn.commit()
+        else:
+            await self.conn.execute(
+            "REPLACE INTO update_state (id, pts, qts, date, seq)"
+            "VALUES (?, ?, ?, ?, ?)",
+            value
+        )
+        await self.conn.commit()
 
     async def get_peer_by_id(self, peer_id: int):
         q = await self.conn.execute(
@@ -316,9 +317,8 @@ class AioSQLiteStorage(Storage):
             )
 
             return (await q.fetchone())[0]
-        else:
-            await self.conn.execute(
-                "UPDATE version SET number = ?",
-                (value,)
-            )
-            await self.conn.commit()
+        await self.conn.execute(
+            "UPDATE version SET number = ?",
+            (value,)
+        )
+        await self.conn.commit()

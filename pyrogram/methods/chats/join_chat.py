@@ -19,8 +19,7 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 
 
 class JoinChat:
@@ -65,7 +64,7 @@ class JoinChat:
             )
             if isinstance(chat.chats[0], raw.types.Chat):
                 return types.Chat._parse_chat_chat(self, chat.chats[0])
-            elif isinstance(chat.chats[0], raw.types.Channel):
+            if isinstance(chat.chats[0], raw.types.Channel):
                 return types.Chat._parse_channel_chat(self, chat.chats[0])
 
         else:

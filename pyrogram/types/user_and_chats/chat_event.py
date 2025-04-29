@@ -20,7 +20,8 @@ from datetime import datetime
 from typing import Optional
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
+from pyrogram import enums, raw, types, utils
+
 from ..object import Object
 
 
@@ -543,11 +544,11 @@ class ChatEvent(Object):
         elif isinstance(action, raw.types.ChannelAdminLogEventActionToggleSignatureProfiles):
             show_message_sender_enabled = action.new_value
             action = enums.ChatEventAction.SHOW_MESSAGE_SENDER_ENABLED
-        
+
         elif isinstance(action, raw.types.ChannelAdminLogEventActionToggleAntiSpam):
             has_aggressive_anti_spam_enabled = action.new_value
             action = enums.ChatEventAction.AGGRESSIVE_ANTI_SPAM_TOGGLED
-        
+
         elif isinstance(action, raw.types.ChannelAdminLogEventActionToggleNoForwards):
             has_protected_content = action.new_value
             action = enums.ChatEventAction.PROTECTED_CONTENT_TOGGLED

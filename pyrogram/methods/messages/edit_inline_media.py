@@ -22,11 +22,10 @@ import os
 import re
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
-from pyrogram import utils
-from pyrogram.errors import RPCError, MediaEmpty
+from pyrogram import raw, types, utils
+from pyrogram.errors import MediaEmpty, RPCError
 from pyrogram.file_id import FileType
+
 from .inline_session import get_session
 
 
@@ -84,7 +83,7 @@ class EditInlineMedia:
         is_bytes_io = isinstance(media.media, io.BytesIO)
         is_uploaded_file = is_bytes_io or os.path.isfile(media.media)
 
-        is_external_url = not is_uploaded_file and re.match("^https?://", media.media)
+        is_external_url = not is_uploaded_file and re.match(r"^https?://", media.media)
 
         if is_bytes_io and not hasattr(media.media, "name"):
             media.media.name = "media"

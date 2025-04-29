@@ -17,10 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Optional, List
+from typing import List, Optional
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
+from pyrogram import enums, raw, types, utils
+
 from .inline_query_result import InlineQueryResult
 
 log = logging.getLogger(__name__)
@@ -101,33 +102,33 @@ class InlineQueryResultDocument(InlineQueryResult):
                 "Parameters `thumb_url` and `thumbnail_url` are mutually "
                 "exclusive."
             )
-        
+
         if thumb_url is not None:
             log.warning(
                 "This property is deprecated. "
                 "Please use thumbnail_url instead"
             )
             thumbnail_url = thumb_url
-        
+
         if thumb_width and thumbnail_width:
             raise ValueError(
                 "Parameters `thumb_width` and `thumbnail_width` are mutually "
                 "exclusive."
             )
-        
+
         if thumb_width is not None:
             log.warning(
                 "This property is deprecated. "
                 "Please use thumbnail_width instead"
             )
             thumbnail_width = thumb_width
-        
+
         if thumb_height and thumbnail_height:
             raise ValueError(
                 "Parameters `thumb_height` and `thumbnail_height` are mutually "
                 "exclusive."
             )
-        
+
         if thumb_height is not None:
             log.warning(
                 "This property is deprecated. "

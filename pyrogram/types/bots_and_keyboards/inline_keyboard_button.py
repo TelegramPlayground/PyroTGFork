@@ -20,6 +20,7 @@ from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types
+
 from ..object import Object
 
 
@@ -167,16 +168,15 @@ class InlineKeyboardButton(Object):
                     text=b.text,
                     switch_inline_query_current_chat=b.query
                 )
-            elif b.peer_types:
+            if b.peer_types:
                 return InlineKeyboardButton(
                     text=b.text,
                     switch_inline_query_chosen_chat=types.SwitchInlineQueryChosenChat.read(b)
                 )
-            else:
-                return InlineKeyboardButton(
-                    text=b.text,
-                    switch_inline_query=b.query
-                )
+            return InlineKeyboardButton(
+                text=b.text,
+                switch_inline_query=b.query
+            )
 
         if isinstance(b, raw.types.KeyboardButtonGame):
             return InlineKeyboardButton(
@@ -191,7 +191,7 @@ class InlineKeyboardButton(Object):
                     url=b.url
                 )
             )
-        
+
         if isinstance(b, raw.types.KeyboardButtonBuy):
             return InlineKeyboardButton(
                 text=b.text,

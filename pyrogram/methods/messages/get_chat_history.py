@@ -17,11 +17,12 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from asyncio import sleep
+from collections.abc import AsyncGenerator
 from datetime import datetime
-from typing import Union, Optional, AsyncGenerator
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import types, raw, utils
+from pyrogram import raw, types, utils
 
 
 async def get_chunk(
@@ -54,30 +55,29 @@ async def get_chunk(
         if reverse:
             messages.reverse()
         return messages
-    else:
-        from_message_id = from_message_id or (1 if reverse else 0)
-        messages = await client.invoke(
-            raw.functions.messages.GetHistory(
-                peer=await client.resolve_peer(chat_id),
-                offset_id=from_message_id,
-                offset_date=utils.datetime_to_timestamp(from_date),
-                add_offset=offset * (-1 if reverse else 1) - (limit if reverse else 0),
-                limit=limit,
-                max_id=max_id,
-                min_id=min_id,
-                hash=0
-            ),
-            sleep_threshold=60
-        )
-        messages = await utils.parse_messages(
-            client,
-            messages,
-            is_scheduled=False,
-            replies=0
-        )
-        if reverse:
-            messages.reverse()
-        return messages
+    from_message_id = from_message_id or (1 if reverse else 0)
+    messages = await client.invoke(
+        raw.functions.messages.GetHistory(
+            peer=await client.resolve_peer(chat_id),
+            offset_id=from_message_id,
+            offset_date=utils.datetime_to_timestamp(from_date),
+            add_offset=offset * (-1 if reverse else 1) - (limit if reverse else 0),
+            limit=limit,
+            max_id=max_id,
+            min_id=min_id,
+            hash=0
+        ),
+        sleep_threshold=60
+    )
+    messages = await utils.parse_messages(
+        client,
+        messages,
+        is_scheduled=False,
+        replies=0
+    )
+    if reverse:
+        messages.reverse()
+    return messages
 
 
 class GetChatHistory:

@@ -18,14 +18,15 @@
 
 
 import re
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, enums, types
+from pyrogram import enums, raw, types
 from pyrogram.errors import ChannelPrivate
+
+from ... import utils
 from ..object import Object
 from ..update import Update
-from ... import utils
 
 
 class CallbackQuery(Object, Update):
@@ -107,7 +108,7 @@ class CallbackQuery(Object, Update):
             peer_id = utils.get_raw_peer_id(callback_query.peer)
             message_id = callback_query.msg_id
 
-            message = client.message_cache[(chat_id, message_id)]
+            message = client.message_cache[chat_id, message_id]
             if not message:
                 try:
                     message = await client.get_messages(
@@ -117,7 +118,7 @@ class CallbackQuery(Object, Update):
                 except ChannelPrivate:
                     message = None
                 if not message:
-                    channel = chats.get(peer_id, None)
+                    channel = chats.get(peer_id)
                     if channel:
                         message = types.Message(
                             id=message_id,
@@ -253,16 +254,15 @@ class CallbackQuery(Object, Update):
                 disable_web_page_preview=disable_web_page_preview,
                 business_connection_id=self.message.business_connection_id
             )
-        else:
-            return await self._client.edit_inline_text(
-                inline_message_id=self.inline_message_id,
-                text=text,
-                parse_mode=parse_mode,
-                entities=entities,
-                link_preview_options=link_preview_options,
-                reply_markup=reply_markup,
-                disable_web_page_preview=disable_web_page_preview
-            )
+        return await self._client.edit_inline_text(
+            inline_message_id=self.inline_message_id,
+            text=text,
+            parse_mode=parse_mode,
+            entities=entities,
+            link_preview_options=link_preview_options,
+            reply_markup=reply_markup,
+            disable_web_page_preview=disable_web_page_preview
+        )
 
     async def edit_message_caption(
         self,
@@ -340,12 +340,11 @@ class CallbackQuery(Object, Update):
                 file_name=file_name,
                 business_connection_id=self.message.business_connection_id
             )
-        else:
-            return await self._client.edit_inline_media(
-                inline_message_id=self.inline_message_id,
-                media=media,
-                reply_markup=reply_markup
-            )
+        return await self._client.edit_inline_media(
+            inline_message_id=self.inline_message_id,
+            media=media,
+            reply_markup=reply_markup
+        )
 
     async def edit_message_reply_markup(
         self,
@@ -373,8 +372,7 @@ class CallbackQuery(Object, Update):
                 reply_markup=reply_markup,
                 business_connection_id=self.message.business_connection_id,
             )
-        else:
-            return await self._client.edit_inline_reply_markup(
-                inline_message_id=self.inline_message_id,
-                reply_markup=reply_markup
-            )
+        return await self._client.edit_inline_reply_markup(
+            inline_message_id=self.inline_message_id,
+            reply_markup=reply_markup
+        )

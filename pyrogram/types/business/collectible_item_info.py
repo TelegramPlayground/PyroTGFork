@@ -19,6 +19,7 @@
 from datetime import datetime
 
 from pyrogram import raw, utils
+
 from ..object import Object
 
 
@@ -59,7 +60,7 @@ class CollectibleItemInfo(Object):
         super().__init__()
 
         self.purchase_date = purchase_date
-        self.currency= currency
+        self.currency = currency
         self.amount = amount
         self.cryptocurrency = cryptocurrency
         self.cryptocurrency_amount = cryptocurrency_amount

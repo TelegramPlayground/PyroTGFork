@@ -16,13 +16,11 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from datetime import datetime
 
 import pyrogram
-
 from pyrogram import raw, types
-from ..object import Object
 
+from ..object import Object
 
 
 class GiveawayCompleted(Object):
@@ -58,7 +56,6 @@ class GiveawayCompleted(Object):
         self.unclaimed_prize_count = unclaimed_prize_count
         self.giveaway_message = giveaway_message
         self.is_star_giveaway = is_star_giveaway
-
 
     @staticmethod
     def _parse(

@@ -23,14 +23,14 @@
 
 import asyncio
 import inspect
-import sqlite3
 import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any
 
 from pyrogram import raw
-from .storage import Storage
+
 from .. import utils
+from .storage import Storage
 
 # language=SQLite
 SCHEMA = """
@@ -191,19 +191,18 @@ class SQLiteStorage(Storage):
                 "SELECT id, pts, qts, date, seq FROM update_state "
                 "ORDER BY date ASC"
             ).fetchall()
-        else:
-            with self.conn:
-                if isinstance(value, int):
-                    self.conn.execute(
-                        "DELETE FROM update_state WHERE id = ?",
-                        (value,)
-                    )
-                else:
-                    self.conn.execute(
-                        "REPLACE INTO update_state (id, pts, qts, date, seq)"
-                        "VALUES (?, ?, ?, ?, ?)",
-                        value
-                    )
+        with self.conn:
+            if isinstance(value, int):
+                self.conn.execute(
+                    "DELETE FROM update_state WHERE id = ?",
+                    (value,)
+                )
+            else:
+                self.conn.execute(
+                    "REPLACE INTO update_state (id, pts, qts, date, seq)"
+                    "VALUES (?, ?, ?, ?, ?)",
+                    value
+                )
 
     async def update_state(self, value: tuple[int, int, int, int, int] = object):
         return await self.loop.run_in_executor(self.executor, self._update_state_impl, value)
@@ -285,7 +284,7 @@ class SQLiteStorage(Storage):
     async def _accessor(self, value: Any = object):
         # return await self._get(attr) if value == object else await self._set(attr, value)
         return await self._get() if value == object else await self._set(value)
-    
+
     def _get_version_impl(self):
         with self.conn:
             return self.conn.execute("SELECT number FROM version").fetchone()[0]
@@ -318,5 +317,4 @@ class SQLiteStorage(Storage):
     async def version(self, value: int = object):
         if value == object:
             return await self.loop.run_in_executor(self.executor, self._get_version_impl)
-        else:
-            return await self.loop.run_in_executor(self.executor, self._set_version_impl, value)
+        return await self.loop.run_in_executor(self.executor, self._set_version_impl, value)

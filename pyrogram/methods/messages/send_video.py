@@ -16,17 +16,18 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 import io
+import logging
 import os
 import re
 from datetime import datetime
-from typing import Union, Optional, Callable
+from typing import Callable, Optional, Union
 
 import pyrogram
 from pyrogram import StopTransmission, enums, raw, types, utils
 from pyrogram.errors import FilePartMissing
 from pyrogram.file_id import FileType
+
 from .inline_session import get_session
 
 log = logging.getLogger(__name__)
@@ -241,7 +242,7 @@ class SendVideo:
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
                 "exclusive."
             )
-        
+
         if reply_to_message_id is not None:
             log.warning(
                 "This property is deprecated. "
@@ -256,7 +257,7 @@ class SendVideo:
         if cover:
             is_bytes_io = isinstance(cover, io.BytesIO)
             is_uploaded_file = is_bytes_io or os.path.isfile(cover)
-            is_external_url = not is_uploaded_file and re.match("^https?://", cover)
+            is_external_url = not is_uploaded_file and re.match(r"^https?://", cover)
 
             if is_bytes_io and not hasattr(cover, "name"):
                 cover.name = "cover.jpg"
@@ -317,7 +318,7 @@ class SendVideo:
                         video_cover=coverfile,
                         video_timestamp=start_timestamp
                     )
-                elif re.match("^https?://", video):
+                elif re.match(r"^https?://", video):
                     media = raw.types.InputMediaDocumentExternal(
                         url=video,
                         ttl_seconds=ttl_seconds,
@@ -334,7 +335,7 @@ class SendVideo:
                     )
                     media.video_cover = coverfile
                     media.video_timestamp = start_timestamp
-                    
+
             else:
                 file = await self.save_file(video, progress=progress, progress_args=progress_args)
                 thumb = await self.save_file(thumb)
@@ -420,7 +421,7 @@ class SendVideo:
                                 is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                                 replies=self.fetch_replies
                             )
-                        elif isinstance(
+                        if isinstance(
                             i,
                             (
                                 raw.types.UpdateBotNewBusinessMessage

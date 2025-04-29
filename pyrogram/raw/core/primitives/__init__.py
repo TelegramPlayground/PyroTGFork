@@ -16,9 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .bool import Bool, BoolFalse, BoolTrue
-from .bytes import Bytes
-from .double import Double
-from .int import Int, Long, Int128, Int256
-from .string import String
-from .vector import Vector
+from .bool import Bool as Bool
+from .bool import BoolFalse as BoolFalse
+from .bool import BoolTrue as BoolTrue
+from .bytes import Bytes as Bytes
+from .double import Double as Double
+from .int import Int as Int
+from .int import Int128 as Int128
+from .int import Int256 as Int256
+from .int import Long as Long
+from .string import String as String
+from .vector import Vector as Vector

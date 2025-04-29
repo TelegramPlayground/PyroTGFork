@@ -20,7 +20,6 @@ import io
 from typing import Optional, Union
 
 from .input_paid_media import InputPaidMedia
-from ... import enums
 
 
 class InputPaidMediaVideo(InputPaidMedia):

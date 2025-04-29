@@ -28,6 +28,8 @@ from .get_bot_name import GetBotName
 from .get_chat_menu_button import GetChatMenuButton
 from .get_game_high_scores import GetGameHighScores
 from .get_inline_bot_results import GetInlineBotResults
+from .get_owned_bots import GetOwnedBots
+from .get_similar_bots import GetSimilarBots
 from .request_callback_answer import RequestCallbackAnswer
 from .send_game import SendGame
 from .send_inline_bot_result import SendInlineBotResult
@@ -39,8 +41,6 @@ from .set_bot_info_short_description import SetBotInfoShortDescription
 from .set_bot_name import SetBotName
 from .set_chat_menu_button import SetChatMenuButton
 from .set_game_score import SetGameScore
-from .get_owned_bots import GetOwnedBots
-from .get_similar_bots import GetSimilarBots
 
 
 class Bots(

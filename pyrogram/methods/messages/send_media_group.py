@@ -25,6 +25,7 @@ from typing import Union
 import pyrogram
 from pyrogram import raw, types, utils
 from pyrogram.file_id import FileType
+
 from .inline_session import get_session
 
 log = logging.getLogger(__name__)
@@ -124,7 +125,7 @@ class SendMediaGroup:
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
                 "exclusive."
             )
-        
+
         if reply_to_message_id is not None:
             log.warning(
                 "This property is deprecated. "
@@ -158,7 +159,7 @@ class SendMediaGroup:
                             ),
                             spoiler=i.has_spoiler
                         )
-                    elif re.match("^https?://", i.media):
+                    elif re.match(r"^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
                                 business_connection_id=business_connection_id,
@@ -239,7 +240,7 @@ class SendMediaGroup:
                             ),
                             spoiler=i.has_spoiler
                         )
-                    elif re.match("^https?://", i.media):
+                    elif re.match(r"^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
                                 business_connection_id=business_connection_id,
@@ -324,7 +325,7 @@ class SendMediaGroup:
                                 file_reference=media.document.file_reference
                             )
                         )
-                    elif re.match("^https?://", i.media):
+                    elif re.match(r"^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
                                 business_connection_id=business_connection_id,
@@ -398,7 +399,7 @@ class SendMediaGroup:
                                 file_reference=media.document.file_reference
                             )
                         )
-                    elif re.match("^https?://", i.media):
+                    elif re.match(r"^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
                                 business_connection_id=business_connection_id,

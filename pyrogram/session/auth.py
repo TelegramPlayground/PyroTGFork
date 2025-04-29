@@ -26,9 +26,10 @@ from os import urandom
 import pyrogram
 from pyrogram import raw
 from pyrogram.connection import Connection
-from pyrogram.crypto import aes, rsa, prime
+from pyrogram.crypto import aes, prime, rsa
 from pyrogram.errors import SecurityCheckMismatch
-from pyrogram.raw.core import TLObject, Long, Int
+from pyrogram.raw.core import Int, Long, TLObject
+
 from .internals import MsgId
 
 log = logging.getLogger(__name__)
@@ -100,8 +101,7 @@ class Auth:
                         log.debug(f"Using fingerprint: {i}")
                         public_key_fingerprint = i
                         break
-                    else:
-                        log.debug(f"Fingerprint unknown: {i}")
+                    log.debug(f"Fingerprint unknown: {i}")
                 else:
                     raise Exception("Public key not found")
 

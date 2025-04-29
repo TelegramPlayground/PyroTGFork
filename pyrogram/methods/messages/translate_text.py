@@ -72,7 +72,6 @@ class TranslateText:
             ]
         )
 
-
     async def translate_text(
         self: "pyrogram.Client",
         to_language_code: str,

@@ -20,7 +20,14 @@ from typing import Union
 
 import pyrogram
 from pyrogram import raw, types
-from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType, ThumbnailSource
+from pyrogram.file_id import (
+    FileId,
+    FileType,
+    FileUniqueId,
+    FileUniqueType,
+    ThumbnailSource,
+)
+
 from ..object import Object
 
 

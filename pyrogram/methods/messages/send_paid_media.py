@@ -19,13 +19,13 @@
 import io
 import os
 import re
-
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
 from pyrogram.file_id import FileType
+
 from .inline_session import get_session
 
 
@@ -148,7 +148,7 @@ class SendPaidMedia:
                                 file_reference=media.photo.file_reference
                             )
                         )
-                    elif re.match("^https?://", i.media):
+                    elif re.match(r"^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
                                 peer=await self.resolve_peer(chat_id),
@@ -189,7 +189,7 @@ class SendPaidMedia:
                 if i.cover:
                     is_bytes_io = isinstance(i.cover, io.BytesIO)
                     is_uploaded_file = is_bytes_io or os.path.isfile(i.cover)
-                    is_external_url = not is_uploaded_file and re.match("^https?://", i.cover)
+                    is_external_url = not is_uploaded_file and re.match(r"^https?://", i.cover)
                     if is_bytes_io and not hasattr(i.cover, "name"):
                         cover.name = "cover.jpg"
 
@@ -259,7 +259,7 @@ class SendPaidMedia:
                                 file_reference=media.document.file_reference
                             )
                         )
-                    elif re.match("^https?://", i.media):
+                    elif re.match(r"^https?://", i.media):
                         media = await self.invoke(
                             raw.functions.messages.UploadMedia(
                                 peer=await self.resolve_peer(chat_id),
@@ -315,7 +315,7 @@ class SendPaidMedia:
             else:
                 raise ValueError(f"{i.__class__.__name__} is not a supported type for send_paid_media")
             multi_media.append(media)
-        
+
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
             media=raw.types.InputMediaPaidMedia(
@@ -370,7 +370,7 @@ class SendPaidMedia:
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotNewBusinessMessage

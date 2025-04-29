@@ -19,8 +19,8 @@
 from datetime import datetime
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
+
 from ..object import Object
 from ..update import Update
 

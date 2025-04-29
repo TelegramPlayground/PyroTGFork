@@ -68,9 +68,7 @@ class SwitchInlineQueryChosenChat(Object):
                 allow_bot_chats = True
             elif isinstance(peer_type, raw.types.InlineQueryPeerTypePM):
                 allow_user_chats = True
-            elif isinstance(peer_type, raw.types.InlineQueryPeerTypeChat):
-                allow_group_chats = True
-            elif isinstance(peer_type, raw.types.InlineQueryPeerTypeMegagroup):
+            elif isinstance(peer_type, raw.types.InlineQueryPeerTypeChat) or isinstance(peer_type, raw.types.InlineQueryPeerTypeMegagroup):
                 allow_group_chats = True
             elif isinstance(peer_type, raw.types.InlineQueryPeerTypeBroadcast):
                 allow_channel_chats = True

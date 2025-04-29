@@ -21,7 +21,8 @@ from io import BytesIO
 from os import urandom
 
 from pyrogram.errors import SecurityCheckMismatch
-from pyrogram.raw.core import Message, Long
+from pyrogram.raw.core import Long, Message
+
 from . import aes
 
 
@@ -70,7 +71,7 @@ def unpack(
         message = Message.read(data)
     except KeyError as e:
         if e.args[0] == 0:
-            raise ConnectionError(f"Received empty data. Check your internet connection.")
+            raise ConnectionError("Received empty data. Check your internet connection.")
 
         left = data.read().hex()
 

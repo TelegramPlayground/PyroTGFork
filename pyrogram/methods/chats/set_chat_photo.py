@@ -129,5 +129,4 @@ class SetChatPhoto:
                     {i.id: i for i in r.chats},
                     replies=self.fetch_replies
                 )
-        else:
-            return True
+        return True

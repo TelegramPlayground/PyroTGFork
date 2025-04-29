@@ -27,14 +27,14 @@ from .on_disconnect import OnDisconnect
 from .on_edited_message import OnEditedMessage
 from .on_inline_query import OnInlineQuery
 from .on_message import OnMessage
-from .on_poll import OnPoll
-from .on_raw_update import OnRawUpdate
-from .on_user_status import OnUserStatus
-from .on_message_reaction_updated import OnMessageReactionUpdated
 from .on_message_reaction_count_updated import OnMessageReactionCountUpdated
+from .on_message_reaction_updated import OnMessageReactionUpdated
+from .on_poll import OnPoll
 from .on_pre_checkout_query import OnPreCheckoutQuery
+from .on_raw_update import OnRawUpdate
 from .on_shipping_query import OnShippingQuery
 from .on_story import OnStory
+from .on_user_status import OnUserStatus
 
 
 class Decorators(
@@ -51,7 +51,7 @@ class Decorators(
     OnPreCheckoutQuery,
     OnBotPurchasedPaidMedia,
     OnPoll,
-    
+
     OnChatMemberUpdated,
     OnChatJoinRequest,
 

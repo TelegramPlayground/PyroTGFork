@@ -17,12 +17,12 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from io import BytesIO
-from typing import cast, Union, Any
+from typing import Any, Union, cast
 
-from .bool import BoolFalse, BoolTrue, Bool
-from .int import Int, Long
 from ..list import List
 from ..tl_object import TLObject
+from .bool import Bool, BoolFalse, BoolTrue
+from .int import Int, Long
 
 
 class Vector(bytes, TLObject):
@@ -47,8 +47,7 @@ class Vector(bytes, TLObject):
             ]:
                 return Bool.read(b)
             # not
-            else:
-                return Int.read(b)
+            return Int.read(b)
 
         if size == 8:
             return Long.read(b)
@@ -71,5 +70,5 @@ class Vector(bytes, TLObject):
     def __new__(cls, value: list, t: Any = None) -> bytes:  # type: ignore
         return b"".join(
             [Int(cls.ID, False), Int(len(value))]
-            + [cast(bytes, t(i)) if t else i.write() for i in value]
+            + [cast("bytes", t(i)) if t else i.write() for i in value]
         )

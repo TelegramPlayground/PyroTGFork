@@ -21,12 +21,14 @@ import logging
 import re
 from datetime import datetime
 from functools import partial
-from typing import Union, Optional, Callable
+from typing import Callable, Optional, Union
 
 import pyrogram
-from pyrogram import raw, enums, types, utils
+from pyrogram import enums, raw, types, utils
 from pyrogram.errors import MessageIdsEmpty, PeerIdInvalid
-from pyrogram.parser import utils as parser_utils, Parser
+from pyrogram.parser import Parser
+from pyrogram.parser import utils as parser_utils
+
 from ..object import Object
 from ..update import Update
 
@@ -37,7 +39,7 @@ class Str(str):
     def __init__(self, *args):
         super().__init__()
 
-        self.entities: Optional[list["types.MessageEntity"]] = None
+        self.entities: Optional[list[types.MessageEntity]] = None
 
     def init(self, entities):
         self.entities = entities
@@ -559,7 +561,7 @@ class Message(Object, Update):
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
         screenshot_taken: "types.ScreenshotTaken" = None,
-        _raw = None
+        _raw=None
     ):
         super().__init__(client)
 
@@ -703,7 +705,7 @@ class Message(Object, Update):
                 id=message.id,
                 empty=True,
                 chat=sender_chat,
-                business_connection_id=business_connection_id if business_connection_id else None,
+                business_connection_id=business_connection_id or None,
                 client=client,
                 _raw=message
             )
@@ -731,7 +733,7 @@ class Message(Object, Update):
             action = message.action
 
             chat = types.Chat._parse(client, message, users, chats, is_chat=True)
-            from_user = types.User._parse(client, users.get(user_id, None))
+            from_user = types.User._parse(client, users.get(user_id))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
 
             new_chat_members = None
@@ -993,7 +995,7 @@ class Message(Object, Update):
             elif isinstance(action, (raw.types.MessageActionPaymentSent, raw.types.MessageActionPaymentSentMe)):
                 successful_payment = types.SuccessfulPayment._parse(client, action)
                 service_type = enums.MessageServiceType.SUCCESSFUL_PAYMENT
-            
+
             elif isinstance(action, raw.types.MessageActionPaymentRefunded):
                 refunded_payment = types.RefundedPayment._parse(client, action)
                 service_type = enums.MessageServiceType.REFUNDED_PAYMENT
@@ -1038,7 +1040,7 @@ class Message(Object, Update):
             ):
                 received_gift = await types.ReceivedGift._parse_action(client, message, users, chats)
                 service_type = enums.MessageServiceType.RECEIVED_GIFT
-            
+
             elif isinstance(action, raw.types.MessageActionPaidMessagesPrice):
                 paid_message_price_changed = types.PaidMessagePriceChanged._parse_action(
                     client, message.action
@@ -1333,7 +1335,7 @@ class Message(Object, Update):
                 else:
                     reply_markup = None
 
-            from_user = types.User._parse(client, users.get(user_id, None))
+            from_user = types.User._parse(client, users.get(user_id))
             sender_chat = types.Chat._parse(client, message, users, chats, is_chat=False) if not from_user else None
 
             reactions = types.MessageReactions._parse(client, message.reactions)
@@ -1487,7 +1489,7 @@ class Message(Object, Update):
             )
 
         if not parsed_message.poll:  # Do not cache poll messages
-            client.message_cache[(parsed_message.chat.id, parsed_message.id)] = parsed_message
+            client.message_cache[parsed_message.chat.id, parsed_message.id] = parsed_message
 
         parsed_message._raw = message
 
@@ -4853,14 +4855,14 @@ class Message(Object, Update):
                 "Service messages cannot be copied. chat_id: %s, message_id: %s",
                 self.chat.id, self.id
             )
-        elif self.game and not (self._client.me and self._client.me.is_bot):
+        if self.game and not (self._client.me and self._client.me.is_bot):
             raise ValueError(
                 "Users cannot send messages with Game media type. chat_id: %s, message_id: %s",
                 self.chat.id, self.id
             )
-        elif self.empty:
+        if self.empty:
             raise ValueError("Empty messages cannot be copied.")
-        elif self.text:
+        if self.text:
             return await self._client.send_message(
                 chat_id=chat_id,
                 message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
@@ -4880,7 +4882,7 @@ class Message(Object, Update):
                 send_as=send_as,
                 schedule_date=schedule_date
             )
-        elif self.media:
+        if self.media:
             send_media = partial(
                 self._client.send_cached_media,
                 chat_id=chat_id,
@@ -5058,8 +5060,7 @@ class Message(Object, Update):
                 parse_mode=parse_mode,
                 caption_entities=caption_entities,
             )
-        else:
-            raise ValueError("Can't copy this message")
+        raise ValueError("Can't copy this message")
 
     async def delete(self, revoke: bool = True):
         """Bound method *delete* of :obj:`~pyrogram.types.Message`.
@@ -5228,7 +5229,7 @@ class Message(Object, Update):
                     callback_data=button.callback_data,
                     timeout=timeout
                 )
-            elif button.callback_data_with_password:
+            if button.callback_data_with_password:
                 if password is None:
                     raise ValueError(
                         "Invalid argument passed"
@@ -5240,9 +5241,9 @@ class Message(Object, Update):
                     password=password,
                     timeout=timeout
                 )
-            elif button.url:
+            if button.url:
                 return button.url
-            elif button.login_url:
+            if button.login_url:
                 tlu = button.login_url
                 rieep = await self._client.resolve_peer(
                     self.chat.id
@@ -5265,7 +5266,7 @@ class Message(Object, Update):
                     )
                 )
                 return tiudko.url
-            elif button.web_app:
+            if button.web_app:
                 tlu = button.web_app
                 whichbotchat = (
                     self.via_bot and
@@ -5295,21 +5296,19 @@ class Message(Object, Update):
                     )
                 )
                 return okduit.url
-            elif button.user_id:
+            if button.user_id:
                 return await self._client.get_chat(
                     button.user_id,
                     False
                 )
-            elif button.switch_inline_query:
+            if button.switch_inline_query:
                 return button.switch_inline_query
-            elif button.switch_inline_query_current_chat:
+            if button.switch_inline_query_current_chat:
                 return button.switch_inline_query_current_chat
-            elif button.switch_inline_query_chosen_chat:
+            if button.switch_inline_query_chosen_chat:
                 return button.switch_inline_query_chosen_chat
-            else:
-                raise ValueError("This button is not supported yet")
-        else:
-            await self.reply(text=button, quote=quote)
+            raise ValueError("This button is not supported yet")
+        await self.reply(text=button, quote=quote)
 
     async def react(
         self,
@@ -5630,7 +5629,7 @@ class Message(Object, Update):
             "Please use forward_origin instead"
         )
         return getattr(self.forward_origin, "sender_user", None)
-    
+
     @property
     def forward_sender_name(self) -> str:
         log.warning(
@@ -5670,7 +5669,7 @@ class Message(Object, Update):
             "Please use forward_origin instead"
         )
         return getattr(self.forward_origin, "author_signature", None)
-        
+
     @property
     def forward_date(self) -> datetime:
         log.warning(
@@ -5783,7 +5782,6 @@ class Message(Object, Update):
             message_ids=self.id,
             to_language_code=to_language_code
         )
-
 
     async def pay(self) -> Union[
         bool,

@@ -17,10 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import types, enums
+from pyrogram import enums, types
 
 
 class EditMessageCaption:

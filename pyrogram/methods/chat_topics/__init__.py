@@ -16,17 +16,17 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .get_forum_topic_icon_stickers import GetForumTopicIconStickers
-from .create_forum_topic import CreateForumTopic
-from .edit_forum_topic import EditForumTopic
 from .close_forum_topic import CloseForumTopic
-from .reopen_forum_topic import ReopenForumTopic
-from .hide_forum_topic import HideForumTopic
-from .unhide_forum_topic import UnhideForumTopic
+from .create_forum_topic import CreateForumTopic
 from .delete_forum_topic import DeleteForumTopic
-from .get_forum_topics import GetForumTopics
+from .edit_forum_topic import EditForumTopic
 from .get_forum_topic import GetForumTopic
+from .get_forum_topic_icon_stickers import GetForumTopicIconStickers
+from .get_forum_topics import GetForumTopics
+from .hide_forum_topic import HideForumTopic
+from .reopen_forum_topic import ReopenForumTopic
 from .toggle_forum_topic_is_pinned import ToggleForumTopicIsPinned
+from .unhide_forum_topic import UnhideForumTopic
 
 
 class ChatTopics(

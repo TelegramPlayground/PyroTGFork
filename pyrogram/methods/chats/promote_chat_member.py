@@ -19,7 +19,7 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, types, errors
+from pyrogram import errors, raw, types
 
 
 class PromoteChatMember:
@@ -101,5 +101,4 @@ class PromoteChatMember:
                     {i.id: i for i in r.chats},
                     replies=self.fetch_replies
                 )
-        else:
-            return True
+        return True

@@ -20,6 +20,7 @@ from typing import Optional
 
 import pyrogram
 from pyrogram import raw
+
 from ..object import Object
 
 
@@ -127,15 +128,15 @@ class ReactionType(Object):
     ) -> Optional["ReactionType"]:
         if isinstance(update, raw.types.ReactionEmpty):
             return None
-        elif isinstance(update, raw.types.ReactionEmoji):
+        if isinstance(update, raw.types.ReactionEmoji):
             return ReactionTypeEmoji(
                 emoji=update.emoticon
             )
-        elif isinstance(update, raw.types.ReactionCustomEmoji):
+        if isinstance(update, raw.types.ReactionCustomEmoji):
             return ReactionTypeCustomEmoji(
                 custom_emoji_id=update.document_id
             )
-        elif isinstance(update, raw.types.ReactionPaid):
+        if isinstance(update, raw.types.ReactionPaid):
             return ReactionTypePaid()
 
     def write(self, client: "pyrogram.Client"):
@@ -164,7 +165,7 @@ class ReactionTypeEmoji(ReactionType):
         return raw.types.ReactionEmoji(
             emoticon=self.emoji
         )
-        
+
 
 class ReactionTypeCustomEmoji(ReactionType):
     """The reaction is based on a custom emoji.
@@ -183,7 +184,7 @@ class ReactionTypeCustomEmoji(ReactionType):
             type="custom_emoji",
             custom_emoji_id=custom_emoji_id
         )
-    
+
     def write(self, client: "pyrogram.Client") -> "raw.base.Reaction":
         return raw.types.ReactionCustomEmoji(
             document_id=self.custom_emoji_id
@@ -197,7 +198,7 @@ class ReactionTypePaid(ReactionType):
         super().__init__(
             type="paid"
         )
-    
+
     def write(self, client: "pyrogram.Client") -> "raw.base.Reaction":
         return raw.types.ReactionPaid()
 

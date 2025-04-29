@@ -20,7 +20,8 @@ import logging
 from typing import Optional
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
+from pyrogram import enums, raw, types, utils
+
 from .input_message_content import InputMessageContent
 
 log = logging.getLogger(__name__)

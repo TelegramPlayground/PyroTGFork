@@ -16,9 +16,9 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .tcp import TCP
-from .tcp_abridged import TCPAbridged
-from .tcp_abridged_o import TCPAbridgedO
-from .tcp_full import TCPFull
-from .tcp_intermediate import TCPIntermediate
-from .tcp_intermediate_o import TCPIntermediateO
+from .tcp import TCP as TCP
+from .tcp_abridged import TCPAbridged as TCPAbridged
+from .tcp_abridged_o import TCPAbridgedO as TCPAbridgedO
+from .tcp_full import TCPFull as TCPFull
+from .tcp_intermediate import TCPIntermediate as TCPIntermediate
+from .tcp_intermediate_o import TCPIntermediateO as TCPIntermediateO

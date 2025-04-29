@@ -17,10 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from asyncio import sleep
-from typing import Union, AsyncGenerator, Optional
+from collections.abc import AsyncGenerator
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import types, raw, utils
+from pyrogram import raw, types, utils
 
 
 class GetChatPhotos:
@@ -102,11 +103,10 @@ class GetChatPhotos:
                     photos = (current + extra) if current[0].file_id != extra[0].file_id else extra
                 else:
                     photos = extra
+            elif current:
+                photos = current
             else:
-                if current:
-                    photos = current
-                else:
-                    photos = []
+                photos = []
 
             current = 0
 

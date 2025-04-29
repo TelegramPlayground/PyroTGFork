@@ -16,11 +16,11 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Union, Callable
+from typing import Callable, Optional, Union
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
-from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType
+from pyrogram import enums, raw, types, utils
+
 from ..object import Object
 
 
@@ -215,7 +215,7 @@ class ExternalReplyInfo(Object):
             location = None
             poll = None
             venue = None
-            
+
             web_page = None
             link_preview_options = types.LinkPreviewOptions._parse(
                 client,
@@ -226,7 +226,7 @@ class ExternalReplyInfo(Object):
 
             media = reply_to.reply_media
             media_type = None
-            
+
             if media:
                 if isinstance(media, raw.types.MessageMediaPhoto):
                     photo = types.Photo._parse(
@@ -348,7 +348,6 @@ class ExternalReplyInfo(Object):
                 media=media_type
             )
 
-
     async def download(
         self,
         file_name: str = "",
@@ -428,7 +427,7 @@ class ExternalReplyInfo(Object):
         message = getattr(self, self.media.value, None)
         if not message:
             raise ValueError(
-                f"The reply doesn't contain any downloadable media"
+                "The reply doesn't contain any downloadable media"
             )
 
         return await self._client.download_media(

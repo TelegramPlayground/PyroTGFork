@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
 
 import pyrogram
 from pyrogram import raw, types
@@ -47,7 +46,6 @@ class PaidMediaPurchased(Object):
         self.from_user = from_user
         self.paid_media_payload = paid_media_payload
         self._raw = _raw
-
 
     @staticmethod
     def _parse(

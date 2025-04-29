@@ -89,7 +89,7 @@ class SearchMessagesCount:
                 q=query,
                 filter=filter.value(),
                 min_date=utils.datetime_to_timestamp(min_date),
-                max_date= utils.datetime_to_timestamp(max_date),
+                max_date=utils.datetime_to_timestamp(max_date),
                 offset_id=0,
                 add_offset=0,
                 limit=1,
@@ -109,5 +109,4 @@ class SearchMessagesCount:
 
         if hasattr(r, "count"):
             return r.count
-        else:
-            return len(r.messages)
+        return len(r.messages)

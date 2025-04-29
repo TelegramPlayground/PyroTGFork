@@ -20,6 +20,7 @@ from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types, utils
+
 from ..object import Object
 
 
@@ -91,7 +92,6 @@ class UpgradedGift(Object):
         self.owner_name = owner_name
         self.gift_address = gift_address
         self._raw = _raw  # TODO
-
 
     @staticmethod
     def _parse(

@@ -97,8 +97,7 @@ class SetReaction:
             for r in reaction:
                 if isinstance(r, types.ReactionTypePaid):
                     raise ValueError("This type of reaction is not supported using this method")
-                else:
-                    raw_reactions.append(r.write(self))
+                raw_reactions.append(r.write(self))
 
         if message_id is not None:
             r = await self.invoke(
@@ -116,7 +115,7 @@ class SetReaction:
             # TODO
             return r
 
-        elif story_id is not None:
+        if story_id is not None:
             r = await self.invoke(
                 raw.functions.stories.SendReaction(
                     peer=await self.resolve_peer(chat_id),
@@ -128,9 +127,7 @@ class SetReaction:
             # TODO
             return r
 
-        else:
-            raise ValueError("You need to pass one of message_id OR story_id!")
-
+        raise ValueError("You need to pass one of message_id OR story_id!")
 
     async def send_reaction(
         self: "pyrogram.Client",

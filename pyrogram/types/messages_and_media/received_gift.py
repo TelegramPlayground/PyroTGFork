@@ -21,8 +21,9 @@ from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
-from .message import Str
+
 from ..object import Object
+from .message import Str
 
 
 class ReceivedGift(Object):
@@ -124,7 +125,6 @@ class ReceivedGift(Object):
         self.transfer_star_count = transfer_star_count
         self.export_date = export_date
 
-
     @staticmethod
     async def _parse(
         client,
@@ -180,7 +180,7 @@ class ReceivedGift(Object):
             text = action.message.text or None
             entities = [types.MessageEntity._parse(client, entity, users) for entity in action.message.entities]
             entities = types.List(filter(lambda x: x is not None, entities))
-        # TODO 
+        # TODO
         if isinstance(action, raw.types.MessageActionStarGift):
             return ReceivedGift(
                 gift=await types.Gift._parse(

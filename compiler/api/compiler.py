@@ -123,7 +123,7 @@ def get_type_hint(type: str) -> str:
     if type in ["Object", "!X"]:
         return "TLObject"
 
-    if re.match("^vector", type, re.I):
+    if re.match(r"^vector", type, re.IGNORECASE):
         is_core = True
 
         sub_type = type.split("<")[1][:-1]
@@ -131,11 +131,10 @@ def get_type_hint(type: str) -> str:
 
     if is_core:
         return f"Optional[{type}] = None" if is_flag else type
-    else:
-        ns, name = type.split(".") if "." in type else ("", type)
-        type = f'"raw.base.' + ".".join([ns, name]).strip(".") + '"'
+    ns, name = type.split(".") if "." in type else ("", type)
+    type = '"raw.base.' + ".".join([ns, name]).strip(".") + '"'
 
-        return f'{type}{" = None" if is_flag else ""}'
+    return f'{type}{" = None" if is_flag else ""}'
 
 
 def sort_args(args):
@@ -168,25 +167,23 @@ def get_docstring_arg_type(t: str):
     if t in CORE_TYPES:
         if t == "long":
             return "``int`` ``64-bit``"
-        elif "int" in t:
+        if "int" in t:
             size = INT_RE.match(t)
             return f"``int`` ``{size.group(1)}-bit``" if size else "``int`` ``32-bit``"
-        elif t == "double":
+        if t == "double":
             return "``float`` ``64-bit``"
-        elif t == "string":
+        if t == "string":
             return "``str``"
-        elif t == "true":
+        if t == "true":
             return "``bool``"
-        else:
-            return f"``{t.lower()}``"
-    elif t == "TLObject" or t == "X":
+        return f"``{t.lower()}``"
+    if t == "TLObject" or t == "X":
         return "Any object from :obj:`~pyrogram.raw.types`"
-    elif t == "!X":
+    if t == "!X":
         return "Any function from :obj:`~pyrogram.raw.functions`"
-    elif t.lower().startswith("vector"):
+    if t.lower().startswith("vector"):
         return "List of " + get_docstring_arg_type(t.split("<", 1)[1][:-1])
-    else:
-        return f":obj:`{t} <pyrogram.raw.base.{t}>`"
+    return f":obj:`{t} <pyrogram.raw.base.{t}>`"
 
 
 def get_references(t: str, kind: str):
@@ -258,7 +255,7 @@ def start(format: bool = False):
             qualtype = ".".join([typespace, type]).lstrip(".")
 
             # Pingu!
-            has_flags = not not FLAGS_RE_3.findall(line)
+            has_flags = bool(FLAGS_RE_3.findall(line))
 
             args = ARGS_RE.findall(line)
 
@@ -412,7 +409,7 @@ def start(format: bool = False):
                 "{} ({}{}):\n            {}\n".format(
                     arg_name,
                     get_docstring_arg_type(arg_type),
-                    ", *optional*".format(flag_number) if is_optional else "",
+                    ", *optional*" if is_optional else "",
                     arg_docs
                 )
             )
@@ -433,11 +430,11 @@ def start(format: bool = False):
             if function_docs:
                 docstring += function_docs["desc"] + "\n"
             else:
-                docstring += f"Telegram API function."
+                docstring += "Telegram API function."
 
         docstring += f"\n\n    Details:\n        - Layer: ``{layer}``\n        - ID: ``{c.id[2:].upper()}``\n\n"
-        docstring += f"    Parameters:\n        " + \
-                     (f"\n        ".join(docstring_args) if docstring_args else "No parameters required.\n")
+        docstring += "    Parameters:\n        " + \
+                     ("\n        ".join(docstring_args) if docstring_args else "No parameters required.\n")
 
         if c.section == "functions":
             docstring += "\n    Returns:\n        " + get_docstring_arg_type(c.qualtype)
@@ -517,31 +514,30 @@ def start(format: bool = False):
 
                     read_types += "\n        "
                     read_types += f"{arg_name} = TLObject.read(b) if flags{number} & (1 << {index}) else None\n        "
+            elif arg_type in CORE_TYPES:
+                write_types += "\n        "
+                write_types += f"b.write({arg_type.title()}(self.{arg_name}))\n        "
+
+                read_types += "\n        "
+                read_types += f"{arg_name} = {arg_type.title()}.read(b)\n        "
+            elif "vector" in arg_type.lower():
+                sub_type = arg_type.split("<")[1][:-1]
+
+                write_types += "\n        "
+                write_types += "b.write(Vector(self.{}{}))\n        ".format(
+                    arg_name, f", {sub_type.title()}" if sub_type in CORE_TYPES else ""
+                )
+
+                read_types += "\n        "
+                read_types += "{} = TLObject.read(b{})\n        ".format(
+                    arg_name, f", {sub_type.title()}" if sub_type in CORE_TYPES else ""
+                )
             else:
-                if arg_type in CORE_TYPES:
-                    write_types += "\n        "
-                    write_types += f"b.write({arg_type.title()}(self.{arg_name}))\n        "
+                write_types += "\n        "
+                write_types += f"b.write(self.{arg_name}.write())\n        "
 
-                    read_types += "\n        "
-                    read_types += f"{arg_name} = {arg_type.title()}.read(b)\n        "
-                elif "vector" in arg_type.lower():
-                    sub_type = arg_type.split("<")[1][:-1]
-
-                    write_types += "\n        "
-                    write_types += "b.write(Vector(self.{}{}))\n        ".format(
-                        arg_name, f", {sub_type.title()}" if sub_type in CORE_TYPES else ""
-                    )
-
-                    read_types += "\n        "
-                    read_types += "{} = TLObject.read(b{})\n        ".format(
-                        arg_name, f", {sub_type.title()}" if sub_type in CORE_TYPES else ""
-                    )
-                else:
-                    write_types += "\n        "
-                    write_types += f"b.write(self.{arg_name}.write())\n        "
-
-                    read_types += "\n        "
-                    read_types += f"{arg_name} = TLObject.read(b)\n        "
+                read_types += "\n        "
+                read_types += f"{arg_name} = TLObject.read(b)\n        "
 
         slots = ", ".join([f'"{i[0]}"' for i in sorted_args])
         return_arguments = ", ".join([f"{i[0]}={i[0]}" for i in sorted_args])
@@ -651,8 +647,8 @@ def start(format: bool = False):
         f.write("\n}\n")
 
 
-if "__main__" == __name__:
-    HOME_PATH = Path(".")
+if __name__ == "__main__":
+    HOME_PATH = Path()
     DESTINATION_PATH = Path("../../pyrogram/raw")
     NOTICE_PATH = Path("../../NOTICE")
 

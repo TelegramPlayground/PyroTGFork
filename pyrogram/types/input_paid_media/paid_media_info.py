@@ -18,6 +18,7 @@
 
 import pyrogram
 from pyrogram import raw, types
+
 from ..object import Object
 
 
@@ -43,7 +44,6 @@ class PaidMediaInfo(Object):
 
         self.star_count = star_count
         self.paid_media = paid_media
-
 
     @staticmethod
     def _parse(

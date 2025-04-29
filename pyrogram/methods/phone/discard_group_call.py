@@ -19,7 +19,7 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import types, raw
+from pyrogram import raw, types
 
 
 class DiscardGroupCall:

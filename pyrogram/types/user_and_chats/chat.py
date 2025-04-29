@@ -17,14 +17,14 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import io
+from collections.abc import AsyncGenerator
 from datetime import datetime
-from typing import Union, Optional, AsyncGenerator
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import enums, raw, types, utils
 from pyrogram.errors import MessageIdsEmpty
+
 from ..object import Object
 
 
@@ -567,10 +567,9 @@ class Chat(Object):
     def _parse_dialog(client, peer, users: dict, chats: dict):
         if isinstance(peer, raw.types.PeerUser):
             return Chat._parse_user_chat(client, users[peer.user_id])
-        elif isinstance(peer, raw.types.PeerChat):
+        if isinstance(peer, raw.types.PeerChat):
             return Chat._parse_chat_chat(client, chats[peer.chat_id])
-        else:
-            return Chat._parse_channel_chat(client, chats[peer.channel_id])
+        return Chat._parse_channel_chat(client, chats[peer.channel_id])
 
     @staticmethod
     async def _parse_full(client, chat_full: Union[raw.types.messages.ChatFull, raw.types.users.UserFull]) -> "Chat":
@@ -615,7 +614,7 @@ class Chat(Object):
                 parsed_chat.birthdate = types.Birthdate._parse(
                     full_user.birthday
                 )
-            
+
             if getattr(full_user, "business_intro", None):
                 parsed_chat.business_intro = await types.BusinessIntro._parse(
                     client,
@@ -669,7 +668,7 @@ class Chat(Object):
 
                     parsed_chat.send_as_chat = Chat._parse_chat(client, send_as_raw)
 
-                parsed_chat.members_count = getattr(full_chat, "participants_count", 0)                
+                parsed_chat.members_count = getattr(full_chat, "participants_count", 0)
                 parsed_chat.has_visible_history = not getattr(full_chat, "hidden_prehistory", False)
                 parsed_chat.has_hidden_members = not getattr(full_chat, "participants_hidden", True)
                 parsed_chat.has_aggressive_anti_spam_enabled = getattr(full_chat, "antispam", False)
@@ -732,13 +731,12 @@ class Chat(Object):
             isinstance(chat, raw.types.ChatEmpty)
         ):
             return Chat._parse_chat_chat(client, chat)
-        elif (
+        if (
             isinstance(chat, raw.types.User) or
             isinstance(chat, raw.types.UserEmpty)
         ):
             return Chat._parse_user_chat(client, chat)
-        else:
-            return Chat._parse_channel_chat(client, chat)
+        return Chat._parse_channel_chat(client, chat)
 
     @staticmethod
     def _parse_chat_preview(client, chat_invite: "raw.types.ChatInvite") -> "Chat":

@@ -17,7 +17,9 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
+
 from pyrogram import raw, utils
+
 from ..object import Object
 
 
@@ -211,11 +213,11 @@ class ChatPermissions(Object):
                 not permissions.can_manage_topics
             ) or not permissions.can_pin_messages,
             # view_messages=# TODO
-            send_audios=not permissions.can_send_audios,# TODO
-            send_docs=not permissions.can_send_documents,# TODO
-            send_photos=not permissions.can_send_photos,# TODO
-            send_videos=not permissions.can_send_videos,# TODO
-            send_roundvideos=not permissions.can_send_video_notes,# TODO
-            send_voices=not permissions.can_send_voice_notes,# TODO
+            send_audios=not permissions.can_send_audios,  # TODO
+            send_docs=not permissions.can_send_documents,  # TODO
+            send_photos=not permissions.can_send_photos,  # TODO
+            send_videos=not permissions.can_send_videos,  # TODO
+            send_roundvideos=not permissions.can_send_video_notes,  # TODO
+            send_voices=not permissions.can_send_voice_notes,  # TODO
             # send_plain=# TODO
         )

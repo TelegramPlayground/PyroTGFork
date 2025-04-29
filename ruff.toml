@@ -1,0 +1,45 @@
+line-length = 79
+
+[lint]
+select = [
+    "FURB", # refurb
+    "I",    # isort
+    "E",    # pycodestyle: error
+    "W",    # pycodestyle: warning
+    "UP",   # pyupgrade
+    "F",    # pyflakes
+    "SIM",  # flake8-simplify
+    "RET",  # flake8-return
+    "C4",   # flake8-comprehensions
+    "PTH",  # flake8-use-pathlib
+    "PERF", # perflint
+    "N",    # pep8-naming
+    "RUF",  # ruff
+    "G",    # flake8-logging-format
+    "TID",  # flake8-tidy-imports
+    "TC",   # flake8-type-checking
+    "FA",   # flake8-future-annotations
+    "PL",   # pylint
+]
+ignore = [
+    "RUF001",
+    "RUF002",
+    "RUF003",
+    "E203",
+    "PERF203",
+    "PLR09",
+    "PLR2004",
+    "PLR1702",
+    "PLW1514",
+    "PLW2901",
+    "PLW0603",
+    "FURB189", # This rule is unsafe and not relevant for us.
+]
+preview = true
+
+[lint.isort]
+known-first-party = ["pyrogram"]
+
+[format]
+docstring-code-format = true
+preview = true

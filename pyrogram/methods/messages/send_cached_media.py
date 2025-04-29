@@ -18,10 +18,10 @@
 
 import logging
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, enums, types, utils
+from pyrogram import enums, raw, types, utils
 
 log = logging.getLogger(__name__)
 
@@ -141,7 +141,7 @@ class SendCachedMedia:
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
                 "exclusive."
             )
-        
+
         if reply_to_message_id is not None:
             log.warning(
                 "This property is deprecated. "
@@ -197,7 +197,7 @@ class SendCachedMedia:
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotNewBusinessMessage,

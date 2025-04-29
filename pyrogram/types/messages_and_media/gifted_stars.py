@@ -19,6 +19,7 @@
 from random import choice
 
 from pyrogram import raw, types
+
 from ..object import Object
 
 

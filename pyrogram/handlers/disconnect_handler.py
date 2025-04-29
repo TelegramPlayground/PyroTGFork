@@ -19,6 +19,7 @@
 from typing import Any, Callable
 
 import pyrogram
+
 from .handler import Handler
 
 CallbackFunc: Callable = Callable[["pyrogram.Client"], Any]

@@ -19,10 +19,9 @@
 from datetime import datetime
 
 import pyrogram
-
 from pyrogram import raw, types, utils
-from ..object import Object
 
+from ..object import Object
 
 
 class Giveaway(Object):
@@ -83,7 +82,6 @@ class Giveaway(Object):
         self.country_codes = country_codes
         self.prize_star_count = prize_star_count
         self.premium_subscription_month_count = premium_subscription_month_count
-
 
     @staticmethod
     def _parse(

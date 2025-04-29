@@ -19,7 +19,8 @@
 import re
 
 import pyrogram
-from pyrogram import raw, types, enums
+from pyrogram import enums, raw, types
+
 from ..object import Object
 from ..update import Update
 

@@ -16,7 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from pyrogram import raw, types, enums
+from pyrogram import enums, raw, types
+
 from ..object import Object
 
 
@@ -166,20 +167,19 @@ class KeyboardButton(Object):
                     )
                 )
 
-
     def write(self):
         if self.request_contact:
             return raw.types.KeyboardButtonRequestPhone(text=self.text)
-        elif self.request_location:
+        if self.request_location:
             return raw.types.KeyboardButtonRequestGeoLocation(text=self.text)
-        elif self.request_poll:
+        if self.request_poll:
             return raw.types.KeyboardButtonRequestPoll(
                 text=self.text,
                 quiz=True if self.request_poll.type == enums.PollType.QUIZ else False
             )
-        elif self.web_app:
+        if self.web_app:
             return raw.types.KeyboardButtonSimpleWebView(text=self.text, url=self.web_app.url)
-        elif self.request_users:
+        if self.request_users:
             return raw.types.InputKeyboardButtonRequestPeer(
                 name_requested=self.request_users.request_name,
                 username_requested=self.request_users.request_username,
@@ -193,7 +193,7 @@ class KeyboardButton(Object):
                 max_quantity=self.request_users.max_quantity
             )
 
-        elif self.request_chat:
+        if self.request_chat:
             user_admin_rights = self.request_chat.user_administrator_rights.write() if self.request_chat.user_administrator_rights else None
             bot_admin_rights = self.request_chat.bot_administrator_rights.write() if self.request_chat.bot_administrator_rights else None
             if self.request_chat.chat_is_channel:
@@ -211,22 +211,20 @@ class KeyboardButton(Object):
                     ),
                     max_quantity=1
                 )
-            else:
-                return raw.types.InputKeyboardButtonRequestPeer(
-                    name_requested=self.request_chat.request_title,
-                    username_requested=self.request_chat.request_username,
-                    photo_requested=self.request_chat.request_photo,
-                    text=self.text,
-                    button_id=self.request_chat.request_id,
-                    peer_type=raw.types.RequestPeerTypeChat(
-                        creator=self.request_chat.chat_is_created,
-                        bot_participant=self.request_chat.bot_is_member,
-                        has_username=self.request_chat.chat_has_username,
-                        forum=self.request_chat.chat_is_forum,
-                        user_admin_rights=user_admin_rights,
-                        bot_admin_rights=bot_admin_rights
-                    ),
-                    max_quantity=1
-                )
-        else:
-            return raw.types.KeyboardButton(text=self.text)
+            return raw.types.InputKeyboardButtonRequestPeer(
+                name_requested=self.request_chat.request_title,
+                username_requested=self.request_chat.request_username,
+                photo_requested=self.request_chat.request_photo,
+                text=self.text,
+                button_id=self.request_chat.request_id,
+                peer_type=raw.types.RequestPeerTypeChat(
+                    creator=self.request_chat.chat_is_created,
+                    bot_participant=self.request_chat.bot_is_member,
+                    has_username=self.request_chat.chat_has_username,
+                    forum=self.request_chat.chat_is_forum,
+                    user_admin_rights=user_admin_rights,
+                    bot_admin_rights=bot_admin_rights
+                ),
+                max_quantity=1
+            )
+        return raw.types.KeyboardButton(text=self.text)

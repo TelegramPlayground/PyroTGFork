@@ -21,7 +21,8 @@ from datetime import datetime
 from typing import Optional
 
 import pyrogram
-from pyrogram import enums, utils, raw, types
+from pyrogram import enums, raw, types, utils
+
 from ..object import Object
 from ..update import Update
 

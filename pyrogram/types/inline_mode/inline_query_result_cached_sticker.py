@@ -20,8 +20,9 @@ from typing import Optional
 
 import pyrogram
 from pyrogram import enums, raw, types
-from .inline_query_result import InlineQueryResult
+
 from ...file_id import FileId
+from .inline_query_result import InlineQueryResult
 
 
 class InlineQueryResultCachedSticker(InlineQueryResult):

@@ -19,9 +19,10 @@
 from typing import Optional
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
-from .inline_query_result import InlineQueryResult
+from pyrogram import enums, raw, types, utils
+
 from ...file_id import FileId
+from .inline_query_result import InlineQueryResult
 
 
 class InlineQueryResultCachedAudio(InlineQueryResult):

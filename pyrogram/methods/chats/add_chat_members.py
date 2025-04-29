@@ -118,7 +118,5 @@ class AddChatMembers:
         if len(_rc) > 0:
             if len(_rc) == 1:
                 return _rc[0]
-            else:
-                return types.List(_rc)
-        else:
-            return True
+            return types.List(_rc)
+        return True

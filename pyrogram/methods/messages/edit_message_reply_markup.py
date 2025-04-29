@@ -105,7 +105,7 @@ class EditMessageReplyMarkup:
                     {i.id: i for i in r.chats},
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotEditBusinessMessage

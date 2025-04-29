@@ -77,7 +77,7 @@ exclude = [
 
 [tool.hatch.build.targets.wheel]
 ignore-vcs = true
-packages = ["pyrogram"]
+packages = ["pyrogram", "pyrotgfork"]
 
 [project.optional-dependencies]
 dev = [
@@ -98,6 +98,20 @@ docs = [
 ]
 
 fast = [
-    "PyTgCrypto>1.2.9.2,<=1.4",
+    "PyTgCrypto==1.2.9.2",
     "uvloop>0.18.0,<=0.19.0"
+]
+
+[tool.uv]
+managed = true
+dev-dependencies = [
+    "ruff>=0.11.6",
+    "pytest==7.4.3",
+    "pytest-asyncio==0.21.1",
+    "pytest-cov==4.1.0",
+    "twine==4.0.2",
+    "pre-commit>=4.2.0",
+    "httpx[http2]>=0.28.1",
+    "lxml>=5.3.2",
+    "hatchling>=1.27.0",
 ]

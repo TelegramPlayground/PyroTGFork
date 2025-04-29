@@ -16,10 +16,9 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional
 
-import pyrogram
-from pyrogram import raw, types, utils, enums
+from pyrogram import raw
+
 from ..object import Object
 
 
@@ -50,7 +49,6 @@ class ForumTopicCreated(Object):
         self.name = name
         self.icon_color = icon_color
         self.icon_custom_emoji_id = icon_custom_emoji_id
-
 
     @staticmethod
     def _parse(

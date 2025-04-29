@@ -19,6 +19,7 @@
 from .birthdate import Birthdate
 from .chat import Chat
 from .chat_admin_with_invite_links import ChatAdminWithInviteLinks
+from .chat_background import ChatBackground
 from .chat_color import ChatColor
 from .chat_event import ChatEvent
 from .chat_event_filter import ChatEventFilter
@@ -37,6 +38,7 @@ from .emoji_status import EmojiStatus
 from .group_call_participant import GroupCallParticipant
 from .invite_link_importer import InviteLinkImporter
 from .restriction import Restriction
+from .rtmp_url import RtmpUrl
 from .user import User
 from .username import Username
 from .users_shared import UsersShared
@@ -44,19 +46,18 @@ from .video_chat_ended import VideoChatEnded
 from .video_chat_participants_invited import VideoChatParticipantsInvited
 from .video_chat_scheduled import VideoChatScheduled
 from .video_chat_started import VideoChatStarted
-from .rtmp_url import RtmpUrl
-from .chat_background import ChatBackground
 
 __all__ = [
     "Birthdate",
     "Chat",
     "ChatAdminWithInviteLinks",
+    "ChatBackground",
     "ChatColor",
     "ChatEvent",
     "ChatEventFilter",
     "ChatInviteLink",
-    "ChatJoiner",
     "ChatJoinRequest",
+    "ChatJoiner",
     "ChatMember",
     "ChatMemberUpdated",
     "ChatPermissions",
@@ -69,13 +70,12 @@ __all__ = [
     "GroupCallParticipant",
     "InviteLinkImporter",
     "Restriction",
+    "RtmpUrl",
     "User",
     "Username",
     "UsersShared",
     "VideoChatEnded",
     "VideoChatParticipantsInvited",
     "VideoChatScheduled",
-    "VideoChatStarted",
-    "RtmpUrl",
-    "ChatBackground"
+    "VideoChatStarted"
 ]

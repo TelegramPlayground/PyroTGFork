@@ -21,6 +21,7 @@ from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types
+
 from .input_message_content import InputMessageContent
 
 log = logging.getLogger(__name__)
@@ -168,7 +169,7 @@ class InputInvoiceMessageContent(InputMessageContent):
             payload=self.payload.encode() if isinstance(self.payload, str) else self.payload,
             provider=self.provider_token,
             provider_data=raw.types.DataJSON(
-                data=self.provider_data if self.provider_data else "{}"
+                data=self.provider_data or "{}"
             ),
             reply_markup=await reply_markup.write(client) if reply_markup else None
         )

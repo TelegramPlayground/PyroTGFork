@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from pyrogram import raw
+
 from ..object import Object
 
 
@@ -169,10 +170,10 @@ class ChatEventFilter(Object):
 
         if self.video_chats:
             group_call = True
-        
+
         if self.forum_changes:
             forum_changes = True
-        
+
         if self.subscription_extensions:
             subscription_extensions = True
 

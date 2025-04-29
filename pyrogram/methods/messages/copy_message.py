@@ -18,10 +18,10 @@
 
 import logging
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import types, enums
+from pyrogram import enums, types
 
 log = logging.getLogger(__name__)
 
@@ -147,7 +147,7 @@ class CopyMessage:
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
                 "exclusive."
             )
-        
+
         if reply_to_message_id is not None:
             log.warning(
                 "This property is deprecated. "

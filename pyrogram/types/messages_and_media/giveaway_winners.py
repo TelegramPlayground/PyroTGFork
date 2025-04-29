@@ -19,10 +19,9 @@
 from datetime import datetime
 
 import pyrogram
-
 from pyrogram import raw, types, utils
-from ..object import Object
 
+from ..object import Object
 
 
 class GiveawayWinners(Object):
@@ -128,5 +127,5 @@ class GiveawayWinners(Object):
                 unclaimed_prize_count=getattr(giveaway_media, "unclaimed_count", None),
                 only_new_members=getattr(giveaway_media, "only_new_subscribers", None),
                 was_refunded=getattr(giveaway_media, "refunded", None),
-                prize_description=getattr(giveaway_media, "prize_description", None)   
+                prize_description=getattr(giveaway_media, "prize_description", None)
             )

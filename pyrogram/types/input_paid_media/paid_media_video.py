@@ -17,7 +17,6 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import pyrogram
 from pyrogram import types
 
 from .paid_media import PaidMedia

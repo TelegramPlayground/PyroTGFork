@@ -19,10 +19,10 @@
 from typing import Optional
 
 import pyrogram
-from pyrogram import enums, raw, types, utils
+from pyrogram import raw, types
+
 from ..object import Object
 from ..update import Update
-from .message import Str
 
 
 class PollAnswer(Object, Update):
@@ -81,7 +81,7 @@ class PollAnswer(Object, Update):
             return PollAnswer(
                 poll_id=str(update.poll_id),
                 option_ids=[
-                    "{:0>2x}".format(option[0])
+                    f"{option[0]:0>2x}"
                     for option in update.options
                 ],
                 user=user,

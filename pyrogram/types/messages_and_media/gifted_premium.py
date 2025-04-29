@@ -20,6 +20,7 @@ from random import choice
 from typing import Optional
 
 from pyrogram import raw, types
+
 from ..object import Object
 from .message import Str
 
@@ -81,7 +82,7 @@ class GiftedPremium(Object):
         self.sticker = sticker
         self.caption = caption
         self.caption_entities = caption_entities
-  
+
     @staticmethod
     async def _parse(
         client,

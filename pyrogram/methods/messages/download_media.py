@@ -21,11 +21,11 @@ import io
 import os
 import re
 from datetime import datetime
-from typing import Callable, Optional, Union 
+from typing import Callable, Optional, Union
 
 import pyrogram
-from pyrogram import enums, types, utils
-from pyrogram.file_id import FileId, FileType, PHOTO_TYPES
+from pyrogram import types, utils
+from pyrogram.file_id import PHOTO_TYPES, FileId, FileType
 
 DEFAULT_DOWNLOAD_DIR = "downloads/"
 
@@ -155,8 +155,8 @@ class DownloadMedia:
                 medium = [message.new_chat_photo]
 
             elif (
-                not (self.me and self.me.is_bot) and
-                message.story or message.reply_to_story
+                (not (self.me and self.me.is_bot) and
+                message.story) or message.reply_to_story
             ):
                 story_media = message.story or message.reply_to_story or None
                 if story_media and story_media.media:
@@ -172,25 +172,23 @@ class DownloadMedia:
                 else:
                     medium = []
 
-            else:
-                if message.media:
-                    if message.photo:
-                        medium = [
-                            getattr(message, message.media.value, None).sizes[-1]
-                        ]
-                    else:
-                        medium = [getattr(message, message.media.value, None)]
+            elif message.media:
+                if message.photo:
+                    medium = [
+                        getattr(message, message.media.value, None).sizes[-1]
+                    ]
                 else:
-                    medium = []
+                    medium = [getattr(message, message.media.value, None)]
+            else:
+                medium = []
 
         elif isinstance(message, types.Story):
             if (self.me and self.me.is_bot):
                 raise ValueError("This method cannot be used by bots")
+            if medium.media:
+                medium = [getattr(message, message.media.value, None)]
             else:
-                if medium.media:
-                    medium = [getattr(message, message.media.value, None)]
-                else:
-                    medium = []
+                medium = []
 
         elif isinstance(message, types.PaidMediaInfo):
             if any([isinstance(paid_media, (types.PaidMediaPhoto, types.PaidMediaVideo)) for paid_media in message.paid_media]):
@@ -208,14 +206,11 @@ class DownloadMedia:
 
         elif isinstance(message, types.PaidMediaPreview):
             medium = [getattr(getattr(message, "minithumbnail"), "data", None)]
-            
+
         elif isinstance(message, types.StrippedThumbnail):
             medium = [message.data]
-        
-        elif isinstance(message, types.Thumbnail):
-            medium = [message]
 
-        elif isinstance(message, str):
+        elif isinstance(message, types.Thumbnail) or isinstance(message, str):
             medium = [message]
 
         medium = types.List(filter(lambda x: x is not None, medium))
@@ -256,7 +251,7 @@ class DownloadMedia:
                 dledmedia.append(temp_file_path)
                 continue
 
-            elif isinstance(media, str):
+            if isinstance(media, str):
                 file_id_str = media
             else:
                 file_id_str = media.file_id
@@ -310,4 +305,4 @@ class DownloadMedia:
             else:
                 asyncio.get_event_loop().create_task(downloader)
 
-        return types.List(dledmedia) if block and len(dledmedia) > 1  else dledmedia[0] if block and len(dledmedia) == 1 else None
+        return types.List(dledmedia) if block and len(dledmedia) > 1 else dledmedia[0] if block and len(dledmedia) == 1 else None

@@ -17,10 +17,10 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Optional
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
+from pyrogram import raw, types, utils
+
 from ..object import Object
 
 
@@ -131,14 +131,13 @@ class ForumTopic(Object):
 
         self.is_reduced_version = is_reduced_version
 
-
     @staticmethod
     def _parse(
         client: "pyrogram.Client",
         forum_topic: "raw.types.ForumTopic",
-        messages: dict, # friendly
-        users: dict, # raw
-        chats: dict, # raw 
+        messages: dict,  # friendly
+        users: dict,  # raw
+        chats: dict,  # raw
     ) -> "ForumTopic":
         if isinstance(forum_topic, raw.types.ForumTopicDeleted):
             return ForumTopic(
@@ -164,7 +163,7 @@ class ForumTopic(Object):
         last_message = None
         top_message_id = getattr(forum_topic, "top_message", None)
         if top_message_id:
-            last_message = messages.get(top_message_id, None)
+            last_message = messages.get(top_message_id)
 
         return ForumTopic(
             message_thread_id=forum_topic.id,

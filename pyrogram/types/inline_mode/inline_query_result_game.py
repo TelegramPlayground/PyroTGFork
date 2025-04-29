@@ -20,6 +20,7 @@ import logging
 
 import pyrogram
 from pyrogram import raw, types
+
 from .inline_query_result import InlineQueryResult
 
 log = logging.getLogger(__name__)

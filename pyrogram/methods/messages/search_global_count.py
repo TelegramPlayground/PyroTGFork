@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import pyrogram
-from pyrogram import raw, enums
+from pyrogram import enums, raw
 
 
 class SearchGlobalCount:
@@ -70,5 +70,4 @@ class SearchGlobalCount:
 
         if hasattr(r, "count"):
             return r.count
-        else:
-            return len(r.messages)
+        return len(r.messages)

@@ -20,7 +20,7 @@ import os
 
 import pyrogram
 from pyrogram import raw
-from pyrogram.utils import compute_password_hash, btoi, itob
+from pyrogram.utils import btoi, compute_password_hash, itob
 
 
 class EnableCloudPassword:

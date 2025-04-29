@@ -18,10 +18,10 @@
 
 import logging
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, enums, types, utils
+from pyrogram import enums, raw, types, utils
 
 from .inline_session import get_session
 
@@ -144,7 +144,7 @@ class EditCachedMedia:
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotEditBusinessMessage

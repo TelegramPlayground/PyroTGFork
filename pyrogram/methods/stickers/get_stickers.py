@@ -19,8 +19,7 @@
 import logging
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 
 log = logging.getLogger(__name__)
 
@@ -56,7 +55,6 @@ class GetStickers:
             )
         )
         return r
-
 
     async def _get_raw_stickers(
         self: "pyrogram.Client",

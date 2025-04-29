@@ -18,10 +18,11 @@
 
 import logging
 from asyncio import sleep
-from typing import Union, Optional, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, types, enums
+from pyrogram import enums, raw, types
 
 log = logging.getLogger(__name__)
 

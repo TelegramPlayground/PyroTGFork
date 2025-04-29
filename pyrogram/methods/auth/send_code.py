@@ -19,10 +19,9 @@
 import logging
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
-from pyrogram.errors import PhoneMigrate, NetworkMigrate
-from pyrogram.session import Session, Auth
+from pyrogram import raw, types
+from pyrogram.errors import NetworkMigrate, PhoneMigrate
+from pyrogram.session import Auth, Session
 
 log = logging.getLogger(__name__)
 

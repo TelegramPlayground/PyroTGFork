@@ -45,7 +45,6 @@ class StarAmount(Object):
         self.star_count = star_count
         self.nanostar_count = nanostar_count
 
-
     @staticmethod
     def _parse(
         client: "pyrogram.Client",

@@ -17,7 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import pyrogram
-from pyrogram import raw, types, utils
+from pyrogram import raw, types
 
 from ..object import Object
 
@@ -49,7 +49,7 @@ class ActiveSessions(Object):
     def _parse(
         client: "pyrogram.Client",
         authorizations: "raw.types.account.Authorizations"
-    ) -> "ActiveSessions":        
+    ) -> "ActiveSessions":
         return ActiveSessions(
             inactive_session_ttl_days=authorizations.authorization_ttl_days,
             active_sessions=types.List([

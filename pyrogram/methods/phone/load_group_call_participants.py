@@ -17,10 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from asyncio import sleep
-from typing import Union, AsyncGenerator
+from collections.abc import AsyncGenerator
+from typing import Union
 
 import pyrogram
-from pyrogram import types, raw
+from pyrogram import raw, types
 
 
 class LoadGroupCallParticipants:

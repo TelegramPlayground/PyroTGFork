@@ -71,16 +71,14 @@ class DataCenter:
                 ip = cls.TEST[dc_id]
 
             return ip, cls.TEST_PORT
-        else:
-            if ipv6:
-                if media:
-                    ip = cls.PROD_IPV6_MEDIA.get(dc_id, cls.PROD_IPV6[dc_id])
-                else:
-                    ip = cls.PROD_IPV6[dc_id]
+        if ipv6:
+            if media:
+                ip = cls.PROD_IPV6_MEDIA.get(dc_id, cls.PROD_IPV6[dc_id])
             else:
-                if media:
-                    ip = cls.PROD_MEDIA.get(dc_id, cls.PROD[dc_id])
-                else:
-                    ip = cls.PROD[dc_id]
+                ip = cls.PROD_IPV6[dc_id]
+        elif media:
+            ip = cls.PROD_MEDIA.get(dc_id, cls.PROD[dc_id])
+        else:
+            ip = cls.PROD[dc_id]
 
-            return ip, cls.PROD_PORT
+        return ip, cls.PROD_PORT

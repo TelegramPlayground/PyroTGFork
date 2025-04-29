@@ -116,7 +116,7 @@ class PinChatMessage:
                     chats,
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotNewBusinessMessage

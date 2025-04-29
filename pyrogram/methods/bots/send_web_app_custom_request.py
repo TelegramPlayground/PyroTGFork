@@ -19,7 +19,7 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import raw
 
 
 class SendWebAppCustomRequest:

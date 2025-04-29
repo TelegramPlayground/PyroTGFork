@@ -20,6 +20,7 @@ import logging
 
 import pyrogram
 from pyrogram import raw, types
+
 from .inline_query_result import InlineQueryResult
 
 log = logging.getLogger(__name__)
@@ -100,33 +101,33 @@ class InlineQueryResultLocation(InlineQueryResult):
                 "Parameters `thumb_url` and `thumbnail_url` are mutually "
                 "exclusive."
             )
-        
+
         if thumb_url is not None:
             log.warning(
                 "This property is deprecated. "
                 "Please use thumbnail_url instead"
             )
             thumbnail_url = thumb_url
-        
+
         if thumb_width and thumbnail_width:
             raise ValueError(
                 "Parameters `thumb_width` and `thumbnail_width` are mutually "
                 "exclusive."
             )
-        
+
         if thumb_width is not None:
             log.warning(
                 "This property is deprecated. "
                 "Please use thumbnail_width instead"
             )
             thumbnail_width = thumb_width
-        
+
         if thumb_height and thumbnail_height:
             raise ValueError(
                 "Parameters `thumb_height` and `thumbnail_height` are mutually "
                 "exclusive."
             )
-        
+
         if thumb_height is not None:
             log.warning(
                 "This property is deprecated. "

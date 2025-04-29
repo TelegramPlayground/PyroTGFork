@@ -20,8 +20,8 @@ from datetime import datetime
 from typing import Optional
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
+
 from ..object import Object
 
 
@@ -142,7 +142,7 @@ class ChatInviteLink(Object):
             member_limit=invite.usage_limit,
             member_count=invite.usage,
             pending_join_request_count=invite.requested,
-            expired_member_count=invite.subscription_expired   
+            expired_member_count=invite.subscription_expired
         )
         if invite.subscription_pricing:
             chat_invite_link.subscription_period = invite.subscription_pricing.period

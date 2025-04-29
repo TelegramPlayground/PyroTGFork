@@ -17,11 +17,12 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from asyncio import sleep
+from collections.abc import AsyncGenerator
 from datetime import datetime
-from typing import Union, AsyncGenerator, Optional
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, types, utils, enums
+from pyrogram import enums, raw, types, utils
 
 
 # noinspection PyShadowingBuiltins
@@ -47,7 +48,7 @@ async def get_chunk(
             q=query,
             filter=filter.value(),
             min_date=utils.datetime_to_timestamp(min_date),
-            max_date= utils.datetime_to_timestamp(max_date),
+            max_date=utils.datetime_to_timestamp(max_date),
             offset_id=offset_id,
             add_offset=offset,
             limit=limit,

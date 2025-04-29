@@ -17,11 +17,12 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from asyncio import sleep
+from collections.abc import AsyncGenerator
 from datetime import datetime
-from typing import Union, AsyncGenerator
+from typing import Union
 
 import pyrogram
-from pyrogram import types, raw, utils
+from pyrogram import raw, types, utils
 
 
 class GetForumTopics:

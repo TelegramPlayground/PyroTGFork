@@ -72,7 +72,7 @@ class RequestCallbackAnswer:
 
         # Telegram only wants bytes, but we are allowed to pass strings too.
         data = bytes(callback_data, "utf-8") if isinstance(callback_data, str) else callback_data
-        
+
         if password:
             pwd = await self.invoke(
                 raw.functions.account.GetPassword()

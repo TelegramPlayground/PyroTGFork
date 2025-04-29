@@ -19,8 +19,7 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 from pyrogram.errors import UserNotParticipant
 
 
@@ -71,12 +70,10 @@ class GetChatMember:
                 if isinstance(user, raw.types.InputPeerSelf):
                     if member.user.is_self:
                         return member
-                else:
-                    if member.user.id == user.user_id:
-                        return member
-            else:
-                raise UserNotParticipant
-        elif isinstance(chat, raw.types.InputPeerChannel):
+                elif member.user.id == user.user_id:
+                    return member
+            raise UserNotParticipant
+        if isinstance(chat, raw.types.InputPeerChannel):
             r = await self.invoke(
                 raw.functions.channels.GetParticipant(
                     channel=chat,
@@ -88,5 +85,4 @@ class GetChatMember:
             chats = {i.id: i for i in r.chats}
 
             return types.ChatMember._parse(self, r.participant, users, chats)
-        else:
-            raise ValueError(f'The chat_id "{chat_id}" belongs to a user')
+        raise ValueError(f'The chat_id "{chat_id}" belongs to a user')

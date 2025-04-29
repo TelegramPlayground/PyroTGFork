@@ -21,6 +21,7 @@ from typing import Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
+
 from ..object import Object
 from ..update import Update
 
@@ -66,7 +67,7 @@ class ChatMemberUpdated(Object, Update):
         invite_link: "types.ChatInviteLink" = None,
         via_join_request: bool = None,
         via_chat_folder_invite_link: bool = None,
-        _raw = None,
+        _raw=None,
     ):
         super().__init__(client)
 

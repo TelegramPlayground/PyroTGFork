@@ -25,22 +25,17 @@ try:
 
     log.info("Using TgCrypto")
 
-
     def ige256_encrypt(data: bytes, key: bytes, iv: bytes) -> bytes:
         return tgcrypto.ige256_encrypt(data, key, iv)
-
 
     def ige256_decrypt(data: bytes, key: bytes, iv: bytes) -> bytes:
         return tgcrypto.ige256_decrypt(data, key, iv)
 
-
     def ctr256_encrypt(data: bytes, key: bytes, iv: bytearray, state: bytearray = None) -> bytes:
         return tgcrypto.ctr256_encrypt(data, key, iv, state or bytearray(1))
 
-
     def ctr256_decrypt(data: bytes, key: bytes, iv: bytearray, state: bytearray = None) -> bytes:
         return tgcrypto.ctr256_decrypt(data, key, iv, state or bytearray(1))
-
 
     def xor(a: bytes, b: bytes) -> bytes:
         return int.to_bytes(
@@ -57,22 +52,17 @@ except ImportError:
         "More info: https://telegramplayground.github.io/pyrogram/topics/speedups"
     )
 
-
     def ige256_encrypt(data: bytes, key: bytes, iv: bytes) -> bytes:
         return ige(data, key, iv, True)
-
 
     def ige256_decrypt(data: bytes, key: bytes, iv: bytes) -> bytes:
         return ige(data, key, iv, False)
 
-
     def ctr256_encrypt(data: bytes, key: bytes, iv: bytearray, state: bytearray = None) -> bytes:
         return ctr(data, key, iv, state or bytearray(1))
 
-
     def ctr256_decrypt(data: bytes, key: bytes, iv: bytearray, state: bytearray = None) -> bytes:
         return ctr(data, key, iv, state or bytearray(1))
-
 
     def xor(a: bytes, b: bytes) -> bytes:
         return int.to_bytes(
@@ -80,7 +70,6 @@ except ImportError:
             len(a),
             "big",
         )
-
 
     def ige(data: bytes, key: bytes, iv: bytes, encrypt: bool) -> bytes:
         cipher = pyaes.AES(key)
@@ -100,7 +89,6 @@ except ImportError:
                 iv_1 = chunk
 
         return b"".join(data)
-
 
     def ctr(data: bytes, key: bytes, iv: bytearray, state: bytearray) -> bytes:
         cipher = pyaes.AES(key)

@@ -132,7 +132,7 @@ class ActiveSession(Object):
     def _parse(
         client: "pyrogram.Client",
         session: "raw.types.Authorization"
-    ) -> "ActiveSession":        
+    ) -> "ActiveSession":
         return ActiveSession(
             client=client,
             id=session.hash,

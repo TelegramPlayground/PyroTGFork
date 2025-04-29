@@ -25,37 +25,37 @@ import platform
 import re
 import shutil
 import sys
+from collections.abc import AsyncGenerator
 from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from hashlib import sha256
 from importlib import import_module
-from io import StringIO, BytesIO
+from io import BytesIO, StringIO
 from mimetypes import MimeTypes
 from pathlib import Path
-from typing import Union, Optional, Callable, AsyncGenerator
+from typing import Callable, Optional, Union
 
 import pyrogram
-from pyrogram import __version__, __license__
-from pyrogram import enums
-from pyrogram import raw
-from pyrogram import utils
+from pyrogram import __license__, __version__, enums, raw, utils
 from pyrogram.crypto import aes
-from pyrogram.errors import CDNFileHashMismatch
 from pyrogram.errors import (
+    AuthBytesInvalid,
+    BadRequest,
+    CDNFileHashMismatch,
+    ChannelInvalid,
+    ChannelPrivate,
+    PersistentTimestampInvalid,
+    PersistentTimestampOutdated,
     SessionPasswordNeeded,
-    VolumeLocNotFound, ChannelPrivate,
-    BadRequest, AuthBytesInvalid,
-    FloodWait, FloodPremiumWait,
-    ChannelInvalid, PersistentTimestampInvalid, PersistentTimestampOutdated
+    VolumeLocNotFound,
 )
 from pyrogram.handlers.handler import Handler
 from pyrogram.methods import Methods
 from pyrogram.session import Auth, Session
-from pyrogram.storage import Storage, FileStorage, MemoryStorage
-from pyrogram.types import User, TermsOfService
+from pyrogram.storage import FileStorage, MemoryStorage, Storage
+from pyrogram.types import TermsOfService, User
 from pyrogram.utils import ainput
-from .connection import Connection
-from .connection.transport import TCP, TCPAbridged, TCPFull
+
 from .dispatcher import Dispatcher
 from .file_id import FileId, FileType, ThumbnailSource
 from .mime_types import mime_types
@@ -426,8 +426,7 @@ class Client(Methods):
                     if ":" in value:
                         self.bot_token = value
                         return await self.sign_in_bot(value)
-                    else:
-                        self.phone_number = value
+                    self.phone_number = value
 
                 sent_code = await self.send_code(self.phone_number)
             except BadRequest as e:
@@ -464,7 +463,7 @@ class Client(Methods):
                 print(e.MESSAGE)
 
                 while True:
-                    print("Password hint: {}".format(await self.get_password_hint()))
+                    print(f"Password hint: {await self.get_password_hint()}")
 
                     if not self.password:
                         self.password = await ainput("Enter password (empty to recover): ", hide=self.hide_password)
@@ -703,9 +702,8 @@ class Client(Methods):
                     {u.id: u for u in diff.users},
                     {c.id: c for c in diff.chats}
                 ))
-            else:
-                if diff.other_updates:  # The other_updates list can be empty
-                    self.dispatcher.updates_queue.put_nowait((diff.other_updates[0], {}, {}))
+            elif diff.other_updates:  # The other_updates list can be empty
+                self.dispatcher.updates_queue.put_nowait((diff.other_updates[0], {}, {}))
         elif isinstance(updates, raw.types.UpdateShort):
             self.dispatcher.updates_queue.put_nowait((updates.update, {}, {}))
         elif isinstance(updates, raw.types.UpdatesTooLong):
@@ -745,11 +743,9 @@ class Client(Methods):
                 except (ChannelPrivate, ChannelInvalid, PersistentTimestampOutdated, PersistentTimestampInvalid):
                     break
 
-                if isinstance(diff, raw.types.updates.DifferenceEmpty):
+                if isinstance(diff, raw.types.updates.DifferenceEmpty) or isinstance(diff, raw.types.updates.DifferenceTooLong):
                     break
-                elif isinstance(diff, raw.types.updates.DifferenceTooLong):
-                    break
-                elif isinstance(diff, raw.types.updates.Difference):
+                if isinstance(diff, raw.types.updates.Difference):
                     local_pts = diff.state.pts
                 elif isinstance(diff, raw.types.updates.DifferenceSlice):
                     local_pts = diff.intermediate_state.pts
@@ -759,9 +755,7 @@ class Client(Methods):
                         break
 
                     prev_pts = local_pts
-                elif isinstance(diff, raw.types.updates.ChannelDifferenceEmpty):
-                    break
-                elif isinstance(diff, raw.types.updates.ChannelDifferenceTooLong):
+                elif isinstance(diff, raw.types.updates.ChannelDifferenceEmpty) or isinstance(diff, raw.types.updates.ChannelDifferenceTooLong):
                     break
                 elif isinstance(diff, raw.types.updates.ChannelDifference):
                     local_pts = diff.pts
@@ -831,27 +825,26 @@ class Client(Methods):
             )
             await self.storage.user_id(None)
             await self.storage.is_bot(None)
-        else:
-            # Needed for migration from storage v2 to v3
-            if not await self.storage.api_id():
-                if self.api_id:
-                    await self.storage.api_id(self.api_id)
-                else:
-                    while True:
-                        try:
-                            value = int(await ainput("Enter the api_id part of the API key: "))
+        # Needed for migration from storage v2 to v3
+        elif not await self.storage.api_id():
+            if self.api_id:
+                await self.storage.api_id(self.api_id)
+            else:
+                while True:
+                    try:
+                        value = int(await ainput("Enter the api_id part of the API key: "))
 
-                            if value <= 0:
-                                print("Invalid value")
-                                continue
+                        if value <= 0:
+                            print("Invalid value")
+                            continue
 
-                            confirm = (await ainput(f'Is "{value}" correct? (y/N): ')).lower()
+                        confirm = (await ainput(f'Is "{value}" correct? (y/N): ')).lower()
 
-                            if confirm == "y":
-                                await self.storage.api_id(value)
-                                break
-                        except Exception as e:
-                            print(e)
+                        if confirm == "y":
+                            await self.storage.api_id(value)
+                            break
+                    except Exception as e:
+                        print(e)
 
     def load_plugins(self):
         if self.plugins:
@@ -885,8 +878,7 @@ class Client(Methods):
                                 if isinstance(handler, Handler) and isinstance(group, int):
                                     self.add_handler(handler, group)
 
-                                    log.info('[{}] [LOAD] {}("{}") in group {} from "{}"'.format(
-                                        self.name, type(handler).__name__, name, group, module_path))
+                                    log.info(f'[{self.name}] [LOAD] {type(handler).__name__}("{name}") in group {group} from "{module_path}"')
 
                                     count += 1
                         except Exception:
@@ -917,14 +909,12 @@ class Client(Methods):
                                 if isinstance(handler, Handler) and isinstance(group, int):
                                     self.add_handler(handler, group)
 
-                                    log.info('[{}] [LOAD] {}("{}") in group {} from "{}"'.format(
-                                        self.name, type(handler).__name__, name, group, module_path))
+                                    log.info(f'[{self.name}] [LOAD] {type(handler).__name__}("{name}") in group {group} from "{module_path}"')
 
                                     count += 1
                         except Exception:
                             if warn_non_existent_functions:
-                                log.warning('[{}] [LOAD] Ignoring non-existent function "{}" from "{}"'.format(
-                                    self.name, name, module_path))
+                                log.warning(f'[{self.name}] [LOAD] Ignoring non-existent function "{name}" from "{module_path}"')
 
             if exclude:
                 for path, handlers in exclude:
@@ -952,14 +942,12 @@ class Client(Methods):
                                 if isinstance(handler, Handler) and isinstance(group, int):
                                     self.remove_handler(handler, group)
 
-                                    log.info('[{}] [UNLOAD] {}("{}") from group {} in "{}"'.format(
-                                        self.name, type(handler).__name__, name, group, module_path))
+                                    log.info(f'[{self.name}] [UNLOAD] {type(handler).__name__}("{name}") from group {group} in "{module_path}"')
 
                                     count -= 1
                         except Exception:
                             if warn_non_existent_functions:
-                                log.warning('[{}] [UNLOAD] Ignoring non-existent function "{}" from "{}"'.format(
-                                    self.name, name, module_path))
+                                log.warning(f'[{self.name}] [UNLOAD] Ignoring non-existent function "{name}" from "{module_path}"')
 
             if count > 0:
                 log.info('[{}] Successfully loaded {} plugin{} from "{}"'.format(
@@ -990,11 +978,10 @@ class Client(Methods):
             if in_memory:
                 file.name = file_name
                 return file
-            else:
-                file.close()
-                file_path = os.path.splitext(temp_file_path)[0]
-                shutil.move(temp_file_path, file_path)
-                return file_path
+            file.close()
+            file_path = os.path.splitext(temp_file_path)[0]
+            shutil.move(temp_file_path, file_path)
+            return file_path
 
     async def get_file(
         self,
@@ -1014,16 +1001,15 @@ class Client(Methods):
                         user_id=file_id.chat_id,
                         access_hash=file_id.chat_access_hash
                     )
+                elif file_id.chat_access_hash == 0:
+                    peer = raw.types.InputPeerChat(
+                        chat_id=-file_id.chat_id
+                    )
                 else:
-                    if file_id.chat_access_hash == 0:
-                        peer = raw.types.InputPeerChat(
-                            chat_id=-file_id.chat_id
-                        )
-                    else:
-                        peer = raw.types.InputPeerChannel(
-                            channel_id=utils.get_channel_id(file_id.chat_id),
-                            access_hash=file_id.chat_access_hash
-                        )
+                    peer = raw.types.InputPeerChannel(
+                        channel_id=utils.get_channel_id(file_id.chat_id),
+                        access_hash=file_id.chat_access_hash
+                    )
 
                 location = raw.types.InputPeerPhotoFileLocation(
                     peer=peer,

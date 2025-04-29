@@ -20,7 +20,14 @@ from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw
-from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType, ThumbnailSource
+from pyrogram.file_id import (
+    FileId,
+    FileType,
+    FileUniqueId,
+    FileUniqueType,
+    ThumbnailSource,
+)
+
 from ..object import Object
 
 
@@ -75,7 +82,7 @@ class Thumbnail(Object):
             raw_thumbs = media.thumbs
             file_type = FileType.THUMBNAIL
         else:
-            return
+            return None
 
         parsed_thumbs = []
 

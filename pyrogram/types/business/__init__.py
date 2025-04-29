@@ -30,15 +30,15 @@ from .paid_reaction_type import (
     PaidReactionType,
     PaidReactionTypeAnonymous,
     PaidReactionTypeChat,
-    PaidReactionTypeRegular
+    PaidReactionTypeRegular,
 )
 from .pre_checkout_query import PreCheckoutQuery
+from .refunded_payment import RefundedPayment
 from .shipping_address import ShippingAddress
 from .shipping_option import ShippingOption
 from .shipping_query import ShippingQuery
 from .star_amount import StarAmount
 from .successful_payment import SuccessfulPayment
-from .refunded_payment import RefundedPayment
 
 __all__ = [
     "BusinessBotRights",
@@ -56,10 +56,10 @@ __all__ = [
     "PaidReactionTypeChat",
     "PaidReactionTypeRegular",
     "PreCheckoutQuery",
+    "RefundedPayment",
     "ShippingAddress",
     "ShippingOption",
     "ShippingQuery",
     "StarAmount",
     "SuccessfulPayment",
-    "RefundedPayment",
 ]

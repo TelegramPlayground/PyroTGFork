@@ -64,9 +64,9 @@ class TCP:
             self.socket.set_proxy(
                 proxy_type=getattr(socks, proxy.get("scheme").upper()),
                 addr=hostname,
-                port=proxy.get("port", None),
-                username=proxy.get("username", None),
-                password=proxy.get("password", None)
+                port=proxy.get("port"),
+                username=proxy.get("username"),
+                password=proxy.get("password")
             )
 
             log.info(f"Using proxy {hostname}")

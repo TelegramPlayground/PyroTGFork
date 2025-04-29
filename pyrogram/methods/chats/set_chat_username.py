@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw
@@ -64,5 +64,4 @@ class SetChatUsername:
                     )
                 )
             )
-        else:
-            raise ValueError(f'The chat_id "{chat_id}" belongs to a user or chat')
+        raise ValueError(f'The chat_id "{chat_id}" belongs to a user or chat')

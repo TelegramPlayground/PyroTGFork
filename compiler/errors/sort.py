@@ -17,15 +17,16 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import csv
-from pathlib import Path
 import re
-import requests  # requests==2.28.1
 import sys
+from pathlib import Path
+
+import requests  # requests==2.28.1
 
 if len(sys.argv) != 2:
     sys.exit(1)
 
-if sys.argv[1] == "sort": 
+if sys.argv[1] == "sort":
     for p in Path("source").glob("*.tsv"):
         with open(p) as f:
             reader = csv.reader(f, delimiter="\t")
@@ -80,7 +81,7 @@ elif sys.argv[1] == "scrape":
                 dct[m] = l
 
             keys = sorted(dct)
-            
+
             for p in Path("source/").glob(f"{h}*.tsv"):
                 with open(p, "w") as f:
                     f.write("id\tmessage\n")

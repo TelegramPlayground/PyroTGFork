@@ -18,7 +18,7 @@
 
 import pytest
 
-from pyrogram.file_id import FileId, FileUniqueId, FileType, FileUniqueType
+from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType
 
 
 def check(file_id: str, expected_file_type: FileType):

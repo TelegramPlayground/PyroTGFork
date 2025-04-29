@@ -16,13 +16,13 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .forum_topic_created import ForumTopicCreated
+from .forum_topic import ForumTopic
 from .forum_topic_closed import ForumTopicClosed
+from .forum_topic_created import ForumTopicCreated
 from .forum_topic_edited import ForumTopicEdited
 from .forum_topic_reopened import ForumTopicReopened
 from .general_forum_topic_hidden import GeneralForumTopicHidden
 from .general_forum_topic_unhidden import GeneralForumTopicUnhidden
-from .forum_topic import ForumTopic
 
 __all__ = [
     "ForumTopic",

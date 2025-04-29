@@ -19,6 +19,7 @@
 
 from .get_stories import GetStories
 
+
 class Stories(
     GetStories,
 ):

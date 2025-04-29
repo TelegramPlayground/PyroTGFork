@@ -21,7 +21,7 @@ from random import randint
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, enums
+from pyrogram import enums, raw
 
 
 class SendChatAction:
@@ -123,7 +123,7 @@ class SendChatAction:
                     data=dumps(
                         {
                             "v": 1,
-                            "a":[
+                            "a": [
                                 {
                                     "t": 0,
                                     "i": randint(
@@ -155,5 +155,4 @@ class SendChatAction:
                     connection_id=business_connection_id
                 )
             )
-        else:
-            return await self.invoke(rpc)
+        return await self.invoke(rpc)

@@ -16,10 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from datetime import datetime
 import io
 import os
 import re
+from datetime import datetime
 from typing import Union
 
 import pyrogram
@@ -108,7 +108,7 @@ class EditMessageMedia:
         is_bytes_io = isinstance(media.media, io.BytesIO)
         is_uploaded_file = is_bytes_io or os.path.isfile(media.media)
 
-        is_external_url = not is_uploaded_file and re.match("^https?://", media.media)
+        is_external_url = not is_uploaded_file and re.match(r"^https?://", media.media)
 
         if is_bytes_io and not hasattr(media.media, "name"):
             media.media.name = "media"
@@ -343,7 +343,7 @@ class EditMessageMedia:
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotEditBusinessMessage

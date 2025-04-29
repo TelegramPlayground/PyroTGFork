@@ -63,7 +63,6 @@ class GetOwnedStarCount:
 
         return types.StarAmount._parse(self, r)
 
-
     async def get_business_account_star_balance(
         self: "pyrogram.Client",
         business_connection_id: str,

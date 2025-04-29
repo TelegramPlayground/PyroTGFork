@@ -17,10 +17,11 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from datetime import datetime
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
+
 from ..object import Object
 from ..update import Update
 from .message import Str

@@ -21,6 +21,7 @@ from typing import Optional
 
 import pyrogram
 from pyrogram import raw
+
 from .input_message_content import InputMessageContent
 
 log = logging.getLogger(__name__)

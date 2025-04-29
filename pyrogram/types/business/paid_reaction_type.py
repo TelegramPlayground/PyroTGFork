@@ -16,10 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from ..object import Object
-
 import pyrogram
-from pyrogram import raw, types
+from pyrogram import raw
+
+from ..object import Object
 
 
 class PaidReactionType(Object):
@@ -35,7 +35,7 @@ class PaidReactionType(Object):
 
     def __init__(self):
         super().__init__()
-    
+
     async def write(
         self,
         client: "pyrogram.Client",
@@ -44,9 +44,7 @@ class PaidReactionType(Object):
             return self._raw(
                 peer=await client.resolve_peer(self.chat_id)
             )
-        else:
-            return self._raw()
-
+        return self._raw()
 
 
 class PaidReactionTypeRegular(PaidReactionType):

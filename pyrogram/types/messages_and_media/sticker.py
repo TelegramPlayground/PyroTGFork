@@ -19,10 +19,10 @@
 from datetime import datetime
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
 from pyrogram.errors import StickersetInvalid
 from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType
+
 from ..object import Object
 
 
@@ -133,7 +133,7 @@ class Sticker(Object):
                 )
             ).set.short_name
 
-            Sticker.cache[(set_id, set_access_hash)] = name
+            Sticker.cache[set_id, set_access_hash] = name
 
             if len(Sticker.cache) > 250:
                 for i in range(50):

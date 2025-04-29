@@ -16,17 +16,18 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 import io
+import logging
 import os
 import re
 from datetime import datetime
-from typing import Union, Optional, Callable
+from typing import Callable, Optional, Union
 
 import pyrogram
 from pyrogram import StopTransmission, enums, raw, types, utils
 from pyrogram.errors import FilePartMissing
 from pyrogram.file_id import FileType
+
 from .inline_session import get_session
 
 log = logging.getLogger(__name__)
@@ -222,7 +223,7 @@ class SendAnimation:
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
                 "exclusive."
             )
-        
+
         if reply_to_message_id is not None:
             log.warning(
                 "This property is deprecated. "
@@ -254,7 +255,7 @@ class SendAnimation:
                         ],
                         ttl_seconds=ttl_seconds
                     )
-                elif re.match("^https?://", animation):
+                elif re.match(r"^https?://", animation):
                     media = raw.types.InputMediaDocumentExternal(
                         url=animation,
                         spoiler=has_spoiler,
@@ -367,7 +368,7 @@ class SendAnimation:
                                 )
 
                             return message
-                        elif isinstance(
+                        if isinstance(
                             i,
                             (
                                 raw.types.UpdateBotNewBusinessMessage
@@ -382,7 +383,6 @@ class SendAnimation:
                                 raw_reply_to_message=i.reply_to_message,
                                 replies=0
                             )
-
 
         except StopTransmission:
             return None

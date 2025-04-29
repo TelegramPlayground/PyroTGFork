@@ -20,7 +20,12 @@ import os
 
 import pyrogram
 from pyrogram import raw
-from pyrogram.utils import compute_password_hash, compute_password_check, btoi, itob
+from pyrogram.utils import (
+    btoi,
+    compute_password_check,
+    compute_password_hash,
+    itob,
+)
 
 
 class ChangeCloudPassword:

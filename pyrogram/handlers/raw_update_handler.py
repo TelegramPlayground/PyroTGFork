@@ -20,6 +20,7 @@ from typing import Any, Callable
 
 import pyrogram
 from pyrogram.filters import Filter
+
 from .handler import Handler
 
 CallbackFunc: Callable = Callable[

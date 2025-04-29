@@ -20,7 +20,7 @@
 from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, types, enums, utils
+from pyrogram import enums, raw, types, utils
 
 
 class SendGift:

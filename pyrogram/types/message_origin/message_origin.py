@@ -18,10 +18,10 @@
 
 from datetime import datetime
 
-from ..object import Object
-
 import pyrogram
 from pyrogram import raw, types, utils
+
+from ..object import Object
 
 
 class MessageOrigin(Object):
@@ -51,8 +51,8 @@ class MessageOrigin(Object):
     def _parse(
         client: "pyrogram.Client",
         forward_header: "raw.types.MessageFwdHeader",
-        users: dict, # raw
-        chats: dict, # raw 
+        users: dict,  # raw
+        chats: dict,  # raw
     ) -> "MessageOrigin":
         if not forward_header:
             return None
@@ -67,29 +67,27 @@ class MessageOrigin(Object):
                     date=forward_date,
                     sender_user=forward_from
                 )
-            else:
-                forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
-                forward_from_message_id = forward_header.channel_post
-                if forward_from_message_id:
-                    return types.MessageOriginChannel(
-                        date=forward_date,
-                        chat=forward_from_chat,
-                        message_id=forward_from_message_id,
-                        author_signature=forward_signature
-                    )
-                else:
-                    return types.MessageOriginChat(
-                        date=forward_date,
-                        sender_chat=forward_from_chat,
-                        author_signature=forward_signature
-                    )
-        elif forward_header.from_name:
+            forward_from_chat = types.Chat._parse_channel_chat(client, chats[raw_peer_id])
+            forward_from_message_id = forward_header.channel_post
+            if forward_from_message_id:
+                return types.MessageOriginChannel(
+                    date=forward_date,
+                    chat=forward_from_chat,
+                    message_id=forward_from_message_id,
+                    author_signature=forward_signature
+                )
+            return types.MessageOriginChat(
+                date=forward_date,
+                sender_chat=forward_from_chat,
+                author_signature=forward_signature
+            )
+        if forward_header.from_name:
             forward_sender_name = forward_header.from_name
             return types.MessageOriginHiddenUser(
                 date=forward_date,
                 sender_user_name=forward_sender_name
             )
-        elif forward_header.imported:
+        if forward_header.imported:
             return types.MessageImportInfo(
                 date=forward_date,
                 sender_user_name=forward_signature

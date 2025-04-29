@@ -19,59 +19,59 @@
 from .alternative_video import AlternativeVideo
 from .animation import Animation
 from .audio import Audio
+from .chat_boost_added import ChatBoostAdded
 from .contact import Contact
 from .contact_registered import ContactRegistered
 from .dice import Dice
 from .document import Document
 from .game import Game
+from .gift import Gift
+from .gift_code import GiftCode
+from .gifted_premium import GiftedPremium
+from .gifted_stars import GiftedStars
+from .giveaway import Giveaway
+from .giveaway_completed import GiveawayCompleted
+from .giveaway_created import GiveawayCreated
+from .giveaway_winners import GiveawayWinners
 from .location import Location
 from .message import Message
+from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
+from .message_effect import MessageEffect
 from .message_entity import MessageEntity
+from .message_reaction_count_updated import MessageReactionCountUpdated
+from .message_reaction_updated import MessageReactionUpdated
+from .message_reactions import MessageReactions
+from .paid_message_price_changed import PaidMessagePriceChanged
+from .paid_messages_refunded import PaidMessagesRefunded
+from .payment_form import PaymentForm
 from .photo import Photo
 from .poll import Poll
 from .poll_answer import PollAnswer
 from .poll_option import PollOption
 from .reaction import (
     Reaction,
+    ReactionCount,
     ReactionType,
-    ReactionTypeEmoji,
     ReactionTypeCustomEmoji,
+    ReactionTypeEmoji,
     ReactionTypePaid,
-    ReactionCount
 )
-from .sponsored_message import SponsoredMessage
-from .gift import Gift
 from .received_gift import ReceivedGift
-from .upgraded_gift import UpgradedGift
+from .screenshot_taken import ScreenshotTaken
+from .sponsored_message import SponsoredMessage
 from .sticker import Sticker
+from .story import Story
 from .stripped_thumbnail import StrippedThumbnail
 from .thumbnail import Thumbnail
+from .translated_text import TranslatedText
+from .upgraded_gift import UpgradedGift
 from .venue import Venue
 from .video import Video
 from .video_note import VideoNote
 from .voice import Voice
 from .web_app_data import WebAppData
 from .web_page import WebPage
-from .message_reactions import MessageReactions
-from .message_reaction_updated import MessageReactionUpdated
-from .message_reaction_count_updated import MessageReactionCountUpdated
-from .chat_boost_added import ChatBoostAdded
-from .story import Story
-from .payment_form import PaymentForm
-from .giveaway import Giveaway
-from .giveaway_created import GiveawayCreated
-from .giveaway_completed import GiveawayCompleted
-from .giveaway_winners import GiveawayWinners
-from .gift_code import GiftCode
-from .gifted_premium import GiftedPremium
-from .gifted_stars import GiftedStars
-from .message_effect import MessageEffect
-from .screenshot_taken import ScreenshotTaken
-from .translated_text import TranslatedText
-from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .write_access_allowed import WriteAccessAllowed
-from .paid_message_price_changed import PaidMessagePriceChanged
-from .paid_messages_refunded import PaidMessagesRefunded
 
 __all__ = [
     "AlternativeVideo",
@@ -83,13 +83,13 @@ __all__ = [
     "Dice",
     "Document",
     "Game",
-    "PaymentForm",
+    "Gift",
     "GiftCode",
     "GiftedPremium",
     "GiftedStars",
     "Giveaway",
-    "GiveawayCreated",
     "GiveawayCompleted",
+    "GiveawayCreated",
     "GiveawayWinners",
     "Location",
     "Message",  # TODO
@@ -99,24 +99,28 @@ __all__ = [
     "MessageReactionCountUpdated",
     "MessageReactionUpdated",
     "MessageReactions",
+    "PaidMessagePriceChanged",
+    "PaidMessagesRefunded",
+    "PaymentForm",
     "Photo",
-    "Reaction",
-    "ReactionCount",
-    "ReactionType",
-    "ReactionTypeEmoji",
-    "ReactionTypeCustomEmoji",
-    "ReactionTypePaid",
-    "Thumbnail",
-    "StrippedThumbnail",
     "Poll",
     "PollAnswer",
     "PollOption",
-    "SponsoredMessage",
-    "Gift",
+    "Reaction",
+    "ReactionCount",
+    "ReactionType",
+    "ReactionTypeCustomEmoji",
+    "ReactionTypeEmoji",
+    "ReactionTypePaid",
     "ReceivedGift",
-    "UpgradedGift",
+    "ScreenshotTaken",
+    "SponsoredMessage",
     "Sticker",
     "Story",
+    "StrippedThumbnail",
+    "Thumbnail",
+    "TranslatedText",
+    "UpgradedGift",
     "Venue",
     "Video",
     "VideoNote",
@@ -124,8 +128,4 @@ __all__ = [
     "WebAppData",
     "WebPage",
     "WriteAccessAllowed",
-    "ScreenshotTaken",
-    "TranslatedText",
-    "PaidMessagePriceChanged",
-    "PaidMessagesRefunded",
 ]

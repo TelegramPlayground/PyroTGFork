@@ -19,7 +19,8 @@
 import asyncio
 import logging
 import signal
-from signal import signal as signal_fn, SIGINT, SIGTERM, SIGABRT
+from signal import SIGABRT, SIGINT, SIGTERM
+from signal import signal as signal_fn
 
 log = logging.getLogger(__name__)
 

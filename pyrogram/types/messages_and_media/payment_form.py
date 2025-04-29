@@ -19,7 +19,8 @@
 from typing import Optional
 
 import pyrogram
-from pyrogram import types, raw
+from pyrogram import raw, types
+
 from ..object import Object
 
 

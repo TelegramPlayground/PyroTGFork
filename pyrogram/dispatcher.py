@@ -22,50 +22,57 @@ import logging
 from collections import OrderedDict
 
 import pyrogram
-from pyrogram import errors, utils, raw
+from pyrogram import utils
 from pyrogram.handlers import (
-    MessageHandler, EditedMessageHandler,
     BusinessBotConnectionHandler,
-    MessageReactionUpdatedHandler,
-    MessageReactionCountUpdatedHandler,
-    InlineQueryHandler,
-    ChosenInlineResultHandler,
     CallbackQueryHandler,
-    ShippingQueryHandler,
+    ChatJoinRequestHandler,
+    ChatMemberUpdatedHandler,
+    ChosenInlineResultHandler,
+    DeletedMessagesHandler,
+    EditedMessageHandler,
+    InlineQueryHandler,
+    MessageHandler,
+    MessageReactionCountUpdatedHandler,
+    MessageReactionUpdatedHandler,
+    PollHandler,
     PreCheckoutQueryHandler,
     PurchasedPaidMediaHandler,
-    PollHandler,
-
-
-    ChatMemberUpdatedHandler,
-    ChatJoinRequestHandler,
-
-
-    DeletedMessagesHandler,
-    UserStatusHandler,
+    RawUpdateHandler,
+    ShippingQueryHandler,
     StoryHandler,
-    RawUpdateHandler
+    UserStatusHandler,
 )
 from pyrogram.raw.types import (
-    UpdateNewMessage, UpdateNewChannelMessage, UpdateNewScheduledMessage,
-    UpdateEditMessage, UpdateEditChannelMessage,
-    UpdateDeleteMessages, UpdateDeleteChannelMessages,
-    UpdateBotCallbackQuery, UpdateInlineBotCallbackQuery,
-    UpdateUserStatus, UpdateBotInlineQuery,
-    UpdateMessagePoll, UpdateMessagePollVote,
-    UpdateBotInlineSend, UpdateChatParticipant, UpdateChannelParticipant, UpdateBotStopped,
+    UpdateBotBusinessConnect,
+    UpdateBotCallbackQuery,
     UpdateBotChatInviteRequester,
+    UpdateBotDeleteBusinessMessage,
+    UpdateBotEditBusinessMessage,
+    UpdateBotInlineQuery,
+    UpdateBotInlineSend,
     UpdateBotMessageReaction,
     UpdateBotMessageReactions,
     UpdateBotNewBusinessMessage,
-    UpdateBotEditBusinessMessage,
-    UpdateBotDeleteBusinessMessage,
     UpdateBotPrecheckoutQuery,
-    UpdateBotShippingQuery,
-    UpdateStory,
-    UpdateBusinessBotCallbackQuery,
-    UpdateBotBusinessConnect,
     UpdateBotPurchasedPaidMedia,
+    UpdateBotShippingQuery,
+    UpdateBotStopped,
+    UpdateBusinessBotCallbackQuery,
+    UpdateChannelParticipant,
+    UpdateChatParticipant,
+    UpdateDeleteChannelMessages,
+    UpdateDeleteMessages,
+    UpdateEditChannelMessage,
+    UpdateEditMessage,
+    UpdateInlineBotCallbackQuery,
+    UpdateMessagePoll,
+    UpdateMessagePollVote,
+    UpdateNewChannelMessage,
+    UpdateNewMessage,
+    UpdateNewScheduledMessage,
+    UpdateStory,
+    UpdateUserStatus,
 )
 
 log = logging.getLogger(__name__)
@@ -157,7 +164,7 @@ class Dispatcher:
                 ),
                 PollHandler
             )
-        
+
         async def poll_answer_parser(update, users, chats):
             return (
                 pyrogram.types.PollAnswer._parse_update(
@@ -184,7 +191,6 @@ class Dispatcher:
                 ChatJoinRequestHandler
             )
 
-        
         async def message_bot_na_reaction_parser(update, users, chats):
             return (
                 pyrogram.types.MessageReactionUpdated._parse(self.client, update, users, chats),
@@ -256,7 +262,6 @@ class Dispatcher:
         }
 
         self.update_parsers = {key: value for key_tuple, value in self.update_parsers.items() for key in key_tuple}
-
 
     async def start(self):
         if not self.client.no_updates:

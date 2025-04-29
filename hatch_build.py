@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
 # Add the current directory to the path, so we can import the compiler.

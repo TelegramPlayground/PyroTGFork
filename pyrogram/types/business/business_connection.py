@@ -20,11 +20,9 @@ import logging
 from datetime import datetime
 from typing import Optional
 
-import pyrogram
 from pyrogram import raw, types, utils
 
 from ..object import Object
-
 
 log = logging.getLogger(__name__)
 
@@ -74,7 +72,6 @@ class BusinessConnection(Object):
         self.is_enabled = is_enabled
         self._raw = _raw
 
-
     @staticmethod
     def _parse(
         client,
@@ -99,7 +96,6 @@ class BusinessConnection(Object):
             ),
             is_enabled=not bool(getattr(business_connect_update.connection, "disabled", None))
         )
-
 
     @property
     def can_reply(self) -> str:

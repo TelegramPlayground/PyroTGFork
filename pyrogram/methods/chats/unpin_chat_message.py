@@ -62,7 +62,7 @@ class UnpinChatMessage:
             id=message_id,
             unpin=True
         )
-        
+
         session = None
         business_connection = None
         if business_connection_id:

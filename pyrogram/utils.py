@@ -27,12 +27,11 @@ from concurrent.futures.thread import ThreadPoolExecutor
 from datetime import datetime, timezone
 from getpass import getpass
 from io import BytesIO
-from typing import Union, Optional
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
-from pyrogram.file_id import FileId, FileType, PHOTO_TYPES, DOCUMENT_TYPES
+from pyrogram import enums, raw, types
+from pyrogram.file_id import DOCUMENT_TYPES, PHOTO_TYPES, FileId, FileType
 
 
 async def ainput(prompt: str = "", *, hide: bool = False):
@@ -227,15 +226,14 @@ def unpack_inline_message_id(inline_message_id: str) -> "raw.base.InputBotInline
             id=unpacked[1],
             access_hash=unpacked[2]
         )
-    else:
-        unpacked = struct.unpack("<iqiq", decoded)
+    unpacked = struct.unpack("<iqiq", decoded)
 
-        return raw.types.InputBotInlineMessageID64(
-            dc_id=unpacked[0],
-            owner_id=unpacked[1],
-            id=unpacked[2],
-            access_hash=unpacked[3]
-        )
+    return raw.types.InputBotInlineMessageID64(
+        dc_id=unpacked[0],
+        owner_id=unpacked[1],
+        id=unpacked[2],
+        access_hash=unpacked[3]
+    )
 
 
 MIN_CHANNEL_ID_OLD = -1002147483647
@@ -277,7 +275,7 @@ def get_peer_id(peer: raw.base.Peer) -> int:
 
 def get_peer_type(peer_id: int) -> str:
     if peer_id < 0:
-        if MIN_CHAT_ID <= peer_id:
+        if peer_id >= MIN_CHAT_ID:
             return "chat"
 
         if MIN_CHANNEL_ID <= peer_id < MAX_CHANNEL_ID:
@@ -554,15 +552,13 @@ def get_first_url(
             if len(url) <= 4:
                 url = None
                 continue
-            else:
-                break
-        elif isinstance(entity, raw.types.MessageEntityUrl):
-            url = text_[entity.offset:entity.offset+entity.length+1]
+            break
+        if isinstance(entity, raw.types.MessageEntityUrl):
+            url = text_[entity.offset:entity.offset + entity.length + 1]
             if len(url) <= 4:
                 url = None
                 continue
-            else:
-                break
+            break
     text = text_.encode("utf-16", "surrogatepass").decode("utf-16")
     if url:
         if (
@@ -648,7 +644,7 @@ def expand_inline_bytes(bytes_data: bytes):
 def from_inline_bytes(data: bytes, file_name: str = None) -> BytesIO:
     b = BytesIO()
     b.write(data)
-    b.name = file_name if file_name else f"photo_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.jpg"
+    b.name = file_name or f"photo_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.jpg"
     return b
 
 

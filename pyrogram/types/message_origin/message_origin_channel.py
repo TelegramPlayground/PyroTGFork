@@ -18,10 +18,9 @@
 
 from datetime import datetime
 
-from .message_origin import MessageOrigin
+from pyrogram import enums, types
 
-import pyrogram
-from pyrogram import types, enums
+from .message_origin import MessageOrigin
 
 
 class MessageOriginChannel(MessageOrigin):

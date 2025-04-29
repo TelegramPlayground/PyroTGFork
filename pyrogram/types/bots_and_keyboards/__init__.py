@@ -18,11 +18,15 @@
 
 from .bot_command import BotCommand
 from .bot_command_scope import BotCommandScope
-from .bot_command_scope_all_chat_administrators import BotCommandScopeAllChatAdministrators
+from .bot_command_scope_all_chat_administrators import (
+    BotCommandScopeAllChatAdministrators,
+)
 from .bot_command_scope_all_group_chats import BotCommandScopeAllGroupChats
 from .bot_command_scope_all_private_chats import BotCommandScopeAllPrivateChats
 from .bot_command_scope_chat import BotCommandScopeChat
-from .bot_command_scope_chat_administrators import BotCommandScopeChatAdministrators
+from .bot_command_scope_chat_administrators import (
+    BotCommandScopeChatAdministrators,
+)
 from .bot_command_scope_chat_member import BotCommandScopeChatMember
 from .bot_command_scope_default import BotCommandScopeDefault
 from .callback_game import CallbackGame
@@ -35,8 +39,8 @@ from .inline_keyboard_markup import InlineKeyboardMarkup
 from .keyboard_button import KeyboardButton
 from .keyboard_button_poll_type import (
     KeyboardButtonPollType,
+    KeyboardButtonPollTypeQuiz,
     KeyboardButtonPollTypeRegular,
-    KeyboardButtonPollTypeQuiz
 )
 from .keyboard_button_request_chat import KeyboardButtonRequestChat
 from .keyboard_button_request_users import KeyboardButtonRequestUsers
@@ -51,24 +55,7 @@ from .sent_web_app_message import SentWebAppMessage
 from .switch_inline_query_chosen_chat import SwitchInlineQueryChosenChat
 from .web_app_info import WebAppInfo
 
-
 __all__ = [
-    "CallbackGame",
-    "CallbackQuery",
-    "CopyTextButton",
-    "ForceReply",
-    "GameHighScore",
-    "InlineKeyboardButton",
-    "InlineKeyboardMarkup",
-    "KeyboardButton",
-    "KeyboardButtonPollType",
-    "KeyboardButtonPollTypeRegular",
-    "KeyboardButtonPollTypeQuiz",
-    "KeyboardButtonRequestChat",
-    "KeyboardButtonRequestUsers",
-    "ReplyKeyboardMarkup",
-    "ReplyKeyboardRemove",
-    "LoginUrl",
     "BotCommand",
     "BotCommandScope",
     "BotCommandScopeAllChatAdministrators",
@@ -78,11 +65,27 @@ __all__ = [
     "BotCommandScopeChatAdministrators",
     "BotCommandScopeChatMember",
     "BotCommandScopeDefault",
-    "WebAppInfo",
+    "CallbackGame",
+    "CallbackQuery",
+    "CopyTextButton",
+    "ForceReply",
+    "GameHighScore",
+    "InlineKeyboardButton",
+    "InlineKeyboardMarkup",
+    "KeyboardButton",
+    "KeyboardButtonPollType",
+    "KeyboardButtonPollTypeQuiz",
+    "KeyboardButtonPollTypeRegular",
+    "KeyboardButtonRequestChat",
+    "KeyboardButtonRequestUsers",
+    "LoginUrl",
     "MenuButton",
     "MenuButtonCommands",
-    "MenuButtonWebApp",
     "MenuButtonDefault",
+    "MenuButtonWebApp",
+    "ReplyKeyboardMarkup",
+    "ReplyKeyboardRemove",
     "SentWebAppMessage",
     "SwitchInlineQueryChosenChat",
+    "WebAppInfo",
 ]

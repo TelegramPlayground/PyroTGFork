@@ -16,16 +16,21 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .future_salt import FutureSalt
-from .future_salts import FutureSalts
-from .gzip_packed import GzipPacked
-from .list import List
-from .message import Message
-from .msg_container import MsgContainer
-from .primitives.bool import Bool, BoolFalse, BoolTrue
-from .primitives.bytes import Bytes
-from .primitives.double import Double
-from .primitives.int import Int, Long, Int128, Int256
-from .primitives.string import String
-from .primitives.vector import Vector
-from .tl_object import TLObject
+from .future_salt import FutureSalt as FutureSalt
+from .future_salts import FutureSalts as FutureSalts
+from .gzip_packed import GzipPacked as GzipPacked
+from .list import List as List
+from .message import Message as Message
+from .msg_container import MsgContainer as MsgContainer
+from .primitives.bool import Bool as Bool
+from .primitives.bool import BoolFalse as BoolFalse
+from .primitives.bool import BoolTrue as BoolTrue
+from .primitives.bytes import Bytes as Bytes
+from .primitives.double import Double as Double
+from .primitives.int import Int as Int
+from .primitives.int import Int128 as Int128
+from .primitives.int import Int256 as Int256
+from .primitives.int import Long as Long
+from .primitives.string import String as String
+from .primitives.vector import Vector as Vector
+from .tl_object import TLObject as TLObject

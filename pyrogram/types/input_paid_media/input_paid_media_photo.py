@@ -17,10 +17,9 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import io
-from typing import Optional, Union
+from typing import Union
 
 from .input_paid_media import InputPaidMedia
-from ... import enums
 
 
 class InputPaidMediaPhoto(InputPaidMedia):
@@ -43,4 +42,3 @@ class InputPaidMediaPhoto(InputPaidMedia):
         media: Union[str, "io.BytesIO"]
     ):
         super().__init__(media)
-

@@ -16,10 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from datetime import datetime
 
-import pyrogram
-from pyrogram import raw, types, utils
+from pyrogram import raw
 
 from ..object import Object
 
@@ -46,7 +44,6 @@ class BusinessOpeningHoursInterval(Object):
 
         self.opening_minute = opening_minute
         self.closing_minute = closing_minute
-
 
     @staticmethod
     def _parse(

@@ -20,7 +20,7 @@ import logging
 from typing import Optional, Union
 
 import pyrogram
-from pyrogram import enums, raw, utils, types
+from pyrogram import enums, raw, types, utils
 
 log = logging.getLogger(__name__)
 
@@ -223,7 +223,7 @@ class SendInvoice:
                 payload=payload.encode() if isinstance(payload, str) else payload,
                 provider=provider_token,
                 provider_data=raw.types.DataJSON(
-                    data=provider_data if provider_data else "{}"
+                    data=provider_data or "{}"
                 ),
                 start_param=start_parameter
             ),

@@ -39,7 +39,6 @@ class PaidMedia(Object):
     ):
         super().__init__()
 
-
     @staticmethod
     def _parse(
         client: "pyrogram.Client",
@@ -67,11 +66,11 @@ class PaidMedia(Object):
 
             if isinstance(media, raw.types.MessageMediaPhoto):
                 photo = types.Photo._parse(client, media.photo, ttl_seconds, has_media_spoiler)
-                
+
                 return types.PaidMediaPhoto(
                     photo=photo
                 )
-            
+
             if isinstance(media, raw.types.MessageMediaDocument):
                 doc = media.document
 

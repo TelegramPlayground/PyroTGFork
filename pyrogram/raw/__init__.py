@@ -18,7 +18,10 @@
 
 from importlib import import_module
 
-from . import types, functions, base, core
+from . import base as base
+from . import core as core
+from . import functions as functions
+from . import types as types
 from .all import objects
 
 for k, v in objects.items():

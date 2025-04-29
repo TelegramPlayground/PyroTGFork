@@ -18,7 +18,6 @@
 
 from typing import Optional
 
-import pyrogram
 from pyrogram import raw
 
 from ..object import Object
@@ -106,7 +105,6 @@ class BusinessBotRights(Object):
         self.can_transfer_and_upgrade_gifts = can_transfer_and_upgrade_gifts
         self.can_transfer_stars = can_transfer_stars
         self.can_manage_stories = can_manage_stories
-
 
     @staticmethod
     def _parse(

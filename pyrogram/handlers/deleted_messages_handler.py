@@ -21,6 +21,7 @@ from typing import Any, Callable
 import pyrogram
 from pyrogram.filters import Filter
 from pyrogram.types import Message
+
 from .handler import Handler
 
 CallbackFunc: Callable = Callable[
@@ -66,5 +67,4 @@ class DeletedMessagesHandler(Handler):
         for message in messages:
             if await super().check(client, message):
                 return True
-        else:
-            return False
+        return False

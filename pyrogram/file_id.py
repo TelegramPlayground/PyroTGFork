@@ -81,6 +81,7 @@ def rle_encode(s: bytes) -> bytes:
 
     return bytes(r)
 
+
 def rle_decode(s: bytes) -> bytes:
     """Zero-value RLE decoder
 

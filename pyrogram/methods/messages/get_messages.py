@@ -17,7 +17,8 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Iterable, Optional, Union
+from collections.abc import Iterable
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types, utils
@@ -203,7 +204,6 @@ class GetMessages:
 
         raise ValueError("No valid argument supplied. https://telegramplayground.github.io/pyrogram/api/methods/get_messages")
 
-
     async def get_chat_pinned_message(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
@@ -241,7 +241,6 @@ class GetMessages:
             replies=replies
         )
         return messages[0] if messages else None
-
 
     async def get_callback_query_message(
         self: "pyrogram.Client",
@@ -289,7 +288,6 @@ class GetMessages:
             replies=replies
         )
         return messages[0] if messages else None
-
 
     async def get_replied_message(
         self: "pyrogram.Client",

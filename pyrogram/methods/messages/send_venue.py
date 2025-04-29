@@ -21,7 +21,7 @@ from datetime import datetime
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, utils, types
+from pyrogram import raw, types, utils
 
 log = logging.getLogger(__name__)
 
@@ -140,7 +140,7 @@ class SendVenue:
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
                 "exclusive."
             )
-        
+
         if reply_to_message_id is not None:
             log.warning(
                 "This property is deprecated. "
@@ -163,7 +163,7 @@ class SendVenue:
                 ),
                 title=title,
                 address=address,
-                provider="", # TODO
+                provider="",  # TODO
                 venue_id=foursquare_id,
                 venue_type=foursquare_type
             ),
@@ -205,7 +205,7 @@ class SendVenue:
                     is_scheduled=isinstance(i, raw.types.UpdateNewScheduledMessage),
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotNewBusinessMessage

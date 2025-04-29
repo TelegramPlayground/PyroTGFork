@@ -18,15 +18,16 @@
 
 import inspect
 import re
-from typing import Any, Callable, Literal, Optional, Pattern, Union
+from re import Pattern
+from typing import Any, Callable, Literal, Optional, Union
 
 import pyrogram
 from pyrogram import enums
 from pyrogram.types import (
-    Message,
     CallbackQuery,
-    InlineQuery,
     InlineKeyboardMarkup,
+    InlineQuery,
+    Message,
     PreCheckoutQuery,
     ReplyKeyboardMarkup,
     Update,
@@ -169,7 +170,7 @@ all = create(all_filter)
 
 # region me_filter
 async def me_filter(_, __, m: Message) -> bool:
-    return bool(m.from_user and m.from_user.is_self or getattr(m, "outgoing", False))
+    return bool((m.from_user and m.from_user.is_self) or getattr(m, "outgoing", False))
 
 
 me: Filter = create(me_filter)
@@ -760,6 +761,7 @@ def via_bot_filter(flt, *args):
     flt = type(flt)(u.lower().lstrip("@") if isinstance(u, str) else u for u in bots)
     return flt
 
+
 via_bot: Filter = type(
     via_bot_filter.__name__,
     (Filter, set),
@@ -810,7 +812,7 @@ async def tg_business_filter(_, __, m: Union[Message, list[Message]]):
         len(m) > 0
     ):
         return bool(m[0].business_connection_id)
-    elif isinstance(m, Message):
+    if isinstance(m, Message):
         return bool(m.business_connection_id)
 
 
@@ -906,6 +908,7 @@ async def linked_channel_filter(_, __, m: Message) -> bool:
         m.forward_origin.type == enums.MessageOriginType.CHANNEL and
         m.forward_origin.chat == m.sender_chat
     )
+
 
 linked_channel: Filter = create(linked_channel_filter)
 """Filter messages that are automatically forwarded from the linked channel to the group chat."""
@@ -1023,10 +1026,9 @@ def cq_data(data: Union[str, list[str]]):
     async def func(_, __, callback_query: CallbackQuery):
         if isinstance(data, str):
             return callback_query.data == data
-        elif isinstance(data, list):
+        if isinstance(data, list):
             return callback_query.data in data
-        else:
-            return False
+        return False
     return filters.create(func)
 
 
@@ -1178,6 +1180,7 @@ users_shared: Filter = create(
     )
 )
 """Filter service messages for chat shared."""
+
 
 # endregion
 

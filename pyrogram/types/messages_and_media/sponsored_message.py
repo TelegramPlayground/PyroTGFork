@@ -22,6 +22,7 @@ from pyrogram import raw, types
 from ..object import Object
 from .message import Str
 
+
 class SponsoredMessage(Object):
     """Describes a sponsored message.
 

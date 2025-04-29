@@ -26,6 +26,7 @@ import pyrogram
 from pyrogram import raw
 from pyrogram.enums import MessageEntityType
 from pyrogram.errors import PeerIdInvalid
+
 from . import utils
 
 log = logging.getLogger(__name__)
@@ -206,7 +207,7 @@ class HTML:
                 start_tag = f'<emoji id="{custom_emoji_id}">'
                 end_tag = "</emoji>"
             else:
-                return
+                return None
 
             return (start_tag, start), (end_tag, end)
 

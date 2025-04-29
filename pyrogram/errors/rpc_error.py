@@ -16,16 +16,16 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from os import environ
 import re
 from datetime import datetime
 from importlib import import_module
+from os import environ
 from typing import Union
 
 from pyrogram import __version__, raw
 from pyrogram.raw.core import TLObject
-from .exceptions.all import exceptions
 
+from .exceptions.all import exceptions
 
 UEFN = environ.get(
     "PYROGRAM_LOG_UNKNOWN_ERRORS_FILENAME",
@@ -48,7 +48,7 @@ class RPCError(Exception):
         rpc_name: str = None,
         is_unknown: bool = False,
         is_signed: bool = False,
-        _raw = None
+        _raw=None
     ):
         super().__init__("Telegram says: [{}{} {}] {} Pyrogram {} thinks: {}".format(
             "-" if is_signed else "",

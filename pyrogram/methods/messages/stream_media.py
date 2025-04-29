@@ -16,10 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from asyncio import sleep
 import io
 import math
-from typing import Union, Optional
+from asyncio import sleep
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import types

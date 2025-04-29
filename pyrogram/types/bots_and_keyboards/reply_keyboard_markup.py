@@ -21,6 +21,7 @@ from typing import Union
 
 import pyrogram
 from pyrogram import raw, types
+
 from ..object import Object
 
 log = logging.getLogger(__name__)

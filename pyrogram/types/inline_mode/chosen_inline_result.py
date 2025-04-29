@@ -20,6 +20,7 @@ from typing import Optional
 
 import pyrogram
 from pyrogram import raw, types, utils
+
 from ..object import Object
 from ..update import Update
 
@@ -125,15 +126,14 @@ class ChosenInlineResult(Object, Update):
         """
         if self.inline_message_id is None:
             raise ValueError("Identifier of the inline message is required to edit the message")
-        else:
-            return await self._client.edit_inline_text(
-                inline_message_id=self.inline_message_id,
-                text=text,
-                parse_mode=parse_mode,
-                entities=entities,
-                link_preview_options=link_preview_options,
-                reply_markup=reply_markup
-            )
+        return await self._client.edit_inline_text(
+            inline_message_id=self.inline_message_id,
+            text=text,
+            parse_mode=parse_mode,
+            entities=entities,
+            link_preview_options=link_preview_options,
+            reply_markup=reply_markup
+        )
 
     async def edit_message_caption(
         self,
@@ -202,12 +202,11 @@ class ChosenInlineResult(Object, Update):
         """
         if self.inline_message_id is None:
             raise ValueError("Identifier of the inline message is required to edit the message")
-        else:
-            return await self._client.edit_inline_media(
-                inline_message_id=self.inline_message_id,
-                media=media,
-                reply_markup=reply_markup
-            )
+        return await self._client.edit_inline_media(
+            inline_message_id=self.inline_message_id,
+            media=media,
+            reply_markup=reply_markup
+        )
 
     async def edit_message_reply_markup(
         self,
@@ -229,8 +228,7 @@ class ChosenInlineResult(Object, Update):
         """
         if self.inline_message_id is None:
             raise ValueError("Identifier of the inline message is required to edit the message")
-        else:
-            return await self._client.edit_inline_reply_markup(
-                inline_message_id=self.inline_message_id,
-                reply_markup=reply_markup
-            )
+        return await self._client.edit_inline_reply_markup(
+            inline_message_id=self.inline_message_id,
+            reply_markup=reply_markup
+        )

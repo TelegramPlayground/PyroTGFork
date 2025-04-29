@@ -19,9 +19,9 @@
 import io
 from typing import Optional, Union
 
-from .input_media import InputMedia
-from ..messages_and_media import MessageEntity
 from ... import enums
+from ..messages_and_media import MessageEntity
+from .input_media import InputMedia
 
 
 class InputMediaVideo(InputMedia):

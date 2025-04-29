@@ -20,7 +20,7 @@ import logging
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, utils, types
+from pyrogram import raw, types, utils
 
 log = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ class SendGame:
         business_connection_id: str = None,
         send_as: Union[int, str] = None,
         message_effect_id: int = None,
-        reply_parameters: "types.ReplyParameters" = None,        
+        reply_parameters: "types.ReplyParameters" = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -110,7 +110,7 @@ class SendGame:
                 "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
                 "exclusive."
             )
-        
+
         if reply_to_message_id is not None:
             log.warning(
                 "This property is deprecated. "
@@ -160,7 +160,7 @@ class SendGame:
                     {i.id: i for i in r.chats},
                     replies=self.fetch_replies
                 )
-            elif isinstance(
+            if isinstance(
                 i,
                 (
                     raw.types.UpdateBotNewBusinessMessage
