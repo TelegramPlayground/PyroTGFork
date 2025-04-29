@@ -25,11 +25,11 @@ from .story_area_type import StoryAreaType
 
 
 class StoryAreaTypeMessage(StoryAreaType):
-    """This object describes an area pointing to a message.
+    """This object describes an area pointing to a message. Currently, a story can have up to 1 message area.
 
     Parameters:
         chat_id (``int`` | ``str``):
-            
+            Unique identifier (int) or username (str) of the target chat.
         
         message_id (``int``):
             Identifier of the message.
