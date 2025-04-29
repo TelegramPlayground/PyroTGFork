@@ -25,14 +25,18 @@ class StoryAreaType(Object):
 
     Currently, it can be one of:
 
+    .. include:: /_includes/usable-by/users-bots.rst
+
     - :obj:`~pyrogram.types.StoryAreaTypeLocation`
     - :obj:`~pyrogram.types.StoryAreaTypeSuggestedReaction`
     - :obj:`~pyrogram.types.StoryAreaTypeLink`
     - :obj:`~pyrogram.types.StoryAreaTypeWeather`
     - :obj:`~pyrogram.types.StoryAreaTypeUniqueGift`
 
-    TODO: inputMediaAreaVenue#b282217f
-    TODO: inputMediaAreaChannelPost#2271f2bf
+    .. include:: /_includes/usable-by/users.rst
+
+    - :obj:`~pyrogram.types.StoryAreaTypeMessage`
+    - :obj:`~pyrogram.types.StoryAreaTypeFoundVenue`
 
     """
 

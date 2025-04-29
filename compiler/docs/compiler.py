@@ -706,9 +706,11 @@ def pyrogram_api():
             StoryAreaPosition
             LocationAddress
             StoryAreaType
+            StoryAreaTypeFoundVenue
             StoryAreaTypeLocation
             StoryAreaTypeSuggestedReaction
             StoryAreaTypeLink
+            StoryAreaTypeMessage
             StoryAreaTypeWeather
             StoryAreaTypeUniqueGift
             StoryArea

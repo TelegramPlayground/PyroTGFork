@@ -49,7 +49,7 @@ class StoryAreaTypeWeather(StoryAreaType):
         self.emoji = emoji
         self.background_color = background_color
 
-    def write(
+    async def write(
         self,
         client: "pyrogram.Client",
         coordinates: "raw.types.MediaAreaCoordinates"

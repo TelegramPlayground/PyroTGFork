@@ -24,9 +24,11 @@ from .location_address import LocationAddress
 from .story_area import StoryArea
 from .story_area_position import StoryAreaPosition
 from .story_area_type import StoryAreaType
+from .story_area_type_found_venue import StoryAreaTypeFoundVenue
 from .story_area_type_location import StoryAreaTypeLocation
 from .story_area_type_suggested_reaction import StoryAreaTypeSuggestedReaction
 from .story_area_type_link import StoryAreaTypeLink
+from .story_area_type_message import StoryAreaTypeMessage
 from .story_area_type_weather import StoryAreaTypeWeather
 from .story_area_type_unique_gift import StoryAreaTypeUniqueGift
 from .story_privacy_settings import StoryPrivacySettings
@@ -44,9 +46,11 @@ __all__ = [
     "StoryArea",
     "StoryAreaPosition",
     "StoryAreaType",
+    "StoryAreaTypeFoundVenue",
     "StoryAreaTypeLocation",
     "StoryAreaTypeSuggestedReaction",
     "StoryAreaTypeLink",
+    "StoryAreaTypeMessage",
     "StoryAreaTypeWeather",
     "StoryAreaTypeUniqueGift",
     "StoryPrivacySettings",

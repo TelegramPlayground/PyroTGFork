@@ -39,7 +39,7 @@ class StoryAreaTypeUniqueGift(StoryAreaType):
 
         self.name = name
 
-    def write(
+    async def write(
         self,
         client: "pyrogram.Client",
         coordinates: "raw.types.MediaAreaCoordinates"

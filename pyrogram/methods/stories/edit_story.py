@@ -178,7 +178,7 @@ class EditStory:
                             peer=await self.resolve_peer(chat_id),
                             id=story_id,
                             media=media,
-                            media_areas=[area.write(self) for area in (areas or [])] or None,
+                            media_areas=[await area.write(self) for area in (areas or [])] or None,
                             caption=message,
                             entities=entities,
                             privacy_rules=privacy_rules,

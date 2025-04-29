@@ -56,7 +56,7 @@ class StoryAreaTypeLocation(StoryAreaType):
         self.horizontal_accuracy = horizontal_accuracy
         self.address = address
 
-    def write(
+    async def write(
         self,
         client: "pyrogram.Client",
         coordinates: "raw.types.MediaAreaCoordinates"

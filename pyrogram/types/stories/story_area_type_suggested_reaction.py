@@ -51,7 +51,7 @@ class StoryAreaTypeSuggestedReaction(StoryAreaType):
         self.is_dark = is_dark
         self.is_flipped = is_flipped
 
-    def write(
+    async def write(
         self,
         client: "pyrogram.Client",
         coordinates: "raw.types.MediaAreaCoordinates"

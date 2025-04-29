@@ -39,7 +39,7 @@ class StoryAreaTypeLink(StoryAreaType):
 
         self.url = url
 
-    def write(
+    async def write(
         self,
         client: "pyrogram.Client",
         coordinates: "raw.types.MediaAreaCoordinates"

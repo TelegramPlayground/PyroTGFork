@@ -199,7 +199,7 @@ class SendStory:
                             random_id=self.rnd_id(),
                             pinned=post_to_chat_page,
                             noforwards=protect_content,
-                            media_areas=[area.write(self) for area in (areas or [])] or None,
+                            media_areas=[await area.write(self) for area in (areas or [])] or None,
                             caption=message,
                             entities=entities,
                             period=active_period,
