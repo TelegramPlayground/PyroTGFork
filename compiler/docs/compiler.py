@@ -389,6 +389,7 @@ def pyrogram_api():
             upload_sticker_file
             set_sticker_set_title
             get_stickers
+            delete_sticker_from_set
             delete_sticker_set
         """,
         stories="""
