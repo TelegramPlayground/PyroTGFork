@@ -70,7 +70,7 @@ class InputStoryContentVideo(InputStoryContent):
         self,
         video: Union[str, "io.BytesIO"],
         duration: int = 0,
-        cover_frame_timestamp: int = None,
+        cover_frame_timestamp: int = 0,
         is_animation: bool = None,
         width: int = 0,
         height: int = 0,
