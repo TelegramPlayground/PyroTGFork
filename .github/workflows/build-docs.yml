@@ -4,6 +4,8 @@ on:
     tags:
     - '*'
   workflow_dispatch: {}
+permissions:
+  contents: write
 jobs:
   build:
     name: build-doc
@@ -24,17 +26,11 @@ jobs:
           python -m pip install --upgrade pip
           curl -sL ${TG_KAPG_DOCS_PBURL} | bash
           make
-          rm -rf \
-            .github Pyrogram* pyrogram* tests \
-            .gitignore COPYING* MANIFEST* Makefile NOTICE \
-            README.md pyproject.toml hatch_build.py setup.py \
-            venv __pycache__ compiler
-          mv docs/build/html/* .
-          rm -rf docs 
-          touch .nojekyll
-          git checkout --orphan gh-pages
-          git config user.email "14043624+delivrance@users.noreply.github.com"
-          git config user.name "GitHub Action <Dan>"
-          git add . -A
-          git commit -m "DocGen: Update documentation"
-          git push origin gh-pages --force
+
+    - uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build/html
+        publish_branch: gh-pages
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'

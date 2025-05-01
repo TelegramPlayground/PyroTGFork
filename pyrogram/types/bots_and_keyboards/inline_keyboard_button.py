@@ -92,7 +92,7 @@ class InlineKeyboardButton(Object):
 
     def __init__(
         self,
-        text: str,
+        text: str, *,
         url: Optional[str] = None,
         user_id: Optional[int] = None,
         callback_data: Optional[Union[str, bytes]] = None,
