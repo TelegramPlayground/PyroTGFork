@@ -17,15 +17,15 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
+from .delete_stories import DeleteStories
 from .edit_story import EditStory
 from .get_stories import GetStories
-from .send_story import SendStory
-from .delete_stories import DeleteStories
+from .post_story import PostStory
 
 class Stories(
+    DeleteStories,
     EditStory,
     GetStories,
-    SendStory,
-    DeleteStories,
+    PostStory,
 ):
     pass

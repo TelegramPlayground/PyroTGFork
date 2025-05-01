@@ -391,12 +391,11 @@ def pyrogram_api():
         stories="""
         Stories
             get_stories
-            send_story
             post_story
             edit_story
             edit_business_story
             delete_stories
-            delete_story
+            delete_business_story
         """,
         payments="""
         Payments

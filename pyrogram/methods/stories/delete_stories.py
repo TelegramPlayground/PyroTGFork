@@ -64,7 +64,7 @@ class DeleteStories:
         return types.List(r)
 
 
-    async def delete_story(
+    async def delete_business_story(
         self: "pyrogram.Client",
         business_connection_id: str,
         story_id: int,
