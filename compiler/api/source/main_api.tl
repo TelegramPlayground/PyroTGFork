@@ -36,6 +36,7 @@ double ? = Double;
 string ? = String;
 
 bytes = Bytes;
+int256 = Int256;
 
 // boolFalse#bc799737 = Bool;  // Parsed manually
 // boolTrue#997275b5 = Bool;  // Parsed manually
