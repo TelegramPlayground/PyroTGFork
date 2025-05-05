@@ -29,7 +29,7 @@ class EditStory:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         story_id: int,
-        content: "types.InputStoryContent",
+        content: "types.InputStoryContent" = None,
         caption: str = None,
         parse_mode: "enums.ParseMode" = None,
         caption_entities: list["types.MessageEntity"] = None,
@@ -50,7 +50,7 @@ class EditStory:
             story_id (``int``):
                 Unique identifier of the story to edit.
 
-            content (:obj:`~pyrogram.types.InputStoryContent`):
+            content (:obj:`~pyrogram.types.InputStoryContent`, *optional*):
                 Content of the story.
 
             caption (``str``, *optional*):
@@ -102,22 +102,45 @@ class EditStory:
         message, entities = (await utils.parse_text_entities(self, caption, parse_mode, caption_entities)).values()
 
         media = None
-        thumb = None
-        mime_type = None
-        if isinstance(content, types.InputStoryContentPhoto):
-            media = content.photo
-            thumb = content.thumbnail
-            mime_type = "image/jpg"
-        elif isinstance(content, types.InputStoryContentVideo):
-            media = content.video
-            thumb = content.thumbnail
-            mime_type = "video/mp4"
-        else:
-            raise ValueError("invalid content")
+        if content:
+            thumb = None
+            mime_type = None
+            if isinstance(content, types.InputStoryContentPhoto):
+                media = content.photo
+                thumb = content.thumbnail
+                mime_type = "image/jpg"
+            elif isinstance(content, types.InputStoryContentVideo):
+                media = content.video
+                thumb = content.thumbnail
+                mime_type = "video/mp4"
 
-        try:
-            if isinstance(media, str):
-                if os.path.isfile(media):
+            try:
+                if isinstance(media, str):
+                    if os.path.isfile(media):
+                        file = await self.save_file(media, progress=progress, progress_args=progress_args)
+                        thumb = await self.save_file(thumb) if thumb else None
+                        if isinstance(content, types.InputStoryContentVideo):
+                            media = raw.types.InputMediaUploadedDocument(
+                                mime_type=mime_type,
+                                file=file,
+                                thumb=thumb,
+                                attributes=[
+                                    raw.types.DocumentAttributeVideo(
+                                        supports_streaming=content.supports_streaming or None,
+                                        duration=content.duration,
+                                        w=content.width,
+                                        h=content.height,
+                                    ),
+                                    raw.types.DocumentAttributeFilename(file_name=content.file_name or os.path.basename(media))
+                                ]
+                            )
+                        else:
+                            media = raw.types.InputMediaUploadedPhoto(
+                                file=file,
+                            )
+                    else:
+                        media = utils.get_input_media_from_file_id(media)
+                else:
                     file = await self.save_file(media, progress=progress, progress_args=progress_args)
                     thumb = await self.save_file(thumb) if thumb else None
                     if isinstance(content, types.InputStoryContentVideo):
@@ -132,81 +155,53 @@ class EditStory:
                                     w=content.width,
                                     h=content.height,
                                 ),
-                                raw.types.DocumentAttributeFilename(file_name=content.file_name or os.path.basename(media))
+                                raw.types.DocumentAttributeFilename(file_name=content.file_name or media.name)
                             ]
                         )
                     else:
                         media = raw.types.InputMediaUploadedPhoto(
                             file=file,
                         )
-                else:
-                    media = utils.get_input_media_from_file_id(media)
-            else:
-                file = await self.save_file(media, progress=progress, progress_args=progress_args)
-                thumb = await self.save_file(thumb) if thumb else None
-                if isinstance(content, types.InputStoryContentVideo):
-                    media = raw.types.InputMediaUploadedDocument(
-                        mime_type=mime_type,
-                        file=file,
-                        thumb=thumb,
-                        attributes=[
-                            raw.types.DocumentAttributeVideo(
-                                supports_streaming=content.supports_streaming or None,
-                                duration=content.duration,
-                                w=content.width,
-                                h=content.height,
-                            ),
-                            raw.types.DocumentAttributeFilename(file_name=content.file_name or media.name)
-                        ]
-                    )
-                else:
-                    media = raw.types.InputMediaUploadedPhoto(
-                        file=file,
-                    )
+            except StopTransmission:
+                return None
 
-            privacy_rules = []
-            if privacy_settings:
-                for privacy_rule in (privacy_settings or []):
-                    privacy_rules += (await privacy_rule.write(self))
-            else:
-                privacy_rules += (await (types.StoryPrivacySettingsEveryone()).write(self))
+        privacy_rules = []
+        if privacy_settings:
+            for privacy_rule in (privacy_settings or []):
+                privacy_rules += (await privacy_rule.write(self))
+        else:
+            privacy_rules += (await (types.StoryPrivacySettingsEveryone()).write(self))
 
-            while True:
-                try:
-                    r = await self.invoke(
-                        raw.functions.stories.EditStory( 
-                            peer=await self.resolve_peer(chat_id),
-                            id=story_id,
-                            media=media,
-                            media_areas=[await area.write(self) for area in (areas or [])] or None,
-                            caption=message,
-                            entities=entities,
-                            privacy_rules=privacy_rules,
-                        )
-                    )
-                except FilePartMissing as e:
-                    await self.save_file(media, file_id=file.id, file_part=e.value)
-                else:
-                    for i in r.updates:
-                        if isinstance(i, raw.types.UpdateStory):
-                            return await types.Story._parse(
-                                self,
-                                {i.id: i for i in r.users},
-                                {i.id: i for i in r.chats},
-                                None, None,
-                                i,
-                                i.story,
-                                i.peer
-                            )
-        except StopTransmission:
-            return None
+        r = await self.invoke(
+            raw.functions.stories.EditStory( 
+                peer=await self.resolve_peer(chat_id),
+                id=story_id,
+                media=media,
+                media_areas=[await area.write(self) for area in (areas or [])] or None,
+                caption=message,
+                entities=entities,
+                privacy_rules=privacy_rules,
+            )
+        )
+
+        for i in r.updates:
+            if isinstance(i, raw.types.UpdateStory):
+                return await types.Story._parse(
+                    self,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                    None, None,
+                    i,
+                    i.story,
+                    i.peer
+                )
 
 
     async def edit_business_story(
         self: "pyrogram.Client",
         business_connection_id: str,
         story_id: int,
-        content: "types.InputStoryContent",
+        content: "types.InputStoryContent" = None,
         caption: str = None,
         parse_mode: "enums.ParseMode" = None,
         caption_entities: list["types.MessageEntity"] = None,
@@ -226,7 +221,7 @@ class EditStory:
             story_id (``int``):
                 Unique identifier of the story to edit.
 
-            content (:obj:`~pyrogram.types.InputStoryContent`):
+            content (:obj:`~pyrogram.types.InputStoryContent`, *optional*):
                 Content of the story.
 
             caption (``str``, *optional*):
@@ -242,7 +237,9 @@ class EditStory:
             areas (List of :obj:`~pyrogram.types.StoryArea`, *optional*):
                 List of of clickable areas to be shown on the story.
 
-            TODO: test
+            privacy_settings (:obj:`~pyrogram.types.StoryPrivacySettings`, *optional*):
+                The privacy settings for the story; ignored for stories sent to supergroup and channel chats.
+                Defaults to :obj:`~pyrogram.types.StoryPrivacySettingsEveryone`.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
