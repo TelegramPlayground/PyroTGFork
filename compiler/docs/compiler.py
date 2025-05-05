@@ -390,6 +390,7 @@ def pyrogram_api():
         """,
         stories="""
         Stories
+            activate_story_stealth_mode
             can_post_story
             get_stories
             post_story

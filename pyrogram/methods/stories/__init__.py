@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
+from .activate_story_stealth_mode import ActivateStoryStealthMode
 from .can_post_story import CanPostStory
 from .delete_stories import DeleteStories
 from .edit_story import EditStory
@@ -24,6 +25,7 @@ from .get_stories import GetStories
 from .post_story import PostStory
 
 class Stories(
+    ActivateStoryStealthMode,
     CanPostStory,
     DeleteStories,
     EditStory,
