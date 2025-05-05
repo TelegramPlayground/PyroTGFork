@@ -390,6 +390,7 @@ def pyrogram_api():
         """,
         stories="""
         Stories
+            can_post_story
             get_stories
             post_story
             edit_story
@@ -699,6 +700,13 @@ def pyrogram_api():
         """,
         stories="""
         Stories
+            CanPostStoryResult
+            CanPostStoryResultOk
+            CanPostStoryResultPremiumNeeded
+            CanPostStoryResultBoostNeeded
+            CanPostStoryResultActiveStoryLimitExceeded
+            CanPostStoryResultWeeklyLimitExceeded
+            CanPostStoryResultMonthlyLimitExceeded
             InputStoryContent
             InputStoryContentPhoto
             InputStoryContentVideo

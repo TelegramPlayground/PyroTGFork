@@ -17,17 +17,22 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from .can_post_story import CanPostStory
-from .delete_stories import DeleteStories
-from .edit_story import EditStory
-from .get_stories import GetStories
-from .post_story import PostStory
+from .can_post_story_result import CanPostStoryResult
 
-class Stories(
-    CanPostStory,
-    DeleteStories,
-    EditStory,
-    GetStories,
-    PostStory,
-):
-    pass
+
+class CanPostStoryResultMonthlyLimitExceeded(CanPostStoryResult):
+    """The monthly limit for the number of posted stories exceeded. The user needs to buy Telegram Premium or wait specified time.
+
+    Parameters:
+        retry_after (``int``):
+            Time left before the user can post the next story.
+
+    """
+
+    def __init__(
+        self,
+        retry_after: int,
+    ):
+        super().__init__()
+
+        self.retry_after = retry_after

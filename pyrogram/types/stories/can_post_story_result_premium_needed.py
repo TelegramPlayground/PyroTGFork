@@ -17,17 +17,12 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from .can_post_story import CanPostStory
-from .delete_stories import DeleteStories
-from .edit_story import EditStory
-from .get_stories import GetStories
-from .post_story import PostStory
+from .can_post_story_result import CanPostStoryResult
 
-class Stories(
-    CanPostStory,
-    DeleteStories,
-    EditStory,
-    GetStories,
-    PostStory,
-):
-    pass
+
+class CanPostStoryResultPremiumNeeded(CanPostStoryResult):
+    """The user must subscribe to Telegram Premium to be able to post stories.
+    """
+
+    def __init__(self,):
+        super().__init__()

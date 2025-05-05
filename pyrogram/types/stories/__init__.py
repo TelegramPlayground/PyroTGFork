@@ -17,6 +17,13 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
+from .can_post_story_result import CanPostStoryResult
+from .can_post_story_result_ok import CanPostStoryResultOk
+from .can_post_story_result_premium_needed import CanPostStoryResultPremiumNeeded
+from .can_post_story_result_boost_needed import CanPostStoryResultBoostNeeded
+from .can_post_story_result_active_story_limit_exceeded import CanPostStoryResultActiveStoryLimitExceeded
+from .can_post_story_result_weekly_limit_exceeded import CanPostStoryResultWeeklyLimitExceeded
+from .can_post_story_result_monthly_limit_exceeded import CanPostStoryResultMonthlyLimitExceeded
 from .input_story_content import InputStoryContent
 from .input_story_content_photo import InputStoryContentPhoto
 from .input_story_content_video import InputStoryContentVideo
@@ -39,6 +46,13 @@ from .story_privacy_settings_selected_users import StoryPrivacySettingsSelectedU
 
 
 __all__ = [
+    "CanPostStoryResultActiveStoryLimitExceeded",
+    "CanPostStoryResultBoostNeeded",
+    "CanPostStoryResultMonthlyLimitExceeded",
+    "CanPostStoryResultOk",
+    "CanPostStoryResultPremiumNeeded",
+    "CanPostStoryResultWeeklyLimitExceeded",
+    "CanPostStoryResult",
     "InputStoryContent",
     "InputStoryContentPhoto",
     "InputStoryContentVideo",

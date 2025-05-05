@@ -17,17 +17,14 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from .can_post_story import CanPostStory
-from .delete_stories import DeleteStories
-from .edit_story import EditStory
-from .get_stories import GetStories
-from .post_story import PostStory
+from .can_post_story_result import CanPostStoryResult
 
-class Stories(
-    CanPostStory,
-    DeleteStories,
-    EditStory,
-    GetStories,
-    PostStory,
-):
-    pass
+
+class CanPostStoryResultBoostNeeded(CanPostStoryResult):
+    """The chat must be boosted first by Telegram Premium subscribers to post more stories.
+    
+    Call getChatBoostStatus to get current boost status of the chat.
+    """
+
+    def __init__(self,):
+        super().__init__()

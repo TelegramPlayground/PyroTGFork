@@ -17,17 +17,21 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from .can_post_story import CanPostStory
-from .delete_stories import DeleteStories
-from .edit_story import EditStory
-from .get_stories import GetStories
-from .post_story import PostStory
+from ..object import Object
 
-class Stories(
-    CanPostStory,
-    DeleteStories,
-    EditStory,
-    GetStories,
-    PostStory,
-):
-    pass
+
+class CanPostStoryResult(Object):
+    """This object represents result of checking whether the current user can post a story on behalf of the specific chat.
+
+    Currently, it can be one of:
+
+    - :obj:`~pyrogram.types.CanPostStoryResultOk`
+    - :obj:`~pyrogram.types.CanPostStoryResultPremiumNeeded`
+    - :obj:`~pyrogram.types.CanPostStoryResultBoostNeeded`
+    - :obj:`~pyrogram.types.CanPostStoryResultActiveStoryLimitExceeded`
+    - :obj:`~pyrogram.types.CanPostStoryResultWeeklyLimitExceeded`
+    - :obj:`~pyrogram.types.CanPostStoryResultMonthlyLimitExceeded`
+    """
+
+    def __init__(self):
+        super().__init__()
