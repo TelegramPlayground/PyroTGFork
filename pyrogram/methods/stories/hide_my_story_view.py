@@ -16,10 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional
+from typing import Optional, Union
 
 import pyrogram
-from pyrogram import raw
+from pyrogram import raw, types
 
 
 class HideMyStoryView:
@@ -27,7 +27,7 @@ class HideMyStoryView:
         self: "pyrogram.Client",
         past: Optional[bool] = True,
         future: Optional[bool] = True,
-    ) -> bool:
+    ) -> Union["types.StoryStealthMode", bool]:
         """Activates stealth mode for stories, which hides all views of stories from the current user in the last "stories_stealth_past_period" seconds and for the next "stories_stealth_future_period" seconds; for Telegram Premium users only.
 
         .. include:: /_includes/usable-by/users.rst
@@ -40,7 +40,7 @@ class HideMyStoryView:
                 Pass True to hide future story views for the next stories_stealth_future_period seconds, as specified by the client configuration.
 
         Returns:
-            ``bool``: On success, True is returned.
+            :obj:`~pyrogram.types.StoryStealthMode`: On success, the information about stealth mode session is returned.
 
         Example:
             .. code-block:: python
@@ -59,5 +59,7 @@ class HideMyStoryView:
                 future=future
             )
         )
-        # TODO
-        return r
+        for i in r.updates:
+            if isinstance(i, raw.types.UpdateStoriesStealthMode):
+                return types.StoryStealthMode._parse(i.stealth_mode)
+        return False

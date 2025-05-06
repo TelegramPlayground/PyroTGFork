@@ -727,6 +727,7 @@ def pyrogram_api():
             StoryPrivacySettingsContacts
             StoryPrivacySettingsCloseFriends
             StoryPrivacySettingsSelectedUsers
+            StoryStealthMode
         """,
     )
 

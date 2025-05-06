@@ -43,6 +43,7 @@ from .story_privacy_settings_everyone import StoryPrivacySettingsEveryone
 from .story_privacy_settings_contacts import StoryPrivacySettingsContacts
 from .story_privacy_settings_close_friends import StoryPrivacySettingsCloseFriends
 from .story_privacy_settings_selected_users import StoryPrivacySettingsSelectedUsers
+from .story_stealth_mode import StoryStealthMode
 
 
 __all__ = [
@@ -72,4 +73,5 @@ __all__ = [
     "StoryPrivacySettingsContacts",
     "StoryPrivacySettingsCloseFriends",
     "StoryPrivacySettingsSelectedUsers",
+    "StoryStealthMode",
 ]
