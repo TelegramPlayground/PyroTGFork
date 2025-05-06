@@ -143,6 +143,28 @@ class GetMessages:
                         int(linkps[4])
                     )
                     message_id = int(linkps[5])
+                elif linkps[4] == "s":
+                    # https://t.me/yehudalev/s/1
+                    if (
+                        self.me and
+                        self.me.is_bot
+                    ):
+                        raise ValueError(
+                            "Invalid ClientType used to parse this story link"
+                        )
+                    raw_chat_id = linkps[3]
+                    story_id = int(linkps[5])
+
+                    story = await self.get_stories(
+                        story_sender_chat_id=raw_chat_id,
+                        story_ids=story_id
+                    )
+                    return types.Message(
+                        client=self,
+                        id=0,
+                        story=story,
+                        empty=True
+                    )
                 else:
                     # https://t.me/TheForum/322/487
                     raw_chat_id = linkps[3]
@@ -192,7 +214,7 @@ class GetMessages:
                 raw_chat_id = linkps[3]
                 if raw_chat_id == "m":
                     raise ValueError(
-                        "Invalid ClientType used to parse this message link"
+                        "Invalid ClientType used to parse this link to start chat"
                     )
                 message_id = int(linkps[4])
 
