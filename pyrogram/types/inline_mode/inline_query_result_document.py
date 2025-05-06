@@ -16,11 +16,14 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import Optional, List
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
 from .inline_query_result import InlineQueryResult
+
+log = logging.getLogger(__name__)
 
 
 class InlineQueryResultDocument(InlineQueryResult):
@@ -28,6 +31,7 @@ class InlineQueryResultDocument(InlineQueryResult):
 
     By default, this file will be sent by the user with an optional caption.
     Alternatively, you can use *input_message_content* to send a message with the specified content instead of the file.
+    Currently, only **.PDF** and **.ZIP** files can be sent using this method.
 
     Parameters:
         document_url (``str``):
@@ -63,13 +67,13 @@ class InlineQueryResultDocument(InlineQueryResult):
         input_message_content (:obj:`~pyrogram.types.InputMessageContent`):
             Content of the message to be sent instead of the file.
 
-        thumb_url (``str``, *optional*):
-            Url of the thumbnail for the result.
+        thumbnail_url (``str``, *optional*):
+            URL of the thumbnail (JPEG only) for the file.
 
-        thumb_width (``int``, *optional*):
+        thumbnail_width (``int``, *optional*):
             Thumbnail width.
 
-        thumb_height (``int``, *optional*):
+        thumbnail_height (``int``, *optional*):
             Thumbnail height.
     """
 
@@ -85,10 +89,52 @@ class InlineQueryResultDocument(InlineQueryResult):
         description: str = "",
         reply_markup: "types.InlineKeyboardMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
+        thumbnail_url: str = None,
+        thumbnail_width: int = 0,
+        thumbnail_height: int = 0,
         thumb_url: str = None,
-        thumb_width: int = 0,
-        thumb_height: int = 0
+        thumb_width: int = None,
+        thumb_height: int = None
     ):
+        if thumb_url and thumbnail_url:
+            raise ValueError(
+                "Parameters `thumb_url` and `thumbnail_url` are mutually "
+                "exclusive."
+            )
+        
+        if thumb_url is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use thumbnail_url instead"
+            )
+            thumbnail_url = thumb_url
+        
+        if thumb_width and thumbnail_width:
+            raise ValueError(
+                "Parameters `thumb_width` and `thumbnail_width` are mutually "
+                "exclusive."
+            )
+        
+        if thumb_width is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use thumbnail_width instead"
+            )
+            thumbnail_width = thumb_width
+        
+        if thumb_height and thumbnail_height:
+            raise ValueError(
+                "Parameters `thumb_height` and `thumbnail_height` are mutually "
+                "exclusive."
+            )
+        
+        if thumb_height is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use thumbnail_height instead"
+            )
+            thumbnail_height = thumb_height
+
         super().__init__("file", id, input_message_content, reply_markup)
 
         self.document_url = document_url
@@ -98,9 +144,9 @@ class InlineQueryResultDocument(InlineQueryResult):
         self.parse_mode = parse_mode
         self.caption_entities = caption_entities
         self.description = description
-        self.thumb_url = thumb_url
-        self.thumb_width = thumb_width
-        self.thumb_height = thumb_height
+        self.thumbnail_url = thumbnail_url
+        self.thumbnail_width = thumbnail_width
+        self.thumbnail_height = thumbnail_height
 
     async def write(self, client: "pyrogram.Client"):
         document = raw.types.InputWebDocument(
@@ -111,16 +157,16 @@ class InlineQueryResultDocument(InlineQueryResult):
         )
 
         thumb = raw.types.InputWebDocument(
-            url=self.thumb_url,
+            url=self.thumbnail_url,
             size=0,
             mime_type="image/jpeg",
             attributes=[
                 raw.types.DocumentAttributeImageSize(
-                    w=self.thumb_width,
-                    h=self.thumb_height
+                    w=self.thumbnail_width,
+                    h=self.thumbnail_height
                 )
             ]
-        ) if self.thumb_url else None
+        ) if self.thumbnail_url else None
 
         message, entities = (await utils.parse_text_entities(
             client, self.caption, self.parse_mode, self.caption_entities

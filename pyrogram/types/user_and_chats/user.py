@@ -188,6 +188,9 @@ class User(Object, Update):
 
         active_user_count (``int``, *optional*):
             The number of recently active users of the bot.
+        
+        paid_message_star_count (``int``, *optional*):
+            Number of Telegram Stars that must be paid by general user for each sent message to the user. If positive and userFullInfo is unknown, use ``canSendMessageToUser`` to check whether the current user must pay.
 
         mention (``str``, *property*):
             Generate a text mention for this user.
@@ -245,6 +248,7 @@ class User(Object, Update):
         have_access: bool = None,
         has_main_web_app: bool = None,
         active_user_count: int = None,
+        paid_message_star_count: int = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -290,6 +294,7 @@ class User(Object, Update):
         self.have_access = have_access
         self.has_main_web_app = has_main_web_app
         self.active_user_count = active_user_count
+        self.paid_message_star_count = paid_message_star_count
         self._raw = _raw
 
     @property
@@ -367,6 +372,7 @@ class User(Object, Update):
             accent_color=types.ChatColor._parse(getattr(user, "color", None)),
             profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
             have_access=not bool(getattr(user, "min", False)),  # apply_min_photo
+            paid_message_star_count=user.send_paid_messages_stars,
             _raw=user
         )
         if parsed_user.is_bot:
@@ -434,7 +440,7 @@ class User(Object, Update):
             client=client
         )
 
-    async def archive(self):
+    async def archive(self) -> bool:
         """Bound method *archive* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -457,7 +463,7 @@ class User(Object, Update):
 
         return await self._client.archive_chats(self.id)
 
-    async def unarchive(self):
+    async def unarchive(self) -> bool:
         """Bound method *unarchive* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -480,7 +486,7 @@ class User(Object, Update):
 
         return await self._client.unarchive_chats(self.id)
 
-    def block(self):
+    async def block(self) -> bool:
         """Bound method *block* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
@@ -501,21 +507,21 @@ class User(Object, Update):
             RPCError: In case of a Telegram RPC error.
         """
 
-        return self._client.block_user(self.id)
+        return await self._client.block_user(self.id)
 
-    def unblock(self):
+    async def unblock(self) -> bool:
         """Bound method *unblock* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
 
         .. code-block:: python
 
-            client.unblock_user(123456789)
+            await client.unblock_user(123456789)
 
         Example:
             .. code-block:: python
 
-                user.unblock()
+                await user.unblock()
 
         Returns:
             True on success.
@@ -524,27 +530,27 @@ class User(Object, Update):
             RPCError: In case of a Telegram RPC error.
         """
 
-        return self._client.unblock_user(self.id)
+        return await self._client.unblock_user(self.id)
 
-    def get_common_chats(self):
+    async def get_common_chats(self) -> list["types.Chat"]:
         """Bound method *get_common_chats* of :obj:`~pyrogram.types.User`.
 
         Use as a shortcut for:
 
         .. code-block:: python
 
-            client.get_common_chats(123456789)
+            await client.get_common_chats(123456789)
 
         Example:
             .. code-block:: python
 
-                user.get_common_chats()
+                await user.get_common_chats()
 
         Returns:
-            True on success.
+            List of :obj:`~pyrogram.types.Chat`: On success, a list of the common chats is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
 
-        return self._client.get_common_chats(self.id)
+        return await self._client.get_common_chats(self.id)

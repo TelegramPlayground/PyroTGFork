@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -21,7 +21,7 @@ from datetime import datetime
 from .message_origin import MessageOrigin
 
 import pyrogram
-from pyrogram import types
+from pyrogram import types, enums
 
 
 class MessageImportInfo(MessageOrigin):
@@ -43,7 +43,7 @@ class MessageImportInfo(MessageOrigin):
         sender_user_name: str = None
     ):
         super().__init__(
-            type="import_info",
+            type=enums.MessageOriginType.IMPORT_INFO,
             date=date
         )
 

@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -33,6 +33,8 @@ class MessageOrigin(Object):
     - :obj:`~pyrogram.types.MessageOriginHiddenUser`
     - :obj:`~pyrogram.types.MessageOriginChat`
     - :obj:`~pyrogram.types.MessageOriginChannel`
+    - :obj:`~pyrogram.types.MessageImportInfo`
+
     """
 
     def __init__(

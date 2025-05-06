@@ -179,9 +179,9 @@ async def parse_messages(
             else:
                 chat_id = 0
 
-            reply_messages = await client.get_messages(
+            reply_messages = await client.get_replied_message(
                 chat_id=chat_id,
-                reply_to_message_ids=messages_with_replies.keys(),
+                message_ids=messages_with_replies.keys(),
                 replies=replies - 1
             )
 
@@ -463,14 +463,16 @@ def datetime_to_timestamp(dt: Optional[datetime]) -> Optional[int]:
 
 
 async def _get_reply_message_parameters(
-    client: "pyroram.Client",
+    client: "pyrogram.Client",
     message_thread_id: int = None,
     reply_parameters: "types.ReplyParameters" = None
 ) -> Union[
     raw.types.InputReplyToStory,
     raw.types.InputReplyToMessage
 ]:
-    reply_to = None
+    reply_to = raw.types.InputReplyToMessage(
+        reply_to_msg_id=0
+    )
     if not reply_parameters:
         if message_thread_id:
             reply_to = raw.types.InputReplyToMessage(
@@ -575,7 +577,7 @@ def get_first_url(
 
 
 def fix_up_voice_audio_uri(
-    client: "pyroram.Client",
+    client: "pyrogram.Client",
     file_name: str,
     dinxe: int
 ) -> str:
@@ -648,3 +650,12 @@ def from_inline_bytes(data: bytes, file_name: str = None) -> BytesIO:
     b.write(data)
     b.name = file_name if file_name else f"photo_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.jpg"
     return b
+
+
+def is_list_like(obj):
+    """
+    Returns `True` if the given object looks like a list.
+
+    Ported from https://github.com/LonamiWebs/Telethon/blob/1cb5ff1dd54ecfad41711fc5a4ecf36d2ad8eaf6/telethon/utils.py#L902
+    """
+    return isinstance(obj, (list, tuple, set, dict, range))

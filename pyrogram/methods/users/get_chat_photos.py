@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from typing import Union, AsyncGenerator, Optional
 
 import pyrogram
@@ -110,6 +111,8 @@ class GetChatPhotos:
             current = 0
 
             for photo in photos:
+                await sleep(0)
+
                 if not photo:
                     continue
 
@@ -153,6 +156,11 @@ class GetChatPhotos:
                 offset += len(photos)
 
                 for photo in photos:
+                    await sleep(0)
+
+                    if not photo:
+                        continue
+
                     yield photo
 
                     current += 1

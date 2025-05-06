@@ -26,21 +26,32 @@ from pyrogram import raw, types, enums, utils
 class SendGift:
     async def send_gift(
         self: "pyrogram.Client",
-        user_id: Union[int, str],
-        gift_id: int,
+        *,
+        user_id: Union[int, str] = None,
+        chat_id: Union[int, str] = None,
+        gift_id: int = None,
         pay_for_upgrade: Optional[bool] = None,
         text: Optional[str] = None,
-        parse_mode: Optional["enums.ParseMode"] = None,
-        entities: Optional[list["types.MessageEntity"]] = None,
+        text_parse_mode: Optional["enums.ParseMode"] = None,
+        text_entities: Optional[list["types.MessageEntity"]] = None,
         is_private: Optional[bool] = None,
     ) -> bool:
-        """Sends a gift to another user.
+        """Sends a gift to the given user or channel chat. The gift can't be converted to Telegram Stars by the receiver.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
+        You must use exactly one of ``user_id`` OR ``chat_id``.
+
         Parameters:
             user_id (``int`` | ``str``):
-                Unique identifier (int) or username (str) of the user that will receive the gift.
+                Required if ``chat_id`` is not specified.
+                Unique identifier (int) or username (str) of the target user that will receive the gift.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
+            chat_id (``int`` | ``str``):
+                Required if ``user_id`` is not specified.
+                Unique identifier (int) or username (str) for the chat or username of the channel that will receive the gift.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
@@ -53,12 +64,12 @@ class SendGift:
             text (``str``, *optional*):
                 Text that will be shown along with the gift. 0-``gift_text_length_max`` characters.
 
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+            text_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.
                 You can combine both syntaxes together.
 
-            entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-                List of special entities that appear in message text, which can be specified instead of *parse_mode*.
+            text_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
+                List of special entities that appear in message text, which can be specified instead of *text_parse_mode*.
                 Only Bold, Italic, Underline, Strikethrough, Spoiler, and CustomEmoji entities are allowed.
 
             is_private (``bool``, *optional*):
@@ -77,12 +88,15 @@ class SendGift:
                 app.send_gift(user_id=user_id, gift_id=123)
 
         """
-        peer = await self.resolve_peer(user_id)
-
-        if not isinstance(peer, (raw.types.InputPeerUser, raw.types.InputPeerSelf)):
-            raise ValueError("user_id must belong to a user.")
-
-        text, entities = (await utils.parse_text_entities(self, text, parse_mode, entities)).values()
+        peer = None
+        if user_id:
+            peer = await self.resolve_peer(user_id)
+        elif chat_id:
+            peer = await self.resolve_peer(chat_id)
+        # TODO
+        if not peer:
+            raise ValueError("You must use exactly one of user_id OR chat_id")
+        text, entities = (await utils.parse_text_entities(self, text, text_parse_mode, text_entities)).values()
 
         invoice = raw.types.InputInvoiceStarGift(
             user_id=peer,

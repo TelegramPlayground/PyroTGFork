@@ -16,9 +16,21 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Callable
+from typing import Any, Callable
 
+import pyrogram
+from pyrogram.filters import Filter
 from .handler import Handler
+
+CallbackFunc: Callable = Callable[
+    [
+        "pyrogram.Client",
+        pyrogram.types.Update,
+        Any,
+        Any
+    ],
+    Any
+]
 
 
 class RawUpdateHandler(Handler):
@@ -67,5 +79,5 @@ class RawUpdateHandler(Handler):
         - :obj:`~pyrogram.raw.types.ChannelForbidden`
     """
 
-    def __init__(self, callback: Callable, filters=None):
+    def __init__(self, callback: CallbackFunc, filters: Filter = None):
         super().__init__(callback, filters)

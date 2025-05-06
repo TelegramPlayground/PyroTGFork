@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from random import choice
+from typing import Optional
 
 from pyrogram import raw, types
 from ..object import Object
@@ -46,7 +47,7 @@ class GiftedPremium(Object):
             Number of months the Telegram Premium subscription will be active
 
         sticker (:obj:`~pyrogram.types.Sticker`):
-            A sticker to be shown in the message; may be null if unknown
+            A sticker to be shown in the transaction information; may be None if unknown
 
         caption (``str``, *optional*):
             Text message chosen by the sender.
@@ -59,15 +60,15 @@ class GiftedPremium(Object):
     def __init__(
         self,
         *,
-        gifter_user_id: int = None,
-        currency: str = None,
-        amount: int = None,
-        cryptocurrency: str = None,
-        cryptocurrency_amount: int = None,
-        month_count: int = None,
-        sticker: "types.Sticker" = None,
-        caption: str = None,
-        caption_entities: list["types.MessageEntity"] = None
+        gifter_user_id: Optional[int] = None,
+        currency: Optional[str] = None,
+        amount: Optional[int] = None,
+        cryptocurrency: Optional[str] = None,
+        cryptocurrency_amount: Optional[int] = None,
+        month_count: Optional[int] = None,
+        sticker: Optional["types.Sticker"] = None,
+        caption: Optional[str] = None,
+        caption_entities: Optional[list["types.MessageEntity"]] = None
     ):
         super().__init__()
 

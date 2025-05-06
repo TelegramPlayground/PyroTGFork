@@ -92,7 +92,7 @@ class InlineKeyboardButton(Object):
 
     def __init__(
         self,
-        text: str,
+        text: str, *,
         url: Optional[str] = None,
         user_id: Optional[int] = None,
         callback_data: Optional[Union[str, bytes]] = None,
@@ -204,6 +204,11 @@ class InlineKeyboardButton(Object):
                 copy_text=types.CopyTextButton(
                     text=b.copy_text
                 )
+            )
+
+        if isinstance(b, raw.types.KeyboardButton):
+            return InlineKeyboardButton(
+                text=b.text
             )
 
     async def write(self, client: "pyrogram.Client"):

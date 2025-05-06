@@ -29,6 +29,7 @@ from .inline_query_result_cached_sticker import InlineQueryResultCachedSticker
 from .inline_query_result_cached_video import InlineQueryResultCachedVideo
 from .inline_query_result_cached_voice import InlineQueryResultCachedVoice
 from .inline_query_result_contact import InlineQueryResultContact
+from .inline_query_result_game import InlineQueryResultGame
 from .inline_query_result_document import InlineQueryResultDocument
 from .inline_query_result_location import InlineQueryResultLocation
 from .inline_query_result_photo import InlineQueryResultPhoto
@@ -56,6 +57,7 @@ __all__ = [
     "InlineQueryResultVoice",
     "InlineQueryResultArticle",
     "InlineQueryResultContact",
+    "InlineQueryResultGame",
     "InlineQueryResultLocation",
     "InlineQueryResultVenue",
 ]

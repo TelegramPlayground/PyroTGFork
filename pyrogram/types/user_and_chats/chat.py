@@ -222,6 +222,16 @@ class Chat(Object):
         can_enable_paid_reaction (``bool``, *optional*):
             True, if paid reaction can be enabled in the channel chat; for channels only.
 
+        gift_count (``int``, *optional*):
+            Number of saved to profile gifts for other users or the total number of received gifts for the current user.
+            Number of saved to profile gifts for channels without ``can_post_messages`` administrator right, otherwise, the total number of received gifts.
+
+        can_send_gift (``bool``, *optional*):
+            True, if gifts can be sent to the chat.
+
+        paid_message_star_count (``int``, *optional*):
+            Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
 
@@ -289,6 +299,9 @@ class Chat(Object):
         can_send_paid_media: bool = None,
         pending_join_request_count: int = None,
         can_enable_paid_reaction: bool = None,
+        gift_count: int = None,
+        can_send_gift: bool = None,
+        paid_message_star_count: int = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -358,10 +371,20 @@ class Chat(Object):
         self.can_send_paid_media = can_send_paid_media
         self.pending_join_request_count = pending_join_request_count
         self.can_enable_paid_reaction = can_enable_paid_reaction
+        self.gift_count = gift_count
+        self.can_send_gift = can_send_gift
+        self.paid_message_star_count = paid_message_star_count
         self._raw = _raw
 
     @staticmethod
     def _parse_user_chat(client, user: raw.types.User) -> "Chat":
+        if isinstance(user, int):
+            return Chat(
+                id=user,
+                client=client,
+                _raw=None
+            )
+
         peer_id = user.id
 
         if isinstance(user, raw.types.UserEmpty):
@@ -408,6 +431,13 @@ class Chat(Object):
 
     @staticmethod
     def _parse_chat_chat(client, chat: raw.types.Chat) -> "Chat":
+        if isinstance(chat, int):
+            return Chat(
+                id=-chat,
+                client=client,
+                _raw=None
+            )
+
         peer_id = -chat.id
 
         if isinstance(chat, raw.types.ChatEmpty):
@@ -444,6 +474,13 @@ class Chat(Object):
 
     @staticmethod
     def _parse_channel_chat(client, channel: raw.types.Channel) -> "Chat":
+        if isinstance(channel, int):
+            return Chat(
+                id=utils.get_channel_id(channel),
+                client=client,
+                _raw=None
+            )
+
         peer_id = utils.get_channel_id(channel.id)
 
         if isinstance(channel, raw.types.ChannelForbidden):
@@ -502,6 +539,7 @@ class Chat(Object):
             accent_color=types.ChatColor._parse(getattr(channel, "color", None)),
             profile_color=types.ChatColor._parse_profile_color(getattr(channel, "profile_color", None)),
             emoji_status=types.EmojiStatus._parse(client, channel.emoji_status),
+            paid_message_star_count=channel.send_paid_messages_stars,
             _raw=channel
         )
 
@@ -596,6 +634,8 @@ class Chat(Object):
 
             if getattr(full_user, "wallpaper", None):
                 parsed_chat.background = types.ChatBackground._parse(client, full_user.wallpaper)
+            parsed_chat.gift_count = full_user.stargifts_count
+
         else:
             full_chat = chat_full.full_chat
             chat_raw = chats[full_chat.id]
@@ -645,6 +685,9 @@ class Chat(Object):
 
                 parsed_chat.can_send_paid_media = getattr(full_chat, "paid_media_allowed", None)
                 parsed_chat.can_enable_paid_reaction = full_chat.paid_reactions_available
+                parsed_chat.gift_count = full_chat.stargifts_count
+
+                parsed_chat.can_send_gift = full_chat.stargifts_available
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 

@@ -51,7 +51,7 @@ class GiftedStars(Object):
             Identifier of the transaction for Telegram Stars purchase; for receiver only
 
         sticker (:obj:`~pyrogram.types.Sticker`):
-            A sticker to be shown in the message; may be null if unknown
+            A sticker to be shown in the transaction information; may be None if unknown
 
     """
 

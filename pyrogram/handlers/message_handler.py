@@ -16,9 +16,19 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Callable
+from typing import Any, Callable
 
+import pyrogram
+from pyrogram.filters import Filter
 from .handler import Handler
+
+CallbackFunc: Callable = Callable[
+    [
+        "pyrogram.Client",
+        pyrogram.types.Message
+    ],
+    Any
+]
 
 
 class MessageHandler(Handler):
@@ -33,7 +43,7 @@ class MessageHandler(Handler):
             Pass a function that will be called when a new Message arrives. It takes *(client, message)*
             as positional arguments (look at the section below for a detailed description).
 
-        filters (:obj:`Filters`):
+        filters (:obj:`Filter`):
             Pass one or more filters to allow only a subset of messages to be passed
             in your callback function.
 
@@ -43,7 +53,8 @@ class MessageHandler(Handler):
 
         message (:obj:`~pyrogram.types.Message`):
             The received message.
+
     """
 
-    def __init__(self, callback: Callable, filters=None):
+    def __init__(self, callback: CallbackFunc, filters: Filter = None):
         super().__init__(callback, filters)

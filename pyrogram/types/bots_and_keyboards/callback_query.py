@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+
 import re
 from typing import Union, Optional
 
@@ -88,7 +89,16 @@ class CallbackQuery(Object, Update):
         self.matches = matches
 
     @staticmethod
-    async def _parse(client: "pyrogram.Client", callback_query, users, chats) -> "CallbackQuery":
+    async def _parse(
+        client: "pyrogram.Client",
+        callback_query: Union[
+            "raw.types.UpdateBotCallbackQuery",
+            "raw.types.UpdateInlineBotCallbackQuery",
+            "raw.types.UpdateBusinessBotCallbackQuery",
+        ],
+        users: dict,
+        chats: dict,
+    ) -> "CallbackQuery":
         message = None
         inline_message_id = None
 
@@ -98,7 +108,6 @@ class CallbackQuery(Object, Update):
             message_id = callback_query.msg_id
 
             message = client.message_cache[(chat_id, message_id)]
-
             if not message:
                 try:
                     message = await client.get_messages(
@@ -106,6 +115,8 @@ class CallbackQuery(Object, Update):
                         message_ids=message_id
                     )
                 except ChannelPrivate:
+                    message = None
+                if not message:
                     channel = chats.get(peer_id, None)
                     if channel:
                         message = types.Message(

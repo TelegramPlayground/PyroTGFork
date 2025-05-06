@@ -210,6 +210,9 @@ def pyrogram_api():
             get_chat_history_count
             read_chat_history
             get_messages
+            get_chat_pinned_message
+            get_callback_query_message
+            get_replied_message
             view_messages
             get_discussion_message
             get_discussion_replies
@@ -224,6 +227,8 @@ def pyrogram_api():
             retract_vote
             translate_text
             translate_message_text
+            delete_chat_history
+            send_screenshot_notification
         """,
         chats="""
         Chats
@@ -366,6 +371,7 @@ def pyrogram_api():
             answer_web_app_query
             send_web_app_custom_request
             get_owned_bots
+            get_similar_bots
         """,
         phone="""
         Phone
@@ -398,11 +404,12 @@ def pyrogram_api():
             get_payment_form
             send_payment_form
             get_available_gifts
-            get_user_gifts
+            get_received_gifts
             sell_gift
             send_gift
             toggle_gift_is_saved
             get_owned_star_count
+            get_business_account_star_balance
         """,
         advanced="""
         Advanced
@@ -475,6 +482,8 @@ def pyrogram_api():
             VideoChatStarted
             VideoChatEnded
             VideoChatParticipantsInvited
+            PaidMessagePriceChanged
+            PaidMessagesRefunded
             Dialog
             EmojiStatus
             GroupCallParticipant
@@ -518,7 +527,7 @@ def pyrogram_api():
             Location
             Venue
             Gift
-            UserGift
+            ReceivedGift
             UpgradedGift
             WebAppData
             MessageAutoDeleteTimerChanged
@@ -620,6 +629,7 @@ def pyrogram_api():
             InlineQueryResultVoice
             InlineQueryResultArticle
             InlineQueryResultContact
+            InlineQueryResultGame
             InlineQueryResultLocation
             InlineQueryResultVenue
         """,
@@ -659,6 +669,7 @@ def pyrogram_api():
         """,
         payments="""
         Payments
+            BusinessBotRights
             BusinessConnection
             BusinessIntro
             BusinessLocation
@@ -676,6 +687,10 @@ def pyrogram_api():
             ShippingQuery
             PreCheckoutQuery
             StarAmount
+            PaidReactionType
+            PaidReactionTypeAnonymous
+            PaidReactionTypeChat
+            PaidReactionTypeRegular
         """
     )
 
@@ -750,7 +765,8 @@ def pyrogram_api():
             Message.translate
             Message.pay
             Message.star
-            UserGift.toggle
+            ReceivedGift.toggle
+            ExternalReplyInfo.download
         """,
         chat="""
         Chat
@@ -787,6 +803,10 @@ def pyrogram_api():
             CallbackQuery.edit_message_caption
             CallbackQuery.edit_message_media
             CallbackQuery.edit_message_reply_markup
+            ChosenInlineResult.edit_message_text
+            ChosenInlineResult.edit_message_caption
+            ChosenInlineResult.edit_message_media
+            ChosenInlineResult.edit_message_reply_markup
         """,
         inline_query="""
         InlineQuery
@@ -859,6 +879,7 @@ def pyrogram_api():
             ClientPlatform
             MessageEntityType
             MessageMediaType
+            MessageOriginType
             MessageServiceType
             MessagesFilter
             ParseMode

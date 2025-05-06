@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional, Union
+from typing import Optional, Union, Callable
 
 import pyrogram
 from pyrogram import raw, types, utils, enums
@@ -99,6 +99,12 @@ class ExternalReplyInfo(Object):
 
         venue (:obj:`~pyrogram.types.Venue`, *optional*):
             Message is a venue, information about the venue.
+        
+        media (:obj:`~pyrogram.enums.MessageMediaType`, *optional*):
+            The external reply is a media message.
+            This field will contain the enumeration type of the media message.
+            You can use ``media = getattr(external_reply, external_reply.media.value)`` to access the media message.
+
     """
 
     def __init__(
@@ -129,6 +135,7 @@ class ExternalReplyInfo(Object):
         location: "types.Location" = None,
         poll: "types.Poll" = None,
         venue: "types.Venue" = None,
+        media: "enums.MessageMediaType" = None,
     ):
         super().__init__(client)
 
@@ -156,6 +163,7 @@ class ExternalReplyInfo(Object):
         self.location = location
         self.poll = poll
         self.venue = venue
+        self.media = media
 
     @staticmethod
     async def _parse(
@@ -268,7 +276,7 @@ class ExternalReplyInfo(Object):
                                 video_note = types.VideoNote._parse(client, doc, video_attributes)
                                 media_type = enums.MessageMediaType.VIDEO_NOTE
                             else:
-                                video = types.Video._parse(client, doc, video_attributes, file_name, media.ttl_seconds)
+                                video = types.Video._parse(client, media, video_attributes, file_name, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO
                                 has_media_spoiler = media.spoiler
                         elif raw.types.DocumentAttributeAudio in attributes:
@@ -336,5 +344,99 @@ class ExternalReplyInfo(Object):
                 invoice=invoice,
                 location=location,
                 poll=poll,
-                venue=venue
+                venue=venue,
+                media=media_type
             )
+
+
+    async def download(
+        self,
+        file_name: str = "",
+        in_memory: bool = False,
+        block: bool = True,
+        idx: int = None,
+        progress: Callable = None,
+        progress_args: tuple = ()
+    ) -> Optional[Union[str, "io.BytesIO", list[str], list["io.BytesIO"]]]:
+        """Bound method *download* of :obj:`~pyrogram.types.ExternalReplyInfo`.
+
+        Use as a shortcut for:
+
+        .. code-block:: python
+
+            await client.download_media(message.external_reply.document)
+
+        Example:
+            .. code-block:: python
+
+                await message.external_reply.download()
+
+        Parameters:
+            file_name (``str``, *optional*):
+                A custom *file_name* to be used instead of the one provided by Telegram.
+                By default, all files are downloaded in the *downloads* folder in your working directory.
+                You can also specify a path for downloading files in a custom location: paths that end with "/"
+                are considered directories. All non-existent folders will be created automatically.
+
+            in_memory (``bool``, *optional*):
+                Pass True to download the media in-memory.
+                A binary file-like object with its attribute ".name" set will be returned.
+                Defaults to False.
+
+            block (``bool``, *optional*):
+                Blocks the code execution until the file has been downloaded.
+                Defaults to True.
+
+            idx (``int``, *optional*):
+                In case of a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media``, the zero based index of the :obj:`~pyrogram.types.PaidMedia` to download. Raises ``IndexError`` if the index specified does not exist in the original ``message``.
+
+            progress (``Callable``, *optional*):
+                Pass a callback function to view the file transmission progress.
+                The function must take *(current, total)* as positional arguments (look at Other Parameters below for a
+                detailed description) and will be called back each time a new file chunk has been successfully
+                transmitted.
+
+            progress_args (``tuple``, *optional*):
+                Extra custom arguments for the progress callback function.
+                You can pass anything you need to be available in the progress callback scope; for example, a Message
+                object or a Client instance in order to edit the message with the updated progress status.
+
+        Other Parameters:
+            current (``int``):
+                The amount of bytes transmitted so far.
+
+            total (``int``):
+                The total size of the file.
+
+            *args (``tuple``, *optional*):
+                Extra custom arguments as defined in the ``progress_args`` parameter.
+                You can either keep ``*args`` or add every single extra argument in your function signature.
+
+        Returns:
+            ``str`` | ``None`` | :obj:`io.BytesIO`: On success, the absolute path of the downloaded file is returned,
+            otherwise, in case the download failed or was deliberately stopped with
+            :meth:`~pyrogram.Client.stop_transmission`, None is returned.
+            Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.
+            If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` containing ``minithumbnail`` and ``idx`` is not specified, then a list of paths or binary file-like objects is returned.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+            IndexError: In case of wrong value of ``idx``.
+            ValueError: If the message doesn't contain any downloadable media.
+
+        """
+        message = getattr(self, self.media.value, None)
+        if not message:
+            raise ValueError(
+                f"The reply doesn't contain any downloadable media"
+            )
+
+        return await self._client.download_media(
+            message=message,
+            file_name=file_name,
+            in_memory=in_memory,
+            block=block,
+            idx=idx,
+            progress=progress,
+            progress_args=progress_args,
+        )

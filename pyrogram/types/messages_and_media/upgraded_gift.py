@@ -19,7 +19,7 @@
 from typing import Optional
 
 import pyrogram
-from pyrogram import raw, utils
+from pyrogram import raw, types, utils
 from ..object import Object
 
 
@@ -33,6 +33,9 @@ class UpgradedGift(Object):
         title (``str``):
             The title of the upgraded gift.
 
+        name (``str``):
+            Unique name of the upgraded gift.
+
         number (``int``):
             Unique number of the upgraded gift among gifts upgraded from the same gift.
 
@@ -42,8 +45,20 @@ class UpgradedGift(Object):
         max_upgraded_count (``int``):
             The maximum number of gifts that can be upgraded from the same gift.
 
-        owner_user_id (``int``, *optional*):
-            User identifier of the user that owns the upgraded gift.
+        owner_id (:obj:`~pyrogram.types.User`, *optional*):
+            User identifier of the user or the chat that owns the upgraded gift; may be None if unknown.
+
+        owner_address (``str``, *optional*):
+            Address of the gift NFT owner in TON blockchain.
+
+        owner_name (``str``, *optional*):
+            Name of the owner for the case when owner identifier and address aren't known.
+
+        gift_address (``str``, *optional*):
+            Address of the gift NFT in TON blockchain.
+
+        link (``str``, *property*):
+            The link is a link to an upgraded gift.
 
     """
 
@@ -53,35 +68,56 @@ class UpgradedGift(Object):
         client: "pyrogram.Client" = None,
         id: int,
         title: str,
+        name: str,
         number: int,
         total_upgraded_count: int,
         max_upgraded_count: int,
-        owner_user_id: Optional[int] = None,
+        owner_id: Optional["types.Chat"] = None,
+        owner_address: Optional[str] = None,
+        owner_name: Optional[str] = None,
+        gift_address: Optional[str] = None,
         _raw: "raw.types.StarGiftUnique" = None,
     ):
         super().__init__(client)
 
         self.id = id
         self.title = title
+        self.name = name
         self.number = number
         self.total_upgraded_count = total_upgraded_count
         self.max_upgraded_count = max_upgraded_count
-        self.owner_user_id = owner_user_id
+        self.owner_id = owner_id
+        self.owner_address = owner_address
+        self.owner_name = owner_name
+        self.gift_address = gift_address
         self._raw = _raw  # TODO
 
 
     @staticmethod
     def _parse(
         client,
-        star_gift: "raw.types.StarGiftUnique"
+        star_gift: "raw.types.StarGiftUnique",
+        users: dict
     ) -> "UpgradedGift":
+        owner_id = utils.get_raw_peer_id(getattr(star_gift, "owner_id", None))
         return UpgradedGift(
             id=star_gift.id,
             title=star_gift.title,
+            name=star_gift.slug,
             number=star_gift.num,
             total_upgraded_count=star_gift.availability_issued,
             max_upgraded_count=star_gift.availability_total,
-            owner_user_id=utils.get_raw_peer_id(getattr(star_gift, "owner_id", None)),
+            owner_id=types.Chat._parse_user_chat(
+                client,
+                users.get(owner_id, owner_id)
+            ),
+            owner_address=getattr(star_gift, "owner_address", None),
+            owner_name=getattr(star_gift, "owner_name", None),
+            gift_address=getattr(star_gift, "gift_address", None),
             _raw=star_gift,
             client=client
         )
+
+    @property
+    def link(self) -> str:
+        return f"https://t.me/nft/{self.name}"

@@ -18,6 +18,7 @@
 
 from .copy_media_group import CopyMediaGroup
 from .copy_message import CopyMessage
+from .delete_chat_history import DeleteChatHistory
 from .delete_messages import DeleteMessages
 from .download_media import DownloadMedia
 from .edit_cached_media import EditCachedMedia
@@ -72,10 +73,12 @@ from .get_chat_sponsored_messages import GetChatSponsoredMessages
 from .search_public_messages_by_tag import SearchPublicMessagesByTag
 from .count_public_messages_by_tag import CountPublicMessagesByTag
 from .translate_text import TranslateText
+from .send_screenshot_notification import SendScreenshotNotification
 
 class Messages(
     CopyMediaGroup,
     CopyMessage,
+    DeleteChatHistory,
     DeleteMessages,
     DownloadMedia,
     EditCachedMedia,
@@ -117,6 +120,7 @@ class Messages(
     SendPaidMedia,
     SendPhoto,
     SendPoll,
+    SendScreenshotNotification,
     SendSticker,
     SendVenue,
     SendVideo,

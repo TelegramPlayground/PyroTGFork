@@ -367,13 +367,13 @@ gift_code = create(gift_code_filter)
 
 # endregion
 
-# region user_gift
-async def user_gift_filter(_, __, m: Message):
-    return bool(m.user_gift)
+# region received_gift
+async def received_gift_filter(_, __, m: Message):
+    return bool(m.received_gift)
 
 
-user_gift = create(user_gift_filter)
-"""Filter messages that contain :obj:`~pyrogram.types.UserGift` objects."""
+received_gift = create(received_gift_filter)
+"""Filter messages that contain :obj:`~pyrogram.types.ReceivedGift` objects."""
 
 
 # endregion
@@ -903,7 +903,7 @@ from_scheduled: Filter = create(from_scheduled_filter)
 async def linked_channel_filter(_, __, m: Message) -> bool:
     return bool(
         m.forward_origin and
-        m.forward_origin.type == "channel" and
+        m.forward_origin.type == enums.MessageOriginType.CHANNEL and
         m.forward_origin.chat == m.sender_chat
     )
 

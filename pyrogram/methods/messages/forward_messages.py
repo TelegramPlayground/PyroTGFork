@@ -20,8 +20,7 @@ from datetime import datetime
 from typing import Union, Iterable
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
 
 
 class ForwardMessages:
@@ -34,8 +33,10 @@ class ForwardMessages:
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        drop_author: bool = None,
-        drop_media_captions: bool = None,
+        paid_message_star_count: int = None,
+        send_copy: bool = None,
+        remove_caption: bool = None,
+        video_start_timestamp: int = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", list["types.Message"]]:
@@ -70,11 +71,17 @@ class ForwardMessages:
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a fee; for bots only
 
-            drop_author (``bool``, *optional*):
-                Whether to forward messages without quoting the original author.
+            paid_message_star_count (``int``, *optional*):
+                The number of Telegram Stars the user agreed to pay to send the messages.
 
-            drop_media_captions (``bool``, *optional*):
-                Whether to strip captions from media.
+            send_copy (``bool``, *optional*):
+                Pass True to copy content of the messages without reference to the original sender.
+
+            remove_caption (``bool``, *optional*):
+                Pass True to remove media captions of message copies.
+
+            video_start_timestamp (``int``, *optional*):
+                New start timestamp for the forwarded video in the message.
 
             send_as (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the chat or channel to send the message as.
@@ -100,7 +107,7 @@ class ForwardMessages:
                 await app.forward_messages(to_chat, from_chat, [1, 2, 3])
         """
 
-        is_iterable = not isinstance(message_ids, int)
+        is_iterable = utils.is_list_like(message_ids)
         message_ids = list(message_ids) if is_iterable else [message_ids]
 
         r = await self.invoke(
@@ -110,16 +117,16 @@ class ForwardMessages:
                 id=message_ids,
                 silent=disable_notification or None,
                 # TODO
-                # TODO
-                drop_author=drop_author,
-                drop_media_captions=drop_media_captions,
+                video_timestamp=video_start_timestamp,
+                drop_author=send_copy,
+                drop_media_captions=remove_caption,
                 noforwards=protect_content,
                 allow_paid_floodskip=allow_paid_broadcast,
+                allow_paid_stars=paid_message_star_count,
                 random_id=[self.rnd_id() for _ in message_ids],
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 top_msg_id=message_thread_id
-                # TODO
             )
         )
 

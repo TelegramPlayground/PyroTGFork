@@ -20,8 +20,7 @@ import logging
 from typing import Union, Iterable
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types, utils
 
 log = logging.getLogger(__name__)
 
@@ -59,7 +58,8 @@ class GetForumTopic:
         Raises:
             ValueError: In case of invalid arguments.
         """
-        is_iterable = not isinstance(message_thread_ids, int)
+
+        is_iterable = utils.is_list_like(message_thread_ids)
         ids = list(message_thread_ids) if is_iterable else [message_thread_ids]
 
         r = await self.invoke(

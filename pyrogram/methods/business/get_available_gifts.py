@@ -31,7 +31,7 @@ class GetAvailableGifts:
         .. include:: /_includes/usable-by/users-bots.rst
 
         Returns:
-            List of :obj:`~pyrogram.types.Gift` | :obj:`~pyrogram.types.UpgradedGift`: On success, a list of star gifts is returned.
+            List of :obj:`~pyrogram.types.Gift` | :obj:`~pyrogram.types.UpgradedGift`: On success, a list of star gifts that can be sent by the Client to users and channel chats is returned.
 
         Example:
             .. code-block:: python
@@ -42,4 +42,7 @@ class GetAvailableGifts:
             raw.functions.payments.GetStarGifts(hash=0)
         )
 
-        return types.List([await types.Gift._parse(self, gift) for gift in r.gifts])
+        return types.List([
+            await types.Gift._parse(self, gift, {})
+            for gift in r.gifts
+        ])

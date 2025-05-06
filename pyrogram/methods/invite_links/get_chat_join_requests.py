@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from typing import Union, Optional, AsyncGenerator
 
 import pyrogram
@@ -80,6 +81,7 @@ class GetChatJoinRequests:
             offset_user = await self.resolve_peer(r.importers[-1].user_id)
 
             for i in r.importers:
+                await sleep(0)
                 yield types.ChatJoiner._parse(self, i, users)
 
                 current += 1
