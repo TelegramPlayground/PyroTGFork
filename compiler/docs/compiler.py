@@ -390,7 +390,6 @@ def pyrogram_api():
         """,
         stories="""
         Stories
-            activate_story_stealth_mode
             can_post_story
             get_stories
             post_story
@@ -398,6 +397,7 @@ def pyrogram_api():
             edit_business_story
             delete_stories
             delete_business_story
+            hide_my_story_view
         """,
         payments="""
         Payments

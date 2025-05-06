@@ -22,8 +22,8 @@ import pyrogram
 from pyrogram import raw
 
 
-class ActivateStoryStealthMode:
-    async def activate_story_stealth_mode(
+class HideMyStoryView:
+    async def hide_my_story_view(
         self: "pyrogram.Client",
         past: Optional[bool] = True,
         future: Optional[bool] = True,
@@ -46,7 +46,7 @@ class ActivateStoryStealthMode:
             .. code-block:: python
 
                 # Erase and hide story views in the past stories_stealth_past_period and the next stories_stealth_future_period seconds
-                await app.activate_story_stealth_mode()
+                await app.hide_my_story_view()
 
         Raises:
             RPCError: In case of Telegram RPCError.
@@ -60,4 +60,4 @@ class ActivateStoryStealthMode:
             )
         )
         # TODO
-        return True
+        return r
