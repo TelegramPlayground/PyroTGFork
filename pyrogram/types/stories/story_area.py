@@ -18,7 +18,7 @@
 
 
 import pyrogram
-from pyrogram import types, raw
+from pyrogram import types, raw, utils
 
 from ..object import Object
 
@@ -51,14 +51,46 @@ class StoryArea(Object):
         area: "raw.base.MediaArea",
     ) -> "StoryArea":
         story_area_type = None
-        # if isinstance(area, raw.types.)
-        # mediaAreaVenue#be82db9c coordinates:MediaAreaCoordinates geo:GeoPoint title:string address:string provider:string venue_id:string venue_type:string = MediaArea;
-        # mediaAreaGeoPoint#cad5452d flags:# coordinates:MediaAreaCoordinates geo:GeoPoint address:flags.0?GeoPointAddress = MediaArea;
-        # mediaAreaSuggestedReaction#14455871 flags:# dark:flags.0?true flipped:flags.1?true coordinates:MediaAreaCoordinates reaction:Reaction = MediaArea;
-        # mediaAreaChannelPost#770416af coordinates:MediaAreaCoordinates channel_id:long msg_id:int = MediaArea;
-        # mediaAreaUrl#37381085 coordinates:MediaAreaCoordinates url:string = MediaArea;
-        # mediaAreaWeather#49a6549c coordinates:MediaAreaCoordinates emoji:string temperature_c:double color:int = MediaArea;
-        # mediaAreaStarGift#5787686d coordinates:MediaAreaCoordinates slug:string = MediaArea;
+        if isinstance(area, raw.types.MediaAreaVenue):
+            # coordinates:MediaAreaCoordinates geo:GeoPoint title:string address:string provider:string venue_id:string venue_type:string
+            story_area_type = area
+        if isinstance(area, raw.types.MediaAreaGeoPoint):
+            story_area_type = types.StoryAreaTypeLocation(
+                latitude=area.geo.lat,
+                longitude=area.geo.long,
+                horizontal_accuracy=area.geo.accuracy_radius,
+                address=types.LocationAddress(
+                    country_code=area.address.country_iso2,
+                    state=area.address.state,
+                    city=area.address.city,
+                    street=area.address.street,
+                ) if area.address else None
+            )
+        if isinstance(area, raw.types.MediaAreaSuggestedReaction):
+            story_area_type = types.StoryAreaTypeSuggestedReaction(
+                reaction_type=types.ReactionType._parse(client, area.reaction),
+                is_dark=area.dark,
+                is_flipped=area.flipped
+            )
+        if isinstance(area, raw.types.MediaAreaChannelPost):
+            story_area_type = types.StoryAreaTypeMessage(
+                chat_id=utils.get_channel_id(area.channel_id),
+                message_id=area.msg_id
+            )
+        if isinstance(area, raw.types.MediaAreaUrl):
+            story_area_type = types.StoryAreaTypeLink(
+                url=area.url
+            )
+        if isinstance(area, raw.types.MediaAreaWeather):
+            story_area_type = types.StoryAreaTypeWeather(
+                temperature=area.temperature_c,
+                emoji=area.emoji,
+                background_color=area.color
+            )
+        if isinstance(area, raw.types.MediaAreaStarGift):
+            story_area_type = types.StoryAreaTypeUniqueGift(
+                name=area.slug
+            )
         return StoryArea(
             position=types.StoryAreaPosition._parse(area.coordinates),
             type=story_area_type,

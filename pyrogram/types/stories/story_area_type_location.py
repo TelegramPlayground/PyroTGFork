@@ -70,9 +70,9 @@ class StoryAreaTypeLocation(StoryAreaType):
                 accuracy_radius=self.horizontal_accuracy
             ),
             address=raw.types.GeoPointAddress(
-                 country_iso2=self.address.country_code,
-                 state=self.address.state,
-                 city=self.address.city,
-                 street=self.address.street
+                country_iso2=self.address.country_code,
+                state=self.address.state,
+                city=self.address.city,
+                street=self.address.street
             ) if self.address else None
         )

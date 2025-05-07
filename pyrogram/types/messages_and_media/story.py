@@ -217,6 +217,7 @@ class Story(Object, Update):
             # from_id:flags.18?Peer
             # fwd_from:flags.17?StoryFwdHeader 
             # privacy:flags.2?Vector<PrivacyRule>
+
             # sent_reaction:flags.15?Reaction = StoryItem;
 
             if isinstance(story_item.media, raw.types.MessageMediaPhoto):
@@ -249,7 +250,7 @@ class Story(Object, Update):
                         area,
                     ) for area in story_item.media_areas
                 ]
-                
+
         return (
             date,
             expire_date,
