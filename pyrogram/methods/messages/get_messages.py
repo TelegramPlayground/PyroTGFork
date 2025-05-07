@@ -156,7 +156,7 @@ class GetMessages:
                     story_id = int(linkps[5])
 
                     story = await self.get_stories(
-                        story_sender_chat_id=raw_chat_id,
+                        story_poster_chat_id=raw_chat_id,
                         story_ids=story_id
                     )
                     return types.Message(

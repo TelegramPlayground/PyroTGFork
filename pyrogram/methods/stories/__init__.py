@@ -24,6 +24,7 @@ from .forward_story import ForwardStory
 from .get_stories import GetStories
 from .hide_my_story_view import HideMyStoryView
 from .post_story import PostStory
+from .toggle_story_is_posted_to_chat_page import ToggleStoryIsPostedToChatPage
 
 class Stories(
     CanPostStory,
@@ -33,5 +34,6 @@ class Stories(
     GetStories,
     HideMyStoryView,
     PostStory,
+    ToggleStoryIsPostedToChatPage,
 ):
     pass

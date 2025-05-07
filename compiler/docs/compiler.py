@@ -399,6 +399,7 @@ def pyrogram_api():
             delete_business_story
             hide_my_story_view
             forward_story
+            toggle_story_is_posted_to_chat_page
         """,
         payments="""
         Payments
