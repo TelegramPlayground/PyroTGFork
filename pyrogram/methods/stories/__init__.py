@@ -20,6 +20,7 @@
 from .can_post_story import CanPostStory
 from .delete_stories import DeleteStories
 from .edit_story import EditStory
+from .forward_story import ForwardStory
 from .get_stories import GetStories
 from .hide_my_story_view import HideMyStoryView
 from .post_story import PostStory
@@ -28,6 +29,7 @@ class Stories(
     CanPostStory,
     DeleteStories,
     EditStory,
+    ForwardStory,
     GetStories,
     HideMyStoryView,
     PostStory,

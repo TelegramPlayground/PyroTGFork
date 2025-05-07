@@ -398,6 +398,7 @@ def pyrogram_api():
             delete_stories
             delete_business_story
             hide_my_story_view
+            forward_story
         """,
         payments="""
         Payments
