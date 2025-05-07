@@ -27,7 +27,7 @@ class ForwardStory:
     async def forward_story(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        story_sender_chat_id: Union[int, str],
+        story_poster_chat_id: Union[int, str],
         story_id: int,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
@@ -59,7 +59,7 @@ class ForwardStory:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            story_sender_chat_id (``int`` | ``str``):
+            story_poster_chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
@@ -145,7 +145,7 @@ class ForwardStory:
                 invert_media=show_caption_above_media,
                 peer=await self.resolve_peer(chat_id),
                 media=raw.types.InputMediaStory(
-                    peer=await self.resolve_peer(story_sender_chat_id),
+                    peer=await self.resolve_peer(story_poster_chat_id),
                     id=story_id
                 ),
                 silent=disable_notification or None,
