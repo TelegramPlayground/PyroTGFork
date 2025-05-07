@@ -38,7 +38,7 @@ class EditStory:
         progress: Callable = None,
         progress_args: tuple = (),
     ) -> "types.Story":
-        """Post new story.
+        """Changes content, privacy settings and caption of a story.
 
         .. include:: /_includes/usable-by/users.rst
 
@@ -210,7 +210,7 @@ class EditStory:
         progress: Callable = None,
         progress_args: tuple = (),
     ) -> "types.Story":
-        """Post new story.
+        """Edits a story previously posted by the bot on behalf of a managed business account. Requires the can_manage_stories business bot right.
 
         .. include:: /_includes/usable-by/bots.rst
 
