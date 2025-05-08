@@ -21,6 +21,7 @@ from .can_post_story import CanPostStory
 from .delete_stories import DeleteStories
 from .edit_story import EditStory
 from .forward_story import ForwardStory
+from .get_chat_active_stories import GetChatActiveStories
 from .get_stories import GetStories
 from .hide_my_story_view import HideMyStoryView
 from .post_story import PostStory
@@ -31,6 +32,7 @@ class Stories(
     DeleteStories,
     EditStory,
     ForwardStory,
+    GetChatActiveStories,
     GetStories,
     HideMyStoryView,
     PostStory,
