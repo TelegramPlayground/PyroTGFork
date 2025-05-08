@@ -21,6 +21,7 @@ from .delete_sticker_set import DeleteStickerSet
 from .get_custom_emoji_stickers import GetCustomEmojiStickers
 from .get_message_effects import GetMessageEffects
 from .get_stickers import GetStickers
+from .set_sticker_position_in_set import SetStickerPositionInSet
 from .set_sticker_set_title import SetStickerSetTitle
 from .upload_sticker_file import UploadStickerFile
 
@@ -31,6 +32,7 @@ class Stickers(
     GetCustomEmojiStickers,
     GetMessageEffects,
     GetStickers,
+    SetStickerPositionInSet,
     SetStickerSetTitle,
     UploadStickerFile,
 ):
