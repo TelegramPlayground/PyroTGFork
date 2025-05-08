@@ -212,7 +212,7 @@ class PostStory:
 
             privacy_rules = []
             if privacy_settings:
-                privacy_rules += (await privacy_rule.write(self))
+                privacy_rules += (await privacy_settings.write(self))
             else:
                 privacy_rules += (await (types.StoryPrivacySettingsEveryone()).write(self))
 
