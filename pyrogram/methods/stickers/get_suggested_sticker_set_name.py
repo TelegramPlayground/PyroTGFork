@@ -31,7 +31,7 @@ class GetSuggestedStickerSetName:
     ) -> str:
         """Use this method to return a suggested name for a new sticker set with a given title.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             title (``str``):
