@@ -167,8 +167,7 @@ class EditStory:
 
         privacy_rules = []
         if privacy_settings:
-            for privacy_rule in (privacy_settings or []):
-                privacy_rules += (await privacy_rule.write(self))
+            privacy_rules += (await privacy_rule.write(self))
         else:
             privacy_rules += (await (types.StoryPrivacySettingsEveryone()).write(self))
 
