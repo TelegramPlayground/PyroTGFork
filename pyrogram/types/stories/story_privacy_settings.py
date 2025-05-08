@@ -17,6 +17,9 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
+import pyrogram
+from pyrogram import raw, types, utils
+
 from ..object import Object
 
 
@@ -34,3 +37,34 @@ class StoryPrivacySettings(Object):
 
     def __init__(self):
         super().__init__()
+
+    @staticmethod
+    def _parse(
+        client: "pyrogram.Client",
+        privacy_rules: list["raw.base.PrivacyRule"],
+    ) -> "StoryPrivacySettings":
+        ko = []
+        for priv in privacy_rules:
+            # privacyValueDisallowContacts#f888fa1a = PrivacyRule;
+            # privacyValueDisallowAll#8b73e763 = PrivacyRule;
+            # privacyValueDisallowUsers#e4621141 users:Vector<long> = PrivacyRule;
+            # privacyValueDisallowChatParticipants#41c87565 chats:Vector<long> = PrivacyRule;
+            # privacyValueAllowPremium#ece9814b = PrivacyRule;
+            # privacyValueAllowBots#21461b5d = PrivacyRule;
+            # privacyValueDisallowBots#f6a5f82f = PrivacyRule;
+            if isinstance(priv, raw.types.PrivacyValueAllowAll):
+                ko.append(types.StoryPrivacySettingsEveryone())
+            if isinstance(priv, raw.types.PrivacyValueDisallowUsers):
+                if types.StoryPrivacySettingsEveryone in ko:
+                    ko.append(types.StoryPrivacySettingsEveryone(except_user_ids=users))
+                if types.StoryPrivacySettingsContacts in ko:
+                    ko.append(types.StoryPrivacySettingsContacts(except_user_ids=users))
+            if isinstance(priv, raw.types.PrivacyValueAllowContacts):
+                ko.append(types.StoryPrivacySettingsContacts())
+            if isinstance(priv, raw.types.PrivacyValueAllowCloseFriends):
+                ko.append(types.StoryPrivacySettingsCloseFriends())
+            if isinstance(priv, raw.types.PrivacyValueAllowUsers):
+                ko.append(types.StoryPrivacySettingsSelectedUsers(user_ids=users))
+            if isinstance(priv, raw.types.PrivacyValueAllowChatParticipants):
+                ko.append(types.StoryPrivacySettingsSelectedUsers(user_ids=[utils.get_channel_id(chat_id) for chat_id in chats]))
+        return ko[-1] if len(ko) > 0 else None

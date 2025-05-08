@@ -29,7 +29,6 @@ class StoryPrivacySettingsEveryone(StoryPrivacySettings):
     """The story can be viewed by everyone.
 
     Parameters:
-
         except_user_ids (List of ``int`` | ``str``, *optional*):
             Identifiers of the users that can't see the story; always unknown and empty for non-owned stories.
 

@@ -29,7 +29,6 @@ class StoryPrivacySettingsSelectedUsers(StoryPrivacySettings):
     """The story can be viewed by certain specified users.
 
     Parameters:
-
         user_ids (List of ``int`` | ``str``, *optional*):
             Identifiers of the users; always unknown and empty for non-owned stories.
 

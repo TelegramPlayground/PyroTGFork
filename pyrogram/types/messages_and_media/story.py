@@ -196,6 +196,7 @@ class Story(Object, Update):
         deleted = None
         is_visible_only_for_self = None
         areas = None
+        privacy_settings = None
 
         if isinstance(story_item, raw.types.StoryItemDeleted):
             deleted = True
@@ -216,7 +217,8 @@ class Story(Object, Update):
             # out:flags.16?true
             # from_id:flags.18?Peer
             # fwd_from:flags.17?StoryFwdHeader 
-            # privacy:flags.2?Vector<PrivacyRule>
+            if story_item.privacy:
+                privacy_settings = types.StoryPrivacySettings._parse(client, story_item.privacy)
 
             # sent_reaction:flags.15?Reaction = StoryItem;
 
@@ -269,6 +271,7 @@ class Story(Object, Update):
             deleted,
             is_visible_only_for_self,
             areas,
+            privacy_settings,
         )
 
     @staticmethod
@@ -304,6 +307,7 @@ class Story(Object, Update):
         skipped = None
         deleted = None
         areas = None
+        privacy_settings = None
 
         if story_media:
             rawupdate = story_media
@@ -358,6 +362,7 @@ class Story(Object, Update):
                     deleted,
                     is_visible_only_for_self,
                     areas,
+                    privacy_settings,
                 ) = Story._parse_story_item(client, story_item)
         
         if story_update:
@@ -388,6 +393,7 @@ class Story(Object, Update):
                 deleted,
                 is_visible_only_for_self,
                 areas,
+                privacy_settings,
             ) = Story._parse_story_item(client, story_update.story)
 
         if peer:
@@ -417,6 +423,7 @@ class Story(Object, Update):
                 deleted,
                 is_visible_only_for_self,
                 areas,
+                privacy_settings,
             ) = Story._parse_story_item(client, story_item)
 
         return Story(
@@ -441,6 +448,7 @@ class Story(Object, Update):
             skipped=skipped,
             deleted=deleted,
             areas=areas,
+            privacy_settings=privacy_settings,
         )
 
     async def react(

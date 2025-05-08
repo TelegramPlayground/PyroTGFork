@@ -29,7 +29,6 @@ class StoryPrivacySettingsContacts(StoryPrivacySettings):
     """The story can be viewed by all contacts except chosen users.
 
     Parameters:
-
         except_user_ids (List of ``int`` | ``str``, *optional*):
             User identifiers of the contacts that can't see the story; always unknown and empty for non-owned stories.
 
