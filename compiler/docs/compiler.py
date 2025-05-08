@@ -383,6 +383,7 @@ def pyrogram_api():
         """,
         stickers="""
         Stickers
+            get_suggested_sticker_set_name
             send_sticker
             get_custom_emoji_stickers
             get_message_effects
