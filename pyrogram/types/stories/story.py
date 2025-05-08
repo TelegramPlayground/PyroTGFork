@@ -25,7 +25,7 @@ import pyrogram
 from pyrogram import raw, utils, types, enums
 from ..object import Object
 from ..update import Update
-from .message import Str
+from ..messages_and_media.message import Str
 from pyrogram.errors import RPCError
 
 log = logging.getLogger(__name__)

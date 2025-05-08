@@ -28,6 +28,7 @@ from .input_story_content import InputStoryContent
 from .input_story_content_photo import InputStoryContentPhoto
 from .input_story_content_video import InputStoryContentVideo
 from .location_address import LocationAddress
+from .story import Story
 from .story_area import StoryArea
 from .story_area_position import StoryAreaPosition
 from .story_area_type import StoryAreaType
@@ -58,6 +59,7 @@ __all__ = [
     "InputStoryContentPhoto",
     "InputStoryContentVideo",
     "LocationAddress",
+    "Story",
     "StoryArea",
     "StoryAreaPosition",
     "StoryAreaType",
