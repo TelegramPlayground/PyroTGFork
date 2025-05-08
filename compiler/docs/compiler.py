@@ -726,6 +726,10 @@ def pyrogram_api():
             StoryAreaTypeWeather
             StoryAreaTypeUniqueGift
             StoryArea
+            StoryRepostInfo
+            StoryOrigin
+            StoryOriginHiddenUser
+            StoryOriginPublicStory
             StoryPrivacySettings
             StoryPrivacySettingsEveryone
             StoryPrivacySettingsContacts

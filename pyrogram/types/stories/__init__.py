@@ -39,11 +39,15 @@ from .story_area_type_link import StoryAreaTypeLink
 from .story_area_type_message import StoryAreaTypeMessage
 from .story_area_type_weather import StoryAreaTypeWeather
 from .story_area_type_unique_gift import StoryAreaTypeUniqueGift
+from .story_origin import StoryOrigin
+from .story_origin_hidden_user import StoryOriginHiddenUser
+from .story_origin_public_story import StoryOriginPublicStory
 from .story_privacy_settings import StoryPrivacySettings
 from .story_privacy_settings_everyone import StoryPrivacySettingsEveryone
 from .story_privacy_settings_contacts import StoryPrivacySettingsContacts
 from .story_privacy_settings_close_friends import StoryPrivacySettingsCloseFriends
 from .story_privacy_settings_selected_users import StoryPrivacySettingsSelectedUsers
+from .story_repost_info import StoryRepostInfo
 from .story_stealth_mode import StoryStealthMode
 
 
@@ -70,10 +74,14 @@ __all__ = [
     "StoryAreaTypeMessage",
     "StoryAreaTypeWeather",
     "StoryAreaTypeUniqueGift",
+    "StoryOrigin",
+    "StoryOriginHiddenUser",
+    "StoryOriginPublicStory",
     "StoryPrivacySettings",
     "StoryPrivacySettingsEveryone",
     "StoryPrivacySettingsContacts",
     "StoryPrivacySettingsCloseFriends",
     "StoryPrivacySettingsSelectedUsers",
+    "StoryRepostInfo",
     "StoryStealthMode",
 ]

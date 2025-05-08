@@ -56,6 +56,9 @@ class Story(Object, Update):
         is_visible_only_for_self (``bool``, *optional*):
             True, if the story is visible only for the current user.
 
+        repost_info (:obj:`~pyrogram.types.StoryRepostInfo`, *optional*):
+            Information about the original story; may be None if the story wasn't reposted.
+
         privacy_settings (:obj:`~pyrogram.types.StoryPrivacySettings`, *optional*):
             Privacy rules affecting story visibility; may be approximate for non-owned stories.
 
@@ -115,6 +118,7 @@ class Story(Object, Update):
         is_edited: bool = None,
         is_posted_to_chat_page: bool = None,
         is_visible_only_for_self: bool = None,
+        repost_info: "types.StoryRepostInfo" = None,
         privacy_settings: "types.StoryPrivacySettings" = None,
         media: "enums.MessageMediaType" = None,
         photo: "types.Photo" = None,
@@ -139,6 +143,7 @@ class Story(Object, Update):
         self.is_edited = is_edited
         self.is_posted_to_chat_page = is_posted_to_chat_page
         self.is_visible_only_for_self = is_visible_only_for_self
+        self.repost_info = repost_info
         self.privacy_settings = privacy_settings
         self.media = media
         self.photo = photo
@@ -195,8 +200,6 @@ class Story(Object, Update):
             is_visible_only_for_self = not story_item.public
 
             # out:flags.16?true
-            # from_id:flags.18?Peer
-            # fwd_from:flags.17?StoryFwdHeader 
             if story_item.privacy:
                 privacy_settings = types.StoryPrivacySettings._parse(client, story_item.privacy)
 
@@ -288,6 +291,7 @@ class Story(Object, Update):
         deleted = None
         areas = None
         privacy_settings = None
+        repost_info = None
 
         if story_media:
             rawupdate = story_media
@@ -382,7 +386,11 @@ class Story(Object, Update):
                 else:
                     chat = types.Chat._parse_channel_chat(client, chats.get(peer_id, None))
         
-            # fwd_from:flags.17?StoryFwdHeader
+            if story_item.fwd_from:
+                repost_info = types.StoryRepostInfo._parse(
+                    client, story_item.fwd_from,
+                    users, chats
+                )
 
         return Story(
             client=client,
@@ -407,6 +415,7 @@ class Story(Object, Update):
             deleted=deleted,
             areas=areas,
             privacy_settings=privacy_settings,
+            repost_info=repost_info,
         )
 
     async def react(
