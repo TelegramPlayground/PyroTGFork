@@ -29,10 +29,6 @@ class ForwardStory:
         chat_id: Union[int, str],
         story_poster_chat_id: Union[int, str],
         story_id: int,
-        caption: str = "",
-        parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: list["types.MessageEntity"] = None,
-        show_caption_above_media: bool = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
@@ -66,19 +62,6 @@ class ForwardStory:
 
             story_id (``int``):
                 Unique identifier of story.
-
-            caption (``str``, *optional*):
-                Story message caption, 0-2048 characters.
-
-            parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            caption_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
-
-            show_caption_above_media (``bool``, *optional*):
-                Pass True, if the caption must be shown above the message media.
 
             disable_notification (``bool``, *optional*):
                 Sends the message with story silently.
@@ -133,16 +116,11 @@ class ForwardStory:
         )
         r = await self.invoke(
             raw.functions.messages.SendMedia(
-                # background:flags.6?true
-                # clear_draft:flags.7?true
-                # update_stickersets_order:flags.15?true
-                # quick_reply_shortcut:flags.17?InputQuickReplyShortcut
                 allow_paid_floodskip=allow_paid_broadcast,
                 reply_markup=await reply_markup.write(self) if reply_markup else None,
                 noforwards=protect_content,
                 send_as=send_as,
                 effect=message_effect_id,
-                invert_media=show_caption_above_media,
                 peer=await self.resolve_peer(chat_id),
                 media=raw.types.InputMediaStory(
                     peer=await self.resolve_peer(story_poster_chat_id),
@@ -153,7 +131,7 @@ class ForwardStory:
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
                 reply_to=reply_to,
                 allow_paid_stars=paid_message_star_count,
-                **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
+                message=""
             )
         )
 
