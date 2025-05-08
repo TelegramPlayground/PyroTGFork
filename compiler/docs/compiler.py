@@ -393,6 +393,7 @@ def pyrogram_api():
             can_post_story
             get_stories
             get_chat_active_stories
+            get_chat_archived_stories
             post_story
             edit_story
             edit_business_story
