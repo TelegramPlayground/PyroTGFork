@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import io
+import logging
 from datetime import datetime
 from typing import Callable, Optional, Union
 
@@ -26,6 +27,8 @@ from ..object import Object
 from ..update import Update
 from .message import Str
 from pyrogram.errors import RPCError
+
+log = logging.getLogger(__name__)
 
 
 class Story(Object, Update):
@@ -55,8 +58,6 @@ class Story(Object, Update):
 
         privacy_settings (:obj:`~pyrogram.types.StoryPrivacySettings`, *optional*):
             Privacy rules affecting story visibility; may be approximate for non-owned stories.
-
-        TODO: //@content Content of the story
 
         media (:obj:`~pyrogram.enums.MessageMediaType`, *optional*):
             The media type of the Story.
@@ -100,27 +101,6 @@ class Story(Object, Update):
         
         link (``str``, *property*):
             Generate a link to this story, only for Telegram Premium chats having usernames. Can be None if the story cannot have a link.
-
-        can_be_deleted (``bool``, *property*):
-            True, if the story can be deleted
-
-        can_be_edited (``bool``, *property*):
-            True, if the story can be edited
-
-        can_be_forwarded (``bool``, *property*):
-            True, if the story can be forwarded as a message. Otherwise, screenshots and saving of the story content must be also forbidden
-
-        can_be_replied (``bool``, *property*):
-            True, if the story can be replied in the chat with the story sender
-
-        can_toggle_is_posted_to_chat_page (``bool``, *property*):
-            True, if the story's is_posted_to_chat_page value can be changed
-
-        can_get_statistics (``bool``, *property*):
-            True, if the story statistics are available through getStoryStatistics
-
-        can_get_interactions (``bool``, *property*):
-            True, if interactions with the story can be received through getStoryInteractions
 
     """
 
@@ -331,7 +311,23 @@ class Story(Object, Update):
                     chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
             story_id = getattr(reply_story, "story_id", None)
         
-        if story_id and not (client.me and client.me.is_bot):
+        if story_update:
+            rawupdate = story_update
+
+            raw_peer_id = utils.get_raw_peer_id(story_update.peer)
+            if isinstance(story_update.peer, raw.types.PeerUser):
+                chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
+            else:
+                chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
+            
+            story_id = getattr(story_update.story, "id", None)
+            story_item = story_update.story
+
+        if (
+            not story_item and
+            story_id and
+            not (client.me and client.me.is_bot)
+        ):
             try:
                 story_item = (
                     await client.invoke(
@@ -343,58 +339,6 @@ class Story(Object, Update):
                 ).stories[0]
             except (RPCError, IndexError):
                 pass
-            else:
-                (
-                    date,
-                    expire_date,
-                    media,
-                    has_protected_content,
-                    photo,
-                    video,
-                    is_edited,
-                    is_posted_to_chat_page,
-                    caption,
-                    caption_entities,
-                    views,
-                    forwards,
-                    reactions,
-                    skipped,
-                    deleted,
-                    is_visible_only_for_self,
-                    areas,
-                    privacy_settings,
-                ) = Story._parse_story_item(client, story_item)
-        
-        if story_update:
-            rawupdate = story_update
-
-            raw_peer_id = utils.get_raw_peer_id(story_update.peer)
-            if isinstance(story_update.peer, raw.types.PeerUser):
-                chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
-            else:
-                chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
-            
-            story_id = getattr(story_update.story, "id", None)
-            (
-                date,
-                expire_date,
-                media,
-                has_protected_content,
-                photo,
-                video,
-                is_edited,
-                is_posted_to_chat_page,
-                caption,
-                caption_entities,
-                views,
-                forwards,
-                reactions,
-                skipped,
-                deleted,
-                is_visible_only_for_self,
-                areas,
-                privacy_settings,
-            ) = Story._parse_story_item(client, story_update.story)
 
         if peer:
             raw_peer_id = utils.get_raw_peer_id(peer)
@@ -402,9 +346,12 @@ class Story(Object, Update):
                 chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
             else:
                 chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
-            
+
         if story_item:
-            story_id = getattr(story_item, "id", None)
+            rawupdate = story_item
+
+            if not story_id:
+                story_id = getattr(story_item, "id", None)
             (
                 date,
                 expire_date,
@@ -425,6 +372,17 @@ class Story(Object, Update):
                 areas,
                 privacy_settings,
             ) = Story._parse_story_item(client, story_item)
+
+            if not chat and story_item.from_id:
+                peer_id = utils.get_peer_id(story_item.from_id)
+                if isinstance(story_item.from_id, raw.types.PeerUser):
+                    chat = types.Chat._parse_user_chat(client, users.get(peer_id, None))
+                elif isinstance(story_item.from_id, raw.types.PeerChat):
+                    chat = types.Chat._parse_chat_chat(client, chats.get(peer_id, None))
+                else:
+                    chat = types.Chat._parse_channel_chat(client, chats.get(peer_id, None))
+        
+            # fwd_from:flags.17?StoryFwdHeader
 
         return Story(
             client=client,
@@ -615,6 +573,18 @@ class Story(Object, Update):
         if self.chat and self.chat.username:
             return f"https://t.me/{self.chat.username}/s/{self.id}"
 
+    @property
+    def edited(self) -> bool:
+        log.warning(
+            "This property is deprecated. "
+            "Please use is_edited instead"
+        )
+        return self.is_edited
 
-    # edited: bool = None,
-    # pinned: bool = None,
+    @property
+    def pinned(self) -> bool:
+        log.warning(
+            "This property is deprecated. "
+            "Please use is_posted_to_chat_page instead"
+        )
+        return self.is_posted_to_chat_page
