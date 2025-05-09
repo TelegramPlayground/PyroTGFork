@@ -187,7 +187,7 @@ class DownloadMedia:
             if (self.me and self.me.is_bot):
                 raise ValueError("This method cannot be used by bots")
             else:
-                if medium.media:
+                if message.media:
                     medium = [getattr(message, message.media.value, None)]
                 else:
                     medium = []
