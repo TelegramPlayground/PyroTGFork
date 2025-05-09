@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -17,9 +17,27 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 
+from .can_post_story import CanPostStory
+from .delete_stories import DeleteStories
+from .edit_story import EditStory
+from .forward_story import ForwardStory
+from .get_chat_active_stories import GetChatActiveStories
+from .get_chat_archived_stories import GetChatArchivedStories
 from .get_stories import GetStories
+from .hide_my_story_view import HideMyStoryView
+from .post_story import PostStory
+from .toggle_story_is_posted_to_chat_page import ToggleStoryIsPostedToChatPage
 
 class Stories(
+    CanPostStory,
+    DeleteStories,
+    EditStory,
+    ForwardStory,
+    GetChatActiveStories,
+    GetChatArchivedStories,
     GetStories,
+    HideMyStoryView,
+    PostStory,
+    ToggleStoryIsPostedToChatPage,
 ):
     pass
