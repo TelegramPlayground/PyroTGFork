@@ -22,7 +22,17 @@ from .can_post_story_result import CanPostStoryResult
 
 class CanPostStoryResultOk(CanPostStoryResult):
     """A story can be sent.
+
+    Parameters:
+        story_count (``int``):
+            Number of stories that can be posted by the user.
+
     """
 
-    def __init__(self,):
+    def __init__(
+        self,
+        story_count: int = None,
+    ):
         super().__init__()
+
+        self.story_count = story_count

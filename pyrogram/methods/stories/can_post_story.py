@@ -60,16 +60,11 @@ class CanPostStory:
         except errors.StoriesTooMuch:
             return types.CanPostStoryResultActiveStoryLimitExceeded()
         except errors.StorySendFloodWeekly as ex:
-            if ex.value > 0:
-                return types.CanPostStoryResultWeeklyLimitExceeded(
-                    retry_after=ex.value
-                )
-            return types.CanPostStoryResultOk()
+            return types.CanPostStoryResultWeeklyLimitExceeded(
+                retry_after=ex.value
+            )
         except errors.StorySendFloodMonthly as ex:
-            if ex.value > 0:
-                return types.CanPostStoryResultMonthlyLimitExceeded(
-                    retry_after=ex.value
-                )
-            return types.CanPostStoryResultOk()
-        else:
-            return types.CanPostStoryResultOk()
+            return types.CanPostStoryResultMonthlyLimitExceeded(
+                retry_after=ex.value
+            )
+        return types.CanPostStoryResultOk(story_count=r.count_remains)
