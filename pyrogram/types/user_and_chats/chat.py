@@ -235,6 +235,9 @@ class Chat(Object):
         paid_message_star_count (``int``, *optional*):
             Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
 
+        has_automatic_translation (``bool``, *optional*):
+            True, if automatic translation of messages is enabled in the channel.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
 
@@ -306,6 +309,7 @@ class Chat(Object):
         gift_count: int = None,
         can_send_gift: bool = None,
         paid_message_star_count: int = None,
+        has_automatic_translation: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -379,6 +383,7 @@ class Chat(Object):
         self.gift_count = gift_count
         self.can_send_gift = can_send_gift
         self.paid_message_star_count = paid_message_star_count
+        self.has_automatic_translation = has_automatic_translation
         self._raw = _raw
 
     @staticmethod
@@ -546,6 +551,7 @@ class Chat(Object):
             profile_color=types.ChatColor._parse_profile_color(getattr(channel, "profile_color", None)),
             emoji_status=types.EmojiStatus._parse(client, channel.emoji_status),
             paid_message_star_count=channel.send_paid_messages_stars,
+            has_automatic_translation=channel.autotranslation,
             _raw=channel
         )
 

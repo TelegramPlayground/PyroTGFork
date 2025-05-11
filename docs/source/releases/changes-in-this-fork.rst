@@ -32,9 +32,23 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 203 |
++------------------------+
+
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=202&to=203>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=202&to=203>`__.
+
++------------------------+
 | Scheme layer used: 202 |
 +------------------------+
 
+- Added the method :meth:`~pyrogram.Client.post_story` allowing bots to post a story on behalf of a managed business account.
+- Added the method :meth:`~pyrogram.Client.edit_story` and :meth:`~pyrogram.Client.edit_business_story`, allowing bots to edit stories they had previously posted on behalf of a managed business account.
+- Added the methods :meth:`~pyrogram.Client.delete_stories` and :meth:`~pyrogram.Client.delete_business_story`, allowing bots to delete stories they had previously posted on behalf of a managed business account.
+- Added the classes :obj:`~pyrogram.types.InputStoryContentPhoto` and :obj:`~pyrogram.types.InputStoryContentVideo` representing the content of a story to post.
+- Added the classes :obj:`~pyrogram.types.StoryArea`, :obj:`~pyrogram.types.StoryAreaPosition`, :obj:`~pyrogram.types.LocationAddress`, :obj:`~pyrogram.types.StoryAreaTypeLocation`, :obj:`~pyrogram.types.StoryAreaTypeSuggestedReaction`, :obj:`~pyrogram.types.StoryAreaTypeLink`, :obj:`~pyrogram.types.StoryAreaTypeWeather`, :obj:`~pyrogram.types.StoryAreaTypeUniqueGift`, :obj:`~pyrogram.types.StoryAreaTypeFoundVenue` and :obj:`~pyrogram.types.StoryAreaTypeMessage` describing clickable active areas on stories.
+- Added the classes :obj:`~pyrogram.types.StoryPrivacySettings`, :obj:`~pyrogram.types.StoryPrivacySettingsEveryone`, :obj:`~pyrogram.types.StoryPrivacySettingsContacts`, :obj:`~pyrogram.types.StoryPrivacySettingsCloseFriends`, :obj:`~pyrogram.types.StoryPrivacySettingsSelectedUsers` to describe the privacy settings of a story.
+- Added the methods :meth:`~pyrogram.Client.can_post_story`, :meth:`~pyrogram.Client.hide_my_story_view`, :meth:`~pyrogram.Client.forward_story`,  :meth:`~pyrogram.Client.toggle_story_is_posted_to_chat_page`,  :meth:`~pyrogram.Client.get_chat_active_stories`,  :meth:`~pyrogram.Client.get_chat_archived_stories`.
+- Add support for parsing story links in :meth:`~pyrogram.Client.get_messages`.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=201&to=202>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=200&to=202>`__.
 
 +------------------------+

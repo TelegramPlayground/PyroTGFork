@@ -56,7 +56,6 @@ from .message_reactions import MessageReactions
 from .message_reaction_updated import MessageReactionUpdated
 from .message_reaction_count_updated import MessageReactionCountUpdated
 from .chat_boost_added import ChatBoostAdded
-from .story import Story
 from .payment_form import PaymentForm
 from .giveaway import Giveaway
 from .giveaway_created import GiveawayCreated
@@ -116,7 +115,6 @@ __all__ = [
     "ReceivedGift",
     "UpgradedGift",
     "Sticker",
-    "Story",
     "Venue",
     "Video",
     "VideoNote",

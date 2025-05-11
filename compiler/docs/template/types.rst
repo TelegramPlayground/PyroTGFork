@@ -163,3 +163,16 @@ Payments
     :hidden:
 
     {payments}
+
+Stories
+--------
+
+.. autosummary::
+    :nosignatures:
+
+    {stories}
+
+.. toctree::
+    :hidden:
+
+    {stories}

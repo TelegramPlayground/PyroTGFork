@@ -390,7 +390,18 @@ def pyrogram_api():
         """,
         stories="""
         Stories
+            can_post_story
             get_stories
+            get_chat_active_stories
+            get_chat_archived_stories
+            post_story
+            edit_story
+            edit_business_story
+            delete_stories
+            delete_business_story
+            hide_my_story_view
+            forward_story
+            toggle_story_is_posted_to_chat_page
         """,
         payments="""
         Payments
@@ -691,7 +702,41 @@ def pyrogram_api():
             PaidReactionTypeAnonymous
             PaidReactionTypeChat
             PaidReactionTypeRegular
-        """
+        """,
+        stories="""
+        Stories
+            CanPostStoryResult
+            CanPostStoryResultOk
+            CanPostStoryResultPremiumNeeded
+            CanPostStoryResultBoostNeeded
+            CanPostStoryResultActiveStoryLimitExceeded
+            CanPostStoryResultWeeklyLimitExceeded
+            CanPostStoryResultMonthlyLimitExceeded
+            InputStoryContent
+            InputStoryContentPhoto
+            InputStoryContentVideo
+            StoryAreaPosition
+            LocationAddress
+            StoryAreaType
+            StoryAreaTypeFoundVenue
+            StoryAreaTypeLocation
+            StoryAreaTypeSuggestedReaction
+            StoryAreaTypeLink
+            StoryAreaTypeMessage
+            StoryAreaTypeWeather
+            StoryAreaTypeUniqueGift
+            StoryArea
+            StoryRepostInfo
+            StoryOrigin
+            StoryOriginHiddenUser
+            StoryOriginPublicStory
+            StoryPrivacySettings
+            StoryPrivacySettingsEveryone
+            StoryPrivacySettingsContacts
+            StoryPrivacySettingsCloseFriends
+            StoryPrivacySettingsSelectedUsers
+            StoryStealthMode
+        """,
     )
 
     root = PYROGRAM_API_DEST + "/types"
