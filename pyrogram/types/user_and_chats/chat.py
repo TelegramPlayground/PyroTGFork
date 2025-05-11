@@ -117,9 +117,6 @@ class Chat(Object):
 
         permissions (:obj:`~pyrogram.types.ChatPermissions` *optional*):
             Default chat member permissions, for groups and supergroups.
-        
-        privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
-            Administrator Privileges of the current logged in user in the current chat. None if the current user is not an Administrator.
 
         can_send_paid_media (``bool``, *optional*):
             True, if paid media messages can be sent or forwarded to the channel chat. The field is available only for channel chats.
@@ -282,7 +279,6 @@ class Chat(Object):
         members_count: int = None,
         restrictions: list["types.Restriction"] = None,
         permissions: "types.ChatPermissions" = None,
-        privileges: "types.ChatPrivileges" = None,
         distance: int = None,
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
@@ -347,7 +343,6 @@ class Chat(Object):
         self.members_count = members_count
         self.restrictions = restrictions
         self.permissions = permissions
-        self.privileges = privileges
         self.distance = distance
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
@@ -540,7 +535,6 @@ class Chat(Object):
                 ]
             ) or None,
             permissions=types.ChatPermissions._parse(getattr(channel, "default_banned_rights", None)),
-            privileges=types.ChatPrivileges._parse(getattr(channel, "admin_rights", None)),
             members_count=getattr(channel, "participants_count", 0),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
