@@ -362,7 +362,7 @@ class Client(Methods):
         self.message_cache = Cache(self.max_message_cache_size)
         self.business_user_connection_cache = Cache(self.max_business_user_connection_cache_size)
 
-        self.app_constant = Constant(client_instance=self)
+        self.app_constant: dict[str, "types.ClientConfigurationOption"] = {}
 
         # Sometimes, for some reason, the server will stop sending updates and will only respond to pings.
         # This watchdog will invoke updates.GetState in order to wake up the server and enable it sending updates again
@@ -1244,47 +1244,3 @@ class Cache:
         if len(self.store) > self.capacity:
             for _ in range(self.capacity // 2 + 1):
                 del self.store[next(iter(self.store))]
-
-
-class Constant:
-    """Tuple of min, max, premium max lengths"""
-
-    # Text of the message to be sent, 1-4096 characters
-    MAX_TEXT_LENGTH = (1, 4096, 0)
-
-    # Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
-    MAX_CAPTION_LENGTH = (0, 1024, 0)
-
-    MAX_FIRST_NAME_LENGTH = (1, 64, 0)
-    MAX_LAST_NAME_LENGTH = (0, 64, 0)
-
-    # USER's BIO
-    MAX_BIO_LENGTH = (0, 70, 140)
-
-    # ADMIN TITLE
-    MAX_TITLE_LENGTH = (0, 16, 0)
-
-    # Use the InlineQuery.answer() method. No more than 50 results per query are allowed.
-    MAX_RESULTS_LENGTH = (0, 50, 0)
-
-    def __init__(self, client_instance: Client):
-        self.is_premium = client_instance.me.is_premium
-
-    def check_valid_length(self, text: Union[List, str], arg_type: str, ):
-        if not isinstance(text, (str, list)):
-            raise ValueError(f"Argument {arg_type} must be a str | list")
-
-        text_length = len(text)
-
-        attr_str = f"max_{arg_type}_length".upper()
-
-        # MIN, MAX, PREM-MAX
-        lengths: tuple[int, int, int] = getattr(self, attr_str, (0, 0, 0))
-
-        min_length = lengths[0]
-        # Check if client is premium and the premium value isn't 0
-        max_length = lengths[2] if self.is_premium and lengths[2] != 0 else lengths[1]
-
-        error_info = f"\nInvalid length of {text_length} for arg {arg_type}\nValid Lengths: {min_length}-{max_length}"
-
-        assert bool(min_length < text_length <= max_length), error_info

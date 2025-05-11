@@ -659,3 +659,22 @@ def is_list_like(obj):
     Ported from https://github.com/LonamiWebs/Telethon/blob/1cb5ff1dd54ecfad41711fc5a4ecf36d2ad8eaf6/telethon/utils.py#L902
     """
     return isinstance(obj, (list, tuple, set, dict, range))
+
+
+def check_valid_length(
+    client: "pyrogram.Client",
+    text: Union[list, str],
+    arg_type: str,
+):
+    if not isinstance(text, (str, list)):
+        raise ValueError(f"Argument {arg_type} must be a str | list")
+
+    text_length = len(text)
+    max_length = client.app_constant.get(arg_type)
+
+    if not max_length:
+        raise ValueError(f"Argument {arg_type} is not supported")
+
+    error_info = f"\nInvalid length of {text_length} for arg {arg_type}\nValid Length: {max_length.value}"
+
+    assert bool(text_length <= max_length.value), error_info

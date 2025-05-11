@@ -63,9 +63,11 @@ class UpdateProfile:
                 await app.update_profile(last_name="")
         """
 
-        for var_name in ("first_name", "last_name", "bio"):
+        for var_name in ("first_name", "last_name",):
             if var_value := locals()[var_name]:
-                self.app_constant.check_valid_length(text=var_value, arg_type=var_name)
+                utils.check_valid_length(client=self, text=var_value, arg_type="name_length_max")
+        if bio:
+            utils.check_valid_length(client=self, text=bio, arg_type="about_length_max")
 
         return bool(
             await self.invoke(

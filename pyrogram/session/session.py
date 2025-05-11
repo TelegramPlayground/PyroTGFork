@@ -24,7 +24,7 @@ from hashlib import sha1
 from io import BytesIO
 
 import pyrogram
-from pyrogram import raw
+from pyrogram import raw, types
 from pyrogram.connection import Connection
 from pyrogram.crypto import mtproto
 from pyrogram.errors import (
@@ -147,8 +147,56 @@ class Session:
                         timeout=self.START_TIMEOUT
                     )
                     if isinstance(cfg, raw.types.Config):  # TODO
-                        self.client.app_constant.MAX_TEXT_LENGTH = (1, cfg.message_length_max, cfg.message_length_max)
-                        self.client.app_constant.MAX_CAPTION_LENGTH = (0, cfg.caption_length_max, cfg.caption_length_max)
+                        for key in [
+                            "chat_size_max",
+                            "megagroup_size_max",
+                            "forwarded_count_max",
+                            "online_update_period_ms",
+                            "online_cloud_timeout_ms",
+                            "edit_time_limit",
+                            "revoke_time_limit",
+                            "revoke_pm_time_limit",
+                            "stickers_recent_limit",
+                            "channels_read_media_period",
+                            "me_url_prefix",
+                            "caption_length_max",
+                            "message_length_max",
+                            "gif_search_username",
+                            "venue_search_username",
+                            "img_search_username",
+                            "autologin_token",
+                        ]:
+                            self.client.app_constant[
+                                key
+                            ] = types.ClientConfigurationOption(
+                                key=key,
+                                value=getattr(cfg, key, None)
+                            ) if getattr(cfg, key, None) else None
+                    self.client.app_constant[
+                        "name_length_max"
+                    ] = types.ClientConfigurationOption(
+                        key="name_length_max",
+                        value=64
+                    )
+                    self.client.app_constant[
+                        "administrator_title_length_max"
+                    ] = types.ClientConfigurationOption(
+                        key="administrator_title_length_max",
+                        value=16
+                    )
+                    self.client.app_constant[
+                        "inline_query_results_max"
+                    ] = types.ClientConfigurationOption(
+                        key="inline_query_results_max",
+                        value=50
+                    )
+                    # TODO
+                    self.client.app_constant[
+                        "about_length_max"
+                    ] = types.ClientConfigurationOption(
+                        key="about_length_max",
+                        value=70,  # 140
+                    )
 
                 self.ping_task = self.loop.create_task(self.ping_worker())
 

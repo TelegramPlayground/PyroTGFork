@@ -198,7 +198,7 @@ class SendMessage:
         message, entities = (await utils.parse_text_entities(self, text, parse_mode, entities)).values()
 
         if message:
-            self.app_constant.check_valid_length(text=message, arg_type="text")
+            utils.check_valid_length(client=self, text=message, arg_type="message_length_max")
 
         session = None
         business_connection = None
