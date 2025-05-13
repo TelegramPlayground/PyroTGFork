@@ -118,6 +118,9 @@ class Chat(Object):
         permissions (:obj:`~pyrogram.types.ChatPermissions` *optional*):
             Default chat member permissions, for groups and supergroups.
 
+        admin_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
+            Administrator Privileges of the current logged in user in the current chat. Only for supergroups and channels. None if the current user is not an Administrator.
+
         can_send_paid_media (``bool``, *optional*):
             True, if paid media messages can be sent or forwarded to the channel chat. The field is available only for channel chats.
 
@@ -232,6 +235,9 @@ class Chat(Object):
         paid_message_star_count (``int``, *optional*):
             Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
 
+        has_automatic_translation (``bool``, *optional*):
+            True, if automatic translation of messages is enabled in the channel.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
 
@@ -276,6 +282,7 @@ class Chat(Object):
         members_count: int = None,
         restrictions: list["types.Restriction"] = None,
         permissions: "types.ChatPermissions" = None,
+        admin_privileges: "types.ChatPrivileges" = None,
         distance: int = None,
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
@@ -302,6 +309,7 @@ class Chat(Object):
         gift_count: int = None,
         can_send_gift: bool = None,
         paid_message_star_count: int = None,
+        has_automatic_translation: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -339,6 +347,7 @@ class Chat(Object):
         self.members_count = members_count
         self.restrictions = restrictions
         self.permissions = permissions
+        self.admin_privileges = admin_privileges
         self.distance = distance
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
@@ -374,6 +383,7 @@ class Chat(Object):
         self.gift_count = gift_count
         self.can_send_gift = can_send_gift
         self.paid_message_star_count = paid_message_star_count
+        self.has_automatic_translation = has_automatic_translation
         self._raw = _raw
 
     @staticmethod
@@ -530,6 +540,7 @@ class Chat(Object):
                 ]
             ) or None,
             permissions=types.ChatPermissions._parse(getattr(channel, "default_banned_rights", None)),
+            admin_privileges=types.ChatPrivileges._parse(getattr(channel, "admin_rights", None)),
             members_count=getattr(channel, "participants_count", 0),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
@@ -540,6 +551,7 @@ class Chat(Object):
             profile_color=types.ChatColor._parse_profile_color(getattr(channel, "profile_color", None)),
             emoji_status=types.EmojiStatus._parse(client, channel.emoji_status),
             paid_message_star_count=channel.send_paid_messages_stars,
+            has_automatic_translation=channel.autotranslation,
             _raw=channel
         )
 

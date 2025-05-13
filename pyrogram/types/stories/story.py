@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import io
+import logging
 from datetime import datetime
 from typing import Callable, Optional, Union
 
@@ -24,33 +25,47 @@ import pyrogram
 from pyrogram import raw, utils, types, enums
 from ..object import Object
 from ..update import Update
-from .message import Str
+from ..messages_and_media.message import Str
 from pyrogram.errors import RPCError
+
+log = logging.getLogger(__name__)
 
 
 class Story(Object, Update):
     """This object represents a story.
 
     Parameters:
-        chat (:obj:`~pyrogram.types.Chat`):
-            Chat that posted the story.
-        
         id (``int``):
-            Unique identifier for the story in the chat.
+            Unique story identifier among stories of the given sender.
 
+        chat (:obj:`~pyrogram.types.Chat`):
+            Identifier of the chat that posted the story.
+        
         date (:py:obj:`~datetime.datetime`, *optional*):
-            Date the story was sent.
+            Date the story was published.
         
         expire_date (:py:obj:`~datetime.datetime`, *optional*):
             Date the story will be expired.
         
+        is_edited (``bool``, *optional*):
+            True, if the story was edited.
+
+        is_posted_to_chat_page (``bool``, *optional*):
+            True, if the story is saved in the sender's profile and will be available there after expiration
+
+        is_visible_only_for_self (``bool``, *optional*):
+            True, if the story is visible only for the current user.
+
+        repost_info (:obj:`~pyrogram.types.StoryRepostInfo`, *optional*):
+            Information about the original story; may be None if the story wasn't reposted.
+
+        privacy_settings (:obj:`~pyrogram.types.StoryPrivacySettings`, *optional*):
+            Privacy rules affecting story visibility; may be approximate for non-owned stories.
+
         media (:obj:`~pyrogram.enums.MessageMediaType`, *optional*):
             The media type of the Story.
             This field will contain the enumeration type of the media message.
             You can use ``media = getattr(story, story.media.value)`` to access the media message.
-
-        has_protected_content (``bool``, *optional*):
-            True, if the story can't be forwarded.
 
         photo (:obj:`~pyrogram.types.Photo`, *optional*):
             Story is a photo, information about the photo.
@@ -58,26 +73,26 @@ class Story(Object, Update):
         video (:obj:`~pyrogram.types.Video`, *optional*):
             Story is a video, information about the video.
 
-        edited (``bool``, *optional*):
-           True, if the Story has been edited.
-
-        pinned (``bool``, *optional*):
-           True, if the Story is pinned.
-
         caption (``str``, *optional*):
             Caption for the Story, 0-1024 characters.
 
         caption_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the caption.
 
+        areas (List of :obj:`~pyrogram.types.StoryArea`, *optional*):
+            Clickable areas to be shown on the story content.
+
+        has_protected_content (``bool``, *optional*):
+            True, if the story can't be forwarded.
+
+        reactions (List of :obj:`~pyrogram.types.Reaction`):
+            List of the reactions to this story.
+
         views (``int``, *optional*):
             Stories views.
 
         forwards (``int``, *optional*):
             Stories forwards.
-
-        reactions (List of :obj:`~pyrogram.types.Reaction`):
-            List of the reactions to this story.
 
         skipped (``bool``, *optional*):
             The story is skipped.
@@ -96,42 +111,50 @@ class Story(Object, Update):
         self,
         *,
         client: "pyrogram.Client" = None,
-        chat: "types.Chat" = None,
         id: int = None,
+        chat: "types.Chat" = None,
         date: datetime = None,
         expire_date: datetime = None,
+        is_edited: bool = None,
+        is_posted_to_chat_page: bool = None,
+        is_visible_only_for_self: bool = None,
+        repost_info: "types.StoryRepostInfo" = None,
+        privacy_settings: "types.StoryPrivacySettings" = None,
         media: "enums.MessageMediaType" = None,
-        has_protected_content: bool = None,
         photo: "types.Photo" = None,
         video: "types.Video" = None,
-        edited: bool = None,
-        pinned: bool = None,
         caption: Str = None,
         caption_entities: list["types.MessageEntity"] = None,
+        areas: list["types.StoryArea"] = None,
+        has_protected_content: bool = None,
+        reactions: list["types.Reaction"] = None,
         views: int = None,
         forwards: int = None,
-        reactions: list["types.Reaction"] = None,
         skipped: bool = None,
         deleted: bool = None,
         _raw = None
     ):
         super().__init__(client)
 
-        self.chat = chat
         self.id = id
+        self.chat = chat
         self.date = date
         self.expire_date = expire_date
+        self.is_edited = is_edited
+        self.is_posted_to_chat_page = is_posted_to_chat_page
+        self.is_visible_only_for_self = is_visible_only_for_self
+        self.repost_info = repost_info
+        self.privacy_settings = privacy_settings
         self.media = media
-        self.has_protected_content = has_protected_content
         self.photo = photo
         self.video = video
-        self.edited = edited
-        self.pinned = pinned
         self.caption = caption
         self.caption_entities = caption_entities
+        self.areas = areas
+        self.has_protected_content = has_protected_content
+        self.reactions = reactions
         self.views = views
         self.forwards = forwards
-        self.reactions = reactions
         self.skipped = skipped
         self.deleted = deleted
         self._raw = _raw
@@ -147,8 +170,8 @@ class Story(Object, Update):
         has_protected_content = None
         photo = None
         video = None
-        edited = None
-        pinned = None
+        is_edited = None
+        is_posted_to_chat_page = None
         caption = None
         caption_entities = None
         views = None
@@ -156,14 +179,32 @@ class Story(Object, Update):
         reactions = None
         skipped = None
         deleted = None
+        is_visible_only_for_self = None
+        areas = None
+        privacy_settings = None
 
         if isinstance(story_item, raw.types.StoryItemDeleted):
             deleted = True
         elif isinstance(story_item, raw.types.StoryItemSkipped):
             skipped = True
+            date = utils.timestamp_to_datetime(story_item.date)
+            expire_date = utils.timestamp_to_datetime(story_item.expire_date)
+            # close_friends:flags.8?true
         else:
             date = utils.timestamp_to_datetime(story_item.date)
             expire_date = utils.timestamp_to_datetime(story_item.expire_date)
+            # close_friends:flags.8?true
+            # contacts:flags.12?true
+            # selected_contacts:flags.13?true
+
+            is_visible_only_for_self = not story_item.public
+
+            # out:flags.16?true
+            if story_item.privacy:
+                privacy_settings = types.StoryPrivacySettings._parse(client, story_item.privacy)
+
+            # sent_reaction:flags.15?Reaction = StoryItem;
+
             if isinstance(story_item.media, raw.types.MessageMediaPhoto):
                 photo = types.Photo._parse(client, story_item.media.photo, story_item.media.ttl_seconds)
                 media = enums.MessageMediaType.PHOTO
@@ -174,8 +215,8 @@ class Story(Object, Update):
                 video = types.Video._parse(client, story_item.media, video_attributes, None)
                 media = enums.MessageMediaType.VIDEO
             has_protected_content = story_item.noforwards
-            edited = story_item.edited
-            pinned = story_item.pinned
+            is_edited = story_item.edited
+            is_posted_to_chat_page = story_item.pinned
             entities = [e for e in (types.MessageEntity._parse(client, entity, {}) for entity in story_item.entities) if e]
             caption = Str(story_item.caption or "").init(entities) or None
             caption_entities = entities or None
@@ -186,6 +227,15 @@ class Story(Object, Update):
                     types.Reaction._parse_count(client, reaction)
                     for reaction in getattr(story_item.views, "reactions", [])
                 ] or None
+            
+            if story_item.media_areas:
+                areas = [
+                    types.StoryArea._parse(
+                        client,
+                        area,
+                    ) for area in story_item.media_areas
+                ]
+
         return (
             date,
             expire_date,
@@ -193,15 +243,18 @@ class Story(Object, Update):
             has_protected_content,
             photo,
             video,
-            edited,
-            pinned,
+            is_edited,
+            is_posted_to_chat_page,
             caption,
             caption_entities,
             views,
             forwards,
             reactions,
             skipped,
-            deleted
+            deleted,
+            is_visible_only_for_self,
+            areas,
+            privacy_settings,
         )
 
     @staticmethod
@@ -226,8 +279,9 @@ class Story(Object, Update):
         has_protected_content = None
         photo = None
         video = None
-        edited = None
-        pinned = None
+        is_edited = None
+        is_posted_to_chat_page = None
+        is_visible_only_for_self = None
         caption = None
         caption_entities = None
         views = None
@@ -235,6 +289,9 @@ class Story(Object, Update):
         reactions = None
         skipped = None
         deleted = None
+        areas = None
+        privacy_settings = None
+        repost_info = None
 
         if story_media:
             rawupdate = story_media
@@ -258,7 +315,23 @@ class Story(Object, Update):
                     chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
             story_id = getattr(reply_story, "story_id", None)
         
-        if story_id and not (client.me and client.me.is_bot):
+        if story_update:
+            rawupdate = story_update
+
+            raw_peer_id = utils.get_raw_peer_id(story_update.peer)
+            if isinstance(story_update.peer, raw.types.PeerUser):
+                chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
+            else:
+                chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
+            
+            story_id = getattr(story_update.story, "id", None)
+            story_item = story_update.story
+
+        if (
+            not story_item and
+            story_id and
+            not (client.me and client.me.is_bot)
+        ):
             try:
                 story_item = (
                     await client.invoke(
@@ -270,52 +343,6 @@ class Story(Object, Update):
                 ).stories[0]
             except (RPCError, IndexError):
                 pass
-            else:
-                (
-                    date,
-                    expire_date,
-                    media,
-                    has_protected_content,
-                    photo,
-                    video,
-                    edited,
-                    pinned,
-                    caption,
-                    caption_entities,
-                    views,
-                    forwards,
-                    reactions,
-                    skipped,
-                    deleted
-                ) = Story._parse_story_item(client, story_item)
-        
-        if story_update:
-            rawupdate = story_update
-
-            raw_peer_id = utils.get_raw_peer_id(story_update.peer)
-            if isinstance(story_update.peer, raw.types.PeerUser):
-                chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
-            else:
-                chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
-            
-            story_id = getattr(story_update.story, "id", None)
-            (
-                date,
-                expire_date,
-                media,
-                has_protected_content,
-                photo,
-                video,
-                edited,
-                pinned,
-                caption,
-                caption_entities,
-                views,
-                forwards,
-                reactions,
-                skipped,
-                deleted
-            ) = Story._parse_story_item(client, story_update.story)
 
         if peer:
             raw_peer_id = utils.get_raw_peer_id(peer)
@@ -323,9 +350,12 @@ class Story(Object, Update):
                 chat = types.Chat._parse_chat(client, users.get(raw_peer_id))
             else:
                 chat = types.Chat._parse_chat(client, chats.get(raw_peer_id))
-            
+
         if story_item:
-            story_id = getattr(story_item, "id", None)
+            rawupdate = story_item
+
+            if not story_id:
+                story_id = getattr(story_item, "id", None)
             (
                 date,
                 expire_date,
@@ -333,16 +363,34 @@ class Story(Object, Update):
                 has_protected_content,
                 photo,
                 video,
-                edited,
-                pinned,
+                is_edited,
+                is_posted_to_chat_page,
                 caption,
                 caption_entities,
                 views,
                 forwards,
                 reactions,
                 skipped,
-                deleted
+                deleted,
+                is_visible_only_for_self,
+                areas,
+                privacy_settings,
             ) = Story._parse_story_item(client, story_item)
+
+            if not chat and story_item.from_id:
+                peer_id = utils.get_peer_id(story_item.from_id)
+                if isinstance(story_item.from_id, raw.types.PeerUser):
+                    chat = types.Chat._parse_user_chat(client, users.get(peer_id, None))
+                elif isinstance(story_item.from_id, raw.types.PeerChat):
+                    chat = types.Chat._parse_chat_chat(client, chats.get(peer_id, None))
+                else:
+                    chat = types.Chat._parse_channel_chat(client, chats.get(peer_id, None))
+        
+            if story_item.fwd_from:
+                repost_info = types.StoryRepostInfo._parse(
+                    client, story_item.fwd_from,
+                    users, chats
+                )
 
         return Story(
             client=client,
@@ -355,15 +403,19 @@ class Story(Object, Update):
             has_protected_content=has_protected_content,
             photo=photo,
             video=video,
-            edited=edited,
-            pinned=pinned,
+            is_edited=is_edited,
+            is_posted_to_chat_page=is_posted_to_chat_page,
+            is_visible_only_for_self=is_visible_only_for_self,
             caption=caption,
             caption_entities=caption_entities,
             views=views,
             forwards=forwards,
             reactions=reactions,
             skipped=skipped,
-            deleted=deleted
+            deleted=deleted,
+            areas=areas,
+            privacy_settings=privacy_settings,
+            repost_info=repost_info,
         )
 
     async def react(
@@ -529,3 +581,19 @@ class Story(Object, Update):
     def link(self) -> str:
         if self.chat and self.chat.username:
             return f"https://t.me/{self.chat.username}/s/{self.id}"
+
+    @property
+    def edited(self) -> bool:
+        log.warning(
+            "This property is deprecated. "
+            "Please use is_edited instead"
+        )
+        return self.is_edited
+
+    @property
+    def pinned(self) -> bool:
+        log.warning(
+            "This property is deprecated. "
+            "Please use is_posted_to_chat_page instead"
+        )
+        return self.is_posted_to_chat_page

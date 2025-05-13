@@ -25,15 +25,48 @@ Breaking Changes in this Fork
 - PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
 - PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
 - If you relied on internal types like ``import pyrogram.file_id`` OR ``import pyrogram.utils``, Then read this full document to know where `else <https://t.me/PyrogramChat/42497>`_ your code will break.
+- :obj:`~pyrogram.types.InlineKeyboardButton` only accepts keyword arguments instead of positional arguments.
 
 
 Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 203 |
++------------------------+
+
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=202&to=203>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=202&to=203>`__.
+
++------------------------+
+| Scheme layer used: 202 |
++------------------------+
+
+- Added the method :meth:`~pyrogram.Client.post_story` allowing bots to post a story on behalf of a managed business account.
+- Added the method :meth:`~pyrogram.Client.edit_story` and :meth:`~pyrogram.Client.edit_business_story`, allowing bots to edit stories they had previously posted on behalf of a managed business account.
+- Added the methods :meth:`~pyrogram.Client.delete_stories` and :meth:`~pyrogram.Client.delete_business_story`, allowing bots to delete stories they had previously posted on behalf of a managed business account.
+- Added the classes :obj:`~pyrogram.types.InputStoryContentPhoto` and :obj:`~pyrogram.types.InputStoryContentVideo` representing the content of a story to post.
+- Added the classes :obj:`~pyrogram.types.StoryArea`, :obj:`~pyrogram.types.StoryAreaPosition`, :obj:`~pyrogram.types.LocationAddress`, :obj:`~pyrogram.types.StoryAreaTypeLocation`, :obj:`~pyrogram.types.StoryAreaTypeSuggestedReaction`, :obj:`~pyrogram.types.StoryAreaTypeLink`, :obj:`~pyrogram.types.StoryAreaTypeWeather`, :obj:`~pyrogram.types.StoryAreaTypeUniqueGift`, :obj:`~pyrogram.types.StoryAreaTypeFoundVenue` and :obj:`~pyrogram.types.StoryAreaTypeMessage` describing clickable active areas on stories.
+- Added the classes :obj:`~pyrogram.types.StoryPrivacySettings`, :obj:`~pyrogram.types.StoryPrivacySettingsEveryone`, :obj:`~pyrogram.types.StoryPrivacySettingsContacts`, :obj:`~pyrogram.types.StoryPrivacySettingsCloseFriends`, :obj:`~pyrogram.types.StoryPrivacySettingsSelectedUsers` to describe the privacy settings of a story.
+- Added the methods :meth:`~pyrogram.Client.can_post_story`, :meth:`~pyrogram.Client.hide_my_story_view`, :meth:`~pyrogram.Client.forward_story`,  :meth:`~pyrogram.Client.toggle_story_is_posted_to_chat_page`,  :meth:`~pyrogram.Client.get_chat_active_stories`,  :meth:`~pyrogram.Client.get_chat_archived_stories`.
+- Add support for parsing story links in :meth:`~pyrogram.Client.get_messages`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=201&to=202>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=200&to=202>`__.
+
++------------------------+
+| Scheme layer used: 201 |
++------------------------+
+
+- Renamed the field ``paid_message_star_count`` to ``paid_star_count`` in the :obj:`~pyrogram.types.Message`, containing the number of Telegram Stars that were paid to send the message.
+- Added the classes :obj:`~pyrogram.types.PaidMessagePriceChanged` and :obj:`~pyrogram.types.PaidMessagesRefunded` and the fields ``paid_message_price_changed`` and ``paid_messages_refunded`` to the :obj:`~pyrogram.types.Message`, describing the appropriate service message.
+- Added the :meth:`~pyrogram.Client.get_business_account_star_balance`, allowing bots to check the current Telegram Star balance of a managed business account.
+- Added the :obj:`~pyrogram.types.BusinessBotRights` and replaced the field ``can_reply`` with the field ``rights`` of the type :obj:`~pyrogram.types.BusinessBotRights` in the :obj:`~pyrogram.types.BusinessConnection`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=200&to=201>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=200&to=201>`__.
+
++------------------------+
 | Scheme layer used: 200 |
 +------------------------+
 
+- Added ``sizes`` to :obj:`~pyrogram.types.Photo` to return all available sizes.
+- Add :meth:`~pyrogram.Client.send_screenshot_notification`.
 - Add ``media`` in :obj:`~pyrogram.types.ExternalReplyInfo`.
 - Add :obj:`~pyrogram.enums.MessageOriginType` as enum instead of str, and updated the appropriate filters.
 - Document about `the issue #161 <https://github.com/TelegramPlayGround/pyrogram/issues/161>`__.

@@ -136,6 +136,9 @@ class Message(Object, Update):
             Signature of the post author for messages in channels, or the custom title of an anonymous group
             administrator.
 
+        paid_star_count (``int``, *optional*):
+            The number of Telegram Stars that were paid by the sender of the message to send it.
+
         text (``str``, *optional*):
             For text messages, the actual UTF-8 text of the message, 0-4096 characters.
             If the message contains entities (bold, italic, ...) you can access *text.markdown* or
@@ -323,6 +326,12 @@ class Message(Object, Update):
         giveaway_completed (:obj:`~pyrogram.types.GiveawayCompleted`, *optional*):
             Service message: a giveaway without public winners was completed
 
+        paid_message_price_changed (:obj:`~pyrogram.types.PaidMessagePriceChanged`, *optional*):
+            Service message: the price for paid messages has changed in the chat.
+
+        paid_messages_refunded (:obj:`~pyrogram.types.PaidMessagesRefunded`, *optional*):
+            Service message: Paid messages were refunded.
+
         video_chat_scheduled (:obj:`~pyrogram.types.VideoChatScheduled`, *optional*):
             Service message: voice chat scheduled.
 
@@ -416,9 +425,6 @@ class Message(Object, Update):
         screenshot_taken (:obj:`~pyrogram.types.ScreenshotTaken`, *optional*):
             A service message that a screenshot of a message in the chat has been taken.
 
-        paid_message_star_count (``int``, *optional*):
-            The number of Telegram Stars the sender paid to send the message.
-
         link (``str``, *property*):
             Generate a link to this message, only for supergroups and channels. Can be None if the message cannot have a link.
 
@@ -459,6 +465,7 @@ class Message(Object, Update):
         is_from_offline: bool = None,
         media_group_id: str = None,
         author_signature: str = None,
+        paid_star_count: int = None,
         text: Str = None,
         entities: list["types.MessageEntity"] = None,
         link_preview_options: "types.LinkPreviewOptions" = None,
@@ -516,6 +523,8 @@ class Message(Object, Update):
         giveaway: "types.Giveaway" = None,
         giveaway_winners: "types.GiveawayWinners" = None,
         giveaway_completed: "types.GiveawayCompleted" = None,
+        paid_message_price_changed: "types.PaidMessagePriceChanged" = None,
+        paid_messages_refunded: "types.PaidMessagesRefunded" = None,
         video_chat_scheduled: "types.VideoChatScheduled" = None,
         video_chat_started: "types.VideoChatStarted" = None,
         video_chat_ended: "types.VideoChatEnded" = None,
@@ -550,7 +559,6 @@ class Message(Object, Update):
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
         screenshot_taken: "types.ScreenshotTaken" = None,
-        paid_message_star_count: int = None,
         _raw = None
     ):
         super().__init__(client)
@@ -641,6 +649,8 @@ class Message(Object, Update):
         self.connected_website = connected_website
         self.write_access_allowed = write_access_allowed
         self.giveaway_completed = giveaway_completed
+        self.paid_message_price_changed = paid_message_price_changed
+        self.paid_messages_refunded = paid_messages_refunded
         self.giveaway_winners = giveaway_winners
         self.gift_code = gift_code
         self.gifted_premium = gifted_premium
@@ -661,7 +671,7 @@ class Message(Object, Update):
         self.contact_registered = contact_registered
         self.chat_join_type = chat_join_type
         self.screenshot_taken = screenshot_taken
-        self.paid_message_star_count = paid_message_star_count
+        self.paid_star_count = paid_star_count
         self._raw = _raw
 
     @staticmethod
@@ -751,6 +761,8 @@ class Message(Object, Update):
             boost_added = None
             giveaway_completed = None
             custom_action = None
+            paid_message_price_changed = None
+            paid_messages_refunded = None
 
             forum_topic_created = None
             forum_topic_edited = None
@@ -1026,6 +1038,18 @@ class Message(Object, Update):
             ):
                 received_gift = await types.ReceivedGift._parse_action(client, message, users, chats)
                 service_type = enums.MessageServiceType.RECEIVED_GIFT
+            
+            elif isinstance(action, raw.types.MessageActionPaidMessagesPrice):
+                paid_message_price_changed = types.PaidMessagePriceChanged._parse_action(
+                    client, message.action
+                )
+                service_type = enums.MessageServiceType.PAID_MESSAGE_PRICE_CHANGED
+
+            elif isinstance(action, raw.types.MessageActionPaidMessagesRefunded):
+                paid_messages_refunded = types.PaidMessagesRefunded._parse_action(
+                    client, message.action
+                )
+                service_type = enums.MessageServiceType.PAID_MESSAGES_REFUNDED
 
             parsed_message = Message(
                 id=message.id,
@@ -1051,6 +1075,8 @@ class Message(Object, Update):
                 web_app_data=web_app_data,
                 giveaway_created=giveaway_created,
                 giveaway_completed=giveaway_completed,
+                paid_message_price_changed=paid_message_price_changed,
+                paid_messages_refunded=paid_messages_refunded,
                 gift_code=gift_code,
                 gifted_premium=gifted_premium,
                 gifted_stars=gifted_stars,
@@ -1379,7 +1405,7 @@ class Message(Object, Update):
                 effect_id=getattr(message, "effect", None),
                 show_caption_above_media=show_caption_above_media,
                 paid_media=paid_media,
-                paid_message_star_count=message.paid_message_stars
+                paid_star_count=message.paid_message_stars
             )
 
             parsed_message.external_reply = await types.ExternalReplyInfo._parse(

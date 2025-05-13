@@ -56,7 +56,6 @@ from .message_reactions import MessageReactions
 from .message_reaction_updated import MessageReactionUpdated
 from .message_reaction_count_updated import MessageReactionCountUpdated
 from .chat_boost_added import ChatBoostAdded
-from .story import Story
 from .payment_form import PaymentForm
 from .giveaway import Giveaway
 from .giveaway_created import GiveawayCreated
@@ -70,6 +69,8 @@ from .screenshot_taken import ScreenshotTaken
 from .translated_text import TranslatedText
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .write_access_allowed import WriteAccessAllowed
+from .paid_message_price_changed import PaidMessagePriceChanged
+from .paid_messages_refunded import PaidMessagesRefunded
 
 __all__ = [
     "AlternativeVideo",
@@ -114,7 +115,6 @@ __all__ = [
     "ReceivedGift",
     "UpgradedGift",
     "Sticker",
-    "Story",
     "Venue",
     "Video",
     "VideoNote",
@@ -124,4 +124,6 @@ __all__ = [
     "WriteAccessAllowed",
     "ScreenshotTaken",
     "TranslatedText",
+    "PaidMessagePriceChanged",
+    "PaidMessagesRefunded",
 ]

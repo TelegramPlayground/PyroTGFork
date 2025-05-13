@@ -228,6 +228,7 @@ def pyrogram_api():
             translate_text
             translate_message_text
             delete_chat_history
+            send_screenshot_notification
         """,
         chats="""
         Chats
@@ -389,7 +390,18 @@ def pyrogram_api():
         """,
         stories="""
         Stories
+            can_post_story
             get_stories
+            get_chat_active_stories
+            get_chat_archived_stories
+            post_story
+            edit_story
+            edit_business_story
+            delete_stories
+            delete_business_story
+            hide_my_story_view
+            forward_story
+            toggle_story_is_posted_to_chat_page
         """,
         payments="""
         Payments
@@ -408,6 +420,7 @@ def pyrogram_api():
             send_gift
             toggle_gift_is_saved
             get_owned_star_count
+            get_business_account_star_balance
         """,
         advanced="""
         Advanced
@@ -480,6 +493,8 @@ def pyrogram_api():
             VideoChatStarted
             VideoChatEnded
             VideoChatParticipantsInvited
+            PaidMessagePriceChanged
+            PaidMessagesRefunded
             Dialog
             EmojiStatus
             GroupCallParticipant
@@ -665,6 +680,7 @@ def pyrogram_api():
         """,
         payments="""
         Payments
+            BusinessBotRights
             BusinessConnection
             BusinessIntro
             BusinessLocation
@@ -686,7 +702,41 @@ def pyrogram_api():
             PaidReactionTypeAnonymous
             PaidReactionTypeChat
             PaidReactionTypeRegular
-        """
+        """,
+        stories="""
+        Stories
+            CanPostStoryResult
+            CanPostStoryResultOk
+            CanPostStoryResultPremiumNeeded
+            CanPostStoryResultBoostNeeded
+            CanPostStoryResultActiveStoryLimitExceeded
+            CanPostStoryResultWeeklyLimitExceeded
+            CanPostStoryResultMonthlyLimitExceeded
+            InputStoryContent
+            InputStoryContentPhoto
+            InputStoryContentVideo
+            StoryAreaPosition
+            LocationAddress
+            StoryAreaType
+            StoryAreaTypeFoundVenue
+            StoryAreaTypeLocation
+            StoryAreaTypeSuggestedReaction
+            StoryAreaTypeLink
+            StoryAreaTypeMessage
+            StoryAreaTypeWeather
+            StoryAreaTypeUniqueGift
+            StoryArea
+            StoryRepostInfo
+            StoryOrigin
+            StoryOriginHiddenUser
+            StoryOriginPublicStory
+            StoryPrivacySettings
+            StoryPrivacySettingsEveryone
+            StoryPrivacySettingsContacts
+            StoryPrivacySettingsCloseFriends
+            StoryPrivacySettingsSelectedUsers
+            StoryStealthMode
+        """,
     )
 
     root = PYROGRAM_API_DEST + "/types"
