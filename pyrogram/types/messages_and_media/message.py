@@ -1103,6 +1103,7 @@ class Message(Object, Update):
             )
 
             if isinstance(action, raw.types.MessageActionPinMessage):
+                parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
                 try:
                     parsed_message.pinned_message = await client.get_replied_message(
                         chat_id=parsed_message.chat.id,
@@ -1110,12 +1111,15 @@ class Message(Object, Update):
                         replies=0
                     )
                 except MessageIdsEmpty:
-                    parsed_message.pinned_message = types.Message(
-                        id=message.reply_to.reply_to_msg_id,
-                        empty=True,
-                        client=client
-                    )
-                parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
+                    if (
+                        message.reply_to and
+                        isinstance(message.reply_to, raw.types.InputReplyToMessage)
+                    ):
+                        parsed_message.pinned_message = types.Message(
+                            id=message.reply_to.reply_to_msg_id,
+                            empty=True,
+                            client=client
+                        )
 
             if isinstance(action, raw.types.MessageActionGameScore):
                 parsed_message.game_high_score = types.GameHighScore._parse_action(client, message, users)
