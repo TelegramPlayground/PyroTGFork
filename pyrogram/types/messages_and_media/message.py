@@ -2387,6 +2387,7 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        mime_type: str = None,
         reply_to_message_id: int = None,
         force_document: bool = None,
         progress: Callable = None,
@@ -2476,6 +2477,9 @@ class Message(Object, Update):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
+            mime_type (``str``, *optional*):
+                MIME type of the file; as defined by the sender.
+
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
                 The function must take *(current, total)* as positional arguments (look at Other Parameters below for a
@@ -2534,6 +2538,7 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
+            mime_type=mime_type,
             reply_to_message_id=reply_to_message_id,
             force_document=force_document,
             progress=progress,
