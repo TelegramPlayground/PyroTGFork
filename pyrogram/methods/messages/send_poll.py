@@ -77,7 +77,8 @@ class SendPoll:
                 Poll question, 1-255 characters.
 
             options (List of :obj:`~pyrogram.types.InputPollOption`):
-                List of answer options, 2-10 answer options.
+                List of poll answer options, 2-12 strings 1-100 characters each.
+                Only custom emoji entities are allowed to be added and only by Upgraded bots OR Premium users.
 
             question_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.
