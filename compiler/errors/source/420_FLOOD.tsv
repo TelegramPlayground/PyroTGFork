@@ -4,6 +4,7 @@ ADDRESS_INVALID	The specified geopoint address is invalid.
 FLOOD_PREMIUM_WAIT_X	Please wait {value} seconds before repeating the action, or purchase a [Telegram Premium subscription](https://core.telegram.org/api/premium) to remove this rate limit.
 FLOOD_TEST_PHONE_WAIT_X	A wait of {value} seconds is required in the test servers
 FLOOD_WAIT_X	Please wait {value} seconds before repeating the action.
+FROZEN_METHOD_INVALID	The method cannot be used by frozen account. You can appeal via @SpamBot if you believe this was a mistake.
 PREMIUM_SUB_ACTIVE_UNTIL_X	You already have a premium subscription active until unixtime {value} .
 SLOWMODE_WAIT_X	Slowmode is enabled in this chat: wait {value} seconds before sending another message to this chat.
 STORY_SEND_FLOOD_X	A wait of {value} seconds is required to continue posting stories
