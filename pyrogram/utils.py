@@ -466,10 +466,7 @@ async def _get_reply_message_parameters(
     client: "pyrogram.Client",
     message_thread_id: int = None,
     reply_parameters: "types.ReplyParameters" = None
-) -> Union[
-    raw.types.InputReplyToStory,
-    raw.types.InputReplyToMessage
-]:
+) -> "raw.base.InputReplyTo":
     reply_to = raw.types.InputReplyToMessage(
         reply_to_msg_id=0
     )
