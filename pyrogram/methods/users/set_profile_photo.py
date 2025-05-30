@@ -24,6 +24,7 @@ from pyrogram import raw
 
 
 class SetProfilePhoto:
+    # TODO: FIXME!
     async def set_profile_photo(
         self: "pyrogram.Client",
         *,
@@ -60,7 +61,7 @@ class SetProfilePhoto:
                 The bot should have ``can_be_edited`` property set to True.
 
             photo_frame_start_timestamp (``float``, *optional*):
-                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` or ``video_emoji_markup`` is set.
+                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` is set.
 
         Returns:
             ``bool``: True on success.
