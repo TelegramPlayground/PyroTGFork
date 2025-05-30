@@ -955,7 +955,7 @@ class Chat(Object):
                 ".name" set for in-memory uploads.
 
             photo_frame_start_timestamp (``float``, *optional*):
-                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` or ``video_emoji_markup`` is set.
+                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` is set.
 
         Returns:
             :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
