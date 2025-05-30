@@ -33,7 +33,7 @@ class SetChatPhoto:
         *,
         photo: Union[str, "io.BytesIO"] = None,
         video: Union[str, "io.BytesIO"] = None,
-        video_start_ts: float = None,
+        photo_frame_start_timestamp: float = None,
     ) -> Union["types.Message", bool]:
         """Set a new chat photo or video (H.264/MPEG-4 AVC video, max 5 seconds).
 
@@ -58,8 +58,8 @@ class SetChatPhoto:
                 from your local machine or a binary file-like object with its attribute
                 ".name" set for in-memory uploads.
 
-            video_start_ts (``float``, *optional*):
-                The timestamp in seconds of the video frame to use as photo profile preview.
+            photo_frame_start_timestamp (``float``, *optional*):
+                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` is set.
 
         Returns:
             :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
@@ -91,7 +91,7 @@ class SetChatPhoto:
                 photo = raw.types.InputChatUploadedPhoto(
                     file=await self.save_file(photo),
                     video=await self.save_file(video),
-                    video_start_ts=video_start_ts,
+                    video_start_ts=photo_frame_start_timestamp,
                 )
             else:
                 photo = utils.get_input_media_from_file_id(photo, FileType.PHOTO)
@@ -100,7 +100,7 @@ class SetChatPhoto:
             photo = raw.types.InputChatUploadedPhoto(
                 file=await self.save_file(photo),
                 video=await self.save_file(video),
-                video_start_ts=video_start_ts,
+                video_start_ts=photo_frame_start_timestamp,
             )
 
         if isinstance(peer, raw.types.InputPeerChat):
