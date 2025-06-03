@@ -46,7 +46,7 @@ class TextQuote(Object):
         self,
         *,
         client: "pyrogram.Client" = None,
-        text: str = None,
+        text: Str = None,
         entities: list["types.MessageEntity"] = None,
         position: int = None,
         is_manual: bool = None
