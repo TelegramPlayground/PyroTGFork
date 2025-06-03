@@ -87,7 +87,7 @@ class ReceivedGift(Object):
         *,
         client: "pyrogram.Client" = None,
         sender_user: Optional["types.User"] = None,
-        text: Optional[str] = None,
+        text: Optional[Str] = None,
         entities: list["types.MessageEntity"] = None,
         date: datetime,
         is_private: Optional[bool] = None,
