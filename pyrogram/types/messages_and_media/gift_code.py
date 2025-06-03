@@ -77,7 +77,7 @@ class GiftCode(Object):
         amount: int = None,
         cryptocurrency: str = None,
         cryptocurrency_amount: int = None,
-        caption: str = None,
+        caption: Str = None,
         caption_entities: list["types.MessageEntity"] = None
     ):
         super().__init__()

@@ -20,6 +20,7 @@ import pyrogram
 from pyrogram import types
 
 from ..object import Object
+from .message import Str
 
 
 class PollOption(Object):
@@ -44,7 +45,7 @@ class PollOption(Object):
         self,
         *,
         client: "pyrogram.Client" = None,
-        text: str,
+        text: Str,
         text_entities: list["types.MessageEntity"],
         voter_count: int,
         data: bytes

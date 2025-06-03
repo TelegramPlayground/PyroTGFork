@@ -1511,7 +1511,7 @@ class Message(Object, Update):
             return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
 
     @property
-    def content(self) -> str:
+    def content(self) -> Str:
         return self.text or self.caption or Str("").init([])
 
     async def get_media_group(self) -> list["types.Message"]:

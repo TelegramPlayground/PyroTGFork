@@ -85,7 +85,7 @@ class Poll(Object, Update):
         *,
         client: "pyrogram.Client" = None,
         id: str,
-        question: str,
+        question: Str,
         options: list["types.PollOption"],
         question_entities: list["types.MessageEntity"] = None,
         total_voter_count: int,
