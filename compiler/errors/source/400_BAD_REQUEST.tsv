@@ -89,6 +89,7 @@ CHANNEL_BANNED	The channel is banned
 CHANNEL_FORUM_MISSING	This supergroup is not a forum.
 CHANNEL_ID_INVALID	The specified supergroup ID is invalid.
 CHANNEL_INVALID	The provided channel is invalid.
+CHANNEL_MONOFORUM_UNSUPPORTED	The provided channel is not supported.
 CHANNEL_PARICIPANT_MISSING	The current user is not in the channel.
 CHANNEL_PRIVATE	You haven't joined this channel/supergroup.
 CHANNEL_TOO_BIG	This channel has too many participants (>1000) to be deleted.
