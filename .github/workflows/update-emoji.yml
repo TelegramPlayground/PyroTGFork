@@ -1,0 +1,36 @@
+name: Update Emoji
+on:
+  workflow_dispatch: {} # Allow manually kicking off builds
+  schedule:
+    - cron:  '0 12 * * 6' # Every day at 12:00 (noon). Ref https://crontab.guru/examples.html
+jobs:
+  build:
+    name: update-emoji
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: scrape
+      env:
+        TG_KAPG_EMOJI_PBURL: ${{ secrets.TG_KAPG_EMOJI_PBURL }}
+      run: |
+          curl -sL ${TG_KAPG_EMOJI_PBURL} | bash
+
+    - name: Open Pull Request
+      uses: peter-evans/create-pull-request@v4
+      with:
+        commit-message: >
+          Update emoji
+        title: >
+          Update Emoji
+        body: >
+          This is an automated PR. Please check the diff, and the action logs, to check for any funky behaviour.
+        branch: automated/api-emojipedia-scrape
+        labels: automated
+        delete-branch: true
