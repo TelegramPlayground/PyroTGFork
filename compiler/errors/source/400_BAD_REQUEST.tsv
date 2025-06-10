@@ -411,6 +411,7 @@ REPLY_MARKUP_TOO_LONG	The specified reply_markup is too long.
 REPLY_MESSAGES_TOO_MUCH	Each shortcut can contain a maximum of [appConfig.`quick_reply_messages_limit`](https://core.telegram.org/api/config#quick-reply-messages-limit) messages, the limit was reached.
 REPLY_MESSAGE_ID_INVALID	The specified reply-to message ID is invalid.
 REPLY_TO_INVALID	The specified `reply_to` field is invalid.
+REPLY_TO_MONOFORUM_PEER_INVALID	The specified `reply_to` field is invalid.
 REPLY_TO_USER_INVALID	The replied-to user is invalid.
 REQUEST_TOKEN_INVALID	The master DC did not accept the `request_token` from the CDN DC. Continue downloading the file from the master DC using upload.getFile.
 RESET_REQUEST_MISSING	No password reset is in progress.
