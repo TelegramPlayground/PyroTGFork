@@ -58,6 +58,7 @@ BOT_WEBVIEW_DISABLED	A webview cannot be opened in the specified conditions: emi
 BROADCAST_ID_INVALID	Broadcast ID invalid.
 BROADCAST_PUBLIC_VOTERS_FORBIDDEN	You can't forward polls with public voters.
 BROADCAST_REQUIRED	This method can only be called on a channel, please use stats.getMegagroupStats for supergroups.
+BUSINESS_BOT_MISSING	The business bot is missing.
 BUSINESS_CONNECTION_INVALID	The business connection is invalid.
 BUSINESS_CONNECTION_NOT_ALLOWED	This business connection is not allowed.
 BUSINESS_PEER_INVALID	Messages can't be set to the specified peer through the current [business connection](https://core.telegram.org/api/business#connected-bots).
