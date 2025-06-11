@@ -499,7 +499,10 @@ async def _get_reply_message_parameters(
                 peer=await client.resolve_peer(reply_parameters.chat_id),
                 story_id=reply_parameters.story_id
             )
-        if reply_parameters.direct_message_topic_id:
+        if (
+            not reply_parameters.message_id and
+            reply_parameters.direct_message_topic_id
+        ):
             return raw.types.InputReplyToMonoForum(
                 monoforum_peer_id=await client.resolve_peer(reply_parameters.direct_message_topic_id)
             )
