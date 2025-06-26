@@ -305,6 +305,7 @@ MESSAGE_TOO_LONG	The provided message is too long.
 MESSAGE_TOO_OLD	The message is too old, the requested information is not available.
 METHOD_INVALID	The specified method is invalid.
 MIN_DATE_INVALID	The specified minimum date is invalid.
+MONOFORUM_FILTER_INVALID	The specified filter is invalid.
 MSG_ID_INVALID	Invalid message ID provided.
 MSG_TOO_OLD	[`chat_read_mark_expire_period` seconds](https://core.telegram.org/api/config#chat-read-mark-expire-period) have passed since the message was sent, read receipts were deleted.
 MSG_WAIT_FAILED	A waiting call returned an error.
