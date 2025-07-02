@@ -396,8 +396,8 @@ class Message(Object, Update):
             E.g.: "/start 1 2 3" would produce ["start", "1", "2", "3"].
             Only applicable when using :obj:`~pyrogram.filters.command`.
 
-        reactions (List of :obj:`~pyrogram.types.Reaction`):
-            List of the reactions to this message.
+        reactions (:obj:`~pyrogram.types.MessageReactions`):
+            Reactions on this message.
 
         custom_action (``str``, *optional*):
             Custom action (most likely not supported by the current layer, an upgrade might be needed)
@@ -554,7 +554,7 @@ class Message(Object, Update):
         outgoing: bool = None,
         matches: list[re.Match] = None,
         command: list[str] = None,
-        reactions: list["types.Reaction"] = None,
+        reactions: "types.MessageReactions" = None,
         custom_action: str = None,
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
