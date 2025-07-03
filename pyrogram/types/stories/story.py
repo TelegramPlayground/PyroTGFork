@@ -385,8 +385,8 @@ class Story(Object, Update):
                     chat = types.Chat._parse_chat_chat(client, chats.get(peer_id, None))
                 else:
                     chat = types.Chat._parse_channel_chat(client, chats.get(peer_id, None))
-        
-            if story_item.fwd_from:
+
+            if getattr(story_item, "fwd_from", None):
                 repost_info = types.StoryRepostInfo._parse(
                     client, story_item.fwd_from,
                     users, chats
