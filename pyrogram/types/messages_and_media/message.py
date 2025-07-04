@@ -3176,11 +3176,12 @@ class Message(Object, Update):
         Parameters:
 
             question (``str``):
-                Poll question, 1-255 characters.
+                Poll question.
+                **Users**: 1-255 characters.
+                **Bots**: 1-300 characters.
 
             options (List of :obj:`~pyrogram.types.InputPollOption`):
-                List of poll answer options, 2-12 strings 1-100 characters each.
-                Only custom emoji entities are allowed to be added and only by Upgraded bots OR Premium users.
+                List of 2-12 poll answer options.
 
             question_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.

@@ -29,12 +29,12 @@ class InputPollOption(Object):
 
     Parameters:
         text (``str``):
-            Option text, 1-100 characters
+            Option text, 1-100 characters after entity parsing.
 
         text_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
             By default, texts are parsed using both Markdown and HTML styles.
             You can combine both syntaxes together.
-            Currently, only custom emoji entities are allowed.
+            Currently, only custom emoji entities are allowed to be added and only by Upgraded bots OR Premium users.
 
         text_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             List of special entities that appear in the poll option text, which can be specified instead of *text_parse_mode*.
