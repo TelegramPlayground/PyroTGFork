@@ -544,6 +544,8 @@ TTL_MEDIA_INVALID	Invalid media Time To Live was provided.
 TTL_PERIOD_INVALID	The specified TTL period is invalid.
 TYPES_EMPTY	No top peer type was provided.
 TYPE_CONSTRUCTOR_INVALID	The type constructor is invalid
+UNKNOWN_ERROR	Unknown error.
+UNSUPPORTED	This method is not supported.
 UNTIL_DATE_INVALID	Invalid until date provided.
 URL_INVALID	Invalid URL provided.
 USAGE_LIMIT_INVALID	The specified usage limit is invalid.
