@@ -229,6 +229,7 @@ def pyrogram_api():
             translate_message_text
             delete_chat_history
             send_screenshot_notification
+            send_checklist
         """,
         chats="""
         Chats
@@ -571,6 +572,8 @@ def pyrogram_api():
             ContactRegistered
             ScreenshotTaken
             DraftMessage
+            InputChecklist
+            InputChecklistTask
         """,
         chat_topics="""
         Chat Forum Topics
