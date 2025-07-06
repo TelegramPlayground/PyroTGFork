@@ -74,6 +74,7 @@ from .search_public_messages_by_tag import SearchPublicMessagesByTag
 from .count_public_messages_by_tag import CountPublicMessagesByTag
 from .translate_text import TranslateText
 from .send_screenshot_notification import SendScreenshotNotification
+from .send_checklist import SendChecklist
 
 class Messages(
     CopyMediaGroup,
@@ -111,6 +112,7 @@ class Messages(
     SendAudio,
     SendCachedMedia,
     SendChatAction,
+    SendChecklist,
     SendContact,
     SendDice,
     SendDocument,
