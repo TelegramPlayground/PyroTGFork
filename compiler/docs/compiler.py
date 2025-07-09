@@ -536,6 +536,12 @@ def pyrogram_api():
             InputPollOption
             Poll
             PollAnswer
+            ChecklistTask
+            Checklist
+            InputChecklistTask
+            InputChecklist
+            ChecklistTasksDone
+            ChecklistTasksAdded
             Location
             Venue
             Gift
@@ -571,9 +577,7 @@ def pyrogram_api():
             WebPage
             ContactRegistered
             ScreenshotTaken
-            DraftMessage
-            InputChecklist
-            InputChecklistTask
+            DraftMessage            
         """,
         chat_topics="""
         Chat Forum Topics

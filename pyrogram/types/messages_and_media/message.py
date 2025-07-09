@@ -203,6 +203,9 @@ class Message(Object, Update):
         has_media_spoiler (``bool``, *optional*):
             True, if the message media is covered by a spoiler animation.
 
+        checklist (:obj:`~pyrogram.types.Checklist`, *optional*):
+            Message is a checklist.
+
         contact (:obj:`~pyrogram.types.Contact`, *optional*):
             Message is a shared contact, information about the contact.
 
@@ -295,6 +298,12 @@ class Message(Object, Update):
 
         boost_added (:obj:`~pyrogram.types.ChatBoostAdded`, *optional*):
             Service message: user boosted the chat
+
+        checklist_tasks_done (:obj:`~pyrogram.types.ChecklistTasksDone`, *optional*):
+            Service message: some tasks in a checklist were marked as done or not done.
+
+        checklist_tasks_added (:obj:`~pyrogram.types.ChecklistTasksAdded`, *optional*):
+            Service message: tasks were added to a checklist.
 
         forum_topic_created (:obj:`~pyrogram.types.ForumTopicCreated`, *optional*):
             Service message: forum topic created
@@ -485,6 +494,7 @@ class Message(Object, Update):
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         has_media_spoiler: bool = None,
+        checklist: Optional["types.Checklist"] = None,
         contact: "types.Contact" = None,
         dice: "types.Dice" = None,
         game: "types.Game" = None,
@@ -513,6 +523,8 @@ class Message(Object, Update):
 
 
         boost_added: "types.ChatBoostAdded" = None,
+        checklist_tasks_done: Optional["types.ChecklistTasksDone"] = None,
+        checklist_tasks_added: Optional["types.ChecklistTasksAdded"] = None,
         forum_topic_created: "types.ForumTopicCreated" = None,
         forum_topic_edited: "types.ForumTopicEdited" = None,
         forum_topic_closed: "types.ForumTopicClosed" = None,
@@ -672,6 +684,9 @@ class Message(Object, Update):
         self.chat_join_type = chat_join_type
         self.screenshot_taken = screenshot_taken
         self.paid_star_count = paid_star_count
+        self.checklist = checklist
+        self.checklist_tasks_done = checklist_tasks_done
+        self.checklist_tasks_added = checklist_tasks_added
         self._raw = _raw
 
     @staticmethod
@@ -778,6 +793,9 @@ class Message(Object, Update):
             screenshot_taken = None
 
             received_gift = None
+
+            checklist_tasks_done = None
+            checklist_tasks_added = None
 
             service_type = enums.MessageServiceType.UNKNOWN
 
@@ -1050,6 +1068,14 @@ class Message(Object, Update):
                     client, message.action
                 )
                 service_type = enums.MessageServiceType.PAID_MESSAGES_REFUNDED
+            
+            elif isinstance(action, raw.types.MessageActionTodoCompletions):
+                service_type = enums.MessageServiceType.CHECKLIST_TASKS_DONE
+                checklist_tasks_done = types.ChecklistTasksDone._parse(client, message)
+
+            elif isinstance(action, raw.types.MessageActionTodoAppendTasks):
+                service_type = enums.MessageServiceType.CHECKLIST_TASKS_ADDED
+                checklist_tasks_added = types.ChecklistTasksAdded._parse(client, message)
 
             parsed_message = Message(
                 id=message.id,
@@ -1099,6 +1125,8 @@ class Message(Object, Update):
                 chat_join_type=chat_join_type,
                 screenshot_taken=screenshot_taken,
                 reactions=types.MessageReactions._parse(client, message.reactions) if message.reactions else None,
+                checklist_tasks_done=checklist_tasks_done,
+                checklist_tasks_added=checklist_tasks_added,
                 client=client
             )
 
@@ -1179,6 +1207,8 @@ class Message(Object, Update):
 
             link_preview_options = None
             web_page_url = None
+
+            checklist = None
 
             if media:
                 if isinstance(media, raw.types.MessageMediaPhoto):
@@ -1308,6 +1338,9 @@ class Message(Object, Update):
                 elif isinstance(media, raw.types.MessageMediaPaidMedia):
                     paid_media = types.PaidMediaInfo._parse(client, media)
                     media_type = enums.MessageMediaType.PAID_MEDIA
+                elif isinstance(media, raw.types.MessageMediaToDo):
+                    media_type = enums.MessageMediaType.CHECKLIST
+                    checklist = types.Checklist._parse(client, media, users)
                 else:
                     media = None
                     media_type = enums.MessageMediaType.UNKNOWN
@@ -1381,6 +1414,7 @@ class Message(Object, Update):
                 media_group_id=message.grouped_id,
                 photo=photo,
                 location=location,
+                checklist=checklist,
                 contact=contact,
                 venue=venue,
                 audio=audio,
