@@ -337,6 +337,9 @@ class Message(Object, Update):
 
         paid_message_price_changed (:obj:`~pyrogram.types.PaidMessagePriceChanged`, *optional*):
             Service message: the price for paid messages has changed in the chat.
+        
+        direct_message_price_changed (:obj:`~pyrogram.types.DirectMessagePriceChanged`, *optional*):
+            Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed.
 
         paid_messages_refunded (:obj:`~pyrogram.types.PaidMessagesRefunded`, *optional*):
             Service message: Paid messages were refunded.
@@ -536,6 +539,7 @@ class Message(Object, Update):
         giveaway_winners: "types.GiveawayWinners" = None,
         giveaway_completed: "types.GiveawayCompleted" = None,
         paid_message_price_changed: "types.PaidMessagePriceChanged" = None,
+        direct_message_price_changed: "types.DirectMessagePriceChanged" = None,
         paid_messages_refunded: "types.PaidMessagesRefunded" = None,
         video_chat_scheduled: "types.VideoChatScheduled" = None,
         video_chat_started: "types.VideoChatStarted" = None,
@@ -662,6 +666,7 @@ class Message(Object, Update):
         self.write_access_allowed = write_access_allowed
         self.giveaway_completed = giveaway_completed
         self.paid_message_price_changed = paid_message_price_changed
+        self.direct_message_price_changed = direct_message_price_changed
         self.paid_messages_refunded = paid_messages_refunded
         self.giveaway_winners = giveaway_winners
         self.gift_code = gift_code
@@ -777,6 +782,7 @@ class Message(Object, Update):
             giveaway_completed = None
             custom_action = None
             paid_message_price_changed = None
+            direct_message_price_changed = None
             paid_messages_refunded = None
 
             forum_topic_created = None
@@ -1058,10 +1064,16 @@ class Message(Object, Update):
                 service_type = enums.MessageServiceType.RECEIVED_GIFT
             
             elif isinstance(action, raw.types.MessageActionPaidMessagesPrice):
-                paid_message_price_changed = types.PaidMessagePriceChanged._parse_action(
-                    client, message.action
-                )
-                service_type = enums.MessageServiceType.PAID_MESSAGE_PRICE_CHANGED
+                if action.broadcast_messages_allowed:
+                    direct_message_price_changed = types.DirectMessagePriceChanged._parse_action(
+                        client, message.action
+                    )
+                    service_type = enums.MessageServiceType.DIRECT_MESSAGE_PRICE_CHANGED
+                else:
+                    paid_message_price_changed = types.PaidMessagePriceChanged._parse_action(
+                        client, message.action
+                    )
+                    service_type = enums.MessageServiceType.PAID_MESSAGE_PRICE_CHANGED
 
             elif isinstance(action, raw.types.MessageActionPaidMessagesRefunded):
                 paid_messages_refunded = types.PaidMessagesRefunded._parse_action(
@@ -1102,6 +1114,7 @@ class Message(Object, Update):
                 giveaway_created=giveaway_created,
                 giveaway_completed=giveaway_completed,
                 paid_message_price_changed=paid_message_price_changed,
+                direct_message_price_changed=direct_message_price_changed,
                 paid_messages_refunded=paid_messages_refunded,
                 gift_code=gift_code,
                 gifted_premium=gifted_premium,
