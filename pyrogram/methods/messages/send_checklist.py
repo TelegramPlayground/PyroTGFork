@@ -37,7 +37,7 @@ class SendChecklist:
         message_thread_id: Optional[int] = None,
         reply_parameters: Optional["types.ReplyParameters"] = None,
         schedule_date: Optional[datetime] = None,
-        # business_connection_id: Optional[str] = None,
+        business_connection_id: Optional[str] = None,
         paid_message_star_count: int = None,
         reply_markup: Optional[
             Union[
@@ -153,7 +153,15 @@ class SendChecklist:
             effect=message_effect_id,
             **await utils.parse_text_entities(self, caption, parse_mode, caption_entities)
         )
-        r = await self.invoke(rpc)
+        if business_connection_id:
+            r = await self.invoke(
+                raw.functions.InvokeWithBusinessConnection(
+                    query=rpc,
+                    connection_id=business_connection_id
+                )
+            )
+        else:
+            r = await self.invoke(rpc)
 
         messages = await utils.parse_messages(
             client=self,
