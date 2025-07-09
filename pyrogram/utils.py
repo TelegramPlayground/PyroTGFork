@@ -496,7 +496,7 @@ async def _get_reply_message_parameters(
         return raw.types.InputReplyToStory(
             peer=await client.resolve_peer(reply_parameters.chat_id),
             story_id=reply_parameters.story_id
-        )    
+        )
     reply_to_message_id = reply_parameters.message_id
     if not reply_to_message_id:
         if reply_parameters.direct_message_topic_id:
