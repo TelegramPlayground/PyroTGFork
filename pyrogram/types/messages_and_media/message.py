@@ -1310,6 +1310,7 @@ class Message(Object, Update):
                     media_type = enums.MessageMediaType.PAID_MEDIA
                 else:
                     media = None
+                    media_type = enums.MessageMediaType.UNKNOWN
 
             show_caption_above_media = getattr(message, "invert_media", False)
             if (
@@ -1350,22 +1351,22 @@ class Message(Object, Update):
                 sender_chat=sender_chat,
                 text=(
                     Str(message.message).init(entities) or None
-                    if media is None or web_page is not None
+                    if media_type is None or web_page is not None
                     else None
                 ),
                 caption=(
                     Str(message.message).init(entities) or None
-                    if media is not None and web_page is None
+                    if media_type is not None and web_page is None
                     else None
                 ),
                 entities=(
                     entities or None
-                    if media is None or web_page is not None
+                    if media_type is None or web_page is not None
                     else None
                 ),
                 caption_entities=(
                     entities or None
-                    if media is not None and web_page is None
+                    if media_type is not None and web_page is None
                     else None
                 ),
                 author_signature=message.post_author,
