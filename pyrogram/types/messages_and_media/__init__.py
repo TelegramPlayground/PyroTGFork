@@ -75,6 +75,7 @@ from .checklist import Checklist
 from .checklist_task import ChecklistTask
 from .checklist_tasks_added import ChecklistTasksAdded
 from .checklist_tasks_done import ChecklistTasksDone
+from .direct_message_price_changed import DirectMessagePriceChanged
 
 __all__ = [
     "AlternativeVideo",
@@ -134,4 +135,5 @@ __all__ = [
     "ChecklistTask",
     "ChecklistTasksAdded",
     "ChecklistTasksDone",
+    "DirectMessagePriceChanged",
 ]
