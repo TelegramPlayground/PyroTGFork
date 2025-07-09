@@ -72,6 +72,9 @@ class ExternalReplyInfo(Object):
 
         has_media_spoiler (``bool``, *optional*):
             True, if the message media is covered by a spoiler animation.
+        
+        checklist (:obj:`~pyrogram.types.Checklist`, *optional*):
+            Message is a checklist.
 
         contact (:obj:`~pyrogram.types.Contact`, *optional*):
             Message is a shared contact, information about the contact.
@@ -126,6 +129,7 @@ class ExternalReplyInfo(Object):
         video_note: "types.VideoNote" = None,
         voice: "types.Voice" = None,
         has_media_spoiler: bool = None,
+        checklist: Optional["types.Checklist"] = None,
         contact: "types.Contact" = None,
         dice: "types.Dice" = None,
         game: "types.Game" = None,
@@ -154,6 +158,7 @@ class ExternalReplyInfo(Object):
         self.video_note = video_note
         self.voice = voice
         self.has_media_spoiler = has_media_spoiler
+        self.checklist = checklist
         self.contact = contact
         self.dice = dice
         self.game = game
@@ -206,6 +211,7 @@ class ExternalReplyInfo(Object):
 
             has_media_spoiler = None
 
+            checklist = None
             contact = None
             dice = None
             game = None
@@ -319,6 +325,11 @@ class ExternalReplyInfo(Object):
                 elif isinstance(media, raw.types.MessageMediaPaidMedia):
                     paid_media = types.PaidMediaInfo._parse(client, media)
                     media_type = enums.MessageMediaType.PAID_MEDIA
+                elif isinstance(media, raw.types.MessageMediaToDo):
+                    media_type = enums.MessageMediaType.CHECKLIST
+                    checklist = types.Checklist._parse(client, media, users)
+                else:
+                    media_type = enums.MessageMediaType.UNKNOWN
 
             return ExternalReplyInfo(
                 origin=origin,
@@ -336,6 +347,7 @@ class ExternalReplyInfo(Object):
                 video_note=video_note,
                 voice=voice,
                 has_media_spoiler=has_media_spoiler,
+                checklist=checklist,
                 contact=contact,
                 dice=dice,
                 game=game,
