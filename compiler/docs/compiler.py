@@ -229,6 +229,9 @@ def pyrogram_api():
             translate_message_text
             delete_chat_history
             send_screenshot_notification
+            send_checklist
+            edit_message_checklist
+            mark_checklist_tasks_as_done
         """,
         chats="""
         Chats
@@ -500,6 +503,7 @@ def pyrogram_api():
             VideoChatEnded
             VideoChatParticipantsInvited
             PaidMessagePriceChanged
+            DirectMessagePriceChanged
             PaidMessagesRefunded
             Dialog
             EmojiStatus
@@ -542,6 +546,12 @@ def pyrogram_api():
             InputPollOption
             Poll
             PollAnswer
+            ChecklistTask
+            Checklist
+            InputChecklistTask
+            InputChecklist
+            ChecklistTasksDone
+            ChecklistTasksAdded
             Location
             Venue
             Gift

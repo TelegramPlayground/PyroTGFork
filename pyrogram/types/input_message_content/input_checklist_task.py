@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -16,40 +16,55 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
 
 import pyrogram
-from pyrogram import raw, utils, types, enums
-
+from pyrogram import enums, raw, types, utils
 from ..object import Object
 
 
-class InputPollOption(Object):
-    """This object contains information about one answer option in a poll to send.
+class InputChecklistTask(Object):
+    """Describes a task to add to a checklist.
 
     Parameters:
-        text (``str``):
-            Option text, 1-100 characters after entity parsing.
+        id  (``int``):
+            Unique identifier of the task; must be positive and unique among all task identifiers currently present in the checklist.
 
-        text_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+        text  (``str``):
+            Text of the task; 1-100 characters after entities parsing.
+        
+        parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
             By default, texts are parsed using both Markdown and HTML styles.
             You can combine both syntaxes together.
-            Currently, only custom emoji entities are allowed to be added and only by Upgraded bots OR Premium users.
 
         text_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             List of special entities that appear in the poll option text, which can be specified instead of *text_parse_mode*.
+            Currently, only bold, italic, underline, strikethrough, spoiler, and custom_emoji entities are allowed.
 
     """
 
     def __init__(
         self,
-        *,
-        text: str,
-        text_parse_mode: "enums.ParseMode" = None,
+        id: int = None,
+        text: str = None,
+        parse_mode: "enums.ParseMode" = None,
         text_entities: list["types.MessageEntity"] = None,
     ):
         super().__init__()
 
+        self.id = id
         self.text = text
-        self.text_parse_mode = text_parse_mode
+        self.parse_mode = parse_mode
         self.text_entities = text_entities
+
+    async def write(self, client: "pyrogram.Client") -> "raw.types.TodoItem":
+        text, entities = (await utils.parse_text_entities(
+            client, self.text, self.parse_mode, self.text_entities
+        )).values()
+
+        return raw.types.TodoItem(
+            id=self.id,
+            title=raw.types.TextWithEntities(
+                text=text,
+                entities=entities or []
+            )
+        )

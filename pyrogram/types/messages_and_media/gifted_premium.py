@@ -67,7 +67,7 @@ class GiftedPremium(Object):
         cryptocurrency_amount: Optional[int] = None,
         month_count: Optional[int] = None,
         sticker: Optional["types.Sticker"] = None,
-        caption: Optional[str] = None,
+        caption: Optional[Str] = None,
         caption_entities: Optional[list["types.MessageEntity"]] = None
     ):
         super().__init__()

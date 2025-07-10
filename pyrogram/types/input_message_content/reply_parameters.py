@@ -55,6 +55,11 @@ class ReplyParameters(Object):
 
         quote_position (``int``, *optional*):
             Position of the quote in the original message in UTF-16 code units
+        
+        direct_message_topic_id (``int``, *optional*):
+            TEMPORARY till the NEXT update.
+            Unique identifier of the topic in a channel direct messages chat administered by the current user; pass None if the chat is not a channel direct messages chat administered by the current user.
+
     """
 
     def __init__(
@@ -68,6 +73,7 @@ class ReplyParameters(Object):
         quote_parse_mode: Optional["enums.ParseMode"] = None,
         quote_entities: list["types.MessageEntity"] = None,
         quote_position: int = None,
+        direct_message_topic_id: int = None,
     ):
         super().__init__()
 
@@ -78,3 +84,4 @@ class ReplyParameters(Object):
         self.quote_parse_mode = quote_parse_mode
         self.quote_entities = quote_entities
         self.quote_position = quote_position
+        self.direct_message_topic_id = direct_message_topic_id

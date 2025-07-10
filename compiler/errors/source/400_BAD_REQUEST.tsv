@@ -58,6 +58,7 @@ BOT_WEBVIEW_DISABLED	A webview cannot be opened in the specified conditions: emi
 BROADCAST_ID_INVALID	Broadcast ID invalid.
 BROADCAST_PUBLIC_VOTERS_FORBIDDEN	You can't forward polls with public voters.
 BROADCAST_REQUIRED	This method can only be called on a channel, please use stats.getMegagroupStats for supergroups.
+BUSINESS_BOT_MISSING	The business bot is missing.
 BUSINESS_CONNECTION_INVALID	The business connection is invalid.
 BUSINESS_CONNECTION_NOT_ALLOWED	This business connection is not allowed.
 BUSINESS_PEER_INVALID	Messages can't be set to the specified peer through the current [business connection](https://core.telegram.org/api/business#connected-bots).
@@ -89,6 +90,7 @@ CHANNEL_BANNED	The channel is banned
 CHANNEL_FORUM_MISSING	This supergroup is not a forum.
 CHANNEL_ID_INVALID	The specified supergroup ID is invalid.
 CHANNEL_INVALID	The provided channel is invalid.
+CHANNEL_MONOFORUM_UNSUPPORTED	The provided channel is not supported.
 CHANNEL_PARICIPANT_MISSING	The current user is not in the channel.
 CHANNEL_PRIVATE	You haven't joined this channel/supergroup.
 CHANNEL_TOO_BIG	This channel has too many participants (>1000) to be deleted.
@@ -210,6 +212,7 @@ FORUM_ENABLED	You can't execute the specified action because the group is a [for
 FRESH_CHANGE_ADMINS_FORBIDDEN	You were just elected admin, you can't add or modify other admins yet.
 FROM_MESSAGE_BOT_DISABLED	Bots can't use fromMessage min constructors.
 FROM_PEER_INVALID	The specified from_id is invalid.
+FROZEN_PARTICIPANT_MISSING	The account is frozen and cannot access the chat participant.
 GAME_BOT_INVALID	Bots can't send another bot's game.
 GENERAL_MODIFY_ICON_FORBIDDEN	You can't modify the icon of the 'General' topic.
 GEO_POINT_INVALID	Invalid geoposition provided.
@@ -302,6 +305,7 @@ MESSAGE_TOO_LONG	The provided message is too long.
 MESSAGE_TOO_OLD	The message is too old, the requested information is not available.
 METHOD_INVALID	The specified method is invalid.
 MIN_DATE_INVALID	The specified minimum date is invalid.
+MONOFORUM_FILTER_INVALID	The specified filter is invalid.
 MSG_ID_INVALID	Invalid message ID provided.
 MSG_TOO_OLD	[`chat_read_mark_expire_period` seconds](https://core.telegram.org/api/config#chat-read-mark-expire-period) have passed since the message was sent, read receipts were deleted.
 MSG_WAIT_FAILED	A waiting call returned an error.
@@ -374,6 +378,7 @@ POLL_OPTION_INVALID	Invalid poll option provided.
 POLL_QUESTION_INVALID	One of the poll questions is not acceptable.
 POLL_UNSUPPORTED	This layer does not support polls in the invoked method
 POLL_VOTE_REQUIRED	Cast a vote in the poll before calling this method
+PRECHECKOUT_FAILED	precheckout failed
 PREMIUM_ACCOUNT_REQUIRED	A premium account is required to execute this action.
 PRICING_CHAT_INVALID	The pricing for the [subscription](https://core.telegram.org/api/subscriptions) is invalid, the maximum price is specified in the [`stars_subscription_amount_max` config key](https://core.telegram.org/api/config#stars-subscription-amount-max).
 PRIVACY_KEY_INVALID	The privacy key is invalid.
@@ -407,6 +412,7 @@ REPLY_MARKUP_TOO_LONG	The specified reply_markup is too long.
 REPLY_MESSAGES_TOO_MUCH	Each shortcut can contain a maximum of [appConfig.`quick_reply_messages_limit`](https://core.telegram.org/api/config#quick-reply-messages-limit) messages, the limit was reached.
 REPLY_MESSAGE_ID_INVALID	The specified reply-to message ID is invalid.
 REPLY_TO_INVALID	The specified `reply_to` field is invalid.
+REPLY_TO_MONOFORUM_PEER_INVALID	The specified `reply_to` field is invalid.
 REPLY_TO_USER_INVALID	The replied-to user is invalid.
 REQUEST_TOKEN_INVALID	The master DC did not accept the `request_token` from the CDN DC. Continue downloading the file from the master DC using upload.getFile.
 RESET_REQUEST_MISSING	No password reset is in progress.
@@ -448,8 +454,13 @@ SMS_CODE_CREATE_FAILED	An error occurred while creating the SMS code.
 SRP_A_INVALID	The specified inputCheckPasswordSRP.A value is invalid.
 SRP_ID_INVALID	Invalid SRP ID provided.
 SRP_PASSWORD_CHANGED	Password has changed.
+STARGIFT_CONVERT_TOO_OLD	This gift can no longer be converted into stars.
 STARGIFT_INVALID	The passed [inputInvoiceStarGift](https://core.telegram.org/constructor/inputInvoiceStarGift) is invalid.
+STARGIFT_MESSAGE_INVALID	The provided message for this gift is invalid.
 STARGIFT_NOT_FOUND	The specified star gift was not found.
+STARGIFT_NOT_OWNER	You cannot control this gift because it does not belong to you.
+STARGIFT_RESELL_NOT_ALLOWED	You cannot buy this gift. Someone else may have already bought it.
+STARGIFT_RESELL_TOO_EARLY_X	A wait of {value} seconds is required to resell this gift.
 STARGIFT_SLUG_INVALID	The provided star gift slug is invalid.
 STARGIFT_USAGE_LIMITED	The gift is sold out.
 STARREF_AWAITING_END	The previous referral program was terminated less than 24 hours ago: further changes can be made after the date specified in userFull.starref_program.end_date.
@@ -458,6 +469,7 @@ STARREF_MONTHS_TOO_LOW	The ``duration_months`` parameter must be between 0 and 3
 STARREF_PERMILLE_INVALID	The specified commission_permille is invalid: the minimum and maximum values for this parameter are contained in the [starref_min_commission_permille](https://core.telegram.org/api/config#starref-min-commission-permille) and [starref_max_commission_permille](https://core.telegram.org/api/config#starref-max-commission-permille) client configuration parameters.
 STARREF_PERMILLE_TOO_LOW	The specified commission_permille is too low: the minimum and maximum values for this parameter are contained in the [starref_min_commission_permille](https://core.telegram.org/api/config#starref-min-commission-permille) and [starref_max_commission_permille](https://core.telegram.org/api/config#starref-max-commission-permille) client configuration parameters.
 STARS_AMOUNT_INVALID	The specified ``paid_stars`` amount is invalid.
+STARS_FORM_AMOUNT_MISMATCH	stars form amount mismatch
 STARS_INVOICE_INVALID	The specified Telegram Star invoice is invalid.
 STARS_PAYMENT_REQUIRED	To import this chat invite link, you must first [pay for the associated Telegram Star subscription](https://core.telegram.org/api/subscriptions#channel-subscriptions).
 START_PARAM_EMPTY	The start parameter is empty.
@@ -532,6 +544,8 @@ TTL_MEDIA_INVALID	Invalid media Time To Live was provided.
 TTL_PERIOD_INVALID	The specified TTL period is invalid.
 TYPES_EMPTY	No top peer type was provided.
 TYPE_CONSTRUCTOR_INVALID	The type constructor is invalid
+UNKNOWN_ERROR	Unknown error.
+UNSUPPORTED	This method is not supported.
 UNTIL_DATE_INVALID	Invalid until date provided.
 URL_INVALID	Invalid URL provided.
 USAGE_LIMIT_INVALID	The specified usage limit is invalid.

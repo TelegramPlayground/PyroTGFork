@@ -203,6 +203,9 @@ class Message(Object, Update):
         has_media_spoiler (``bool``, *optional*):
             True, if the message media is covered by a spoiler animation.
 
+        checklist (:obj:`~pyrogram.types.Checklist`, *optional*):
+            Message is a checklist.
+
         contact (:obj:`~pyrogram.types.Contact`, *optional*):
             Message is a shared contact, information about the contact.
 
@@ -296,6 +299,12 @@ class Message(Object, Update):
         boost_added (:obj:`~pyrogram.types.ChatBoostAdded`, *optional*):
             Service message: user boosted the chat
 
+        checklist_tasks_done (:obj:`~pyrogram.types.ChecklistTasksDone`, *optional*):
+            Service message: some tasks in a checklist were marked as done or not done.
+
+        checklist_tasks_added (:obj:`~pyrogram.types.ChecklistTasksAdded`, *optional*):
+            Service message: tasks were added to a checklist.
+
         forum_topic_created (:obj:`~pyrogram.types.ForumTopicCreated`, *optional*):
             Service message: forum topic created
 
@@ -328,6 +337,9 @@ class Message(Object, Update):
 
         paid_message_price_changed (:obj:`~pyrogram.types.PaidMessagePriceChanged`, *optional*):
             Service message: the price for paid messages has changed in the chat.
+        
+        direct_message_price_changed (:obj:`~pyrogram.types.DirectMessagePriceChanged`, *optional*):
+            Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed.
 
         paid_messages_refunded (:obj:`~pyrogram.types.PaidMessagesRefunded`, *optional*):
             Service message: Paid messages were refunded.
@@ -396,8 +408,8 @@ class Message(Object, Update):
             E.g.: "/start 1 2 3" would produce ["start", "1", "2", "3"].
             Only applicable when using :obj:`~pyrogram.filters.command`.
 
-        reactions (List of :obj:`~pyrogram.types.Reaction`):
-            List of the reactions to this message.
+        reactions (:obj:`~pyrogram.types.MessageReactions`):
+            Reactions on this message.
 
         custom_action (``str``, *optional*):
             Custom action (most likely not supported by the current layer, an upgrade might be needed)
@@ -485,6 +497,7 @@ class Message(Object, Update):
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         has_media_spoiler: bool = None,
+        checklist: Optional["types.Checklist"] = None,
         contact: "types.Contact" = None,
         dice: "types.Dice" = None,
         game: "types.Game" = None,
@@ -513,6 +526,8 @@ class Message(Object, Update):
 
 
         boost_added: "types.ChatBoostAdded" = None,
+        checklist_tasks_done: Optional["types.ChecklistTasksDone"] = None,
+        checklist_tasks_added: Optional["types.ChecklistTasksAdded"] = None,
         forum_topic_created: "types.ForumTopicCreated" = None,
         forum_topic_edited: "types.ForumTopicEdited" = None,
         forum_topic_closed: "types.ForumTopicClosed" = None,
@@ -524,6 +539,7 @@ class Message(Object, Update):
         giveaway_winners: "types.GiveawayWinners" = None,
         giveaway_completed: "types.GiveawayCompleted" = None,
         paid_message_price_changed: "types.PaidMessagePriceChanged" = None,
+        direct_message_price_changed: "types.DirectMessagePriceChanged" = None,
         paid_messages_refunded: "types.PaidMessagesRefunded" = None,
         video_chat_scheduled: "types.VideoChatScheduled" = None,
         video_chat_started: "types.VideoChatStarted" = None,
@@ -554,7 +570,7 @@ class Message(Object, Update):
         outgoing: bool = None,
         matches: list[re.Match] = None,
         command: list[str] = None,
-        reactions: list["types.Reaction"] = None,
+        reactions: "types.MessageReactions" = None,
         custom_action: str = None,
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
@@ -650,6 +666,7 @@ class Message(Object, Update):
         self.write_access_allowed = write_access_allowed
         self.giveaway_completed = giveaway_completed
         self.paid_message_price_changed = paid_message_price_changed
+        self.direct_message_price_changed = direct_message_price_changed
         self.paid_messages_refunded = paid_messages_refunded
         self.giveaway_winners = giveaway_winners
         self.gift_code = gift_code
@@ -672,6 +689,9 @@ class Message(Object, Update):
         self.chat_join_type = chat_join_type
         self.screenshot_taken = screenshot_taken
         self.paid_star_count = paid_star_count
+        self.checklist = checklist
+        self.checklist_tasks_done = checklist_tasks_done
+        self.checklist_tasks_added = checklist_tasks_added
         self._raw = _raw
 
     @staticmethod
@@ -762,6 +782,7 @@ class Message(Object, Update):
             giveaway_completed = None
             custom_action = None
             paid_message_price_changed = None
+            direct_message_price_changed = None
             paid_messages_refunded = None
 
             forum_topic_created = None
@@ -778,6 +799,9 @@ class Message(Object, Update):
             screenshot_taken = None
 
             received_gift = None
+
+            checklist_tasks_done = None
+            checklist_tasks_added = None
 
             service_type = enums.MessageServiceType.UNKNOWN
 
@@ -1040,16 +1064,30 @@ class Message(Object, Update):
                 service_type = enums.MessageServiceType.RECEIVED_GIFT
             
             elif isinstance(action, raw.types.MessageActionPaidMessagesPrice):
-                paid_message_price_changed = types.PaidMessagePriceChanged._parse_action(
-                    client, message.action
-                )
-                service_type = enums.MessageServiceType.PAID_MESSAGE_PRICE_CHANGED
+                if action.broadcast_messages_allowed:
+                    direct_message_price_changed = types.DirectMessagePriceChanged._parse_action(
+                        client, message.action
+                    )
+                    service_type = enums.MessageServiceType.DIRECT_MESSAGE_PRICE_CHANGED
+                else:
+                    paid_message_price_changed = types.PaidMessagePriceChanged._parse_action(
+                        client, message.action
+                    )
+                    service_type = enums.MessageServiceType.PAID_MESSAGE_PRICE_CHANGED
 
             elif isinstance(action, raw.types.MessageActionPaidMessagesRefunded):
                 paid_messages_refunded = types.PaidMessagesRefunded._parse_action(
                     client, message.action
                 )
                 service_type = enums.MessageServiceType.PAID_MESSAGES_REFUNDED
+            
+            elif isinstance(action, raw.types.MessageActionTodoCompletions):
+                service_type = enums.MessageServiceType.CHECKLIST_TASKS_DONE
+                checklist_tasks_done = types.ChecklistTasksDone._parse(client, message)
+
+            elif isinstance(action, raw.types.MessageActionTodoAppendTasks):
+                service_type = enums.MessageServiceType.CHECKLIST_TASKS_ADDED
+                checklist_tasks_added = types.ChecklistTasksAdded._parse(client, message)
 
             parsed_message = Message(
                 id=message.id,
@@ -1076,6 +1114,7 @@ class Message(Object, Update):
                 giveaway_created=giveaway_created,
                 giveaway_completed=giveaway_completed,
                 paid_message_price_changed=paid_message_price_changed,
+                direct_message_price_changed=direct_message_price_changed,
                 paid_messages_refunded=paid_messages_refunded,
                 gift_code=gift_code,
                 gifted_premium=gifted_premium,
@@ -1099,10 +1138,13 @@ class Message(Object, Update):
                 chat_join_type=chat_join_type,
                 screenshot_taken=screenshot_taken,
                 reactions=types.MessageReactions._parse(client, message.reactions) if message.reactions else None,
+                checklist_tasks_done=checklist_tasks_done,
+                checklist_tasks_added=checklist_tasks_added,
                 client=client
             )
 
             if isinstance(action, raw.types.MessageActionPinMessage):
+                parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
                 try:
                     parsed_message.pinned_message = await client.get_replied_message(
                         chat_id=parsed_message.chat.id,
@@ -1110,12 +1152,15 @@ class Message(Object, Update):
                         replies=0
                     )
                 except MessageIdsEmpty:
-                    parsed_message.pinned_message = types.Message(
-                        id=message.reply_to.reply_to_msg_id,
-                        empty=True,
-                        client=client
-                    )
-                parsed_message.service = enums.MessageServiceType.PINNED_MESSAGE
+                    if (
+                        message.reply_to and
+                        isinstance(message.reply_to, raw.types.InputReplyToMessage)
+                    ):
+                        parsed_message.pinned_message = types.Message(
+                            id=message.reply_to.reply_to_msg_id,
+                            empty=True,
+                            client=client
+                        )
 
             if isinstance(action, raw.types.MessageActionGameScore):
                 parsed_message.game_high_score = types.GameHighScore._parse_action(client, message, users)
@@ -1175,6 +1220,8 @@ class Message(Object, Update):
 
             link_preview_options = None
             web_page_url = None
+
+            checklist = None
 
             if media:
                 if isinstance(media, raw.types.MessageMediaPhoto):
@@ -1304,8 +1351,12 @@ class Message(Object, Update):
                 elif isinstance(media, raw.types.MessageMediaPaidMedia):
                     paid_media = types.PaidMediaInfo._parse(client, media)
                     media_type = enums.MessageMediaType.PAID_MEDIA
+                elif isinstance(media, raw.types.MessageMediaToDo):
+                    media_type = enums.MessageMediaType.CHECKLIST
+                    checklist = types.Checklist._parse(client, media, users)
                 else:
                     media = None
+                    media_type = enums.MessageMediaType.UNKNOWN
 
             show_caption_above_media = getattr(message, "invert_media", False)
             if (
@@ -1346,22 +1397,22 @@ class Message(Object, Update):
                 sender_chat=sender_chat,
                 text=(
                     Str(message.message).init(entities) or None
-                    if media is None or web_page is not None
+                    if media_type is None or web_page is not None
                     else None
                 ),
                 caption=(
                     Str(message.message).init(entities) or None
-                    if media is not None and web_page is None
+                    if media_type is not None and web_page is None
                     else None
                 ),
                 entities=(
                     entities or None
-                    if media is None or web_page is not None
+                    if media_type is None or web_page is not None
                     else None
                 ),
                 caption_entities=(
                     entities or None
-                    if media is not None and web_page is None
+                    if media_type is not None and web_page is None
                     else None
                 ),
                 author_signature=message.post_author,
@@ -1376,6 +1427,7 @@ class Message(Object, Update):
                 media_group_id=message.grouped_id,
                 photo=photo,
                 location=location,
+                checklist=checklist,
                 contact=contact,
                 venue=venue,
                 audio=audio,
@@ -1507,7 +1559,7 @@ class Message(Object, Update):
             return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
 
     @property
-    def content(self) -> str:
+    def content(self) -> Str:
         return self.text or self.caption or Str("").init([])
 
     async def get_media_group(self) -> list["types.Message"]:
@@ -2383,6 +2435,7 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        mime_type: str = None,
         reply_to_message_id: int = None,
         force_document: bool = None,
         progress: Callable = None,
@@ -2472,6 +2525,9 @@ class Message(Object, Update):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
+            mime_type (``str``, *optional*):
+                MIME type of the file; as defined by the sender.
+
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
                 The function must take *(current, total)* as positional arguments (look at Other Parameters below for a
@@ -2530,6 +2586,7 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             reply_markup=reply_markup,
+            mime_type=mime_type,
             reply_to_message_id=reply_to_message_id,
             force_document=force_document,
             progress=progress,
@@ -3107,7 +3164,7 @@ class Message(Object, Update):
     async def reply_poll(
         self,
         question: str,
-        options: list[str],
+        options: list["types.InputPollOption"],
         question_parse_mode: "enums.ParseMode" = None,
         question_entities: list["types.MessageEntity"] = None,
         is_anonymous: bool = True,
@@ -3167,10 +3224,12 @@ class Message(Object, Update):
         Parameters:
 
             question (``str``):
-                Poll question, 1-255 characters.
+                Poll question.
+                **Users**: 1-255 characters.
+                **Bots**: 1-300 characters.
 
-            options (List of ``str``):
-                List of answer options, 2-10 strings 1-100 characters each.
+            options (List of :obj:`~pyrogram.types.InputPollOption`):
+                List of 2-12 poll answer options.
 
             question_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.

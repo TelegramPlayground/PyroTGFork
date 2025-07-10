@@ -74,10 +74,12 @@ class SendPoll:
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
             question (``str``):
-                Poll question, 1-255 characters.
+                Poll question.
+                **Users**: 1-255 characters.
+                **Bots**: 1-300 characters.
 
             options (List of :obj:`~pyrogram.types.InputPollOption`):
-                List of answer options, 2-10 answer options.
+                List of 2-12 poll answer options.
 
             question_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 By default, texts are parsed using both Markdown and HTML styles.
