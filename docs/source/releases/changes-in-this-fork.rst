@@ -43,6 +43,7 @@ Changes in this Fork
 - Added the :obj:`~pyrogram.types.ChecklistTasksDone` and the field ``checklist_tasks_done`` to the :obj:`~pyrogram.types.Message`, describing a service message about status changes for tasks in a checklist (i.e., marked as done/not done).
 - Added the :obj:`~pyrogram.types.ChecklistTasksAdded` and the field ``checklist_tasks_added`` to the :obj:`~pyrogram.types.Message`, describing a service message about the addition of new tasks to a checklist.
 - Added the :meth:`~pyrogram.Client.send_checklist`, allowing bots to send a checklist on behalf of a business account.
+- Added the :meth:`~pyrogram.Client.edit_message_checklist`, allowing bots to edit a checklist on behalf of a business account.
 - Added the :obj:`~pyrogram.types.DirectMessagePriceChanged` and the field ``direct_message_price_changed`` to the :obj:`~pyrogram.types.Message`, describing a service message about a price change for direct messages sent to the channel chat.
 - `Fix conditions for recover_gaps <https://github.com/KurimuzonAkuma/pyrogram/commit/b59ae77>`__.
 - Added ``reply_parameters`` in :meth:`~pyrogram.Client.forward_messages`.

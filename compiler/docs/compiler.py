@@ -230,6 +230,7 @@ def pyrogram_api():
             delete_chat_history
             send_screenshot_notification
             send_checklist
+            edit_message_checklist
         """,
         chats="""
         Chats
