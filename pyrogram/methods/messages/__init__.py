@@ -76,6 +76,7 @@ from .translate_text import TranslateText
 from .send_screenshot_notification import SendScreenshotNotification
 from .send_checklist import SendChecklist
 from .edit_message_checklist import EditMessageChecklist
+from .mark_checklist_tasks_as_done import MarkChecklistTasksAsDone
 
 class Messages(
     CopyMediaGroup,
@@ -113,8 +114,6 @@ class Messages(
     SendAudio,
     SendCachedMedia,
     SendChatAction,
-    SendChecklist,
-    EditMessageChecklist,
     SendContact,
     SendDice,
     SendDocument,
@@ -138,5 +137,8 @@ class Messages(
     VotePoll,
     GetChatSponsoredMessages,
     TranslateText,
+    SendChecklist,
+    EditMessageChecklist,
+    MarkChecklistTasksAsDone,
 ):
     pass

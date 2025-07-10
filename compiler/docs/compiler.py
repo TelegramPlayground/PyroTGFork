@@ -231,6 +231,7 @@ def pyrogram_api():
             send_screenshot_notification
             send_checklist
             edit_message_checklist
+            mark_checklist_tasks_as_done
         """,
         chats="""
         Chats
