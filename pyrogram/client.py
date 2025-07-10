@@ -32,7 +32,7 @@ from importlib import import_module
 from io import StringIO, BytesIO
 from mimetypes import MimeTypes
 from pathlib import Path
-from typing import Union, Optional, Callable, AsyncGenerator
+from typing import AsyncGenerator, Callable, Optional, Tuple, Union
 
 import pyrogram
 from pyrogram import __version__, __license__
@@ -53,7 +53,7 @@ from pyrogram.methods import Methods
 from pyrogram.session import Auth, Session
 from pyrogram.storage import Storage, FileStorage, MemoryStorage
 from pyrogram.types import User, TermsOfService
-from pyrogram.utils import ainput
+from pyrogram.utils import MIN_MONOFORUM_CHANNEL_ID, ainput
 from .connection import Connection
 from .connection.transport import TCP, TCPAbridged, TCPFull
 from .dispatcher import Dispatcher
@@ -711,18 +711,24 @@ class Client(Methods):
         elif isinstance(updates, raw.types.UpdatesTooLong):
             log.info(updates)
 
-    async def recover_gaps(self) -> tuple[int, int]:
+    async def recover_gaps(self) -> Tuple[int, int]:
+        if self.skip_updates:
+            log.info("Recover gaps disabled in client params. Skipping recovery")
+            return (0, 0)
+
         states = await self.storage.update_state()
+
+        if not states:
+            log.info("No states found, skipping recovery")
+            return (0, 0)
 
         message_updates_counter = 0
         other_updates_counter = 0
 
-        if not states:
-            log.info("No states found, skipping recovery.")
-            return (message_updates_counter, other_updates_counter)
+        log.info("Started gaps recovering...")
 
-        for state in states:
-            id, local_pts, _, local_date, _ = state
+        for local_state in states:
+            id, local_pts, local_qts, local_date, local_seq = local_state
 
             prev_pts = 0
 
@@ -735,7 +741,7 @@ class Client(Methods):
                             pts=local_pts,
                             limit=10000,
                             force=False
-                        ) if id < 0 else
+                        ) if id < 0 or id > MIN_MONOFORUM_CHANNEL_ID else
                         raw.functions.updates.GetDifference(
                             pts=local_pts,
                             date=local_date,
@@ -746,28 +752,64 @@ class Client(Methods):
                     break
 
                 if isinstance(diff, raw.types.updates.DifferenceEmpty):
+                    await self.storage.update_state(
+                        (
+                            id,
+                            local_pts,
+                            None,
+                            diff.date,
+                            diff.seq
+                        )
+                    )
                     break
                 elif isinstance(diff, raw.types.updates.DifferenceTooLong):
-                    break
+                    await self.storage.update_state(
+                        (
+                            id,
+                            diff.pts,
+                            None,
+                            local_date,
+                            local_seq
+                        )
+                    )
+                    continue
                 elif isinstance(diff, raw.types.updates.Difference):
                     local_pts = diff.state.pts
+                    local_date = diff.state.date
+                    local_seq = diff.state.seq
                 elif isinstance(diff, raw.types.updates.DifferenceSlice):
                     local_pts = diff.intermediate_state.pts
                     local_date = diff.intermediate_state.date
+                    local_seq = diff.intermediate_state.seq
 
                     if prev_pts == local_pts:
                         break
 
                     prev_pts = local_pts
                 elif isinstance(diff, raw.types.updates.ChannelDifferenceEmpty):
+                    await self.storage.update_state(
+                        (
+                            id,
+                            diff.pts,
+                            None,
+                            local_date,
+                            local_seq
+                        )
+                    )
                     break
                 elif isinstance(diff, raw.types.updates.ChannelDifferenceTooLong):
-                    break
+                    await self.storage.update_state(
+                        (
+                            id,
+                            diff.dialog.pts,
+                            None,
+                            local_date,
+                            local_seq
+                        )
+                    )
+                    continue
                 elif isinstance(diff, raw.types.updates.ChannelDifference):
                     local_pts = diff.pts
-
-                if not diff:
-                    break
 
                 users = {i.id: i for i in diff.users}
                 chats = {i.id: i for i in diff.chats}
@@ -795,9 +837,17 @@ class Client(Methods):
                 if isinstance(diff, (raw.types.updates.Difference, raw.types.updates.ChannelDifference)):
                     break
 
-            await self.storage.update_state(id)
+            await self.storage.update_state(
+                (
+                    id,
+                    local_pts,
+                    None,
+                    local_date,
+                    local_seq
+                )
+            )
 
-        log.info("Recovered %s messages and %s updates.", message_updates_counter, other_updates_counter)
+        log.info("Recovered %s messages and %s updates", message_updates_counter, other_updates_counter)
         return (message_updates_counter, other_updates_counter)
 
     async def load_session(self):
