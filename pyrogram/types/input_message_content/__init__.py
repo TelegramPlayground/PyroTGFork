@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .input_checklist import InputChecklist
+from .input_checklist_task import InputChecklistTask
 from .input_message_content import InputMessageContent
 from .input_text_message_content import InputTextMessageContent
 from .input_location_message_content import InputLocationMessageContent
@@ -38,4 +40,6 @@ __all__ = [
     "InputInvoiceMessageContent",
     "ReplyParameters",
     "TextQuote",
+    "InputChecklist",
+    "InputChecklistTask",
 ]

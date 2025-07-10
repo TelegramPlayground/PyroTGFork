@@ -66,6 +66,8 @@ class TextQuote(Object):
         reply_to: "raw.types.MessageReplyHeader"
     ) -> "TextQuote":
         if isinstance(reply_to, raw.types.MessageReplyHeader):
+            if not reply_to.quote:
+                return None
             quote_text = reply_to.quote_text
             quote_entities = reply_to.quote_entities
             position = reply_to.quote_offset or 0

@@ -71,6 +71,11 @@ from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .write_access_allowed import WriteAccessAllowed
 from .paid_message_price_changed import PaidMessagePriceChanged
 from .paid_messages_refunded import PaidMessagesRefunded
+from .checklist import Checklist
+from .checklist_task import ChecklistTask
+from .checklist_tasks_added import ChecklistTasksAdded
+from .checklist_tasks_done import ChecklistTasksDone
+from .direct_message_price_changed import DirectMessagePriceChanged
 
 __all__ = [
     "AlternativeVideo",
@@ -126,4 +131,9 @@ __all__ = [
     "TranslatedText",
     "PaidMessagePriceChanged",
     "PaidMessagesRefunded",
+    "Checklist",
+    "ChecklistTask",
+    "ChecklistTasksAdded",
+    "ChecklistTasksDone",
+    "DirectMessagePriceChanged",
 ]

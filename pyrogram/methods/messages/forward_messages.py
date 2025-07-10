@@ -34,6 +34,7 @@ class ForwardMessages:
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         send_copy: bool = None,
         remove_caption: bool = None,
         video_start_timestamp: int = None,
@@ -73,6 +74,9 @@ class ForwardMessages:
 
             paid_message_star_count (``int``, *optional*):
                 The number of Telegram Stars the user agreed to pay to send the messages.
+            
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             send_copy (``bool``, *optional*):
                 Pass True to copy content of the messages without reference to the original sender.
@@ -110,6 +114,12 @@ class ForwardMessages:
         is_iterable = utils.is_list_like(message_ids)
         message_ids = list(message_ids) if is_iterable else [message_ids]
 
+        reply_to = await utils._get_reply_message_parameters(
+            self,
+            message_thread_id,
+            reply_parameters
+        )
+
         r = await self.invoke(
             raw.functions.messages.ForwardMessages(
                 to_peer=await self.resolve_peer(chat_id),
@@ -126,7 +136,8 @@ class ForwardMessages:
                 random_id=[self.rnd_id() for _ in message_ids],
                 send_as=await self.resolve_peer(send_as) if send_as else None,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
-                top_msg_id=message_thread_id
+                top_msg_id=message_thread_id,
+                reply_to=reply_to
             )
         )
 

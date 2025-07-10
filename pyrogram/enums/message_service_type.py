@@ -150,5 +150,14 @@ class MessageServiceType(AutoName):
     PAID_MESSAGES_REFUNDED = auto()
     "Refunded paid messages"
 
+    DIRECT_MESSAGE_PRICE_CHANGED = auto()
+    "Direct message price"
+
+    CHECKLIST_TASKS_DONE = auto()
+    "Checklist tasks done"
+
+    CHECKLIST_TASKS_ADDED = auto()
+    "Checklist tasks added"
+
     UNKNOWN = auto()
     "This service message is unsupported by the current version of Pyrogram"

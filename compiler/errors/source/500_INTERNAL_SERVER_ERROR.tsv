@@ -9,6 +9,7 @@ CHAT_ID_GENERATE_FAILED	Failure while generating the chat ID.
 CHAT_INVALID	Invalid chat.
 CHAT_OCCUPY_LOC_FAILED	An internal error occurred while creating the chat
 CHAT_OCCUPY_USERNAME_FAILED	Failure to occupy chat username due to Telegram having internal problems. Please try again later
+CHP_BAD_EVENT	Telegram is having internal problems. Please try again later.
 CHP_CALL_FAIL	Telegram is having internal problems. Please try again later
 ENCRYPTION_OCCUPY_ADMIN_FAILED	Failed occupying memory for admin info due to Telegram having internal problems. Please try again later
 ENCRYPTION_OCCUPY_FAILED	Internal server error while accepting secret chat
