@@ -332,6 +332,7 @@ class ExternalReplyInfo(Object):
                     media_type = enums.MessageMediaType.UNKNOWN
 
             return ExternalReplyInfo(
+                client=client,
                 origin=origin,
                 chat=chat,
                 message_id=reply_to.reply_to_msg_id,
