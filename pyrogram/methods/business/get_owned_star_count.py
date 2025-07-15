@@ -58,6 +58,7 @@ class GetOwnedStarCount:
         r = await self.invoke(
             raw.functions.payments.GetStarsStatus(
                 peer=peer
+                # TODO
             )
         )
 
