@@ -71,6 +71,8 @@ elif sys.argv[1] == "scrape":
                 g = d.get("descriptions")
                 l = g.get(k)
                 m = k.replace("_%d", "_X")
+                if "_X" in m:
+                    l = l.replace("for the specified number of", "{value}")
                 l = l.replace("%d", "{value}")
                 l = l.replace("\"", "'")
                 l = l.replace("&raquo;", "»")

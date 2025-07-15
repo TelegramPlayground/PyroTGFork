@@ -19,6 +19,7 @@ PREMIUM_CURRENTLY_UNAVAILABLE	You cannot currently purchase a Premium subscripti
 PREVIOUS_CHAT_IMPORT_ACTIVE_WAIT_XMIN	Import for this chat is already in progress, wait {value} minutes before starting a new one.
 PRIVACY_PREMIUM_REQUIRED	You need a [Telegram Premium subscription](https://core.telegram.org/api/premium) to send a message to this user.
 SEND_CODE_UNAVAILABLE	Returned when all available options for this type of number were already used (e.g. flash-call, then SMS, then this error might be returned to trigger a second resend).
+STARGIFT_EXPORT_IN_PROGRESS	Gift export in progress.
 STICKERSET_INVALID	The provided sticker set is invalid.
 STICKERSET_OWNER_ANONYMOUS	Provided stickerset can't be installed as group stickerset to prevent admin deanonymization.
 TOPIC_CLOSED	This topic was closed, you can't send messages to it anymore.
