@@ -89,7 +89,7 @@ class DeleteStories:
         if not business_connection_id:
             raise ValueError("business_connection_id is required")
 
-        business_connection = self.business_user_connection_cache.get(business_connection_id)
+        business_connection = self.business_user_connection_cache[business_connection_id]
         if business_connection is None:
             business_connection = await self.get_business_connection(business_connection_id)
         return await self.delete_stories(
