@@ -32,7 +32,7 @@ class PinChatMessage:
         disable_notification: bool = False,
         both_sides: bool = False,
         business_connection_id: str = None,
-    ) -> "types.Message":
+    ) -> Union["types.Message", bool]:
         """Pin a message in a group, channel or your own chat.
         You must be an administrator in the chat for this to work and must have the "can_pin_messages" admin right in
         the supergroup or "can_edit_messages" admin right in the channel.
@@ -58,7 +58,8 @@ class PinChatMessage:
                 Unique identifier of the business connection on behalf of which the message will be pinned.
 
         Returns:
-            :obj:`~pyrogram.types.Message`: On success, the service message is returned.
+            :obj:`~pyrogram.types.Message` | ``bool``: On success, the service message is returned (when applicable),
+            otherwise, in case a message object couldn't be returned, True is returned.
 
         Example:
             .. code-block:: python
@@ -131,3 +132,4 @@ class PinChatMessage:
                     raw_reply_to_message=i.reply_to_message,
                     replies=0
                 )
+        return True

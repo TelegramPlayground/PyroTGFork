@@ -5613,7 +5613,7 @@ class Message(Object, Update):
             options=option
         )
 
-    async def pin(self, disable_notification: bool = False, both_sides: bool = False) -> "types.Message":
+    async def pin(self, disable_notification: bool = False, both_sides: bool = False) -> Union["Message", bool]:
         """Bound method *pin* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -5640,7 +5640,8 @@ class Message(Object, Update):
                 Applicable to private chats only. Defaults to False.
 
         Returns:
-            :obj:`~pyrogram.types.Message`: On success, the service message is returned.
+            :obj:`~pyrogram.types.Message` | ``bool``: On success, the service message is returned (when applicable),
+            otherwise, in case a message object couldn't be returned, True is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
