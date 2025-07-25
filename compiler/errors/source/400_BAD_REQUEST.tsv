@@ -309,6 +309,7 @@ MONOFORUM_FILTER_INVALID	The specified filter is invalid.
 MSG_ID_INVALID	Invalid message ID provided.
 MSG_TOO_OLD	[`chat_read_mark_expire_period` seconds](https://core.telegram.org/api/config#chat-read-mark-expire-period) have passed since the message was sent, read receipts were deleted.
 MSG_WAIT_FAILED	A waiting call returned an error.
+MTPROTO_CLUSTER_INVALID	The mtproto 1049295266_343213 cluster is invalid.
 MULTI_MEDIA_TOO_LONG	Too many media files for album.
 NEW_SALT_INVALID	The new salt is invalid.
 NEW_SETTINGS_EMPTY	No password is set on the current account, and no new password was specified in `new_settings`.
