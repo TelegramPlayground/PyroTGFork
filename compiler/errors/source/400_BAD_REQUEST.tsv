@@ -309,6 +309,7 @@ MONOFORUM_FILTER_INVALID	The specified filter is invalid.
 MSG_ID_INVALID	Invalid message ID provided.
 MSG_TOO_OLD	[`chat_read_mark_expire_period` seconds](https://core.telegram.org/api/config#chat-read-mark-expire-period) have passed since the message was sent, read receipts were deleted.
 MSG_WAIT_FAILED	A waiting call returned an error.
+MTPROTO_CLUSTER_INVALID	The mtproto 1049295266_343213 cluster is invalid.
 MULTI_MEDIA_TOO_LONG	Too many media files for album.
 NEW_SALT_INVALID	The new salt is invalid.
 NEW_SETTINGS_EMPTY	No password is set on the current account, and no new password was specified in `new_settings`.
@@ -460,6 +461,7 @@ STARGIFT_MESSAGE_INVALID	The provided message for this gift is invalid.
 STARGIFT_NOT_FOUND	The specified star gift was not found.
 STARGIFT_NOT_OWNER	You cannot control this gift because it does not belong to you.
 STARGIFT_OWNER_INVALID	The specified gift owner is invalid.
+STARGIFT_RESELL_CURRENCY_NOT_ALLOWED	The resell currency is not valid.
 STARGIFT_RESELL_NOT_ALLOWED	You cannot buy this gift. Someone else may have already bought it.
 STARGIFT_RESELL_TOO_EARLY_X	A wait of {value} seconds is required to resell this gift.
 STARGIFT_SLUG_INVALID	The provided star gift slug is invalid.
@@ -505,6 +507,7 @@ STORY_ID_EMPTY	You specified no story IDs.
 STORY_ID_INVALID	The specified story ID is invalid.
 STORY_NOT_MODIFIED	The new story information you passed is equal to the previous story information, thus it wasn't modified.
 STORY_PERIOD_INVALID	The specified story period is invalid for this account.
+STORY_PUBLIC_MISSING	The story you are trying to access or manipulate is not publicly available.
 STORY_SEND_FLOOD_MONTHLY_X	You've hit the monthly story limit as specified by the [`stories_sent_monthly_limit_*` client configuration parameters](https://core.telegram.org/api/config#stories-sent-monthly-limit-default): wait {value} seconds before posting a new story.
 STORY_SEND_FLOOD_WEEKLY_X	You've hit the weekly story limit as specified by the [`stories_sent_weekly_limit_*` client configuration parameters](https://core.telegram.org/api/config#stories-sent-weekly-limit-default): wait {value} seconds before posting a new story.
 SUBSCRIPTION_EXPORT_MISSING	You cannot send a [bot subscription invoice](https://core.telegram.org/api/subscriptions#bot-subscriptions) directly, you may only create invoice links using [payments.exportInvoice](https://core.telegram.org/method/payments.exportInvoice).
