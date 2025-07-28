@@ -118,10 +118,7 @@ class DraftMessage(Object):
     @staticmethod
     def _parse(
         client: "pyrogram.Client",
-        raw_draft_message: Union[
-            "raw.types.DraftMessage",
-            "raw.types.DraftMessageEmpty",
-        ],
+        raw_draft_message: "raw.base.DraftMessage",
         users: dict, # raw
         chats: dict, # raw 
     ) -> "DraftMessage":
@@ -192,13 +189,14 @@ class DraftMessage(Object):
             not link_preview_options and
             web_page_url
         ):
+            # TODO: no_webpage:flags.1?true
             link_preview_options = types.LinkPreviewOptions._parse(
                 client,
                 None,
                 web_page_url,
                 getattr(raw_draft_message, "invert_media", False)
             )
-
+ 
         draft_message = DraftMessage(
             date=utils.timestamp_to_datetime(raw_draft_message.date),
             text=(
@@ -216,6 +214,7 @@ class DraftMessage(Object):
         # if raw_draft_message.reply_to:
         #     # TODO reply_to:flags.4?InputReplyTo
         #     draft_message.reply_to_message_id
-        #     draft_message.reply_to_message 
+        #     draft_message.reply_to_message
+        # TODO: suggested_post:flags.8?SuggestedPost
 
         return draft_message

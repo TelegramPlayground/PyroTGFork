@@ -96,7 +96,8 @@ class GetReceivedGifts:
                     exclude_unlimited=exclude_unlimited,
                     exclude_limited=exclude_limited,
                     exclude_unique=exclude_upgraded,
-                    sort_by_value=sort_by_price
+                    sort_by_value=sort_by_price,
+                    # collection_id=
                 ),
                 sleep_threshold=60
             )
