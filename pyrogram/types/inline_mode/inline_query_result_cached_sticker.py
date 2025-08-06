@@ -19,7 +19,7 @@
 from typing import Optional
 
 import pyrogram
-from pyrogram import enums, raw, types
+from pyrogram import enums, raw, types, utils
 from .inline_query_result import InlineQueryResult
 from ...file_id import FileId
 
