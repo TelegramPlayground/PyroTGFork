@@ -119,10 +119,16 @@ class SQLiteStorage(Storage):
     def __init__(self, name: str):
         super().__init__(name)
 
-        self.executor = ThreadPoolExecutor(1)
+        self._executor = None
         self.loop = asyncio.get_event_loop()
         self.conn = None  # type: sqlite3.Connection | None
 
+    @property
+    def executor(self):
+        if self._executor is None:
+           self._executor = ThreadPoolExecutor(1)
+        return self._executor
+        
     def _create_impl(self):
         with self.conn:
             self.conn.executescript(SCHEMA)
