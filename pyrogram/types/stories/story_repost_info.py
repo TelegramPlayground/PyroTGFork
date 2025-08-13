@@ -60,7 +60,7 @@ class StoryRepostInfo(Object):
             peer_id = utils.get_peer_id(from_user)
             if isinstance(from_user, raw.types.PeerUser):
                 fwd_from_chat = types.Chat._parse_user_chat(client, users.get(peer_id, None))
-            elif isinstance(story_item.from_id, raw.types.PeerChat):
+            elif isinstance(from_user, raw.types.PeerChat):
                 fwd_from_chat = types.Chat._parse_chat_chat(client, chats.get(peer_id, None))
             else:
                 fwd_from_chat = types.Chat._parse_channel_chat(client, chats.get(peer_id, None))
