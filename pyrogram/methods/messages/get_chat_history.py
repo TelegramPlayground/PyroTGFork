@@ -16,12 +16,15 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from asyncio import sleep
 from datetime import datetime
-from typing import Union, Optional, AsyncGenerator
+from typing import AsyncGenerator, Optional, Union 
 
 import pyrogram
-from pyrogram import types, raw, utils
+from pyrogram import raw, types, utils
+
+log = logging.getLogger(__name__)
 
 
 async def get_chunk(
@@ -32,11 +35,11 @@ async def get_chunk(
     offset: int = 0,
     min_id: int = 0,
     max_id: int = 0,
-    from_message_id: int = 0,
+    offset_id: int = 0,
     from_date: datetime = utils.zero_datetime(),
     reverse: bool = False,
     is_scheduled: bool = False
-):
+) -> list[types.Message]:
     if is_scheduled:
         r = await client.invoke(
             raw.functions.messages.GetScheduledHistory(
@@ -55,13 +58,19 @@ async def get_chunk(
             messages.reverse()
         return messages
     else:
-        from_message_id = from_message_id or (1 if reverse else 0)
-        messages = await client.invoke(
+        if (min_id or max_id) and not offset_id:
+            if max_id:
+                offset_id = max_id + 1
+            elif min_id:
+                offset_id = 0
+        if min_id and max_id and not offset_id:
+            offset_id = max_id + 1
+        history: raw.base.messages.Messages = await client.invoke(
             raw.functions.messages.GetHistory(
                 peer=await client.resolve_peer(chat_id),
-                offset_id=from_message_id,
+                offset_id=offset_id,
                 offset_date=utils.datetime_to_timestamp(from_date),
-                add_offset=offset * (-1 if reverse else 1) - (limit if reverse else 0),
+                add_offset=offset,
                 limit=limit,
                 max_id=max_id,
                 min_id=min_id,
@@ -71,7 +80,7 @@ async def get_chunk(
         )
         messages = await utils.parse_messages(
             client,
-            messages,
+            history,
             is_scheduled=False,
             replies=0
         )
@@ -85,8 +94,9 @@ class GetChatHistory:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         limit: int = 0,
+        *,
         offset: int = 0,
-        offset_id: int = 0,
+        offset_id: int = None,
         min_id: int = 0,
         max_id: int = 0,
         offset_date: datetime = utils.zero_datetime(),
@@ -95,7 +105,7 @@ class GetChatHistory:
     ) -> Optional[AsyncGenerator["types.Message", None]]:
         """Get messages from a chat history.
 
-        The messages are returned in reverse chronological order.
+        The messages are returned in reverse chronological order by default.
 
         .. include:: /_includes/usable-by/users.rst
 
@@ -115,6 +125,8 @@ class GetChatHistory:
 
             offset_id (``int``, *optional*):
                 Identifier of the first message to be returned.
+                This parameter is deprecated and should not be used.
+                Use ``min_id`` / ``max_id`` instead for proper filtering.
 
             min_id (``int``, *optional*):
                 If a positive value was transferred, the method will return only messages with IDs more than min_id.
@@ -142,9 +154,20 @@ class GetChatHistory:
                 async for message in app.get_chat_history(chat_id):
                     print(message.text)
         """
-        current = 0
-        total = limit or (1 << 31) - 1
-        limit = min(100, total)
+        if offset_id is not None:
+            log.warning(
+                "`offset_id` is deprecated and will be removed in future updates. Use `min_id` or `max_id` instead."
+            )
+
+        current: int = 0
+        total: int = limit or (1 << 31) - 1
+        limit: int = min(100, total)
+
+        if reverse:
+            offset_id = min_id if min_id else 1
+            offset = offset - limit
+        else:
+            offset_id = max_id if max_id else 0
 
         while True:
             messages = await get_chunk(
@@ -152,7 +175,7 @@ class GetChatHistory:
                 chat_id=chat_id,
                 limit=limit,
                 offset=offset,
-                from_message_id=offset_id,
+                offset_id=offset_id,
                 min_id=min_id,
                 max_id=max_id,
                 from_date=offset_date,
