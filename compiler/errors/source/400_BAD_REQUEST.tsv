@@ -545,6 +545,8 @@ TO_LANG_INVALID	The specified destination language is invalid.
 TRANSACTION_ID_INVALID	The specified transaction ID is invalid.
 TRANSCRIPTION_FAILED	Audio transcription failed.
 TRANSLATE_REQ_QUOTA_EXCEEDED	Translation is currently unavailable due to a temporary server-side lack of resources.
+TRANSLATIONS_DISABLED	Translation is disabled.
+TRANSLATIONS_DISABLED_ALT	Translation is disabled.
 TTL_DAYS_INVALID	The provided TTL is invalid.
 TTL_MEDIA_INVALID	Invalid media Time To Live was provided.
 TTL_PERIOD_INVALID	The specified TTL period is invalid.
