@@ -499,10 +499,10 @@ async def _get_reply_message_parameters(
         )
     reply_to_message_id = reply_parameters.message_id
     if not reply_to_message_id:
-        if reply_parameters.direct_message_topic_id:
+        if reply_parameters.direct_messages_topic_id:
             return raw.types.InputReplyToMonoForum(
                 monoforum_peer_id=await client.resolve_peer(
-                    reply_parameters.direct_message_topic_id
+                    reply_parameters.direct_messages_topic_id
                 )
             )
         return reply_to
@@ -528,9 +528,9 @@ async def _get_reply_message_parameters(
         reply_to.reply_to_peer_id = await client.resolve_peer(reply_parameters.chat_id)
     if reply_parameters.quote_position:
         reply_to.quote_offset = reply_parameters.quote_position
-    if reply_parameters.direct_message_topic_id:
+    if reply_parameters.direct_messages_topic_id:
         reply_to.monoforum_peer_id = await client.resolve_peer(
-            reply_parameters.direct_message_topic_id
+            reply_parameters.direct_messages_topic_id
         )
     return reply_to
 
