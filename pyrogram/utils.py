@@ -532,6 +532,8 @@ async def _get_reply_message_parameters(
         reply_to.monoforum_peer_id = await client.resolve_peer(
             reply_parameters.direct_messages_topic_id
         )
+    if reply_parameters.checklist_task_id:
+        reply_to.todo_item_id = reply_parameters.checklist_task_id
     return reply_to
 
 
