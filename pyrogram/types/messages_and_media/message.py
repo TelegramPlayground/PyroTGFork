@@ -117,6 +117,9 @@ class Message(Object, Update):
         reply_to_story (:obj:`~pyrogram.types.Story`, *optional*):
             For replies to a story, the original story
 
+        reply_to_checklist_task_id (``int``, *optional*):
+            Identifier of the specific checklist task that is being replied to.
+
         via_bot (:obj:`~pyrogram.types.User`):
             The information of the bot that generated the message from an inline query of a user.
 
@@ -471,6 +474,7 @@ class Message(Object, Update):
         external_reply: "types.ExternalReplyInfo" = None,
         quote: "types.TextQuote" = None,
         reply_to_story: "types.Story" = None,
+        reply_to_checklist_task_id: int = None,
         via_bot: "types.User" = None,
         edit_date: datetime = None,
         has_protected_content: bool = None,
@@ -692,6 +696,7 @@ class Message(Object, Update):
         self.checklist = checklist
         self.checklist_tasks_done = checklist_tasks_done
         self.checklist_tasks_added = checklist_tasks_added
+        self.reply_to_checklist_task_id = reply_to_checklist_task_id
         self._raw = _raw
 
     @staticmethod
@@ -1490,6 +1495,7 @@ class Message(Object, Update):
             parsed_message.reply_to_message_id = None
             parsed_message.message_thread_id = None
             if isinstance(message.reply_to, raw.types.MessageReplyHeader):
+                parsed_message.reply_to_checklist_task_id = message.reply_to.todo_item_id
                 parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
                 parsed_message.message_thread_id = message.reply_to.reply_to_top_id
                 if message.reply_to.forum_topic:
