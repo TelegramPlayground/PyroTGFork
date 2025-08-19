@@ -299,7 +299,7 @@ def get_peer_type(peer_id: int) -> str:
 
 def get_channel_id(peer_id: int) -> int:
     if MIN_MONOFORUM_CHANNEL_ID <= peer_id < MAX_MONOFORUM_CHANNEL_ID:
-        return peer_id
+        return MAX_CHANNEL_ID - peer_id
     return MAX_CHANNEL_ID - peer_id
 
 
