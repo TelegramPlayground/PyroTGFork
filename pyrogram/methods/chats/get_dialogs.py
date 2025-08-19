@@ -16,11 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from asyncio import sleep
 from typing import AsyncGenerator, Optional
 
-import pyrogram
 from pyrogram import types, raw, utils
+from pyrogram.errors import ChannelPrivate, PeerIdInvalid
 
 
 class GetDialogs:
@@ -30,39 +29,16 @@ class GetDialogs:
         pinned_only: bool = False,
         chat_list: int = 0
     ) -> Optional[AsyncGenerator["types.Dialog", None]]:
-        """Get a user's dialogs sequentially.
 
-        .. include:: /_includes/usable-by/users.rst
-
-        Parameters:
-            limit (``int``, *optional*):
-                Limits the number of dialogs to be retrieved.
-                By default, no limit is applied and all dialogs are returned.
-            
-            pinned_only (``bool``, *optional*):
-                Pass True if you want to get only pinned dialogs.
-                Defaults to False.
-            
-            chat_list (``int``, *optional*):
-                Chat list from which to get the dialogs; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
-
-        Returns:
-            ``Generator``: A generator yielding :obj:`~pyrogram.types.Dialog` objects.
-
-        Example:
-            .. code-block:: python
-
-                # Iterate through all dialogs
-                async for dialog in app.get_dialogs():
-                    print(dialog.chat.first_name or dialog.chat.title)
-        """
         current = 0
         total = limit or (1 << 31) - 1
-        limit = min(100, total)
+        request_limit = min(100, total)
 
         offset_date = 0
         offset_id = 0
         offset_peer = raw.types.InputPeerEmpty()
+
+        seen_dialog_ids = set()
 
         while True:
             r = await self.invoke(
@@ -70,7 +46,7 @@ class GetDialogs:
                     offset_date=offset_date,
                     offset_id=offset_id,
                     offset_peer=offset_peer,
-                    limit=limit,
+                    limit=request_limit,
                     hash=0,
                     exclude_pinned=not pinned_only,
                     folder_id=chat_list
@@ -88,13 +64,10 @@ class GetDialogs:
                     continue
 
                 chat_id = utils.get_peer_id(message.peer_id)
-                messages[chat_id] = await types.Message._parse(
-                    self,
-                    message,
-                    users,
-                    chats,
-                    replies=self.fetch_replies
-                )
+                try:
+                    messages[chat_id] = await types.Message._parse(self, message, users, chats)
+                except (ChannelPrivate, PeerIdInvalid):
+                    continue
 
             dialogs = []
 
@@ -102,22 +75,27 @@ class GetDialogs:
                 if not isinstance(dialog, raw.types.Dialog):
                     continue
 
-                dialogs.append(types.Dialog._parse(self, dialog, messages, users, chats))
+                parsed = types.Dialog._parse(self, dialog, messages, users, chats)
+                if parsed.chat.id in seen_dialog_ids:
+                    continue
+                seen_dialog_ids.add(parsed.chat.id)
+
+                dialogs.append(parsed)
 
             if not dialogs:
                 return
 
             last = dialogs[-1]
 
+            if last.top_message is None:
+                return
+
             offset_id = last.top_message.id
             offset_date = utils.datetime_to_timestamp(last.top_message.date)
             offset_peer = await self.resolve_peer(last.chat.id)
 
             for dialog in dialogs:
-                await sleep(0)
                 yield dialog
-
                 current += 1
-
                 if current >= total:
                     return
