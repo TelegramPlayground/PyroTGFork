@@ -87,6 +87,9 @@ class Chat(Object):
             Information about the corresponding channel chat; for direct messages chats only.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
 
+        direct_messages_chat_id (``int``, *optional*):
+            Information about the corresponding Direct Messages chat; for channel chats only.
+
         available_reactions (:obj:`~pyrogram.types.ChatReactions`, *optional*):
             Available reactions in the chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -296,6 +299,7 @@ class Chat(Object):
         personal_chat: "types.Chat" = None,
         personal_chat_message: "types.Message" = None,
         parent_chat: "types.Chat" = None,
+        direct_messages_chat_id: int = None,
         available_reactions: Optional["types.ChatReactions"] = None,
         accent_color: "types.ChatColor" = None,
         profile_color: "types.ChatColor" = None,
@@ -381,6 +385,7 @@ class Chat(Object):
         self.personal_chat = personal_chat
         self.personal_chat_message = personal_chat_message
         self.parent_chat = parent_chat
+        self.direct_messages_chat_id = direct_messages_chat_id
         self.birthdate = birthdate
         self.business_intro = business_intro
         self.business_location = business_location
@@ -564,6 +569,7 @@ class Chat(Object):
             paid_message_star_count=channel.send_paid_messages_stars,
             has_automatic_translation=channel.autotranslation,
             is_direct_messages=channel.monoforum,
+            direct_messages_chat_id=utils.get_channel_id(channel.linked_monoforum_id) if channel.linked_monoforum_id else None,
             _raw=channel
         )
 
