@@ -29,7 +29,32 @@ class GetDialogs:
         pinned_only: bool = False,
         chat_list: int = 0
     ) -> Optional[AsyncGenerator["types.Dialog", None]]:
+        """Get a user's dialogs sequentially.
 
+        .. include:: /_includes/usable-by/users.rst
+
+        Parameters:
+            limit (``int``, *optional*):
+                Limits the number of dialogs to be retrieved.
+                By default, no limit is applied and all dialogs are returned.
+            
+            pinned_only (``bool``, *optional*):
+                Pass True if you want to get only pinned dialogs.
+                Defaults to False.
+            
+            chat_list (``int``, *optional*):
+                Chat list from which to get the dialogs; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
+
+        Returns:
+            ``Generator``: A generator yielding :obj:`~pyrogram.types.Dialog` objects.
+
+        Example:
+            .. code-block:: python
+
+                # Iterate through all dialogs
+                async for dialog in app.get_dialogs():
+                    print(dialog.chat.first_name or dialog.chat.title)
+        """
         current = 0
         total = limit or (1 << 31) - 1
         request_limit = min(100, total)
@@ -76,10 +101,16 @@ class GetDialogs:
                     continue
 
                 parsed = types.Dialog._parse(self, dialog, messages, users, chats)
+                if parsed is None:
+                    continue
+                
+                if parsed.chat is None:
+                    continue
+                
                 if parsed.chat.id in seen_dialog_ids:
                     continue
+                
                 seen_dialog_ids.add(parsed.chat.id)
-
                 dialogs.append(parsed)
 
             if not dialogs:
