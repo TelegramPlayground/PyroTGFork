@@ -16,10 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from asyncio import sleep
 from typing import AsyncGenerator, Optional
 
-from pyrogram import types, raw, utils
-from pyrogram.errors import ChannelPrivate, PeerIdInvalid
+from pyrogram import raw, types, utils
 
 
 class GetDialogs:
@@ -89,10 +89,7 @@ class GetDialogs:
                     continue
 
                 chat_id = utils.get_peer_id(message.peer_id)
-                try:
-                    messages[chat_id] = await types.Message._parse(self, message, users, chats)
-                except (ChannelPrivate, PeerIdInvalid):
-                    continue
+                messages[chat_id] = await types.Message._parse(self, message, users, chats, replies=self.fetch_replies)
 
             dialogs = []
 
@@ -126,6 +123,7 @@ class GetDialogs:
             offset_peer = await self.resolve_peer(last.chat.id)
 
             for dialog in dialogs:
+                await sleep(0)
                 yield dialog
                 current += 1
                 if current >= total:
