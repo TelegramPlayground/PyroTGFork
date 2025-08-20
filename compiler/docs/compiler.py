@@ -505,6 +505,7 @@ def pyrogram_api():
             InviteLinkImporter
             Restriction
             RtmpUrl
+            DirectMessagesTopic
         """,
         messages_media="""
         Messages & Media

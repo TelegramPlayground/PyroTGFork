@@ -22,6 +22,7 @@ from .audio import Audio
 from .contact import Contact
 from .contact_registered import ContactRegistered
 from .dice import Dice
+from .direct_messages_topic import DirectMessagesTopic
 from .document import Document
 from .game import Game
 from .location import Location
@@ -136,4 +137,5 @@ __all__ = [
     "ChecklistTasksAdded",
     "ChecklistTasksDone",
     "DirectMessagePriceChanged",
+    "DirectMessagesTopic",
 ]

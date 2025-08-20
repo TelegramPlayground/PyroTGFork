@@ -66,6 +66,9 @@ class Message(Object, Update):
         message_thread_id (``int``, *optional*):
             Unique identifier of a message thread to which the message belongs; for supergroups only
 
+        direct_messages_topic (:obj:`~pyrogram.types.DirectMessagesTopic`, *optional*):
+            Information about the direct messages chat topic that contains the message.
+
         from_user (:obj:`~pyrogram.types.User`, *optional*):
             Sender, empty for messages sent to channels.
 
@@ -459,6 +462,7 @@ class Message(Object, Update):
         client: "pyrogram.Client" = None,
         id: int,
         message_thread_id: int = None,
+        direct_messages_topic: "types.DirectMessagesTopic" = None,
         from_user: "types.User" = None,
         sender_chat: "types.Chat" = None,
         sender_boost_count: int = None,
@@ -697,6 +701,7 @@ class Message(Object, Update):
         self.checklist_tasks_done = checklist_tasks_done
         self.checklist_tasks_added = checklist_tasks_added
         self.reply_to_checklist_task_id = reply_to_checklist_task_id
+        self.direct_messages_topic = direct_messages_topic
         self._raw = _raw
 
     @staticmethod
@@ -1542,6 +1547,13 @@ class Message(Object, Update):
                 chats,
                 business_connection_id=business_connection_id,
                 replies=0
+            )
+
+        if parsed_message.chat.is_direct_messages:
+            parsed_message.direct_messages_topic = types.DirectMessagesTopic._parse_message(
+                client,
+                message,
+                users, chats
             )
 
         if not parsed_message.poll:  # Do not cache poll messages
