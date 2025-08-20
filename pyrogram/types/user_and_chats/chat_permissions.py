@@ -28,6 +28,9 @@ class ChatPermissions(Object):
         can_send_messages (``bool``, *optional*):
             True, if the user is allowed to send text messages, contacts, giveaways, giveaway winners, invoices, locations and venues
 
+        can_send_plain (``bool``, *optional*):
+            True, if the user is allowed to send plain text messages
+
         can_send_audios (``bool``, *optional*):
             True, if the user is allowed to send audios
 
@@ -223,5 +226,4 @@ class ChatPermissions(Object):
             send_roundvideos=not permissions.can_send_video_notes,# TODO
             send_voices=not permissions.can_send_voice_notes,# TODO
             send_plain=not permissions.can_send_plain# TODO
-            # send_plain=# TODO
         )
