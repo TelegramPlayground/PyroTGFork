@@ -53,6 +53,9 @@ class Chat(Object):
         is_forum (``bool``, *optional*):
             True, if the supergroup chat is a forum
 
+        is_direct_messages (``bool``, *optional*):
+            True, if the chat is the direct messages chat of a channel.
+
         max_reaction_count (``int``):
             The maximum number of reactions that can be set on a message in the chat
 
@@ -79,6 +82,13 @@ class Chat(Object):
 
         personal_chat_message (:obj:`~pyrogram.types.Message`, *optional*):
             **TEMPORARY**: For private chats, the personal message_id in the ``personal_chat``.
+
+        parent_chat (:obj:`~pyrogram.types.Chat`, *optional*):
+            Information about the corresponding channel chat; for direct messages chats only.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        direct_messages_chat_id (``int``, *optional*):
+            Information about the corresponding Direct Messages chat; for channel chats only.
 
         available_reactions (:obj:`~pyrogram.types.ChatReactions`, *optional*):
             Available reactions in the chat.
@@ -288,6 +298,8 @@ class Chat(Object):
         send_as_chat: "types.Chat" = None,
         personal_chat: "types.Chat" = None,
         personal_chat_message: "types.Message" = None,
+        parent_chat: "types.Chat" = None,
+        direct_messages_chat_id: int = None,
         available_reactions: Optional["types.ChatReactions"] = None,
         accent_color: "types.ChatColor" = None,
         profile_color: "types.ChatColor" = None,
@@ -310,6 +322,7 @@ class Chat(Object):
         can_send_gift: bool = None,
         paid_message_star_count: int = None,
         has_automatic_translation: bool = None,
+        is_direct_messages: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -371,6 +384,8 @@ class Chat(Object):
         self.is_peak_preview = is_peak_preview
         self.personal_chat = personal_chat
         self.personal_chat_message = personal_chat_message
+        self.parent_chat = parent_chat
+        self.direct_messages_chat_id = direct_messages_chat_id
         self.birthdate = birthdate
         self.business_intro = business_intro
         self.business_location = business_location
@@ -384,6 +399,7 @@ class Chat(Object):
         self.can_send_gift = can_send_gift
         self.paid_message_star_count = paid_message_star_count
         self.has_automatic_translation = has_automatic_translation
+        self.is_direct_messages = is_direct_messages
         self._raw = _raw
 
     @staticmethod
@@ -552,6 +568,8 @@ class Chat(Object):
             emoji_status=types.EmojiStatus._parse(client, channel.emoji_status),
             paid_message_star_count=channel.send_paid_messages_stars,
             has_automatic_translation=channel.autotranslation,
+            is_direct_messages=channel.monoforum,
+            direct_messages_chat_id=utils.get_channel_id(channel.linked_monoforum_id) if channel.linked_monoforum_id else None,
             _raw=channel
         )
 
@@ -700,6 +718,10 @@ class Chat(Object):
                 parsed_chat.gift_count = full_chat.stargifts_count
 
                 parsed_chat.can_send_gift = full_chat.stargifts_available
+
+                parent_chat_raw = chats.get(chat_raw.linked_monoforum_id, None)
+                if parent_chat_raw:
+                    parsed_chat.parent_chat = Chat._parse_channel_chat(client, parent_chat_raw)
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 

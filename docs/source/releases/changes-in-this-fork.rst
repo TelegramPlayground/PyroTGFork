@@ -35,6 +35,14 @@ Changes in this Fork
 | Scheme layer used: 211 |
 +------------------------+
 
+- Rename direct_message_topic_id to ``direct_messages_topic_id`` in :obj:`~pyrogram.types.ReplyParameters`. This parameter can be used to send a message to a direct messages chat topic.
+- Added the field ``checklist_task_id`` to the class :obj:`~pyrogram.types.ReplyParameters`, allowing bots to reply to a specific checklist task.
+- Added the field ``reply_to_checklist_task_id`` to the class :obj:`~pyrogram.types.Message`.
+- Added the field ``can_manage_direct_messages`` to :obj:`~pyrogram.types.ChatPrivileges`.
+- Added the field ``is_direct_messages`` to the classes :obj:`~pyrogram.types.Chat` which can be used to identify supergroups that are used as channel direct messages chats.
+- Added the fields ``parent_chat`` and ``direct_messages_chat_id`` to the class :obj:`~pyrogram.types.Chat` which indicates the parent channel chat for a channel direct messages chat.
+- Added the class :obj:`~pyrogram.types.DirectMessagesTopic` and the field ``direct_messages_topic`` to the class :obj:`~pyrogram.types.Message`, describing a topic of a direct messages chat.
+- Added :meth:`~pyrogram.Client.get_direct_messages_topics_by_id`, :meth:`~pyrogram.Client.get_direct_messages_topics`, :meth:`~pyrogram.Client.set_chat_direct_messages_group`.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=205&to=211>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=205&to=211>`__.
 
 +------------------------+
