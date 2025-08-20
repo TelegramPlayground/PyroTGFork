@@ -33,6 +33,8 @@ from .get_chat_members import GetChatMembers
 from .get_chat_members_count import GetChatMembersCount
 from .get_chat_online_count import GetChatOnlineCount
 from .get_dialogs import GetDialogs
+from .get_direct_messages_topics_by_id import GetDirectMessagesTopicsByID
+from .get_direct_messages_topics import GetDirectMessagesTopics
 from .get_dialogs_count import GetDialogsCount
 from .get_nearby_chats import GetNearbyChats
 from .get_send_as_chats import GetSendAsChats
@@ -45,6 +47,7 @@ from .restrict_chat_member import RestrictChatMember
 from .search_chats import SearchChats
 from .set_administrator_title import SetAdministratorTitle
 from .set_chat_description import SetChatDescription
+from .set_chat_direct_messages_group import SetChatDirectMessagesGroup
 from .set_chat_permissions import SetChatPermissions
 from .set_chat_photo import SetChatPhoto
 from .set_chat_protected_content import SetChatProtectedContent
@@ -76,10 +79,13 @@ class Chats(
     DeleteChatPhoto,
     SetChatTitle,
     SetChatDescription,
+    SetChatDirectMessagesGroup,
     SetChatMessageAutoDeleteTime,
     PinChatMessage,
     UnpinChatMessage,
     GetDialogs,
+    GetDirectMessagesTopicsByID,
+    GetDirectMessagesTopics,
     GetChatMembersCount,
     SetChatUsername,
     SetChatPermissions,
