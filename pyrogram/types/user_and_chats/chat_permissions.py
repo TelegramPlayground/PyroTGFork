@@ -78,6 +78,7 @@ class ChatPermissions(Object):
     def __init__(
         self,
         *,
+        can_send_plain: bool = None,
         can_send_messages: bool = None,  # Text, contacts, giveaways, giveaway winners, invoices, locations and venues
         can_send_audios: bool = None,
         can_send_documents: bool = None,
@@ -96,6 +97,7 @@ class ChatPermissions(Object):
     ):
         super().__init__(None)
 
+        self.can_send_plain = can_send_plain
         self.can_send_messages = can_send_messages
         self.can_send_audios = can_send_audios
         self.can_send_documents = can_send_documents
@@ -114,6 +116,7 @@ class ChatPermissions(Object):
 
     @staticmethod
     def _parse(denied_permissions: "raw.base.ChatBannedRights") -> "ChatPermissions":
+        can_send_plain = False
         can_send_messages = False
         can_send_audios = False
         can_send_documents = False
@@ -131,6 +134,7 @@ class ChatPermissions(Object):
         can_send_media_messages = False
 
         if isinstance(denied_permissions, raw.types.ChatBannedRights):
+            can_send_plain = not denied_permissions.send_plain
             can_send_messages = not denied_permissions.send_messages
             can_send_polls = not denied_permissions.send_polls
             can_send_other_messages = any([
@@ -171,6 +175,7 @@ class ChatPermissions(Object):
                 can_send_voice_notes = can_send_media_messages
 
             return ChatPermissions(
+                can_send_plain=can_send_plain,
                 can_send_messages=can_send_messages,
                 can_send_audios=can_send_audios,
                 can_send_documents=can_send_documents,
@@ -217,5 +222,6 @@ class ChatPermissions(Object):
             send_videos=not permissions.can_send_videos,# TODO
             send_roundvideos=not permissions.can_send_video_notes,# TODO
             send_voices=not permissions.can_send_voice_notes,# TODO
+            send_plain=not permissions.can_send_plain# TODO
             # send_plain=# TODO
         )
