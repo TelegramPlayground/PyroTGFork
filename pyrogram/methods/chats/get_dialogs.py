@@ -19,6 +19,7 @@
 from asyncio import sleep
 from typing import AsyncGenerator, Optional
 
+import pyrogram
 from pyrogram import raw, types, utils
 
 
