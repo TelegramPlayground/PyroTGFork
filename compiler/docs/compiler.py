@@ -255,7 +255,9 @@ def pyrogram_api():
             get_chat_members
             get_chat_members_count
             get_chat_member
-            
+            get_direct_messages_topics_by_id
+            get_direct_messages_topics
+            set_chat_direct_messages_group
             get_dialogs
             get_dialogs_count
             set_chat_username
@@ -505,6 +507,7 @@ def pyrogram_api():
             InviteLinkImporter
             Restriction
             RtmpUrl
+            DirectMessagesTopic
         """,
         messages_media="""
         Messages & Media

@@ -28,22 +28,19 @@ class ChatPrivileges(Object):
             True, if the user's presence in the chat is hidden.
 
         can_manage_chat (``bool``, *optional*):
-            True, if the administrator can access the chat event log, boost list in channels, see channel members, report spam messages, see anonymous administrators in supergroups and ignore slow mode.
-            Implied by any other administrator privilege.
+            True, if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report spam messages, ignore slow mode, and send messages to the chat without paying Telegram Stars. Implied by any other administrator privilege.
 
         can_delete_messages (``bool``, *optional*):
             True, if the administrator can delete messages of other users.
 
         can_manage_video_chats (``bool``, *optional*):
-            True, if the administrator can manage video chats
+            True, if the administrator can manage video chats.
 
         can_restrict_members (``bool``, *optional*):
-            True, if the administrator can restrict, ban or unban chat members, or access supergroup statistics
+            True, if the administrator can restrict, ban or unban chat members, or access supergroup statistics.
 
         can_promote_members (``bool``, *optional*):
-            True, if the administrator can add new administrators with a subset of his own privileges or demote
-            administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed
-            by the user).
+            True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by the user).
 
         can_change_info (``bool``, *optional*):
             True, if the user is allowed to change the chat title, photo and other settings.
@@ -52,29 +49,29 @@ class ChatPrivileges(Object):
             True, if the user is allowed to invite new users to the chat.
 
         can_post_messages (``bool``, *optional*):
-            True, if the administrator can post messages in the channel, or access channel statistics.
-            channels only
+            True, if the administrator can post messages in the channel, approve suggested posts, or access channel statistics; for channels only.
 
         can_edit_messages (``bool``, *optional*):
-            True, if the administrator can edit messages of other users and can pin messages.
-            channels only
+            True, if the administrator can edit messages of other users and can pin messages; for channels only.
 
         can_pin_messages (``bool``, *optional*):
-            True, if the user is allowed to pin messages.
-            groups and supergroups only
+            True, if the user is allowed to pin messages; for groups and supergroups only.
         
         can_post_stories (``bool``, *optional*):
             True, if the administrator can post stories to the chat.
 
         can_edit_stories (``bool``, *optional*):
-            True, if the administrator can edit stories posted by other users.
+            True, if the administrator can edit stories posted by other users, post stories to the chat page, pin chat stories, and access the chat's story archive.
 
         can_delete_stories (``bool``, *optional*):
             True, if the administrator can delete stories posted by other users
 
         can_manage_topics (``bool``, *optional*):
-            True, if the user is allowed to create, rename, close, and reopen forum topics.
-            supergroups only
+            True, if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only.
+        
+        can_manage_direct_messages (``bool``, *optional*):
+            True, if the administrator can manage direct messages of the channel and decline suggested posts; for channels only.
+
     """
 
     def __init__(
@@ -95,6 +92,7 @@ class ChatPrivileges(Object):
         can_edit_stories: bool = False,
         can_delete_stories: bool = False,
         can_manage_topics: bool = False,  # supergroups only
+        can_manage_direct_messages: bool = False,
     ):
         super().__init__(None)
 
@@ -113,6 +111,7 @@ class ChatPrivileges(Object):
         self.can_edit_stories: bool = can_edit_stories
         self.can_delete_stories: bool = can_delete_stories
         self.can_manage_topics: bool = can_manage_topics
+        self.can_manage_direct_messages: bool = can_manage_direct_messages
 
     @staticmethod
     def _parse(admin_rights: "raw.base.ChatAdminRights") -> "ChatPrivileges":
@@ -133,7 +132,8 @@ class ChatPrivileges(Object):
             can_manage_topics=admin_rights.manage_topics,
             can_post_stories=admin_rights.post_stories,
             can_edit_stories=admin_rights.edit_stories,
-            can_delete_stories=admin_rights.delete_stories
+            can_delete_stories=admin_rights.delete_stories,
+            can_manage_direct_messages=admin_rights.manage_direct_messages
         )
 
     def write(self):
@@ -152,5 +152,6 @@ class ChatPrivileges(Object):
             manage_topics=self.can_manage_topics,
             post_stories=self.can_post_stories,
             edit_stories=self.can_edit_stories,
-            delete_stories=self.can_delete_stories
+            delete_stories=self.can_delete_stories,
+            manage_direct_messages=self.can_manage_direct_messages
         ) if self else raw.types.ChatAdminRights()
