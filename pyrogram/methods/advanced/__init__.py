@@ -17,12 +17,14 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .invoke import Invoke
+from .iter_invoke import IterInvoke
 from .resolve_peer import ResolvePeer
 from .save_file import SaveFile
 
 
 class Advanced(
     Invoke,
+    IterInvoke,
     ResolvePeer,
     SaveFile
 ):
