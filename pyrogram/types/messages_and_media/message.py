@@ -1708,13 +1708,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
 
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_message(
             chat_id=self.chat.id,
@@ -1903,13 +1905,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_animation(
             chat_id=self.chat.id,
@@ -2088,13 +2092,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_audio(
             chat_id=self.chat.id,
@@ -2217,13 +2223,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_cached_media(
             chat_id=self.chat.id,
@@ -2402,13 +2410,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_contact(
             chat_id=self.chat.id,
@@ -2576,13 +2586,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_document(
             chat_id=self.chat.id,
@@ -2687,13 +2699,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_game(
             chat_id=self.chat.id,
@@ -2770,13 +2784,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_inline_bot_result(
             chat_id=self.chat.id,
@@ -2878,13 +2894,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_location(
             chat_id=self.chat.id,
@@ -2978,13 +2996,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_media_group(
             chat_id=self.chat.id,
@@ -3145,13 +3165,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_photo(
             chat_id=self.chat.id,
@@ -3337,13 +3359,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_poll(
             chat_id=self.chat.id,
@@ -3501,13 +3525,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_sticker(
             chat_id=self.chat.id,
@@ -3637,13 +3663,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_venue(
             chat_id=self.chat.id,
@@ -3847,13 +3875,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_video(
             chat_id=self.chat.id,
@@ -4036,13 +4066,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_video_note(
             chat_id=self.chat.id,
@@ -4210,13 +4242,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_voice(
             chat_id=self.chat.id,
@@ -4402,13 +4436,15 @@ class Message(Object, Update):
         Raises:
             RPCError: In case of a Telegram RPC error.
         """
-        if quote is None:
-            quote = self.chat.type != enums.ChatType.PRIVATE
-
-        if not reply_parameters and quote:
-            reply_parameters = types.ReplyParameters(
-                message_id=self.id
-            )
+        
+        reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
+            reply_parameters,
+            self.id,
+            self.chat.type,
+            self.direct_messages_topic.topic_id if self.direct_messages_topic else None,
+            quote,
+            reply_to_message_id,
+        )
 
         return await self._client.send_invoice(
             chat_id=self.chat.id,
