@@ -240,6 +240,7 @@ IMAGE_PROCESS_FAILED	Failure while processing image.
 IMPORT_FILE_INVALID	The specified chat export file is invalid.
 IMPORT_FORMAT_DATE_INVALID	The date specified in the import file is invalid.
 IMPORT_FORMAT_UNRECOGNIZED	The specified chat export file was exported from an unsupported chat app.
+IMPORT_HISTORY_LOG_EMPTY	The specified chat export file is empty or has an invalid indentation.
 IMPORT_ID_INVALID	The specified import ID is invalid.
 IMPORT_TOKEN_INVALID	The specified token is invalid.
 INLINE_RESULT_EXPIRED	The inline query expired.
