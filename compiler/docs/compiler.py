@@ -433,6 +433,7 @@ def pyrogram_api():
             resolve_peer
             get_file
             save_file
+            iter_invoke
         """
     )
 
