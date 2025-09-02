@@ -34,7 +34,8 @@ class GetReceivedGifts:
         exclude_unlimited: bool = None,
         exclude_limited: bool = None,
         exclude_upgraded: bool = None,
-        sort_by_price: bool = None
+        sort_by_price: bool = None,
+        bb44f36: bool = False,
     ) -> Optional[AsyncGenerator["types.ReceivedGift", None]]:
         """Returns gifts received by the given user or chat.
 
@@ -69,6 +70,9 @@ class GetReceivedGifts:
 
             sort_by_price (``bool``, *optional*):
                 Pass True to sort results by gift price instead of send date.
+
+            bb44f36 (``bool``, *optional*):
+                Ignore friendly parsing, more Telethon-like.
 
         Returns:
             ``Generator``: A generator yielding :obj:`~pyrogram.types.ReceivedGift` objects.
@@ -105,22 +109,34 @@ class GetReceivedGifts:
             users = {u.id: u for u in r.users}
             chats = {c.id: c for c in r.chats}
 
-            received_gifts = [
-                await types.ReceivedGift._parse(self, gift, users, chats)
-                for gift in r.gifts
-            ]
+            if bb44f36:
+                for gift in r.gifts:
+                    await sleep(0)
+                    yield gift, users, chats
 
-            if not received_gifts:
-                return
+                    current += 1
 
-            for received_gift in received_gifts:
-                await sleep(0)
-                yield received_gift
-
-                current += 1
-
-                if current >= total:
+                    if current >= total:
+                        return
+                if current == 0:
                     return
+            else:
+                received_gifts = [
+                    await types.ReceivedGift._parse(self, gift, users, chats)
+                    for gift in r.gifts
+                ]
+
+                if not received_gifts:
+                    return
+
+                for received_gift in received_gifts:
+                    await sleep(0)
+                    yield received_gift
+
+                    current += 1
+
+                    if current >= total:
+                        return
 
             offset = r.next_offset
 
