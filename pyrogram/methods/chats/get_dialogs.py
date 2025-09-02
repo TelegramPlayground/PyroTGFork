@@ -87,24 +87,15 @@ class GetDialogs:
             users = {i.id: i for i in r.users}
             chats = {i.id: i for i in r.chats}
 
-            if bb44f36:
-                messages = {i.id: i for i in r.messages}
-                for dialog in r.dialogs:
-                    await sleep(0)
-                    yield dialog, messages, users, chats
-                    current += 1
-                    if current >= total:
-                        return
+            messages = {}
 
-            else:
-
-                messages = {}
-
-                for message in r.messages:
-                    if isinstance(message, raw.types.MessageEmpty):
-                        continue
-
-                    chat_id = utils.get_peer_id(message.peer_id)
+            for message in r.messages:
+                if isinstance(message, raw.types.MessageEmpty):
+                    continue
+                chat_id = utils.get_peer_id(message.peer_id)
+                if bb44f36:
+                    messages[chat_id] = message
+                else:
                     messages[chat_id] = await types.Message._parse(
                         self,
                         message,
@@ -113,40 +104,43 @@ class GetDialogs:
                         replies=self.fetch_replies
                     )
 
-                dialogs = []
+            dialogs = []
 
-                for dialog in r.dialogs:
-                    if not isinstance(dialog, raw.types.Dialog):
-                        continue
+            for dialog in r.dialogs:
+                if not isinstance(dialog, raw.types.Dialog):
+                    continue
 
-                    parsed = types.Dialog._parse(self, dialog, messages, users, chats)
-                    if parsed is None:
-                        continue
-                    
-                    if parsed.chat is None:
-                        continue
-                    
-                    if parsed.chat.id in seen_dialog_ids:
-                        continue
-                    
-                    seen_dialog_ids.add(parsed.chat.id)
-                    dialogs.append(parsed)
+                parsed = types.Dialog._parse(self, dialog, messages, users, chats)
+                if parsed is None:
+                    continue
+                
+                if parsed.chat is None:
+                    continue
+                
+                if parsed.chat.id in seen_dialog_ids:
+                    continue
+                
+                seen_dialog_ids.add(parsed.chat.id)
+                dialogs.append(parsed)
 
-                if not dialogs:
-                    return
+            if not dialogs:
+                return
 
-                last = dialogs[-1]
+            last = dialogs[-1]
 
-                if last.top_message is None:
-                    return
+            if last.top_message is None:
+                return
 
-                offset_id = last.top_message.id
-                offset_date = utils.datetime_to_timestamp(last.top_message.date)
-                offset_peer = await self.resolve_peer(last.chat.id)
+            offset_id = last.top_message.id
+            offset_date = utils.datetime_to_timestamp(last.top_message.date)
+            offset_peer = await self.resolve_peer(last.chat.id)
 
-                for dialog in dialogs:
-                    await sleep(0)
+            for dialog in dialogs:
+                await sleep(0)
+                if bb44f36:
+                    yield dialog, messages, users, chats
+                else:
                     yield dialog
-                    current += 1
-                    if current >= total:
-                        return
+                current += 1
+                if current >= total:
+                    return
