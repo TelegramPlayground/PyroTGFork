@@ -537,6 +537,40 @@ async def _get_reply_message_parameters(
     return reply_to
 
 
+def _get_reply_to_message_quote_ids(
+    reply_parameters: "types.ReplyParameters" = None,
+    message_id: int = None,
+    chat_type: "enums.ChatType" = None,
+    direct_messages_topic_id: int = None,
+    quote: bool = None,
+    reply_to_message_id: int = None,
+) -> tuple[int, "types.ReplyParameters"]:
+    if quote is None:
+        quote = chat_type != enums.ChatType.PRIVATE
+
+    if not reply_parameters and quote:
+        if reply_to_message_id:
+            reply_parameters = types.ReplyParameters(
+                message_id=reply_to_message_id
+            )
+        else:
+            reply_parameters = types.ReplyParameters(
+                message_id=message_id
+            )
+        reply_to_message_id = None
+
+    if direct_messages_topic_id:
+        if reply_parameters:
+            reply_parameters.direct_messages_topic_id = direct_messages_topic_id
+        else:
+            reply_parameters = types.ReplyParameters(
+                direct_messages_topic_id=direct_messages_topic_id
+            )
+        reply_to_message_id = None
+    
+    return reply_to_message_id, reply_parameters
+
+
 def is_plain_domain(url):
     # https://github.com/tdlib/td/blob/d963044/td/telegram/MessageEntity.cpp#L1778
     return (
