@@ -98,7 +98,7 @@ class GetChatPhotos:
                     elif isinstance(m.new_chat_photo, types.Photo):
                         _current_file_id = m.new_chat_photo.sizes[0].file_id
                     else:
-                        continue 
+                        continue
                     if _first_file_id != _current_file_id:
                         chat_icons.append(m.new_chat_photo)
 
@@ -129,10 +129,10 @@ class GetChatPhotos:
 
                 photos = []
                 for photo in r.photos:
-                    photos.append(types.Photo._parse(self, photo))
-                    current_animation = types.Animation._parse_chat_animation(self, photo)
-                    if current_animation:
-                        photos.append(current_animation)
+                    photos.append(
+                        types.Animation._parse_chat_animation(self, photo)
+                        or types.Photo._parse(self, photo)
+                    )
 
                 if not photos:
                     return
