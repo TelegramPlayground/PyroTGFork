@@ -853,7 +853,7 @@ class Message(Object, Update):
                     channel_chat_created = True
                     service_type = enums.MessageServiceType.CHANNEL_CHAT_CREATED
             elif isinstance(action, raw.types.MessageActionChatEditPhoto):
-                new_chat_photo = types.Photo._parse(client, action.photo)
+                new_chat_photo = types.Animation._parse_chat_animation(client, action.photo) or types.Photo._parse(client, action.photo)
                 service_type = enums.MessageServiceType.NEW_CHAT_PHOTO
             elif isinstance(action, raw.types.MessageActionGroupCallScheduled):
                 video_chat_scheduled = types.VideoChatScheduled._parse(action)
