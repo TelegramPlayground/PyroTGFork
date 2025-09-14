@@ -20,7 +20,7 @@ from asyncio import sleep
 from typing import Union, AsyncGenerator, Optional
 
 import pyrogram
-from pyrogram import types, raw, utils
+from pyrogram import types, raw
 
 
 class GetChatPhotos:
@@ -70,37 +70,37 @@ class GetChatPhotos:
             chat_icons = [_animation or _photo]
 
             if not (self.me and self.me.is_bot):
-                r = await utils.parse_messages(
-                    self,
-                    await self.invoke(
-                        raw.functions.messages.Search(
-                            peer=peer_id,
-                            q="",
-                            filter=raw.types.InputMessagesFilterChatPhotos(),
-                            min_date=0,
-                            max_date=0,
-                            offset_id=0,
-                            add_offset=0,
-                            limit=limit,
-                            max_id=0,
-                            min_id=0,
-                            hash=0,
-                        )
-                    ),
+                r = await self.invoke(
+                    raw.functions.messages.Search(
+                        peer=peer_id,
+                        q="",
+                        filter=raw.types.InputMessagesFilterChatPhotos(),
+                        min_date=0,
+                        max_date=0,
+                        offset_id=0,
+                        add_offset=0,
+                        limit=limit,
+                        max_id=0,
+                        min_id=0,
+                        hash=0,
+                    )
                 )
                 if _icon := chat_icons[0]:
                     _first_file_id = _icon.file_id if _animation else _icon.sizes[0].file_id
                 else:
                     _first_file_id = None
-                for m in r:
-                    if isinstance(m.new_chat_photo, types.Animation):
-                        _current_file_id = m.new_chat_photo.file_id
-                    elif isinstance(m.new_chat_photo, types.Photo):
-                        _current_file_id = m.new_chat_photo.sizes[0].file_id
-                    else:
+
+                for m in r.messages:
+                    if not isinstance(m.action, raw.types.MessageActionChatEditPhoto):
                         continue
-                    if _first_file_id != _current_file_id:
-                        chat_icons.append(m.new_chat_photo)
+
+                    _c_animation = types.Animation._parse_chat_animation(self, m.action.photo)
+                    _c_photo = types.Photo._parse(self, m.action.photo)
+
+                    _current_file_id = (_c_animation and _c_animation.file_id) or (_c_photo and _c_photo.sizes[0].file_id)
+
+                    if (_c_animation or _c_photo) and _first_file_id != _current_file_id:
+                        chat_icons.append(_c_animation or _c_photo)
 
             current = 0
 
