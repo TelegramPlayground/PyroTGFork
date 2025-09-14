@@ -90,8 +90,8 @@ class GetChatPhotos:
                 else:
                     _first_file_id = None
 
-                for m in r.messages:
-                    if not isinstance(m.action, raw.types.MessageActionChatEditPhoto):
+                for m in getaatr(r, "messages", []):
+                    if not isinstance(getattr(m, "action", None), raw.types.MessageActionChatEditPhoto):
                         continue
 
                     _c_animation = types.Animation._parse_chat_animation(self, m.action.photo)
