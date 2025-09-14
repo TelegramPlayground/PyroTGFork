@@ -282,15 +282,15 @@ class DownloadMedia:
                 if file_type in PHOTO_TYPES:
                     extension = ".jpg"
                 elif file_type == FileType.VOICE:
-                    extension = guessed_extension or ".ogg"
+                    extension = ".ogg"
                 elif file_type in (FileType.VIDEO, FileType.ANIMATION, FileType.VIDEO_NOTE):
-                    extension = guessed_extension or ".mp4"
+                    extension = ".mp4"
                 elif file_type == FileType.DOCUMENT:
-                    extension = guessed_extension or ".zip"
+                    extension = ".zip"
                 elif file_type == FileType.STICKER:
-                    extension = guessed_extension or ".webp"
+                    extension = ".webp"
                 elif file_type == FileType.AUDIO:
-                    extension = guessed_extension or ".mp3"
+                    extension = ".mp3"
                 else:
                     extension = ".unknown"
 
@@ -298,7 +298,7 @@ class DownloadMedia:
                     FileType(file_id_obj.file_type).name.lower(),
                     (date or datetime.now()).strftime("%Y-%m-%d_%H-%M-%S"),
                     self.rnd_id(),
-                    extension
+                    guessed_extension or extension
                 )
 
             downloader = self.handle_download(
