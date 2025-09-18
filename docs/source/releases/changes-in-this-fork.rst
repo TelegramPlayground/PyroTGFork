@@ -32,6 +32,17 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 214 |
++------------------------+
+
+- `fix get_chat_photos <https://github.com/TelegramPlayground/pyrogram/pull/203>`.
+- `support filters.regex for ChosenInlineResult <https://github.com/TelegramPlayground/pyrogram/pull/198>`__.
+- Update :meth:`~pyrogram.types.Message.reply_game`, :meth:`~pyrogram.types.Message.reply_text`, :meth:`~pyrogram.types.Message.reply_animation`, :meth:`~pyrogram.types.Message.reply_audio`, :meth:`~pyrogram.types.Message.reply_contact`, :meth:`~pyrogram.types.Message.reply_document`, :meth:`~pyrogram.types.Message.reply_location`, :meth:`~pyrogram.types.Message.reply_media_group`, :meth:`~pyrogram.types.Message.reply_photo`, :meth:`~pyrogram.types.Message.reply_poll`, :meth:`~pyrogram.types.Message.reply_sticker`, :meth:`~pyrogram.types.Message.reply_venue`, :meth:`~pyrogram.types.Message.reply_video`, :meth:`~pyrogram.types.Message.reply_video_note`, :meth:`~pyrogram.types.Message.reply_voice`, :meth:`~pyrogram.types.Message.reply_invoice`, :meth:`~pyrogram.types.Message.forward`, :meth:`~pyrogram.types.Message.copy`, :meth:`~pyrogram.types.Message.reply_cached_media` methods to support direct_messages_topic_id.
+- `Fix get_dialogs <https://github.com/TelegramPlayground/pyrogram/pull/195>`__.
+- `Fix timestamp_to_datetime to correctly handle timezone conversion <https://github.com/TelegramPlayground/pyrogram/commit/fc838cf>`__.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=211&to=214>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=211&to=214>`__.
+
++------------------------+
 | Scheme layer used: 211 |
 +------------------------+
 

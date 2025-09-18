@@ -102,6 +102,9 @@ class Story(Object, Update):
             The story is deleted.
             A story can be deleted in case it was deleted or you tried to retrieve a story that doesn't exist yet.
         
+        album_ids (List of ``int``):
+            Identifiers of story albums to which the story is added; only for manageable stories.
+
         link (``str``, *property*):
             Generate a link to this story, only for Telegram Premium chats having usernames. Can be None if the story cannot have a link.
 
@@ -132,6 +135,7 @@ class Story(Object, Update):
         forwards: int = None,
         skipped: bool = None,
         deleted: bool = None,
+        album_ids: list[int] = None,
         _raw = None
     ):
         super().__init__(client)
@@ -157,6 +161,7 @@ class Story(Object, Update):
         self.forwards = forwards
         self.skipped = skipped
         self.deleted = deleted
+        self.album_ids = album_ids
         self._raw = _raw
 
     @staticmethod
@@ -182,6 +187,7 @@ class Story(Object, Update):
         is_visible_only_for_self = None
         areas = None
         privacy_settings = None
+        album_ids = None
 
         if isinstance(story_item, raw.types.StoryItemDeleted):
             deleted = True
@@ -235,6 +241,8 @@ class Story(Object, Update):
                         area,
                     ) for area in story_item.media_areas
                 ]
+            
+            album_ids = story_item.albums
 
         return (
             date,
@@ -255,6 +263,7 @@ class Story(Object, Update):
             is_visible_only_for_self,
             areas,
             privacy_settings,
+            album_ids,
         )
 
     @staticmethod
@@ -292,6 +301,7 @@ class Story(Object, Update):
         areas = None
         privacy_settings = None
         repost_info = None
+        album_ids = None
 
         if story_media:
             rawupdate = story_media
@@ -375,6 +385,7 @@ class Story(Object, Update):
                 is_visible_only_for_self,
                 areas,
                 privacy_settings,
+                album_ids,
             ) = Story._parse_story_item(client, story_item)
 
             if not chat and story_item.from_id:
@@ -416,6 +427,7 @@ class Story(Object, Update):
             areas=areas,
             privacy_settings=privacy_settings,
             repost_info=repost_info,
+            album_ids=album_ids,
         )
 
     async def react(
