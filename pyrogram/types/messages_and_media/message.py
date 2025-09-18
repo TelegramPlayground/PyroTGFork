@@ -4963,13 +4963,11 @@ class Message(Object, Update):
         """
         if self.service:
             raise ValueError(
-                "Service messages cannot be copied. chat_id: %s, message_id: %s",
-                self.chat.id, self.id
+                f"Service messages cannot be copied. chat_id: {self.chat.id}, message_id: {self.id}"
             )
         elif self.game and not (self._client.me and self._client.me.is_bot):
             raise ValueError(
-                "Users cannot send messages with Game media type. chat_id: %s, message_id: %s",
-                self.chat.id, self.id
+                f"Users cannot send messages with Game media type. chat_id: {self.chat.id}, message_id: {self.id}"
             )
         elif self.empty:
             raise ValueError("Empty messages cannot be copied.")
@@ -5029,8 +5027,8 @@ class Message(Object, Update):
                     parse_mode=parse_mode,
                     caption_entities=caption_entities,
                     show_caption_above_media=show_caption_above_media or self.show_caption_above_media,
-                    cover=video_cover,
-                    start_timestamp=video_start_timestamp,
+                    cover=video_cover if video_cover else self.video.cover.sizes[-1].file_id if self.video.cover else None,
+                    start_timestamp=video_start_timestamp if video_start_timestamp else self.video.start_timestamp,
                     has_spoiler=self.has_media_spoiler,
                     disable_notification=disable_notification,
                     protect_content=self.has_protected_content if protect_content is None else protect_content,
