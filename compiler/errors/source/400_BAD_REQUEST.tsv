@@ -267,6 +267,7 @@ INVITE_REVOKED_MISSING	The specified invite link was already revoked or is inval
 INVITE_SLUG_EMPTY	The specified invite slug is empty.
 INVITE_SLUG_EXPIRED	The specified chat folder link has expired.
 INVITE_SLUG_INVALID	The specified invitation slug is invalid.
+INVOICE_INVALID	The specified invoice is invalid.
 INVOICE_PAYLOAD_INVALID	The specified invoice payload is invalid.
 JOIN_AS_PEER_INVALID	The specified peer cannot be used to join a group call.
 LANGUAGE_INVALID	The specified lang_code is invalid.
