@@ -16,12 +16,9 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
 from datetime import datetime
 from pyrogram import raw, utils
 from ..object import Object
-
-log = logging.getLogger(__name__)
 
 
 class ChatPermissions(Object):
@@ -73,11 +70,15 @@ class ChatPermissions(Object):
             True, if the user is allowed to create forum topics
             If omitted defaults to the value of can_pin_messages
 
+        can_send_media_messages (``bool``, *optional*):
+            True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes.
+            Implies *can_send_messages*.
     """
 
     def __init__(
         self,
         *,
+        can_send_plain: bool = None,
         can_send_messages: bool = None,  # Text, contacts, giveaways, giveaway winners, invoices, locations and venues
         can_send_audios: bool = None,
         can_send_documents: bool = None,
@@ -92,9 +93,11 @@ class ChatPermissions(Object):
         can_invite_users: bool = None,
         can_pin_messages: bool = None,
         can_manage_topics: bool = None,
+        can_send_media_messages: bool = None,  # Audio files, documents, photos, videos, video notes and voice notes
     ):
         super().__init__(None)
 
+        self.can_send_plain = can_send_plain
         self.can_send_messages = can_send_messages
         self.can_send_audios = can_send_audios
         self.can_send_documents = can_send_documents
@@ -109,9 +112,11 @@ class ChatPermissions(Object):
         self.can_invite_users = can_invite_users
         self.can_pin_messages = can_pin_messages
         self.can_manage_topics = can_manage_topics
+        self.can_send_media_messages = can_send_media_messages
 
     @staticmethod
     def _parse(denied_permissions: "raw.base.ChatBannedRights") -> "ChatPermissions":
+        can_send_plain = False
         can_send_messages = False
         can_send_audios = False
         can_send_documents = False
@@ -126,8 +131,10 @@ class ChatPermissions(Object):
         can_invite_users = False
         can_pin_messages = False
         can_manage_topics = False
+        can_send_media_messages = False
 
         if isinstance(denied_permissions, raw.types.ChatBannedRights):
+            can_send_plain = not denied_permissions.send_plain
             can_send_messages = not denied_permissions.send_messages
             can_send_polls = not denied_permissions.send_polls
             can_send_other_messages = any([
@@ -158,29 +165,17 @@ class ChatPermissions(Object):
                 can_send_videos = not denied_permissions.send_videos
                 can_send_video_notes = not denied_permissions.send_roundvideos
                 can_send_voice_notes = not denied_permissions.send_voices
-                send_aidem = any([
-                    can_send_audios,
-                    can_send_documents,
-                    can_send_photos,
-                    can_send_videos,
-                    can_send_video_notes,
-                    can_send_voice_notes,
-                ])
-                if not send_aidem:
-                    can_send_messages = not any([
-                        denied_permissions.send_messages,
-                        denied_permissions.send_plain
-                    ])
             else:
-                send_media = not denied_permissions.send_media
-                can_send_audios = send_media
-                can_send_documents = send_media
-                can_send_photos = send_media
-                can_send_videos = send_media
-                can_send_video_notes = send_media
-                can_send_voice_notes = send_media
+                can_send_media_messages = not denied_permissions.send_media
+                can_send_audios = can_send_media_messages
+                can_send_documents = can_send_media_messages
+                can_send_photos = can_send_media_messages
+                can_send_videos = can_send_media_messages
+                can_send_video_notes = can_send_media_messages
+                can_send_voice_notes = can_send_media_messages
 
             return ChatPermissions(
+                can_send_plain=can_send_plain,
                 can_send_messages=can_send_messages,
                 can_send_audios=can_send_audios,
                 can_send_documents=can_send_documents,
@@ -195,6 +190,7 @@ class ChatPermissions(Object):
                 can_invite_users=can_invite_users,
                 can_pin_messages=can_pin_messages,
                 can_manage_topics=can_manage_topics,
+                can_send_media_messages=can_send_media_messages
             )
 
     def write(
@@ -202,80 +198,30 @@ class ChatPermissions(Object):
         use_independent_chat_permissions: bool,
         until_date: datetime = utils.zero_datetime()
     ) -> "raw.base.ChatBannedRights":
-        if use_independent_chat_permissions:
-            return raw.types.ChatBannedRights(
-                until_date=utils.datetime_to_timestamp(until_date),
-                send_messages=not permissions.can_send_messages,
-                send_media=False,
-                send_stickers=not permissions.can_send_other_messages,
-                send_gifs=not permissions.can_send_other_messages,
-                send_games=not permissions.can_send_other_messages,
-                send_inline=not permissions.can_send_other_messages,
-                embed_links=not permissions.can_add_web_page_previews,
-                send_polls=not permissions.can_send_polls,
-                change_info=not permissions.can_change_info,
-                invite_users=not permissions.can_invite_users,
-                pin_messages=not permissions.can_pin_messages,
-                manage_topics=(
-                    permissions.can_manage_topics and
-                    not permissions.can_manage_topics
-                ) or not permissions.can_pin_messages,
-                view_messages=False,
-                send_audios=not permissions.can_send_audios,
-                send_docs=not permissions.can_send_documents,
-                send_photos=not permissions.can_send_photos,
-                send_videos=not permissions.can_send_videos,
-                send_roundvideos=not permissions.can_send_video_notes,
-                send_voices=not permissions.can_send_voice_notes,
-                send_plain=not permissions.can_send_messages,
-            )
-        else:
-            send_aidem = any([
-                permissions.can_send_audios,
-                permissions.can_send_documents,
-                permissions.can_send_photos,
-                permissions.can_send_videos,
-                permissions.can_send_video_notes,
-                permissions.can_send_voice_notes,
-            ])
-            return raw.types.ChatBannedRights(
-                until_date=utils.datetime_to_timestamp(until_date),
-                send_messages=False,
-                send_media=not send_aidem,
-                send_stickers=not permissions.can_send_other_messages,
-                send_gifs=not permissions.can_send_other_messages,
-                send_games=not permissions.can_send_other_messages,
-                send_inline=not permissions.can_send_other_messages,
-                embed_links=not permissions.can_add_web_page_previews,
-                send_polls=not permissions.can_send_polls,
-                change_info=not permissions.can_change_info,
-                invite_users=not permissions.can_invite_users,
-                pin_messages=not permissions.can_pin_messages,
-                manage_topics=(
-                    permissions.can_manage_topics and
-                    not permissions.can_manage_topics
-                ) or not permissions.can_pin_messages,
-                view_messages=False,
-                send_audios=not permissions.can_send_audios,
-                send_docs=not permissions.can_send_documents,
-                send_photos=not permissions.can_send_photos,
-                send_videos=not permissions.can_send_videos,
-                send_roundvideos=not permissions.can_send_video_notes,
-                send_voices=not permissions.can_send_voice_notes,
-                send_plain=not permissions.can_send_messages,
-            )
-
-    @property
-    def can_send_media_messages(permissions: "ChatPermissions"):
-        log.warning(
-            "can_send_media_messages property is deprecated. "
-            "Please use any of can_send_audios, can_send_documents, can_send_photos, can_send_videos, can_send_video_notes or can_send_voice_notes."
+        return raw.types.ChatBannedRights(
+            until_date=utils.datetime_to_timestamp(until_date),
+            send_messages=not permissions.can_send_messages,
+            send_media=not permissions.can_send_media_messages,
+            send_stickers=not permissions.can_send_other_messages,
+            send_gifs=not permissions.can_send_other_messages,
+            send_games=not permissions.can_send_other_messages,
+            send_inline=not permissions.can_send_other_messages,
+            embed_links=not permissions.can_add_web_page_previews,
+            send_polls=not permissions.can_send_polls,
+            change_info=not permissions.can_change_info,
+            invite_users=not permissions.can_invite_users,
+            pin_messages=not permissions.can_pin_messages,
+            manage_topics=(
+                permissions.can_manage_topics and
+                not permissions.can_manage_topics
+            ) or not permissions.can_pin_messages,
+            # view_messages=# TODO
+            send_audios=not permissions.can_send_audios,# TODO
+            send_docs=not permissions.can_send_documents,# TODO
+            send_photos=not permissions.can_send_photos,# TODO
+            send_videos=not permissions.can_send_videos,# TODO
+            send_roundvideos=not permissions.can_send_video_notes,# TODO
+            send_voices=not permissions.can_send_voice_notes,# TODO
+            send_plain=not permissions.can_send_plain# TODO
+            # send_plain=# TODO
         )
-        return any([
-            permissions.can_send_audios,
-            permissions.can_send_documents,
-            permissions.can_send_photos,
-            permissions.can_send_videos,
-            permissions.can_send_video_notes,
-            permissions.can_send_voice_notes,
-        ])
