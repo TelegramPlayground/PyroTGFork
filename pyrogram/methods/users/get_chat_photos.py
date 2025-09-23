@@ -37,7 +37,7 @@ class GetChatPhotos:
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
             limit (``int``, *optional*):
-                Limits the number of profІile photos to be retrieved.
+                Limits the number of profile photos to be retrieved.
                 By default, no limit is applied and all profile photos are returned.
 
         Returns:
@@ -49,6 +49,14 @@ class GetChatPhotos:
                 async for photo in app.get_chat_photos("me"):
                     print(photo)
         """
+
+        def get_unique_file_id(media_obj):
+            """Отримати унікальний file_id для медіа об'єкта"""
+            if isinstance(media_obj, types.Animation):
+                return media_obj.file_unique_id
+            elif isinstance(media_obj, types.Photo) and media_obj.sizes:
+                return media_obj.sizes[-1].file_unique_id
+            return None
 
         total = limit or (1 << 31)
         chunk_limit = min(100, total)
@@ -62,6 +70,7 @@ class GetChatPhotos:
             chat_icons = []
             _animation = types.Animation._parse_chat_animation(self, r.full_chat.chat_photo)
             _photo = types.Photo._parse(self, r.full_chat.chat_photo)
+            
             if _animation:
                 chat_icons.append(_animation)
             elif _photo:
@@ -91,10 +100,15 @@ class GetChatPhotos:
             current = 0
             for icon in chat_icons:
                 await sleep(0)
-                if not icon or icon.file_unique_id in seen:
+                if not icon:
+                    continue
+                
+                file_unique_id = get_unique_file_id(icon)
+                
+                if not file_unique_id or file_unique_id in seen:
                     continue
 
-                seen.add(icon.file_unique_id)
+                seen.add(file_unique_id)
                 yield icon
                 current += 1
                 if current >= total:
@@ -114,13 +128,15 @@ class GetChatPhotos:
                     )
                 )
 
-                photos = [
-                    types.Animation._parse_chat_animation(self, p) or types.Photo._parse(self, p)
-                    for p in r.photos
-                ]
-
-                # Фільтруємо None
-                photos = [p for p in photos if p]
+                photos = []
+                for p in r.photos:
+                    _animation = types.Animation._parse_chat_animation(self, p)
+                    _photo = types.Photo._parse(self, p)
+                    
+                    if _animation:
+                        photos.append(_animation)
+                    elif _photo:
+                        photos.append(_photo)
 
                 if not photos:
                     return
@@ -129,9 +145,13 @@ class GetChatPhotos:
 
                 for photo in photos:
                     await sleep(0)
-                    if photo.file_unique_id in seen:
+                    
+                    file_unique_id = get_unique_file_id(photo)
+                    
+                    if not file_unique_id or file_unique_id in seen:
                         continue
-                    seen.add(photo.file_unique_id)
+                        
+                    seen.add(file_unique_id)
                     yield photo
                     current += 1
                     if current >= total:
