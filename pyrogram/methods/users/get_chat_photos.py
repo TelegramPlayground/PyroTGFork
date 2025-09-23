@@ -86,7 +86,7 @@ class GetChatPhotos:
                     )
                 )
                 if _icon := chat_icons[0]:
-                    _first_file_id = _icon.file_id if _animation else _icon.sizes[0].file_id
+                    _first_file_id = _icon.file_unique_id if _animation else _icon.sizes[-1].file_unique_id
                 else:
                     _first_file_id = None
 
@@ -97,7 +97,7 @@ class GetChatPhotos:
                     _c_animation = types.Animation._parse_chat_animation(self, m.action.photo)
                     _c_photo = types.Photo._parse(self, m.action.photo)
 
-                    _current_file_id = (_c_animation and _c_animation.file_id) or (_c_photo and _c_photo.sizes[0].file_id)
+                    _current_file_id = (_c_animation and _c_animation.file_unique_id) or (_c_photo and _c_photo.sizes[-1].file_unique_id)
 
                     if (_c_animation or _c_photo) and _first_file_id != _current_file_id:
                         chat_icons.append(_c_animation or _c_photo)
