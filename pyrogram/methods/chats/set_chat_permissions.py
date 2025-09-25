@@ -75,6 +75,8 @@ class SetChatPermissions:
                     send_docs=not permissions.can_send_documents,
                     send_photos=not permissions.can_send_photos,
                     send_videos=not permissions.can_send_videos,
+                    send_roundvideos=not permissions.can_send_video_notes,
+                    send_voices=not permissions.can_send_voice_notes,
                     send_polls=not permissions.can_send_polls,
                     send_stickers=not permissions.can_send_other_messages,
                     send_gifs=not permissions.can_send_other_messages,
