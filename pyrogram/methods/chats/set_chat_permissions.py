@@ -21,6 +21,7 @@ from typing import Union
 import pyrogram
 from pyrogram import raw
 from pyrogram import types
+from pyrogram.methods.messages import send_document
 
 
 class SetChatPermissions:
@@ -71,16 +72,13 @@ class SetChatPermissions:
                     until_date=0,
                     send_messages=not permissions.can_send_messages,
                     send_audios=not permissions.can_send_audios,
-                    send_documents=not permissions.can_send_documents,
+                    send_docs=not permissions.can_send_documents,
                     send_photos=not permissions.can_send_photos,
                     send_videos=not permissions.can_send_videos,
-                    send_video_notes=not permissions.can_send_video_notes,
-                    send_voice_notes=not permissions.can_send_voice_notes,
                     send_polls=not permissions.can_send_polls,
                     send_stickers=not permissions.can_send_other_messages,
                     send_gifs=not permissions.can_send_other_messages,
                     send_games=not permissions.can_send_other_messages,
-                    send_animation=not permissions.can_send_other_messages,
                     send_inline=not permissions.can_send_other_messages,
                     embed_links=not permissions.can_add_web_page_previews,
                     change_info=not permissions.can_change_info,
