@@ -21,7 +21,6 @@ from typing import Union
 import pyrogram
 from pyrogram import raw
 from pyrogram import types
-from pyrogram.methods.messages import send_document
 
 
 class SetChatPermissions:
