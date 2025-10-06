@@ -250,6 +250,7 @@ class Chat(Object):
 
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
+            OR, Title of the chat, for groups and channels.
 
     """
 
