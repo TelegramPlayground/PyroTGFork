@@ -48,6 +48,7 @@ STORAGE_CHECK_FAILED	Server storage check failed due to Telegram having internal
 STORAGE_CHOOSE_VOLUME_FAILED	Storage choose volume failed due to Telegram having internal problems. Please try again later
 STORE_INVALID_SCALAR_TYPE	Telegram is having internal problems. Please try again later
 TRANSLATE_REQ_FAILED	Translation failed, please try again later.
+TRANSLATION_TIMEOUT	A timeout occurred while translating the specified text.
 UNKNOWN_METHOD	The method you tried to call cannot be called on non-CDN DCs
 UPLOAD_NO_VOLUME	Telegram is having internal problems. Please try again later
 VOLUME_LOC_NOT_FOUND	Telegram is having internal problems. Please try again later
