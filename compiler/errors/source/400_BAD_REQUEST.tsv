@@ -41,6 +41,7 @@ BOT_CHANNELS_NA	Bots can't edit admin privileges.
 BOT_COMMAND_DESCRIPTION_INVALID	The specified command description is invalid.
 BOT_COMMAND_INVALID	The specified command is invalid.
 BOT_DOMAIN_INVALID	Bot domain invalid.
+BOT_FALLBACK_UNSUPPORTED	The fallback flag can't be set for bots.
 BOT_GAMES_DISABLED	Games can't be sent to channels.
 BOT_GROUPS_BLOCKED	This bot can't be added to groups.
 BOT_INLINE_DISABLED	This bot can't be used in inline mode.
@@ -59,8 +60,8 @@ BROADCAST_ID_INVALID	Broadcast ID invalid.
 BROADCAST_PUBLIC_VOTERS_FORBIDDEN	You can't forward polls with public voters.
 BROADCAST_REQUIRED	This method can only be called on a channel, please use stats.getMegagroupStats for supergroups.
 BUSINESS_BOT_MISSING	The business bot is missing.
-BUSINESS_CONNECTION_INVALID	The business connection is invalid.
-BUSINESS_CONNECTION_NOT_ALLOWED	This business connection is not allowed.
+BUSINESS_CONNECTION_INVALID	The `connection_id` passed to the wrapping [invokeWithBusinessConnection](https://core.telegram.org/api/business) call is invalid.
+BUSINESS_CONNECTION_NOT_ALLOWED	This method was invoked over a business connection using [invokeWithBusinessConnection](https://core.telegram.org/api/business#connected-bots), but either (1) we're a user, and users cannot invoke methods over a business connection; (2) we're a bot, but business mode was disabled in @botfather or (3); we're a bot, but this method cannot be invoked over a business connection.
 BUSINESS_PEER_INVALID	Messages can't be set to the specified peer through the current [business connection](https://core.telegram.org/api/business#connected-bots).
 BUSINESS_PEER_USAGE_MISSING	You cannot send a message to a user through a [business connection](https://core.telegram.org/api/business#connected-bots) if the user hasn't recently contacted us.
 BUSINESS_RECIPIENTS_EMPTY	You didn't set any flag in inputBusinessBotRecipients, thus the bot cannot work with *any* peer.
@@ -70,6 +71,7 @@ BUSINESS_WORK_HOURS_PERIOD_INVALID	The specified work hours are invalid, see [he
 BUTTON_COPY_TEXT_INVALID	The specified [keyboardButtonCopy](https://core.telegram.org/constructor/keyboardButtonCopy).`copy_text` is invalid.
 BUTTON_DATA_INVALID	The data of one or more of the buttons you provided is invalid.
 BUTTON_ID_INVALID	The specified button ID is invalid.
+BUTTON_INVALID	The specified button is invalid.
 BUTTON_POS_INVALID	The position of one of the keyboard buttons is invalid (i.e. a Game or Pay button not in the first position, and so on...).
 BUTTON_TEXT_INVALID	The specified button text is invalid.
 BUTTON_TYPE_INVALID	The type of one or more of the buttons you provided is invalid.
@@ -81,6 +83,7 @@ CALL_ALREADY_DECLINED	The call was already declined.
 CALL_OCCUPY_FAILED	The call failed because the user is already making another call.
 CALL_PEER_INVALID	The provided call peer object is invalid.
 CALL_PROTOCOL_FLAGS_INVALID	Call protocol flags invalid.
+CALL_PROTOCOL_LAYER_INVALID	The specified protocol layer version range is invalid.
 CDN_METHOD_INVALID	You can't call this method in a CDN DC.
 CHANNELS_ADMIN_LOCATED_TOO_MUCH	The user has reached the limit of public geogroups.
 CHANNELS_ADMIN_PUBLIC_TOO_MUCH	You're admin of too many public channels, make some channels private to change the username of this channel.
@@ -90,12 +93,14 @@ CHANNEL_BANNED	The channel is banned
 CHANNEL_FORUM_MISSING	This supergroup is not a forum.
 CHANNEL_ID_INVALID	The specified supergroup ID is invalid.
 CHANNEL_INVALID	The provided channel is invalid.
-CHANNEL_MONOFORUM_UNSUPPORTED	The provided channel is not supported.
+CHANNEL_MONOFORUM_UNSUPPORTED	[Monoforums](https://core.telegram.org/api/channel#monoforums) do not support this feature.
 CHANNEL_PARICIPANT_MISSING	The current user is not in the channel.
 CHANNEL_PRIVATE	You haven't joined this channel/supergroup.
 CHANNEL_TOO_BIG	This channel has too many participants (>1000) to be deleted.
 CHANNEL_TOO_LARGE	Channel is too large to be deleted; this error is issued when trying to delete channels with more than 1000 members (subject to change).
 CHARGE_ALREADY_REFUNDED	The transaction was already refunded.
+CHARGE_ID_EMPTY	The specified charge_id is empty.
+CHARGE_ID_INVALID	The specified charge_id is invalid.
 CHATLINKS_TOO_MUCH	Too many [business chat links](https://core.telegram.org/api/business#business-chat-links) were created, please delete some older links.
 CHATLINK_SLUG_EMPTY	The specified slug is empty.
 CHATLINK_SLUG_EXPIRED	The specified [business chat link](https://core.telegram.org/api/business#business-chat-links) has expired.
@@ -142,6 +147,7 @@ CONTACT_REQ_MISSING	Missing contact request.
 CREATE_CALL_FAILED	An error occurred while creating the call.
 CURRENCY_TOTAL_AMOUNT_INVALID	The total amount of all prices is invalid.
 CUSTOM_REACTIONS_TOO_MANY	Too many custom reactions were specified.
+DATA_HASH_SIZE_INVALID	The size of the specified secureValueErrorData.data_hash is invalid.
 DATA_INVALID	Encrypted data invalid.
 DATA_JSON_INVALID	The provided JSON data is invalid.
 DATA_TOO_LONG	Data too long.
@@ -149,7 +155,7 @@ DATE_EMPTY	Date empty.
 DC_ID_INVALID	The provided DC ID is invalid.
 DH_G_A_INVALID	g_a invalid.
 DOCUMENT_INVALID	The specified document is invalid.
-EFFECT_ID_INVALID	The effect id is invalid
+EFFECT_ID_INVALID	The specified effect ID is invalid.
 EMAIL_HASH_EXPIRED	Email hash expired.
 EMAIL_INVALID	The specified email is invalid.
 EMAIL_NOT_ALLOWED	The specified email cannot be used to complete the operation.
@@ -172,9 +178,11 @@ ENTITIES_TOO_LONG	You provided too many styled message entities.
 ENTITY_BOUNDS_INVALID	A specified [entity offset or length](https://core.telegram.org/api/entities#entity-length) is invalid, see [here](https://core.telegram.org/api/entities#entity-length) for info on how to properly compute the entity offset/length.
 ENTITY_MENTION_USER_INVALID	You mentioned an invalid user.
 ERROR_TEXT_EMPTY	The provided error message is empty.
+EXPIRES_AT_INVALID	The specified `expires_at` timestamp is invalid.
 EXPIRE_DATE_INVALID	The specified expiration date is invalid.
 EXPORT_CARD_INVALID	Provided card is invalid.
 EXTENDED_MEDIA_AMOUNT_INVALID	The specified `stars_amount` of the passed [inputMediaPaidMedia](https://core.telegram.org/constructor/inputMediaPaidMedia) is invalid.
+EXTENDED_MEDIA_INVALID	The specified paid media is invalid.
 EXTERNAL_URL_INVALID	External URL invalid.
 FIELD_NAME_EMPTY	The field with the name FIELD_NAME is missing
 FIELD_NAME_INVALID	The field with the name FIELD_NAME is invalid
@@ -191,11 +199,11 @@ FILE_PART_SIZE_INVALID	The provided file part size is invalid.
 FILE_PART_TOO_BIG	The uploaded file part is too big.
 FILE_PART_TOO_SMALL	The size of the uploaded file part is too small, please see the documentation for the allowed sizes.
 FILE_PART_X_MISSING	Part {value} of the file is missing from storage. Try repeating the method call to resave the part.
-FILE_REFERENCE_EMPTY	An empty [file reference](https://core.telegram.org/api/file_reference) was specified.
-FILE_REFERENCE_EXPIRED	File reference expired, it must be refetched as described in [the documentation](https://core.telegram.org/api/file_reference).
-FILE_REFERENCE_INVALID	The specified [file reference](https://core.telegram.org/api/file_reference) is invalid.
-FILE_REFERENCE_X_EXPIRED	The file reference of the media file at index {value} in the passed media array expired, it [must be refreshed](https://core.telegram.org/api/file_reference).
-FILE_REFERENCE_X_INVALID	The file reference of the media file at index {value} in the passed media array is invalid.
+FILE_REFERENCE_EMPTY	An empty [file reference](https://core.telegram.org/api/file-references) was specified.
+FILE_REFERENCE_EXPIRED	File reference expired, it must be refetched as described in [the documentation](https://core.telegram.org/api/file-references).
+FILE_REFERENCE_INVALID	The specified [file reference](https://core.telegram.org/api/file-references) is invalid.
+FILE_REFERENCE_X_EXPIRED	The file reference of the media file at index {value} in the passed media array expired, it [must be refreshed as specified in the documentation](https://core.telegram.org/api/file-references). .
+FILE_REFERENCE_X_INVALID	The [file reference](https://core.telegram.org/api/file-references) of the media file at index {value} in the passed media array is invalid.
 FILE_TITLE_EMPTY	An empty file title was specified.
 FILE_TOKEN_INVALID	The master DC did not accept the `file_token` (e.g., the token has expired). Continue downloading the file from the master DC using upload.getFile.
 FILTER_ID_INVALID	The specified filter ID is invalid.
@@ -207,17 +215,20 @@ FOLDER_ID_EMPTY	An empty folder ID was specified.
 FOLDER_ID_INVALID	Invalid folder ID.
 FORM_EXPIRED	The form was generated more than 10 minutes ago and has expired, please re-generate it using [payments.getPaymentForm](https://core.telegram.org/method/payments.getPaymentForm) and pass the new `form_id`.
 FORM_ID_EMPTY	The specified form ID is empty.
+FORM_SUBMIT_DUPLICATE	The same payment form was already submitted.  .
 FORM_UNSUPPORTED	Please update your client.
 FORUM_ENABLED	You can't execute the specified action because the group is a [forum](https://core.telegram.org/api/forum), disable forum functionality to continue.
 FRESH_CHANGE_ADMINS_FORBIDDEN	You were just elected admin, you can't add or modify other admins yet.
 FROM_MESSAGE_BOT_DISABLED	Bots can't use fromMessage min constructors.
 FROM_PEER_INVALID	The specified from_id is invalid.
-FROZEN_PARTICIPANT_MISSING	The account is frozen and cannot access the chat participant.
+FROZEN_PARTICIPANT_MISSING	The current account is [frozen](https://core.telegram.org/api/auth#frozen-accounts), and cannot access the specified peer.
 GAME_BOT_INVALID	Bots can't send another bot's game.
 GENERAL_MODIFY_ICON_FORBIDDEN	You can't modify the icon of the 'General' topic.
 GEO_POINT_INVALID	Invalid geoposition provided.
+GIFT_MONTHS_INVALID	The value passed in invoice.inputInvoicePremiumGiftStars.months is invalid.
 GIFT_SLUG_EXPIRED	The specified gift slug has expired.
 GIFT_SLUG_INVALID	The specified slug is invalid.
+GIFT_STARS_INVALID	The specified amount of stars is invalid.
 GIF_CONTENT_TYPE_INVALID	GIF content-type invalid.
 GIF_ID_INVALID	The provided GIF ID is invalid.
 GRAPH_EXPIRED_RELOAD	This graph has expired, please obtain a new graph token.
@@ -233,6 +244,7 @@ GROUPED_MEDIA_INVALID	Invalid grouped media.
 GROUP_CALL_INVALID	The group call is invalid
 HASHTAG_INVALID	The specified hashtag is invalid.
 HASH_INVALID	The provided hash is invalid.
+HASH_SIZE_INVALID	The size of the specified secureValueError.hash is invalid.
 HIDE_REQUESTER_MISSING	The join request was missing or was already handled.
 ID_EXPIRED	The passed prepared inline message ID has expired.
 ID_INVALID	The passed ID is invalid.
@@ -253,6 +265,7 @@ INPUT_FILTER_INVALID	The specified filter is invalid.
 INPUT_LAYER_INVALID	The specified layer is invalid.
 INPUT_METHOD_INVALID	The specified method is invalid.
 INPUT_PEERS_EMPTY	The specified peer array is empty.
+INPUT_PURPOSE_INVALID	The specified payment purpose is invalid.
 INPUT_REQUEST_TOO_LONG	The request payload is too long.
 INPUT_TEXT_EMPTY	The specified text is empty.
 INPUT_TEXT_TOO_LONG	The specified text is too long.
@@ -282,6 +295,7 @@ MAX_DATE_INVALID	The specified maximum date is invalid.
 MAX_ID_INVALID	The provided max ID is invalid.
 MAX_QTS_INVALID	The specified max_qts is invalid.
 MD5_CHECKSUM_INVALID	The MD5 checksums do not match.
+MEDIA_ALREADY_PAID	You already paid for the specified media.
 MEDIA_CAPTION_TOO_LONG	The caption is too long.
 MEDIA_EMPTY	The provided media object is invalid.
 MEDIA_FILE_INVALID	The specified media file is invalid.
@@ -308,8 +322,10 @@ MESSAGE_TOO_OLD	The message is too old, the requested information is not availab
 METHOD_INVALID	The specified method is invalid.
 MIN_DATE_INVALID	The specified minimum date is invalid.
 MONOFORUM_FILTER_INVALID	The specified filter is invalid.
+MONTH_INVALID	The number of months specified in inputInvoicePremiumGiftStars.months is invalid.
 MSG_ID_INVALID	Invalid message ID provided.
 MSG_TOO_OLD	[`chat_read_mark_expire_period` seconds](https://core.telegram.org/api/config#chat-read-mark-expire-period) have passed since the message was sent, read receipts were deleted.
+MSG_VOICE_MISSING	The specified message is not a voice message.
 MSG_WAIT_FAILED	A waiting call returned an error.
 MTPROTO_CLUSTER_INVALID	The mtproto 1049295266_343213 cluster is invalid.
 MULTI_MEDIA_TOO_LONG	Too many media files for album.
@@ -317,8 +333,10 @@ NEW_SALT_INVALID	The new salt is invalid.
 NEW_SETTINGS_EMPTY	No password is set on the current account, and no new password was specified in `new_settings`.
 NEW_SETTINGS_INVALID	The new password settings are invalid.
 NEXT_OFFSET_INVALID	The specified offset is longer than 64 bytes.
+NOGENERAL_HIDE_FORBIDDEN	Only the 'General' topic with `id=1` can be hidden.
 NOT_ELIGIBLE	The current user is not eligible to join the Peer-to-Peer Login Program.
 NOT_JOINED	The current user hasn't joined the Peer-to-Peer Login Program.
+NO_PAYMENT_NEEDED	The upgrade/transfer of the specified gift was already paid for or is free.
 OFFSET_INVALID	The provided offset is invalid.
 OFFSET_PEER_ID_INVALID	The provided offset peer is invalid.
 OPTIONS_TOO_MUCH	Too many options provided.
@@ -327,6 +345,8 @@ ORDER_INVALID	The specified username order is invalid.
 PACK_SHORT_NAME_INVALID	Short pack name invalid.
 PACK_SHORT_NAME_OCCUPIED	A stickerpack with this name already exists.
 PACK_TITLE_INVALID	The stickerpack title is invalid.
+PACK_TYPE_INVALID	The masks and emojis flags are mutually exclusive.
+PARENT_PEER_INVALID	The specified `parent_peer` is invalid.
 PARTICIPANTS_TOO_FEW	Not enough participants.
 PARTICIPANT_ID_INVALID	The specified participant ID is invalid.
 PARTICIPANT_JOIN_MISSING	Trying to enable a presentation, when the user hasn't joined the Video Chat with [phone.joinGroupCall](https://core.telegram.org/method/phone.joinGroupCall).
@@ -338,7 +358,9 @@ PASSWORD_RECOVERY_EXPIRED	The recovery code has expired.
 PASSWORD_RECOVERY_NA	No email was set, can't recover password via email.
 PASSWORD_REQUIRED	A [2FA password](https://core.telegram.org/api/srp) must be configured to use Telegram Passport.
 PASSWORD_TOO_FRESH_X	The password was modified less than 24 hours ago, try again in {value} seconds.
+PAYMENT_CREDENTIALS_INVALID	The specified payment credentials are invalid.
 PAYMENT_PROVIDER_INVALID	The specified payment provider is invalid.
+PAYMENT_REQUIRED	Payment is required for this action, see [here](https://core.telegram.org/api/gifts) for more info.
 PEERS_LIST_EMPTY	The specified list of peers is empty.
 PEER_FLOOD	The current account is spamreported, you cannot execute this action, check @spambot for more info.
 PEER_HISTORY_EMPTY	You can't pin an empty chat with a user.
@@ -373,6 +395,7 @@ PHOTO_SAVE_FILE_INVALID	Internal issues, try again later.
 PHOTO_THUMB_URL_EMPTY	Photo thumbnail URL is empty.
 PHOTO_THUMB_URL_INVALID	The photo thumb URL is invalid
 PINNED_DIALOGS_TOO_MUCH	Too many pinned dialogs.
+PINNED_TOO_MUCH	There are too many pinned topics, unpin some first.
 PIN_RESTRICTED	You can't pin messages.
 POLL_ANSWERS_INVALID	Invalid poll answers were provided.
 POLL_ANSWER_INVALID	One of the poll answers is not acceptable.
@@ -388,9 +411,11 @@ PRIVACY_KEY_INVALID	The privacy key is invalid.
 PRIVACY_TOO_LONG	Too many privacy rules were specified, the current limit is 1000.
 PRIVACY_VALUE_INVALID	The specified privacy rule combination is invalid.
 PUBLIC_KEY_REQUIRED	A public key is required.
+PURPOSE_INVALID	The specified payment purpose is invalid.
 QUERY_ID_EMPTY	The query ID is empty.
 QUERY_ID_INVALID	The query ID is invalid.
 QUERY_TOO_SHORT	The query string is too short.
+QUICK_REPLIES_BOT_NOT_ALLOWED	[Quick replies](https://core.telegram.org/api/business#quick-reply-shortcuts) cannot be used by bots.
 QUICK_REPLIES_TOO_MUCH	A maximum of [appConfig.`quick_replies_limit`](https://core.telegram.org/api/config#quick-replies-limit) shortcuts may be created, the limit was reached.
 QUIZ_ANSWER_MISSING	You can forward a quiz while hiding the original author only after choosing an option in the quiz.
 QUIZ_CORRECT_ANSWERS_EMPTY	No correct quiz answer was specified.
@@ -400,9 +425,11 @@ QUIZ_MULTIPLE_INVALID	Quizzes can't have the multiple_choice flag set!
 QUOTE_TEXT_INVALID	The specified `reply_to`.`quote_text` field is invalid.
 RAISE_HAND_FORBIDDEN	You cannot raise your hand.
 RANDOM_ID_EMPTY	Random ID empty.
+RANDOM_ID_EXPIRED	The specified `random_id` was expired (most likely it didn't follow the required `uint64_t random_id = (time() << 32) | ((uint64_t)random_uint32_t())` format, or the specified time is too far in the past).
 RANDOM_ID_INVALID	A provided random ID is invalid.
 RANDOM_LENGTH_INVALID	Random length invalid.
 RANGES_INVALID	Invalid range provided.
+REACTIONS_COUNT_INVALID	The specified number of reactions is invalid.
 REACTIONS_TOO_MANY	The message already has exactly `reactions_uniq_max` reaction emojis, you can't react with a new emoji, see [the docs for more info](https://core.telegram.org/api/config#client-configuration).
 REACTION_EMPTY	Empty reaction provided.
 REACTION_INVALID	The specified reaction is invalid.
@@ -415,7 +442,7 @@ REPLY_MARKUP_TOO_LONG	The specified reply_markup is too long.
 REPLY_MESSAGES_TOO_MUCH	Each shortcut can contain a maximum of [appConfig.`quick_reply_messages_limit`](https://core.telegram.org/api/config#quick-reply-messages-limit) messages, the limit was reached.
 REPLY_MESSAGE_ID_INVALID	The specified reply-to message ID is invalid.
 REPLY_TO_INVALID	The specified `reply_to` field is invalid.
-REPLY_TO_MONOFORUM_PEER_INVALID	The specified `reply_to` field is invalid.
+REPLY_TO_MONOFORUM_PEER_INVALID	The specified inputReplyToMonoForum.monoforum_peer_id is invalid.
 REPLY_TO_USER_INVALID	The replied-to user is invalid.
 REQUEST_TOKEN_INVALID	The master DC did not accept the `request_token` from the CDN DC. Continue downloading the file from the master DC using upload.getFile.
 RESET_REQUEST_MISSING	No password reset is in progress.
@@ -429,6 +456,7 @@ RIGHTS_NOT_MODIFIED	The new admin rights are equal to the old rights, no change 
 RINGTONE_INVALID	The specified ringtone is invalid.
 RINGTONE_MIME_INVALID	The MIME type for the ringtone is invalid.
 RSA_DECRYPT_FAILED	Internal RSA decryption failed.
+SAVED_ID_EMPTY	The passed inputSavedStarGiftChat.saved_id is empty.
 SCHEDULE_BOT_NOT_ALLOWED	Bots cannot schedule messages.
 SCHEDULE_DATE_INVALID	Invalid schedule date provided.
 SCHEDULE_DATE_TOO_LATE	You can't schedule a message this far in the future.
@@ -439,7 +467,9 @@ SEARCH_QUERY_EMPTY	The search query is empty.
 SEARCH_WITH_LINK_NOT_SUPPORTED	You cannot provide a search query and an invite link at the same time.
 SECONDS_INVALID	Invalid duration provided.
 SECURE_SECRET_REQUIRED	A secure secret is required.
+SELF_DELETE_RESTRICTED	Business bots can't delete messages just for the user, `revoke` **must** be set.
 SEND_AS_PEER_INVALID	You can't send messages as the specified peer.
+SEND_MESSAGE_GAME_INVALID	An inputBotInlineMessageGame can only be contained in an inputBotInlineResultGame, not in an inputBotInlineResult/inputBotInlineResultPhoto/etc.
 SEND_MESSAGE_MEDIA_INVALID	Invalid media provided.
 SEND_MESSAGE_TYPE_INVALID	The message type is invalid.
 SESSION_TOO_FRESH_X	This session was created less than 24 hours ago, try again in {value} seconds.
@@ -457,25 +487,31 @@ SMS_CODE_CREATE_FAILED	An error occurred while creating the SMS code.
 SRP_A_INVALID	The specified inputCheckPasswordSRP.A value is invalid.
 SRP_ID_INVALID	Invalid SRP ID provided.
 SRP_PASSWORD_CHANGED	Password has changed.
+STARGIFT_ALREADY_CONVERTED	The specified star gift was already converted to Stars.
+STARGIFT_ALREADY_REFUNDED	The specified star gift was already refunded.
+STARGIFT_ALREADY_UPGRADED	The specified gift was already upgraded to a collectible gift.
 STARGIFT_CONVERT_TOO_OLD	This gift can no longer be converted into stars.
-STARGIFT_INVALID	The passed [inputInvoiceStarGift](https://core.telegram.org/constructor/inputInvoiceStarGift) is invalid.
+STARGIFT_INVALID	The passed gift is invalid.
 STARGIFT_MESSAGE_INVALID	The provided message for this gift is invalid.
-STARGIFT_NOT_FOUND	The specified star gift was not found.
+STARGIFT_NOT_FOUND	The specified gift was not found.
 STARGIFT_NOT_OWNER	You cannot control this gift because it does not belong to you.
-STARGIFT_OWNER_INVALID	The specified gift owner is invalid.
-STARGIFT_RESELL_CURRENCY_NOT_ALLOWED	The resell currency is not valid.
+STARGIFT_OWNER_INVALID	You cannot transfer or sell a gift owned by another user.
+STARGIFT_PEER_INVALID	The specified inputSavedStarGiftChat.peer is invalid.
+STARGIFT_RESELL_CURRENCY_NOT_ALLOWED	You can't buy the gift using the specified currency (i.e. trying to pay in Stars for TON gifts).
 STARGIFT_RESELL_NOT_ALLOWED	You cannot buy this gift. Someone else may have already bought it.
 STARGIFT_RESELL_TOO_EARLY_X	A wait of {value} seconds is required to resell this gift.
-STARGIFT_SLUG_INVALID	The provided star gift slug is invalid.
-STARGIFT_TRANSFER_TOO_EARLY_X	A wait of {value} seconds is required to transfer this gift.
+STARGIFT_SLUG_INVALID	The specified gift slug is invalid.
+STARGIFT_TRANSFER_TOO_EARLY_X	You cannot transfer this gift yet, wait {value} seconds.
+STARGIFT_UPGRADE_UNAVAILABLE	A received gift can only be upgraded to a collectible gift if the [messageActionStarGift](https://core.telegram.org/constructor/messageActionStarGift)/[savedStarGift](https://core.telegram.org/constructor/savedStarGift).`can_upgrade` flag is set.
 STARGIFT_USAGE_LIMITED	The gift is sold out.
+STARGIFT_USER_USAGE_LIMITED	You've reached the starGift.limited_per_user limit, you can't buy any more gifts of this type.
 STARREF_AWAITING_END	The previous referral program was terminated less than 24 hours ago: further changes can be made after the date specified in userFull.starref_program.end_date.
-STARREF_EXPIRED	The specified referral link is expired.
+STARREF_EXPIRED	The specified referral link is invalid.
 STARREF_HASH_REVOKED	The specified affiliate link was already revoked.
 STARREF_MONTHS_TOO_LOW	The ``duration_months`` parameter must be between 0 and 36
 STARREF_PERMILLE_INVALID	The specified commission_permille is invalid: the minimum and maximum values for this parameter are contained in the [starref_min_commission_permille](https://core.telegram.org/api/config#starref-min-commission-permille) and [starref_max_commission_permille](https://core.telegram.org/api/config#starref-max-commission-permille) client configuration parameters.
 STARREF_PERMILLE_TOO_LOW	The specified commission_permille is too low: the minimum and maximum values for this parameter are contained in the [starref_min_commission_permille](https://core.telegram.org/api/config#starref-min-commission-permille) and [starref_max_commission_permille](https://core.telegram.org/api/config#starref-max-commission-permille) client configuration parameters.
-STARS_AMOUNT_INVALID	The specified ``paid_stars`` amount is invalid.
+STARS_AMOUNT_INVALID	The specified amount in stars is invalid.
 STARS_FORM_AMOUNT_MISMATCH	stars form amount mismatch
 STARS_INVOICE_INVALID	The specified Telegram Star invoice is invalid.
 STARS_PAYMENT_REQUIRED	To import this chat invite link, you must first [pay for the associated Telegram Star subscription](https://core.telegram.org/api/subscriptions#channel-subscriptions).
@@ -511,9 +547,12 @@ STORY_NOT_MODIFIED	The new story information you passed is equal to the previous
 STORY_PERIOD_INVALID	The specified story period is invalid for this account.
 STORY_PUBLIC_MISSING	The story you are trying to access or manipulate is not publicly available.
 STORY_SEND_FLOOD_MONTHLY_X	You've hit the monthly story limit as specified by the [`stories_sent_monthly_limit_*` client configuration parameters](https://core.telegram.org/api/config#stories-sent-monthly-limit-default): wait {value} seconds before posting a new story.
-STORY_SEND_FLOOD_WEEKLY_X	You've hit the weekly story limit as specified by the [`stories_sent_weekly_limit_*` client configuration parameters](https://core.telegram.org/api/config#stories-sent-weekly-limit-default): wait {value} seconds before posting a new story.
+STORY_SEND_FLOOD_WEEKLY_X	You've hit the weekly story limit as specified by the [`stories_sent_weekly_limit_*` client configuration parameters](https://core.telegram.org/api/config#stories-sent-weekly-limit-default): wait for {value} seconds before posting a new story.
 SUBSCRIPTION_EXPORT_MISSING	You cannot send a [bot subscription invoice](https://core.telegram.org/api/subscriptions#bot-subscriptions) directly, you may only create invoice links using [payments.exportInvoice](https://core.telegram.org/method/payments.exportInvoice).
+SUBSCRIPTION_ID_INVALID	The specified subscription_id is invalid.
 SUBSCRIPTION_PERIOD_INVALID	The specified subscription_pricing.period is invalid.
+SUGGESTED_POST_AMOUNT_INVALID	The specified price for the suggested post is invalid.
+SUGGESTED_POST_PEER_INVALID	You cannot send suggested posts to non-[monoforum](https://core.telegram.org/api/monoforum) peers.
 SWITCH_PM_TEXT_EMPTY	The switch_pm.text field was empty.
 SWITCH_WEBVIEW_URL_INVALID	The URL specified in switch_webview.url is invalid!
 TAKEOUT_INVALID	The specified takeout ID is invalid.
@@ -527,11 +566,15 @@ THEME_FORMAT_INVALID	Invalid theme format provided.
 THEME_INVALID	Invalid theme provided.
 THEME_MIME_INVALID	The theme's MIME type is invalid.
 THEME_PARAMS_INVALID	The specified `theme_params` field is invalid.
+THEME_SLUG_INVALID	The specified theme slug is invalid.
 THEME_TITLE_INVALID	The specified theme title is invalid.
 TIMEZONE_INVALID	The specified timezone does not exist.
 TITLE_INVALID	The specified stickerpack title is invalid.
 TMP_PASSWORD_DISABLED	The temporary password is disabled.
 TMP_PASSWORD_INVALID	The passed tmp_password is invalid.
+TODO_ITEMS_EMPTY	A checklist was specified, but no [checklist items](https://core.telegram.org/api/todo) were passed.
+TODO_ITEM_DUPLICATE	Duplicate [checklist items](https://core.telegram.org/api/todo) detected.
+TODO_NOT_MODIFIED	No todo items were specified, so no changes were made to the todo list.
 TOKEN_EMPTY	The specified token is empty.
 TOKEN_INVALID	The provided token is invalid.
 TOKEN_TYPE_INVALID	The specified token type is invalid.
@@ -543,6 +586,7 @@ TOPIC_HIDE_SEPARATELY	The `hide` flag cannot be provided together with any of th
 TOPIC_ID_INVALID	The specified topic ID is invalid.
 TOPIC_NOT_MODIFIED	The updated topic info is equal to the current topic info, nothing was changed.
 TOPIC_TITLE_EMPTY	The specified topic title is empty.
+TO_ID_INVALID	The specified `to_id` of the passed inputInvoiceStarGiftResale or inputInvoiceStarGiftTransfer is invalid.
 TO_LANG_INVALID	The specified destination language is invalid.
 TRANSACTION_ID_INVALID	The specified transaction ID is invalid.
 TRANSCRIPTION_FAILED	Audio transcription failed.
@@ -555,7 +599,7 @@ TTL_PERIOD_INVALID	The specified TTL period is invalid.
 TYPES_EMPTY	No top peer type was provided.
 TYPE_CONSTRUCTOR_INVALID	The type constructor is invalid
 UNKNOWN_ERROR	Unknown error.
-UNSUPPORTED	This method is not supported.
+UNSUPPORTED	`require_payment` cannot be *set* by users, only by monoforums: users must instead use the [inputPrivacyKeyNoPaidMessages](https://core.telegram.org/constructor/inputPrivacyKeyNoPaidMessages) privacy setting to remove a previously added exemption.
 UNTIL_DATE_INVALID	Invalid until date provided.
 URL_INVALID	Invalid URL provided.
 USAGE_LIMIT_INVALID	The specified usage limit is invalid.
