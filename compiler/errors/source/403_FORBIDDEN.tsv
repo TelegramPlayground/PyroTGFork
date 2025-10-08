@@ -1,9 +1,10 @@
 id	message
 ACCESS_DENIED	You cannot perform this request.
-ALLOW_PAYMENT_REQUIRED_X	The user has enabled paid messages with {value} stars.
+ALLOW_PAYMENT_REQUIRED_X	This peer charges {value} [Telegram Stars](https://core.telegram.org/api/stars) per message, but the `allow_paid_stars` was not set or its value is smaller than {value}.
 ANONYMOUS_REACTIONS_DISABLED	Sorry, anonymous administrators cannot leave reactions or participate in polls.
-BOT_ACCESS_FORBIDDEN	You cannot access this bot.
+BOT_ACCESS_FORBIDDEN	The specified method *can* be used over a [business connection](https://core.telegram.org/api/bots/connected-business-bots) for some operations, but the specified query attempted an operation that is not allowed over a business connection.
 BOT_OWNER_REQUIRED	You must be the owner of the bot to perform this action
+BOT_VERIFIER_FORBIDDEN	This bot cannot assign [verification icons](https://core.telegram.org/api/bots/verification).
 BROADCAST_FORBIDDEN	Channel poll voters and reactions cannot be fetched to prevent deanonymization.
 CHANNEL_PUBLIC_GROUP_NA	channel/supergroup not available.
 CHAT_ACTION_FORBIDDEN	You cannot execute this action.
@@ -24,6 +25,7 @@ CHAT_SEND_ROUNDVIDEOS_FORBIDDEN	You can't send round videos to this chat.
 CHAT_SEND_STICKERS_FORBIDDEN	You can't send stickers in this chat.
 CHAT_SEND_VIDEOS_FORBIDDEN	You can't send videos in this chat.
 CHAT_SEND_VOICES_FORBIDDEN	You can't send voice recordings in this chat.
+CHAT_SEND_WEBPAGE_FORBIDDEN	You can't send webpage previews to this chat.
 CHAT_TYPE_INVALID	The specified user type is invalid.
 CHAT_WRITE_FORBIDDEN	You can't write in this chat.
 EDIT_BOT_INVITE_FORBIDDEN	Normal users can't edit invites that were created by bots.
@@ -50,6 +52,7 @@ USER_INVALID	Invalid user provided.
 USER_IS_BLOCKED	You were blocked by this user.
 USER_NOT_MUTUAL_CONTACT	The provided user is not a mutual contact.
 USER_NOT_PARTICIPANT	You're not a member of this supergroup/channel.
+USER_PERMISSION_DENIED	The user hasn't granted or has revoked the bot's access to change their emoji status using [bots.toggleUserEmojiStatusPermission](https://core.telegram.org/method/bots.toggleUserEmojiStatusPermission).
 USER_PRIVACY_RESTRICTED	The user's privacy settings do not allow you to do this.
 USER_RESTRICTED	You're spamreported, you can't create channels or chats.
 VOICE_MESSAGES_FORBIDDEN	This user's privacy settings forbid you from sending voice messages.
