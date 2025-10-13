@@ -1039,6 +1039,7 @@ class Client(Methods):
         else:
             if in_memory:
                 file.name = file_name
+                file.seek(0)
                 return file
             else:
                 file.close()
