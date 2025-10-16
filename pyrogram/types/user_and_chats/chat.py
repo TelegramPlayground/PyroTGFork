@@ -111,7 +111,7 @@ class Chat(Object):
             Returned only in :meth:`~pyrogram.Client.get_chat`.
 
         join_by_request (``bool``, *optional*):
-            True, if all users directly joining the supergroup need to be approved by supergroup administrators.
+            True, if all users directly joining the supergroup need to be approved by supergroup administrators. Can be True only for non-broadcast supergroups with username, location, or a linked chat.
 
         description (``str``, *optional*):
             Description, for groups, supergroups and channel chats.

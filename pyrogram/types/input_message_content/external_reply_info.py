@@ -28,7 +28,7 @@ class ExternalReplyInfo(Object):
     """This object contains information about a message that is being replied to, which may come from another chat or forum topic.
 
     Parameters:
-        origin (:obj:`~pyrogram.types.User`, *optional*):
+        origin (:obj:`~pyrogram.types.MessageOrigin`, *optional*):
             Origin of the message replied to by the given message
 
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
