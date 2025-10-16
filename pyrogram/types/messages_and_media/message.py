@@ -2358,10 +2358,10 @@ class Message(Object, Update):
 
         Parameters:
             phone_number (``str``):
-                Contact's phone number.
+                Phone number of the user.
 
             first_name (``str``):
-                Contact's first name.
+                First name of the user; 1-64 characters.
 
             quote (``bool``, *optional*):
                 If ``True``, the message will be sent as a reply to this message.
@@ -2369,10 +2369,10 @@ class Message(Object, Update):
                 Defaults to ``True`` in group chats and ``False`` in private chats.
 
             last_name (``str``, *optional*):
-                Contact's last name.
+                Last name of the user; 0-64 characters.
 
             vcard (``str``, *optional*):
-                Additional data about the contact in the form of a vCard, 0-2048 bytes
+                Additional data about the user in a form of `vCard <https://en.wikipedia.org/wiki/VCard>`_; 0-2048 bytes in length.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
