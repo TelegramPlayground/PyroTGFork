@@ -83,7 +83,7 @@ class Story(Object, Update):
             Clickable areas to be shown on the story content.
 
         has_protected_content (``bool``, *optional*):
-            True, if the story can't be forwarded.
+            True, if the story can't be forwarded as a message or reposted as a story.
 
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this story.
