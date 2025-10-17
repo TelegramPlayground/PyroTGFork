@@ -137,7 +137,7 @@ class CopyMediaGroup:
 
         for i, message in enumerate(media_group):
             if message.photo:
-                file_id = message.photo.file_id
+                file_id = message.photo.sizes[-1].file_id
             elif message.audio:
                 file_id = message.audio.file_id
             elif message.document:
