@@ -69,6 +69,7 @@ class Checklist(Object):
         client: "pyrogram.Client",
         checklist: "raw.types.MessageMediaToDo",
         users: Dict[int, "raw.base.User"],
+        chats: Dict[int, "raw.base.User"],
     ) -> "Checklist":
         completions = {i.id: i for i in getattr(checklist, "completions", [])}
 
@@ -80,7 +81,8 @@ class Checklist(Object):
                     client,
                     task,
                     completions.get(task.id),
-                    users
+                    users,
+                    chats
                 )
             )
 

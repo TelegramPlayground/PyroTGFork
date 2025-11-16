@@ -1097,7 +1097,7 @@ class Message(Object, Update):
 
             elif isinstance(action, raw.types.MessageActionTodoAppendTasks):
                 service_type = enums.MessageServiceType.CHECKLIST_TASKS_ADDED
-                checklist_tasks_added = types.ChecklistTasksAdded._parse(client, message)
+                checklist_tasks_added = types.ChecklistTasksAdded._parse(client, message, users, chats)
 
             parsed_message = Message(
                 id=message.id,
@@ -1363,7 +1363,7 @@ class Message(Object, Update):
                     media_type = enums.MessageMediaType.PAID_MEDIA
                 elif isinstance(media, raw.types.MessageMediaToDo):
                     media_type = enums.MessageMediaType.CHECKLIST
-                    checklist = types.Checklist._parse(client, media, users)
+                    checklist = types.Checklist._parse(client, media, users, chats)
                 else:
                     media = None
                     media_type = enums.MessageMediaType.UNKNOWN

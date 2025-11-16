@@ -327,7 +327,7 @@ class ExternalReplyInfo(Object):
                     media_type = enums.MessageMediaType.PAID_MEDIA
                 elif isinstance(media, raw.types.MessageMediaToDo):
                     media_type = enums.MessageMediaType.CHECKLIST
-                    checklist = types.Checklist._parse(client, media, users)
+                    checklist = types.Checklist._parse(client, media, users, chats)
                 else:
                     media_type = enums.MessageMediaType.UNKNOWN
 
