@@ -54,11 +54,11 @@ class ToggleForumTopicIsPinned:
                 await app.toggle_forum_topic_is_pinned(chat_id, topic_id, True)
         """
         await self.invoke(
-            raw.functions.channels.UpdatePinnedForumTopic(
-                channel=await self.resolve_peer(chat_id),
+            raw.functions.messages.UpdatePinnedForumTopic(
+                peer=await self.resolve_peer(chat_id),
                 topic_id=message_thread_id,
                 pinned=is_pinned
             )
         )
-
+        # TODO
         return True
