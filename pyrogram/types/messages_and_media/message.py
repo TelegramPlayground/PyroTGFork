@@ -4763,6 +4763,7 @@ class Message(Object, Update):
         remove_caption: bool = None,
         video_start_timestamp: int = None,
         send_as: Union[int, str] = None,
+        message_effect_id: int = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", list["types.Message"]]:
         """Bound method *forward* of :obj:`~pyrogram.types.Message`.
@@ -4820,6 +4821,9 @@ class Message(Object, Update):
                 This setting applies to the current message and will remain effective for future messages unless explicitly changed.
                 To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
+            message_effect_id (``int`` ``64-bit``, *optional*):
+                Unique identifier of the message effect to be added to the message; for private chats only.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -4842,6 +4846,7 @@ class Message(Object, Update):
             remove_caption=remove_caption,
             video_start_timestamp=video_start_timestamp,
             send_as=send_as,
+            message_effect_id=message_effect_id,
             schedule_date=schedule_date
         )
 
