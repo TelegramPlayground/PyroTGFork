@@ -79,8 +79,9 @@ class GetForumTopics:
 
         while True:
             r = await self.invoke(
-                raw.functions.channels.GetForumTopics(
-                    channel=await self.resolve_peer(chat_id),
+                raw.functions.messages.GetForumTopics(
+                    # q:flags.0?string 
+                    peer=await self.resolve_peer(chat_id),
                     offset_date=offset_date,
                     offset_id=offset_message_id,
                     offset_topic=offset_message_thread_id,

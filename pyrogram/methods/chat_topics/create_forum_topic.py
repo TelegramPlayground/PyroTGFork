@@ -66,10 +66,14 @@ class CreateForumTopic:
                 # Create a new Topic
                 await app.create_forum_topic(chat, "Topic Title")
         """
-
+        wxp = await self.resolve_peer(chat_id)
+        tm = False
+        if not isinstance(wxp, raw.types.InputChannel):
+            tm = True
         r = await self.invoke(
-            raw.functions.channels.CreateForumTopic(
-                channel=await self.resolve_peer(chat_id),
+            raw.functions.messages.CreateForumTopic(
+                title_missing=tm,
+                peer=wxp,
                 title=name,
                 icon_color=icon_color,
                 icon_emoji_id=icon_custom_emoji_id,

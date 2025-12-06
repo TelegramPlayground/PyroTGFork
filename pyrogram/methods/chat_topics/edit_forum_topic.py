@@ -64,8 +64,8 @@ class EditForumTopic:
         """
 
         r = await self.invoke(
-            raw.functions.channels.EditForumTopic(
-                channel=await self.resolve_peer(chat_id),
+            raw.functions.messages.EditForumTopic(
+                peer=await self.resolve_peer(chat_id),
                 topic_id=message_thread_id,
                 title=name,
                 icon_emoji_id=icon_custom_emoji_id
