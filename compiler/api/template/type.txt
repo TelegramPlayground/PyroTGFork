@@ -2,10 +2,26 @@
 
 {warning}
 
-from typing import Union
+from typing import TYPE_CHECKING, Union
 from pyrogram import raw
+from pyrogram.raw.core import BaseTypeMeta
 
-{name} = Union[{types}]
-{name}.__doc__ = """
-    {docstring}
-"""
+
+if TYPE_CHECKING:
+    {name} = Union[{types}]
+else:
+    # noinspection PyRedeclaration
+    class {name}(metaclass=BaseTypeMeta):  # type: ignore
+        """{docstring}
+        """
+
+        QUALNAME = "pyrogram.raw.base.{qualname}"
+        __union_types__ = Union[{types}]
+
+        def __init__(self):
+            raise TypeError(
+                "Base types can only be used for type checking purposes: "
+                "you tried to use a base type instance as argument, "
+                "but you need to instantiate one of its constructors instead. "
+                "More info: https://telegramplayground.github.io/pyrogram/telegram/base/{doc_name}"
+            )
