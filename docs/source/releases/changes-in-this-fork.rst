@@ -32,6 +32,13 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 220 |
++------------------------+
+
+- Added ``message_effect_id`` in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=214&to=220>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=214&to=220>`__.
+
++------------------------+
 | Scheme layer used: 214 |
 +------------------------+
 
