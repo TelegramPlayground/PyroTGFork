@@ -19,7 +19,7 @@
 from random import choice
 from typing import Optional
 
-from pyrogram import raw, types
+from pyrogram import raw, types, utils
 from ..object import Object
 from .message import Str
 
@@ -44,7 +44,10 @@ class GiftedPremium(Object):
             The paid amount, in the smallest units of the cryptocurrency; 0 if none
 
         month_count (``int``):
-            Number of months the Telegram Premium subscription will be active
+            Number of months the Telegram Premium subscription will be active.
+
+        day_count (``int``):
+            Number of days the Telegram Premium subscription will be active.
 
         sticker (:obj:`~pyrogram.types.Sticker`):
             A sticker to be shown in the transaction information; may be None if unknown
@@ -66,6 +69,7 @@ class GiftedPremium(Object):
         cryptocurrency: Optional[str] = None,
         cryptocurrency_amount: Optional[int] = None,
         month_count: Optional[int] = None,
+        day_count: Optional[int] = None,
         sticker: Optional["types.Sticker"] = None,
         caption: Optional[Str] = None,
         caption_entities: Optional[list["types.MessageEntity"]] = None
@@ -78,6 +82,7 @@ class GiftedPremium(Object):
         self.cryptocurrency = cryptocurrency
         self.cryptocurrency_amount = cryptocurrency_amount
         self.month_count = month_count
+        self.day_count = day_count
         self.sticker = sticker
         self.caption = caption
         self.caption_entities = caption_entities
@@ -110,8 +115,9 @@ class GiftedPremium(Object):
             amount=gifted_premium.amount,
             cryptocurrency=getattr(gifted_premium, "crypto_currency", None),
             cryptocurrency_amount=getattr(gifted_premium, "crypto_amount", None),
-            month_count=gifted_premium.months,
+            day_count=gifted_premium.days,
+            month_count=utils.get_premium_duration_month_count(gifted_premium.days),
             sticker=sticker,
             caption=caption,
-            caption_entities=caption_entities
+            caption_entities=caption_entities or None
         )
