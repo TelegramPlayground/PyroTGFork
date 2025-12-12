@@ -91,6 +91,9 @@ class GetForumTopics:
 
             users = {i.id: i for i in r.users}
             chats = {i.id: i for i in r.chats}
+            tts = getattr(r, "topics", [])
+            if not tts:
+                return
             messages = {}
 
             for message in getattr(r, "messages", []):
@@ -107,7 +110,7 @@ class GetForumTopics:
 
             topics = []
 
-            for topic in getattr(r, "topics", []):
+            for topic in tts:
                 topics.append(
                     types.ForumTopic._parse(
                         self, topic, messages, users, chats
