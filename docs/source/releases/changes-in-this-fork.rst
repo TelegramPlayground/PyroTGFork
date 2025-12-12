@@ -35,7 +35,14 @@ Changes in this Fork
 | Scheme layer used: 220 |
 +------------------------+
 
-- Added ``message_effect_id`` in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
+- fix: set description correctly in :obj:`~pyrogram.types.InlineQueryResultAnimation` (contributed by @Krau in `#262 <https://github.com/KurimuzonAkuma/kurigram/pull/262>`__).
+- Add generic return type for :meth:`~pyrogram.Client.invoke` (contributed by @ZeN220 in `#252 <https://github.com/KurimuzonAkuma/kurigram/pull/252>`__).
+- fix: :meth:`~pyrogram.Client.copy_message` and :meth:`~pyrogram.types.Message.copy` (contributed by @beepsound in `#210 <https://github.com/TelegramPlayground/pyrogram/pull/210>`__).
+- fix: file pointer position before returning file (contributed by @anonymousx97)
+- Add ``offset_date`` and ``offset_message_id`` in :meth:`~pyrogram.Client.get_dialogs` and :meth:`~pyrogram.Client.search_global`.
+- Enhance ``full_name`` property of :obj:`~pyrogram.types.Chat` (contributed by @Ling-ex in `#206 <https://github.com/TelegramPlayground/pyrogram/pull/206>`__).
+- fix: :meth:`~pyrogram.Client.set_chat_permissions` method (contributed by @sudo-py-dev in `#204 <https://github.com/TelegramPlayground/pyrogram/pull/204>`__).
+- Add ``message_effect_id`` in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
 - View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=214&to=220>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=214&to=220>`__.
 
 +------------------------+
