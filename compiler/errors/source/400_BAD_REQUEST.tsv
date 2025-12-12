@@ -489,8 +489,10 @@ SRP_ID_INVALID	Invalid SRP ID provided.
 SRP_PASSWORD_CHANGED	Password has changed.
 STARGIFT_ALREADY_CONVERTED	The specified star gift was already converted to Stars.
 STARGIFT_ALREADY_REFUNDED	The specified star gift was already refunded.
+STARGIFT_ALREADY_TRANSFERRED	The provided star gift was already transferred.
 STARGIFT_ALREADY_UPGRADED	The specified gift was already upgraded to a collectible gift.
 STARGIFT_CONVERT_TOO_OLD	This gift can no longer be converted into stars.
+STARGIFT_EXPORT_UNAVAILABLE	This gift is not available for export yet.
 STARGIFT_INVALID	The passed gift is invalid.
 STARGIFT_MESSAGE_INVALID	The provided message for this gift is invalid.
 STARGIFT_NOT_FOUND	The specified gift was not found.
