@@ -385,8 +385,8 @@ class SendMediaGroup:
                                     thumb=await self.save_file(i.thumb),
                                     attributes=[
                                         raw.types.DocumentAttributeFilename(file_name=i.file_name or os.path.basename(i.media))
-                                    ]
-                                    # TODO
+                                    ],
+                                    force_file=True # if i.disable_content_type_detection else True
                                 )
                             )
                         )
