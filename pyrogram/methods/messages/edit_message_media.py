@@ -329,7 +329,7 @@ class EditMessageMedia:
                             thumb=await self.save_file(media.thumb),
                             file=await self.save_file(media.media),
                             attributes=filename_attribute,
-                            force_file=True
+                            force_file=media.disable_content_type_detection
                         )
                     )
                 )
