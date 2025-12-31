@@ -39,6 +39,9 @@ class ForumTopic(Object):
 
         icon_custom_emoji_id (``str``, *optional*):
             Unique identifier of the custom emoji shown as the topic icon
+        
+        is_name_implicit (``bool``, *optional*):
+            True, if the name of the topic wasn't specified explicitly by its creator and likely needs to be changed by the bot.
 
         creation_date (:py:obj:`~datetime.datetime`, *optional*):
             Point in time (Unix timestamp) when the topic was created
@@ -92,6 +95,7 @@ class ForumTopic(Object):
         name: str,
         icon_color: int,
         icon_custom_emoji_id: str = None,
+        is_name_implicit: bool = None,
         creation_date: datetime = None,
         creator: "types.Chat" = None,
         outgoing: bool = None,
@@ -114,6 +118,7 @@ class ForumTopic(Object):
         self.name = name
         self.icon_color = icon_color
         self.icon_custom_emoji_id = icon_custom_emoji_id
+        self.is_name_implicit = is_name_implicit
         self.creation_date = creation_date
         self.creator = creator
         self.outgoing = outgoing
@@ -135,7 +140,7 @@ class ForumTopic(Object):
     @staticmethod
     def _parse(
         client: "pyrogram.Client",
-        forum_topic: "raw.types.ForumTopic",
+        forum_topic: "raw.base.ForumTopic",
         messages: dict, # friendly
         users: dict, # raw
         chats: dict, # raw 
@@ -171,6 +176,7 @@ class ForumTopic(Object):
             name=forum_topic.title,
             icon_color=forum_topic.icon_color,  # TODO
             icon_custom_emoji_id=getattr(forum_topic, "icon_emoji_id", None),
+            is_name_implicit=getattr(forum_topic, "title_missing", False),
             creation_date=utils.timestamp_to_datetime(forum_topic.date),
             creator=creator,
             outgoing=getattr(forum_topic, "my", None),
