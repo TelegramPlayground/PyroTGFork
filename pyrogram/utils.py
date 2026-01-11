@@ -35,11 +35,22 @@ from pyrogram import types
 from pyrogram.file_id import FileId, FileType, PHOTO_TYPES, DOCUMENT_TYPES
 
 
-async def ainput(prompt: str = "", *, hide: bool = False):
+def get_event_loop() -> asyncio.AbstractEventLoop:
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    return loop
+
+
+async def ainput(prompt: str = "", *, hide: bool = False, loop: Optional[asyncio.AbstractEventLoop] = None):
     """Just like the built-in input, but async"""
+    if loop is None:
+        loop = get_event_loop()
     with ThreadPoolExecutor(1) as executor:
         func = functools.partial(getpass if hide else input, prompt)
-        return await asyncio.get_event_loop().run_in_executor(executor, func)
+        return await loop.run_in_executor(executor, func)
 
 
 def get_input_media_from_file_id(
