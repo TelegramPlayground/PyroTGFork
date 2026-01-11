@@ -310,7 +310,7 @@ class Client(Methods):
         self.phone_code = phone_code
         self.password = password
         self.workers = workers
-        self.WORKDIR = Path(workdir)
+        self.workdir = Path(workdir)
         self.plugins = plugins
         self.parse_mode = parse_mode
         self.no_updates = no_updates
@@ -347,7 +347,7 @@ class Client(Methods):
         else:
             self.storage = SQLiteStorage(
                 self.name,
-                workdir=self.WORKDIR
+                workdir=self.workdir
             )
 
         self.dispatcher = Dispatcher(self)
@@ -381,7 +381,7 @@ class Client(Methods):
         self.updates_watchdog_event = asyncio.Event()
         self.last_update_time = datetime.now()
 
-        self.loop = asyncio.get_event_loop()
+        self.loop = utils.get_event_loop()
 
     def __enter__(self):
         return self.start()

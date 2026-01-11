@@ -285,7 +285,7 @@ class DownloadMedia:
             file_name = file_name or media_file_name or ""
 
             if not os.path.isabs(file_name):
-                directory = self.WORKDIR / (directory or DEFAULT_DOWNLOAD_DIR)
+                directory = self.workdir / (directory or DEFAULT_DOWNLOAD_DIR)
 
             if not file_name:
                 guessed_extension = self.guess_extension(mime_type)
@@ -319,6 +319,6 @@ class DownloadMedia:
             if block:
                 dledmedia.append(await downloader)
             else:
-                asyncio.get_event_loop().create_task(downloader)
+                utils.get_event_loop().create_task(downloader)
 
         return types.List(dledmedia) if block and len(dledmedia) > 1  else dledmedia[0] if block and len(dledmedia) == 1 else None
