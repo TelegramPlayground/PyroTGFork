@@ -106,7 +106,7 @@ How to use the ``AioSQLiteStorage`` Storage Engine is shown below
 
     import asyncio
     from pyrogram import Client
-    from pyrogram.storage.aio_sqlite_storage import AioSQLiteStorage
+    from .aio_sqlite_storage import AioSQLiteStorage  # assumes the file is available
     api_id = 12345
     api_hash = "0123456789abcdef0123456789abcdef"
     async def main():

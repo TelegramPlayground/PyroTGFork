@@ -106,7 +106,7 @@ This storage is almost completely identical to the default File Storage, but ins
 .. code-block:: python
 
     from pyrogram import Client
-    from pyrogram.storage.aio_sqlite_storage import AioSQLiteStorage
+    from .aio_sqlite_storage import AioSQLiteStorage  # assumes the file is available
 
     async with Client(
         "my_account",

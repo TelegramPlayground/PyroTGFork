@@ -22,15 +22,23 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import asyncio
+import base64
 import inspect
+import logging
 import sqlite3
+import struct
 import time
 from concurrent.futures import ThreadPoolExecutor
-from typing import Any
+from functools import partial
+from pathlib import Path
+from typing import Any, Optional
 
 from pyrogram import raw
 from .storage import Storage
 from .. import utils
+
+log = logging.getLogger(__name__)
+
 
 # language=SQLite
 SCHEMA = """
@@ -115,20 +123,115 @@ def get_input_peer(peer_id: int, access_hash: int, peer_type: str):
 class SQLiteStorage(Storage):
     VERSION = 6
     USERNAME_TTL = 8 * 60 * 60
+    FILE_EXTENSION = ".session"
 
-    def __init__(self, name: str):
+    def __init__(
+        self,
+        name: str,
+        workdir: Path,
+        session_string: Optional[str] = None,
+        in_memory: Optional[bool] = False,
+        use_wal: Optional[bool] = True,
+    ):
         super().__init__(name)
 
         self._executor = None
-        self.loop = asyncio.get_event_loop()
+        self.loop = utils.get_event_loop()
         self.conn = None  # type: sqlite3.Connection | None
+
+        self.session_string = session_string
+        self.in_memory = in_memory
+        self.use_wal = use_wal
+
+        if self.in_memory:
+            self.database = ":memory:"
+        else:
+            self.database = workdir / (self.name + self.FILE_EXTENSION)
 
     @property
     def executor(self):
         if self._executor is None:
            self._executor = ThreadPoolExecutor(1)
         return self._executor
-        
+
+    def _vacuum(self):
+        with self.conn:
+            self.conn.execute("VACUUM")
+
+    def _update_from_one_impl(self):
+        with self.conn:
+            self.conn.execute("DELETE FROM peers")
+
+    def _update_from_two_impl(self):
+        with self.conn:
+            self.conn.execute("ALTER TABLE sessions ADD api_id INTEGER")
+
+    def _update_from_three_impl(self):
+        with self.conn:
+            self.conn.executescript("""
+CREATE TABLE usernames
+(
+    id       INTEGER,
+    username TEXT,
+    FOREIGN KEY (id) REFERENCES peers(id)
+);
+
+CREATE INDEX idx_usernames_username ON usernames (username);
+""")
+
+    def _update_from_four_impl(self):
+        with self.conn:
+            self.conn.executescript("""
+CREATE TABLE update_state
+(
+    id   INTEGER PRIMARY KEY,
+    pts  INTEGER,
+    qts  INTEGER,
+    date INTEGER,
+    seq  INTEGER
+);
+""")
+
+    def _update_from_five_impl(self):
+        with self.conn:
+            self.conn.executescript("CREATE INDEX idx_usernames_id ON usernames (id);")
+
+    async def update(self):
+        version = await self.version()
+
+        if version == 1:
+            await self.loop.run_in_executor(self.executor, self._update_from_one_impl)
+            version += 1
+
+        if version == 2:
+            await self.loop.run_in_executor(self.executor, self._update_from_two_impl)
+            version += 1
+
+        if version == 3:
+            await self.loop.run_in_executor(self.executor, self._update_from_three_impl)
+            version += 1
+
+        if version == 4:
+            await self.loop.run_in_executor(self.executor, self._update_from_four_impl)
+            version += 1
+
+        if version == 5:
+            await self.loop.run_in_executor(self.executor, self._update_from_five_impl)
+            version += 1
+
+        await self.version(version)
+
+    def _connect_impl(self, path):
+        self.conn = sqlite3.connect(str(path), timeout=1, check_same_thread=False)
+
+        with self.conn:
+            if self.use_wal:
+                self.conn.execute("PRAGMA journal_mode=WAL").close()
+            else:
+                self.conn.execute("PRAGMA journal_mode=DELETE").close()
+            self.conn.execute("PRAGMA synchronous=NORMAL").close()
+            self.conn.execute("PRAGMA temp_store=1").close()
+
     def _create_impl(self):
         with self.conn:
             self.conn.executescript(SCHEMA)
@@ -147,7 +250,68 @@ class SQLiteStorage(Storage):
         return await self.loop.run_in_executor(self.executor, self._create_impl)
 
     async def open(self):
-        raise NotImplementedError
+        if self.in_memory:
+            connfunc = partial(sqlite3.connect, ":memory:", timeout=1, check_same_thread=False)
+            self.conn = await self.loop.run_in_executor(self.executor, connfunc)
+            await self.create()
+
+            if self.session_string:
+                # Old format
+                if len(self.session_string) in [
+                    self.SESSION_STRING_SIZE,
+                    self.SESSION_STRING_SIZE_64,
+                ]:
+                    dc_id, test_mode, auth_key, user_id, is_bot = struct.unpack(
+                        (
+                            self.OLD_SESSION_STRING_FORMAT
+                            if len(self.session_string) == self.SESSION_STRING_SIZE
+                            else self.OLD_SESSION_STRING_FORMAT_64
+                        ),
+                        base64.urlsafe_b64decode(
+                            self.session_string + "=" * (-len(self.session_string) % 4)
+                        ),
+                    )
+
+                    await self.dc_id(dc_id)
+                    await self.test_mode(test_mode)
+                    await self.auth_key(auth_key)
+                    await self.user_id(user_id)
+                    await self.is_bot(is_bot)
+                    await self.date(0)
+
+                    log.warning(
+                        "You are using an old session string format. Use export_session_string to update"
+                    )
+                    return
+
+                dc_id, api_id, test_mode, auth_key, user_id, is_bot = struct.unpack(
+                    self.SESSION_STRING_FORMAT,
+                    base64.urlsafe_b64decode(
+                        self.session_string + "=" * (-len(self.session_string) % 4)
+                    ),
+                )
+
+                await self.dc_id(dc_id)
+                await self.api_id(api_id)
+                await self.test_mode(test_mode)
+                await self.auth_key(auth_key)
+                await self.user_id(user_id)
+                await self.is_bot(is_bot)
+                await self.date(0)
+
+            return
+
+        path = self.database
+        file_exists = isinstance(path, Path) and path.is_file()
+
+        self.executor.submit(self._connect_impl, path).result()
+
+        if not file_exists:
+            await self.create()
+        else:
+            await self.update()
+
+        await self.loop.run_in_executor(self.executor, self._vacuum)
 
     async def save(self):
         await self.date(int(time.time()))
@@ -159,7 +323,8 @@ class SQLiteStorage(Storage):
         self._executor = None 
         
     async def delete(self):
-        raise NotImplementedError
+        if not self.in_memory:
+            Path(self.database).unlink()
 
     def _update_peers_impl(self, peers):
         with self.conn:
@@ -191,6 +356,18 @@ class SQLiteStorage(Storage):
 
     async def update_peers(self, peers: list[tuple[int, int, str, list[str], str]]):
         return await self.loop.run_in_executor(self.executor, self._update_peers_impl, peers)
+
+    def _update_usernames_impl(self, usernames: list[tuple[int, list[str]]]):
+        with self.conn:
+            self.conn.executemany("DELETE FROM usernames WHERE id = ?", [(id,) for id, _ in usernames])
+
+            self.conn.executemany(
+                "REPLACE INTO usernames (id, username) VALUES (?, ?)",
+                [(id, username) for id, usernames in usernames for username in usernames],
+            )
+
+    async def update_usernames(self, usernames: list[tuple[int, list[str]]]):
+        return await self.loop.run_in_executor(self.executor, self._update_usernames_impl, usernames)
 
     def _update_state_impl(self, value: tuple[int, int, int, int, int] = object):
         if value == object:
