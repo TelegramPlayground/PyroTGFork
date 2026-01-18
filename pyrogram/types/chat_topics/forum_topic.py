@@ -145,6 +145,9 @@ class ForumTopic(Object):
         users: dict, # raw
         chats: dict, # raw 
     ) -> "ForumTopic":
+        if not forum_topic:
+            return None
+
         if isinstance(forum_topic, raw.types.ForumTopicDeleted):
             return ForumTopic(
                 message_thread_id=forum_topic.id,
