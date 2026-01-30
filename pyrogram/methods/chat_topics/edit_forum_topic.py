@@ -30,8 +30,9 @@ class EditForumTopic:
         name: str = None,
         icon_custom_emoji_id: str = None
     ) -> "types.Message":
-        """Use this method to edit name and icon of a topic in a forum supergroup chat.
-        The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights, unless it is the creator of the topic.
+        """Use this method to edit name and icon of a topic in a forum supergroup chat or a private chat with a user.
+        
+        In the case of a supergroup chat the bot must be an administrator in the chat for this to work and must have the ``can_manage_topics`` administrator rights, unless it is the creator of the topic.
 
         .. include:: /_includes/usable-by/users-bots.rst
 

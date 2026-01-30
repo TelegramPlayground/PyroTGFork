@@ -243,7 +243,7 @@ class Chat(Object):
             True, if gifts can be sent to the chat.
 
         paid_message_star_count (``int``, *optional*):
-            Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
+            The number of Telegram Stars a general user have to pay to send a message to the chat.
 
         has_automatic_translation (``bool``, *optional*):
             True, if automatic translation of messages is enabled in the channel.

@@ -40,7 +40,7 @@ class UnpinAllChatMessages:
                 Unique identifier (int) or username (str) of the target chat.
 
             message_thread_id (``int``, *optional*):
-                Unique identifier for the target message thread of the forum topic
+                Unique identifier for the target message thread of the forum topic.
 
         Returns:
             ``int``: Amount of affected messages
