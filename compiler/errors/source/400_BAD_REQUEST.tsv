@@ -145,6 +145,7 @@ CONTACT_MISSING	The specified user is not a contact.
 CONTACT_NAME_EMPTY	Contact name empty.
 CONTACT_REQ_MISSING	Missing contact request.
 CREATE_CALL_FAILED	An error occurred while creating the call.
+CREDENTIAL_INVALID	The credential is invalid.
 CURRENCY_TOTAL_AMOUNT_INVALID	The total amount of all prices is invalid.
 CUSTOM_REACTIONS_TOO_MANY	Too many custom reactions were specified.
 DATA_HASH_SIZE_INVALID	The size of the specified secureValueErrorData.data_hash is invalid.

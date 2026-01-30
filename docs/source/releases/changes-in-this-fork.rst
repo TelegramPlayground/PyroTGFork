@@ -32,6 +32,14 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 221 |
++------------------------+
+
+- Added the field ``has_topics_enabled`` to the class :obj:`~pyrogram.types.User`, which can be used to determine whether forum topic mode is enabled for the bot in private chats.
+- Added the field ``is_name_implicit`` to the classes :obj:`~pyrogram.types.ForumTopic` and :obj:`~pyrogram.types.ForumTopicCreated`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=220&to=221>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=220&to=221>`__.
+
++------------------------+
 | Scheme layer used: 220 |
 +------------------------+
 
