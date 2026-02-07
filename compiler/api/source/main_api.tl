@@ -1310,8 +1310,8 @@ folderPeer#e9baa668 peer:Peer folder_id:int = FolderPeer;
 
 messages.searchCounter#e844ebff flags:# inexact:flags.1?true filter:MessagesFilter count:int = messages.SearchCounter;
 
-urlAuthResultRequest#92d33a0e flags:# request_write_access:flags.0?true bot:User domain:string = UrlAuthResult;
-urlAuthResultAccepted#8f8c0e4e url:string = UrlAuthResult;
+urlAuthResultRequest#32fabf1a flags:# request_write_access:flags.0?true request_phone_number:flags.1?true bot:User domain:string browser:flags.2?string platform:flags.2?string ip:flags.2?string region:flags.2?string = UrlAuthResult;
+urlAuthResultAccepted#623a8fa0 flags:# url:flags.0?string = UrlAuthResult;
 urlAuthResultDefault#a9d6db1f = UrlAuthResult;
 
 channelLocationEmpty#bfb5ad8b = ChannelLocation;
@@ -2478,7 +2478,7 @@ messages.getEmojiKeywordsLanguages#4e9963b2 lang_codes:Vector<string> = Vector<E
 messages.getEmojiURL#d5b10c26 lang_code:string = EmojiURL;
 messages.getSearchCounters#1bbcf300 flags:# peer:InputPeer saved_peer_id:flags.2?InputPeer top_msg_id:flags.0?int filters:Vector<MessagesFilter> = Vector<messages.SearchCounter>;
 messages.requestUrlAuth#198fb446 flags:# peer:flags.1?InputPeer msg_id:flags.1?int button_id:flags.1?int url:flags.2?string = UrlAuthResult;
-messages.acceptUrlAuth#b12c7125 flags:# write_allowed:flags.0?true peer:flags.1?InputPeer msg_id:flags.1?int button_id:flags.1?int url:flags.2?string = UrlAuthResult;
+messages.acceptUrlAuth#b12c7125 flags:# write_allowed:flags.0?true share_phone_number:flags.3?true peer:flags.1?InputPeer msg_id:flags.1?int button_id:flags.1?int url:flags.2?string = UrlAuthResult;
 messages.hidePeerSettingsBar#4facb138 peer:InputPeer = Bool;
 messages.getScheduledHistory#f516760b peer:InputPeer hash:long = messages.Messages;
 messages.getScheduledMessages#bdbb0464 peer:InputPeer id:Vector<int> = messages.Messages;
@@ -2956,4 +2956,4 @@ fragment.getCollectibleInfo#be1e85ba collectible:InputCollectible = fragment.Col
 // invokeWithApnsSecretPrefix#0dae54f8 nonce:string secret:string = Error;
 // invokeWithReCaptchaPrefix#adbb0f94 token:string = Error;
 
-// LAYER 222
+// LAYER 223
