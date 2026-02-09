@@ -195,6 +195,9 @@ class User(Object, Update):
         has_topics_enabled (``bool``, *optional*):
             True, if the bot has forum topic mode enabled in private chats. Returned only in get_me.
 
+        allows_users_to_create_topics (``bool``, *optional*):
+            True, if users can create and delete topics in the chat with the bot. Returned only in get_me.
+
         mention (``str``, *property*):
             Generate a text mention for this user.
             You can use ``user.mention()`` to mention the user using their first name (styled using html), or
@@ -253,6 +256,7 @@ class User(Object, Update):
         active_user_count: int = None,
         paid_message_star_count: int = None,
         has_topics_enabled: bool = None,
+        allows_users_to_create_topics: bool = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -300,6 +304,7 @@ class User(Object, Update):
         self.active_user_count = active_user_count
         self.paid_message_star_count = paid_message_star_count
         self.has_topics_enabled = has_topics_enabled
+        self.allows_users_to_create_topics = allows_users_to_create_topics
         self._raw = _raw
 
     @property
@@ -398,13 +403,14 @@ class User(Object, Update):
             parsed_user.has_main_web_app = bool(getattr(user, "bot_has_main_app", None))
             parsed_user.active_user_count = getattr(user, "bot_active_users", None)
             parsed_user.has_topics_enabled = getattr(user, "bot_forum_view", None)
+            parsed_user.allows_users_to_create_topics = getattr(user, "bot_forum_can_manage_topics", None)
         # stories_hidden:flags2.3?true
         # stories_unavailable:flags2.4?true 
         # stories_max_id:flags2.5?RecentStory  
         # access_hash:flags.0?long  
         # bot_info_version:flags.14?int 
         # bot_verification_icon:flags2.14?long 
-        if parsed_user.is_bot:
+        if parsed_user.is_bot:  # TODO
             parsed_user.can_be_edited = bool(
                 getattr(user, "bot_can_edit", None)
             )

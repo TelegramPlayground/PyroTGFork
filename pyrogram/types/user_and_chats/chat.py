@@ -518,6 +518,7 @@ class Chat(Object):
                 client=client,
                 is_banned=True,
                 banned_until_date=utils.timestamp_to_datetime(getattr(channel, "until_date", None)),
+                is_direct_messages=channel.monoforum,
                 _raw=channel
             )
 
