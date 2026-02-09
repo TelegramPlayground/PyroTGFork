@@ -600,7 +600,7 @@ def pyrogram_api():
             MessageOriginChannel
             MessageImportInfo
             Photo
-            AlternativeVideo
+            VideoQuality
             Animation
             Audio
             Document
