@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .alternative_video import AlternativeVideo
 from .animation import Animation
 from .audio import Audio
 from .contact import Contact
@@ -49,6 +48,7 @@ from .stripped_thumbnail import StrippedThumbnail
 from .thumbnail import Thumbnail
 from .venue import Venue
 from .video import Video
+from .video_quality import VideoQuality
 from .video_note import VideoNote
 from .voice import Voice
 from .web_app_data import WebAppData
@@ -79,7 +79,6 @@ from .checklist_tasks_done import ChecklistTasksDone
 from .direct_message_price_changed import DirectMessagePriceChanged
 
 __all__ = [
-    "AlternativeVideo",
     "Animation",
     "Audio",
     "ChatBoostAdded",
@@ -124,6 +123,7 @@ __all__ = [
     "Venue",
     "Video",
     "VideoNote",
+    "VideoQuality",
     "Voice",
     "WebAppData",
     "WebPage",
