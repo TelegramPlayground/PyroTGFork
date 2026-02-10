@@ -368,16 +368,6 @@ gift_code = create(gift_code_filter)
 
 # endregion
 
-# region received_gift
-async def received_gift_filter(_, __, m: Message):
-    return bool(m.received_gift)
-
-
-received_gift = create(received_gift_filter)
-"""Filter messages that contain :obj:`~pyrogram.types.ReceivedGift` objects."""
-
-
-# endregion
 
 # region video_filter
 async def video_filter(_, __, m: Message) -> bool:

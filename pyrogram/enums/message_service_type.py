@@ -141,9 +141,6 @@ class MessageServiceType(AutoName):
     WRITE_ACCESS_ALLOWED = auto()
     "The user accepted webapp bot's request to send messages"
 
-    RECEIVED_GIFT = auto()
-    "Owner Received gift"
-
     PAID_MESSAGE_PRICE_CHANGED = auto()
     "The price for paid messages has changed in the chat"
 

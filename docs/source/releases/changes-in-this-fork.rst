@@ -35,6 +35,7 @@ Changes in this Fork
 | Scheme layer used: 222 |
 +------------------------+
 
+- Removed the methods :meth:`~pyrogram.Client.get_received_gifts`, :meth:`~pyrogram.Client.sell_gift`, :meth:`~pyrogram.Client.send_gift`, :meth:`~pyrogram.Client.toggle_gift_is_saved` and the :obj:`~pyrogram.types.ReceivedGift`.
 - Removed the field ``alternative_videos`` from the class :obj:`~pyrogram.types.Message` and added the class :obj:`~pyrogram.types.VideoQuality` and the field ``qualities`` to the class :obj:`~pyrogram.types.Video` allowing to get information about other available qualities of a video.
 - Added the fields ``icon_custom_emoji_id`` and ``style`` to the classes :obj:`~pyrogram.types.InlineKeyboardButton` and :obj:`~pyrogram.types.KeyboardButton`.
 - Added the fields ``has_topics_enabled`` and ``allows_users_to_create_topics`` to the class :obj:`~pyrogram.types.User`, which can be used to determine whether forum topic mode is enabled for the bot in private chats.
