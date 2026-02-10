@@ -497,10 +497,6 @@ def pyrogram_api():
             get_payment_form
             send_payment_form
             get_available_gifts
-            get_received_gifts
-            sell_gift
-            send_gift
-            toggle_gift_is_saved
             get_owned_star_count
             get_business_account_star_balance
         """,
@@ -628,7 +624,6 @@ def pyrogram_api():
             Location
             Venue
             Gift
-            ReceivedGift
             UpgradedGift
             WebAppData
             MessageAutoDeleteTimerChanged
@@ -900,7 +895,6 @@ def pyrogram_api():
             Message.translate
             Message.pay
             Message.star
-            ReceivedGift.toggle
             ExternalReplyInfo.download
         """,
         chat="""
