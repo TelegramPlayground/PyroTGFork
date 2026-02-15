@@ -24,11 +24,11 @@ class WebAppData(Object):
     """Contains data sent from a `Web App <https://core.telegram.org/bots/webapps>`_ to the bot.
 
     Parameters:
-        data (``str``):
-            The data.
+        data (``str``, *optional*):
+            The data. Be aware that a bad client can send arbitrary data in this field.
 
         button_text (``str``):
-            Text of the *web_app* keyboard button, from which the Web App was opened.
+            Text of the *web_app* keyboard button from which the Web App was opened. Be aware that a bad client can send arbitrary data in this field.
 
     """
 
@@ -46,6 +46,6 @@ class WebAppData(Object):
     @staticmethod
     def _parse(action: "raw.types.MessageActionWebViewDataSentMe"):
         return WebAppData(
-            data=action.data,
+            data=getattr(action, "data", None),
             button_text=action.text
         )
