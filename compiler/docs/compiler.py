@@ -398,9 +398,13 @@ def pyrogram_api():
             get_chat_photos
             get_chat_photos_count
             get_users
-            
+            get_chat_audios
+            get_chat_audios_count
             set_profile_photo
             delete_profile_photos
+            add_profile_audio
+            remove_profile_audio
+            set_profile_audio_position
             set_username
             update_profile
             block_user
@@ -503,10 +507,6 @@ def pyrogram_api():
             get_payment_form
             send_payment_form
             get_available_gifts
-            get_received_gifts
-            sell_gift
-            send_gift
-            toggle_gift_is_saved
             get_owned_star_count
             get_business_account_star_balance
         """,
@@ -606,7 +606,7 @@ def pyrogram_api():
             MessageOriginChannel
             MessageImportInfo
             Photo
-            AlternativeVideo
+            VideoQuality
             Animation
             Audio
             Document
@@ -635,7 +635,6 @@ def pyrogram_api():
             Location
             Venue
             Gift
-            ReceivedGift
             UpgradedGift
             WebAppData
             MessageAutoDeleteTimerChanged
@@ -907,7 +906,6 @@ def pyrogram_api():
             Message.translate
             Message.pay
             Message.star
-            ReceivedGift.toggle
             ExternalReplyInfo.download
         """,
         chat="""

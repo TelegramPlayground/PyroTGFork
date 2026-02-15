@@ -33,6 +33,8 @@ except ImportError as e:
 
     raise e
 
+from pyrogram import utils
+
 log = logging.getLogger(__name__)
 
 
@@ -46,7 +48,7 @@ class TCP:
         self.writer = None  # type: asyncio.StreamWriter
 
         self.lock = asyncio.Lock()
-        self.loop = asyncio.get_event_loop()
+        self.loop = utils.get_event_loop()
 
         if proxy:
             hostname = proxy.get("hostname")

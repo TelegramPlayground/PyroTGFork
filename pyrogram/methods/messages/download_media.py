@@ -248,7 +248,8 @@ class DownloadMedia:
                     directory = self.PARENT_DIR / (directory or DEFAULT_DOWNLOAD_DIR)
 
                 os.makedirs(directory, exist_ok=True) if not in_memory else None
-                temp_file_path = os.path.abspath(re.sub("\\\\", "/", os.path.join(directory, file_name)))
+                mcfn = re.sub("\\\\", "/", os.path.join(directory, file_name))
+                temp_file_path = os.path.abspath(mcfn)
 
                 with open(temp_file_path, "wb") as file:
                     file.write(thumb.getbuffer())
@@ -269,12 +270,22 @@ class DownloadMedia:
             mime_type = getattr(media, "mime_type", "")
             date = getattr(media, "date", None)
 
+            # CWE-22: Path Traversal: sanitize file name
+            if media_file_name:
+                # Remove any path components, keeping only the basename
+                media_file_name = os.path.basename(media_file_name)
+                # Remove null bytes which could cause issues
+                media_file_name = media_file_name.replace("\x00", "")
+                # Handle edge cases
+                if not media_file_name or media_file_name in (".", ".."):
+                    media_file_name = ""
+
             directory, file_name = os.path.split(file_name)
             # TODO
             file_name = file_name or media_file_name or ""
 
             if not os.path.isabs(file_name):
-                directory = self.WORKDIR / (directory or DEFAULT_DOWNLOAD_DIR)
+                directory = self.workdir / (directory or DEFAULT_DOWNLOAD_DIR)
 
             if not file_name:
                 guessed_extension = self.guess_extension(mime_type)
@@ -308,6 +319,6 @@ class DownloadMedia:
             if block:
                 dledmedia.append(await downloader)
             else:
-                asyncio.get_event_loop().create_task(downloader)
+                utils.get_event_loop().create_task(downloader)
 
         return types.List(dledmedia) if block and len(dledmedia) > 1  else dledmedia[0] if block and len(dledmedia) == 1 else None

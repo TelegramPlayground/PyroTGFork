@@ -32,6 +32,32 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 222 |
++------------------------+
+
+- Added the field ``first_profile_audio`` to the class :obj:`~pyrogram.types.Chat` and the methods :meth:`~pyrogram.Client.get_chat_audios`, :meth:`~pyrogram.Client.get_chat_audios_count`, :meth:`~pyrogram.Client.add_profile_audio`, :meth:`~pyrogram.Client.remove_profile_audio`, :meth:`~pyrogram.Client.set_profile_audio_position`.
+- Removed the methods :meth:`~pyrogram.Client.get_received_gifts`, :meth:`~pyrogram.Client.sell_gift`, :meth:`~pyrogram.Client.send_gift`, :meth:`~pyrogram.Client.toggle_gift_is_saved` and the :obj:`~pyrogram.types.ReceivedGift`.
+- Removed the field ``alternative_videos`` from the class :obj:`~pyrogram.types.Message` and added the class :obj:`~pyrogram.types.VideoQuality` and the field ``qualities`` to the class :obj:`~pyrogram.types.Video` allowing to get information about other available qualities of a video.
+- Added the fields ``icon_custom_emoji_id`` and ``style`` to the classes :obj:`~pyrogram.types.InlineKeyboardButton` and :obj:`~pyrogram.types.KeyboardButton`.
+- Added the fields ``has_topics_enabled`` and ``allows_users_to_create_topics`` to the class :obj:`~pyrogram.types.User`, which can be used to determine whether forum topic mode is enabled for the bot in private chats.
+- Added the field ``is_name_implicit`` to the classes :obj:`~pyrogram.types.ForumTopic` and :obj:`~pyrogram.types.ForumTopicCreated`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=220&to=222>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=220&to=222>`__.
+
++------------------------+
+| Scheme layer used: 220 |
++------------------------+
+
+- fix: set description correctly in :obj:`~pyrogram.types.InlineQueryResultAnimation` (contributed by @Krau in `#262 <https://github.com/KurimuzonAkuma/kurigram/pull/262>`__).
+- Add generic return type for :meth:`~pyrogram.Client.invoke` (contributed by @ZeN220 in `#252 <https://github.com/KurimuzonAkuma/kurigram/pull/252>`__).
+- fix: :meth:`~pyrogram.Client.copy_message` and :meth:`~pyrogram.types.Message.copy` (contributed by @beepsound in `#210 <https://github.com/TelegramPlayground/pyrogram/pull/210>`__).
+- fix: file pointer position before returning file (contributed by @anonymousx97)
+- Add ``offset_date`` and ``offset_message_id`` in :meth:`~pyrogram.Client.get_dialogs` and :meth:`~pyrogram.Client.search_global`.
+- Enhance ``full_name`` property of :obj:`~pyrogram.types.Chat` (contributed by @Ling-ex in `#206 <https://github.com/TelegramPlayground/pyrogram/pull/206>`__).
+- fix: :meth:`~pyrogram.Client.set_chat_permissions` method (contributed by @sudo-py-dev in `#204 <https://github.com/TelegramPlayground/pyrogram/pull/204>`__).
+- Add ``message_effect_id`` in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=214&to=220>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=214&to=220>`__.
+
++------------------------+
 | Scheme layer used: 214 |
 +------------------------+
 

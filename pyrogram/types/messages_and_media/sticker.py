@@ -72,6 +72,14 @@ class Sticker(Object):
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the sticker was sent.
 
+        emoji (``str``, *optional*):
+            Emoji corresponding to the sticker; may be empty if unknown.
+
+        set_name (``str``, *optional*):
+            Name of the sticker set to which the sticker belongs.
+
+        thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
+            Sticker thumbnails in the .webp or .jpg format.
     """
 
     # TODO: Add mask position

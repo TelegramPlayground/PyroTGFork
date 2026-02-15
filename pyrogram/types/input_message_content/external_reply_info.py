@@ -28,7 +28,7 @@ class ExternalReplyInfo(Object):
     """This object contains information about a message that is being replied to, which may come from another chat or forum topic.
 
     Parameters:
-        origin (:obj:`~pyrogram.types.User`, *optional*):
+        origin (:obj:`~pyrogram.types.MessageOrigin`, *optional*):
             Origin of the message replied to by the given message
 
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
@@ -327,7 +327,7 @@ class ExternalReplyInfo(Object):
                     media_type = enums.MessageMediaType.PAID_MEDIA
                 elif isinstance(media, raw.types.MessageMediaToDo):
                     media_type = enums.MessageMediaType.CHECKLIST
-                    checklist = types.Checklist._parse(client, media, users)
+                    checklist = types.Checklist._parse(client, media, users, chats)
                 else:
                     media_type = enums.MessageMediaType.UNKNOWN
 

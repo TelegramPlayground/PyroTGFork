@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/KurimuzonAkuma>
 #
 #  This file is part of Pyrogram.
 #
@@ -16,47 +16,47 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union, Optional
+from typing import Union
 
 import pyrogram
 from pyrogram import raw
 
 
-class SetSlowMode:
-    async def set_slow_mode(
+class GetChatAudiosCount:
+    async def get_chat_audios_count(
         self: "pyrogram.Client",
-        chat_id: Union[int, str],
-        seconds: Optional[int]
-    ) -> bool:
-        """Set the slow mode interval for a chat.
+        chat_id: Union[int, str]
+    ) -> int:
+        """Get the total count of audios for a chat.
 
-        .. include:: /_includes/usable-by/users.rst
+        .. include:: /_includes/usable-by/users-bots.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
-
-            seconds (``int`` | ``None``):
-                New slow mode delay for the chat, in seconds; must be one of: 0 or None (off), 5, 10, 30, 60 (1 minute), 300 (5 minutes), 900 (15 minutes), 3600 (1 hour).
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
 
         Returns:
-            ``bool``: True on success.
+            ``int``: On success, the user profile audios count is returned.
 
         Example:
             .. code-block:: python
 
-                # Set slow mode to 60 seconds
-                await app.set_slow_mode(chat_id, 60)
+                count = await app.get_chat_audios_count("me")
+                print(count)
 
-                # Disable slow mode
-                await app.set_slow_mode(chat_id, None)
         """
 
-        await self.invoke(
-            raw.functions.channels.ToggleSlowMode(
-                channel=await self.resolve_peer(chat_id),
-                seconds=seconds or 0
+        peer_id = await self.resolve_peer(chat_id)
+
+        r = await self.invoke(
+            raw.functions.users.GetSavedMusic(
+                id=peer_id,
+                offset=0,
+                limit=1,
+                hash=0
             )
         )
 
-        return True
+        return r.count

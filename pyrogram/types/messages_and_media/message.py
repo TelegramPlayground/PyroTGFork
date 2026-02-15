@@ -184,9 +184,6 @@ class Message(Object, Update):
         video (:obj:`~pyrogram.types.Video`, *optional*):
             Message is a video, information about the video.
 
-        alternative_videos (List of :obj:`~pyrogram.types.AlternativeVideo`, *optional*):
-            Alternative qualities of the video, if the message is a video.
-
         video_note (:obj:`~pyrogram.types.VideoNote`, *optional*):
             Message is a video note, information about the video message.
 
@@ -236,6 +233,9 @@ class Message(Object, Update):
 
         left_chat_member (:obj:`~pyrogram.types.User`, *optional*):
             A member was removed from the group, information about them (this member may be the bot itself).
+
+        old_chat_title (``str``, *optional*):
+            The supergroup has been migrated from a group with the specified title.
 
         new_chat_title (``str``, *optional*):
             A chat title was changed to this value.
@@ -430,9 +430,6 @@ class Message(Object, Update):
         gifted_stars (:obj:`~pyrogram.types.GiftedStars`, *optional*):
             Info about gifted Telegram Stars
 
-        received_gift (:obj:`~pyrogram.types.ReceivedGift`, *optional*):
-            Service message: Represents a gift received by a user.
-
         contact_registered (:obj:`~pyrogram.types.ContactRegistered`, *optional*):
             A service message that a contact has registered with Telegram.
 
@@ -498,7 +495,6 @@ class Message(Object, Update):
         sticker: "types.Sticker" = None,
         story: "types.Story" = None,
         video: "types.Video" = None,
-        alternative_videos: list["types.AlternativeVideo"] = None,
         video_note: "types.VideoNote" = None,
         voice: "types.Voice" = None,
         caption: Str = None,
@@ -514,6 +510,7 @@ class Message(Object, Update):
         location: "types.Location" = None,
         new_chat_members: list["types.User"] = None,
         left_chat_member: "types.User" = None,
+        old_chat_title: str = None,
         new_chat_title: str = None,
         new_chat_photo: "types.Photo" = None,
         delete_chat_photo: bool = None,
@@ -564,7 +561,7 @@ class Message(Object, Update):
         gift_code: "types.GiftCode" = None,
         gifted_premium: "types.GiftedPremium" = None,
         gifted_stars: "types.GiftedStars" = None,
-        received_gift: "types.ReceivedGift" = None,
+
         empty: bool = None,
         mentioned: bool = None,
         service: "enums.MessageServiceType" = None,
@@ -619,7 +616,6 @@ class Message(Object, Update):
         self.animation = animation
         self.game = game
         self.video = video
-        self.alternative_videos = alternative_videos
         self.voice = voice
         self.video_note = video_note
         self.caption = caption
@@ -631,6 +627,7 @@ class Message(Object, Update):
         self.dice = dice
         self.new_chat_members = new_chat_members
         self.left_chat_member = left_chat_member
+        self.old_chat_title = old_chat_title
         self.new_chat_title = new_chat_title
         self.new_chat_photo = new_chat_photo
         self.delete_chat_photo = delete_chat_photo
@@ -689,7 +686,6 @@ class Message(Object, Update):
         self.custom_action = custom_action
         self.sender_business_bot = sender_business_bot
         self.business_connection_id = business_connection_id
-        self.received_gift = received_gift
         self.successful_payment = successful_payment
         self.paid_media = paid_media
         self.refunded_payment = refunded_payment
@@ -766,6 +762,7 @@ class Message(Object, Update):
 
             new_chat_members = None
             left_chat_member = None
+            old_chat_title = None
             new_chat_title = None
             delete_chat_photo = None
             migrate_to_chat_id = None
@@ -808,8 +805,6 @@ class Message(Object, Update):
             chat_join_type = None
             screenshot_taken = None
 
-            received_gift = None
-
             checklist_tasks_done = None
             checklist_tasks_added = None
 
@@ -823,6 +818,7 @@ class Message(Object, Update):
                 new_chat_members = [types.User._parse(client, users[utils.get_raw_peer_id(message.from_id)])]
                 service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
                 chat_join_type = enums.ChatJoinType.BY_LINK
+                from_user = types.User._parse(client, users.get(action.inviter_id, None))
             elif isinstance(action, raw.types.MessageActionChatJoinedByRequest):
                 new_chat_members = [types.User._parse(client, users[utils.get_raw_peer_id(message.from_id)])]
                 service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
@@ -840,12 +836,16 @@ class Message(Object, Update):
                 migrate_to_chat_id = action.channel_id
                 service_type = enums.MessageServiceType.MIGRATE_TO_CHAT_ID
             elif isinstance(action, raw.types.MessageActionChannelMigrateFrom):
+                old_chat_title = action.title
                 migrate_from_chat_id = action.chat_id
                 service_type = enums.MessageServiceType.MIGRATE_FROM_CHAT_ID
             elif isinstance(action, raw.types.MessageActionChatCreate):
+                new_chat_members = [types.User._parse(client, users[user]) for user in action.users]
+                new_chat_title = action.title
                 group_chat_created = True
                 service_type = enums.MessageServiceType.GROUP_CHAT_CREATED
             elif isinstance(action, raw.types.MessageActionChannelCreate):
+                new_chat_title = action.title
                 if chat.type == enums.ChatType.SUPERGROUP:
                     supergroup_chat_created = True
                     service_type = enums.MessageServiceType.SUPERGROUP_CHAT_CREATED
@@ -868,7 +868,7 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionInviteToGroupCall):
                 video_chat_participants_invited = types.VideoChatParticipantsInvited._parse(client, action, users)
                 service_type = enums.MessageServiceType.VIDEO_CHAT_PARTICIPANTS_INVITED
-            elif isinstance(action, raw.types.MessageActionWebViewDataSentMe):
+            elif isinstance(action, (raw.types.MessageActionWebViewDataSentMe, raw.types.MessageActionWebViewDataSent)):
                 web_app_data = types.WebAppData._parse(action)
                 service_type = enums.MessageServiceType.WEB_APP_DATA
             elif isinstance(action, raw.types.MessageActionGiveawayLaunch):
@@ -1066,13 +1066,6 @@ class Message(Object, Update):
                     write_access_allowed = types.WriteAccessAllowed._parse(action)
                     service_type = enums.MessageServiceType.WRITE_ACCESS_ALLOWED
 
-            elif (
-                isinstance(action, raw.types.MessageActionStarGift) or
-                isinstance(action, raw.types.MessageActionStarGiftUnique)
-            ):
-                received_gift = await types.ReceivedGift._parse_action(client, message, users, chats)
-                service_type = enums.MessageServiceType.RECEIVED_GIFT
-            
             elif isinstance(action, raw.types.MessageActionPaidMessagesPrice):
                 if action.broadcast_messages_allowed:
                     direct_message_price_changed = types.DirectMessagePriceChanged._parse_action(
@@ -1097,7 +1090,7 @@ class Message(Object, Update):
 
             elif isinstance(action, raw.types.MessageActionTodoAppendTasks):
                 service_type = enums.MessageServiceType.CHECKLIST_TASKS_ADDED
-                checklist_tasks_added = types.ChecklistTasksAdded._parse(client, message)
+                checklist_tasks_added = types.ChecklistTasksAdded._parse(client, message, users, chats)
 
             parsed_message = Message(
                 id=message.id,
@@ -1108,6 +1101,7 @@ class Message(Object, Update):
                 service=service_type,
                 new_chat_members=new_chat_members,
                 left_chat_member=left_chat_member,
+                old_chat_title=old_chat_title,
                 new_chat_title=new_chat_title,
                 new_chat_photo=new_chat_photo,
                 delete_chat_photo=delete_chat_photo,
@@ -1133,7 +1127,6 @@ class Message(Object, Update):
                 chat_shared=chat_shared,
                 connected_website=connected_website,
                 write_access_allowed=write_access_allowed,
-                received_gift=received_gift,
                 successful_payment=successful_payment,
                 message_auto_delete_timer_changed=message_auto_delete_timer_changed,
                 boost_added=boost_added,
@@ -1211,7 +1204,6 @@ class Message(Object, Update):
             voice = None
             animation = None
             video = None
-            alternative_videos = []
             video_note = None
             sticker = None
             story = None
@@ -1280,22 +1272,6 @@ class Message(Object, Update):
                                 video = types.Video._parse(client, media, video_attributes, file_name, media.ttl_seconds)
                                 media_type = enums.MessageMediaType.VIDEO
                                 has_media_spoiler = media.spoiler
-
-                                altdocs = media.alt_documents or []
-                                for altdoc in altdocs:
-                                    if isinstance(altdoc, raw.types.Document):
-                                        altdoc_attributes = {type(i): i for i in altdoc.attributes}
-
-                                        altdoc_file_name = getattr(
-                                            altdoc_attributes.get(
-                                                raw.types.DocumentAttributeFilename, None
-                                            ), "file_name", None
-                                        )
-                                        altdoc_video_attribute = altdoc_attributes.get(raw.types.DocumentAttributeVideo, None)
-                                        if altdoc_video_attribute:
-                                            alternative_videos.append(
-                                                types.AlternativeVideo._parse(client, altdoc, altdoc_video_attribute, altdoc_file_name)
-                                            )
                         elif raw.types.DocumentAttributeAudio in attributes:
                             audio_attributes = attributes[raw.types.DocumentAttributeAudio]
 
@@ -1363,7 +1339,7 @@ class Message(Object, Update):
                     media_type = enums.MessageMediaType.PAID_MEDIA
                 elif isinstance(media, raw.types.MessageMediaToDo):
                     media_type = enums.MessageMediaType.CHECKLIST
-                    checklist = types.Checklist._parse(client, media, users)
+                    checklist = types.Checklist._parse(client, media, users, chats)
                 else:
                     media = None
                     media_type = enums.MessageMediaType.UNKNOWN
@@ -1445,7 +1421,6 @@ class Message(Object, Update):
                 animation=animation,
                 game=game,
                 video=video,
-                alternative_videos=types.List(alternative_videos) if alternative_videos else None,
                 video_note=video_note,
                 sticker=sticker,
                 story=story,
@@ -2358,10 +2333,10 @@ class Message(Object, Update):
 
         Parameters:
             phone_number (``str``):
-                Contact's phone number.
+                Phone number of the user.
 
             first_name (``str``):
-                Contact's first name.
+                First name of the user; 1-64 characters.
 
             quote (``bool``, *optional*):
                 If ``True``, the message will be sent as a reply to this message.
@@ -2369,10 +2344,10 @@ class Message(Object, Update):
                 Defaults to ``True`` in group chats and ``False`` in private chats.
 
             last_name (``str``, *optional*):
-                Contact's last name.
+                Last name of the user; 0-64 characters.
 
             vcard (``str``, *optional*):
-                Additional data about the contact in the form of a vCard, 0-2048 bytes
+                Additional data about the user in a form of `vCard <https://en.wikipedia.org/wiki/VCard>`_; 0-2048 bytes in length.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -2953,10 +2928,8 @@ class Message(Object, Update):
                 await message.reply_media_group(list_of_media)
 
         Parameters:
-            media (``list``):
-                A list containing either :obj:`~pyrogram.types.InputMediaPhoto` or
-                :obj:`~pyrogram.types.InputMediaVideo` objects
-                describing photos and videos to be sent, must include 2–10 items.
+            media (List of :obj:`~pyrogram.types.InputMediaPhoto`, :obj:`~pyrogram.types.InputMediaVideo`, :obj:`~pyrogram.types.InputMediaAudio` or :obj:`~pyrogram.types.InputMediaDocument`):
+                A list describing photos and videos to be sent, must include 2-10 items.
 
             quote (``bool``, *optional*):
                 If ``True``, the message will be sent as a reply to this message.
@@ -2990,8 +2963,7 @@ class Message(Object, Update):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
         Returns:
-            On success, a :obj:`~pyrogram.types.Messages` object is returned containing all the
-            single messages sent.
+            List of :obj:`~pyrogram.types.Message`: On success, a list of the sent messages is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
@@ -4763,6 +4735,7 @@ class Message(Object, Update):
         remove_caption: bool = None,
         video_start_timestamp: int = None,
         send_as: Union[int, str] = None,
+        message_effect_id: int = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", list["types.Message"]]:
         """Bound method *forward* of :obj:`~pyrogram.types.Message`.
@@ -4820,6 +4793,9 @@ class Message(Object, Update):
                 This setting applies to the current message and will remain effective for future messages unless explicitly changed.
                 To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
+            message_effect_id (``int`` ``64-bit``, *optional*):
+                Unique identifier of the message effect to be added to the message; for private chats only.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
@@ -4842,6 +4818,7 @@ class Message(Object, Update):
             remove_caption=remove_caption,
             video_start_timestamp=video_start_timestamp,
             send_as=send_as,
+            message_effect_id=message_effect_id,
             schedule_date=schedule_date
         )
 
@@ -5014,7 +4991,7 @@ class Message(Object, Update):
                 caption = self.caption or ""
                 caption_entities = self.caption_entities
             if self.photo:
-                file_id = self.photo.file_id
+                file_id = self.photo.sizes[-1].file_id
             elif self.audio:
                 file_id = self.audio.file_id
             elif self.document:

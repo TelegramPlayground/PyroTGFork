@@ -43,7 +43,7 @@ class Chat(Object):
 
         username (``str``, *optional*):
             Username, for private chats, bots, supergroups and channels if available.
-        
+
         first_name (``str``, *optional*):
             First name of the other party in a private chat, for private chats and bots.
 
@@ -109,9 +109,9 @@ class Chat(Object):
         bio (``str``, *optional*):
             Bio of the other party in a private chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
-        
+
         join_by_request (``bool``, *optional*):
-            True, if all users directly joining the supergroup need to be approved by supergroup administrators.
+            True, if all users directly joining the supergroup need to be approved by supergroup administrators. Can be True only for non-broadcast supergroups with username, location, or a linked chat.
 
         description (``str``, *optional*):
             Description, for groups, supergroups and channel chats.
@@ -222,7 +222,7 @@ class Chat(Object):
         send_as_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             The default "send_as" chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
-        
+
         is_peak_preview (``bool``, *optional*):
             True, if this is a peak preview.
 
@@ -231,7 +231,7 @@ class Chat(Object):
 
         pending_join_request_count (``int``, *optional*):
             Number of pending join requests in the current chat.
-        
+
         can_enable_paid_reaction (``bool``, *optional*):
             True, if paid reaction can be enabled in the channel chat; for channels only.
 
@@ -243,13 +243,17 @@ class Chat(Object):
             True, if gifts can be sent to the chat.
 
         paid_message_star_count (``int``, *optional*):
-            Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
+            The number of Telegram Stars a general user have to pay to send a message to the chat.
 
         has_automatic_translation (``bool``, *optional*):
             True, if automatic translation of messages is enabled in the channel.
 
+        first_profile_audio (:obj:`~pyrogram.types.Audio`, *optional*):
+            For private chats, the first audio added to the profile of the user.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
+            OR, Title of the chat, for groups and channels.
 
     """
 
@@ -323,6 +327,7 @@ class Chat(Object):
         paid_message_star_count: int = None,
         has_automatic_translation: bool = None,
         is_direct_messages: bool = None,
+        first_profile_audio: "types.Audio" = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -400,6 +405,7 @@ class Chat(Object):
         self.paid_message_star_count = paid_message_star_count
         self.has_automatic_translation = has_automatic_translation
         self.is_direct_messages = is_direct_messages
+        self.first_profile_audio = first_profile_audio
         self._raw = _raw
 
     @staticmethod
@@ -517,6 +523,7 @@ class Chat(Object):
                 client=client,
                 is_banned=True,
                 banned_until_date=utils.timestamp_to_datetime(getattr(channel, "until_date", None)),
+                is_direct_messages=channel.monoforum,
                 _raw=channel
             )
 
@@ -645,7 +652,7 @@ class Chat(Object):
                 parsed_chat.birthdate = types.Birthdate._parse(
                     full_user.birthday
                 )
-            
+
             if getattr(full_user, "business_intro", None):
                 parsed_chat.business_intro = await types.BusinessIntro._parse(
                     client,
@@ -665,6 +672,19 @@ class Chat(Object):
             if getattr(full_user, "wallpaper", None):
                 parsed_chat.background = types.ChatBackground._parse(client, full_user.wallpaper)
             parsed_chat.gift_count = full_user.stargifts_count
+            
+            if full_user.saved_music:
+                doc = full_user.saved_music
+                attributes = {type(i): i for i in doc.attributes}
+                file_name = getattr(
+                    attributes.get(
+                        raw.types.DocumentAttributeFilename, None
+                    ), "file_name", None
+                )
+                audio_attributes = attributes[raw.types.DocumentAttributeAudio]
+                parsed_chat.first_profile_audio = types.Audio._parse(
+                    client, doc, audio_attributes, file_name
+                )
 
         else:
             full_chat = chat_full.full_chat
@@ -810,7 +830,7 @@ class Chat(Object):
                     self.last_name
                 ]
             )
-        ) or None
+        ) or self.title or None
 
     async def archive(self):
         """Bound method *archive* of :obj:`~pyrogram.types.Chat`.

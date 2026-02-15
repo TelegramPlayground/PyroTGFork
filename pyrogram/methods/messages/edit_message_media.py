@@ -153,6 +153,52 @@ class EditMessageMedia:
                 media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaVideo):
             show_caption_above_media.append(media.show_caption_above_media)
+            coverfile = None
+            start_timestamp = None
+            # TODO: remove this duplicate code
+            if media.start_timestamp:
+                start_timestamp = media.start_timestamp
+            if media.cover:
+                cover = media.cover
+
+                cover_is_bytes_io = isinstance(cover, io.BytesIO)
+                cover_is_uploaded_file = cover_is_bytes_io or os.path.isfile(cover)
+                cover_is_external_url = not cover_is_uploaded_file and re.match("^https?://", cover)
+
+                if cover_is_bytes_io and not hasattr(cover, "name"):
+                    cover.name = "cover.jpg"
+                if cover_is_uploaded_file:
+                    coverfile = await self.invoke(
+                        raw.functions.messages.UploadMedia(
+                            business_connection_id=business_connection_id,
+                            peer=await self.resolve_peer(chat_id),
+                            media=raw.types.InputMediaUploadedPhoto(
+                                file=await self.save_file(cover)
+                            )
+                        )
+                    )
+                    coverfile = raw.types.InputPhoto(
+                        id=coverfile.photo.id,
+                        access_hash=coverfile.photo.access_hash,
+                        file_reference=coverfile.photo.file_reference
+                    )
+                elif cover_is_external_url:
+                    coverfile = await self.invoke(
+                        raw.functions.messages.UploadMedia(
+                            business_connection_id=business_connection_id,
+                            peer=await self.resolve_peer(chat_id),
+                            media=raw.types.InputMediaPhotoExternal(
+                                url=cover
+                            )
+                        )
+                    )
+                    coverfile = raw.types.InputPhoto(
+                        id=coverfile.photo.id,
+                        access_hash=coverfile.photo.access_hash,
+                        file_reference=coverfile.photo.file_reference
+                    )
+                else:
+                    coverfile = (utils.get_input_media_from_file_id(cover, FileType.PHOTO)).id
             if is_uploaded_file:
                 uploaded_media = await self.invoke(
                     raw.functions.messages.UploadMedia(
@@ -183,15 +229,21 @@ class EditMessageMedia:
                         access_hash=uploaded_media.document.access_hash,
                         file_reference=uploaded_media.document.file_reference
                     ),
-                    spoiler=media.has_spoiler
+                    spoiler=media.has_spoiler,
+                    video_cover=coverfile,
+                    video_timestamp=start_timestamp
                 )
             elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(
                     url=media.media,
-                    spoiler=media.has_spoiler
+                    spoiler=media.has_spoiler,
+                    video_cover=coverfile,
+                    video_timestamp=start_timestamp
                 )
             else:
                 media = utils.get_input_media_from_file_id(media.media, FileType.VIDEO, has_spoiler=media.has_spoiler)
+                media.video_cover = coverfile
+                media.video_timestamp = start_timestamp
         elif isinstance(media, types.InputMediaAudio):
             if is_uploaded_file:
                 media = await self.invoke(
@@ -277,7 +329,7 @@ class EditMessageMedia:
                             thumb=await self.save_file(media.thumb),
                             file=await self.save_file(media.media),
                             attributes=filename_attribute,
-                            force_file=True
+                            force_file=media.disable_content_type_detection
                         )
                     )
                 )

@@ -166,6 +166,9 @@ class ChatEvent(Object):
             The ``is_forum`` setting of a channel was toggled.
             For :obj:`~pyrogram.enums.ChatEventAction.CHAT_IS_FORUM_TOGGLED` action only.
 
+        old_topic_info, new_topic_info (:obj:`~pyrogram.types.ForumTopic`, *optional*):
+            Affected forum topic info of the chat.
+
     """
 
     def __init__(
@@ -241,6 +244,9 @@ class ChatEvent(Object):
         has_aggressive_anti_spam_enabled: bool = None,
         has_protected_content: bool = None,
         is_forum: bool = None,
+
+        old_topic_info: "types.ForumTopic" = None,
+        new_topic_info: "types.ForumTopic" = None,
     ):
         super().__init__()
 
@@ -315,6 +321,10 @@ class ChatEvent(Object):
         self.has_aggressive_anti_spam_enabled = has_aggressive_anti_spam_enabled
         self.has_protected_content = has_protected_content
         self.is_forum = is_forum
+
+        self.old_topic_info = old_topic_info
+        self.new_topic_info = new_topic_info
+
 
     @staticmethod
     async def _parse(
@@ -396,6 +406,9 @@ class ChatEvent(Object):
         has_protected_content: Optional[bool] = None
         is_forum: Optional[bool] = None
 
+        old_topic_info: Optional["types.ForumTopic"] = None
+        new_topic_info: Optional["types.ForumTopic"] = None
+
         if isinstance(action, raw.types.ChannelAdminLogEventActionChangeAbout):
             old_description = action.prev_value
             new_description = action.new_value
@@ -407,8 +420,10 @@ class ChatEvent(Object):
             action = enums.ChatEventAction.HISTORY_TTL_CHANGED
 
         elif isinstance(action, raw.types.ChannelAdminLogEventActionChangeLinkedChat):
-            old_linked_chat = types.Chat._parse_chat(client, chats[action.prev_value])
-            new_linked_chat = types.Chat._parse_chat(client, chats[action.new_value])
+            if action.prev_value:
+                old_linked_chat = types.Chat._parse_chat(client, chats[action.prev_value])
+            if action.new_value:
+                new_linked_chat = types.Chat._parse_chat(client, chats[action.new_value])
             action = enums.ChatEventAction.LINKED_CHAT_CHANGED
 
         elif isinstance(action, raw.types.ChannelAdminLogEventActionChangePhoto):
@@ -556,6 +571,60 @@ class ChatEvent(Object):
             is_forum = action.new_value
             action = enums.ChatEventAction.CHAT_IS_FORUM_TOGGLED
 
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionCreateTopic):
+            new_topic_info = types.ForumTopic._parse(
+                client,
+                action.topic,
+                {},
+                users,
+                chats
+            )
+            action = enums.ChatEventAction.CHAT_FORUM_TOPIC_CREATED
+
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionDeleteTopic):
+            old_topic_info = types.ForumTopic._parse(
+                client,
+                action.topic,
+                {},
+                users,
+                chats
+            )
+            action = enums.ChatEventAction.CHAT_FORUM_TOPIC_DELETED
+
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionEditTopic):
+            old_topic_info = types.ForumTopic._parse(
+                client,
+                action.prev_topic,
+                {},
+                users,
+                chats
+            )
+            new_topic_info = types.ForumTopic._parse(
+                client,
+                action.new_topic,
+                {},
+                users,
+                chats
+            )
+            action = enums.ChatEventAction.CHAT_FORUM_TOPIC_EDITED            
+
+        elif isinstance(action, raw.types.ChannelAdminLogEventActionPinTopic):
+            old_topic_info = types.ForumTopic._parse(
+                client,
+                action.prev_topic,
+                {},
+                users,
+                chats
+            )
+            new_topic_info = types.ForumTopic._parse(
+                client,
+                action.new_topic,
+                {},
+                users,
+                chats
+            )
+            action = enums.ChatEventAction.CHAT_FORUM_TOPIC_PINNED
+
         else:
             action = f"{enums.ChatEventAction.UNKNOWN}-{action.QUALNAME}"
 
@@ -631,4 +700,7 @@ class ChatEvent(Object):
             has_aggressive_anti_spam_enabled=has_aggressive_anti_spam_enabled,
             has_protected_content=has_protected_content,
             is_forum=is_forum,
+
+            old_topic_info=old_topic_info,
+            new_topic_info=new_topic_info,
         )

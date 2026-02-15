@@ -51,7 +51,7 @@ from pyrogram.errors import (
 from pyrogram.handlers.handler import Handler
 from pyrogram.methods import Methods
 from pyrogram.session import Auth, Session
-from pyrogram.storage import Storage, FileStorage, MemoryStorage
+from pyrogram.storage import SQLiteStorage, Storage
 from pyrogram.types import User, TermsOfService
 from pyrogram.utils import MIN_MONOFORUM_CHANNEL_ID, ainput
 from .connection import Connection
@@ -310,7 +310,7 @@ class Client(Methods):
         self.phone_code = phone_code
         self.password = password
         self.workers = workers
-        self.WORKDIR = Path(workdir)
+        self.workdir = Path(workdir)
         self.plugins = plugins
         self.parse_mode = parse_mode
         self.no_updates = no_updates
@@ -330,13 +330,25 @@ class Client(Methods):
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 
         if self.session_string:
-            self.storage = MemoryStorage(self.name, self.session_string)
+            self.storage = SQLiteStorage(
+                self.name,
+                workdir=self.workdir,
+                session_string=self.session_string,
+                in_memory=True
+            )
         elif self.in_memory:
-            self.storage = MemoryStorage(self.name)
+            self.storage = SQLiteStorage(
+                self.name,
+                workdir=self.workdir,
+                in_memory=True
+            )
         elif isinstance(storage_engine, Storage):
             self.storage = storage_engine
         else:
-            self.storage = FileStorage(self.name, self.WORKDIR)
+            self.storage = SQLiteStorage(
+                self.name,
+                workdir=self.workdir
+            )
 
         self.dispatcher = Dispatcher(self)
         self.rnd_id = MsgId
@@ -369,7 +381,7 @@ class Client(Methods):
         self.updates_watchdog_event = asyncio.Event()
         self.last_update_time = datetime.now()
 
-        self.loop = asyncio.get_event_loop()
+        self.loop = utils.get_event_loop()
 
     def __enter__(self):
         return self.start()
@@ -1021,7 +1033,8 @@ class Client(Methods):
         file_id, directory, file_name, in_memory, file_size, progress, progress_args = packet
 
         os.makedirs(directory, exist_ok=True) if not in_memory else None
-        temp_file_path = os.path.abspath(re.sub("\\\\", "/", os.path.join(directory, file_name))) + ".temp"
+        mcfn = re.sub("\\\\", "/", os.path.join(directory, file_name))
+        temp_file_path = os.path.abspath(mcfn) + ".temp"
         file = BytesIO() if in_memory else open(temp_file_path, "wb")
 
         try:
@@ -1039,6 +1052,7 @@ class Client(Methods):
         else:
             if in_memory:
                 file.name = file_name
+                file.seek(0)
                 return file
             else:
                 file.close()

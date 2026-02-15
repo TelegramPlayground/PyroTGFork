@@ -1,7 +1,7 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/KurimuzonAkuma>
 #
-#  This file is part of Pyrogram.
+#  This file is part of Kurigram.
 #
 #  Pyrogram is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU Lesser General Public License as published
@@ -16,17 +16,11 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .future_salt import FutureSalt
-from .future_salts import FutureSalts
-from .gzip_packed import GzipPacked
-from .list import List
-from .message import Message
-from .msg_container import MsgContainer
-from .primitives.bool import Bool, BoolFalse, BoolTrue
-from .primitives.bytes import Bytes
-from .primitives.double import Double
-from .primitives.int import Int, Long, Int128, Int256
-from .primitives.string import String
-from .primitives.vector import Vector
-from .base_type_meta import BaseTypeMeta
-from .tl_object import TLObject
+from typing import get_args
+
+class BaseTypeMeta(type):
+    def __instancecheck__(cls, instance):
+        return isinstance(instance, get_args(cls.__union_types__))
+
+    def __subclasscheck__(cls, subclass):
+        return issubclass(subclass, get_args(cls.__union_types__))

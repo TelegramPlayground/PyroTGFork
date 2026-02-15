@@ -41,8 +41,12 @@ class ChecklistTask(Object):
             May contain only Bold, Italic, Underline, Strikethrough, Spoiler, CustomEmoji, Url, EmailAddress, Mention, Hashtag, Cashtag and PhoneNumber entities.
 
         completed_by_user (:obj:`~pyrogram.types.User`, *optional*):
-            The user that completed the task.
-            None if the task isn't completed.
+            User that completed the task.
+            omitted if the task wasn't completed by a user.
+
+        completed_by_chat (:obj:`~pyrogram.types.Chat`, *optional*):
+            Chat that completed the task.
+            omitted if the task wasn't completed by a chat.
 
         completion_date (:py:obj:`~datetime.datetime`, *optional*):
             Date when the task was completed.
@@ -57,6 +61,7 @@ class ChecklistTask(Object):
         text: str,
         text_entities: Optional[list["types.MessageEntity"]] = None,
         completed_by_user: Optional["types.User"] = None,
+        completed_by_chat: Optional["types.Chat"] = None,
         completion_date: Optional[datetime] = None,
     ):
         super().__init__()
@@ -65,6 +70,7 @@ class ChecklistTask(Object):
         self.text = text
         self.text_entities = text_entities
         self.completed_by_user = completed_by_user
+        self.completed_by_chat = completed_by_chat
         self.completion_date = completion_date
 
     @staticmethod
@@ -73,6 +79,7 @@ class ChecklistTask(Object):
         item: "raw.types.TodoItem",
         completion: "raw.types.TodoCompletion",
         users: Dict[int, "raw.base.User"],
+        chats: Dict[int, "raw.base.Chat"],
     ) -> "ChecklistTask":
         text_entities = [
             types.MessageEntity._parse(client, entity, users)
@@ -81,10 +88,21 @@ class ChecklistTask(Object):
         text_entities = types.List(filter(lambda x: x is not None, text_entities))
         text = Str(item.title.text).init(text_entities) or None
 
+        completed_by_peer = getattr(completion, "completed_by", None)
+        completed_by_user = None
+        completed_by_chat = None
+        if completed_by_peer:
+            completed_by_peer_id = utils.get_raw_peer_id(completed_by_peer)
+            if isinstance(completed_by_peer, raw.types.PeerUser):
+                completed_by_user = types.User._parse(client, users.get(completed_by_peer_id))
+            else:
+                completed_by_chat = types.Chat._parse_chat(client, chats.get(completed_by_peer_id))
+
         return ChecklistTask(
             id=item.id,
             text=text,
             text_entities=text_entities,
-            completed_by_user=types.User._parse(client, users.get(getattr(completion, "completed_by", None))),
+            completed_by_user=completed_by_user,
+            completed_by_chat=completed_by_chat,
             completion_date=utils.timestamp_to_datetime(getattr(completion, "date", None))
         )

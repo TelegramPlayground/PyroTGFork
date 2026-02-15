@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from asyncio import sleep
+from datetime import datetime
 from typing import AsyncGenerator, Optional
 
 import pyrogram
@@ -28,7 +29,9 @@ class GetDialogs:
         self: "pyrogram.Client",
         limit: int = 0,
         pinned_only: bool = False,
-        chat_list: int = 0
+        chat_list: int = 0,
+        offset_date: datetime = utils.zero_datetime(),
+        offset_message_id: int = 0,
     ) -> Optional[AsyncGenerator["types.Dialog", None]]:
         """Get a user's dialogs sequentially.
 
@@ -46,6 +49,12 @@ class GetDialogs:
             chat_list (``int``, *optional*):
                 Chat list from which to get the dialogs; Only Main (0) and Archive (1) chat lists are supported. Defaults to (0) Main chat list.
 
+            offset_date (:py:obj:`~datetime.datetime`, *optional*):
+                The date starting from which the dialogs need to be fetched. Use 0 or any date in the future to get results from the last dialog.
+
+            offset_message_id (``int``, *optional*):
+                The message identifier of the last message in the last found dialog, or 0 for the first request.
+
         Returns:
             ``Generator``: A generator yielding :obj:`~pyrogram.types.Dialog` objects.
 
@@ -60,8 +69,7 @@ class GetDialogs:
         total = limit or (1 << 31) - 1
         request_limit = min(100, total)
 
-        offset_date = 0
-        offset_id = 0
+        offset_date = utils.datetime_to_timestamp(offset_date)
         offset_peer = raw.types.InputPeerEmpty()
 
         seen_dialog_ids = set()
@@ -70,7 +78,7 @@ class GetDialogs:
             r = await self.invoke(
                 raw.functions.messages.GetDialogs(
                     offset_date=offset_date,
-                    offset_id=offset_id,
+                    offset_id=offset_message_id,
                     offset_peer=offset_peer,
                     limit=request_limit,
                     hash=0,
@@ -125,7 +133,7 @@ class GetDialogs:
             if last.top_message is None:
                 return
 
-            offset_id = last.top_message.id
+            offset_message_id = last.top_message.id
             offset_date = utils.datetime_to_timestamp(last.top_message.date)
             offset_peer = await self.resolve_peer(last.chat.id)
 

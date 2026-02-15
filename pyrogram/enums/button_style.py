@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present KurimuzonAkuma <https://github.com/KurimuzonAkuma>
 #
 #  This file is part of Pyrogram.
 #
@@ -16,17 +16,22 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .future_salt import FutureSalt
-from .future_salts import FutureSalts
-from .gzip_packed import GzipPacked
-from .list import List
-from .message import Message
-from .msg_container import MsgContainer
-from .primitives.bool import Bool, BoolFalse, BoolTrue
-from .primitives.bytes import Bytes
-from .primitives.double import Double
-from .primitives.int import Int, Long, Int128, Int256
-from .primitives.string import String
-from .primitives.vector import Vector
-from .base_type_meta import BaseTypeMeta
-from .tl_object import TLObject
+from enum import auto
+
+from .auto_name import AutoName
+
+
+class ButtonStyle(AutoName):
+    """Button style type enumeration used in :obj:`~pyrogram.types.KeyboardButton` and :obj:`~pyrogram.types.InlineKeyboardButton` to describe the style of a button."""
+
+    DEFAULT = auto()
+    "The button has default style"
+
+    PRIMARY = auto()
+    "The button has dark blue color"
+
+    DANGER = auto()
+    "The button has red color"
+
+    SUCCESS = auto()
+    "The button has green color"

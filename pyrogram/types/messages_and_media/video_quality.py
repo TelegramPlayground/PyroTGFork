@@ -19,14 +19,13 @@
 from datetime import datetime
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
 from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType, ThumbnailSource
 from ..object import Object
 
 
-class AlternativeVideo(Object):
-    """Describes an alternative reencoded quality of a video file.
+class VideoQuality(Object):
+    """Describes a video file of a specific quality.
 
     Parameters:
         file_id (``str``):
@@ -44,15 +43,6 @@ class AlternativeVideo(Object):
 
         codec (``str``):
             Codec used for video file encoding, for example, "h264", "h265", or "av1".
-
-        duration (``int``):
-            Duration of the video in seconds as defined by sender.
-
-        file_name (``str``, *optional*):
-            Video file name.
-
-        mime_type (``str``, *optional*):
-            Mime type of a file as defined by sender.
 
         file_size (``int``, *optional*):
             File size.
@@ -77,9 +67,6 @@ class AlternativeVideo(Object):
         width: int,
         height: int,
         codec: str,
-        duration: int,
-        file_name: str = None,
-        mime_type: str = None,
         file_size: int = None,
         supports_streaming: bool = None,
         date: datetime = None,
@@ -92,9 +79,6 @@ class AlternativeVideo(Object):
         self.width = width
         self.height = height
         self.codec = codec
-        self.duration = duration
-        self.file_name = file_name
-        self.mime_type = mime_type
         self.file_size = file_size
         self.supports_streaming = supports_streaming
         self.date = date
@@ -106,8 +90,8 @@ class AlternativeVideo(Object):
         video: "raw.types.Document",
         video_attributes: "raw.types.DocumentAttributeVideo",
         file_name: str
-    ) -> "AlternativeVideo":
-        return AlternativeVideo(
+    ) -> "VideoQuality":
+        return VideoQuality(
             file_id=FileId(
                 file_type=FileType.VIDEO,
                 dc_id=video.dc_id,
@@ -122,11 +106,8 @@ class AlternativeVideo(Object):
             width=video_attributes.w if video_attributes else None,
             height=video_attributes.h if video_attributes else None,
             codec=video_attributes.video_codec if video_attributes else None,
-            duration=video_attributes.duration if video_attributes else None,
-            file_name=file_name,
-            mime_type=video.mime_type if video else None,
-            supports_streaming=video_attributes.supports_streaming if video_attributes else None,
             file_size=video.size if video else None,
+            supports_streaming=video_attributes.supports_streaming if video_attributes else None,
             date=utils.timestamp_to_datetime(video.date) if video else None,
             thumbs=types.Thumbnail._parse(client, video) if video else None,
             client=client

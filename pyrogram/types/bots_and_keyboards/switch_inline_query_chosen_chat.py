@@ -82,7 +82,7 @@ class SwitchInlineQueryChosenChat(Object):
             allow_channel_chats=allow_channel_chats
         )
 
-    def write(self, text: str):
+    def write(self, text: str, style: "raw.types.KeyboardButtonStyle"):
         peer_types = []
         if self.allow_bot_chats:
             peer_types.append(
@@ -109,5 +109,6 @@ class SwitchInlineQueryChosenChat(Object):
         return raw.types.KeyboardButtonSwitchInline(
             text=text,
             query=self.query,
-            peer_types=peer_types
+            peer_types=peer_types,
+            style=style
         )
