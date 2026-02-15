@@ -53,7 +53,9 @@ class SendMediaGroup:
         message_effect_id: int = None,
         reply_to_message_id: int = None
     ) -> list["types.Message"]:
-        """Send a group of photos or videos as an album.
+        """Use this method to send a group of photos, videos, documents or audios as an album.
+        
+        Documents and audio files can be only grouped in an album with messages of the same type.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
@@ -64,7 +66,7 @@ class SendMediaGroup:
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
             media (List of :obj:`~pyrogram.types.InputMediaPhoto`, :obj:`~pyrogram.types.InputMediaVideo`, :obj:`~pyrogram.types.InputMediaAudio` and :obj:`~pyrogram.types.InputMediaDocument`):
-                A list describing photos and videos to be sent, must include 2–10 items.
+                A list describing photos and videos to be sent, must include 2-10 items.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
