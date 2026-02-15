@@ -62,6 +62,11 @@ from .unpin_all_chat_messages import UnpinAllChatMessages
 from .unpin_chat_message import UnpinChatMessage
 from .get_created_chats import GetCreatedChats
 from .transfer_chat_ownership import TransferChatOwnership
+from .add_profile_audio import AddProfileAudio
+from .get_chat_audios_count import GetChatAudiosCount
+from .get_chat_audios import GetChatAudios
+from .remove_profile_audio import RemoveProfileAudio
+from .set_profile_audio_position import SetProfileAudioPosition
 
 
 class Chats(
@@ -111,5 +116,10 @@ class Chats(
     SetChatProtectedContent,
     GetCreatedChats,
     TransferChatOwnership,
+    AddProfileAudio,
+    GetChatAudiosCount,
+    GetChatAudios,
+    RemoveProfileAudio,
+    SetProfileAudioPosition,
 ):
     pass

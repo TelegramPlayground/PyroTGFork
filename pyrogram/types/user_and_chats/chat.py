@@ -248,6 +248,9 @@ class Chat(Object):
         has_automatic_translation (``bool``, *optional*):
             True, if automatic translation of messages is enabled in the channel.
 
+        first_profile_audio (:obj:`~pyrogram.types.Audio`, *optional*):
+            For private chats, the first audio added to the profile of the user.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
             OR, Title of the chat, for groups and channels.
@@ -324,6 +327,7 @@ class Chat(Object):
         paid_message_star_count: int = None,
         has_automatic_translation: bool = None,
         is_direct_messages: bool = None,
+        first_profile_audio: "types.Audio" = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -401,6 +405,7 @@ class Chat(Object):
         self.paid_message_star_count = paid_message_star_count
         self.has_automatic_translation = has_automatic_translation
         self.is_direct_messages = is_direct_messages
+        self.first_profile_audio = first_profile_audio
         self._raw = _raw
 
     @staticmethod
@@ -667,6 +672,19 @@ class Chat(Object):
             if getattr(full_user, "wallpaper", None):
                 parsed_chat.background = types.ChatBackground._parse(client, full_user.wallpaper)
             parsed_chat.gift_count = full_user.stargifts_count
+            
+            if full_user.saved_music:
+                doc = full_user.saved_music
+                attributes = {type(i): i for i in doc.attributes}
+                file_name = getattr(
+                    attributes.get(
+                        raw.types.DocumentAttributeFilename, None
+                    ), "file_name", None
+                )
+                audio_attributes = attributes[raw.types.DocumentAttributeAudio]
+                parsed_chat.first_profile_audio = types.Audio._parse(
+                    client, doc, audio_attributes, file_name
+                )
 
         else:
             full_chat = chat_full.full_chat
