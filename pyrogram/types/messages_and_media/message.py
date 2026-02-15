@@ -234,6 +234,9 @@ class Message(Object, Update):
         left_chat_member (:obj:`~pyrogram.types.User`, *optional*):
             A member was removed from the group, information about them (this member may be the bot itself).
 
+        old_chat_title (``str``, *optional*):
+            The supergroup has been migrated from a group with the specified title.
+
         new_chat_title (``str``, *optional*):
             A chat title was changed to this value.
 
@@ -507,6 +510,7 @@ class Message(Object, Update):
         location: "types.Location" = None,
         new_chat_members: list["types.User"] = None,
         left_chat_member: "types.User" = None,
+        old_chat_title: str = None,
         new_chat_title: str = None,
         new_chat_photo: "types.Photo" = None,
         delete_chat_photo: bool = None,
@@ -623,6 +627,7 @@ class Message(Object, Update):
         self.dice = dice
         self.new_chat_members = new_chat_members
         self.left_chat_member = left_chat_member
+        self.old_chat_title = old_chat_title
         self.new_chat_title = new_chat_title
         self.new_chat_photo = new_chat_photo
         self.delete_chat_photo = delete_chat_photo
@@ -757,6 +762,7 @@ class Message(Object, Update):
 
             new_chat_members = None
             left_chat_member = None
+            old_chat_title = None
             new_chat_title = None
             delete_chat_photo = None
             migrate_to_chat_id = None
@@ -812,6 +818,7 @@ class Message(Object, Update):
                 new_chat_members = [types.User._parse(client, users[utils.get_raw_peer_id(message.from_id)])]
                 service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
                 chat_join_type = enums.ChatJoinType.BY_LINK
+                from_user = types.User._parse(client, users.get(action.inviter_id, None))
             elif isinstance(action, raw.types.MessageActionChatJoinedByRequest):
                 new_chat_members = [types.User._parse(client, users[utils.get_raw_peer_id(message.from_id)])]
                 service_type = enums.MessageServiceType.NEW_CHAT_MEMBERS
@@ -829,12 +836,16 @@ class Message(Object, Update):
                 migrate_to_chat_id = action.channel_id
                 service_type = enums.MessageServiceType.MIGRATE_TO_CHAT_ID
             elif isinstance(action, raw.types.MessageActionChannelMigrateFrom):
+                old_chat_title = action.title
                 migrate_from_chat_id = action.chat_id
                 service_type = enums.MessageServiceType.MIGRATE_FROM_CHAT_ID
             elif isinstance(action, raw.types.MessageActionChatCreate):
+                new_chat_members = [types.User._parse(client, users[user]) for user in action.users]
+                new_chat_title = action.title
                 group_chat_created = True
                 service_type = enums.MessageServiceType.GROUP_CHAT_CREATED
             elif isinstance(action, raw.types.MessageActionChannelCreate):
+                new_chat_title = action.title
                 if chat.type == enums.ChatType.SUPERGROUP:
                     supergroup_chat_created = True
                     service_type = enums.MessageServiceType.SUPERGROUP_CHAT_CREATED
@@ -857,7 +868,7 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionInviteToGroupCall):
                 video_chat_participants_invited = types.VideoChatParticipantsInvited._parse(client, action, users)
                 service_type = enums.MessageServiceType.VIDEO_CHAT_PARTICIPANTS_INVITED
-            elif isinstance(action, raw.types.MessageActionWebViewDataSentMe):
+            elif isinstance(action, (raw.types.MessageActionWebViewDataSentMe, raw.types.MessageActionWebViewDataSent)):
                 web_app_data = types.WebAppData._parse(action)
                 service_type = enums.MessageServiceType.WEB_APP_DATA
             elif isinstance(action, raw.types.MessageActionGiveawayLaunch):
@@ -1090,6 +1101,7 @@ class Message(Object, Update):
                 service=service_type,
                 new_chat_members=new_chat_members,
                 left_chat_member=left_chat_member,
+                old_chat_title=old_chat_title,
                 new_chat_title=new_chat_title,
                 new_chat_photo=new_chat_photo,
                 delete_chat_photo=delete_chat_photo,
