@@ -398,9 +398,13 @@ def pyrogram_api():
             get_chat_photos
             get_chat_photos_count
             get_users
-            
+            get_chat_audios
+            get_chat_audios_count
             set_profile_photo
             delete_profile_photos
+            add_profile_audio
+            remove_profile_audio
+            set_profile_audio_position
             set_username
             update_profile
             block_user
