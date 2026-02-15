@@ -2916,10 +2916,8 @@ class Message(Object, Update):
                 await message.reply_media_group(list_of_media)
 
         Parameters:
-            media (``list``):
-                A list containing either :obj:`~pyrogram.types.InputMediaPhoto` or
-                :obj:`~pyrogram.types.InputMediaVideo` objects
-                describing photos and videos to be sent, must include 2–10 items.
+            media (List of :obj:`~pyrogram.types.InputMediaPhoto`, :obj:`~pyrogram.types.InputMediaVideo`, :obj:`~pyrogram.types.InputMediaAudio` or :obj:`~pyrogram.types.InputMediaDocument`):
+                A list describing photos and videos to be sent, must include 2-10 items.
 
             quote (``bool``, *optional*):
                 If ``True``, the message will be sent as a reply to this message.
@@ -2953,8 +2951,7 @@ class Message(Object, Update):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
         Returns:
-            On success, a :obj:`~pyrogram.types.Messages` object is returned containing all the
-            single messages sent.
+            List of :obj:`~pyrogram.types.Message`: On success, a list of the sent messages is returned.
 
         Raises:
             RPCError: In case of a Telegram RPC error.
