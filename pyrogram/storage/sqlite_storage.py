@@ -288,7 +288,7 @@ CREATE TABLE update_state
 
     async def open(self):
         if self.in_memory:
-            conn_func = partial(sqlite3.connect, ":memory:", timeout=1, check_same_thread=False)
+            conn_func = partial(sqlite3.connect, self.database, timeout=1, check_same_thread=False)
             self.conn = await self.loop.run_in_executor(self.executor, conn_func)
             await self.create()
             await self._unpack_if_session_string()
