@@ -329,6 +329,10 @@ class Client(Methods):
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 
+        if self.in_memory is None:
+            # default to True when user session if true/false wasn't provided in init
+            self.in_memory = bool(self.session_string)
+
         if isinstance(storage_engine, Storage):
             self.storage = storage_engine
         else:
