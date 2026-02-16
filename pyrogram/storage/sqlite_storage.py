@@ -21,7 +21,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import asyncio
 import base64
 import inspect
 import logging
@@ -139,7 +138,7 @@ class SQLiteStorage(Storage):
         self.loop = utils.get_event_loop()
         self.conn = None  # type: sqlite3.Connection | None
 
-        self.session_string = session_string
+        self.session_string = session_string.strip() if isinstance(session_string, str) else session_string
         self.in_memory = in_memory
         self.use_wal = use_wal
 
@@ -151,7 +150,7 @@ class SQLiteStorage(Storage):
     @property
     def executor(self):
         if self._executor is None:
-           self._executor = ThreadPoolExecutor(1)
+            self._executor = ThreadPoolExecutor(1)
         return self._executor
 
     def _vacuum(self):
@@ -246,59 +245,53 @@ CREATE TABLE update_state
                 (2, None, None, None, 0, None, None)
             )
 
+    async def _unpack_if_session_string(self):
+        if not self.session_string:
+            return
+
+        string_length = len(self.session_string)
+        b64_string_unpack = base64.urlsafe_b64decode(self.session_string + "=" * (-string_length % 4))
+
+        # Old format
+        if string_length in [self.SESSION_STRING_SIZE, self.SESSION_STRING_SIZE_64]:
+            if string_length == self.SESSION_STRING_SIZE:
+                string_format = self.OLD_SESSION_STRING_FORMAT
+            else:
+                string_format = self.OLD_SESSION_STRING_FORMAT_64
+
+            dc_id, test_mode, auth_key, user_id, is_bot = struct.unpack(string_format, b64_string_unpack)
+
+            await self.dc_id(dc_id)
+            await self.test_mode(test_mode)
+            await self.auth_key(auth_key)
+            await self.user_id(user_id)
+            await self.is_bot(is_bot)
+            await self.date(0)
+
+            log.warning(
+                "You are using an old session string format. Use export_session_string to update"
+            )
+            return
+
+        dc_id, api_id, test_mode, auth_key, user_id, is_bot = struct.unpack(self.SESSION_STRING_FORMAT, b64_string_unpack)
+
+        await self.dc_id(dc_id)
+        await self.api_id(api_id)
+        await self.test_mode(test_mode)
+        await self.auth_key(auth_key)
+        await self.user_id(user_id)
+        await self.is_bot(is_bot)
+        await self.date(0)
+
     async def create(self):
         return await self.loop.run_in_executor(self.executor, self._create_impl)
 
     async def open(self):
         if self.in_memory:
-            connfunc = partial(sqlite3.connect, ":memory:", timeout=1, check_same_thread=False)
-            self.conn = await self.loop.run_in_executor(self.executor, connfunc)
+            conn_func = partial(sqlite3.connect, ":memory:", timeout=1, check_same_thread=False)
+            self.conn = await self.loop.run_in_executor(self.executor, conn_func)
             await self.create()
-
-            if self.session_string:
-                # Old format
-                if len(self.session_string) in [
-                    self.SESSION_STRING_SIZE,
-                    self.SESSION_STRING_SIZE_64,
-                ]:
-                    dc_id, test_mode, auth_key, user_id, is_bot = struct.unpack(
-                        (
-                            self.OLD_SESSION_STRING_FORMAT
-                            if len(self.session_string) == self.SESSION_STRING_SIZE
-                            else self.OLD_SESSION_STRING_FORMAT_64
-                        ),
-                        base64.urlsafe_b64decode(
-                            self.session_string + "=" * (-len(self.session_string) % 4)
-                        ),
-                    )
-
-                    await self.dc_id(dc_id)
-                    await self.test_mode(test_mode)
-                    await self.auth_key(auth_key)
-                    await self.user_id(user_id)
-                    await self.is_bot(is_bot)
-                    await self.date(0)
-
-                    log.warning(
-                        "You are using an old session string format. Use export_session_string to update"
-                    )
-                    return
-
-                dc_id, api_id, test_mode, auth_key, user_id, is_bot = struct.unpack(
-                    self.SESSION_STRING_FORMAT,
-                    base64.urlsafe_b64decode(
-                        self.session_string + "=" * (-len(self.session_string) % 4)
-                    ),
-                )
-
-                await self.dc_id(dc_id)
-                await self.api_id(api_id)
-                await self.test_mode(test_mode)
-                await self.auth_key(auth_key)
-                await self.user_id(user_id)
-                await self.is_bot(is_bot)
-                await self.date(0)
-
+            await self._unpack_if_session_string()
             return
 
         path = self.database
@@ -310,6 +303,8 @@ CREATE TABLE update_state
             await self.create()
         else:
             await self.update()
+
+        await self._unpack_if_session_string()
 
         await self.loop.run_in_executor(self.executor, self._vacuum)
 
