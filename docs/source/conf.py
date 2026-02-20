@@ -45,6 +45,7 @@ extensions = [
     # "sphinx.ext.viewcode",
     "sphinx_copybutton",
     # "sphinx.ext.coverage",
+    "sphinx_llms_txt",
 ]
 
 intersphinx_mapping = {
@@ -135,3 +136,15 @@ if os.environ.get("READTHEDOCS", "") == "True":
     if "html_context" not in globals():
         html_context = {}
     html_context["READTHEDOCS"] = True
+
+# Provide a specific, agent-friendly summary of Pyrogram
+llms_txt_summary = """Pyrogram is an elegant, modern, and asynchronous MTProto API framework for Telegram in Python for users and bots.
+This documentation covers the Pyrogram Client High-Level API, the Smart Plugin system, and the raw Low-Level Telegram Functions Types. 
+"""
+
+# Exclude pages that just consume tokens without providing value (like indexes or search pages)
+llms_txt_exclude = [
+    "search",
+    "genindex",
+    "modindex",
+]
