@@ -219,6 +219,9 @@ class Chat(Object):
             Distance in meters of this group chat from your location.
             Returned only in :meth:`~pyrogram.Client.get_nearby_chats`.
 
+        location (:obj:`~pyrogram.types.ChatLocation`, *optional*):
+            For supergroups, the location to which the supergroup is connected.
+
         send_as_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             The default "send_as" chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -298,6 +301,7 @@ class Chat(Object):
         permissions: "types.ChatPermissions" = None,
         admin_privileges: "types.ChatPrivileges" = None,
         distance: int = None,
+        location: "types.ChatLocation" = None,
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
         personal_chat: "types.Chat" = None,
@@ -367,6 +371,7 @@ class Chat(Object):
         self.permissions = permissions
         self.admin_privileges = admin_privileges
         self.distance = distance
+        self.location = location
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
@@ -742,6 +747,15 @@ class Chat(Object):
                 parent_chat_raw = chats.get(chat_raw.linked_monoforum_id, None)
                 if parent_chat_raw:
                     parsed_chat.parent_chat = Chat._parse_channel_chat(client, parent_chat_raw)
+
+                if full_chat.location:
+                    parsed_chat.location = types.ChatLocation(
+                        location=types.Location(
+                            latitude=full_chat.location.geo_point.lat,
+                            longitude=full_chat.location.geo_point.long
+                        ),
+                        address=full_chat.location.address
+                    )
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
