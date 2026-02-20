@@ -45,6 +45,7 @@ extensions = [
     # "sphinx.ext.viewcode",
     "sphinx_copybutton",
     # "sphinx.ext.coverage",
+    "sphinx_llms_txt",
 ]
 
 intersphinx_mapping = {
@@ -129,9 +130,31 @@ latex_elements = {
 
 # Set canonical URL from the Read the Docs Domain
 html_baseurl = os.environ.get("READTHEDOCS_CANONICAL_URL", "")
+if not html_baseurl:
+    html_baseurl = "/pyrogram/"
 
 # Tell Jinja2 templates the build is running on Read the Docs
 if os.environ.get("READTHEDOCS", "") == "True":
     if "html_context" not in globals():
         html_context = {}
     html_context["READTHEDOCS"] = True
+
+llms_txt_filename = "llms.txt"
+
+# Disable full documentation file
+llms_txt_full_file = False
+
+# Provide a specific, agent-friendly summary of Pyrogram
+llms_txt_summary = """Pyrogram is an elegant, modern, and asynchronous MTProto API framework for Telegram in Python for users and bots.
+This documentation covers the Pyrogram Client High-Level API, the Smart Plugin system, and the raw Low-Level Telegram Functions Types.
+We merge changes made to few of pyrogram forks plus changes made by us to this repository. All the features are just customized feature mostly for personal use; there is no guarantee in them being stable, USE AT YOUR OWN RISK.
+"""
+
+llms_txt_title = "PyroTGFork"
+
+# Exclude pages that just consume tokens without providing value (like indexes or search pages)
+llms_txt_exclude = [
+    "search",
+    "genindex",
+    "modindex",
+]
