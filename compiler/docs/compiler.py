@@ -625,6 +625,7 @@ def pyrogram_api():
             InputChecklist
             ChecklistTasksDone
             ChecklistTasksAdded
+            ChatLocation
             Location
             Venue
             Gift

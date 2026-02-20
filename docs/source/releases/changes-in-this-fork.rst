@@ -35,6 +35,10 @@ Changes in this Fork
 | Scheme layer used: 222 |
 +------------------------+
 
+- Add ``location`` in :obj:`~pyrogram.types.Chat` and add missing parameters in :meth:`~pyrogram.Client.create_supergroup`.
+- fix: :meth:`~pyrogram.Client.get_media_group` concurrent logic (contributed by @Alekzum).
+- properly implement in_memory arg in client to support session string. (contributed by @anonymousx97 in `#222 <https://github.com/KurimuzonAkuma/kurigram/pull/222>`__).
+
 - Added the field ``first_profile_audio`` to the class :obj:`~pyrogram.types.Chat` and the methods :meth:`~pyrogram.Client.get_chat_audios`, :meth:`~pyrogram.Client.get_chat_audios_count`, :meth:`~pyrogram.Client.add_profile_audio`, :meth:`~pyrogram.Client.remove_profile_audio`, :meth:`~pyrogram.Client.set_profile_audio_position`.
 - Removed the methods :meth:`~pyrogram.Client.get_received_gifts`, :meth:`~pyrogram.Client.sell_gift`, :meth:`~pyrogram.Client.send_gift`, :meth:`~pyrogram.Client.toggle_gift_is_saved` and the :obj:`~pyrogram.types.ReceivedGift`.
 - Removed the field ``alternative_videos`` from the class :obj:`~pyrogram.types.Message` and added the class :obj:`~pyrogram.types.VideoQuality` and the field ``qualities`` to the class :obj:`~pyrogram.types.Video` allowing to get information about other available qualities of a video.
