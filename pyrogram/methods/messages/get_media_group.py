@@ -66,6 +66,9 @@ class GetMediaGroup:
         # There can be maximum 10 items in a media group.
         # If/else condition to fix the problem of getting correct `media_group_id` when `message_id` is less than 10.
         media_group_id = messages[9].media_group_id if len(messages) == 19 else messages[message_id - 1].media_group_id
+        if media_group_id is None:
+            # Get media group id from message with selected message id (https://t.me/kurigram_chat/5/260054)
+            media_group_id = next((msg.media_group_id) for msg in messages if msg.id == message_id)
 
         if media_group_id is None:
             raise ValueError("The message doesn't belong to a media group")
