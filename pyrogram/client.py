@@ -481,11 +481,7 @@ class Client(Methods):
                     )
 
                     if isinstance(email_sent_code, raw.types.account.EmailVerifiedLogin):
-                        if isinstance(email_sent_code.sent_code, raw.types.auth.SentCodePaymentRequired):
-                            # TODO: raw.functions.auth.CheckPaidAuth
-                            raise Unauthorized(
-                                f"You need to pay {email_sent_code.sent_code.amount}{email_sent_code.sent_code.currency} or contact {email_sent_code.sent_code.support_email_subject} ({email_sent_code.sent_code.support_email_address}) which is currently not supported by Pyrogram."
-                            )
+                        sent_code = types.SentCode._parse(email_sent_code.sent_code)
                 except BadRequest as e:
                     print(e.MESSAGE)
                     self.phone_number = None
@@ -510,7 +506,6 @@ class Client(Methods):
         while True:
             if not self.phone_code:
                 self.phone_code = await ainput("Enter confirmation code: ")
-
             try:
                 signed_in = await self.sign_in(self.phone_number, sent_code.phone_code_hash, self.phone_code)
             except BadRequest as e:
