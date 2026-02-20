@@ -1004,6 +1004,7 @@ def pyrogram_api():
     categories = dict(
         enums="""
         Enumerations
+            ButtonStyle
             ChatAction
             ChatEventAction
             ChatMemberStatus
