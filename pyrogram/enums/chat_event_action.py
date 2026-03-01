@@ -162,5 +162,10 @@ class ChatEventAction(AutoName):
     ``old_topic_info`` Information about the old pinned topic; may be null
     ``new_topic_info`` Information about the new pinned topic; may be null"""
 
+    CHAT_MEMBER_TAG_CHANGED = auto()
+    """A chat member tag has been changed.
+    ```old_member_tag``` - Information about the old chat member tag
+    ```new_member_tag``` - Information about the new chat member tag"""
+
     UNKNOWN = auto()
     "Unknown chat event action"

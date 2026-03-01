@@ -84,6 +84,11 @@ class Message(Object, Update):
         sender_business_bot (:obj:`~pyrogram.types.User`, *optional*):
             The bot that actually sent the message on behalf of the business account. Available only for outgoing messages sent on behalf of the connected business account.
 
+        sender_tag (``str``, *optional*):
+            Tag of the sender of the message in the supergroup at the time the message was sent.
+            May be empty if none or unknown.
+            For messages sent by basic groups or supergroup administrators, the current custom title or tag must be used instead.
+
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the message was sent.
 
@@ -464,6 +469,7 @@ class Message(Object, Update):
         sender_chat: "types.Chat" = None,
         sender_boost_count: int = None,
         sender_business_bot: "types.User" = None,
+        sender_tag: str = None,
         date: datetime = None,
         business_connection_id: str = None,
         chat: "types.Chat" = None,
@@ -685,6 +691,7 @@ class Message(Object, Update):
         self.general_forum_topic_unhidden = general_forum_topic_unhidden
         self.custom_action = custom_action
         self.sender_business_bot = sender_business_bot
+        self.sender_tag = sender_tag
         self.business_connection_id = business_connection_id
         self.successful_payment = successful_payment
         self.paid_media = paid_media
@@ -1452,6 +1459,7 @@ class Message(Object, Update):
                 message.reply_to
             )
             parsed_message.sender_boost_count = getattr(message, "from_boosts_applied", None)
+            parsed_message.sender_tag = getattr(message, "from_rank", None)
 
             if getattr(message, "via_business_bot_id", None):
                 parsed_message.sender_business_bot = types.User._parse(client, users.get(message.via_business_bot_id, None))

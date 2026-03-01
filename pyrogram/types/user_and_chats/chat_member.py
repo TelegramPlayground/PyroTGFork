@@ -45,6 +45,11 @@ class ChatMember(Object):
             A custom title that will be shown to all members instead of "Owner" or "Admin".
             Creator (owner) and administrators only. Can be None in case there's no custom title set.
 
+        tag (``str``, *optional*):
+            Tag of the chat member or its custom title if the member is an administrator of the chat.
+            0-16 characters without emoji.
+            Applicable to basic groups and supergroups only.
+
         until_date (:py:obj:`~datetime.datetime`, *optional*):
             Member, restricted, banned only.
             If status is RESTRICTED or BANNED, Date when restrictions will be lifted for this user.
@@ -81,6 +86,7 @@ class ChatMember(Object):
         user: "types.User" = None,
         chat: "types.Chat" = None,
         custom_title: str = None,
+        tag: str = None,
         until_date: datetime = None,
         joined_date: datetime = None,
         invited_by: "types.User" = None,
@@ -97,6 +103,7 @@ class ChatMember(Object):
         self.user = user
         self.chat = chat
         self.custom_title = custom_title
+        self.tag = tag
         self.until_date = until_date
         self.joined_date = joined_date
         self.invited_by = invited_by
@@ -121,6 +128,7 @@ class ChatMember(Object):
                 user=types.User._parse(client, users[member.user_id]),
                 joined_date=utils.timestamp_to_datetime(member.date),
                 invited_by=types.User._parse(client, users[member.inviter_id]),
+                tag=member.rank,
                 client=client
             )
         elif isinstance(member, raw.types.ChatParticipantAdmin):
@@ -129,12 +137,14 @@ class ChatMember(Object):
                 user=types.User._parse(client, users[member.user_id]),
                 joined_date=utils.timestamp_to_datetime(member.date),
                 invited_by=types.User._parse(client, users[member.inviter_id]),
+                tag=member.rank,
                 client=client
             )
         elif isinstance(member, raw.types.ChatParticipantCreator):
             return ChatMember(
                 status=enums.ChatMemberStatus.OWNER,
                 user=types.User._parse(client, users[member.user_id]),
+                tag=member.rank,
                 client=client
             )
 
@@ -145,6 +155,7 @@ class ChatMember(Object):
                 user=types.User._parse(client, users[member.user_id]),
                 joined_date=utils.timestamp_to_datetime(member.date),
                 until_date=utils.timestamp_to_datetime(member.subscription_until_date),
+                tag=member.rank,
                 client=client
             )
         elif isinstance(member, raw.types.ChannelParticipantAdmin):
@@ -158,6 +169,7 @@ class ChatMember(Object):
                     if member.inviter_id else None
                 ),
                 custom_title=member.rank,
+                tag=member.rank,
                 can_be_edited=member.can_edit,
                 privileges=types.ChatPrivileges._parse(member.admin_rights),
                 client=client
@@ -189,6 +201,7 @@ class ChatMember(Object):
                 is_member=not member.left,
                 restricted_by=types.User._parse(client, users[member.kicked_by]),
                 permissions=types.ChatPermissions._parse(member.banned_rights),
+                tag=member.rank,
                 client=client
             )
         elif isinstance(member, raw.types.ChannelParticipantCreator):
@@ -196,6 +209,7 @@ class ChatMember(Object):
                 status=enums.ChatMemberStatus.OWNER,
                 user=types.User._parse(client, users[member.user_id]),
                 custom_title=member.rank,
+                tag=member.rank,
                 privileges=types.ChatPrivileges._parse(member.admin_rights),
                 client=client
             )
@@ -226,5 +240,6 @@ class ChatMember(Object):
                 joined_date=utils.timestamp_to_datetime(member.date),
                 invited_by=types.User._parse(client, users[member.inviter_id]),
                 until_date=utils.timestamp_to_datetime(member.subscription_until_date),
+                tag=member.rank,
                 client=client
             )

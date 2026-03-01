@@ -55,7 +55,7 @@ class CreateSupergroup:
                 Pass True to create a supergroup for `importing messages <https://core.telegram.org/api/import>`__. 
 
             location (:obj:`~pyrogram.types.ChatLocation`, *optional*):
-                Chat location if a location-basAlekzumed supergroup is being created; pass None to create an ordinary supergroup chat.
+                Chat location if a location-based supergroup is being created; pass None to create an ordinary supergroup chat.
 
         Returns:
             :obj:`~pyrogram.types.Chat`: On success, a chat object is returned.

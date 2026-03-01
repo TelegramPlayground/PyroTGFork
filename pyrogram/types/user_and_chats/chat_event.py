@@ -169,6 +169,9 @@ class ChatEvent(Object):
         old_topic_info, new_topic_info (:obj:`~pyrogram.types.ForumTopic`, *optional*):
             Affected forum topic info of the chat.
 
+        old_member_tag, new_member_tag (``str``, *optional*):
+            Affected tag of the chat member.
+
     """
 
     def __init__(
@@ -247,6 +250,9 @@ class ChatEvent(Object):
 
         old_topic_info: "types.ForumTopic" = None,
         new_topic_info: "types.ForumTopic" = None,
+
+        old_member_tag: str = None,
+        new_member_tag: str = None,
     ):
         super().__init__()
 
@@ -324,6 +330,9 @@ class ChatEvent(Object):
 
         self.old_topic_info = old_topic_info
         self.new_topic_info = new_topic_info
+
+        self.old_member_tag = old_member_tag
+        self.new_member_tag = new_member_tag
 
 
     @staticmethod
@@ -408,6 +417,9 @@ class ChatEvent(Object):
 
         old_topic_info: Optional["types.ForumTopic"] = None
         new_topic_info: Optional["types.ForumTopic"] = None
+
+        old_member_tag: Optional[str] = None
+        new_member_tag: Optional[str] = None
 
         if isinstance(action, raw.types.ChannelAdminLogEventActionChangeAbout):
             old_description = action.prev_value
@@ -625,6 +637,11 @@ class ChatEvent(Object):
             )
             action = enums.ChatEventAction.CHAT_FORUM_TOPIC_PINNED
 
+        elif isinstance(action, raw.typs.ChannelAdminLogEventActionParticipantEditRank):
+            old_member_tag = action.prev_rank
+            new_member_tag = action.new_rank
+            action = enums.ChatEventAction.CHAT_MEMBER_TAG_CHANGED
+
         else:
             action = f"{enums.ChatEventAction.UNKNOWN}-{action.QUALNAME}"
 
@@ -703,4 +720,7 @@ class ChatEvent(Object):
 
             old_topic_info=old_topic_info,
             new_topic_info=new_topic_info,
+
+            old_member_tag=old_member_tag,
+            new_member_tag=new_member_tag,
         )
