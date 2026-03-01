@@ -25,7 +25,7 @@ from .direct_messages_topic import DirectMessagesTopic
 from .document import Document
 from .file import File
 from .game import Game
-from .location import Location
+from .location import ChatLocation, Location
 from .message import Message
 from .message_entity import MessageEntity
 from .photo import Photo
@@ -96,6 +96,7 @@ __all__ = [
     "GiveawayCreated",
     "GiveawayCompleted",
     "GiveawayWinners",
+    "ChatLocation",
     "Location",
     "Message",  # TODO
     "MessageAutoDeleteTimerChanged",

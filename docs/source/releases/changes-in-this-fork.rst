@@ -32,6 +32,21 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 223 |
++------------------------+
+
+
+- Added the field ``can_edit_tag`` to the class :obj:`~pyrogram.types.ChatPermissions`.
+- Added the field ``tag`` to the class :obj:`~pyrogram.types.ChatMember`.
+- Added the field ``can_manage_tags`` to the class :obj:`~pyrogram.types.ChatPrivileges`.
+- Added the methods :meth:`~pyrogram.Client.set_chat_member_tag` and :meth:`~pyrogram.Client.process_chat_protected_content_disable_request`. Updated the method :meth:`~pyyrogram.Client.set_chat_protected_content` to return the appropriate service message, if available.
+- Added the field ``sender_tag`` to the class :obj:`~pyrogram.types.Message`.
+- Add ``location`` in :obj:`~pyrogram.types.Chat` and add missing parameters in :meth:`~pyrogram.Client.create_supergroup`.
+- fix: :meth:`~pyrogram.Client.get_media_group` concurrent logic (contributed by @Alekzum).
+- properly implement in_memory arg in client to support session string. (contributed by @anonymousx97 in `#222 <https://github.com/KurimuzonAkuma/kurigram/pull/222>`__).
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=222&to=223>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=222&to=223>`__.
+
++------------------------+
 | Scheme layer used: 222 |
 +------------------------+
 

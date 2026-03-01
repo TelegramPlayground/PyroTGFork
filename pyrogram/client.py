@@ -329,25 +329,18 @@ class Client(Methods):
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 
-        if self.session_string:
-            self.storage = SQLiteStorage(
-                self.name,
-                workdir=self.workdir,
-                session_string=self.session_string,
-                in_memory=True
-            )
-        elif self.in_memory:
-            self.storage = SQLiteStorage(
-                self.name,
-                workdir=self.workdir,
-                in_memory=True
-            )
-        elif isinstance(storage_engine, Storage):
+        if self.in_memory is None:
+            # default to True when user session if true/false wasn't provided in init
+            self.in_memory = bool(self.session_string)
+
+        if isinstance(storage_engine, Storage):
             self.storage = storage_engine
         else:
             self.storage = SQLiteStorage(
                 self.name,
-                workdir=self.workdir
+                workdir=self.workdir,
+                session_string=self.session_string,
+                in_memory=self.in_memory,
             )
 
         self.dispatcher = Dispatcher(self)

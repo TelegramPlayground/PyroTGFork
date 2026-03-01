@@ -53,3 +53,28 @@ class Location(Object):
                 latitude=geo_point.lat,
                 client=client
             )
+
+
+class ChatLocation(Object):
+    """Represents a location to which a chat is connected.
+    
+    Parameters:
+        location (:obj:`~pyrogram.types.Location`):
+            The location to which the supergroup is connected. Can't be a live location.
+        
+        address (``string``):
+            Location address; 1-64 characters, as defined by the chat owner.
+
+    """
+
+    def __init__(
+        self,
+        *,
+        client: "pyrogram.Client" = None,
+        location: "Location",
+        address: str
+    ):
+        super().__init__(client)
+
+        self.location = location
+        self.address = address
