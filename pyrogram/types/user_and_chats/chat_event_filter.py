@@ -78,6 +78,9 @@ class ChatEventFilter(Object):
             True, if subscription extensions need to be returned.
             Defaults to False.
 
+        member_tag_changes (``bool``, *optional*):
+            True, if member tag and custom title change events need to be returned.
+
     """
 
     def __init__(
@@ -95,6 +98,7 @@ class ChatEventFilter(Object):
         video_chats: bool = False,
         forum_changes: bool = False,
         subscription_extensions: bool = False,
+        member_tag_changes: bool = False,
     ):
         super().__init__()
 
@@ -111,6 +115,7 @@ class ChatEventFilter(Object):
         self.video_chats = video_chats
         self.forum_changes = forum_changes
         self.subscription_extensions = subscription_extensions
+        self.member_tag_changes = member_tag_changes
 
     def write(self) -> "raw.base.ChannelAdminLogEventsFilter":
         join = False
@@ -131,6 +136,7 @@ class ChatEventFilter(Object):
         invites = False
         forum_changes = False
         subscription_extensions = False
+        member_tag_changes = False
 
         if self.new_restrictions:
             ban = True
@@ -175,6 +181,9 @@ class ChatEventFilter(Object):
         
         if self.subscription_extensions:
             subscription_extensions = True
+        
+        if self.member_tag_changes:
+            member_tag_changes = True
 
         return raw.types.ChannelAdminLogEventsFilter(
             join=join,
@@ -193,7 +202,8 @@ class ChatEventFilter(Object):
             delete=delete,
             group_call=group_call,
             invites=invites,
-            # send
+            send=False,
             forums=forum_changes,
             sub_extend=subscription_extensions,
+            edit_rank=member_tag_changes,
         )
