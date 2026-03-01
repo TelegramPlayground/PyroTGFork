@@ -83,7 +83,7 @@ class Story(Object, Update):
             Clickable areas to be shown on the story content.
 
         has_protected_content (``bool``, *optional*):
-            True, if the story can't be forwarded.
+            True, if the story can't be forwarded as a message or reposted as a story.
 
         reactions (List of :obj:`~pyrogram.types.Reaction`):
             List of the reactions to this story.
@@ -102,6 +102,9 @@ class Story(Object, Update):
             The story is deleted.
             A story can be deleted in case it was deleted or you tried to retrieve a story that doesn't exist yet.
         
+        album_ids (List of ``int``):
+            Identifiers of story albums to which the story is added; only for manageable stories.
+
         link (``str``, *property*):
             Generate a link to this story, only for Telegram Premium chats having usernames. Can be None if the story cannot have a link.
 
@@ -132,6 +135,7 @@ class Story(Object, Update):
         forwards: int = None,
         skipped: bool = None,
         deleted: bool = None,
+        album_ids: list[int] = None,
         _raw = None
     ):
         super().__init__(client)
@@ -157,6 +161,7 @@ class Story(Object, Update):
         self.forwards = forwards
         self.skipped = skipped
         self.deleted = deleted
+        self.album_ids = album_ids
         self._raw = _raw
 
     @staticmethod
@@ -182,6 +187,7 @@ class Story(Object, Update):
         is_visible_only_for_self = None
         areas = None
         privacy_settings = None
+        album_ids = None
 
         if isinstance(story_item, raw.types.StoryItemDeleted):
             deleted = True
@@ -235,6 +241,8 @@ class Story(Object, Update):
                         area,
                     ) for area in story_item.media_areas
                 ]
+            
+            album_ids = story_item.albums
 
         return (
             date,
@@ -255,6 +263,7 @@ class Story(Object, Update):
             is_visible_only_for_self,
             areas,
             privacy_settings,
+            album_ids,
         )
 
     @staticmethod
@@ -292,6 +301,7 @@ class Story(Object, Update):
         areas = None
         privacy_settings = None
         repost_info = None
+        album_ids = None
 
         if story_media:
             rawupdate = story_media
@@ -375,6 +385,7 @@ class Story(Object, Update):
                 is_visible_only_for_self,
                 areas,
                 privacy_settings,
+                album_ids,
             ) = Story._parse_story_item(client, story_item)
 
             if not chat and story_item.from_id:
@@ -385,8 +396,8 @@ class Story(Object, Update):
                     chat = types.Chat._parse_chat_chat(client, chats.get(peer_id, None))
                 else:
                     chat = types.Chat._parse_channel_chat(client, chats.get(peer_id, None))
-        
-            if story_item.fwd_from:
+
+            if getattr(story_item, "fwd_from", None):
                 repost_info = types.StoryRepostInfo._parse(
                     client, story_item.fwd_from,
                     users, chats
@@ -416,6 +427,7 @@ class Story(Object, Update):
             areas=areas,
             privacy_settings=privacy_settings,
             repost_info=repost_info,
+            album_ids=album_ids,
         )
 
     async def react(

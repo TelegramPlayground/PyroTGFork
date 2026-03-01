@@ -16,15 +16,15 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from .alternative_video import AlternativeVideo
 from .animation import Animation
 from .audio import Audio
 from .contact import Contact
 from .contact_registered import ContactRegistered
 from .dice import Dice
+from .direct_messages_topic import DirectMessagesTopic
 from .document import Document
 from .game import Game
-from .location import Location
+from .location import ChatLocation, Location
 from .message import Message
 from .message_entity import MessageEntity
 from .photo import Photo
@@ -41,13 +41,13 @@ from .reaction import (
 )
 from .sponsored_message import SponsoredMessage
 from .gift import Gift
-from .received_gift import ReceivedGift
 from .upgraded_gift import UpgradedGift
 from .sticker import Sticker
 from .stripped_thumbnail import StrippedThumbnail
 from .thumbnail import Thumbnail
 from .venue import Venue
 from .video import Video
+from .video_quality import VideoQuality
 from .video_note import VideoNote
 from .voice import Voice
 from .web_app_data import WebAppData
@@ -71,9 +71,13 @@ from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .write_access_allowed import WriteAccessAllowed
 from .paid_message_price_changed import PaidMessagePriceChanged
 from .paid_messages_refunded import PaidMessagesRefunded
+from .checklist import Checklist
+from .checklist_task import ChecklistTask
+from .checklist_tasks_added import ChecklistTasksAdded
+from .checklist_tasks_done import ChecklistTasksDone
+from .direct_message_price_changed import DirectMessagePriceChanged
 
 __all__ = [
-    "AlternativeVideo",
     "Animation",
     "Audio",
     "ChatBoostAdded",
@@ -90,6 +94,7 @@ __all__ = [
     "GiveawayCreated",
     "GiveawayCompleted",
     "GiveawayWinners",
+    "ChatLocation",
     "Location",
     "Message",  # TODO
     "MessageAutoDeleteTimerChanged",
@@ -112,12 +117,12 @@ __all__ = [
     "PollOption",
     "SponsoredMessage",
     "Gift",
-    "ReceivedGift",
     "UpgradedGift",
     "Sticker",
     "Venue",
     "Video",
     "VideoNote",
+    "VideoQuality",
     "Voice",
     "WebAppData",
     "WebPage",
@@ -126,4 +131,10 @@ __all__ = [
     "TranslatedText",
     "PaidMessagePriceChanged",
     "PaidMessagesRefunded",
+    "Checklist",
+    "ChecklistTask",
+    "ChecklistTasksAdded",
+    "ChecklistTasksDone",
+    "DirectMessagePriceChanged",
+    "DirectMessagesTopic",
 ]

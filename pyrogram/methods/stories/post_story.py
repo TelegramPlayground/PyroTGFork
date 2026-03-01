@@ -38,6 +38,7 @@ class PostStory:
         protect_content: bool = None,
         business_connection_id: str = None,
         privacy_settings: "types.StoryPrivacySettings" = None,
+        album_ids: list[int] = None,
         from_story_chat_id: Union[int, str] = None,
         from_story_id: int = None,
         progress: Callable = None,
@@ -90,6 +91,9 @@ class PostStory:
                 The privacy settings for the story; ignored for stories sent to supergroup and channel chats.
                 Defaults to :obj:`~pyrogram.types.StoryPrivacySettingsEveryone`.
 
+            album_ids (List of ``int``, *optional*):
+                Identifiers of story albums to which the story will be added upon posting. An album can have up to ``stories_album_stories_limit``.
+
             from_story_chat_id (``int`` | ``str``, *optional*):
                 Full identifier of the original story, which content was used to create the story; pass None if the story isn't repost of another story.
                 Identifier of the chat that posted the story.
@@ -124,7 +128,7 @@ class PostStory:
 
         """
         if business_connection_id:
-            business_connection = self.business_user_connection_cache.get(business_connection_id)
+            business_connection = self.business_user_connection_cache[business_connection_id]
             if not business_connection:
                 business_connection = await self.get_business_connection(business_connection_id)
 
@@ -230,6 +234,7 @@ class PostStory:
                             caption=message,
                             entities=entities,
                             period=active_period,
+                            albums=album_ids,
                             # fwd_modified=True if from_story_id else None,
                             fwd_from_id=await self.resolve_peer(from_story_chat_id) if from_story_chat_id else None,
                             fwd_from_story=from_story_id,

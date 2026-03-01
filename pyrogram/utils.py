@@ -35,11 +35,22 @@ from pyrogram import types
 from pyrogram.file_id import FileId, FileType, PHOTO_TYPES, DOCUMENT_TYPES
 
 
-async def ainput(prompt: str = "", *, hide: bool = False):
+def get_event_loop() -> asyncio.AbstractEventLoop:
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    return loop
+
+
+async def ainput(prompt: str = "", *, hide: bool = False, loop: Optional[asyncio.AbstractEventLoop] = None):
     """Just like the built-in input, but async"""
+    if loop is None:
+        loop = get_event_loop()
     with ThreadPoolExecutor(1) as executor:
         func = functools.partial(getpass if hide else input, prompt)
-        return await asyncio.get_event_loop().run_in_executor(executor, func)
+        return await loop.run_in_executor(executor, func)
 
 
 def get_input_media_from_file_id(
@@ -239,12 +250,14 @@ def unpack_inline_message_id(inline_message_id: str) -> "raw.base.InputBotInline
 
 
 MIN_CHANNEL_ID_OLD = -1002147483647
-MIN_CHANNEL_ID = -100997852516352
+MIN_CHANNEL_ID = -1997852516352
 MAX_CHANNEL_ID = -1000000000000
 MIN_CHAT_ID_OLD = -2147483647
 MIN_CHAT_ID = -999999999999
 MAX_USER_ID_OLD = 2147483647
 MAX_USER_ID = 999999999999
+MIN_MONOFORUM_CHANNEL_ID = 1002147483649
+MAX_MONOFORUM_CHANNEL_ID = 3000000000000
 
 
 def get_raw_peer_id(peer: raw.base.Peer) -> Optional[int]:
@@ -270,6 +283,9 @@ def get_peer_id(peer: raw.base.Peer) -> int:
         return -peer.chat_id
 
     if isinstance(peer, raw.types.PeerChannel):
+        if MIN_MONOFORUM_CHANNEL_ID <= peer.channel_id < MAX_MONOFORUM_CHANNEL_ID:
+            return peer.channel_id
+
         return MAX_CHANNEL_ID - peer.channel_id
 
     raise ValueError(f"Peer type invalid: {peer}")
@@ -282,13 +298,19 @@ def get_peer_type(peer_id: int) -> str:
 
         if MIN_CHANNEL_ID <= peer_id < MAX_CHANNEL_ID:
             return "channel"
+
     elif 0 < peer_id <= MAX_USER_ID:
         return "user"
+
+    elif MIN_MONOFORUM_CHANNEL_ID <= peer_id < MAX_MONOFORUM_CHANNEL_ID:
+        return "monoforum"
 
     raise ValueError(f"Peer id invalid: {peer_id}")
 
 
 def get_channel_id(peer_id: int) -> int:
+    if MIN_MONOFORUM_CHANNEL_ID <= peer_id < MAX_MONOFORUM_CHANNEL_ID:
+        return MAX_CHANNEL_ID - peer_id
     return MAX_CHANNEL_ID - peer_id
 
 
@@ -455,7 +477,7 @@ def zero_datetime() -> datetime:
 
 
 def timestamp_to_datetime(ts: Optional[int]) -> Optional[datetime]:
-    return datetime.fromtimestamp(ts).replace(tzinfo=timezone.utc) if ts else None
+    return datetime.fromtimestamp(ts, tz=timezone.utc) if ts else None
 
 
 def datetime_to_timestamp(dt: Optional[datetime]) -> Optional[int]:
@@ -466,10 +488,7 @@ async def _get_reply_message_parameters(
     client: "pyrogram.Client",
     message_thread_id: int = None,
     reply_parameters: "types.ReplyParameters" = None
-) -> Union[
-    raw.types.InputReplyToStory,
-    raw.types.InputReplyToMessage
-]:
+) -> "raw.base.InputReplyTo":
     reply_to = raw.types.InputReplyToMessage(
         reply_to_msg_id=0
     )
@@ -481,9 +500,9 @@ async def _get_reply_message_parameters(
             )
         return reply_to
     if (
-       reply_parameters and
-       reply_parameters.story_id and
-       reply_parameters.chat_id
+        reply_parameters and
+        reply_parameters.story_id and
+        reply_parameters.chat_id
     ):
         return raw.types.InputReplyToStory(
             peer=await client.resolve_peer(reply_parameters.chat_id),
@@ -491,6 +510,12 @@ async def _get_reply_message_parameters(
         )
     reply_to_message_id = reply_parameters.message_id
     if not reply_to_message_id:
+        if reply_parameters.direct_messages_topic_id:
+            return raw.types.InputReplyToMonoForum(
+                monoforum_peer_id=await client.resolve_peer(
+                    reply_parameters.direct_messages_topic_id
+                )
+            )
         return reply_to
     reply_to = raw.types.InputReplyToMessage(
         reply_to_msg_id=reply_to_message_id
@@ -514,7 +539,47 @@ async def _get_reply_message_parameters(
         reply_to.reply_to_peer_id = await client.resolve_peer(reply_parameters.chat_id)
     if reply_parameters.quote_position:
         reply_to.quote_offset = reply_parameters.quote_position
+    if reply_parameters.direct_messages_topic_id:
+        reply_to.monoforum_peer_id = await client.resolve_peer(
+            reply_parameters.direct_messages_topic_id
+        )
+    if reply_parameters.checklist_task_id:
+        reply_to.todo_item_id = reply_parameters.checklist_task_id
     return reply_to
+
+
+def _get_reply_to_message_quote_ids(
+    reply_parameters: "types.ReplyParameters" = None,
+    message_id: int = None,
+    chat_type: "enums.ChatType" = None,
+    direct_messages_topic_id: int = None,
+    quote: bool = None,
+    reply_to_message_id: int = None,
+) -> tuple[int, "types.ReplyParameters"]:
+    if quote is None:
+        quote = chat_type != enums.ChatType.PRIVATE
+
+    if not reply_parameters and quote:
+        if reply_to_message_id:
+            reply_parameters = types.ReplyParameters(
+                message_id=reply_to_message_id
+            )
+        else:
+            reply_parameters = types.ReplyParameters(
+                message_id=message_id
+            )
+        reply_to_message_id = None
+
+    if direct_messages_topic_id:
+        if reply_parameters:
+            reply_parameters.direct_messages_topic_id = direct_messages_topic_id
+        else:
+            reply_parameters = types.ReplyParameters(
+                direct_messages_topic_id=direct_messages_topic_id
+            )
+        reply_to_message_id = None
+    
+    return reply_to_message_id, reply_parameters
 
 
 def is_plain_domain(url):
@@ -659,3 +724,14 @@ def is_list_like(obj):
     Ported from https://github.com/LonamiWebs/Telethon/blob/1cb5ff1dd54ecfad41711fc5a4ecf36d2ad8eaf6/telethon/utils.py#L902
     """
     return isinstance(obj, (list, tuple, set, dict, range))
+
+
+def get_premium_duration_month_count(day_count: int) -> int:
+    return max(1, day_count // 30)
+
+
+def get_premium_duration_day_count(month_count: int) -> int:
+    if month_count <= 0 or month_count > 10000000:
+        return 7
+
+    return month_count * 30 + month_count // 3 + month_count // 12

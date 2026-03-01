@@ -32,7 +32,7 @@ from importlib import import_module
 from io import StringIO, BytesIO
 from mimetypes import MimeTypes
 from pathlib import Path
-from typing import Union, Optional, Callable, AsyncGenerator
+from typing import AsyncGenerator, Callable, Optional, Tuple, Union
 
 import pyrogram
 from pyrogram import __version__, __license__
@@ -51,9 +51,9 @@ from pyrogram.errors import (
 from pyrogram.handlers.handler import Handler
 from pyrogram.methods import Methods
 from pyrogram.session import Auth, Session
-from pyrogram.storage import Storage, FileStorage, MemoryStorage
+from pyrogram.storage import SQLiteStorage, Storage
 from pyrogram.types import User, TermsOfService
-from pyrogram.utils import ainput
+from pyrogram.utils import MIN_MONOFORUM_CHANNEL_ID, ainput
 from .connection import Connection
 from .connection.transport import TCP, TCPAbridged, TCPFull
 from .dispatcher import Dispatcher
@@ -310,7 +310,7 @@ class Client(Methods):
         self.phone_code = phone_code
         self.password = password
         self.workers = workers
-        self.WORKDIR = Path(workdir)
+        self.workdir = Path(workdir)
         self.plugins = plugins
         self.parse_mode = parse_mode
         self.no_updates = no_updates
@@ -329,14 +329,19 @@ class Client(Methods):
 
         self.executor = ThreadPoolExecutor(self.workers, thread_name_prefix="Handler")
 
-        if self.session_string:
-            self.storage = MemoryStorage(self.name, self.session_string)
-        elif self.in_memory:
-            self.storage = MemoryStorage(self.name)
-        elif isinstance(storage_engine, Storage):
+        if self.in_memory is None:
+            # default to True when user session if true/false wasn't provided in init
+            self.in_memory = bool(self.session_string)
+
+        if isinstance(storage_engine, Storage):
             self.storage = storage_engine
         else:
-            self.storage = FileStorage(self.name, self.WORKDIR)
+            self.storage = SQLiteStorage(
+                self.name,
+                workdir=self.workdir,
+                session_string=self.session_string,
+                in_memory=self.in_memory,
+            )
 
         self.dispatcher = Dispatcher(self)
         self.rnd_id = MsgId
@@ -369,7 +374,7 @@ class Client(Methods):
         self.updates_watchdog_event = asyncio.Event()
         self.last_update_time = datetime.now()
 
-        self.loop = asyncio.get_event_loop()
+        self.loop = utils.get_event_loop()
 
     def __enter__(self):
         return self.start()
@@ -711,18 +716,24 @@ class Client(Methods):
         elif isinstance(updates, raw.types.UpdatesTooLong):
             log.info(updates)
 
-    async def recover_gaps(self) -> tuple[int, int]:
+    async def recover_gaps(self) -> Tuple[int, int]:
+        if self.skip_updates:
+            log.info("Recover gaps disabled in client params. Skipping recovery")
+            return (0, 0)
+
         states = await self.storage.update_state()
+
+        if not states:
+            log.info("No states found, skipping recovery")
+            return (0, 0)
 
         message_updates_counter = 0
         other_updates_counter = 0
 
-        if not states:
-            log.info("No states found, skipping recovery.")
-            return (message_updates_counter, other_updates_counter)
+        log.info("Started gaps recovering...")
 
-        for state in states:
-            id, local_pts, _, local_date, _ = state
+        for local_state in states:
+            id, local_pts, local_qts, local_date, local_seq = local_state
 
             prev_pts = 0
 
@@ -735,7 +746,7 @@ class Client(Methods):
                             pts=local_pts,
                             limit=10000,
                             force=False
-                        ) if id < 0 else
+                        ) if id < 0 or id > MIN_MONOFORUM_CHANNEL_ID else
                         raw.functions.updates.GetDifference(
                             pts=local_pts,
                             date=local_date,
@@ -746,28 +757,64 @@ class Client(Methods):
                     break
 
                 if isinstance(diff, raw.types.updates.DifferenceEmpty):
+                    await self.storage.update_state(
+                        (
+                            id,
+                            local_pts,
+                            None,
+                            diff.date,
+                            diff.seq
+                        )
+                    )
                     break
                 elif isinstance(diff, raw.types.updates.DifferenceTooLong):
-                    break
+                    await self.storage.update_state(
+                        (
+                            id,
+                            diff.pts,
+                            None,
+                            local_date,
+                            local_seq
+                        )
+                    )
+                    continue
                 elif isinstance(diff, raw.types.updates.Difference):
                     local_pts = diff.state.pts
+                    local_date = diff.state.date
+                    local_seq = diff.state.seq
                 elif isinstance(diff, raw.types.updates.DifferenceSlice):
                     local_pts = diff.intermediate_state.pts
                     local_date = diff.intermediate_state.date
+                    local_seq = diff.intermediate_state.seq
 
                     if prev_pts == local_pts:
                         break
 
                     prev_pts = local_pts
                 elif isinstance(diff, raw.types.updates.ChannelDifferenceEmpty):
+                    await self.storage.update_state(
+                        (
+                            id,
+                            diff.pts,
+                            None,
+                            local_date,
+                            local_seq
+                        )
+                    )
                     break
                 elif isinstance(diff, raw.types.updates.ChannelDifferenceTooLong):
-                    break
+                    await self.storage.update_state(
+                        (
+                            id,
+                            diff.dialog.pts,
+                            None,
+                            local_date,
+                            local_seq
+                        )
+                    )
+                    continue
                 elif isinstance(diff, raw.types.updates.ChannelDifference):
                     local_pts = diff.pts
-
-                if not diff:
-                    break
 
                 users = {i.id: i for i in diff.users}
                 chats = {i.id: i for i in diff.chats}
@@ -795,9 +842,17 @@ class Client(Methods):
                 if isinstance(diff, (raw.types.updates.Difference, raw.types.updates.ChannelDifference)):
                     break
 
-            await self.storage.update_state(id)
+            await self.storage.update_state(
+                (
+                    id,
+                    local_pts,
+                    None,
+                    local_date,
+                    local_seq
+                )
+            )
 
-        log.info("Recovered %s messages and %s updates.", message_updates_counter, other_updates_counter)
+        log.info("Recovered %s messages and %s updates", message_updates_counter, other_updates_counter)
         return (message_updates_counter, other_updates_counter)
 
     async def load_session(self):
@@ -971,7 +1026,8 @@ class Client(Methods):
         file_id, directory, file_name, in_memory, file_size, progress, progress_args = packet
 
         os.makedirs(directory, exist_ok=True) if not in_memory else None
-        temp_file_path = os.path.abspath(re.sub("\\\\", "/", os.path.join(directory, file_name))) + ".temp"
+        mcfn = re.sub("\\\\", "/", os.path.join(directory, file_name))
+        temp_file_path = os.path.abspath(mcfn) + ".temp"
         file = BytesIO() if in_memory else open(temp_file_path, "wb")
 
         try:
@@ -989,6 +1045,7 @@ class Client(Methods):
         else:
             if in_memory:
                 file.name = file_name
+                file.seek(0)
                 return file
             else:
                 file.close()

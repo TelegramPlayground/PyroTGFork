@@ -26,7 +26,8 @@ class GetSendAsChats:
     async def get_send_as_chats(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        for_paid_reactions: Optional[bool] = None
+        for_paid_reactions: Optional[bool] = None,
+        for_live_stories: Optional[bool] = None,
     ) -> list["types.Chat"]:
         """Get the list of "send_as" chats available.
 
@@ -38,6 +39,9 @@ class GetSendAsChats:
 
             for_paid_reactions (``bool``, *optional*):
                 Pass True to get the list of available send_as chats for paid reactions.
+
+            for_live_stories (``bool``, *optional*):
+                Pass True to get the list of available send_as chats for viewing live stories.
 
         Returns:
             List of :obj:`~pyrogram.types.Chat`: The list of chats.
@@ -52,7 +56,8 @@ class GetSendAsChats:
         r = await self.invoke(
             raw.functions.channels.GetSendAs(
                 peer=await self.resolve_peer(chat_id),
-                for_paid_reactions=for_paid_reactions
+                for_paid_reactions=for_paid_reactions,
+                for_live_stories=for_live_stories
             )
         )
 

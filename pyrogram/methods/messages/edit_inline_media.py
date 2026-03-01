@@ -114,6 +114,7 @@ class EditInlineMedia:
                 media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
         elif isinstance(media, types.InputMediaVideo):
             show_caption_above_media.append(media.show_caption_above_media)
+            # TODO: remove this duplicate code
             if is_uploaded_file:
                 media = raw.types.InputMediaUploadedDocument(
                     mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "video/mp4",
@@ -190,7 +191,7 @@ class EditInlineMedia:
                     thumb=await self.save_file(media.thumb),
                     file=await self.save_file(media.media),
                     attributes=filename_attribute,
-                    force_file=True
+                    force_file=media.disable_content_type_detection
                 )
             elif is_external_url:
                 media = raw.types.InputMediaDocumentExternal(

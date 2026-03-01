@@ -141,14 +141,20 @@ class MessageServiceType(AutoName):
     WRITE_ACCESS_ALLOWED = auto()
     "The user accepted webapp bot's request to send messages"
 
-    RECEIVED_GIFT = auto()
-    "Owner Received gift"
-
     PAID_MESSAGE_PRICE_CHANGED = auto()
     "The price for paid messages has changed in the chat"
 
     PAID_MESSAGES_REFUNDED = auto()
     "Refunded paid messages"
+
+    DIRECT_MESSAGE_PRICE_CHANGED = auto()
+    "Direct message price"
+
+    CHECKLIST_TASKS_DONE = auto()
+    "Checklist tasks done"
+
+    CHECKLIST_TASKS_ADDED = auto()
+    "Checklist tasks added"
 
     UNKNOWN = auto()
     "This service message is unsupported by the current version of Pyrogram"

@@ -70,7 +70,7 @@ class MessageReactionCountUpdated(Object, Update):
         chat = None
         peer_id = utils.get_peer_id(update.peer)
         raw_peer_id = utils.get_raw_peer_id(update.peer)
-        if peer_id > 0:
+        if isinstance(update.peer, raw.types.PeerUser):
             chat = types.Chat._parse_user_chat(client, users[raw_peer_id])
         else:
             chat = types.Chat._parse_chat(client, chats[raw_peer_id])

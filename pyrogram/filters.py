@@ -25,6 +25,7 @@ from pyrogram import enums
 from pyrogram.types import (
     Message,
     CallbackQuery,
+    ChosenInlineResult,
     InlineQuery,
     InlineKeyboardMarkup,
     PreCheckoutQuery,
@@ -367,16 +368,6 @@ gift_code = create(gift_code_filter)
 
 # endregion
 
-# region received_gift
-async def received_gift_filter(_, __, m: Message):
-    return bool(m.received_gift)
-
-
-received_gift = create(received_gift_filter)
-"""Filter messages that contain :obj:`~pyrogram.types.ReceivedGift` objects."""
-
-
-# endregion
 
 # region video_filter
 async def video_filter(_, __, m: Message) -> bool:
@@ -1041,6 +1032,7 @@ def regex(pattern: Union[str, Pattern], flags: int = 0) -> Filter:
 
     - :obj:`~pyrogram.types.Message`: The filter will match ``text`` or ``caption``.
     - :obj:`~pyrogram.types.CallbackQuery`: The filter will match ``data``.
+    - :obj:`~pyrogram.types.ChosenInlineResult`: The filter will match ``query``.
     - :obj:`~pyrogram.types.InlineQuery`: The filter will match ``query``.
     - :obj:`~pyrogram.types.PreCheckoutQuery`: The filter will match ``payload``.
 
@@ -1060,7 +1052,7 @@ def regex(pattern: Union[str, Pattern], flags: int = 0) -> Filter:
             value: Str = update.text or update.caption
         elif isinstance(update, CallbackQuery):
             value: str | bytes = update.data
-        elif isinstance(update, InlineQuery):
+        elif isinstance(update, (ChosenInlineResult, InlineQuery)):
             value: str = update.query
         elif isinstance(update, PreCheckoutQuery):
             value: str = update.invoice_payload

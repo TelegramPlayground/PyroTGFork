@@ -16,19 +16,38 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Optional
+
 from pyrogram import raw, types, enums
 from ..object import Object
 
 
 class KeyboardButton(Object):
     """One button of the reply keyboard.
+
+    At most one of the fields other than ``text``, ``icon_custom_emoji_id``, and ``style`` must be used to specify the type of the button.
+
     For simple text buttons String can be used instead of this object to specify text of the button.
-    Optional fields are mutually exclusive.
 
     Parameters:
         text (``str``):
             Text of the button. If none of the optional fields are used, it will be sent as a message when
             the button is pressed.
+
+        icon_custom_emoji_id (``int``, *optional*):
+            Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on Fragment or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription..
+
+        style (:obj:`~pyrogram.enums.ButtonStyle`, *optional*):
+            Style of the button.
+            If omitted, then an app-specific style is used.
+
+        request_users (:obj:`~pyrogram.types.KeyboardButtonRequestUsers`, *optional*):
+            If specified, pressing the button will open a list of suitable users. Identifiers of selected users will be sent to the bot in a “users_shared” service message.
+            Available in private chats only.
+
+        request_chat (:obj:`~pyrogram.types.KeyboardButtonRequestChat`, *optional*):
+            If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a “chat_shared” service message.
+            Available in private chats only.
 
         request_contact (``bool``, *optional*):
             If True, the user's phone number will be sent as a contact when the button is pressed.
@@ -47,24 +66,19 @@ class KeyboardButton(Object):
             button is pressed. The Web App will be able to send a “web_app_data” service message. Available in private
             chats only.
 
-        request_users (:obj:`~pyrogram.types.KeyboardButtonRequestUsers`, *optional*):
-            If specified, pressing the button will open a list of suitable users. Identifiers of selected users will be sent to the bot in a “users_shared” service message.
-            Available in private chats only.
-
-        request_chat (:obj:`~pyrogram.types.KeyboardButtonRequestChat`, *optional*):
-            If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a “chat_shared” service message.
-            Available in private chats only.
     """
 
     def __init__(
         self,
-        text: str,
+        text: str, *,
         request_contact: bool = None,
         request_location: bool = None,
         request_poll: "types.KeyboardButtonPollType" = None,
         web_app: "types.WebAppInfo" = None,
         request_users: "types.KeyboardButtonRequestUsers" = None,
-        request_chat: "types.KeyboardButtonRequestChat" = None
+        request_chat: "types.KeyboardButtonRequestChat" = None,
+        icon_custom_emoji_id: Optional[int] = None,
+        style: "enums.ButtonStyle" = enums.ButtonStyle.DEFAULT
     ):
         super().__init__()
 
@@ -75,22 +89,46 @@ class KeyboardButton(Object):
         self.web_app = web_app
         self.request_users = request_users
         self.request_chat = request_chat
+        self.icon_custom_emoji_id = icon_custom_emoji_id
+        self.style = style
 
     @staticmethod
     def read(b):
+        raw_style: "raw.types.KeyboardButtonStyle" = b.style
+        button_style = enums.ButtonStyle.DEFAULT
+        icon_custom_emoji_id = None
+
+        if raw_style is not None:
+            if raw_style.bg_primary:
+                button_style = enums.ButtonStyle.PRIMARY
+            elif raw_style.bg_danger:
+                button_style = enums.ButtonStyle.DANGER
+            elif raw_style.bg_success:
+                button_style = enums.ButtonStyle.SUCCESS
+            if raw_style.icon:
+                icon_custom_emoji_id = raw_style.icon
+
         if isinstance(b, raw.types.KeyboardButton):
-            return b.text
+            return KeyboardButton(
+                text=b.text,
+                style=button_style,
+                icon_custom_emoji_id=icon_custom_emoji_id
+            )
 
         if isinstance(b, raw.types.KeyboardButtonRequestPhone):
             return KeyboardButton(
                 text=b.text,
-                request_contact=True
+                request_contact=True,
+                style=button_style,
+                icon_custom_emoji_id=icon_custom_emoji_id
             )
 
         if isinstance(b, raw.types.KeyboardButtonRequestGeoLocation):
             return KeyboardButton(
                 text=b.text,
-                request_location=True
+                request_location=True,
+                style=button_style,
+                icon_custom_emoji_id=icon_custom_emoji_id
             )
 
         if isinstance(b, raw.types.KeyboardButtonRequestPoll):
@@ -98,7 +136,9 @@ class KeyboardButton(Object):
                 text=b.text,
                 request_poll=types.KeyboardButtonPollType(
                     type=enums.PollType.QUIZ if b.quiz else enums.PollType.REGULAR
-                )
+                ),
+                style=button_style,
+                icon_custom_emoji_id=icon_custom_emoji_id
             )
 
         if isinstance(b, raw.types.KeyboardButtonSimpleWebView):
@@ -106,9 +146,11 @@ class KeyboardButton(Object):
                 text=b.text,
                 web_app=types.WebAppInfo(
                     url=b.url
-                )
+                ),
+                style=button_style,
+                icon_custom_emoji_id=icon_custom_emoji_id
             )
-
+        # TODO
         if (
             isinstance(b, raw.types.KeyboardButtonRequestPeer) or
             isinstance(b, raw.types.InputKeyboardButtonRequestPeer)
@@ -149,7 +191,9 @@ class KeyboardButton(Object):
                         request_title=_nr,
                         request_username=_ur,
                         request_photo=_pr
-                    )
+                    ),
+                    style=button_style,
+                    icon_custom_emoji_id=icon_custom_emoji_id
                 )
 
             if isinstance(b.peer_type, raw.types.RequestPeerTypeUser):
@@ -163,22 +207,46 @@ class KeyboardButton(Object):
                         request_name=_nr,
                         request_username=_ur,
                         request_photo=_pr
-                    )
+                    ),
+                    style=button_style,
+                    icon_custom_emoji_id=icon_custom_emoji_id
                 )
 
-
     def write(self):
+        if isinstance(self, str):
+            return raw.types.KeyboardButton(
+                text=self
+            )
+
+        raw_style = raw.types.KeyboardButtonStyle(
+            bg_primary=self.style == enums.ButtonStyle.PRIMARY,
+            bg_danger=self.style == enums.ButtonStyle.DANGER,
+            bg_success=self.style == enums.ButtonStyle.SUCCESS,
+            icon=self.icon_custom_emoji_id
+        )
+
         if self.request_contact:
-            return raw.types.KeyboardButtonRequestPhone(text=self.text)
+            return raw.types.KeyboardButtonRequestPhone(
+                text=self.text,
+                style=raw_style
+            )
         elif self.request_location:
-            return raw.types.KeyboardButtonRequestGeoLocation(text=self.text)
+            return raw.types.KeyboardButtonRequestGeoLocation(
+                text=self.text,
+                style=raw_style
+            )
         elif self.request_poll:
             return raw.types.KeyboardButtonRequestPoll(
                 text=self.text,
-                quiz=True if self.request_poll.type == enums.PollType.QUIZ else False
+                quiz=True if self.request_poll.type == enums.PollType.QUIZ else False,
+                style=raw_style
             )
         elif self.web_app:
-            return raw.types.KeyboardButtonSimpleWebView(text=self.text, url=self.web_app.url)
+            return raw.types.KeyboardButtonSimpleWebView(
+                text=self.text,
+                url=self.web_app.url,
+                style=raw_style
+            )
         elif self.request_users:
             return raw.types.InputKeyboardButtonRequestPeer(
                 name_requested=self.request_users.request_name,
@@ -190,7 +258,8 @@ class KeyboardButton(Object):
                     bot=self.request_users.user_is_bot,
                     premium=self.request_users.user_is_premium
                 ),
-                max_quantity=self.request_users.max_quantity
+                max_quantity=self.request_users.max_quantity,
+                style=raw_style
             )
 
         elif self.request_chat:
@@ -209,7 +278,8 @@ class KeyboardButton(Object):
                         user_admin_rights=user_admin_rights,
                         bot_admin_rights=bot_admin_rights
                     ),
-                    max_quantity=1
+                    max_quantity=1,
+                    style=raw_style
                 )
             else:
                 return raw.types.InputKeyboardButtonRequestPeer(
@@ -226,7 +296,11 @@ class KeyboardButton(Object):
                         user_admin_rights=user_admin_rights,
                         bot_admin_rights=bot_admin_rights
                     ),
-                    max_quantity=1
+                    max_quantity=1,
+                    style=raw_style
                 )
         else:
-            return raw.types.KeyboardButton(text=self.text)
+            return raw.types.KeyboardButton(
+                text=self.text,
+                style=raw_style
+            )

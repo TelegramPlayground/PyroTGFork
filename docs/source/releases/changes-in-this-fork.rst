@@ -32,10 +32,89 @@ Changes in this Fork
 =====================
 
 +------------------------+
-| Scheme layer used: 203 |
+| Scheme layer used: 223 |
 +------------------------+
 
-- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=202&to=203>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=202&to=203>`__.
+
+- Added the field ``can_edit_tag`` to the class :obj:`~pyrogram.types.ChatPermissions`.
+- Added the field ``tag`` to the class :obj:`~pyrogram.types.ChatMember`.
+- Added the field ``can_manage_tags`` to the class :obj:`~pyrogram.types.ChatPrivileges`.
+- Added the methods :meth:`~pyrogram.Client.set_chat_member_tag` and :meth:`~pyrogram.Client.process_chat_protected_content_disable_request`. Updated the method :meth:`~pyyrogram.Client.set_chat_protected_content` to return the appropriate service message, if available.
+- Added the field ``sender_tag`` to the class :obj:`~pyrogram.types.Message`.
+- Add ``location`` in :obj:`~pyrogram.types.Chat` and add missing parameters in :meth:`~pyrogram.Client.create_supergroup`.
+- fix: :meth:`~pyrogram.Client.get_media_group` concurrent logic (contributed by @Alekzum).
+- properly implement in_memory arg in client to support session string. (contributed by @anonymousx97 in `#222 <https://github.com/KurimuzonAkuma/kurigram/pull/222>`__).
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=222&to=223>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=222&to=223>`__.
+
++------------------------+
+| Scheme layer used: 222 |
++------------------------+
+
+- Added the field ``first_profile_audio`` to the class :obj:`~pyrogram.types.Chat` and the methods :meth:`~pyrogram.Client.get_chat_audios`, :meth:`~pyrogram.Client.get_chat_audios_count`, :meth:`~pyrogram.Client.add_profile_audio`, :meth:`~pyrogram.Client.remove_profile_audio`, :meth:`~pyrogram.Client.set_profile_audio_position`.
+- Removed the methods :meth:`~pyrogram.Client.get_received_gifts`, :meth:`~pyrogram.Client.sell_gift`, :meth:`~pyrogram.Client.send_gift`, :meth:`~pyrogram.Client.toggle_gift_is_saved` and the :obj:`~pyrogram.types.ReceivedGift`.
+- Removed the field ``alternative_videos`` from the class :obj:`~pyrogram.types.Message` and added the class :obj:`~pyrogram.types.VideoQuality` and the field ``qualities`` to the class :obj:`~pyrogram.types.Video` allowing to get information about other available qualities of a video.
+- Added the fields ``icon_custom_emoji_id`` and ``style`` to the classes :obj:`~pyrogram.types.InlineKeyboardButton` and :obj:`~pyrogram.types.KeyboardButton`.
+- Added the fields ``has_topics_enabled`` and ``allows_users_to_create_topics`` to the class :obj:`~pyrogram.types.User`, which can be used to determine whether forum topic mode is enabled for the bot in private chats.
+- Added the field ``is_name_implicit`` to the classes :obj:`~pyrogram.types.ForumTopic` and :obj:`~pyrogram.types.ForumTopicCreated`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=220&to=222>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=220&to=222>`__.
+
++------------------------+
+| Scheme layer used: 220 |
++------------------------+
+
+- fix: set description correctly in :obj:`~pyrogram.types.InlineQueryResultAnimation` (contributed by @Krau in `#262 <https://github.com/KurimuzonAkuma/kurigram/pull/262>`__).
+- Add generic return type for :meth:`~pyrogram.Client.invoke` (contributed by @ZeN220 in `#252 <https://github.com/KurimuzonAkuma/kurigram/pull/252>`__).
+- fix: :meth:`~pyrogram.Client.copy_message` and :meth:`~pyrogram.types.Message.copy` (contributed by @beepsound in `#210 <https://github.com/TelegramPlayground/pyrogram/pull/210>`__).
+- fix: file pointer position before returning file (contributed by @anonymousx97)
+- Add ``offset_date`` and ``offset_message_id`` in :meth:`~pyrogram.Client.get_dialogs` and :meth:`~pyrogram.Client.search_global`.
+- Enhance ``full_name`` property of :obj:`~pyrogram.types.Chat` (contributed by @Ling-ex in `#206 <https://github.com/TelegramPlayground/pyrogram/pull/206>`__).
+- fix: :meth:`~pyrogram.Client.set_chat_permissions` method (contributed by @sudo-py-dev in `#204 <https://github.com/TelegramPlayground/pyrogram/pull/204>`__).
+- Add ``message_effect_id`` in :meth:`~pyrogram.Client.forward_messages` and :meth:`~pyrogram.types.Message.forward`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=214&to=220>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=214&to=220>`__.
+
++------------------------+
+| Scheme layer used: 214 |
++------------------------+
+
+- `fix get_chat_photos <https://github.com/TelegramPlayground/pyrogram/pull/203>`.
+- `support filters.regex for ChosenInlineResult <https://github.com/TelegramPlayground/pyrogram/pull/198>`__.
+- Update :meth:`~pyrogram.types.Message.reply_game`, :meth:`~pyrogram.types.Message.reply_text`, :meth:`~pyrogram.types.Message.reply_animation`, :meth:`~pyrogram.types.Message.reply_audio`, :meth:`~pyrogram.types.Message.reply_contact`, :meth:`~pyrogram.types.Message.reply_document`, :meth:`~pyrogram.types.Message.reply_location`, :meth:`~pyrogram.types.Message.reply_media_group`, :meth:`~pyrogram.types.Message.reply_photo`, :meth:`~pyrogram.types.Message.reply_poll`, :meth:`~pyrogram.types.Message.reply_sticker`, :meth:`~pyrogram.types.Message.reply_venue`, :meth:`~pyrogram.types.Message.reply_video`, :meth:`~pyrogram.types.Message.reply_video_note`, :meth:`~pyrogram.types.Message.reply_voice`, :meth:`~pyrogram.types.Message.reply_invoice`, :meth:`~pyrogram.types.Message.forward`, :meth:`~pyrogram.types.Message.copy`, :meth:`~pyrogram.types.Message.reply_cached_media` methods to support direct_messages_topic_id.
+- `Fix get_dialogs <https://github.com/TelegramPlayground/pyrogram/pull/195>`__.
+- `Fix timestamp_to_datetime to correctly handle timezone conversion <https://github.com/TelegramPlayground/pyrogram/commit/fc838cf>`__.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=211&to=214>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=211&to=214>`__.
+
++------------------------+
+| Scheme layer used: 211 |
++------------------------+
+
+- Rename direct_message_topic_id to ``direct_messages_topic_id`` in :obj:`~pyrogram.types.ReplyParameters`. This parameter can be used to send a message to a direct messages chat topic.
+- Added the field ``checklist_task_id`` to the class :obj:`~pyrogram.types.ReplyParameters`, allowing bots to reply to a specific checklist task.
+- Added the field ``reply_to_checklist_task_id`` to the class :obj:`~pyrogram.types.Message`.
+- Added the field ``can_manage_direct_messages`` to :obj:`~pyrogram.types.ChatPrivileges`.
+- Added the field ``is_direct_messages`` to the classes :obj:`~pyrogram.types.Chat` which can be used to identify supergroups that are used as channel direct messages chats.
+- Added the fields ``parent_chat`` and ``direct_messages_chat_id`` to the class :obj:`~pyrogram.types.Chat` which indicates the parent channel chat for a channel direct messages chat.
+- Added the class :obj:`~pyrogram.types.DirectMessagesTopic` and the field ``direct_messages_topic`` to the class :obj:`~pyrogram.types.Message`, describing a topic of a direct messages chat.
+- Added :meth:`~pyrogram.Client.get_direct_messages_topics_by_id`, :meth:`~pyrogram.Client.get_direct_messages_topics`, :meth:`~pyrogram.Client.set_chat_direct_messages_group`.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=205&to=211>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=205&to=211>`__.
+
++------------------------+
+| Scheme layer used: 205 |
++------------------------+
+
+- Added the :obj:`~pyrogram.types.ChecklistTask` representing a task in a checklist.
+- Added the :obj:`~pyrogram.types.Checklist` representing a checklist.
+- Added the :obj:`~pyrogram.types.InputChecklistTask` representing a task to add to a checklist.
+- Added the :obj:`~pyrogram.types.InputChecklist` representing a checklist to create.
+- Added the field ``checklist`` to the :obj:`~pyrogram.types.Message` and :obj:`~pyrogram.types.ExternalReplyInfo`, describing a checklist in a message.
+- Added the :obj:`~pyrogram.types.ChecklistTasksDone` and the field ``checklist_tasks_done`` to the :obj:`~pyrogram.types.Message`, describing a service message about status changes for tasks in a checklist (i.e., marked as done/not done).
+- Added the :obj:`~pyrogram.types.ChecklistTasksAdded` and the field ``checklist_tasks_added`` to the :obj:`~pyrogram.types.Message`, describing a service message about the addition of new tasks to a checklist.
+- Added the :meth:`~pyrogram.Client.send_checklist`, allowing bots to send a checklist on behalf of a business account.
+- Added the :meth:`~pyrogram.Client.edit_message_checklist`, allowing bots to edit a checklist on behalf of a business account.
+- Added the :obj:`~pyrogram.types.DirectMessagePriceChanged` and the field ``direct_message_price_changed`` to the :obj:`~pyrogram.types.Message`, describing a service message about a price change for direct messages sent to the channel chat.
+- `Fix conditions for recover_gaps <https://github.com/KurimuzonAkuma/pyrogram/commit/b59ae77>`__.
+- Added ``reply_parameters`` in :meth:`~pyrogram.Client.forward_messages`.
+- Increased the maximum number of options in a poll to 12.
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=202&to=205>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=202&to=205>`__.
 
 +------------------------+
 | Scheme layer used: 202 |

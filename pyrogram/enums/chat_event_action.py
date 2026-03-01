@@ -144,5 +144,28 @@ class ChatEventAction(AutoName):
     CHAT_IS_FORUM_TOGGLED = auto()
     "The ``is_forum`` setting of a channel was toggled. (see ``is_forum``)"
 
+    CHAT_FORUM_TOPIC_CREATED = auto()
+    """A new forum topic was created.
+    ``new_topic_info`` Information about the topic"""
+
+    CHAT_FORUM_TOPIC_EDITED = auto()
+    """A forum topic was edited.
+    ``old_topic_info`` Old information about the topic
+    ``new_topic_info`` New information about the topic"""
+
+    CHAT_FORUM_TOPIC_DELETED = auto()
+    """A forum topic was deleted.
+    ``new_topic_info`` Information about the topic"""
+
+    CHAT_FORUM_TOPIC_PINNED = auto()
+    """A pinned forum topic was changed.
+    ``old_topic_info`` Information about the old pinned topic; may be null
+    ``new_topic_info`` Information about the new pinned topic; may be null"""
+
+    CHAT_MEMBER_TAG_CHANGED = auto()
+    """A chat member tag has been changed.
+    ```old_member_tag``` - Information about the old chat member tag
+    ```new_member_tag``` - Information about the new chat member tag"""
+
     UNKNOWN = auto()
     "Unknown chat event action"
