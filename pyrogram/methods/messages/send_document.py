@@ -226,7 +226,7 @@ class SendDocument:
                     file = await self.save_file(document, progress=progress, progress_args=progress_args)
                     thumb = await self.save_file(thumb)
                     media = raw.types.InputMediaUploadedDocument(
-                        mime_type=mime_type or self.guess_mime_type(document) or "application/zip",
+                        mime_type=mime_type or "", # self.guess_mime_type(document) or "application/zip",
                         file=file,
                         force_file=disable_content_type_detection or None,
                         thumb=thumb,
@@ -244,7 +244,7 @@ class SendDocument:
                 file = await self.save_file(document, progress=progress, progress_args=progress_args)
                 thumb = await self.save_file(thumb)
                 media = raw.types.InputMediaUploadedDocument(
-                    mime_type=mime_type or self.guess_mime_type(file_name or document.name) or "application/zip",
+                    mime_type=mime_type or "", #self.guess_mime_type(file_name or document.name) or "application/zip",
                     file=file,
                     force_file=disable_content_type_detection or None,
                     thumb=thumb,
