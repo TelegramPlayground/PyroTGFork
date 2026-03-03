@@ -1,5 +1,6 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-2024 Dan <https://github.com/delivrance>
+#  Copyright (C) 2026-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -80,9 +81,15 @@ class Parser(HTMLParser):
             entity = raw.types.MessageEntityCustomEmoji
             custom_emoji_id = int(attrs.get("id"))
             extra["document_id"] = custom_emoji_id
+        elif tag == "tg-emoji":
+            entity = raw.types.MessageEntityCustomEmoji
+            custom_emoji_id = int(attrs.get("emoji-id"))
+            extra["document_id"] = custom_emoji_id
         elif tag == "tg-time":
             entity = raw.types.MessageEntityFormattedDate
             extra["date"] = int(attrs.get("unix"))
+            date_time_format = attrs.get("format", "")
+            extra = utils.parse_date_time_format_tl(extra, date_time_format)
         else:
             return
 
@@ -181,16 +188,13 @@ class HTML:
                 language = getattr(entity, "language", "") or ""
                 start_tag = f'<{name} language="{language}">' if language else f"<{name}>"
                 end_tag = f"</{name}>"
-            elif entity_type == MessageEntityType.BLOCKQUOTE:
-                name = entity_type.name.lower()
-                start_tag = f"<{name}>"
-                end_tag = f"</{name}>"
             elif entity_type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
                 name = "blockquote"
                 start_tag = f"<{name} expandable>"
                 end_tag = f"</{name}>"
             elif entity_type in (
                 MessageEntityType.CODE,
+                MessageEntityType.BLOCKQUOTE,
                 MessageEntityType.SPOILER,
             ):
                 name = entity_type.name.lower()

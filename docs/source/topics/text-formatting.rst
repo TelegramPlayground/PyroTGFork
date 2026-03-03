@@ -40,7 +40,97 @@ list of the basic styles currently supported by Pyrogram.
 - spoiler
 - `text URL <https://telegramplayground.github.io/pyrogram/>`_
 - `user text mention <tg://user?id=123456789>`_
+- :emoji:`👍`
 
+
+HTML Style
+----------
+
+To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* parameter when using
+:meth:`~pyrogram.Client.send_message`. The following tags are currently supported:
+
+.. code-block:: text
+
+    <b>bold</b>, <strong>bold</strong>
+
+    <i>italic</i>, <em>italic</em>
+
+    <u>underline</u>
+
+    <s>strike</s>, <del>strike</del>, <strike>strike</strike>
+
+    <spoiler>spoiler</spoiler>
+
+    <a href="https://telegramplayground.github.io/pyrogram/">text URL</a>
+
+    <a href="tg://user?id=123456789">inline mention</a>
+
+    <code>inline fixed-width code</code>
+
+    <emoji id="5469770542288478598">👍</emoji>
+
+    <pre language="py">
+    pre-formatted
+      fixed-width
+        code block
+    </pre>
+
+**Example**:
+
+.. code-block:: python
+
+    from pyrogram.enums import ParseMode
+
+    await app.send_message(
+        chat_id="me",
+        text=(
+            "<b>bold</b>, <strong>bold</strong>"
+            "<i>italic</i>, <em>italic</em>"
+            "<u>underline</u>, <ins>underline</ins>"
+            "<s>strike</s>, <strike>strike</strike>, <del>strike</del>"
+            "<spoiler>spoiler</spoiler>\n\n"
+
+            "<b>bold <i>italic bold <s>italic bold strike <spoiler>italic bold strike spoiler</spoiler></s> <u>underline italic bold</u></i> bold</b>\n\n"
+
+            "<a href=\"https://telegramplayground.github.io/pyrogram/\">inline URL</a> "
+            "<a href=\"tg://user?id=23122162\">inline mention of a user</a>\n"
+            "<emoji id=5469770542288478598>👍</emoji> "
+            "<code>inline fixed-width code</code> "
+            "<pre>pre-formatted fixed-width code block</pre>\n\n"
+            "<pre language='py'>"
+            "for i in range(10):\n"
+            "    print(i)"
+            "</pre>\n\n"
+
+            "<blockquote>Block quotation started"
+            "Block quotation continued"
+            "The last line of the block quotation</blockquote>"
+            "<blockquote expandable>Expandable block quotation started"
+            "Expandable block quotation continued"
+            "Expandable block quotation continued"
+            "Hidden by default part of the block quotation started"
+            "Expandable block quotation continued"
+            "The last line of the block quotation</blockquote>"
+        ),
+        parse_mode=ParseMode.HTML
+    )
+
+.. note::
+
+    All ``<``, ``>`` and ``&`` symbols that are not a part of a tag or an HTML entity must be replaced with the
+    corresponding HTML entities (``<`` with ``&lt;``, ``>`` with ``&gt;`` and ``&`` with ``&amp;``). You can use this
+    snippet to quickly escape those characters:
+
+    .. code-block:: python
+
+        text = "<my & text>"
+        text = text.replace("<", "&lt;").replace("&", "&amp;")
+
+        print(text)
+
+    .. code-block:: text
+
+        &lt;my &amp; text>
 
 
 Markdown Style
@@ -107,11 +197,12 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
             "~~strike~~, "
             "||spoiler||, "
             "[URL](https://telegramplayground.github.io/pyrogram/), "
+            "![👍](tg://emoji?id=5469770542288478598)"
             "`code`, "
-            "```"
+            "```py"
             "for i in range(10):\n"
             "    print(i)"
-            "```"
+            "```\n"
 
             ">blockquote\n"
 
@@ -135,96 +226,6 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.ParseMode.MARKDOWN` to the
         parse_mode=ParseMode.MARKDOWN
     )
 
-HTML Style
-----------
-
-To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* parameter when using
-:meth:`~pyrogram.Client.send_message`. The following tags are currently supported:
-
-.. code-block:: text
-
-    <b>bold</b>, <strong>bold</strong>
-
-    <i>italic</i>, <em>italic</em>
-
-    <u>underline</u>
-
-    <s>strike</s>, <del>strike</del>, <strike>strike</strike>
-
-    <spoiler>spoiler</spoiler>
-
-    <a href="https://telegramplayground.github.io/pyrogram/">text URL</a>
-
-    <a href="tg://user?id=123456789">inline mention</a>
-
-    <code>inline fixed-width code</code>
-
-    <emoji id="12345678901234567890">🔥</emoji>
-
-    <pre language="py">
-    pre-formatted
-      fixed-width
-        code block
-    </pre>
-
-**Example**:
-
-.. code-block:: python
-
-    from pyrogram.enums import ParseMode
-
-    await app.send_message(
-        chat_id="me",
-        text=(
-            "<b>bold</b>, <strong>bold</strong>"
-            "<i>italic</i>, <em>italic</em>"
-            "<u>underline</u>, <ins>underline</ins>"
-            "<s>strike</s>, <strike>strike</strike>, <del>strike</del>"
-            "<spoiler>spoiler</spoiler>\n\n"
-
-            "<b>bold <i>italic bold <s>italic bold strike <spoiler>italic bold strike spoiler</spoiler></s> <u>underline italic bold</u></i> bold</b>\n\n"
-
-            "<a href=\"https://telegramplayground.github.io/pyrogram/\">inline URL</a> "
-            "<a href=\"tg://user?id=23122162\">inline mention of a user</a>\n"
-            "<emoji id=5368324170671202286>👍</emoji> "
-            "<code>inline fixed-width code</code> "
-            "<pre>pre-formatted fixed-width code block</pre>\n\n"
-            "<pre language='py'>"
-            "for i in range(10):\n"
-            "    print(i)"
-            "</pre>\n\n"
-
-            "<blockquote>Block quotation started"
-            "Block quotation continued"
-            "The last line of the block quotation</blockquote>"
-            "<blockquote expandable>Expandable block quotation started"
-            "Expandable block quotation continued"
-            "Expandable block quotation continued"
-            "Hidden by default part of the block quotation started"
-            "Expandable block quotation continued"
-            "The last line of the block quotation</blockquote>"
-        ),
-        parse_mode=ParseMode.HTML
-    )
-
-.. note::
-
-    All ``<``, ``>`` and ``&`` symbols that are not a part of a tag or an HTML entity must be replaced with the
-    corresponding HTML entities (``<`` with ``&lt;``, ``>`` with ``&gt;`` and ``&`` with ``&amp;``). You can use this
-    snippet to quickly escape those characters:
-
-    .. code-block:: python
-
-        import html
-
-        text = "<my text>"
-        text = html.escape(text)
-
-        print(text)
-
-    .. code-block:: text
-
-        &lt;my text&gt;
 
 Different Styles
 ----------------
@@ -271,6 +272,13 @@ Result:
 
 Nested and Overlapping Entities
 -------------------------------
+
+.. warning::
+
+    The Markdown style is not recommended for complex text formatting.
+
+    If you want to use complex text formatting such as nested entities, overlapping entities use the HTML style instead.
+
 
 You can also style texts with more than one decoration at once by nesting entities together. For example, you can send
 a text message with both :bold-underline:`bold and underline` styles, or a text that has both :strike-italic:`italic and

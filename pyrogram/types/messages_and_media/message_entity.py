@@ -20,6 +20,7 @@ from typing import Optional
 
 import pyrogram
 from pyrogram import raw, enums, types
+from pyrogram.parser import utils as parserutils
 from ..object import Object
 
 
@@ -171,5 +172,12 @@ class MessageEntity(Object):
         ):
             entity = raw.types.MessageEntityBlockquote
         elif self.type == enums.MessageEntityType.DATE_TIME:
-            
+            entity = raw.types.MessageEntityFormattedDate
+
+            unix_time = args.pop("unix_time")
+            args["date"] = unix_time
+
+            date_time_format = args.pop("date_time_format")
+            args = parserutils.parse_date_time_format_tl(args, date_time_format)
+
         return entity(**args)
