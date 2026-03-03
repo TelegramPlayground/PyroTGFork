@@ -52,7 +52,7 @@ class Parser(HTMLParser):
             entity = raw.types.MessageEntityBold
         elif tag in ["i", "em"]:
             entity = raw.types.MessageEntityItalic
-        elif tag == "u":
+        elif tag in ["u", "ins"]:
             entity = raw.types.MessageEntityUnderline
         elif tag in ["s", "del", "strike"]:
             entity = raw.types.MessageEntityStrike
@@ -61,10 +61,16 @@ class Parser(HTMLParser):
             extra["collapsed"] = bool("expandable" in attrs.keys())
         elif tag == "code":
             entity = raw.types.MessageEntityCode
+            _maybe_probable_language = attrs.get("class", "")
+            if _maybe_probable_language.startswith(("language-")):
+                entity = raw.types.MessageEntityPre
+                extra["language"] = _maybe_probable_language[10:]
         elif tag == "pre":
             entity = raw.types.MessageEntityPre
             extra["language"] = attrs.get("language", "")
-        elif tag == "spoiler":
+        elif tag in ["spoiler", "tg-spoiler"]:
+            entity = raw.types.MessageEntitySpoiler
+        elif tag == "span" and attrs.get("class", "") == "tg-spoiler":
             entity = raw.types.MessageEntitySpoiler
         elif tag == "a":
             url = attrs.get("href", "")
