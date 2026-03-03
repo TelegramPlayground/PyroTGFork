@@ -19,6 +19,8 @@
 
 import html
 import re
+import urllib.parse
+
 from typing import Optional, Union
 
 import pyrogram
@@ -64,7 +66,9 @@ MARKDOWN_RE = re.compile(
 OPENING_TAG = "<{}>"
 CLOSING_TAG = "</{}>"
 URL_MARKUP = '<a href="{}">{}</a>'
-EMOJI_MARKUP = "<emoji id={}>{}</emoji>"
+EMOJI_MARKUP = "<tg-emoji emoji-id={}>{}</emoji>"
+DATE_TIME_MARKUP = "<tg-time unix={}>{}</tg-time>"
+DATE_TIME_FORMAT_MARKUP = "<tg-time unix={} format={}>{}</tg-time>"
 FIXED_WIDTH_DELIMS = [CODE_DELIM, PRE_DELIM]
 CODE_TAG_RE = re.compile(r"<code>.*?</code>")
 URL_RE = re.compile(r"(!?)\[(.+?)\]\((.+?)\)")
@@ -180,7 +184,7 @@ class Markdown:
 
         for i, match in enumerate(re.finditer(MARKDOWN_RE, text)):
             start, _ = match.span()
-            delim, is_emoji, text_url, url = match.groups()
+            delim, is_emoji_or_date, text_url, url = match.groups()
             full = match.group(0)
 
             if delim in FIXED_WIDTH_DELIMS:
@@ -189,14 +193,30 @@ class Markdown:
             if is_fixed_width and delim not in FIXED_WIDTH_DELIMS:
                 continue
 
-            if not is_emoji and text_url:
+            if not is_emoji_or_date and text_url:
                 text = utils.replace_once(text, full, URL_MARKUP.format(url, text_url), start)
                 continue
 
-            if is_emoji:
+            if is_emoji_or_date:
                 emoji = text_url
-                emoji_id = url.lstrip("tg://emoji?id=")
-                text = utils.replace_once(text, full, EMOJI_MARKUP.format(emoji_id, emoji), start)
+
+                parsed_url = urllib.parse.urlparse(url)
+                # Parse the query parameters into a dictionary-like object
+                query_params = urllib.parse.parse_qs(parsed_url.query)
+
+                # Branch 1: Custom Emoji
+                if parsed_url.netloc == "emoji":
+                    emoji_id = query_params.get("id", ["0"])[0]
+                    text = utils.replace_once(text, full, EMOJI_MARKUP.format(emoji_id, emoji), start)
+                
+                # Branch 2: Custom Time
+                elif parsed_url.netloc == "time":
+                    unix_time = query_params.get("unix", ["0"])[0]
+                    fmt_string = query_params.get("format", [""])[0]
+                    if fmt_string:
+                        text = utils.replace_once(text, full, DATE_TIME_MARKUP.format(unix_time, fmt_string, emoji), start)
+                    else:
+                        text = utils.replace_once(text, full, DATE_TIME_MARKUP.format(unix_time, emoji), start)
                 continue
 
             if delim == BOLD_DELIM:
@@ -323,16 +343,22 @@ class Markdown:
             # No closing delimiter for blockquotes
             else:
                 url = None
-                is_emoji = False
+                is_emoji_or_date = False
                 if entity.type == MessageEntityType.TEXT_LINK:
                     url = entity.url
                 elif entity.type == MessageEntityType.TEXT_MENTION:
                     url = f"tg://user?id={entity.user.id}"
                 elif entity.type == MessageEntityType.CUSTOM_EMOJI:
                     url = f"tg://emoji?id={entity.custom_emoji_id}"
-                    is_emoji = True
+                    is_emoji_or_date = True
+                elif entity.type == MessageEntityType.DATE_TIME:
+                    if entity.date_time_format:
+                        url = f"tg://time?unix={entity.unix_time}&format={entity.date_time_format}"
+                    else:
+                        url = f"tg://time?unix={entity.unix_time}"
+                    is_emoji_or_date = True
                 if url:
-                    if is_emoji:
+                    if is_emoji_or_date:
                         insert_at.append((s, i, "!["))
                     else:
                         insert_at.append((s, i, "["))
