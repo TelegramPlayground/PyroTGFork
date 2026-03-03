@@ -127,7 +127,7 @@ class SetAdministratorTitle:
             raw.functions.messages.EditChatParticipantRank(
                 peer=chat_id,
                 participant=user_id,
-                rank=title
+                rank=tag
             )
         )
 
