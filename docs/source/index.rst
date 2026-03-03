@@ -103,7 +103,7 @@ Meta
     - :doc:`Pyrogram FAQ <faq/index>`: Answers to common Pyrogram questions.
     - :doc:`Support Pyrogram <support>`: Ways to show your appreciation.
     - :doc:`Release Notes <releases/index>`: Release notes for Pyrogram releases.
-    - :doc:`Release Notes <releases/changes-in-this-fork>`: Changes in this Fork.
+    - :doc:`Fork Release Notes <releases/changes-in-this-fork>`: Documented changes of this Fork.
 
 .. toctree::
     :hidden:
