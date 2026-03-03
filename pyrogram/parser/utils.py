@@ -56,3 +56,41 @@ def within_surrogate(text, index, *, length=None):
             '\ud800' <= text[index - 1] <= '\udbff' and  # previous is
             '\ud800' <= text[index] <= '\udfff'  # current is
     )
+
+
+dtf_reegex = r"r|w?[dD]?[tT]?"
+
+
+def parse_date_time_format_tl(args, date_time_format: str):
+    # Initialize all flags to False (matches the empty string behavior)
+    args["relative"] = False
+    args["short_time"] = False
+    args["long_time"] = False
+    args["short_date"] = False
+    args["long_date"] = False
+    args["day_of_week"] = False
+
+    if date_time_format:
+        # Strictly validate against TDLib's required regex
+        if not re.fullmatch(dtf_reegex, date_time_format):
+            raise ValueError(f"Invalid date-time format string: '{date_time_format}'")
+        
+        # Handle the mutually exclusive relative flag
+        if date_time_format == "r":
+            args["relative"] = True
+        else:
+            # Map the remaining control characters
+            if "w" in date_time_format:
+                args["day_of_week"] = True
+                
+            if "d" in date_time_format:
+                args["short_date"] = True
+            elif "D" in date_time_format:
+                args["long_date"] = True
+                
+            if "t" in date_time_format:
+                args["short_time"] = True
+            elif "T" in date_time_format:
+                args["long_time"] = True
+    
+    return args
