@@ -39,13 +39,13 @@ class MessageEntityType(AutoName):
     "``/start@pyrogrambot``"
 
     URL = raw.types.MessageEntityUrl
-    "``https://pyrogram.org`` (see ``url``)"
+    "``https://pyrogram.org``"
 
     EMAIL = raw.types.MessageEntityEmail
     "``do-not-reply@pyrogram.org``"
 
     PHONE_NUMBER = raw.types.MessageEntityPhone
-    "``+1-123-456-7890``"
+    "``+1-212-555-0123``"
 
     BOLD = raw.types.MessageEntityBold
     "Bold text"
@@ -60,7 +60,7 @@ class MessageEntityType(AutoName):
     "Strikethrough text"
 
     SPOILER = raw.types.MessageEntitySpoiler
-    "Spoiler text"
+    "Spoiler message"
 
     BLOCKQUOTE = auto()
     "Block quotation"
@@ -75,19 +75,19 @@ class MessageEntityType(AutoName):
     "Monowidth block (see ``language``)"
 
     TEXT_LINK = raw.types.MessageEntityTextUrl
-    "For clickable text URLs"
+    "For clickable text URLs (see ``url``)"
 
     TEXT_MENTION = raw.types.MessageEntityMentionName
     "for users without usernames (see ``user``)"
 
     CUSTOM_EMOJI = raw.types.MessageEntityCustomEmoji
-    "Custom emoji"
+    "for inline custom emoji stickers (see ``custom_emoji_id``)"
 
     BANK_CARD = raw.types.MessageEntityBankCard
     "Bank card text"
 
     DATE_TIME = raw.types.MessageEntityFormattedDate
-    "Formatted date and time"
+    "for formatted date and time (see ``unix_time`` and ``date_time_format``)"
 
     UNKNOWN = raw.types.MessageEntityUnknown
     "Unknown message entity type"
