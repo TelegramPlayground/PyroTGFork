@@ -59,15 +59,24 @@ class Parser(HTMLParser):
         elif tag == "blockquote":
             entity = raw.types.MessageEntityBlockquote
             extra["collapsed"] = bool("expandable" in attrs.keys())
-        elif tag == "code":
-            entity = raw.types.MessageEntityCode
-            _maybe_probable_language = attrs.get("class", "")
-            if _maybe_probable_language.startswith(("language-")):
-                entity = raw.types.MessageEntityPre
-                extra["language"] = _maybe_probable_language[10:]
         elif tag == "pre":
             entity = raw.types.MessageEntityPre
             extra["language"] = attrs.get("language", "")
+        elif tag == "code":
+            entity = raw.types.MessageEntityCode
+            _class = attrs.get("class", "")
+            active_pres = self.tag_entities.get("pre", [])
+            # Check if this <code> block is nested inside an active <pre>
+            if active_pres:
+                if _class.startswith("language-"):
+                    # Update the language of the currently open <pre> entity
+                    active_pres[-1].language = _class[9:] # 9 is the length of "language-"
+                    
+                # Return early to intentionally skip creating a nested CODE entity.
+                # (When handle_endtag hits </code>, it will safely ignore it).
+                return
+            # If not inside a <pre>, treat it as a standard inline code block
+            entity = raw.types.MessageEntityCode
         elif tag in ["spoiler", "tg-spoiler"]:
             entity = raw.types.MessageEntitySpoiler
         elif tag == "span" and attrs.get("class", "") == "tg-spoiler":
@@ -192,8 +201,8 @@ class HTML:
             elif entity_type == MessageEntityType.PRE:
                 name = entity_type.name.lower()
                 language = getattr(entity, "language", "") or ""
-                start_tag = f'<{name} language="{language}">' if language else f"<{name}>"
-                end_tag = f"</{name}>"
+                start_tag = f'<pre><code class="language-{language}">' if language else f"<{name}>"
+                end_tag = f"</code></pre>" if language else f"</{name}>"
             elif entity_type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
                 name = "blockquote"
                 start_tag = f"<{name} expandable>"
