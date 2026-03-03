@@ -225,7 +225,7 @@ class HTML:
                 end_tag = "</a>"
             elif entity_type == MessageEntityType.CUSTOM_EMOJI:
                 custom_emoji_id = entity.custom_emoji_id
-                start_tag = f'<emoji id="{custom_emoji_id}">'
+                start_tag = f'<tg-emoji emoji-id="{custom_emoji_id}">'
                 end_tag = "</emoji>"
             elif entity_type == MessageEntityType.DATE_TIME:
                 date = entity.unix_time
