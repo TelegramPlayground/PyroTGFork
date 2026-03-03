@@ -442,24 +442,70 @@ class Client(Methods):
             else:
                 break
 
-        sent_code_descriptions = {
-            enums.SentCodeType.APP: "Telegram app",
-            enums.SentCodeType.CALL: "phone call",
-            enums.SentCodeType.FLASH_CALL: "phone flash call",
-            enums.SentCodeType.MISSED_CALL: "",
-            enums.SentCodeType.SMS: "SMS",
-            enums.SentCodeType.FRAGMENT_SMS: "Fragment SMS",
-            enums.SentCodeType.FIREBASE_SMS: "SMS after Firebase attestation",
-            enums.SentCodeType.EMAIL_CODE: "email",
-            enums.SentCodeType.SETUP_EMAIL_REQUIRED: "add and verify email required",
-        }
+        if sent_code.type == enums.SentCodeType.SETUP_EMAIL_REQUIRED:
+            print("Setup email required for authorization")
 
-        print(f"The confirmation code has been sent via {sent_code_descriptions[sent_code.type]}")
+            while True:
+                try:
+                    while True:
+                        email = await ainput("Enter setup email: ", loop=self.loop)
+
+                        if not email:
+                            continue
+
+                        confirm = await ainput(f'Is "{email}" correct? (y/N): ', loop=self.loop)
+
+                        if confirm.lower() == "y":
+                            break
+
+                    await self.invoke(
+                        raw.functions.account.SendVerifyEmailCode(
+                            purpose=raw.types.EmailVerifyPurposeLoginSetup(
+                                phone_number=self.phone_number,
+                                phone_code_hash=sent_code.phone_code_hash,
+                            ),
+                            email=email,
+                        )
+                    )
+
+                    email_code = await ainput("Enter confirmation code received in setup email: ", loop=self.loop)
+
+                    email_sent_code = await self.invoke(
+                        raw.functions.account.VerifyEmail(
+                            purpose=raw.types.EmailVerifyPurposeLoginSetup(
+                                phone_number=self.phone_number,
+                                phone_code_hash=sent_code.phone_code_hash,
+                            ),
+                            verification=raw.types.EmailVerificationCode(code=email_code),
+                        )
+                    )
+
+                    if isinstance(email_sent_code, raw.types.account.EmailVerifiedLogin):
+                        sent_code = types.SentCode._parse(email_sent_code.sent_code)
+                except BadRequest as e:
+                    print(e.MESSAGE)
+                    self.phone_number = None
+                    self.bot_token = None
+                else:
+                    break
+        else:
+            sent_code_descriptions = {
+                enums.SentCodeType.APP: "Telegram app",
+                enums.SentCodeType.CALL: "phone call",
+                enums.SentCodeType.FLASH_CALL: "phone flash call",
+                enums.SentCodeType.MISSED_CALL: "",
+                enums.SentCodeType.SMS: "SMS",
+                enums.SentCodeType.FRAGMENT_SMS: "Fragment SMS",
+                enums.SentCodeType.FIREBASE_SMS: "SMS after Firebase attestation",
+                enums.SentCodeType.EMAIL_CODE: "email",
+                enums.SentCodeType.SETUP_EMAIL_REQUIRED: "add and verify email required",
+            }
+
+            print(f"The confirmation code has been sent via {sent_code_descriptions[sent_code.type]}")
 
         while True:
             if not self.phone_code:
                 self.phone_code = await ainput("Enter confirmation code: ")
-
             try:
                 signed_in = await self.sign_in(self.phone_number, sent_code.phone_code_hash, self.phone_code)
             except BadRequest as e:
