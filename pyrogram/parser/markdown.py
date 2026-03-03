@@ -66,7 +66,7 @@ MARKDOWN_RE = re.compile(
 OPENING_TAG = "<{}>"
 CLOSING_TAG = "</{}>"
 URL_MARKUP = '<a href="{}">{}</a>'
-EMOJI_MARKUP = "<tg-emoji emoji-id={}>{}</emoji>"
+EMOJI_MARKUP = "<tg-emoji emoji-id={}>{}</tg-emoji>"
 DATE_TIME_MARKUP = "<tg-time unix={}>{}</tg-time>"
 DATE_TIME_FORMAT_MARKUP = "<tg-time unix={} format={}>{}</tg-time>"
 FIXED_WIDTH_DELIMS = [CODE_DELIM, PRE_DELIM]
@@ -214,7 +214,7 @@ class Markdown:
                     unix_time = query_params.get("unix", ["0"])[0]
                     fmt_string = query_params.get("format", [""])[0]
                     if fmt_string:
-                        text = utils.replace_once(text, full, DATE_TIME_MARKUP.format(unix_time, fmt_string, emoji), start)
+                        text = utils.replace_once(text, full, DATE_TIME_FORMAT_MARKUP.format(unix_time, fmt_string, emoji), start)
                     else:
                         text = utils.replace_once(text, full, DATE_TIME_MARKUP.format(unix_time, emoji), start)
                 continue
