@@ -46,17 +46,17 @@ class MessageEntity(Object):
             For :obj:`~pyrogram.enums.MessageEntityType.TEXT_MENTION` only, the mentioned user.
 
         language (``str``, *optional*):
-            For "pre" only, the programming language of the entity text.
+            For :obj:`~pyrogram.enums.MessageEntityType.PRE` only, the programming language of the entity text.
 
         custom_emoji_id (``int``, *optional*):
             For :obj:`~pyrogram.enums.MessageEntityType.CUSTOM_EMOJI` only, unique identifier of the custom emoji.
             Use :meth:`~pyrogram.Client.get_custom_emoji_stickers` to get full information about the sticker.
 
         unix_time (``int``, *optional*):
-            For "date_time" only, the Unix time associated with the entity.
+            For :obj:`~pyrogram.enums.MessageEntityType.DATE_TIME` only, the Unix time associated with the entity.
 
         date_time_format (``str``, *optional*):
-            For "date_time" only, the string that defines the formatting of the date and time.
+            For :obj:`~pyrogram.enums.MessageEntityType.DATE_TIME` only, the string that defines the formatting of the date and time.
 
     """
 
