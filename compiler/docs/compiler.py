@@ -317,6 +317,7 @@ def pyrogram_api():
             restrict_chat_member
             promote_chat_member
             set_administrator_title
+            set_chat_member_tag
             set_chat_permissions
             set_chat_photo
             delete_chat_photo
@@ -356,6 +357,7 @@ def pyrogram_api():
             get_send_as_chats
             set_send_as_chat
             set_chat_protected_content
+            process_chat_protected_content_disable_request
             get_created_chats
             transfer_chat_ownership
         """,
@@ -625,6 +627,7 @@ def pyrogram_api():
             InputChecklist
             ChecklistTasksDone
             ChecklistTasksAdded
+            ChatLocation
             Location
             Venue
             Gift
@@ -660,6 +663,10 @@ def pyrogram_api():
             ContactRegistered
             ScreenshotTaken
             DraftMessage
+            ChatOwnerLeft
+            ChatOwnerChanged
+            ChatHasProtectedContentToggled
+            ChatHasProtectedContentDisableRequested
         """,
         chat_topics="""
         Chat Forum Topics
@@ -1003,6 +1010,7 @@ def pyrogram_api():
     categories = dict(
         enums="""
         Enumerations
+            ButtonStyle
             ChatAction
             ChatEventAction
             ChatMemberStatus

@@ -84,6 +84,11 @@ class Message(Object, Update):
         sender_business_bot (:obj:`~pyrogram.types.User`, *optional*):
             The bot that actually sent the message on behalf of the business account. Available only for outgoing messages sent on behalf of the connected business account.
 
+        sender_tag (``str``, *optional*):
+            Tag of the sender of the message in the supergroup at the time the message was sent.
+            May be empty if none or unknown.
+            For messages sent by basic groups or supergroup administrators, the current custom title or tag must be used instead.
+
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the message was sent.
 
@@ -233,6 +238,18 @@ class Message(Object, Update):
 
         left_chat_member (:obj:`~pyrogram.types.User`, *optional*):
             A member was removed from the group, information about them (this member may be the bot itself).
+
+        chat_owner_left (:obj:`~pyrogram.types.ChatOwnerLeft`, *optional*):
+            Service message: chat owner has left.
+
+        chat_owner_changed (:obj:`~pyrogram.types.ChatOwnerChanged`, *optional*):
+            Service message: chat owner has changed.
+
+        chat_has_protected_content_toggled (:obj:`~pyrogram.types.ChatHasProtectedContentToggled`, *optional*):
+            Service message: Chat has_protected_content setting was changed or request to change it was rejected.
+
+        chat_has_protected_content_disable_requested (:obj:`~pyrogram.types.ChatHasProtectedContentDisableRequested`, *optional*):
+            Service message: Chat has_protected_content setting was requested to be disabled.
 
         old_chat_title (``str``, *optional*):
             The supergroup has been migrated from a group with the specified title.
@@ -464,6 +481,7 @@ class Message(Object, Update):
         sender_chat: "types.Chat" = None,
         sender_boost_count: int = None,
         sender_business_bot: "types.User" = None,
+        sender_tag: str = None,
         date: datetime = None,
         business_connection_id: str = None,
         chat: "types.Chat" = None,
@@ -510,6 +528,10 @@ class Message(Object, Update):
         location: "types.Location" = None,
         new_chat_members: list["types.User"] = None,
         left_chat_member: "types.User" = None,
+        chat_owner_left: Optional["types.ChatOwnerLeft"] = None,
+        chat_owner_changed: Optional["types.ChatOwnerChanged"] = None,
+        chat_has_protected_content_toggled: Optional["types.ChatHasProtectedContentToggled"] = None,
+        chat_has_protected_content_disable_requested: Optional["types.ChatHasProtectedContentDisableRequested"] = None,
         old_chat_title: str = None,
         new_chat_title: str = None,
         new_chat_photo: "types.Photo" = None,
@@ -627,6 +649,10 @@ class Message(Object, Update):
         self.dice = dice
         self.new_chat_members = new_chat_members
         self.left_chat_member = left_chat_member
+        self.chat_owner_left = chat_owner_left
+        self.chat_owner_changed = chat_owner_changed
+        self.chat_has_protected_content_toggled = chat_has_protected_content_toggled
+        self.chat_has_protected_content_disable_requested = chat_has_protected_content_disable_requested
         self.old_chat_title = old_chat_title
         self.new_chat_title = new_chat_title
         self.new_chat_photo = new_chat_photo
@@ -685,6 +711,7 @@ class Message(Object, Update):
         self.general_forum_topic_unhidden = general_forum_topic_unhidden
         self.custom_action = custom_action
         self.sender_business_bot = sender_business_bot
+        self.sender_tag = sender_tag
         self.business_connection_id = business_connection_id
         self.successful_payment = successful_payment
         self.paid_media = paid_media
@@ -762,6 +789,10 @@ class Message(Object, Update):
 
             new_chat_members = None
             left_chat_member = None
+            chat_owner_left = None
+            chat_owner_changed = None
+            chat_has_protected_content_toggled = None
+            chat_has_protected_content_disable_requested = None
             old_chat_title = None
             new_chat_title = None
             delete_chat_photo = None
@@ -826,6 +857,18 @@ class Message(Object, Update):
             elif isinstance(action, raw.types.MessageActionChatDeleteUser):
                 left_chat_member = types.User._parse(client, users[action.user_id])
                 service_type = enums.MessageServiceType.LEFT_CHAT_MEMBERS
+            elif isinstance(action, raw.types.MessageActionNewCreatorPending):
+                service_type = enums.MessageServiceType.CHAT_OWNER_LEFT
+                chat_owner_left = types.ChatOwnerLeft._parse(client, action, users)
+            elif isinstance(action, raw.types.MessageActionChangeCreator):
+                service_type = enums.MessageServiceType.CHAT_OWNER_CHANGED
+                chat_owner_changed = types.ChatOwnerChanged._parse(client, action, users)
+            elif isinstance(action, raw.types.MessageActionNoForwardsToggle):
+                service_type = enums.MessageServiceType.CHAT_HAS_PROTECTED_CONTENT_TOGGLED
+                chat_has_protected_content_toggled = types.ChatHasProtectedContentToggled._parse(client, message)
+            elif isinstance(action, raw.types.MessageActionNoForwardsRequest):
+                service_type = enums.MessageServiceType.CHAT_HAS_PROTECTED_CONTENT_DISABLE_REQUESTED
+                chat_has_protected_content_disable_requested = types.ChatHasProtectedContentDisableRequested._parse(client, action)
             elif isinstance(action, raw.types.MessageActionChatEditTitle):
                 new_chat_title = action.title
                 service_type = enums.MessageServiceType.NEW_CHAT_TITLE
@@ -1101,6 +1144,10 @@ class Message(Object, Update):
                 service=service_type,
                 new_chat_members=new_chat_members,
                 left_chat_member=left_chat_member,
+                chat_owner_left=chat_owner_left,
+                chat_owner_changed=chat_owner_changed,
+                chat_has_protected_content_toggled=chat_has_protected_content_toggled,
+                chat_has_protected_content_disable_requested=chat_has_protected_content_disable_requested,
                 old_chat_title=old_chat_title,
                 new_chat_title=new_chat_title,
                 new_chat_photo=new_chat_photo,
@@ -1452,6 +1499,7 @@ class Message(Object, Update):
                 message.reply_to
             )
             parsed_message.sender_boost_count = getattr(message, "from_boosts_applied", None)
+            parsed_message.sender_tag = getattr(message, "from_rank", None)
 
             if getattr(message, "via_business_bot_id", None):
                 parsed_message.sender_business_bot = types.User._parse(client, users.get(message.via_business_bot_id, None))

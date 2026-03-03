@@ -24,7 +24,7 @@ from .dice import Dice
 from .direct_messages_topic import DirectMessagesTopic
 from .document import Document
 from .game import Game
-from .location import Location
+from .location import ChatLocation, Location
 from .message import Message
 from .message_entity import MessageEntity
 from .photo import Photo
@@ -76,6 +76,10 @@ from .checklist_task import ChecklistTask
 from .checklist_tasks_added import ChecklistTasksAdded
 from .checklist_tasks_done import ChecklistTasksDone
 from .direct_message_price_changed import DirectMessagePriceChanged
+from .chat_owner_left import ChatOwnerLeft
+from .chat_owner_changed import ChatOwnerChanged
+from .chat_has_protected_content_toggled import ChatHasProtectedContentToggled
+from .chat_has_protected_content_disable_requested import ChatHasProtectedContentDisableRequested
 
 __all__ = [
     "Animation",
@@ -94,6 +98,7 @@ __all__ = [
     "GiveawayCreated",
     "GiveawayCompleted",
     "GiveawayWinners",
+    "ChatLocation",
     "Location",
     "Message",  # TODO
     "MessageAutoDeleteTimerChanged",
@@ -136,4 +141,8 @@ __all__ = [
     "ChecklistTasksDone",
     "DirectMessagePriceChanged",
     "DirectMessagesTopic",
+    "ChatOwnerLeft",
+    "ChatOwnerChanged",
+    "ChatHasProtectedContentToggled",
+    "ChatHasProtectedContentDisableRequested",
 ]

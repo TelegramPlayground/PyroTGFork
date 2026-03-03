@@ -16,28 +16,33 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-__fork_name__ = "pyrotgfork"
-__version__ = "2.2.19"
-__license__ = "GNU Lesser General Public License v3.0 (LGPL-3.0)"
-__copyright__ = "Copyright (C) 2017-present Dan <https://github.com/delivrance>"
+import pyrogram
+from pyrogram import raw, types
 
-from concurrent.futures.thread import ThreadPoolExecutor
+from ..object import Object
 
 
-class StopTransmission(Exception):
-    pass
+class ChatOwnerChanged(Object):
+    """Describes a service message about an ownership change in the chat.
 
+    Parameters:
+        new_owner (:obj:`~pyrogram.types.User`):
+            The new owner of the chat.
 
-class StopPropagation(StopAsyncIteration):
-    pass
+    """
 
+    def __init__(self, *, new_owner: "types.User"):
+        super().__init__()
 
-class ContinuePropagation(StopAsyncIteration):
-    pass
+        self.new_owner = new_owner
 
-
-from . import raw, types, filters, handlers, emoji, enums
-from .client import Client
-from .sync import idle, compose
-
-crypto_executor = ThreadPoolExecutor(1, thread_name_prefix="CryptoWorker")
+    @staticmethod
+    def _parse(
+        client: "pyrogram.Client",
+        action: "raw.types.MessageActionChangeCreator",
+        users: dict[int, "types.User"],
+    ) -> "ChatOwnerChanged":
+        if isinstance(action, raw.types.MessageActionChangeCreator):
+            return ChatOwnerChanged(
+                new_owner=types.User._parse(client, users.get(action.new_creator_id))
+            )

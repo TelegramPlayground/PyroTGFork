@@ -156,5 +156,17 @@ class MessageServiceType(AutoName):
     CHECKLIST_TASKS_ADDED = auto()
     "Checklist tasks added"
 
+    CHAT_OWNER_LEFT = auto()
+    "Chat owner left"
+
+    CHAT_OWNER_CHANGED = auto()
+    "Chat owner changed"
+
+    CHAT_HAS_PROTECTED_CONTENT_TOGGLED = auto()
+    "Chat has_protected_content setting was changed or request to change it was rejected"
+
+    CHAT_HAS_PROTECTED_CONTENT_DISABLE_REQUESTED = auto()
+    "Chat has_protected_content setting was requested to be disabled"
+
     UNKNOWN = auto()
     "This service message is unsupported by the current version of Pyrogram"

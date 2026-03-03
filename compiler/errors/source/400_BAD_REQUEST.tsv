@@ -223,6 +223,7 @@ FRESH_CHANGE_ADMINS_FORBIDDEN	You were just elected admin, you can't add or modi
 FROM_MESSAGE_BOT_DISABLED	Bots can't use fromMessage min constructors.
 FROM_PEER_INVALID	The specified from_id is invalid.
 FROZEN_PARTICIPANT_MISSING	The current account is [frozen](https://core.telegram.org/api/auth#frozen-accounts), and cannot access the specified peer.
+FUTURE_CREATOR_NONE	The future creator after leave is only applicable to supergroups.
 GAME_BOT_INVALID	Bots can't send another bot's game.
 GENERAL_MODIFY_ICON_FORBIDDEN	You can't modify the icon of the 'General' topic.
 GEO_POINT_INVALID	Invalid geoposition provided.
