@@ -35,6 +35,7 @@ Changes in this Fork
 | Scheme layer used: 223 |
 +------------------------+
 
+- Added the :obj:`~pyrogram.types.MessageEntity` type :obj:`~pyrogram.enums.MessageEntityType.DATE_TIME`, allowing to show a formatted date and time to the user.
 - Added the fields ``chat_owner_left``, ``chat_owner_changed``, ``chat_has_protected_content_toggled`` and ``chat_has_protected_content_disable_requested`` to the class :obj:`~pyrogram.types.Message`.
 - Added the field ``can_edit_tag`` to the class :obj:`~pyrogram.types.ChatPermissions`.
 - Added the field ``tag`` to the class :obj:`~pyrogram.types.ChatMember`.
