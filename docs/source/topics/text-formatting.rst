@@ -17,6 +17,8 @@ Pyrogram uses a custom Markdown dialect for text formatting which adds some uniq
 texts easier in both Markdown and HTML. You can send sophisticated text messages and media captions using a
 variety of decorations that can also be nested in order to combine multiple styles together.
 
+`The official BOT API style HTML formatting is also supported <https://core.telegram.org/bots/api#html-style>`__
+
 
 -----
 
@@ -59,7 +61,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
 
     <s>strike</s>, <del>strike</del>, <strike>strike</strike>
 
-    <spoiler>spoiler</spoiler>
+    <tg-spoiler>spoiler</tg-spoiler>
 
     <a href="https://telegramplayground.github.io/pyrogram/">text URL</a>
 
@@ -67,12 +69,12 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
 
     <code>inline fixed-width code</code>
 
-    <emoji id="5469770542288478598">👍</emoji>
+    <tg-emoji emoji-id="5469770542288478598">👍</tg-emoji>
 
-    <pre language="py">
-    pre-formatted
-      fixed-width
-        code block
+    <pre>
+        <code class="language-python">
+            pre-formatted fixed-width code block written in the Python programming language
+        </code>
     </pre>
 
 **Example**:
@@ -88,19 +90,19 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
             "<i>italic</i>, <em>italic</em>"
             "<u>underline</u>, <ins>underline</ins>"
             "<s>strike</s>, <strike>strike</strike>, <del>strike</del>"
-            "<spoiler>spoiler</spoiler>\n\n"
+            "<tg-spoiler>spoiler</tg-spoiler>\n\n"
 
-            "<b>bold <i>italic bold <s>italic bold strike <spoiler>italic bold strike spoiler</spoiler></s> <u>underline italic bold</u></i> bold</b>\n\n"
+            "<b>bold <i>italic bold <s>italic bold strike <tg-spoiler>italic bold strike spoiler</tg-spoiler></s> <u>underline italic bold</u></i> bold</b>\n\n"
 
             "<a href=\"https://telegramplayground.github.io/pyrogram/\">inline URL</a> "
             "<a href=\"tg://user?id=23122162\">inline mention of a user</a>\n"
-            "<emoji id=5469770542288478598>👍</emoji> "
+            "<tg-emoji emoji-id=5469770542288478598>👍</tg-emoji> "
             "<code>inline fixed-width code</code> "
             "<pre>pre-formatted fixed-width code block</pre>\n\n"
-            "<pre language='py'>"
+            "</pre><code class='language-python'>"
             "for i in range(10):\n"
             "    print(i)"
-            "</pre>\n\n"
+            "</code></pre>\n\n"
 
             "<blockquote>Block quotation started"
             "Block quotation continued"
