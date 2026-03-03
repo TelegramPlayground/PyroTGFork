@@ -177,6 +177,7 @@ ENCRYPTION_DECLINED	The secret chat was declined.
 ENCRYPTION_ID_INVALID	The provided secret chat ID is invalid.
 ENTITIES_TOO_LONG	You provided too many styled message entities.
 ENTITY_BOUNDS_INVALID	A specified [entity offset or length](https://core.telegram.org/api/entities#entity-length) is invalid, see [here](https://core.telegram.org/api/entities#entity-length) for info on how to properly compute the entity offset/length.
+ENTITY_DATE_INVALID	A specified date/time entity is invalid.
 ENTITY_MENTION_USER_INVALID	You mentioned an invalid user.
 ERROR_TEXT_EMPTY	The provided error message is empty.
 EXPIRES_AT_INVALID	The specified `expires_at` timestamp is invalid.
