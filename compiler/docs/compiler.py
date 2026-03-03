@@ -1036,6 +1036,7 @@ def pyrogram_api():
             AccentColor
             SentCodeType
             StickerFormat
+            StickerType
             NextCodeType
             UserStatus
         """,
