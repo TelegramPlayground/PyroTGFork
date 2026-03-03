@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from pyrogram import raw, enums
+from pyrogram.errors import Unauthorized
 from ..object import Object
 
 
@@ -53,10 +54,17 @@ class SentCode(Object):
         self.timeout = timeout
 
     @staticmethod
-    def _parse(sent_code: raw.types.auth.SentCode) -> "SentCode":
-        return SentCode(
-            type=enums.SentCodeType(type(sent_code.type)),
-            phone_code_hash=sent_code.phone_code_hash,
-            next_type=enums.NextCodeType(type(sent_code.next_type)) if sent_code.next_type else None,
-            timeout=sent_code.timeout
-        )
+    def _parse(sent_code: raw.base.auth.SentCode) -> "SentCode":
+        if isinstance(sent_code, raw.types.auth.SentCodePaymentRequired):
+            # TODO: raw.functions.auth.CheckPaidAuth
+            raise Unauthorized(
+                f"You need to pay {sent_code.amount}{sent_code.currency} or contact {sent_code.support_email_subject} ({sent_code.support_email_address}) which is currently not supported by Pyrogram."
+            )
+
+        if isinstance(sent_code, raw.types.auth.SentCode):
+            return SentCode(
+                type=enums.SentCodeType(type(sent_code.type)),
+                phone_code_hash=sent_code.phone_code_hash,
+                next_type=enums.NextCodeType(type(sent_code.next_type)) if sent_code.next_type else None,
+                timeout=sent_code.timeout
+            )

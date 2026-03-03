@@ -20,6 +20,7 @@ from typing import Optional
 
 import pyrogram
 from pyrogram import raw, enums, types
+from pyrogram.parser import utils as parserutils
 from ..object import Object
 
 
@@ -50,6 +51,13 @@ class MessageEntity(Object):
         custom_emoji_id (``int``, *optional*):
             For :obj:`~pyrogram.enums.MessageEntityType.CUSTOM_EMOJI` only, unique identifier of the custom emoji.
             Use :meth:`~pyrogram.Client.get_custom_emoji_stickers` to get full information about the sticker.
+
+        unix_time (``int``, *optional*):
+            For "date_time" only, the Unix time associated with the entity.
+
+        date_time_format (``str``, *optional*):
+            For "date_time" only, the string that defines the formatting of the date and time.
+
     """
 
     def __init__(
@@ -62,7 +70,9 @@ class MessageEntity(Object):
         url: str = None,
         user: "types.User" = None,
         language: str = None,
-        custom_emoji_id: int = None
+        custom_emoji_id: int = None,
+        unix_time: int = None,
+        date_time_format: str = None,
     ):
         super().__init__(client)
 
@@ -73,20 +83,46 @@ class MessageEntity(Object):
         self.user = user
         self.language = language
         self.custom_emoji_id = custom_emoji_id
+        self.unix_time = unix_time
+        self.date_time_format = date_time_format
 
     @staticmethod
     def _parse(client, entity: "raw.base.MessageEntity", users: dict) -> Optional["MessageEntity"]:
+        user_id = None
+        unix_time = None
+        date_time_format = ""
+
         # Special case for InputMessageEntityMentionName -> MessageEntityType.TEXT_MENTION
         # This happens in case of UpdateShortSentMessage inside send_message() where entities are parsed from the input
         if isinstance(entity, raw.types.InputMessageEntityMentionName):
             entity_type = enums.MessageEntityType.TEXT_MENTION
             user_id = entity.user_id.user_id
+
         elif isinstance(entity, raw.types.MessageEntityBlockquote):
             if entity.collapsed:
                 entity_type = enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE
             else:
                 entity_type = enums.MessageEntityType.BLOCKQUOTE
-            user_id = None
+
+        elif isinstance(entity, raw.types.MessageEntityFormattedDate):
+            entity_type = enums.MessageEntityType.DATE_TIME
+            unix_time = entity.date
+            if entity.relative:
+                date_time_format = "r"
+            else:
+                if entity.day_of_week:
+                    date_time_format += "w"
+                if entity.short_date or entity.long_date:
+                    if entity.short_date:
+                        date_time_format += "d"
+                    if entity.long_date:
+                        date_time_format += "D"
+                if entity.short_time or entity.long_time:
+                    if entity.short_time:
+                        date_time_format += "t"
+                    if entity.long_time:
+                        date_time_format += "T"
+
         else:
             entity_type = enums.MessageEntityType(entity.__class__)
             user_id = getattr(entity, "user_id", None)
@@ -99,6 +135,8 @@ class MessageEntity(Object):
             user=types.User._parse(client, users.get(user_id, None)),
             language=getattr(entity, "language", None),
             custom_emoji_id=getattr(entity, "document_id", None),
+            unix_time=unix_time,
+            date_time_format=date_time_format,
             client=client
         )
 
@@ -133,5 +171,13 @@ class MessageEntity(Object):
             enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE,
         ):
             entity = raw.types.MessageEntityBlockquote
+        elif self.type == enums.MessageEntityType.DATE_TIME:
+            entity = raw.types.MessageEntityFormattedDate
+
+            unix_time = args.pop("unix_time")
+            args["date"] = unix_time
+
+            date_time_format = args.pop("date_time_format")
+            args = parserutils.parse_date_time_format_tl(args, date_time_format)
 
         return entity(**args)

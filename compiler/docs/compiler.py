@@ -670,6 +670,10 @@ def pyrogram_api():
             ContactRegistered
             ScreenshotTaken
             DraftMessage
+            ChatOwnerLeft
+            ChatOwnerChanged
+            ChatHasProtectedContentToggled
+            ChatHasProtectedContentDisableRequested
         """,
         chat_topics="""
         Chat Forum Topics

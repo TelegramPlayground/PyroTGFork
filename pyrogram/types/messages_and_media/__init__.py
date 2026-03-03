@@ -77,6 +77,10 @@ from .checklist_task import ChecklistTask
 from .checklist_tasks_added import ChecklistTasksAdded
 from .checklist_tasks_done import ChecklistTasksDone
 from .direct_message_price_changed import DirectMessagePriceChanged
+from .chat_owner_left import ChatOwnerLeft
+from .chat_owner_changed import ChatOwnerChanged
+from .chat_has_protected_content_toggled import ChatHasProtectedContentToggled
+from .chat_has_protected_content_disable_requested import ChatHasProtectedContentDisableRequested
 
 __all__ = [
     "Animation",
@@ -139,4 +143,8 @@ __all__ = [
     "ChecklistTasksDone",
     "DirectMessagePriceChanged",
     "DirectMessagesTopic",
+    "ChatOwnerLeft",
+    "ChatOwnerChanged",
+    "ChatHasProtectedContentToggled",
+    "ChatHasProtectedContentDisableRequested",
 ]

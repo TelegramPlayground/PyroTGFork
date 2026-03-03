@@ -86,5 +86,8 @@ class MessageEntityType(AutoName):
     BANK_CARD = raw.types.MessageEntityBankCard
     "Bank card text"
 
+    DATE_TIME = raw.types.MessageEntityFormattedDate
+    "Formatted date and time"
+
     UNKNOWN = raw.types.MessageEntityUnknown
     "Unknown message entity type"

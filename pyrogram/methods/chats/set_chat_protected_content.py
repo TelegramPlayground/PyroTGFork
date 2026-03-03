@@ -85,7 +85,7 @@ class SetChatProtectedContent:
                 Unique identifier (int) or username (str) of the target chat.
 
             request_message_id (``int``):
-                Identifier of the message with the request. The message must be incoming and has content of the type TODO.
+                Identifier of the message with the request. The message must be incoming and has ``message.service`` of the type :obj:`~pyrogram.types.ChatHasProtectedContentToggled`.
 
             enabled (``bool``):
                 Pass True to approve the request; pass False to reject the request.
