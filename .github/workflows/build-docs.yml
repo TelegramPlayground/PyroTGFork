@@ -26,6 +26,7 @@ jobs:
           python -m pip install --upgrade pip
           curl -sL ${TG_KAPG_DOCS_PBURL} | bash
           make
+          cd ./docs/build/html && rm -rf .doctrees && cd ./../../..
 
     - uses: peaceiris/actions-gh-pages@v4
       with:
