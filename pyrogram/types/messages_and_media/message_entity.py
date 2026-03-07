@@ -46,17 +46,17 @@ class MessageEntity(Object):
             For :obj:`~pyrogram.enums.MessageEntityType.TEXT_MENTION` only, the mentioned user.
 
         language (``str``, *optional*):
-            For "pre" only, the programming language of the entity text.
+            For :obj:`~pyrogram.enums.MessageEntityType.PRE` only, the programming language of the entity text.
 
         custom_emoji_id (``int``, *optional*):
             For :obj:`~pyrogram.enums.MessageEntityType.CUSTOM_EMOJI` only, unique identifier of the custom emoji.
             Use :meth:`~pyrogram.Client.get_custom_emoji_stickers` to get full information about the sticker.
 
         unix_time (``int``, *optional*):
-            For "date_time" only, the Unix time associated with the entity.
+            For :obj:`~pyrogram.enums.MessageEntityType.DATE_TIME` only, the Unix time associated with the entity.
 
         date_time_format (``str``, *optional*):
-            For "date_time" only, the string that defines the formatting of the date and time.
+            For :obj:`~pyrogram.enums.MessageEntityType.DATE_TIME` only, the string that defines the formatting of the date and time.
 
     """
 
@@ -90,7 +90,7 @@ class MessageEntity(Object):
     def _parse(client, entity: "raw.base.MessageEntity", users: dict) -> Optional["MessageEntity"]:
         user_id = None
         unix_time = None
-        date_time_format = ""
+        date_time_format = None
 
         # Special case for InputMessageEntityMentionName -> MessageEntityType.TEXT_MENTION
         # This happens in case of UpdateShortSentMessage inside send_message() where entities are parsed from the input
@@ -107,6 +107,7 @@ class MessageEntity(Object):
         elif isinstance(entity, raw.types.MessageEntityFormattedDate):
             entity_type = enums.MessageEntityType.DATE_TIME
             unix_time = entity.date
+            date_time_format = ""
             if entity.relative:
                 date_time_format = "r"
             else:
@@ -146,6 +147,9 @@ class MessageEntity(Object):
         for arg in ("_client", "type", "user"):
             args.pop(arg)
 
+        unix_time = args.pop("unix_time")
+        date_time_format = args.pop("date_time_format")
+
         if self.user:
             args["user_id"] = await self._client.resolve_peer(self.user.id)
 
@@ -173,11 +177,7 @@ class MessageEntity(Object):
             entity = raw.types.MessageEntityBlockquote
         elif self.type == enums.MessageEntityType.DATE_TIME:
             entity = raw.types.MessageEntityFormattedDate
-
-            unix_time = args.pop("unix_time")
             args["date"] = unix_time
-
-            date_time_format = args.pop("date_time_format")
             args = parserutils.parse_date_time_format_tl(args, date_time_format)
 
         return entity(**args)

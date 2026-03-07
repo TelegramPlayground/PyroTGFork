@@ -87,7 +87,7 @@ class Message(Object, Update):
         sender_tag (``str``, *optional*):
             Tag of the sender of the message in the supergroup at the time the message was sent.
             May be empty if none or unknown.
-            For messages sent by basic groups or supergroup administrators, the current custom title or tag must be used instead.
+            For messages sent in basic groups or supergroup administrators, the current custom title or tag must be used instead.
 
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the message was sent.
