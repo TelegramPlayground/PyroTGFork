@@ -42,7 +42,6 @@ list of the basic styles currently supported by Pyrogram.
 - spoiler
 - `text URL <https://telegramplayground.github.io/pyrogram/>`_
 - `user text mention <tg://user?id=123456789>`_
-- :emoji:`👍`
 
 
 HTML Style
@@ -99,7 +98,7 @@ To strictly use this mode, pass :obj:`~pyrogram.enums.HTML` to the *parse_mode* 
             "<tg-emoji emoji-id=5469770542288478598>👍</tg-emoji> "
             "<code>inline fixed-width code</code> "
             "<pre>pre-formatted fixed-width code block</pre>\n\n"
-            "</pre><code class='language-python'>"
+            "<pre><code class='language-python'>"
             "for i in range(10):\n"
             "    print(i)"
             "</code></pre>\n\n"
