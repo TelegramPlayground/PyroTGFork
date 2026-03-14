@@ -1596,8 +1596,12 @@ class Message(Object, Update):
             }
         ):
             if self.chat.username:
-                return f"https://t.me/{self.chat.username}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
-            return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
+                if self.chat.is_forum:
+                    return f"https://t.me/{self.chat.username}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
+                return f"https://t.me/{self.chat.username}/{self.id}"
+            if self.chat.is_forum:
+                return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}{f'/{self.message_thread_id}' if self.message_thread_id else ''}/{self.id}"
+            return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}/{self.id}"
 
     @property
     def content(self) -> Str:
