@@ -19,6 +19,7 @@
 import os
 import subprocess
 import sys
+import inspect
 
 sys.path.insert(0, os.path.abspath("../.."))
 
@@ -32,6 +33,7 @@ commit_id = subprocess.check_output([
     "HEAD",
 ]).decode("UTF-8").strip()
 
+project_url = "https://github.com/TelegramPlayGround/Pyrogram"
 project = "pyrotgfork"
 copyright = "2017-present, Dan"
 author = "Dan"
@@ -45,6 +47,7 @@ extensions = [
     # "sphinx.ext.viewcode",
     "sphinx_copybutton",
     # "sphinx.ext.coverage",
+    "sphinx.ext.linkcode",
     "sphinx_llms_txt",
 ]
 
@@ -158,3 +161,32 @@ llms_txt_exclude = [
     "genindex",
     "modindex",
 ]
+
+def linkcode_resolve(domain, info):
+    """
+    Determine the URL corresponding to Python object
+    """
+    if domain != "py":
+        return None
+    if not info["module"]:
+        return None
+
+    filename = info["module"].replace(".", "/")
+    
+    # Attempt to find the exact line numbers using the inspect module
+    module = sys.modules.get(info["module"])
+    if module is not None:
+        obj = module
+        for part in info["fullname"].split("."):
+            obj = getattr(obj, part, None)
+            
+        if obj is not None:
+            try:
+                source, lineno = inspect.getsourcelines(obj)
+                # Returns a link like: https://github.com/user/repo/blob/main/module.py#L10-L25
+                return f"{project_url}/blob/{commit_id}/{filename}.py#L{lineno}-L{lineno + len(source) - 1}"
+            except (TypeError, OSError):
+                pass
+    
+    # Fallback to just linking to the file if line numbers can't be resolved
+    return f"{project_url}/blob/{commit_id}/{filename}.py"
