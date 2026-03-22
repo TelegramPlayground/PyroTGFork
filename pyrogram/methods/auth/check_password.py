@@ -44,6 +44,8 @@ class CheckPassword:
 
         Raises:
             BadRequest: In case the password is invalid.
+            RPCError: In case of a Telegram RPC error.
+
         """
         r = await self.invoke(
             raw.functions.auth.CheckPassword(

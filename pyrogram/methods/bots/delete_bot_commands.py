@@ -47,6 +47,9 @@ class DeleteBotCommands:
         Returns:
             ``bool``: On success, True is returned.
 
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 

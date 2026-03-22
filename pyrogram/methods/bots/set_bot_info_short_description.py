@@ -51,6 +51,9 @@ class SetBotInfoShortDescription:
         Returns:
             ``bool``: True on success.
 
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 

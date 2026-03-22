@@ -69,6 +69,7 @@ class Invoke:
 
         Raises:
             RPCError: In case of a Telegram RPC error.
+
         """
         if not self.is_connected:
             raise ConnectionError("Client has not been started yet")

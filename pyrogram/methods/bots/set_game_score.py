@@ -68,6 +68,9 @@ class SetGameScore:
             :obj:`~pyrogram.types.Message` | ``bool``: On success, if the message was sent by the bot, the edited
             message is returned, True otherwise.
 
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 

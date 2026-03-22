@@ -69,6 +69,7 @@ class GetInlineBotResults:
 
         Raises:
             TimeoutError: In case the bot fails to answer within 10 seconds.
+            RPCError: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

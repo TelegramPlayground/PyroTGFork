@@ -45,6 +45,8 @@ class SignInBot:
 
         Raises:
             BadRequest: In case the bot token is invalid.
+            RPCError: In case of a Telegram RPC error.
+
         """
         while True:
             try:

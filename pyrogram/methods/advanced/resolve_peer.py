@@ -53,6 +53,7 @@ class ResolvePeer:
 
         Raises:
             KeyError: In case the peer doesn't exist in the internal database.
+
         """
         if not self.is_connected:
             raise ConnectionError("Client has not been started yet")

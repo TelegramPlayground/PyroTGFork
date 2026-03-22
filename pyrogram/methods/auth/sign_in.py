@@ -57,6 +57,8 @@ class SignIn:
         Raises:
             BadRequest: In case the arguments are invalid.
             SessionPasswordNeeded: In case a password is needed to sign in.
+            RPCError: In case of a Telegram RPC error.
+
         """
         phone_number = phone_number.strip(" +")
 

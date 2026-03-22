@@ -44,6 +44,8 @@ class RecoverPassword:
 
         Raises:
             BadRequest: In case the recovery code is invalid.
+            RPCError: In case of a Telegram RPC error.
+
         """
         r = await self.invoke(
             raw.functions.auth.RecoverPassword(

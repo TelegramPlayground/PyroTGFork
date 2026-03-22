@@ -46,6 +46,10 @@ class SendWebAppCustomRequest:
 
         Returns:
             ``str``: On success, a JSON-serialized result is returned.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         """
 
         r = await self.invoke(

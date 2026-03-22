@@ -47,6 +47,9 @@ class GetBotInfoShortDescription:
         Returns:
             ``str``: On success, returns the text shown on a bot's profile page and sent together with the link when users share the bot in the given language.
 
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 

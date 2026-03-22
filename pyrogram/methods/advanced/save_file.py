@@ -91,6 +91,7 @@ class SaveFile:
 
         Raises:
             RPCError: In case of a Telegram RPC error.
+
         """
         if path is None:
             return None

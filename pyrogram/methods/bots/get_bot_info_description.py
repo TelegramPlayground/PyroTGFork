@@ -47,6 +47,9 @@ class GetBotInfoDescription:
         Returns:
             ``str``: On success, returns the text shown in the chat with a bot if the chat is empty in the given language.
 
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 

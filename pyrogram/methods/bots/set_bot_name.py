@@ -48,6 +48,9 @@ class SetBotName:
                 Unique identifier (int) or username (str) of the bot for which profile photo has to be updated instead of the current user.
                 The bot should have ``can_be_edited`` property set to True.
 
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         Returns:
             ``bool``: True on success.
 

@@ -41,6 +41,10 @@ class AnswerWebAppQuery:
 
         Returns:
             :obj:`~pyrogram.types.SentWebAppMessage`: On success the sent web app message is returned.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         """
 
         r = await self.invoke(

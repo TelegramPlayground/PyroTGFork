@@ -36,6 +36,10 @@ class GetChatMenuButton:
             chat_id (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the target chat.
                 If not specified, default bot's menu button will be returned.
+
+        Raises:
+            RPCError: In case of a Telegram RPC error.
+
         """
 
         if chat_id:
