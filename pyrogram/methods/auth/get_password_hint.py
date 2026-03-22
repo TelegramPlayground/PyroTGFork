@@ -36,7 +36,7 @@ class GetPasswordHint:
             ``str``: On success, the password hint as string is returned.
 
         Raises:
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         """
         return (await self.invoke(raw.functions.account.GetPassword())).hint

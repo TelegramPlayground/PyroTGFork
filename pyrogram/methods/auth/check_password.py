@@ -44,7 +44,7 @@ class CheckPassword:
 
         Raises:
             BadRequest: In case the password is invalid.
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         """
         r = await self.invoke(

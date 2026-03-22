@@ -48,7 +48,7 @@ class GetBotInfoShortDescription:
             ``str``: On success, returns the text shown on a bot's profile page and sent together with the link when users share the bot in the given language.
 
         Raises:
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

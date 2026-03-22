@@ -37,7 +37,7 @@ class TerminateSession:
             ``bool``: On success, in case the session is destroyed, True is returned. Otherwise, False is returned.
 
         Raises:
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         """
         return await self.invoke(

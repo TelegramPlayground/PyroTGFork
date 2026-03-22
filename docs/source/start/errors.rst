@@ -1,5 +1,3 @@
-.. _handling-errors:
-
 Error Handling
 ==============
 

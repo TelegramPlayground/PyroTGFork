@@ -62,7 +62,7 @@ class RequestCallbackAnswer:
         Raises:
             TimeoutError: In case the bot fails to answer within 10 seconds.
             ValueError: In case of invalid arguments.
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

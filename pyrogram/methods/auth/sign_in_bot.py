@@ -45,7 +45,7 @@ class SignInBot:
 
         Raises:
             BadRequest: In case the bot token is invalid.
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         """
         while True:

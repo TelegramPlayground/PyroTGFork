@@ -100,7 +100,7 @@ class SendGame:
             :obj:`~pyrogram.types.Message`: On success, the sent game message is returned.
 
         Raises:
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

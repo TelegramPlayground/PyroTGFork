@@ -55,7 +55,7 @@ class SignUp:
 
         Raises:
             BadRequest: In case the arguments are invalid.
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         """
         phone_number = phone_number.strip(" +")

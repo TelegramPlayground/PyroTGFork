@@ -49,7 +49,7 @@ class HideMyStoryView:
                 await app.hide_my_story_view()
 
         Raises:
-            :ref:`RPCError <handling_errors>`: In case of Telegram RPCError.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         """
 

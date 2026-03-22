@@ -48,7 +48,7 @@ class GetBotInfoDescription:
             ``str``: On success, returns the text shown in the chat with a bot if the chat is empty in the given language.
 
         Raises:
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

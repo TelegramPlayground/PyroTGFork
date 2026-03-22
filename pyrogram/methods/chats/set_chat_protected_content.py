@@ -49,7 +49,7 @@ class SetChatProtectedContent:
             otherwise, in case a message object couldn't be returned, True is returned.
 
         Raises:
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
 
         """
         r = await self.invoke(
@@ -95,7 +95,7 @@ class SetChatProtectedContent:
             otherwise, in case a message object couldn't be returned, True is returned.
 
         Raises:
-            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
         
         """
         r = await self.invoke(
