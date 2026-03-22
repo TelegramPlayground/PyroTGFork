@@ -100,13 +100,13 @@ class Markdown:
 
             # Check if line starts a blockquote
             is_bq = False
-            prefix_len = 0
+            started_as_expandable = False
+
             if line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
                 is_bq = True
-                prefix_len = len(BLOCKQUOTE_EXPANDABLE_DELIM)
+                started_as_expandable = True
             elif line.startswith(BLOCKQUOTE_DELIM):
                 is_bq = True
-                prefix_len = len(BLOCKQUOTE_DELIM)
 
             if is_bq:
                 start_index = i
@@ -115,8 +115,19 @@ class Markdown:
                 # Collect all consecutive blockquote lines
                 while i < len(text_lines):
                     curr_line = text_lines[i]
-                    curr_prefix_len = 0
 
+                    # Detect boundaries between consecutive blockquotes
+                    if i > start_index:
+                        # Boundary 1: `**>` explicitly starts a NEW expandable blockquote
+                        if curr_line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+                            break
+                        
+                        # Boundary 2: If the current block is expandable and the PREVIOUS 
+                        # line closed it with `||`, this line starts a NEW blockquote.
+                        if started_as_expandable and bq_lines and bq_lines[-1].endswith(SPOILER_DELIM):
+                            break
+
+                    curr_prefix_len = 0
                     if curr_line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
                         curr_prefix_len = len(BLOCKQUOTE_EXPANDABLE_DELIM)
                     elif curr_line.startswith(BLOCKQUOTE_DELIM):
@@ -128,9 +139,10 @@ class Markdown:
                     bq_lines.append(curr_line[curr_prefix_len:])
                     i += 1
 
-                # Check if the blockquote ends with the expandability mark (||)
+                # Check if it properly closes as an expandable blockquote
                 is_expandable = False
-                if bq_lines and bq_lines[-1].endswith(SPOILER_DELIM):
+                # Strict Bot API requirement: Must have started with **> AND end with ||
+                if started_as_expandable and bq_lines and bq_lines[-1].endswith(SPOILER_DELIM):
                     is_expandable = True
                     # Strip the || from the final line
                     bq_lines[-1] = bq_lines[-1][:-len(SPOILER_DELIM)]
