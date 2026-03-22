@@ -32,7 +32,7 @@ class InlineKeyboardButton(Object):
         text (``str``):
             Label text on the button.
 
-        icon_custom_emoji_id (``int``, *optional*):
+        icon_custom_emoji_id (``str``, *optional*):
             Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on Fragment or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription..
 
         style (:obj:`~pyrogram.enums.ButtonStyle`, *optional*):
@@ -99,7 +99,10 @@ class InlineKeyboardButton(Object):
 
     def __init__(
         self,
-        text: str, *,
+        text: str,
+        icon_custom_emoji_id: Optional[str] = None,
+        style: Optional["enums.ButtonStyle"] = enums.ButtonStyle.DEFAULT,
+        *,
         url: Optional[str] = None,
         user_id: Optional[int] = None,
         callback_data: Optional[Union[str, bytes]] = None,
@@ -112,8 +115,6 @@ class InlineKeyboardButton(Object):
         callback_game: Optional["types.CallbackGame"] = None,
         pay: Optional[bool] = None,
         callback_data_with_password: Optional[bytes] = None,
-        icon_custom_emoji_id: Optional[int] = None,
-        style: "enums.ButtonStyle" = enums.ButtonStyle.DEFAULT
     ):
         super().__init__()
 
@@ -147,7 +148,7 @@ class InlineKeyboardButton(Object):
             elif raw_style.bg_success:
                 button_style = enums.ButtonStyle.SUCCESS
             if raw_style.icon:
-                icon_custom_emoji_id = raw_style.icon
+                icon_custom_emoji_id = str(raw_style.icon)
 
         if isinstance(b, raw.types.KeyboardButtonCallback):
             # Try decode data to keep it as string, but if fails, fallback to bytes so we don't lose any information,
@@ -267,7 +268,7 @@ class InlineKeyboardButton(Object):
             bg_primary=self.style == enums.ButtonStyle.PRIMARY,
             bg_danger=self.style == enums.ButtonStyle.DANGER,
             bg_success=self.style == enums.ButtonStyle.SUCCESS,
-            icon=self.icon_custom_emoji_id
+            icon=int(self.icon_custom_emoji_id) if self.icon_custom_emoji_id else None
         )
 
         if self.callback_data_with_password is not None:
