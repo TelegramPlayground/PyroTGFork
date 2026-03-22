@@ -52,7 +52,7 @@ class SendMessageDraft:
             parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 Mode for parsing entities in the message text. By default, texts are parsed using Markdown and HTML styles.
 
-            entities (List of :obj:`~pyrogram.types.MessageEntity`):
+            entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
                 List of special entities that appear in the text, which can be specified instead of **parse_mode**.
 
             message_thread_id (``int``, *optional*):
