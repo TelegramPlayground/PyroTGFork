@@ -1585,25 +1585,30 @@ class Message(Object, Update):
 
     @property
     def link(self) -> str:
-        if (
+        # 1. Early exit for invalid chat types
+        if not (
             self.chat and
             self.chat.type in {
                 enums.ChatType.SUPERGROUP,
                 enums.ChatType.CHANNEL
             }
         ):
-            if self.chat.username:
-                if self.chat.is_forum and self.is_topic_message:
-                    return f"https://t.me/{self.chat.username}/{self.message_thread_id}/{self.id}"
-                if self.chat.is_forum:
-                    return f"https://t.me/{self.chat.username}/1/{self.id}"
-                return f"https://t.me/{self.chat.username}/{self.id}"
-            if self.chat.is_forum and self.is_topic_message:
-                return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}/{self.message_thread_id}/{self.id}"
-            # https://t.me/c/1279877202/31475
-            if self.chat.is_forum:
-                return f"https://t.me/{self.chat.username}/1/{self.id}"
-            return f"https://t.me/c/{utils.get_channel_id(self.chat.id)}/{self.id}"
+            return None
+
+        # 2. Determine the base chat identifier (Public Username vs. Private Chat ID)
+        if self.chat.username:
+            chat_path = self.chat.username
+        else:
+            chat_path = f"c/{utils.get_channel_id(self.chat.id)}"
+
+        # 3. Determine the message/thread routing
+        if self.chat.is_forum:
+            # If it's a forum but not a specific topic message, it defaults to topic 1 (General)
+            thread_id = self.message_thread_id if self.is_topic_message else 1
+            return f"https://t.me/{chat_path}/{thread_id}/{self.id}"
+
+        # 4. Standard message link
+        return f"https://t.me/{chat_path}/{self.id}"
 
     @property
     def content(self) -> Str:
