@@ -186,6 +186,12 @@ def linkcode_resolve(domain, info):
         except AttributeError:
             return None
 
+    # --- Unwrap decorators to bypass sync.py wrappers ---
+    try:
+        obj = inspect.unwrap(obj)
+    except:
+        pass # If it can't be unwrapped, just proceed with the original object
+
     try:
         # 1. Get the absolute path to the file locally
         filepath = inspect.getsourcefile(obj)
