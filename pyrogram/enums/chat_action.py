@@ -76,6 +76,3 @@ class ChatAction(AutoName):
 
     WATCH_EMOJI_ANIMATION = raw.types.SendMessageEmojiInteractionSeen
     "The user is watching animations sent by the other party by clicking on an animated emoji"
-
-    STREAM_TEXT = raw.types.SendMessageTextDraftAction
-    "Streaming text message"

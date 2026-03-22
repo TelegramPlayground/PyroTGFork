@@ -67,7 +67,6 @@ from .send_video_note import SendVideoNote
 from .send_voice import SendVoice
 from .stop_poll import StopPoll
 from .stream_media import StreamMedia
-from .send_stream_text import SendStreamText
 from .view_messages import ViewMessages
 from .vote_poll import VotePoll
 from .get_chat_sponsored_messages import GetChatSponsoredMessages
@@ -134,7 +133,6 @@ class Messages(
     SetReaction,
     StopPoll,
     StreamMedia,
-    SendStreamText,
     ViewMessages,
     VotePoll,
     GetChatSponsoredMessages,

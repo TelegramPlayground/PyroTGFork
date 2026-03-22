@@ -460,6 +460,7 @@ def pyrogram_api():
             send_web_app_custom_request
             get_owned_bots
             get_similar_bots
+            send_message_draft
         """,
         phone="""
         Phone
