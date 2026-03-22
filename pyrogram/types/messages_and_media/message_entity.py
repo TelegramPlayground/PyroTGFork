@@ -125,7 +125,10 @@ class MessageEntity(Object):
                         date_time_format += "T"
 
         else:
-            entity_type = enums.MessageEntityType(entity.__class__)
+            try:
+                entity_type = enums.MessageEntityType(entity.__class__)
+            except ValueError:
+                entity_type = enums.MessageEntityType.UNKNOWN
             user_id = getattr(entity, "user_id", None)
 
         return MessageEntity(
