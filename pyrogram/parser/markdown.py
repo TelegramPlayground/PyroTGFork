@@ -169,36 +169,68 @@ class Markdown:
 
     async def parse(self, text: str, strict: bool = False):
         text = self.escape_and_create_quotes(text, strict=strict)
+        
+        matches = list(re.finditer(MARKDOWN_RE, text))
+        valid_delims = set()
+        opened = {}
+        active_fixed_width = None
+        
+        # --- Pass 1: Identify paired delimiters ---
+        for i, match in enumerate(matches):
+            delim, is_emoji_or_date, text_url, url = match.groups()
+            
+            if not delim:
+                continue
+                
+            # If we are inside a code block, ignore all other formatting
+            if active_fixed_width:
+                if delim == active_fixed_width:
+                    # Closing the code block
+                    valid_delims.add(opened[delim])
+                    valid_delims.add(i)
+                    del opened[delim]
+                    active_fixed_width = None
+                continue
+                
+            # Opening a new code block
+            if delim in FIXED_WIDTH_DELIMS:
+                active_fixed_width = delim
+                opened[delim] = i
+                continue
+                
+            # Standard formatting delimiters
+            if delim in [BOLD_DELIM, ITALIC_DELIM, UNDERLINE_DELIM, STRIKE_DELIM, SPOILER_DELIM]:
+                if delim not in opened:
+                    opened[delim] = i
+                else:
+                    # Valid pair found!
+                    valid_delims.add(opened[delim])
+                    valid_delims.add(i)
+                    del opened[delim]
+                    
+        # --- Pass 2: Apply replacements ---
         delims = set()
-        is_fixed_width = False
-
-        for i, match in enumerate(re.finditer(MARKDOWN_RE, text)):
+        
+        for i, match in enumerate(matches):
             start, _ = match.span()
             delim, is_emoji_or_date, text_url, url = match.groups()
             full = match.group(0)
 
-            if delim in FIXED_WIDTH_DELIMS:
-                is_fixed_width = not is_fixed_width
-
-            if is_fixed_width and delim not in FIXED_WIDTH_DELIMS:
-                continue
-
+            # 1. Handle Links
             if not is_emoji_or_date and text_url:
                 text = utils.replace_once(text, full, URL_MARKUP.format(url, text_url), start)
                 continue
 
+            # 2. Handle Emojis and Dates
             if is_emoji_or_date:
                 emoji = text_url
-
                 parsed_url = urllib.parse.urlparse(url)
                 # Parse the query parameters into a dictionary-like object
                 query_params = urllib.parse.parse_qs(parsed_url.query)
-
                 # Branch 1: Custom Emoji
                 if parsed_url.netloc == "emoji":
                     emoji_id = query_params.get("id", ["0"])[0]
                     text = utils.replace_once(text, full, EMOJI_MARKUP.format(emoji_id, emoji), start)
-                
                 # Branch 2: Custom Time
                 elif parsed_url.netloc == "time":
                     unix_time = query_params.get("unix", ["0"])[0]
@@ -209,39 +241,46 @@ class Markdown:
                         text = utils.replace_once(text, full, DATE_TIME_MARKUP.format(unix_time, emoji), start)
                 continue
 
-            if delim == BOLD_DELIM:
-                tag = "b"
-            elif delim == ITALIC_DELIM:
-                tag = "i"
-            elif delim == UNDERLINE_DELIM:
-                tag = "u"
-            elif delim == STRIKE_DELIM:
-                tag = "s"
-            elif delim == CODE_DELIM:
-                tag = "code"
-            elif delim == PRE_DELIM:
-                tag = "pre"
-            elif delim == SPOILER_DELIM:
-                tag = "spoiler"
-            else:
-                continue
+            # 3. Handle Formatting Delimiters
+            if delim:
+                # If this delimiter is unclosed (or suppressed by a code block), leave it as literal text!
+                if i not in valid_delims:
+                    continue
+                    
+                if delim == BOLD_DELIM:
+                    tag = "b"
+                elif delim == ITALIC_DELIM:
+                    tag = "i"
+                elif delim == UNDERLINE_DELIM:
+                    tag = "u"
+                elif delim == STRIKE_DELIM:
+                    tag = "s"
+                elif delim == CODE_DELIM:
+                    tag = "code"
+                elif delim == PRE_DELIM:
+                    tag = "pre"
+                elif delim == SPOILER_DELIM:
+                    tag = "spoiler"
+                else:
+                    continue
 
-            if delim not in delims:
-                delims.add(delim)
-                tag = OPENING_TAG.format(tag)
-            else:
-                delims.remove(delim)
-                tag = CLOSING_TAG.format(tag)
+                if delim not in delims:
+                    delims.add(delim)
+                    tag = OPENING_TAG.format(tag)
+                else:
+                    delims.remove(delim)
+                    tag = CLOSING_TAG.format(tag)
 
-            if delim == PRE_DELIM and delim in delims:
-                delim_and_language = text[text.find(PRE_DELIM) :].split("\n")[0]
-                language = delim_and_language[len(PRE_DELIM) :]
-                text = utils.replace_once(
-                    text, delim_and_language, f'<pre language="{language}">', start
-                )
-                continue
+                # Special handling for PRE language definition
+                if delim == PRE_DELIM and delim in delims:
+                    delim_and_language = text[text.find(PRE_DELIM) :].split("\n")[0]
+                    language = delim_and_language[len(PRE_DELIM) :]
+                    text = utils.replace_once(
+                        text, delim_and_language, f'<pre language="{language}">', start
+                    )
+                    continue
 
-            text = utils.replace_once(text, delim, tag, start)
+                text = utils.replace_once(text, delim, tag, start)
 
         return await self.html.parse(text)
 
