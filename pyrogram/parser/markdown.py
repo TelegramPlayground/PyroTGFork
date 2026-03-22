@@ -39,7 +39,7 @@ PRE_DELIM = "```"
 BLOCKQUOTE_DELIM = ">"
 BLOCKQUOTE_ESCAPE_DELIM = "|>"
 BLOCKQUOTE_EXPANDABLE_DELIM = "**>"
-BLOCKQUOTE_EXPANDABLE_OPTIONAL_END_DELIM = "<**"
+BLOCKQUOTE_EXPANDABLE_OPTIONAL_END_DELIM = "<**"  # Kept for backwards compatibility if imported elsewhere
 
 MARKDOWN_RE = re.compile(
     r"({d})|(!?)\[(.+?)\]\((.+?)\)".format(
@@ -81,98 +81,81 @@ class Markdown:
     @staticmethod
     def escape_and_create_quotes(text: str, strict: bool):
         text_lines: list[Union[str, None]] = text.splitlines()
-
-        # Indexes of Already escaped lines
         html_escaped_list: list[int] = []
 
-        # Temporary Queue to hold lines to be quoted
-        # Index and Line
-        to_quote_list: list[tuple[int, str]] = []
+        i = 0
+        while i < len(text_lines):
+            line = text_lines[i]
 
-        def create_blockquote(quote_type: str = "") -> None:
-            """
-            Merges all lines in quote_queue into first line of queue
-            Encloses that line in html quote
-            Replaces rest of the lines with None placeholders to preserve indexes
-            """
-            if len(to_quote_list) == 0:
-                return
+            if line is None:
+                i += 1
+                continue
 
-            # Create quoted text block
-            joined_lines = "\n".join([text for _, text in to_quote_list])
+            # Ignore Escaped >
+            if line.startswith(BLOCKQUOTE_ESCAPE_DELIM):
+                text_lines[i] = html.escape(line[1:]) if strict else line[1:]
+                html_escaped_list.append(i)
+                i += 1
+                continue
 
-            first_line_index, _ = to_quote_list[0]
+            # Check if line starts a blockquote
+            is_bq = False
+            prefix_len = 0
+            if line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+                is_bq = True
+                prefix_len = len(BLOCKQUOTE_EXPANDABLE_DELIM)
+            elif line.startswith(BLOCKQUOTE_DELIM):
+                is_bq = True
+                prefix_len = len(BLOCKQUOTE_DELIM)
 
-            # Enclose the block in html quote
-            # and add to starting index of quoted line
-            text_lines[first_line_index] = f"<blockquote{quote_type}>{joined_lines}</blockquote>"
+            if is_bq:
+                start_index = i
+                bq_lines = []
 
-            # Set None Placeholders for preserving indexes
-            for idx, line_to_remove in to_quote_list[1:]:
-                text_lines[idx] = None
+                # Collect all consecutive blockquote lines
+                while i < len(text_lines):
+                    curr_line = text_lines[i]
+                    curr_prefix_len = 0
 
-            # clear queue
-            to_quote_list.clear()
+                    if curr_line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+                        curr_prefix_len = len(BLOCKQUOTE_EXPANDABLE_DELIM)
+                    elif curr_line.startswith(BLOCKQUOTE_DELIM):
+                        curr_prefix_len = len(BLOCKQUOTE_DELIM)
+                    else:
+                        break  # No longer in a blockquote
 
-        def process_text(start_delimiter, end_delimiter: str = "", quote_type: str = ""):
-            for index, line in enumerate(text_lines):
-                # Ignore None placeholders from previous runs
-                if line is None:
-                    continue
+                    # Strip the delimiter
+                    bq_lines.append(curr_line[curr_prefix_len:])
+                    i += 1
 
-                # Ignore Escaped >
-                if line.startswith(BLOCKQUOTE_ESCAPE_DELIM):
-                    text_lines[index] = line[1:]
-                    create_blockquote(quote_type=quote_type)
-                    continue
+                # Check if the blockquote ends with the expandability mark (||)
+                is_expandable = False
+                if bq_lines and bq_lines[-1].endswith(SPOILER_DELIM):
+                    is_expandable = True
+                    # Strip the || from the final line
+                    bq_lines[-1] = bq_lines[-1][:-len(SPOILER_DELIM)]
 
-                # Parse lines starting with delimiter
-                if line.startswith(start_delimiter):
-                    endswith_delimiter = end_delimiter and line.endswith(end_delimiter)
+                # Escape if strict
+                if strict:
+                    bq_lines = [html.escape(l) for l in bq_lines]
 
-                    # Indexes to skip in line
-                    start_index = len(start_delimiter)
-                    end_index = end_index = len(line) - len(end_delimiter) if endswith_delimiter else len(line)
+                # Create the merged blockquote entity
+                joined_lines = "\n".join(bq_lines)
+                quote_type = " expandable" if is_expandable else ""
 
-                    # Strip delimiters
-                    delimiter_stripped_line = line[start_index:end_index]
+                text_lines[start_index] = f"<blockquote{quote_type}>{joined_lines}</blockquote>"
+                html_escaped_list.append(start_index)
 
-                    # Escape if strict
-                    parsed_line = html.escape(delimiter_stripped_line) if strict else delimiter_stripped_line
-                    
-                    # add to queue
-                    to_quote_list.append((index, parsed_line))
-
-                    # save line index
-                    html_escaped_list.append(index)
-
-                    # if line doesn't end with delimiter continue loop
-                    if not endswith_delimiter:
-                        continue
-
-                # If line doesn't start with a delimiter
-                # or has ended with delimiter
-                # it means the block quote has ended
-                # create pending quotes if any
-                create_blockquote(quote_type=quote_type)
-
+                # Clear out the consumed lines
+                for j in range(start_index + 1, i):
+                    text_lines[j] = None
             else:
-                # is triggered when there's only one line of text
-                # the line above won't be triggered
-                # because loop will exit after first iteration
-                # so try to create quote if any in queue
-                create_blockquote(quote_type=quote_type)
+                i += 1
 
-        process_text(
-            start_delimiter=BLOCKQUOTE_EXPANDABLE_DELIM,
-            end_delimiter=BLOCKQUOTE_EXPANDABLE_OPTIONAL_END_DELIM,
-            quote_type=" expandable",
-        )
-        process_text(start_delimiter=BLOCKQUOTE_DELIM)
-
+        # Escape remaining text lines if strict
         if strict:
             for idx, line in enumerate(text_lines):
-                if idx not in html_escaped_list:
+                if line is not None and idx not in html_escaped_list:
                     text_lines[idx] = html.escape(line)
 
         return "\n".join(filter(lambda x: x is not None, text_lines))
@@ -293,27 +276,16 @@ class Markdown:
                         and blk_entity.offset < e <= blk_entity.offset + blk_entity.length
                         for blk_entity in entities
                         if blk_entity.type == MessageEntityType.BLOCKQUOTE
+                        or blk_entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE
                     )
-                    is_expandable = any(
-                        blk_entity.offset <= s < blk_entity.offset + blk_entity.length
-                        and blk_entity.offset < e <= blk_entity.offset + blk_entity.length
-                        # and blk_entity.collapsed
-                        for blk_entity in entities
-                        if blk_entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE
-                    )
+                    
                     if inside_blockquote:
-                        if is_expandable:
-                            if entity.language:
-                                open_delimiter = f"{delimiter}{entity.language}\n**>"
-                            else:
-                                open_delimiter = f"{delimiter}\n**>"
-                            close_delimiter = f"\n**>{delimiter}"
+                        # Inside any blockquote, inner lines use ">"
+                        if entity.language:
+                            open_delimiter = f"{delimiter}{entity.language}\n>"
                         else:
-                            if entity.language:
-                                open_delimiter = f"{delimiter}{entity.language}\n>"
-                            else:
-                                open_delimiter = f"{delimiter}\n>"
-                            close_delimiter = f"\n>{delimiter}"
+                            open_delimiter = f"{delimiter}\n>"
+                        close_delimiter = f"\n>{delimiter}"
                     else:
                         if entity.language:
                             open_delimiter = f"{delimiter}{entity.language}\n"
@@ -337,10 +309,19 @@ class Markdown:
                     for line_num, line in enumerate(lines):
                         line_start = s + sum(len(l) + 1 for l in lines[:line_num])
                         if entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
-                            insert_at.append((line_start, i, BLOCKQUOTE_EXPANDABLE_DELIM))
+                            # Bot API Style: First line can be **, rest are >
+                            if line_num == 0:
+                                insert_at.append((line_start, i, BLOCKQUOTE_EXPANDABLE_DELIM))
+                            else:
+                                insert_at.append((line_start, i, BLOCKQUOTE_DELIM))
                         else:
                             insert_at.append((line_start, i, BLOCKQUOTE_DELIM))
-            # No closing delimiter for blockquotes
+
+                    # Append expandability mark for expandable blockquotes
+                    if entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
+                        insert_at.append((e, -i, SPOILER_DELIM))
+
+            # No closing delimiter for blockquotes (handled by lines above)
             else:
                 url = None
                 is_emoji_or_date = False
