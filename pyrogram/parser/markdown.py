@@ -121,11 +121,6 @@ class Markdown:
                         # Boundary 1: `**>` explicitly starts a NEW expandable blockquote
                         if curr_line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
                             break
-                        
-                        # Boundary 2: If the current block is expandable and the PREVIOUS 
-                        # line closed it with `||`, this line starts a NEW blockquote.
-                        if started_as_expandable and bq_lines and bq_lines[-1].endswith(SPOILER_DELIM):
-                            break
 
                     curr_prefix_len = 0
                     if curr_line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
@@ -320,18 +315,25 @@ class Markdown:
                     lines = text_subset.splitlines()
                     for line_num, line in enumerate(lines):
                         line_start = s + sum(len(l) + 1 for l in lines[:line_num])
+                        
+                        # Blockquote prefixes MUST be placed at the absolute start of the line.
+                        # We use `-10000 + i` to ensure they are popped last and end up on the far left,
+                        # wrapping perfectly around any inline entities sharing the same offset.
+                        prefix_priority = -10000 + i
+                        
                         if entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
-                            # Bot API Style: First line can be **, rest are >
                             if line_num == 0:
-                                insert_at.append((line_start, i, BLOCKQUOTE_EXPANDABLE_DELIM))
+                                insert_at.append((line_start, prefix_priority, BLOCKQUOTE_EXPANDABLE_DELIM))
                             else:
-                                insert_at.append((line_start, i, BLOCKQUOTE_DELIM))
+                                insert_at.append((line_start, prefix_priority, BLOCKQUOTE_DELIM))
                         else:
-                            insert_at.append((line_start, i, BLOCKQUOTE_DELIM))
+                            insert_at.append((line_start, prefix_priority, BLOCKQUOTE_DELIM))
 
                     # Append expandability mark for expandable blockquotes
                     if entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
-                        insert_at.append((e, -i, SPOILER_DELIM))
+                        # Expandability marks MUST be at the absolute end of the blockquote.
+                        # We use `10000 - i` to ensure it is popped first and ends up on the far right.
+                        insert_at.append((e, 10000 - i, SPOILER_DELIM))
 
             # No closing delimiter for blockquotes (handled by lines above)
             else:
