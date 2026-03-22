@@ -84,7 +84,7 @@ class SendInlineBotResult:
             :obj:`~pyrogram.types.Message`: On success, the sent message is returned or False if no message was sent.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

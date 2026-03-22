@@ -32,7 +32,7 @@ class GetActiveSessions:
             :obj:`~pyrogram.types.ActiveSessions`: On success, all the active sessions of the current user is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         """
         r = await self.invoke(

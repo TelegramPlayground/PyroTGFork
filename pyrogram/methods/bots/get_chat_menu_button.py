@@ -38,7 +38,7 @@ class GetChatMenuButton:
                 If not specified, default bot's menu button will be returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         """
 

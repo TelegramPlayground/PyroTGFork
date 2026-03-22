@@ -52,7 +52,7 @@ class SetBotCommands:
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

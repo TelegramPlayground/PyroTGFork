@@ -52,7 +52,7 @@ class TransferChatOwnership:
 
         Raises:
             ValueError: In case of invalid parameters.
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

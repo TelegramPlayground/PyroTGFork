@@ -49,7 +49,7 @@ class SetBotName:
                 The bot should have ``can_be_edited`` property set to True.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         Returns:
             ``bool``: True on success.

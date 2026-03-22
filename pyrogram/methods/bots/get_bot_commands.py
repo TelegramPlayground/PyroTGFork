@@ -48,7 +48,7 @@ class GetBotCommands:
             List of :obj:`~pyrogram.types.BotCommand`: On success, the list of bot commands is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

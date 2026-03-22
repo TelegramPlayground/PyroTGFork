@@ -48,7 +48,7 @@ class SendWebAppCustomRequest:
             ``str``: On success, a JSON-serialized result is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         """
 

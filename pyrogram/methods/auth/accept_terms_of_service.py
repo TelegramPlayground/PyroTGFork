@@ -34,7 +34,7 @@ class AcceptTermsOfService:
                 The terms of service identifier.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         """
         r = await self.invoke(

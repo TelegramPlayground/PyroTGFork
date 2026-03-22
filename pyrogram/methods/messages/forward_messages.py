@@ -105,6 +105,9 @@ class ForwardMessages:
             :obj:`~pyrogram.types.Message` | List of :obj:`~pyrogram.types.Message`: In case *message_ids* was not
             a list, a single message is returned, otherwise a list of messages is returned.
 
+        Raises:
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 

@@ -124,7 +124,7 @@ class PostStory:
 
         Raises:
             ValueError: In case of invalid arguments.
-            RPCError: In case of Telegram RPCError.
+            :ref:`RPCError <handling_errors>`: In case of Telegram RPCError.
 
         """
         if business_connection_id:

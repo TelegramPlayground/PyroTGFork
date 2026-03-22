@@ -43,7 +43,7 @@ class AnswerWebAppQuery:
             :obj:`~pyrogram.types.SentWebAppMessage`: On success the sent web app message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :ref:`RPCError <handling_errors>`: In case of a Telegram RPC error.
 
         """
 
