@@ -32,6 +32,7 @@ Changes in this Fork
 | Scheme layer used: 223 |
 +------------------------+
 
+- Added the method :meth:`~pyrogram.Client.send_message_draft`, allowing bots to stream partial messages to a user while being generated. (contributed by @sudo-py-dev in `#231 <https://github.com/TelegramPlayground/pyrogram/pull/231>`__).
 - Added the :obj:`~pyrogram.types.MessageEntity` type :obj:`~pyrogram.enums.MessageEntityType.DATE_TIME`, allowing to show a formatted date and time to the user.
 - Added the fields ``chat_owner_left``, ``chat_owner_changed``, ``chat_has_protected_content_toggled`` and ``chat_has_protected_content_disable_requested`` to the class :obj:`~pyrogram.types.Message`.
 - Added the field ``can_edit_tag`` to the class :obj:`~pyrogram.types.ChatPermissions`.

@@ -48,7 +48,7 @@ class GetBotInfoDescription:
             ``str``: On success, returns the text shown in the chat with a bot if the chat is empty in the given language.
 
         Raises:
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

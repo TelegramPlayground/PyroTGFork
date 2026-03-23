@@ -1740,7 +1740,8 @@ class Message(Object, Update):
             On success, the sent Message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(

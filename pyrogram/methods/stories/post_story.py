@@ -124,7 +124,7 @@ class PostStory:
 
         Raises:
             ValueError: In case of invalid arguments.
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         if business_connection_id:

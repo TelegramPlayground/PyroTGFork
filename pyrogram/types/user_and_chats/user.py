@@ -476,7 +476,8 @@ class User(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.archive_chats(self.id)
@@ -499,7 +500,8 @@ class User(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.unarchive_chats(self.id)
@@ -522,7 +524,8 @@ class User(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.block_user(self.id)
@@ -545,7 +548,8 @@ class User(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.unblock_user(self.id)
@@ -568,7 +572,8 @@ class User(Object, Update):
             List of :obj:`~pyrogram.types.Chat`: On success, a list of the common chats is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.get_common_chats(self.id)

@@ -46,7 +46,7 @@ class SendCode:
 
         Raises:
             BadRequest: In case the phone number is invalid.
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         phone_number = phone_number.strip(" +")

@@ -54,7 +54,7 @@ class GetGameHighScores:
             List of :obj:`~pyrogram.types.GameHighScore`: On success.
 
         Raises:
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

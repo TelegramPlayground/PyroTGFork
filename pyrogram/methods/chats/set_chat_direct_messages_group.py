@@ -50,7 +50,7 @@ class SetChatDirectMessagesGroup:
             otherwise, in case a message object couldn't be returned, True is returned.
         
         Raises:
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

@@ -45,7 +45,7 @@ class GetBotName:
                 The bot should have ``can_be_edited`` property set to True.
 
         Raises:
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Returns:
             ``str``: On success, returns the name of a bot in the given language.

@@ -90,7 +90,7 @@ class SaveFile:
             ``InputFile``: On success, the uploaded file is returned in form of an InputFile object.
 
         Raises:
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         if path is None:

@@ -119,7 +119,7 @@ class DownloadMedia:
         Raises:
             IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             Download media to file

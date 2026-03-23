@@ -132,7 +132,7 @@ class CopyMessage:
 
         Raises:
             ValueError: In case if an invalid message_id was provided.
-            :doc:`RPCError <../../start/errors>`: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

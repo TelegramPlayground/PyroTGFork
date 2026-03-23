@@ -433,9 +433,9 @@ class ExternalReplyInfo(Object):
             If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` containing ``minithumbnail`` and ``idx`` is not specified, then a list of paths or binary file-like objects is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         message = getattr(self, self.media.value, None)

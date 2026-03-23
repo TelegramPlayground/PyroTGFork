@@ -864,7 +864,8 @@ class Chat(Object):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.archive_chats(self.id)
@@ -887,7 +888,8 @@ class Chat(Object):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.unarchive_chats(self.id)
@@ -922,8 +924,9 @@ class Chat(Object):
             ``bool``: True on success.
 
         Raises:
-            RPCError: In case of Telegram RPC error.
             ValueError: In case a chat_id belongs to user.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.set_chat_title(
@@ -956,8 +959,9 @@ class Chat(Object):
             ``bool``: True on success.
 
         Raises:
-            RPCError: In case of Telegram RPC error.
             ValueError: If a chat_id doesn't belong to a supergroup or a channel.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.set_chat_description(
@@ -1018,8 +1022,9 @@ class Chat(Object):
             otherwise, in case a message object couldn't be returned, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             ValueError: if a chat_id belongs to user.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.set_chat_photo(
@@ -1105,7 +1110,8 @@ class Chat(Object):
             case a message object couldn't be returned, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.ban_chat_member(
@@ -1144,7 +1150,8 @@ class Chat(Object):
             ``bool``: True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.unban_chat_member(
@@ -1196,7 +1203,8 @@ class Chat(Object):
             :obj:`~pyrogram.types.Chat`: On success, a chat object is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.restrict_chat_member(
@@ -1243,7 +1251,8 @@ class Chat(Object):
             ``bool``: True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.promote_chat_member(
@@ -1273,7 +1282,8 @@ class Chat(Object):
             :obj:`~pyrogram.types.Chat`: On success, a chat object is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.join_chat(self.username or self.id)
@@ -1293,7 +1303,8 @@ class Chat(Object):
                 await chat.leave()
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.leave_chat(self.id)
