@@ -30,6 +30,7 @@ from .get_game_high_scores import GetGameHighScores
 from .get_inline_bot_results import GetInlineBotResults
 from .request_callback_answer import RequestCallbackAnswer
 from .send_game import SendGame
+from .send_message_draft import SendMessageDraft
 from .send_inline_bot_result import SendInlineBotResult
 from .send_web_app_custom_request import SendWebAppCustomRequest
 from .set_bot_commands import SetBotCommands
@@ -69,5 +70,6 @@ class Bots(
     GetBotName,
     GetOwnedBots,
     GetSimilarBots,
+    SendMessageDraft,
 ):
     pass
