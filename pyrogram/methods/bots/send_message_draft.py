@@ -65,6 +65,20 @@ class SendMessageDraft:
             ValueError: If the text is empty or the chat type is not a private chat.
             :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
+        Example:
+            .. code-block:: python
+
+                text = "Hello! I'm your Pyrogram bot! How can I help you?"
+                words = text.split()
+                draft_id = 1
+                for i, word in enumerate(words):
+                    await app.send_message_draft(
+                        chat_id=chat_id,
+                        draft_id=draft_id,
+                        text=" ".join(words[:i+1]),
+                    )
+                await app.send_message(chat_id, text)
+
         """
 
         if not chat_id:
