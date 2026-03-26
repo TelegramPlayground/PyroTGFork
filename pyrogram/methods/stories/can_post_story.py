@@ -67,4 +67,8 @@ class CanPostStory:
             return types.CanPostStoryResultMonthlyLimitExceeded(
                 retry_after=ex.value
             )
+        except errors.StoryLiveAlready as ex:
+            return types.CanPostStoryResultLiveStoryIsActive(
+                story_id=ex.value
+            )
         return types.CanPostStoryResultOk(story_count=r.count_remains)

@@ -24,6 +24,7 @@ from .can_post_story_result_boost_needed import CanPostStoryResultBoostNeeded
 from .can_post_story_result_active_story_limit_exceeded import CanPostStoryResultActiveStoryLimitExceeded
 from .can_post_story_result_weekly_limit_exceeded import CanPostStoryResultWeeklyLimitExceeded
 from .can_post_story_result_monthly_limit_exceeded import CanPostStoryResultMonthlyLimitExceeded
+from .can_post_story_result_live_story_is_active import CanPostStoryResultLiveStoryIsActive
 from .input_story_content import InputStoryContent
 from .input_story_content_photo import InputStoryContentPhoto
 from .input_story_content_video import InputStoryContentVideo
@@ -58,6 +59,7 @@ __all__ = [
     "CanPostStoryResultOk",
     "CanPostStoryResultPremiumNeeded",
     "CanPostStoryResultWeeklyLimitExceeded",
+    "CanPostStoryResultLiveStoryIsActive",
     "CanPostStoryResult",
     "InputStoryContent",
     "InputStoryContentPhoto",

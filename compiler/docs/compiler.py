@@ -808,6 +808,7 @@ def pyrogram_api():
             CanPostStoryResultBoostNeeded
             CanPostStoryResultActiveStoryLimitExceeded
             CanPostStoryResultWeeklyLimitExceeded
+            CanPostStoryResultLiveStoryIsActive
             CanPostStoryResultMonthlyLimitExceeded
             InputStoryContent
             InputStoryContentPhoto
