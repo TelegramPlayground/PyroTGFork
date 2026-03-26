@@ -126,6 +126,21 @@ for i in range(10):
     assert Markdown.unparse(text=text, entities=entities) == expected
 
 
+def test_markdown_unparse_pre_2():
+    expected = """```...```"""
+
+    text = """..."""
+    entities = pyrogram.types.List([
+        pyrogram.types.MessageEntity(
+            type=pyrogram.enums.MessageEntityType.PRE,
+            offset=0, length=3,
+            language=""
+        )
+    ])
+
+    assert Markdown.unparse(text=text, entities=entities) == expected
+
+
 def test_markdown_unparse_blockquote():
     expected = """>Block quotation started
 >Block quotation continued
@@ -157,6 +172,93 @@ def test_markdown_unparse_mixed():
         pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.SPOILER, offset=21, length=5),
         pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.SPOILER, offset=26, length=10),
         pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.CODE, offset=40, length=10)
+    ])
+
+    assert Markdown.unparse(text=text, entities=entities) == expected
+
+
+def test_markdown_unparse_mixed_2():
+    expected = """**bold**, **bold**
+__italic__, __italic__
+--underline--, --underline--
+~~strikethrough~~, ~~strikethrough~~, ~~strikethrough~~
+||spoiler||, ||spoiler||
+**bold __italic bold ~~italic bold strikethrough ||italic bold strikethrough spoiler||~~ --underline italic bold--__ bold**
+[inline URL](http://www.example.com/)
+![👍](tg://emoji?id=5368324170671202286)
+![22:45 tomorrow](tg://time?unix=1647531900&format=wDT)
+![22:45 tomorrow](tg://time?unix=1647531900&format=t)
+![22:45 tomorrow](tg://time?unix=1647531900&format=r)
+![22:45 tomorrow](tg://time?unix=1647531900)
+`inline fixed-width code`
+```
+pre-formatted fixed-width code block```
+```python
+pre-formatted fixed-width code block written in the Python programming language```
+>Block quotation started
+>Block quotation continued
+>The last line of the block quotation
+**>Expandable block quotation started
+**>Expandable block quotation continued
+**>Expandable block quotation continued
+**>Hidden by default part of the block quotation started
+**>Expandable block quotation continued
+**>The last line of the block quotation"""
+
+    text = """bold, bold
+italic, italic
+underline, underline
+strikethrough, strikethrough, strikethrough
+spoiler, spoiler
+bold italic bold italic bold strikethrough italic bold strikethrough spoiler underline italic bold bold
+inline URL
+👍
+22:45 tomorrow
+22:45 tomorrow
+22:45 tomorrow
+22:45 tomorrow
+inline fixed-width code
+
+pre-formatted fixed-width code block
+
+pre-formatted fixed-width code block written in the Python programming language
+Block quotation started
+Block quotation continued
+The last line of the block quotation
+Expandable block quotation started
+Expandable block quotation continued
+Expandable block quotation continued
+Hidden by default part of the block quotation started
+Expandable block quotation continued
+The last line of the block quotation"""
+    entities = entities = pyrogram.types.List([
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.BOLD, offset=0, length=4),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.BOLD, offset=6, length=4),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.ITALIC, offset=11, length=6),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.ITALIC, offset=19, length=6),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.UNDERLINE, offset=26, length=9),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.UNDERLINE, offset=37, length=9),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.STRIKETHROUGH, offset=47, length=13),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.STRIKETHROUGH, offset=62, length=13),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.STRIKETHROUGH, offset=77, length=13),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.SPOILER, offset=91, length=7),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.SPOILER, offset=100, length=7),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.BOLD, offset=108, length=103),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.ITALIC, offset=113, length=93),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.STRIKETHROUGH, offset=125, length=59),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.SPOILER, offset=151, length=33),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.UNDERLINE, offset=185, length=21),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.TEXT_LINK, offset=212, length=10, url="http://www.example.com/"),
+        # TODO
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.DATE_TIME, offset=251, length=14, unix_time=1647531900, date_time_format="wDT"),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.DATE_TIME, offset=266, length=14, unix_time=1647531900, date_time_format="t"),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.DATE_TIME, offset=281, length=14, unix_time=1647531900, date_time_format="r"),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.DATE_TIME, offset=296, length=14, unix_time=1647531900, date_time_format=""),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.CODE, offset=311, length=23),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.PRE, offset=335, length=37, language=""),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.PRE, offset=373, length=80, language="python"),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.BLOCKQUOTE, offset=454, length=86),
+        pyrogram.types.MessageEntity(type=pyrogram.enums.MessageEntityType.EXPANDABLE_BLOCKQUOTE, offset=541, length=236),
     ])
 
     assert Markdown.unparse(text=text, entities=entities) == expected
