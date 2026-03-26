@@ -490,10 +490,12 @@ SMS_CODE_CREATE_FAILED	An error occurred while creating the SMS code.
 SRP_A_INVALID	The specified inputCheckPasswordSRP.A value is invalid.
 SRP_ID_INVALID	Invalid SRP ID provided.
 SRP_PASSWORD_CHANGED	Password has changed.
+STARGIFT_ALREADY_BURNED	The provided gift is already burned.
 STARGIFT_ALREADY_CONVERTED	The specified star gift was already converted to Stars.
 STARGIFT_ALREADY_REFUNDED	The specified star gift was already refunded.
 STARGIFT_ALREADY_TRANSFERRED	The provided star gift was already transferred.
 STARGIFT_ALREADY_UPGRADED	The specified gift was already upgraded to a collectible gift.
+STARGIFT_ATTRIBUTE_INVALID	The provided gift attribute is invalid.
 STARGIFT_CONVERT_TOO_OLD	This gift can no longer be converted into stars.
 STARGIFT_EXPORT_UNAVAILABLE	This gift is not available for export yet.
 STARGIFT_INVALID	The passed gift is invalid.
@@ -548,6 +550,7 @@ STORIES_NEVER_CREATED	This peer hasn't ever posted any stories.
 STORIES_TOO_MUCH	You have hit the maximum active stories limit as specified by the [`story_expiring_limit_*` client configuration parameters](https://core.telegram.org/api/config#story-expiring-limit-default): you should buy a [Premium](https://core.telegram.org/api/premium) subscription, delete an active story, or wait for the oldest story to expire.
 STORY_ID_EMPTY	You specified no story IDs.
 STORY_ID_INVALID	The specified story ID is invalid.
+STORY_LIVE_ALREADY_X	The user or the chat has an active live story with identifier {value}.
 STORY_NOT_MODIFIED	The new story information you passed is equal to the previous story information, thus it wasn't modified.
 STORY_PERIOD_INVALID	The specified story period is invalid for this account.
 STORY_PUBLIC_MISSING	The story you are trying to access or manipulate is not publicly available.
@@ -629,6 +632,7 @@ USER_BOT_REQUIRED	This method can only be called by a bot.
 USER_CHANNELS_TOO_MUCH	One of the users you tried to add is already in too many channels/supergroups.
 USER_CREATOR	For channels.editAdmin: you've tried to edit the admin rights of the owner, but you're not the owner; for channels.leaveChannel: you can't leave this channel, because you're its creator.
 USER_GIFT_UNAVAILABLE	Gifts are not available in the current region ([stars_gifts_enabled](https://core.telegram.org/api/config#stars-gifts-enabled) is equal to false).
+USER_HANDLE_MISMATCH	The user handle mismatch.
 USER_ID_INVALID	The provided user ID is invalid.
 USER_INVALID	Invalid user provided.
 USER_IS_BLOCKED	You were blocked by this user.
