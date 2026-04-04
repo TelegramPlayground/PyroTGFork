@@ -22,6 +22,7 @@ from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils, types, enums
+from pyrogram.file_id import FileType
 
 log = logging.getLogger(__name__)
 
@@ -37,13 +38,20 @@ class SendPoll:
         is_anonymous: bool = True,
         type: "enums.PollType" = enums.PollType.REGULAR,
         allows_multiple_answers: bool = None,
-        correct_option_id: int = None,
+        allows_revoting: bool = None,
+        shuffle_options: bool = None,
+        allow_adding_options: bool = None,
+        hide_results_until_closes: bool = None,
+        correct_option_ids: list[int] = None,
         explanation: str = None,
         explanation_parse_mode: "enums.ParseMode" = None,
         explanation_entities: list["types.MessageEntity"] = None,
         open_period: int = None,
         close_date: datetime = None,
         is_closed: bool = None,
+        description: str = None,
+        description_parse_mode: "enums.ParseMode" = None,
+        description_entities: list["types.MessageEntity"] = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
@@ -60,9 +68,8 @@ class SendPoll:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None
     ) -> "types.Message":
-        """Send a new poll.
+        """Send a native poll.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
@@ -97,11 +104,23 @@ class SendPoll:
                 Defaults to :obj:`~pyrogram.enums.PollType.REGULAR`.
 
             allows_multiple_answers (``bool``, *optional*):
-                True, if the poll allows multiple answers, ignored for polls in quiz mode.
+                True, if the poll allows multiple answers.
                 Defaults to False.
 
-            correct_option_id (``int``, *optional*):
-                0-based identifier of the correct answer option, required for polls in quiz mode.
+            allows_revoting (``bool``, *optional*):
+                Pass True, if the poll allows to change chosen answer options, defaults to False for quizzes and to True for regular polls.
+
+            shuffle_options (``bool``, *optional*):
+                Pass True, if the poll options must be shown in random order.
+
+            allow_adding_options (``bool``, *optional*):
+                Pass True, if answer options can be added to the poll after creation; not supported for anonymous polls and quizzes.
+
+            hide_results_until_closes (``bool``, *optional*):
+                Pass True, if poll results must be shown only after the poll closes.
+
+            correct_option_ids (List of ``int``, *optional*):
+                List of monotonically increasing 0-based identifiers of the correct answer options, required for polls in quiz mode.
 
             explanation (``str``, *optional*):
                 Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style
@@ -116,17 +135,28 @@ class SendPoll:
                 *explanation_parse_mode*.
 
             open_period (``int``, *optional*):
-                Amount of time in seconds the poll will be active after creation, 5-600.
+                Amount of time in seconds the poll will be active after creation, 5-2628000.
                 Can't be used together with *close_date*.
 
             close_date (:py:obj:`~datetime.datetime`, *optional*):
                 Point in time when the poll will be automatically closed.
-                Must be at least 5 and no more than 600 seconds in the future.
+                Must be at least 5 and no more than 2628000 seconds in the future.
                 Can't be used together with *open_period*.
 
             is_closed (``bool``, *optional*):
                 Pass True, if the poll needs to be immediately closed.
                 This can be useful for poll preview.
+
+            description (``str``, *optional*):
+                Description of the poll to be sent, 0-1024 characters after entities parsing.
+
+            description_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
+                By default, texts are parsed using both Markdown and HTML styles.
+                You can combine both syntaxes together.
+
+            description_entities (List of :obj:`~pyrogram.types.MessageEntity`):
+                List of special entities that appear in the poll description, which can be specified instead of
+                *description_parse_mode*.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -185,23 +215,48 @@ class SendPoll:
                 )
 
         """
+        raw_question, raw_question_entities = (await utils.parse_text_entities(self, question, question_parse_mode, question_entities)).values()
+        if not raw_question_entities:
+            raw_question_entities = []
 
-        if reply_to_message_id and reply_parameters:
-            raise ValueError(
-                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
-                "exclusive."
+        answers = []
+        for i, answer_ in enumerate(options):
+            media = None
+            if isinstance(answer_, str):
+                answer, answer_entities = answer_, []
+            else:
+                answer, answer_entities = (await utils.parse_text_entities(self, answer_.text, answer_.text_parse_mode, answer_.text_entities)).values()
+                if not answer_entities:
+                    answer_entities = []
+                if answer_.animation:
+                    media = utils.get_input_media_from_file_id(answer_.animation, FileType.ANIMATION)
+                elif answer_.photo:
+                    media = utils.get_input_media_from_file_id(answer_.photo, FileType.PHOTO)
+                elif answer_.sticker:
+                    media = utils.get_input_media_from_file_id(answer_.sticker, FileType.STICKER)
+                elif answer_.video:
+                    media = utils.get_input_media_from_file_id(answer_.video, FileType.VIDEO)
+
+            answers.append(
+                raw.types.PollAnswer(
+                    text=raw.types.TextWithEntities(
+                        text=answer,
+                        entities=answer_entities
+                    ),
+                    option=bytes([i]),
+                    media=media,
+                    # added_by:flags.1?Peer
+                    # date:flags.1?int
+                )
             )
-        
-        if reply_to_message_id is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use reply_parameters instead"
-            )
-            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
+
+        raw_description, raw_description_entities = (await utils.parse_text_entities(self, description, description_parse_mode, description_entities)).values()
 
         solution, solution_entities = (await utils.parse_text_entities(
             self, explanation, explanation_parse_mode, explanation_entities
         )).values()
+        if not solution_entities:
+            solution_entities = []
 
         reply_to = await utils._get_reply_message_parameters(
             self,
@@ -209,36 +264,18 @@ class SendPoll:
             reply_parameters
         )
 
-        question, question_entities = (await utils.parse_text_entities(self, question, question_parse_mode, question_entities)).values()
-        if not question_entities:
-            question_entities = []
-
-        answers = []
-        for i, answer_ in enumerate(options):
-            if isinstance(answer_, str):
-                answer, answer_entities = answer_, []
-            else:
-                answer, answer_entities = (await utils.parse_text_entities(self, answer_.text, answer_.text_parse_mode, answer_.text_entities)).values()
-                if not answer_entities:
-                    answer_entities = []
-            answers.append(
-                raw.types.PollAnswer(
-                    text=raw.types.TextWithEntities(
-                        text=answer,
-                        entities=answer_entities
-                    ),
-                    option=bytes([i])
-                )
-            )
+        if type == enums.PollType.QUIZ and allow_adding_options:
+            allow_adding_options = False
 
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
             media=raw.types.InputMediaPoll(
                 poll=raw.types.Poll(
                     id=self.rnd_id(),
+                    hash=0,
                     question=raw.types.TextWithEntities(
-                        text=question,
-                        entities=question_entities
+                        text=raw_question,
+                        entities=raw_question_entities
                     ),
                     answers=answers,
                     closed=is_closed,
@@ -246,13 +283,21 @@ class SendPoll:
                     multiple_choice=allows_multiple_answers,
                     quiz=type == enums.PollType.QUIZ or False,
                     close_period=open_period,
-                    close_date=utils.datetime_to_timestamp(close_date)
+                    close_date=utils.datetime_to_timestamp(close_date),
+                    open_answers=allow_adding_options,
+                    revoting_disabled=not allows_revoting,
+                    shuffle_answers=shuffle_options,
+                    hide_results_until_close=hide_results_until_closes,
+                    # creator:flags.10?true 
                 ),
-                correct_answers=[bytes([correct_option_id])] if correct_option_id is not None else None,
+                correct_answers=[correct_option_id for correct_option_id in correct_option_ids] if correct_option_ids is not None else None,
                 solution=solution,
-                solution_entities=solution_entities or []
+                solution_entities=solution_entities,
+                # attached_media:flags.3?InputMedia
+                # solution_media:flags.2?InputMedia = InputMedia;
             ),
-            message="",
+            message=raw_description,
+            entities=raw_description_entities,
             silent=disable_notification,
             reply_to=reply_to,
             random_id=self.rnd_id(),
