@@ -73,7 +73,7 @@ async def idle():
 
     def signal_handler(signum, __):
         log.info(f"Stop signal received ({signals[signum]}). Exiting...")
-        asyncio.get_event_loop().run_in_executor(None, task.cancel)
+        asyncio.get_event_loop().call_soon_threadsafe(task.cancel)
 
     for s in (SIGINT, SIGTERM, SIGABRT):
         signal_fn(s, signal_handler)
