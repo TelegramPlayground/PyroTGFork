@@ -39,6 +39,18 @@ class InputPollOption(Object):
         text_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
             List of special entities that appear in the poll option text, which can be specified instead of *text_parse_mode*.
 
+        animation (``str``, *optional*):
+            Pass a file_id as string to send a photo that exists on the Telegram servers.
+
+        photo (``str``, *optional*):
+            Pass a file_id as string to send a photo that exists on the Telegram servers.
+
+        sticker (``str``, *optional*):
+            Pass a file_id as string to send a photo that exists on the Telegram servers.
+
+        video (``str``, *optional*):
+            Pass a file_id as string to send a photo that exists on the Telegram servers.
+
     """
 
     def __init__(
@@ -47,9 +59,20 @@ class InputPollOption(Object):
         text: str,
         text_parse_mode: "enums.ParseMode" = None,
         text_entities: list["types.MessageEntity"] = None,
+        animation: str = None,
+        # messageLocation
+        photo: str = None,
+        sticker: str = None,
+        # messageVenue
+        video: str = None,
     ):
         super().__init__()
 
         self.text = text
         self.text_parse_mode = text_parse_mode
         self.text_entities = text_entities
+        self.animation = animation
+        # TODO
+        self.photo = photo
+        self.sticker = sticker
+        self.video = video
