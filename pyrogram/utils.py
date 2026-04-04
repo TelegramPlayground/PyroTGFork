@@ -545,6 +545,8 @@ async def _get_reply_message_parameters(
         )
     if reply_parameters.checklist_task_id:
         reply_to.todo_item_id = reply_parameters.checklist_task_id
+    if reply_parameters.poll_option_id:
+        reply_to.poll_option = bytes(reply_parameters.poll_option_id)
     return reply_to
 
 
