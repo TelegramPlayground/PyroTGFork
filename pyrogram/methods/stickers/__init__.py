@@ -16,12 +16,26 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+from .delete_sticker_from_set import DeleteStickerFromSet
+from .delete_sticker_set import DeleteStickerSet
+from .get_custom_emoji_stickers import GetCustomEmojiStickers
 from .get_message_effects import GetMessageEffects
 from .get_stickers import GetStickers
+from .get_suggested_sticker_set_name import GetSuggestedStickerSetName
+from .set_sticker_position_in_set import SetStickerPositionInSet
+from .set_sticker_set_title import SetStickerSetTitle
+from .upload_sticker_file import UploadStickerFile
 
 
 class Stickers(
+    DeleteStickerFromSet,
+    DeleteStickerSet,
+    GetCustomEmojiStickers,
     GetMessageEffects,
     GetStickers,
+    GetSuggestedStickerSetName,
+    SetStickerPositionInSet,
+    SetStickerSetTitle,
+    UploadStickerFile,
 ):
     pass

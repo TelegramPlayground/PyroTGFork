@@ -31,6 +31,8 @@ from .next_code_type import NextCodeType
 from .parse_mode import ParseMode
 from .poll_type import PollType
 from .sent_code_type import SentCodeType
+from .sticker_format import StickerFormat
+from .sticker_type import StickerType
 from .user_status import UserStatus
 from .client_platform import ClientPlatform
 from .accent_color import AccentColor
@@ -38,24 +40,26 @@ from .profile_color import ProfileColor
 from .button_style import ButtonStyle
 
 __all__ = [
-    'ChatAction', 
-    'ChatEventAction', 
-    'ChatJoinType',
-    'ChatMemberStatus', 
-    'ChatMembersFilter', 
-    'ChatType', 
-    'MessageEntityType', 
-    'MessageMediaType',
-    'MessageOriginType',
-    'MessageServiceType', 
-    'MessagesFilter', 
-    'NextCodeType', 
-    'ParseMode', 
-    'PollType', 
-    'SentCodeType', 
-    'UserStatus',
-    'ClientPlatform',
-    'AccentColor',
-    'ProfileColor',
-    'ButtonStyle',
+    "ChatAction", 
+    "ChatEventAction", 
+    "ChatJoinType",
+    "ChatMemberStatus", 
+    "ChatMembersFilter", 
+    "ChatType", 
+    "MessageEntityType", 
+    "MessageMediaType",
+    "MessageOriginType",
+    "MessageServiceType", 
+    "MessagesFilter", 
+    "NextCodeType", 
+    "ParseMode", 
+    "PollType", 
+    "SentCodeType", 
+    "StickerFormat",
+    "StickerType",
+    "UserStatus",
+    "ClientPlatform",
+    "AccentColor",
+    "ProfileColor",
+    "ButtonStyle",
 ]

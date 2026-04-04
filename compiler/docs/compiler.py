@@ -472,10 +472,16 @@ def pyrogram_api():
         """,
         stickers="""
         Stickers
+            get_suggested_sticker_set_name
             send_sticker
             get_custom_emoji_stickers
             get_message_effects
+            upload_sticker_file
+            set_sticker_position_in_set
+            set_sticker_set_title
             get_stickers
+            delete_sticker_from_set
+            delete_sticker_set
         """,
         stories="""
         Stories
@@ -607,6 +613,7 @@ def pyrogram_api():
             Animation
             Audio
             Document
+            File
             Story
             Video
             VideoNote
@@ -1030,6 +1037,8 @@ def pyrogram_api():
             ProfileColor
             AccentColor
             SentCodeType
+            StickerFormat
+            StickerType
             NextCodeType
             UserStatus
         """,

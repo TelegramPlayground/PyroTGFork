@@ -37,6 +37,7 @@ class Sticker(Object):
             Unique identifier for this file, which is supposed to be the same over time and for different accounts.
             Can't be used to download or reuse the file.
 
+
         width (``int``):
             Sticker width.
 
@@ -49,14 +50,24 @@ class Sticker(Object):
         is_video (``bool``):
             True, if the sticker is a video sticker
 
+        thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
+            Sticker thumbnails in the .webp or .jpg format.
+
+        emoji (``str``, *optional*):
+            Emoji associated with the sticker.
+        
+        set_name (``str``, *optional*):
+            Name of the sticker set to which the sticker belongs.
+
+
+        file_size (``int``, *optional*):
+            File size in bytes.
+
         file_name (``str``, *optional*):
             Sticker file name.
 
         mime_type (``str``, *optional*):
             MIME type of the file as defined by sender.
-
-        file_size (``int``, *optional*):
-            File size.
 
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the sticker was sent.
@@ -111,7 +122,7 @@ class Sticker(Object):
     cache = {}
 
     @staticmethod
-    async def _get_sticker_set_name(invoke, input_sticker_set_id):
+    async def _get_sticker_set_name(client, input_sticker_set_id):
         try:
             set_id = input_sticker_set_id[0]
             set_access_hash = input_sticker_set_id[1]
@@ -121,17 +132,24 @@ class Sticker(Object):
             if name is not None:
                 return name
 
-            name = (
-                await invoke(
-                    raw.functions.messages.GetStickerSet(
-                        stickerset=raw.types.InputStickerSetID(
-                            id=set_id,
-                            access_hash=set_access_hash
-                        ),
-                        hash=0
-                    )
+            # _, _sticker_set = await client._get_raw_stickers(
+            #     raw.types.InputStickerSetID(
+            #         id=set_id,
+            #         access_hash=set_access_hash
+            #     )
+            # )
+            # name = _sticker_set.short_name
+            # TODO: FIXME!
+            sticker_set = await client.invoke(
+                raw.functions.messages.GetStickerSet(
+                    stickerset=raw.types.InputStickerSetID(
+                        id=set_id,
+                        access_hash=set_access_hash
+                    ),
+                    hash=0
                 )
-            ).set.short_name
+            )
+            name = sticker_set.set.short_name
 
             Sticker.cache[(set_id, set_access_hash)] = name
 
@@ -164,7 +182,14 @@ class Sticker(Object):
         if isinstance(sticker_set, raw.types.InputStickerSetID):
             input_sticker_set_id = (sticker_set.id, sticker_set.access_hash)
             # TODO: FIXME!
-            set_name = await Sticker._get_sticker_set_name(client.invoke, input_sticker_set_id)
+            # _, _sticker_set = await client._get_raw_stickers(
+            #     raw.types.InputStickerSetID(
+            #         id=input_sticker_set_id[0],
+            #         access_hash=input_sticker_set_id[1]
+            #     )
+            # )
+            # set_name = _sticker_set.short_name
+            set_name = await Sticker._get_sticker_set_name(client, input_sticker_set_id)
         else:
             set_name = None
 
