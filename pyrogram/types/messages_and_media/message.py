@@ -128,6 +128,9 @@ class Message(Object, Update):
         reply_to_checklist_task_id (``int``, *optional*):
             Identifier of the specific checklist task that is being replied to.
 
+        reply_to_poll_option_id (``str``, *optional*):
+            Persistent identifier of the specific poll option that is being replied to.
+
         via_bot (:obj:`~pyrogram.types.User`):
             The information of the bot that generated the message from an inline query of a user.
 
@@ -494,6 +497,7 @@ class Message(Object, Update):
         quote: "types.TextQuote" = None,
         reply_to_story: "types.Story" = None,
         reply_to_checklist_task_id: int = None,
+        reply_to_poll_option_id: str = None,
         via_bot: "types.User" = None,
         edit_date: datetime = None,
         has_protected_content: bool = None,
@@ -724,6 +728,7 @@ class Message(Object, Update):
         self.checklist_tasks_done = checklist_tasks_done
         self.checklist_tasks_added = checklist_tasks_added
         self.reply_to_checklist_task_id = reply_to_checklist_task_id
+        self.reply_to_poll_option_id = reply_to_poll_option_id
         self.direct_messages_topic = direct_messages_topic
         self._raw = _raw
 
@@ -1528,6 +1533,13 @@ class Message(Object, Update):
 
             if isinstance(message.reply_to, raw.types.MessageReplyHeader):
                 parsed_message.reply_to_checklist_task_id = message.reply_to.todo_item_id
+                try:
+                    # Assuming reply_to.poll_option is a bytes-like object
+                    poll_option_id = message.reply_to.poll_option.decode("UTF-8")
+                except (UnicodeDecodeError, AttributeError):
+                    # Equivalent to poll_option_id_.clear()
+                    poll_option_id = ""
+                parsed_message.reply_to_poll_option_id = poll_option_id
                 parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
                 parsed_message.message_thread_id = message.reply_to.reply_to_top_id
                 if message.reply_to.forum_topic:
