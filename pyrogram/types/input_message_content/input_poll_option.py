@@ -19,7 +19,8 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw, utils, types, enums
+from pyrogram import raw, utils, types
+from pyrogram.file_id import FileType
 
 from ..object import Object
 
@@ -28,16 +29,9 @@ class InputPollOption(Object):
     """This object contains information about one answer option in a poll to send.
 
     Parameters:
-        text (``str``):
+        text (:obj:`~pyrogram.types.FormattedText`):
             Option text, 1-100 characters after entity parsing.
-
-        text_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-            By default, texts are parsed using both Markdown and HTML styles.
-            You can combine both syntaxes together.
-            Currently, only custom emoji entities are allowed to be added and only by Upgraded bots OR Premium users.
-
-        text_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-            List of special entities that appear in the poll option text, which can be specified instead of *text_parse_mode*.
+            Only custom emoji entities are allowed to be added and only by Premium users.
 
         animation (``str``, *optional*):
             Pass a file_id as string to send a photo that exists on the Telegram servers.
@@ -56,9 +50,7 @@ class InputPollOption(Object):
     def __init__(
         self,
         *,
-        text: str,
-        text_parse_mode: "enums.ParseMode" = None,
-        text_entities: list["types.MessageEntity"] = None,
+        text: "types.FormattedText",
         animation: str = None,
         # messageLocation
         photo: str = None,
@@ -69,10 +61,33 @@ class InputPollOption(Object):
         super().__init__()
 
         self.text = text
-        self.text_parse_mode = text_parse_mode
-        self.text_entities = text_entities
         self.animation = animation
         # TODO
         self.photo = photo
         self.sticker = sticker
         self.video = video
+
+    async def write(
+        self,
+        client: "pyrogram.Client",
+        idx: int,
+    ) -> "raw.types.PollAnswer":
+        if isinstance(self.text, str):
+            self.text = types.FormattedText(text=self.text)
+
+        media = None
+        if self.animation:
+            media = utils.get_input_media_from_file_id(self.animation, FileType.ANIMATION)
+        elif self.photo:
+            media = utils.get_input_media_from_file_id(self.photo, FileType.PHOTO)
+        elif self.sticker:
+            media = utils.get_input_media_from_file_id(self.sticker, FileType.STICKER)
+        elif self.video:
+            media = utils.get_input_media_from_file_id(self.video, FileType.VIDEO)
+        return raw.types.PollAnswer(
+            text=await self.text.write(client),
+            media=media,
+            option=bytes(idx),
+            # added_by:flags.1?Peer
+            # date:flags.1?int
+        )

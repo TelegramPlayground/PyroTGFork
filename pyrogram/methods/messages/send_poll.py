@@ -22,7 +22,6 @@ from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils, types, enums
-from pyrogram.file_id import FileType
 
 log = logging.getLogger(__name__)
 
@@ -31,10 +30,8 @@ class SendPoll:
     async def send_poll(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        question: str,
+        question: "types.FormattedText",
         options: list["types.InputPollOption"],
-        question_parse_mode: "enums.ParseMode" = None,
-        question_entities: list["types.MessageEntity"] = None,
         is_anonymous: bool = True,
         type: "enums.PollType" = enums.PollType.REGULAR,
         allows_multiple_answers: bool = None,
@@ -43,15 +40,11 @@ class SendPoll:
         allow_adding_options: bool = None,
         hide_results_until_closes: bool = None,
         correct_option_ids: list[int] = None,
-        explanation: str = None,
-        explanation_parse_mode: "enums.ParseMode" = None,
-        explanation_entities: list["types.MessageEntity"] = None,
+        explanation: "types.FormattedText" = None,
         open_period: int = None,
         close_date: datetime = None,
         is_closed: bool = None,
-        description: str = None,
-        description_parse_mode: "enums.ParseMode" = None,
-        description_entities: list["types.MessageEntity"] = None,
+        description: "types.FormattedText" = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
@@ -80,20 +73,13 @@ class SendPoll:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            question (``str``):
+            question (:obj:`~pyrogram.types.FormattedText`):
                 Poll question.
                 **Users**: 1-255 characters.
                 **Bots**: 1-300 characters.
 
             options (List of :obj:`~pyrogram.types.InputPollOption`):
                 List of 2-12 poll answer options.
-
-            question_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            question_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in the poll question, which can be specified instead of *question_parse_mode*.
 
             is_anonymous (``bool``, *optional*):
                 True, if the poll needs to be anonymous.
@@ -122,17 +108,9 @@ class SendPoll:
             correct_option_ids (List of ``int``, *optional*):
                 List of monotonically increasing 0-based identifiers of the correct answer options, required for polls in quiz mode.
 
-            explanation (``str``, *optional*):
+            explanation (:obj:`~pyrogram.types.FormattedText`, *optional*):
                 Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style
                 poll, 0-200 characters with at most 2 line feeds after entities parsing.
-
-            explanation_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            explanation_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in the poll explanation, which can be specified instead of
-                *explanation_parse_mode*.
 
             open_period (``int``, *optional*):
                 Amount of time in seconds the poll will be active after creation, 5-2628000.
@@ -147,16 +125,8 @@ class SendPoll:
                 Pass True, if the poll needs to be immediately closed.
                 This can be useful for poll preview.
 
-            description (``str``, *optional*):
+            description (:obj:`~pyrogram.types.FormattedText`, *optional*):
                 Description of the poll to be sent, 0-1024 characters after entities parsing.
-
-            description_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            description_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in the poll description, which can be specified instead of
-                *description_parse_mode*.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -203,60 +173,49 @@ class SendPoll:
         Example:
             .. code-block:: python
 
-                from pyrogram.types import InputPollOption
+                from pyrogram import types
                 await app.send_poll(
                     chat_id=chat_id,
-                    question="Is this a poll question?",
+                    question=types.FormattedText(
+                        text="Is this a poll question?"
+                    ),
                     options=[
-                        InputPollOption(text="Yes"),
-                        InputPollOption(text="No"),
-                        InputPollOption(text= "Maybe"),
+                        types.InputPollOption(
+                            text=types.FormattedText(
+                                text="Yes"
+                            )
+                        ),
+                        types.InputPollOption(
+                            text=types.FormattedText(
+                                text="No"
+                            ),
+                            sticker="CAACAgIAAxkBAAENQDJp0TeBK91YmUIY_eGLV_OpyDwI2gACRRkAAt1kkUkycGu4PBSkQTsE"
+                        ),
+                        types.InputPollOption(
+                            text=types.FormattedText(
+                                text="Maybe"
+                            )
+                        ),
                     ]
                 )
 
         """
-        raw_question, raw_question_entities = (await utils.parse_text_entities(self, question, question_parse_mode, question_entities)).values()
-        if not raw_question_entities:
-            raw_question_entities = []
+        if isinstance(question, str):
+            question = types.FormattedText(text=question)
 
-        answers = []
-        for i, answer_ in enumerate(options):
-            media = None
-            if isinstance(answer_, str):
-                answer, answer_entities = answer_, []
-            else:
-                answer, answer_entities = (await utils.parse_text_entities(self, answer_.text, answer_.text_parse_mode, answer_.text_entities)).values()
-                if not answer_entities:
-                    answer_entities = []
-                if answer_.animation:
-                    media = utils.get_input_media_from_file_id(answer_.animation, FileType.ANIMATION)
-                elif answer_.photo:
-                    media = utils.get_input_media_from_file_id(answer_.photo, FileType.PHOTO)
-                elif answer_.sticker:
-                    media = utils.get_input_media_from_file_id(answer_.sticker, FileType.STICKER)
-                elif answer_.video:
-                    media = utils.get_input_media_from_file_id(answer_.video, FileType.VIDEO)
+        if isinstance(explanation, str):
+            explanation = types.FormattedText(text=explanation)
 
-            answers.append(
-                raw.types.PollAnswer(
-                    text=raw.types.TextWithEntities(
-                        text=answer,
-                        entities=answer_entities
-                    ),
-                    option=bytes([i]),
-                    media=media,
-                    # added_by:flags.1?Peer
-                    # date:flags.1?int
-                )
-            )
+        if isinstance(description, str):
+            description = types.FormattedText(text=description)
 
-        raw_description, raw_description_entities = (await utils.parse_text_entities(self, description, description_parse_mode, description_entities)).values()
+        answers = [
+            await answer_.write(self, i)
+            for i, answer_ in enumerate(options)
+        ]
 
-        solution, solution_entities = (await utils.parse_text_entities(
-            self, explanation, explanation_parse_mode, explanation_entities
-        )).values()
-        if not solution_entities:
-            solution_entities = []
+        raw_description = await description.write(self, None)
+        solution = await explanation.write(self)
 
         reply_to = await utils._get_reply_message_parameters(
             self,
@@ -273,10 +232,7 @@ class SendPoll:
                 poll=raw.types.Poll(
                     id=self.rnd_id(),
                     hash=0,
-                    question=raw.types.TextWithEntities(
-                        text=raw_question,
-                        entities=raw_question_entities
-                    ),
+                    question=await question.write(self),
                     answers=answers,
                     closed=is_closed,
                     public_voters=not is_anonymous,
@@ -290,14 +246,14 @@ class SendPoll:
                     hide_results_until_close=hide_results_until_closes,
                     # creator:flags.10?true 
                 ),
-                correct_answers=[correct_option_id for correct_option_id in correct_option_ids] if correct_option_ids is not None else None,
-                solution=solution,
-                solution_entities=solution_entities,
+                correct_answers=correct_option_ids or None,
+                solution=solution.text,
+                solution_entities=solution.entities,
                 # attached_media:flags.3?InputMedia
                 # solution_media:flags.2?InputMedia = InputMedia;
             ),
-            message=raw_description,
-            entities=raw_description_entities,
+            message=raw_description.text,
+            entities=raw_description.entities,
             silent=disable_notification,
             reply_to=reply_to,
             random_id=self.rnd_id(),
