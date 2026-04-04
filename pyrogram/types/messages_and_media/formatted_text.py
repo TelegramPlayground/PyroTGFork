@@ -62,7 +62,11 @@ class FormattedText(Object):
         result: "raw.types.TextWithEntities"
     ) -> "FormattedText":
         entities = [
-            types.MessageEntity._parse(client, entity, {})
+            types.MessageEntity._parse(
+                client,
+                entity,
+                {}  # there isn't a TEXT_MENTION entity available yet
+            )
             for entity in result.entities
         ]
         entities = types.List(filter(lambda x: x is not None, entities))

@@ -33,11 +33,8 @@ class Poll(Object, Update):
         id (``str``):
             Unique poll identifier.
 
-        question (``str``):
+        question (:obj:`~pyrogram.types.FormattedText`):
             Poll question, 1-255 characters.
-
-        question_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-            Special entities that appear in the question. Currently, only custom emoji entities are allowed in poll questions.
 
         options (List of :obj:`~pyrogram.types.PollOption`):
             List of poll options.
@@ -57,26 +54,28 @@ class Poll(Object, Update):
         allows_multiple_answers (``bool``, *optional*):
             True, if the poll allows multiple answers.
 
+        allows_revoting (``bool``, *optional*):
+            True, if the poll allows to change the chosen answer options.
+
         chosen_option_id (``int``, *optional*):
             0-based index of the chosen option), None in case of no vote yet.
 
-        correct_option_id (``int``, *optional*):
-            0-based identifier of the correct answer option.
-            Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to
-            the private chat with the bot.
+        correct_option_ids (List of ``int``, *optional*):
+            Array of 0-based identifiers of the correct answer options.
+            Available only for polls in quiz mode which are closed or were sent (not forwarded) by the bot or to the private chat with the bot.
 
-        explanation (``str``, *optional*):
+        explanation (:obj:`~pyrogram.types.FormattedText`, *optional*):
             Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll,
             0-200 characters.
-
-        explanation_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-            Special entities like usernames, URLs, bot commands, etc. that appear in the explanation.
 
         open_period (``int``, *optional*):
             Amount of time in seconds the poll will be active after creation.
 
         close_date (:py:obj:`~datetime.datetime`, *optional*):
             Point in time when the poll will be automatically closed.
+
+        description (:obj:`~pyrogram.types.FormattedText`, *optional*):
+            Description of the poll; for polls inside the Message object only.
 
     """
 
@@ -85,38 +84,38 @@ class Poll(Object, Update):
         *,
         client: "pyrogram.Client" = None,
         id: str,
-        question: Str,
+        question: "types.FormattedText",
         options: list["types.PollOption"],
-        question_entities: list["types.MessageEntity"] = None,
         total_voter_count: int,
         is_closed: bool,
         is_anonymous: bool = None,
         type: "enums.PollType" = None,
         allows_multiple_answers: bool = None,
+        allows_revoting: bool = None,
         chosen_option_id: Optional[int] = None,
-        correct_option_id: Optional[int] = None,
-        explanation: Optional[str] = None,
-        explanation_entities: Optional[list["types.MessageEntity"]] = None,
+        correct_option_ids: Optional[list[int]] = None,
+        explanation: Optional["types.FormattedText"] = None,
         open_period: Optional[int] = None,
         close_date: Optional[datetime] = None,
+        description: Optional["types.FormattedText"] = None,
     ):
         super().__init__(client)
 
         self.id = id
         self.question = question
         self.options = options
-        self.question_entities = question_entities
         self.total_voter_count = total_voter_count
         self.is_closed = is_closed
         self.is_anonymous = is_anonymous
         self.type = type
         self.allows_multiple_answers = allows_multiple_answers
+        self.allows_revoting = allows_revoting
         self.chosen_option_id = chosen_option_id
-        self.correct_option_id = correct_option_id
+        self.correct_option_ids = correct_option_ids
         self.explanation = explanation
-        self.explanation_entities = explanation_entities
         self.open_period = open_period
         self.close_date = close_date
+        self.description = descriptions
 
     @staticmethod
     def _parse(client, media_poll: Union["raw.types.MessageMediaPoll", "raw.types.UpdateMessagePoll"]) -> "Poll":
@@ -161,19 +160,12 @@ class Poll(Object, Update):
                 )
             )
 
-        entities = [
-            types.MessageEntity._parse(
-                client,
-                entity,
-                {}  # there isn't a TEXT_MENTION entity available yet
-            )
-            for entity in (poll.question.entities or [])
-        ]
-        entities = types.List(filter(lambda x: x is not None, entities))
-
         return Poll(
             id=str(poll.id),
-            question=Str(poll.question.text).init(entities),
+            question=types.FormattedText._parse(
+                client,
+                poll.question
+            ),
             options=options,
             question_entities=entities,
             total_voter_count=media_poll.results.total_voters,
