@@ -656,7 +656,7 @@ def pyrogram_api():
             ReactionTypeCustomEmoji
             ReactionTypePaid
             Thumbnail
-            TranslatedText
+            FormattedText
             StrippedThumbnail
             SponsoredMessage
             Sticker

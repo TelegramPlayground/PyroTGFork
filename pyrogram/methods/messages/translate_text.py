@@ -28,7 +28,7 @@ class TranslateText:
         to_language_code: str,
         chat_id: Union[int, str],
         message_ids: Union[int, list[int]]
-    ) -> Union["types.TranslatedText", list["types.TranslatedText"]]:
+    ) -> Union["types.FormattedText", list["types.FormattedText"]]:
         """Extracts text or caption of the given message and translates it to the given language. If the current user is a Telegram Premium user, then text formatting is preserved.
 
         .. include:: /_includes/usable-by/users.rst
@@ -45,7 +45,7 @@ class TranslateText:
                 Identifier or list of message identifiers of the target message.
 
         Returns:
-            :obj:`~pyrogram.types.TranslatedText` | List of :obj:`~pyrogram.types.TranslatedText`: In case *message_ids* was not
+            :obj:`~pyrogram.types.FormattedText` | List of :obj:`~pyrogram.types.FormattedText`: In case *message_ids* was not
             a list, a single result is returned, otherwise a list of results is returned.
 
         Example:
@@ -64,10 +64,10 @@ class TranslateText:
         )
 
         return (
-            types.TranslatedText._parse(self, r.result[0])
+            types.FormattedText._parse(self, r.result[0])
             if len(r.result) == 1
             else [
-                types.TranslatedText._parse(self, i)
+                types.FormattedText._parse(self, i)
                 for i in r.result
             ]
         )
@@ -79,7 +79,7 @@ class TranslateText:
         text: str,
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: list["types.MessageEntity"] = None
-    ) -> Union["types.TranslatedText", list["types.TranslatedText"]]:
+    ) -> Union["types.FormattedText", list["types.FormattedText"]]:
         """Translates a text to the given language. If the current user is a Telegram Premium user, then text formatting is preserved.
 
         .. include:: /_includes/usable-by/users.rst
@@ -100,7 +100,7 @@ class TranslateText:
                 List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
         Returns:
-            :obj:`~pyrogram.types.TranslatedText` | List of :obj:`~pyrogram.types.TranslatedText`: In case *message_ids* was not
+            :obj:`~pyrogram.types.FormattedText` | List of :obj:`~pyrogram.types.FormattedText`: In case *message_ids* was not
             a list, a single result is returned, otherwise a list of results is returned.
 
         Example:
@@ -130,10 +130,10 @@ class TranslateText:
         )
 
         return (
-            types.TranslatedText._parse(self, r.result[0])
+            types.FormattedText._parse(self, r.result[0])
             if len(r.result) == 1
             else [
-                types.TranslatedText._parse(self, i)
+                types.FormattedText._parse(self, i)
                 for i in r.result
             ]
         )
