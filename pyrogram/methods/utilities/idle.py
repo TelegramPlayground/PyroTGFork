@@ -70,17 +70,17 @@ async def idle():
             asyncio.run(main())
     """
     loop = asyncio.get_event_loop()
-    fut = loop.create_future()
+    sig_event = asyncio.Event()
 
     def signal_handler(signum):
         log.info(f"Stop signal received ({signals[signum]}). Exiting...")
-        if not fut.done():
-            loop.call_soon_threadsafe(fut.set_result, True)
+        if not sig_event.is_set():
+            loop.call_soon_threadsafe(sig_event.set)
 
     for s in (SIGINT, SIGTERM, SIGABRT):
         loop.add_signal_handler(s, signal_handler, s)
 
     try:
-        await fut
+        await sig_event.wait()
     except asyncio.CancelledError:
         pass
