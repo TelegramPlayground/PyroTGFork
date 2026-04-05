@@ -226,7 +226,6 @@ class KeyboardButton(Object):
                     icon_custom_emoji_id=icon_custom_emoji_id,
                     request_managed_bot=types.KeyboardButtonRequestManagedBot(
                         request_id=b.button_id,
-                        # bot_managed:flags.0?true
                         suggested_name=b.peer_type.suggested_name,
                         suggested_username=b.peer_type.suggested_username,
                     )
@@ -321,15 +320,12 @@ class KeyboardButton(Object):
                 )
         elif self.request_managed_bot:
             return raw.types.InputKeyboardButtonRequestPeer(
-                # name_requested:flags.0?true 
-                # username_requested:flags.1?true 
-                # photo_requested:flags.2?true 
-                max_quantity=10, 
+                max_quantity=1, 
                 style=raw_style,
                 text=self.text,
                 button_id=self.request_managed_bot.request_id,
                 peer_type=raw.types.RequestPeerTypeCreateBot(
-                    bot_managed=False,
+                    bot_managed=True,
                     suggested_name=self.request_managed_bot.suggested_name,
                     suggested_username=self.request_managed_bot.suggested_username,
                 ),
