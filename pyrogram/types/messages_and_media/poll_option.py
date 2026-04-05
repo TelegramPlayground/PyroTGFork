@@ -49,6 +49,7 @@ class PollOption(Object):
 
         data (``bytes``):
             The data this poll option is holding.
+
     """
 
     def __init__(
@@ -58,17 +59,17 @@ class PollOption(Object):
         persistent_id: str,
         text: "types.FormattedText",
         voter_count: int,
+        data: bytes,
         added_by_user: "types.User" = None,
         added_by_chat: "types.Chat" = None,
         addition_date: datetime = None,
-        data: bytes
     ):
         super().__init__(client)
 
         self.persistent_id = persistent_id
         self.text = text
         self.voter_count = voter_count
+        self.data = data
         self.added_by_user = added_by_user
         self.added_by_chat = added_by_chat
         self.addition_date = addition_date
-        self.data = data

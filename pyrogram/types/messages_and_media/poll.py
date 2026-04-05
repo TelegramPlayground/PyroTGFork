@@ -45,16 +45,16 @@ class Poll(Object, Update):
         is_closed (``bool``):
             True, if the poll is closed.
 
-        is_anonymous (``bool``, *optional*):
+        is_anonymous (``bool``):
             True, if the poll is anonymous
 
-        type (:obj:`~pyrogram.enums.PollType`, *optional*):
+        type (:obj:`~pyrogram.enums.PollType`):
             Poll type.
 
-        allows_multiple_answers (``bool``, *optional*):
+        allows_multiple_answers (``bool``):
             True, if the poll allows multiple answers.
 
-        allows_revoting (``bool``, *optional*):
+        allows_revoting (``bool``):
             True, if the poll allows to change the chosen answer options.
 
         chosen_option_id (``int``, *optional*):
@@ -88,10 +88,10 @@ class Poll(Object, Update):
         options: list["types.PollOption"],
         total_voter_count: int,
         is_closed: bool,
-        is_anonymous: bool = None,
-        type: "enums.PollType" = None,
-        allows_multiple_answers: bool = None,
-        allows_revoting: bool = None,
+        is_anonymous: bool,
+        type: "enums.PollType",
+        allows_multiple_answers: bool,
+        allows_revoting: bool,
         chosen_option_id: Optional[int] = None,
         correct_option_ids: Optional[list[int]] = None,
         explanation: Optional["types.FormattedText"] = None,
@@ -115,16 +115,30 @@ class Poll(Object, Update):
         self.explanation = explanation
         self.open_period = open_period
         self.close_date = close_date
-        self.description = descriptions
+        self.description = description
 
     @staticmethod
-    def _parse(client, media_poll: Union["raw.types.MessageMediaPoll", "raw.types.UpdateMessagePoll"]) -> "Poll":
+    async def _parse(
+        client,
+        media_poll: Union[
+            "raw.types.MessageMediaPoll",
+            "raw.types.UpdateMessagePoll"
+        ],
+        users: dict,
+        chats: dict,
+    ) -> "Poll":
         poll: raw.types.Poll = media_poll.poll
         poll_results: raw.types.PollResults = media_poll.results
         results: list[raw.types.PollAnswerVoters] = poll_results.results
 
-        chosen_option_id = None
-        correct_option_id = None
+        persistent_id = ""
+        if isinstance(media_poll, raw.types.UpdateMessagePoll):
+            persistent_id = str(media_poll.poll_id)
+        if isinstance(media_poll, raw.types.MessageMediaPoll):
+            persistent_id = str(poll.id)
+
+        chosen_option_id = []
+        correct_option_ids = []
         options = []
 
         for i, answer in enumerate(poll.answers):
@@ -135,58 +149,63 @@ class Poll(Object, Update):
                 voter_count = result.voters
 
                 if result.chosen:
-                    chosen_option_id = i
+                    chosen_option_id.append(i)
 
                 if result.correct:
-                    correct_option_id = i
+                    correct_option_ids.append(i)
 
-            entities = [
-                types.MessageEntity._parse(
-                    client,
-                    entity,
-                    {}  # there isn't a TEXT_MENTION entity available yet
-                )
-                for entity in (answer.text.entities or [])
-            ]
-            entities = types.List(filter(lambda x: x is not None, entities))
+            added_by_peer = answer.added_by
+            user = None
+            voter_chat = None
+
+            if added_by_peer:
+                if isinstance(added_by_peer, raw.types.PeerUser):
+                    user = types.Chat._parse_user_chat(client, users[added_by_peer.user_id])
+
+                elif isinstance(added_by_peer, raw.types.PeerChat):
+                    voter_chat = types.Chat._parse_chat_chat(client, chats[added_by_peer.chat_id])
+
+                else:
+                    voter_chat = types.Chat._parse_channel_chat(client, chats[added_by_peer.channel_id])
 
             options.append(
                 types.PollOption(
-                    text=Str(answer.text.text).init(entities),
-                    text_entities=entities,
+                    persistent_id=answer.option.decode("UTF-8"),
+                    text=types.FormattedText._parse(client, answer.text),
+                    # media:flags.0?MessageMedia
                     voter_count=voter_count,
                     data=answer.option,
+                    added_by_user=user,
+                    added_by_chat=voter_chat,
+                    addition_date=utils.timestamp_to_datetime(answer.date),
                     client=client
                 )
             )
 
         return Poll(
-            id=str(poll.id),
+            id=persistent_id,
             question=types.FormattedText._parse(
                 client,
                 poll.question
             ),
             options=options,
-            question_entities=entities,
-            total_voter_count=media_poll.results.total_voters,
+            total_voter_count=poll_results.total_voters,
             is_closed=poll.closed,
             is_anonymous=not poll.public_voters,
             type=enums.PollType.QUIZ if poll.quiz else enums.PollType.REGULAR,
             allows_multiple_answers=poll.multiple_choice,
+            allows_revoting=not poll.revoting_disabled,
             chosen_option_id=chosen_option_id,
-            correct_option_id=correct_option_id,
-            explanation=poll_results.solution,
-            explanation_entities=[
-                types.MessageEntity._parse(client, i, {})
-                for i in poll_results.solution_entities
-            ] if poll_results.solution_entities else None,
+            correct_option_ids=correct_option_ids,
+            explanation=types.FormattedText._parse(client, raw.types.TextWithEntities(text=poll_results.solution, entities=poll_results.solution_entities)),
             open_period=poll.close_period,
             close_date=utils.timestamp_to_datetime(poll.close_date),
+            description=None, #types.FormattedText._parse(client, ),
             client=client
         )
 
     @staticmethod
-    def _parse_update(
+    async def _parse_update(
         client,
         update: Union["raw.types.UpdateMessagePoll", "raw.types.UpdateMessagePollVote"],
         users: dict,
@@ -194,7 +213,7 @@ class Poll(Object, Update):
     ):
         if isinstance(update, raw.types.UpdateMessagePoll):
             if update.poll is not None:
-                return Poll._parse(client, update)
+                return await Poll._parse(client, update, users, chats)
 
             # TODO: FIXME!
             results = update.results.results
@@ -213,7 +232,6 @@ class Poll(Object, Update):
                 options.append(
                     types.PollOption(
                         text="",
-                        text_entities=[],
                         voter_count=result.voters,
                         data=result.option,
                         client=client

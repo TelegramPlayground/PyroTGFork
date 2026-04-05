@@ -100,4 +100,8 @@ class StopPoll:
         else:
             r = await self.invoke(rpc)
 
-        return types.Poll._parse(self, r.updates[0])
+        return await types.Poll._parse(
+            self,
+            r.updates[0],
+            {}, {}
+        )

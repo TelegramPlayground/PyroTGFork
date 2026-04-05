@@ -61,6 +61,8 @@ class FormattedText(Object):
         client,
         result: "raw.types.TextWithEntities"
     ) -> "FormattedText":
+        if not result.text:
+            return None
         entities = [
             types.MessageEntity._parse(
                 client,

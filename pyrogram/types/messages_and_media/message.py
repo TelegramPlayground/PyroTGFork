@@ -1369,7 +1369,7 @@ class Message(Object, Update):
                     if not web_page:
                         media = None
                 elif isinstance(media, raw.types.MessageMediaPoll):
-                    poll = types.Poll._parse(client, media)
+                    poll = await types.Poll._parse(client, media, users, chats)
                     media_type = enums.MessageMediaType.POLL
                 elif isinstance(media, raw.types.MessageMediaDice):
                     dice = types.Dice._parse(client, media)
@@ -1538,7 +1538,7 @@ class Message(Object, Update):
                     poll_option_id = message.reply_to.poll_option.decode("UTF-8")
                 except (UnicodeDecodeError, AttributeError):
                     # Equivalent to poll_option_id_.clear()
-                    poll_option_id = ""
+                    poll_option_id = None
                 parsed_message.reply_to_poll_option_id = poll_option_id
                 parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
                 parsed_message.message_thread_id = message.reply_to.reply_to_top_id

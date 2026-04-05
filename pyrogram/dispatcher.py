@@ -151,7 +151,7 @@ class Dispatcher:
 
         async def poll_parser(update, users, chats):
             return (
-                pyrogram.types.Poll._parse_update(
+                await pyrogram.types.Poll._parse_update(
                     self.client, update, users, chats
                 ),
                 PollHandler
