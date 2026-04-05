@@ -40,6 +40,7 @@ from .keyboard_button_poll_type import (
 )
 from .keyboard_button_request_chat import KeyboardButtonRequestChat
 from .keyboard_button_request_users import KeyboardButtonRequestUsers
+from .keyboard_button_request_managed_bot import KeyboardButtonRequestManagedBot
 from .login_url import LoginUrl
 from .menu_button import MenuButton
 from .menu_button_commands import MenuButtonCommands
@@ -67,6 +68,7 @@ __all__ = [
     "KeyboardButtonPollTypeQuiz",
     "KeyboardButtonRequestChat",
     "KeyboardButtonRequestUsers",
+    "KeyboardButtonRequestManagedBot",
     "ReplyKeyboardMarkup",
     "ReplyKeyboardRemove",
     "LoginUrl",

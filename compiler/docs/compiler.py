@@ -709,6 +709,7 @@ def pyrogram_api():
             KeyboardButtonPollTypeQuiz
             KeyboardButtonRequestChat
             KeyboardButtonRequestUsers
+            KeyboardButtonRequestManagedBot
             ReplyKeyboardMarkup
             ReplyKeyboardRemove
             LoginUrl

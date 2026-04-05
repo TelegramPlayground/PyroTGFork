@@ -218,7 +218,7 @@ class Poll(Object, Update):
             # TODO: FIXME!
             results = update.results.results
             chosen_option_id = []
-            correct_option_id = []
+            correct_option_ids = []
             options = []
             question = types.FormattedText(
                 text=""
@@ -249,7 +249,7 @@ class Poll(Object, Update):
                 total_voter_count=update.results.total_voters,
                 is_closed=False,
                 chosen_option_id=chosen_option_id,
-                correct_option_id=correct_option_id,
+                correct_option_ids=correct_option_ids,
                 client=client
             )
 
