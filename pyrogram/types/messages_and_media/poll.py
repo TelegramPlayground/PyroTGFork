@@ -231,30 +231,13 @@ class Poll(Object, Update):
                 if result.correct:
                     correct_option_ids.append(i)
 
-                added_by_peer = result.added_by
-                user = None
-                voter_chat = None
-
-                if added_by_peer:
-                    if isinstance(added_by_peer, raw.types.PeerUser):
-                        user = types.Chat._parse_user_chat(client, users[added_by_peer.user_id])
-
-                    elif isinstance(added_by_peer, raw.types.PeerChat):
-                        voter_chat = types.Chat._parse_chat_chat(client, chats[added_by_peer.chat_id])
-
-                    else:
-                        voter_chat = types.Chat._parse_channel_chat(client, chats[added_by_peer.channel_id])
-
                 options.append(
                     types.PollOption(
                         persistent_id=result.option.decode("UTF-8"),
-                        text=types.FormattedText._parse(client, result.text),
+                        text=None,
                         # media:flags.0?MessageMedia
                         voter_count=result.voters,
                         data=result.option,
-                        added_by_user=user,
-                        added_by_chat=voter_chat,
-                        addition_date=utils.timestamp_to_datetime(result.date),
                         client=client
                     )
                 )

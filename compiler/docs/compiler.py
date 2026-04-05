@@ -635,6 +635,8 @@ def pyrogram_api():
             UpgradedGift
             WebAppData
             MessageAutoDeleteTimerChanged
+            PollOptionAdded
+            PollOptionDeleted
             ChatBoostAdded
             ChatBackground
             Game
@@ -668,6 +670,7 @@ def pyrogram_api():
             ChatOwnerChanged
             ChatHasProtectedContentToggled
             ChatHasProtectedContentDisableRequested
+            ManagedBotCreated
         """,
         chat_topics="""
         Chat Forum Topics

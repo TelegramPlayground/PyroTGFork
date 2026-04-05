@@ -80,6 +80,8 @@ from .chat_owner_left import ChatOwnerLeft
 from .chat_owner_changed import ChatOwnerChanged
 from .chat_has_protected_content_toggled import ChatHasProtectedContentToggled
 from .chat_has_protected_content_disable_requested import ChatHasProtectedContentDisableRequested
+from .poll_option_added import PollOptionAdded
+from .poll_option_deleted import PollOptionDeleted
 
 __all__ = [
     "Animation",
@@ -145,4 +147,6 @@ __all__ = [
     "ChatOwnerChanged",
     "ChatHasProtectedContentToggled",
     "ChatHasProtectedContentDisableRequested",
+    "PollOptionAdded",
+    "PollOptionDeleted",
 ]

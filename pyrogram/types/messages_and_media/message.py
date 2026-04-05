@@ -361,9 +361,18 @@ class Message(Object, Update):
         giveaway_completed (:obj:`~pyrogram.types.GiveawayCompleted`, *optional*):
             Service message: a giveaway without public winners was completed
 
+        managed_bot_created (:obj:`~pyrogram.types.ManagedBotCreated`, *optional*):
+            Service message: user created a bot that will be managed by the current bot.
+
         paid_message_price_changed (:obj:`~pyrogram.types.PaidMessagePriceChanged`, *optional*):
             Service message: the price for paid messages has changed in the chat.
-        
+
+        poll_option_added (:obj:`~pyrogram.types.PollOptionAdded`, *optional*):
+            Service message: answer option was added to a poll
+
+        poll_option_deleted (:obj:`~pyrogram.types.PollOptionDeleted`, *optional*):
+            Service message: answer option was deleted from a poll.
+
         direct_message_price_changed (:obj:`~pyrogram.types.DirectMessagePriceChanged`, *optional*):
             Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed.
 
@@ -606,6 +615,9 @@ class Message(Object, Update):
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
         screenshot_taken: "types.ScreenshotTaken" = None,
+        managed_bot_created: "types.ManagedBotCreated" = None,
+        poll_option_added: "types.PollOptionAdded" = None,
+        poll_option_deleted: "types.PollOptionDeleted" = None,
         _raw = None
     ):
         super().__init__(client)
@@ -730,6 +742,9 @@ class Message(Object, Update):
         self.reply_to_checklist_task_id = reply_to_checklist_task_id
         self.reply_to_poll_option_id = reply_to_poll_option_id
         self.direct_messages_topic = direct_messages_topic
+        self.managed_bot_created = managed_bot_created
+        self.poll_option_added = poll_option_added
+        self.poll_option_deleted = poll_option_deleted
         self._raw = _raw
 
     @staticmethod
@@ -843,6 +858,10 @@ class Message(Object, Update):
 
             checklist_tasks_done = None
             checklist_tasks_added = None
+
+            managed_bot_created = None
+            poll_option_added = None
+            poll_option_deleted = None
 
             service_type = enums.MessageServiceType.UNKNOWN
 
@@ -1140,6 +1159,16 @@ class Message(Object, Update):
                 service_type = enums.MessageServiceType.CHECKLIST_TASKS_ADDED
                 checklist_tasks_added = types.ChecklistTasksAdded._parse(client, message, users, chats)
 
+            elif isinstance(action, raw.types.MessageActionPollAppendAnswer):
+                service_type = enums.MessageServiceType.POLL_OPTION_ADDED
+                poll_option_added = types.PollOptionAdded._parse(client, message)
+            elif isinstance(action, raw.types.MessageActionPollDeleteAnswer):
+                service_type = enums.MessageServiceType.POLL_OPTION_DELETED
+                poll_option_deleted = types.PollOptionDeleted._parse(client, message)
+            elif isinstance(action, raw.types.MessageActionManagedBotCreated):
+                service_type = enums.MessageServiceType.MANAGED_BOT_CREATED
+                managed_bot_created = types.ManagedBotCreated._parse(client, action, users)
+
             parsed_message = Message(
                 id=message.id,
                 date=utils.timestamp_to_datetime(message.date),
@@ -1195,6 +1224,9 @@ class Message(Object, Update):
                 reactions=types.MessageReactions._parse(client, message.reactions) if message.reactions else None,
                 checklist_tasks_done=checklist_tasks_done,
                 checklist_tasks_added=checklist_tasks_added,
+                managed_bot_created=managed_bot_created,
+                poll_option_added=poll_option_added,
+                poll_option_deleted=poll_option_deleted,
                 client=client
             )
 

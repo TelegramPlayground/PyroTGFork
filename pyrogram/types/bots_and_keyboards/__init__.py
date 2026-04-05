@@ -50,6 +50,7 @@ from .reply_keyboard_remove import ReplyKeyboardRemove
 from .sent_web_app_message import SentWebAppMessage
 from .switch_inline_query_chosen_chat import SwitchInlineQueryChosenChat
 from .web_app_info import WebAppInfo
+from .managed_bot_created import ManagedBotCreated
 
 
 __all__ = [
@@ -85,4 +86,5 @@ __all__ = [
     "MenuButtonDefault",
     "SentWebAppMessage",
     "SwitchInlineQueryChosenChat",
+    "ManagedBotCreated",
 ]
