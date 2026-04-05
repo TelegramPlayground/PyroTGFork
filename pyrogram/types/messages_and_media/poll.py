@@ -248,6 +248,10 @@ class Poll(Object, Update):
                 options=options,
                 total_voter_count=update.results.total_voters,
                 is_closed=False,
+                is_anonymous=None,
+                type=None, # TODO
+                allows_multiple_answers=None,
+                allows_revoting=None,
                 chosen_option_id=chosen_option_id,
                 correct_option_ids=correct_option_ids,
                 client=client

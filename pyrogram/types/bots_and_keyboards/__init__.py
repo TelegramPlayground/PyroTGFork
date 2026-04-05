@@ -52,7 +52,7 @@ from .sent_web_app_message import SentWebAppMessage
 from .switch_inline_query_chosen_chat import SwitchInlineQueryChosenChat
 from .web_app_info import WebAppInfo
 from .managed_bot_created import ManagedBotCreated
-
+from .managed_bot_updated import ManagedBotUpdated
 
 __all__ = [
     "CallbackGame",
@@ -89,4 +89,5 @@ __all__ = [
     "SentWebAppMessage",
     "SwitchInlineQueryChosenChat",
     "ManagedBotCreated",
+    "ManagedBotUpdated",
 ]

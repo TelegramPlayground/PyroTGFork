@@ -671,6 +671,7 @@ def pyrogram_api():
             ChatHasProtectedContentToggled
             ChatHasProtectedContentDisableRequested
             ManagedBotCreated
+            ManagedBotUpdated
         """,
         chat_topics="""
         Chat Forum Topics
