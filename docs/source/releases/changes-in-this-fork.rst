@@ -32,6 +32,24 @@ Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 224 |
++------------------------+
+
+- Added the field ``can_manage_bots`` to the class :obj:`~pyrogram.types.User`.
+- Added the class :obj:`~pyrogram.types.KeyboardButtonRequestManagedBot` and the field ``request_managed_bot`` to the class :obj:`~pyrogram.types.KeyboardButton`.
+- Added the class :obj:`~pyrogram.types.ManagedBotCreated` and the field ``managed_bot_created`` to the class :obj:`~pyrogram.types.Message`.
+- Added updates about the creation of managed bots and the change of their token, represented by the class :obj:`~pyrogram.handlers.ManagedBotUpdateHandler`.
+- Added the fields ``correct_option_ids``, ``allows_revoting``, ``description`` to the class :obj:`~pyrogram.types.Poll`.
+- Added the parameters ``correct_option_ids``, ``allows_multiple_answers``, ``allows_revoting``, ``shuffle_options``, ``allow_adding_options``, ``hide_results_until_closes``, ``description`` to the method :meth:`~pyrogram.Client.send_poll`.
+- Added the field ``option_persistent_ids`` to the class :obj:`~pyrogram.types.PollAnswer`.
+- Added the fields ``persistent_id``, ``addition_date``, ``added_by_user`` and ``added_by_chat`` to the class :obj:`~pyrogram.types.PollOption`.
+- Added the classes :obj:`~pyrogram.types.PollOptionAdded` and :obj:`~pyrogram.types.PollOptionDeleted` and the fields ``poll_option_added``, ``poll_option_deleted`` to the class :obj:`~pyrogram.types.Message`.
+- Added the field ``poll_option_id`` to the class :obj:`~pyrogram.types.ReplyParameters`, allowing to reply to a specific poll option.
+- Added the field ``reply_to_poll_option_id`` to the class :obj:`~pyrogram.types.Message`.
+- Added the method :meth:`~pyrogram.Client.send_message_draft`  (contributed by @sudo-py-dev in `#231 <https://github.com/TelegramPlayground/pyrogram/pull/231>`__).
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=222&to=223>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=222&to=223>`__.
+
++------------------------+
 | Scheme layer used: 223 |
 +------------------------+
 
