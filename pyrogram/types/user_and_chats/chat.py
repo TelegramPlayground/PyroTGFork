@@ -21,9 +21,7 @@ from datetime import datetime
 from typing import Union, Optional, AsyncGenerator
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import enums, raw, types, utils
 from pyrogram.errors import MessageIdsEmpty
 from ..object import Object
 
@@ -254,6 +252,9 @@ class Chat(Object):
         first_profile_audio (:obj:`~pyrogram.types.Audio`, *optional*):
             For private chats, the first audio added to the profile of the user.
 
+        note (:obj:`~pyrogram.types.FormattedText`, *optional*):
+            Note added to the user's contact.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
             OR, Title of the chat, for groups and channels.
@@ -332,6 +333,7 @@ class Chat(Object):
         has_automatic_translation: bool = None,
         is_direct_messages: bool = None,
         first_profile_audio: "types.Audio" = None,
+        note: "types.FormattedText" = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -411,6 +413,7 @@ class Chat(Object):
         self.has_automatic_translation = has_automatic_translation
         self.is_direct_messages = is_direct_messages
         self.first_profile_audio = first_profile_audio
+        self.note = note
         self._raw = _raw
 
     @staticmethod
@@ -690,6 +693,8 @@ class Chat(Object):
                 parsed_chat.first_profile_audio = types.Audio._parse(
                     client, doc, audio_attributes, file_name
                 )
+            if full_user.note:
+                parsed_chat.note = types.FormattedText._parse(client, full_user.note)
 
         else:
             full_chat = chat_full.full_chat
