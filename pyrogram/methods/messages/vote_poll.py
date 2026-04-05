@@ -60,7 +60,6 @@ class VotePoll:
             message_ids=message_id
         )).poll
         options = [options] if not isinstance(options, list) else options
-
         r = await self.invoke(
             raw.functions.messages.SendVote(
                 peer=await self.resolve_peer(chat_id),
@@ -68,9 +67,17 @@ class VotePoll:
                 options=[poll.options[option].data for option in options]
             )
         )
-
-        return await types.Poll._parse(
-            self,
-            r.updates[0],
-            {}, {}
-        )
+        for i in r.updates:
+            if isinstance(
+                i,
+                (
+                    raw.types.MessageMediaPoll,
+                    raw.types.UpdateMessagePoll
+                )
+            ):
+                return await types.Poll._parse(
+                    self,
+                    i,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                )

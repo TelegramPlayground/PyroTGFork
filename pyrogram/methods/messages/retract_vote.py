@@ -58,8 +58,18 @@ class RetractVote:
             )
         )
 
-        return await types.Poll._parse(
-            self,
-            r.updates[0],
-            {}, {}
-        )
+        for i in r.updates:
+            if isinstance(
+                i,
+                (
+                    raw.types.MessageMediaPoll,
+                    raw.types.UpdateMessagePoll
+                )
+            ):
+                return await types.Poll._parse(
+                    self,
+                    i,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                )
+
