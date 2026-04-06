@@ -3309,6 +3309,26 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        attached_media_animation: str = None,
+        attached_media_audio: str = None,
+        attached_media_document: str = None,
+        # messageLocation
+        attached_media_photo: str = None,
+        attached_media_sticker: str = None,
+        # messageVenue
+        attached_media_video: str = None,
+        attached_media_video_note: str = None,
+        attached_media_voice: str = None,
+        solution_media_animation: str = None,
+        solution_media_audio: str = None,
+        solution_media_document: str = None,
+        # messageLocation
+        solution_media_photo: str = None,
+        solution_media_sticker: str = None,
+        # messageVenue
+        solution_media_video: str = None,
+        solution_media_video_note: str = None,
+        solution_media_voice: str = None,
         reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_poll* of :obj:`~pyrogram.types.Message`.
@@ -3492,7 +3512,24 @@ class Message(Object, Update):
             send_as=send_as,
             schedule_date=schedule_date,
             message_effect_id=message_effect_id,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            attached_media_animation=attached_media_animation,
+            attached_media_audio=attached_media_audio,
+            attached_media_document=attached_media_document,
+            attached_media_photo=attached_media_photo,
+            attached_media_sticker=attached_media_sticker,
+            attached_media_video=attached_media_video,
+            attached_media_video_note=attached_media_video_note,
+            # TODO: https://t.me/c/1279877202/191075
+            attached_media_voice=attached_media_voice,
+            solution_media_animation=solution_media_animation,
+            solution_media_audio=solution_media_audio,
+            solution_media_document=solution_media_document,
+            solution_media_photo=solution_media_photo,
+            solution_media_sticker=solution_media_sticker,
+            solution_media_video=solution_media_video,
+            solution_media_video_note=solution_media_video_note,
+            solution_media_voice=solution_media_voice,
         )
 
     async def reply_sticker(

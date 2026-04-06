@@ -16,6 +16,7 @@ ANONYMOUS_OPEN_INVALID	allow_adding_options is not supported for anonymous polls
 API_ID_INVALID	API ID invalid.
 API_ID_PUBLISHED_FLOOD	This API id was published somewhere, you can't use it now.
 ARTICLE_TITLE_EMPTY	The title of the article is empty.
+ATTACH_MEDIA_TYPE_INVALID	The attached_media is invalid.
 AUDIO_CONTENT_URL_EMPTY	The remote URL specified in the content field is empty.
 AUDIO_TITLE_EMPTY	An empty audio title was provided.
 AUTH_BYTES_INVALID	The provided authorization is invalid.
@@ -493,6 +494,7 @@ SLOWMODE_MULTI_MSGS_DISABLED	Slowmode is enabled, you cannot forward multiple me
 SLUG_INVALID	The specified invoice slug is invalid.
 SMSJOB_ID_INVALID	The specified job ID is invalid.
 SMS_CODE_CREATE_FAILED	An error occurred while creating the SMS code.
+SOLUTION_MEDIA_TYPE_INVALID	The solution_media is invalid.
 SRP_A_INVALID	The specified inputCheckPasswordSRP.A value is invalid.
 SRP_ID_INVALID	Invalid SRP ID provided.
 SRP_PASSWORD_CHANGED	Password has changed.

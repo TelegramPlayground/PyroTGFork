@@ -22,6 +22,7 @@ from typing import Union
 
 import pyrogram
 from pyrogram import raw, utils, types, enums
+from pyrogram.file_id import FileType
 
 log = logging.getLogger(__name__)
 
@@ -61,6 +62,26 @@ class SendPoll:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        attached_media_animation: str = None,
+        attached_media_audio: str = None,
+        attached_media_document: str = None,
+        # messageLocation
+        attached_media_photo: str = None,
+        attached_media_sticker: str = None,
+        # messageVenue
+        attached_media_video: str = None,
+        attached_media_video_note: str = None,
+        attached_media_voice: str = None,
+        solution_media_animation: str = None,
+        solution_media_audio: str = None,
+        solution_media_document: str = None,
+        # messageLocation
+        solution_media_photo: str = None,
+        solution_media_sticker: str = None,
+        # messageVenue
+        solution_media_video: str = None,
+        solution_media_video_note: str = None,
+        solution_media_voice: str = None,
     ) -> "types.Message":
         """Send a native poll.
 
@@ -234,6 +255,43 @@ class SendPoll:
         if type == enums.PollType.QUIZ and len(correct_option_ids) > 1 and not allows_multiple_answers:
             allows_multiple_answers = True
 
+        attached_media = None
+        solution_media = None
+
+        if attached_media_animation:
+            attached_media = utils.get_input_media_from_file_id(attached_media_animation, FileType.ANIMATION)
+        elif attached_media_audio:
+            attached_media = utils.get_input_media_from_file_id(attached_media_audio, FileType.AUDIO)
+        elif attached_media_document:
+            attached_media = utils.get_input_media_from_file_id(attached_media_document, FileType.DOCUMENT)
+        elif attached_media_photo:
+            attached_media = utils.get_input_media_from_file_id(attached_media_photo, FileType.PHOTO)
+        elif attached_media_sticker:
+            attached_media = utils.get_input_media_from_file_id(attached_media_sticker, FileType.STICKER)
+        elif attached_media_video:
+            attached_media = utils.get_input_media_from_file_id(attached_media_video, FileType.VIDEO)
+        elif attached_media_video_note:
+            attached_media = utils.get_input_media_from_file_id(attached_media_video_note, FileType.VIDEO_NOTE)
+        elif attached_media_voice:
+            attached_media = utils.get_input_media_from_file_id(attached_media_voice, FileType.VOICE)
+
+        if solution_media_animation:
+            solution_media = utils.get_input_media_from_file_id(solution_media_animation, FileType.ANIMATION)
+        elif solution_media_audio:
+            solution_media = utils.get_input_media_from_file_id(solution_media_audio, FileType.AUDIO)
+        elif solution_media_document:
+            solution_media = utils.get_input_media_from_file_id(solution_media_document, FileType.DOCUMENT)
+        elif solution_media_photo:
+            solution_media = utils.get_input_media_from_file_id(solution_media_photo, FileType.PHOTO)
+        elif solution_media_sticker:
+            solution_media = utils.get_input_media_from_file_id(solution_media_sticker, FileType.STICKER)
+        elif solution_media_video:
+            solution_media = utils.get_input_media_from_file_id(solution_media_video, FileType.VIDEO)
+        elif solution_media_video_note:
+            solution_media = utils.get_input_media_from_file_id(solution_media_video_note, FileType.VIDEO_NOTE)
+        elif solution_media_voice:
+            solution_media = utils.get_input_media_from_file_id(solution_media_voice, FileType.VOICE)
+
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
             media=raw.types.InputMediaPoll(
@@ -257,8 +315,8 @@ class SendPoll:
                 correct_answers=correct_option_ids or None,
                 solution=solution.text if solution else None,
                 solution_entities=solution.entities if solution else None,
-                # attached_media:flags.3?InputMedia
-                # solution_media:flags.2?InputMedia = InputMedia;
+                solution_media=solution_media,
+                attached_media=attached_media,
             ),
             message=raw_description.text if raw_description else "",
             entities=raw_description.entities if raw_description else None,
