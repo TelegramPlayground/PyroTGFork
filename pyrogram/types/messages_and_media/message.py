@@ -128,6 +128,9 @@ class Message(Object, Update):
         reply_to_checklist_task_id (``int``, *optional*):
             Identifier of the specific checklist task that is being replied to.
 
+        reply_to_poll_option_id (``str``, *optional*):
+            Persistent identifier of the specific poll option that is being replied to.
+
         via_bot (:obj:`~pyrogram.types.User`):
             The information of the bot that generated the message from an inline query of a user.
 
@@ -358,9 +361,18 @@ class Message(Object, Update):
         giveaway_completed (:obj:`~pyrogram.types.GiveawayCompleted`, *optional*):
             Service message: a giveaway without public winners was completed
 
+        managed_bot_created (:obj:`~pyrogram.types.ManagedBotCreated`, *optional*):
+            Service message: user created a bot that will be managed by the current bot.
+
         paid_message_price_changed (:obj:`~pyrogram.types.PaidMessagePriceChanged`, *optional*):
             Service message: the price for paid messages has changed in the chat.
-        
+
+        poll_option_added (:obj:`~pyrogram.types.PollOptionAdded`, *optional*):
+            Service message: answer option was added to a poll
+
+        poll_option_deleted (:obj:`~pyrogram.types.PollOptionDeleted`, *optional*):
+            Service message: answer option was deleted from a poll.
+
         direct_message_price_changed (:obj:`~pyrogram.types.DirectMessagePriceChanged`, *optional*):
             Service message: the price for paid messages in the corresponding direct messages chat of a channel has changed.
 
@@ -494,6 +506,7 @@ class Message(Object, Update):
         quote: "types.TextQuote" = None,
         reply_to_story: "types.Story" = None,
         reply_to_checklist_task_id: int = None,
+        reply_to_poll_option_id: str = None,
         via_bot: "types.User" = None,
         edit_date: datetime = None,
         has_protected_content: bool = None,
@@ -602,6 +615,9 @@ class Message(Object, Update):
         contact_registered: "types.ContactRegistered" = None,
         chat_join_type: "enums.ChatJoinType" = None,
         screenshot_taken: "types.ScreenshotTaken" = None,
+        managed_bot_created: "types.ManagedBotCreated" = None,
+        poll_option_added: "types.PollOptionAdded" = None,
+        poll_option_deleted: "types.PollOptionDeleted" = None,
         _raw = None
     ):
         super().__init__(client)
@@ -724,7 +740,11 @@ class Message(Object, Update):
         self.checklist_tasks_done = checklist_tasks_done
         self.checklist_tasks_added = checklist_tasks_added
         self.reply_to_checklist_task_id = reply_to_checklist_task_id
+        self.reply_to_poll_option_id = reply_to_poll_option_id
         self.direct_messages_topic = direct_messages_topic
+        self.managed_bot_created = managed_bot_created
+        self.poll_option_added = poll_option_added
+        self.poll_option_deleted = poll_option_deleted
         self._raw = _raw
 
     @staticmethod
@@ -838,6 +858,10 @@ class Message(Object, Update):
 
             checklist_tasks_done = None
             checklist_tasks_added = None
+
+            managed_bot_created = None
+            poll_option_added = None
+            poll_option_deleted = None
 
             service_type = enums.MessageServiceType.UNKNOWN
 
@@ -1135,6 +1159,16 @@ class Message(Object, Update):
                 service_type = enums.MessageServiceType.CHECKLIST_TASKS_ADDED
                 checklist_tasks_added = types.ChecklistTasksAdded._parse(client, message, users, chats)
 
+            elif isinstance(action, raw.types.MessageActionPollAppendAnswer):
+                service_type = enums.MessageServiceType.POLL_OPTION_ADDED
+                poll_option_added = types.PollOptionAdded._parse(client, message)
+            elif isinstance(action, raw.types.MessageActionPollDeleteAnswer):
+                service_type = enums.MessageServiceType.POLL_OPTION_DELETED
+                poll_option_deleted = types.PollOptionDeleted._parse(client, message)
+            elif isinstance(action, raw.types.MessageActionManagedBotCreated):
+                service_type = enums.MessageServiceType.MANAGED_BOT_CREATED
+                managed_bot_created = types.ManagedBotCreated._parse(client, action, users)
+
             parsed_message = Message(
                 id=message.id,
                 date=utils.timestamp_to_datetime(message.date),
@@ -1190,6 +1224,9 @@ class Message(Object, Update):
                 reactions=types.MessageReactions._parse(client, message.reactions) if message.reactions else None,
                 checklist_tasks_done=checklist_tasks_done,
                 checklist_tasks_added=checklist_tasks_added,
+                managed_bot_created=managed_bot_created,
+                poll_option_added=poll_option_added,
+                poll_option_deleted=poll_option_deleted,
                 client=client
             )
 
@@ -1364,7 +1401,7 @@ class Message(Object, Update):
                     if not web_page:
                         media = None
                 elif isinstance(media, raw.types.MessageMediaPoll):
-                    poll = types.Poll._parse(client, media)
+                    poll = await types.Poll._parse(client, media, users, chats)
                     media_type = enums.MessageMediaType.POLL
                 elif isinstance(media, raw.types.MessageMediaDice):
                     dice = types.Dice._parse(client, media)
@@ -1528,6 +1565,13 @@ class Message(Object, Update):
 
             if isinstance(message.reply_to, raw.types.MessageReplyHeader):
                 parsed_message.reply_to_checklist_task_id = message.reply_to.todo_item_id
+                try:
+                    # Assuming reply_to.poll_option is a bytes-like object
+                    poll_option_id = message.reply_to.poll_option.decode("UTF-8")
+                except (UnicodeDecodeError, AttributeError):
+                    # Equivalent to poll_option_id_.clear()
+                    poll_option_id = None
+                parsed_message.reply_to_poll_option_id = poll_option_id
                 parsed_message.reply_to_message_id = message.reply_to.reply_to_msg_id
                 parsed_message.message_thread_id = message.reply_to.reply_to_top_id
                 if message.reply_to.forum_topic:
@@ -1605,6 +1649,7 @@ class Message(Object, Update):
         if self.chat.is_forum:
             # If it's a forum but not a specific topic message, it defaults to topic 1 (General)
             thread_id = self.message_thread_id if self.is_topic_message else 1
+            # https://t.me/c/1279877202/31475
             return f"https://t.me/{chat_path}/{thread_id}/{self.id}"
 
         # 4. Standard message link
@@ -1740,7 +1785,8 @@ class Message(Object, Update):
             On success, the sent Message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -1937,7 +1983,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2124,7 +2171,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2255,7 +2303,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2337,8 +2386,9 @@ class Message(Object, Update):
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             ValueError: In case the provided string is not a valid chat action.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.send_chat_action(
             chat_id=self.chat.id,
@@ -2442,7 +2492,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2618,7 +2669,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2731,7 +2783,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2816,7 +2869,8 @@ class Message(Object, Update):
             On success, the sent Message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2926,7 +2980,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3025,7 +3080,8 @@ class Message(Object, Update):
             List of :obj:`~pyrogram.types.Message`: On success, a list of the sent messages is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3194,7 +3250,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3234,34 +3291,57 @@ class Message(Object, Update):
 
     async def reply_poll(
         self,
-        question: str,
+        question: "types.FormattedText",
         options: list["types.InputPollOption"],
-        question_parse_mode: "enums.ParseMode" = None,
-        question_entities: list["types.MessageEntity"] = None,
+        quote: bool = None,
         is_anonymous: bool = True,
         type: "enums.PollType" = enums.PollType.REGULAR,
         allows_multiple_answers: bool = None,
-        correct_option_id: int = None,
-        explanation: str = None,
-        explanation_parse_mode: "enums.ParseMode" = None,
-        explanation_entities: list["types.MessageEntity"] = None,
+        allows_revoting: bool = None,
+        shuffle_options: bool = None,
+        allow_adding_options: bool = None,
+        hide_results_until_closes: bool = None,
+        correct_option_ids: list[int] = None,
+        explanation: "types.FormattedText" = None,
         open_period: int = None,
         close_date: datetime = None,
         is_closed: bool = None,
-        quote: bool = None,
+        description: "types.FormattedText" = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
-        message_effect_id: int = None,
         reply_parameters: "types.ReplyParameters" = None,
+        message_thread_id: int = None,
+        business_connection_id: str = None,
         send_as: Union[int, str] = None,
         schedule_date: datetime = None,
+        message_effect_id: int = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        attached_media_animation: str = None,
+        attached_media_audio: str = None,
+        attached_media_document: str = None,
+        # messageLocation
+        attached_media_photo: str = None,
+        attached_media_sticker: str = None,
+        # messageVenue
+        attached_media_video: str = None,
+        attached_media_video_note: str = None,
+        attached_media_voice: str = None,
+        solution_media_animation: str = None,
+        solution_media_audio: str = None,
+        solution_media_document: str = None,
+        # messageLocation
+        solution_media_photo: str = None,
+        solution_media_sticker: str = None,
+        # messageVenue
+        solution_media_video: str = None,
+        solution_media_video_note: str = None,
+        solution_media_voice: str = None,
         reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_poll* of :obj:`~pyrogram.types.Message`.
@@ -3294,7 +3374,7 @@ class Message(Object, Update):
 
         Parameters:
 
-            question (``str``):
+            question (:obj:`~pyrogram.types.FormattedText`):
                 Poll question.
                 **Users**: 1-255 characters.
                 **Bots**: 1-300 characters.
@@ -3302,12 +3382,10 @@ class Message(Object, Update):
             options (List of :obj:`~pyrogram.types.InputPollOption`):
                 List of 2-12 poll answer options.
 
-            question_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            question_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in the poll question, which can be specified instead of *question_parse_mode*.
+            quote (``bool``, *optional*):
+                If ``True``, the message will be sent as a reply to this message.
+                If *reply_to_message_id* is passed, this parameter will be ignored.
+                Defaults to ``True`` in group chats and ``False`` in private chats.
 
             is_anonymous (``bool``, *optional*):
                 True, if the poll needs to be anonymous.
@@ -3318,41 +3396,43 @@ class Message(Object, Update):
                 Defaults to :obj:`~pyrogram.enums.PollType.REGULAR`.
 
             allows_multiple_answers (``bool``, *optional*):
-                True, if the poll allows multiple answers, ignored for polls in quiz mode.
+                True, if the poll allows multiple answers.
                 Defaults to False.
 
-            correct_option_id (``int``, *optional*):
-                0-based identifier of the correct answer option, required for polls in quiz mode.
+            allows_revoting (``bool``, *optional*):
+                Pass True, if the poll allows to change chosen answer options, defaults to False for quizzes and to True for regular polls.
 
-            explanation (``str``, *optional*):
+            shuffle_options (``bool``, *optional*):
+                Pass True, if the poll options must be shown in random order.
+
+            allow_adding_options (``bool``, *optional*):
+                Pass True, if answer options can be added to the poll after creation; not supported for anonymous polls and quizzes.
+
+            hide_results_until_closes (``bool``, *optional*):
+                Pass True, if poll results must be shown only after the poll closes.
+
+            correct_option_ids (List of ``int``, *optional*):
+                List of monotonically increasing 0-based identifiers of the correct answer options, required for polls in quiz mode.
+
+            explanation (:obj:`~pyrogram.types.FormattedText`, *optional*):
                 Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style
                 poll, 0-200 characters with at most 2 line feeds after entities parsing.
 
-            explanation_parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
-                By default, texts are parsed using both Markdown and HTML styles.
-                You can combine both syntaxes together.
-
-            explanation_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-                List of special entities that appear in the poll explanation, which can be specified instead of
-                *parse_mode*.
-
             open_period (``int``, *optional*):
-                Amount of time in seconds the poll will be active after creation, 5-600.
+                Amount of time in seconds the poll will be active after creation, 5-2628000.
                 Can't be used together with *close_date*.
 
             close_date (:py:obj:`~datetime.datetime`, *optional*):
                 Point in time when the poll will be automatically closed.
-                Must be at least 5 and no more than 600 seconds in the future.
+                Must be at least 5 and no more than 2628000 seconds in the future.
                 Can't be used together with *open_period*.
 
             is_closed (``bool``, *optional*):
                 Pass True, if the poll needs to be immediately closed.
                 This can be useful for poll preview.
 
-            quote (``bool``, *optional*):
-                If ``True``, the message will be sent as a reply to this message.
-                If *reply_to_message_id* is passed, this parameter will be ignored.
-                Defaults to ``True`` in group chats and ``False`` in private chats.
+            description (:obj:`~pyrogram.types.FormattedText`, *optional*):
+                Description of the poll to be sent, 0-1024 characters after entities parsing.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -3364,11 +3444,14 @@ class Message(Object, Update):
             allow_paid_broadcast (``bool``, *optional*):
                 Pass True to allow the message to ignore regular broadcast limits for a small fee; for bots only
 
-            message_effect_id (``int`` ``64-bit``, *optional*):
-                Unique identifier of the message effect to be added to the message; for private chats only.
-
             reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
                 Description of the message to reply to
+
+            message_thread_id (``int``, *optional*):
+                If the message is in a thread, ID of the original message.
+
+            business_connection_id (``str``, *optional*):
+                Unique identifier of the business connection on behalf of which the message will be sent.
 
             send_as (``int`` | ``str``):
                 Unique identifier (int) or username (str) of the chat or channel to send the message as.
@@ -3380,6 +3463,9 @@ class Message(Object, Update):
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
+            message_effect_id (``int`` ``64-bit``, *optional*):
+                Unique identifier of the message effect to be added to the message; for private chats only.
+
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
@@ -3388,9 +3474,22 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
+        if reply_to_message_id and reply_parameters:
+            raise ValueError(
+                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                "exclusive."
+            )
         
+        if reply_to_message_id is not None:
+            log.warning(
+                "This property is deprecated. "
+                "Please use reply_parameters instead"
+            )
+            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
+
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
             reply_parameters,
             self.id,
@@ -3404,30 +3503,47 @@ class Message(Object, Update):
             chat_id=self.chat.id,
             question=question,
             options=options,
-            question_parse_mode=question_parse_mode,
-            question_entities=question_entities,
             is_anonymous=is_anonymous,
             type=type,
             allows_multiple_answers=allows_multiple_answers,
-            correct_option_id=correct_option_id,
+            allows_revoting=allows_revoting,
+            shuffle_options=shuffle_options,
+            allow_adding_options=allow_adding_options,
+            hide_results_until_closes=hide_results_until_closes,
+            correct_option_ids=correct_option_ids,
             explanation=explanation,
-            explanation_parse_mode=explanation_parse_mode,
-            explanation_entities=explanation_entities,
             open_period=open_period,
             close_date=close_date,
             is_closed=is_closed,
+            description=description,
             disable_notification=disable_notification,
             protect_content=protect_content,
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
-            message_effect_id=message_effect_id,
             reply_parameters=reply_parameters,
             message_thread_id=self.message_thread_id,
             business_connection_id=self.business_connection_id,
             send_as=send_as,
             schedule_date=schedule_date,
-            reply_to_message_id=reply_to_message_id,
-            reply_markup=reply_markup
+            message_effect_id=message_effect_id,
+            reply_markup=reply_markup,
+            attached_media_animation=attached_media_animation,
+            attached_media_audio=attached_media_audio,
+            attached_media_document=attached_media_document,
+            attached_media_photo=attached_media_photo,
+            attached_media_sticker=attached_media_sticker,
+            attached_media_video=attached_media_video,
+            attached_media_video_note=attached_media_video_note,
+            # TODO: https://t.me/c/1279877202/191075
+            attached_media_voice=attached_media_voice,
+            solution_media_animation=solution_media_animation,
+            solution_media_audio=solution_media_audio,
+            solution_media_document=solution_media_document,
+            solution_media_photo=solution_media_photo,
+            solution_media_sticker=solution_media_sticker,
+            solution_media_video=solution_media_video,
+            solution_media_video_note=solution_media_video_note,
+            solution_media_voice=solution_media_voice,
         )
 
     async def reply_sticker(
@@ -3554,7 +3670,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3692,7 +3809,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3904,7 +4022,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4095,7 +4214,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4271,7 +4391,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4465,7 +4586,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4563,7 +4685,8 @@ class Message(Object, Update):
             On success, the edited :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.edit_message_text(
             chat_id=self.chat.id,
@@ -4622,7 +4745,8 @@ class Message(Object, Update):
             On success, the edited :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.edit_message_caption(
             chat_id=self.chat.id,
@@ -4672,7 +4796,8 @@ class Message(Object, Update):
             On success, the edited :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.edit_message_media(
             chat_id=self.chat.id,
@@ -4711,7 +4836,8 @@ class Message(Object, Update):
             :obj:`~pyrogram.types.Message` is returned, otherwise True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.edit_message_reply_markup(
             chat_id=self.chat.id,
@@ -4862,7 +4988,8 @@ class Message(Object, Update):
             On success, the forwarded Message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.forward_messages(
             from_chat_id=self.chat.id,
@@ -4993,8 +5120,8 @@ class Message(Object, Update):
             :obj:`~pyrogram.types.Message`: On success, the copied message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             ValueError: In case if an invalid message was provided.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         if self.service:
@@ -5236,7 +5363,8 @@ class Message(Object, Update):
             ``int``: Amount of affected messages
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.delete_messages(
             chat_id=self.chat.id,
@@ -5324,9 +5452,10 @@ class Message(Object, Update):
             -   A :obj:`~pyrogram.types.User` object in case of a ``KeyboardButtonUserProfile`` button.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             ValueError: In case the provided index or position is out of range or the button label was not found.
             TimeoutError: In case, after clicking an inline button, the bot fails to answer within the timeout.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         if isinstance(self.reply_markup, types.ReplyKeyboardMarkup):
@@ -5508,7 +5637,8 @@ class Message(Object, Update):
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         sr = None
 
@@ -5571,7 +5701,8 @@ class Message(Object, Update):
             :obj:`~pyrogram.types.Poll`: On success, the poll with the retracted vote is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.retract_vote(
@@ -5650,9 +5781,9 @@ class Message(Object, Update):
             If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` containing ``minithumbnail`` and ``idx`` is not specified, then a list of paths or binary file-like objects is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         return await self._client.download_media(
@@ -5667,7 +5798,7 @@ class Message(Object, Update):
 
     async def vote(
         self,
-        option: int,
+        option: Union[int, list[int]]
     ) -> "types.Poll":
         """Bound method *vote* of :obj:`~pyrogram.types.Message`.
 
@@ -5687,14 +5818,15 @@ class Message(Object, Update):
                 message.vote(6)
 
         Parameters:
-            option (``int``):
-                Index of the poll option you want to vote for (0 to 9).
+            option (``Int`` | List of ``int``):
+                Index or list of indexes (for multiple answers) of the poll option(s) you want to vote for (0 to 9).
 
         Returns:
             :obj:`~pyrogram.types.Poll`: On success, the poll with the chosen option is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.vote_poll(
@@ -5734,7 +5866,8 @@ class Message(Object, Update):
             otherwise, in case a message object couldn't be returned, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.pin_chat_message(
             chat_id=self.chat.id,
@@ -5764,7 +5897,8 @@ class Message(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.unpin_chat_message(
             chat_id=self.chat.id,
@@ -5853,7 +5987,7 @@ class Message(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         return await self._client.read_chat_history(
@@ -5886,7 +6020,7 @@ class Message(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         return await self._client.view_messages(
@@ -5898,7 +6032,7 @@ class Message(Object, Update):
     async def translate(
         self,
         to_language_code: str
-    ) -> "types.TranslatedText":
+    ) -> "types.FormattedText":
         """Bound method *translate* of :obj:`~pyrogram.types.Message`.
 
         Use as a shortcut for:
@@ -5922,10 +6056,10 @@ class Message(Object, Update):
                 Must be one of "af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh-CN", "zh", "zh-Hans", "zh-TW", "zh-Hant", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "he", "iw", "hi", "hmn", "hu", "is", "ig", "id", "in", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "la", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "ji", "yo", "zu".
 
         Returns:
-            :obj:`~pyrogram.types.TranslatedText`: The translated result is returned.
+            :obj:`~pyrogram.types.FormattedText`: The translated result is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         return await self._client.translate_message_text(
@@ -6002,7 +6136,8 @@ class Message(Object, Update):
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.add_paid_message_reaction(
             chat_id=self.chat.id,

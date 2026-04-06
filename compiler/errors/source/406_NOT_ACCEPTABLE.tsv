@@ -1,4 +1,5 @@
 id	message
+AICOMPOSE_ERROR_OCCURED	The composeTextWithAi method encountered an error.
 ALLOW_PAYMENT_REQUIRED	This peer only accepts [paid messages](https://core.telegram.org/api/paid-messages): this error is only emitted for older layers without paid messages support, so the client must be updated in order to use paid messages.  .
 API_GIFT_RESTRICTED_UPDATE_APP	Please update the app to access the gift API.
 AUTH_KEY_DUPLICATED	Concurrent usage of the current session from multiple connections was detected, the current session was invalidated by the server for security reasons!

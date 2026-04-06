@@ -95,7 +95,7 @@ class EditStory:
 
         Raises:
             ValueError: In case of invalid arguments.
-            RPCError: In case of Telegram RPCError.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
 
@@ -256,7 +256,7 @@ class EditStory:
 
         Raises:
             ValueError: In case of invalid arguments.
-            RPCError: In case of Telegram RPCError.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         if not business_connection_id:

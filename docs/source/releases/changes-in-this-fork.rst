@@ -1,7 +1,4 @@
 
-Changes in this Fork
-=====================
-
 .. admonition :: A Word of Warning
     :class: tip
     
@@ -17,24 +14,45 @@ it can take advantage of new goodies!
 
 If you found any issue or have any suggestions, feel free to make `an issue <https://github.com/TelegramPlayGround/pyrogram/issues>`__ on github.
 
-Breaking Changes in this Fork
-==============================
+.. admonition :: Breaking Changes in this Fork
+    :class: tip
 
-- In :meth:`~pyrogram.Client.copy_message`, ``ValueError`` is raised instead of ``logging`` it.
-- In :meth:`~pyrogram.Client.download_media`, if the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` **and** ``idx`` was not specified, then a list of paths or binary file-like objects is returned.
-- PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
-- PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
-- If you relied on internal types like ``import pyrogram.file_id`` OR ``import pyrogram.utils``, Then read this full document to know where `else <https://t.me/PyrogramChat/42497>`_ your code will break.
-- :obj:`~pyrogram.types.InlineKeyboardButton` only accepts keyword arguments instead of positional arguments.
+    - In :meth:`~pyrogram.Client.copy_message`, ``ValueError`` is raised instead of ``logging`` it.
+    - In :meth:`~pyrogram.Client.download_media`, if the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` **and** ``idx`` was not specified, then a list of paths or binary file-like objects is returned.
+    - PR `#115 <https://github.com/TelegramPlayGround/pyrogram/pull/115>`_ This `change <https://github.com/pyrogram/pyrogram/pull/966#issuecomment-1108858881>`_ breaks some usages with offset-naive and offset-aware datetimes.
+    - PR from upstream: `#1411 <https://github.com/pyrogram/pyrogram/pull/1411>`_ without attribution.
+    - If you relied on internal types like ``import pyrogram.file_id`` OR ``import pyrogram.utils``, Then read this full document to know where `else <https://t.me/PyrogramChat/42497>`_ your code will break.
+    - :obj:`~pyrogram.types.InlineKeyboardButton` only accepts keyword arguments instead of positional arguments.
 
 
 Changes in this Fork
 =====================
 
 +------------------------+
+| Scheme layer used: 224 |
++------------------------+
+
+- Added the methods :meth:`~pyrogram.Client.add_poll_option` and :meth:`~pyrogram.Client.delete_poll_option`.
+- Added the field ``can_manage_bots`` to the class :obj:`~pyrogram.types.User`.
+- Added the class :obj:`~pyrogram.types.KeyboardButtonRequestManagedBot` and the field ``request_managed_bot`` to the class :obj:`~pyrogram.types.KeyboardButton`.
+- Added the class :obj:`~pyrogram.types.ManagedBotCreated` and the field ``managed_bot_created`` to the class :obj:`~pyrogram.types.Message`.
+- Added updates about the creation of managed bots and the change of their token, represented by the class :obj:`~pyrogram.handlers.ManagedBotUpdateHandler`.
+- Added support for quizzes with multiple correct answers.
+- Added the fields ``correct_option_ids``, ``allows_revoting``, ``description`` to the class :obj:`~pyrogram.types.Poll`.
+- Added the parameters ``correct_option_ids``, ``allows_multiple_answers``, ``allows_revoting``, ``shuffle_options``, ``allow_adding_options``, ``hide_results_until_closes``, ``description`` to the method :meth:`~pyrogram.Client.send_poll`.
+- Added the field ``option_persistent_ids`` to the class :obj:`~pyrogram.types.PollAnswer`.
+- Added the fields ``persistent_id``, ``addition_date``, ``added_by_user`` and ``added_by_chat`` to the class :obj:`~pyrogram.types.PollOption`.
+- Added the classes :obj:`~pyrogram.types.PollOptionAdded` and :obj:`~pyrogram.types.PollOptionDeleted` and the fields ``poll_option_added``, ``poll_option_deleted`` to the class :obj:`~pyrogram.types.Message`.
+- Added the field ``poll_option_id`` to the class :obj:`~pyrogram.types.ReplyParameters`, allowing to reply to a specific poll option.
+- Added the field ``reply_to_poll_option_id`` to the class :obj:`~pyrogram.types.Message`.
+- Added the method :meth:`~pyrogram.Client.send_message_draft`  (contributed by @sudo-py-dev in `#231 <https://github.com/TelegramPlayground/pyrogram/pull/231>`__).
+- View `new and changed <https://telegramplayground.github.io/TG-APIs/TL/diff/tdlib.html?from=222&to=223>`__ `raw API methods <https://telegramplayground.github.io/TG-APIs/TL/diff/tdesktop.html?from=222&to=223>`__.
+
++------------------------+
 | Scheme layer used: 223 |
 +------------------------+
 
+- Added the method :meth:`~pyrogram.Client.send_message_draft`, allowing bots to stream partial messages to a user while being generated. (contributed by @sudo-py-dev in `#231 <https://github.com/TelegramPlayground/pyrogram/pull/231>`__).
 - Added the :obj:`~pyrogram.types.MessageEntity` type :obj:`~pyrogram.enums.MessageEntityType.DATE_TIME`, allowing to show a formatted date and time to the user.
 - Added the fields ``chat_owner_left``, ``chat_owner_changed``, ``chat_has_protected_content_toggled`` and ``chat_has_protected_content_disable_requested`` to the class :obj:`~pyrogram.types.Message`.
 - Added the field ``can_edit_tag`` to the class :obj:`~pyrogram.types.ChatPermissions`.

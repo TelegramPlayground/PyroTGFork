@@ -34,7 +34,7 @@ class KeyboardButton(Object):
             Text of the button. If none of the optional fields are used, it will be sent as a message when
             the button is pressed.
 
-        icon_custom_emoji_id (``int``, *optional*):
+        icon_custom_emoji_id (``str``, *optional*):
             Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on Fragment or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription..
 
         style (:obj:`~pyrogram.enums.ButtonStyle`, *optional*):
@@ -47,6 +47,11 @@ class KeyboardButton(Object):
 
         request_chat (:obj:`~pyrogram.types.KeyboardButtonRequestChat`, *optional*):
             If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a “chat_shared” service message.
+            Available in private chats only.
+
+        request_managed_bot (:obj:`~pyrogram.types.KeyboardButtonRequestManagedBot`, *optional*):
+            If specified, pressing the button will ask the user to create and share a bot that will be managed by the current bot.
+            Available for bots that enabled management of other bots in the @BotFather Mini App.
             Available in private chats only.
 
         request_contact (``bool``, *optional*):
@@ -70,15 +75,17 @@ class KeyboardButton(Object):
 
     def __init__(
         self,
-        text: str, *,
+        text: str,
+        icon_custom_emoji_id: Optional[str] = None,
+        style: "enums.ButtonStyle" = enums.ButtonStyle.DEFAULT,
+        *,
         request_contact: bool = None,
         request_location: bool = None,
         request_poll: "types.KeyboardButtonPollType" = None,
         web_app: "types.WebAppInfo" = None,
         request_users: "types.KeyboardButtonRequestUsers" = None,
         request_chat: "types.KeyboardButtonRequestChat" = None,
-        icon_custom_emoji_id: Optional[int] = None,
-        style: "enums.ButtonStyle" = enums.ButtonStyle.DEFAULT
+        request_managed_bot: "types.KeyboardButtonRequestManagedBot" = None,
     ):
         super().__init__()
 
@@ -89,6 +96,7 @@ class KeyboardButton(Object):
         self.web_app = web_app
         self.request_users = request_users
         self.request_chat = request_chat
+        self.request_managed_bot = request_managed_bot
         self.icon_custom_emoji_id = icon_custom_emoji_id
         self.style = style
 
@@ -106,7 +114,7 @@ class KeyboardButton(Object):
             elif raw_style.bg_success:
                 button_style = enums.ButtonStyle.SUCCESS
             if raw_style.icon:
-                icon_custom_emoji_id = raw_style.icon
+                icon_custom_emoji_id = str(raw_style.icon)
 
         if isinstance(b, raw.types.KeyboardButton):
             return KeyboardButton(
@@ -212,6 +220,18 @@ class KeyboardButton(Object):
                     icon_custom_emoji_id=icon_custom_emoji_id
                 )
 
+            if isinstance(b.peer_type, raw.types.RequestPeerTypeCreateBot):
+                return KeyboardButton(
+                    text=b.text,
+                    style=button_style,
+                    icon_custom_emoji_id=icon_custom_emoji_id,
+                    request_managed_bot=types.KeyboardButtonRequestManagedBot(
+                        request_id=b.button_id,
+                        suggested_name=b.peer_type.suggested_name,
+                        suggested_username=b.peer_type.suggested_username,
+                    )
+                )
+
     def write(self):
         if isinstance(self, str):
             return raw.types.KeyboardButton(
@@ -222,7 +242,7 @@ class KeyboardButton(Object):
             bg_primary=self.style == enums.ButtonStyle.PRIMARY,
             bg_danger=self.style == enums.ButtonStyle.DANGER,
             bg_success=self.style == enums.ButtonStyle.SUCCESS,
-            icon=self.icon_custom_emoji_id
+            icon=int(self.icon_custom_emoji_id) if self.icon_custom_emoji_id else None
         )
 
         if self.request_contact:
@@ -299,6 +319,18 @@ class KeyboardButton(Object):
                     max_quantity=1,
                     style=raw_style
                 )
+        elif self.request_managed_bot:
+            return raw.types.InputKeyboardButtonRequestPeer(
+                max_quantity=1, 
+                style=raw_style,
+                text=self.text,
+                button_id=self.request_managed_bot.request_id,
+                peer_type=raw.types.RequestPeerTypeCreateBot(
+                    bot_managed=True,
+                    suggested_name=self.request_managed_bot.suggested_name,
+                    suggested_username=self.request_managed_bot.suggested_username,
+                ),
+            )
         else:
             return raw.types.KeyboardButton(
                 text=self.text,

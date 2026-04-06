@@ -27,11 +27,8 @@ class Reaction(Object):
     """Contains information about a reaction.
 
     Parameters:
-        emoji (``str``, *optional*):
-            Reaction emoji.
-
-        custom_emoji_id (``int``, *optional*):
-            Custom emoji id.
+        type (:obj:`~pyrogram.types.ReactionType`, *optional*):
+            List of chosen reactions.
 
         count (``int``, *optional*):
             Reaction count.
@@ -39,9 +36,6 @@ class Reaction(Object):
         chosen_order (``int``, *optional*):
             Chosen reaction order.
             Available for chosen reactions.
-
-        is_paid (``bool``, *optional*):
-            True, if this is a paid reaction.
 
     """
 
@@ -52,7 +46,6 @@ class Reaction(Object):
         type: "types.ReactionType" = None,
         count: Optional[int] = None,
         chosen_order: Optional[int] = None,
-        is_paid: Optional[bool] = None
     ):
         super().__init__(client)
 
@@ -77,7 +70,7 @@ class Reaction(Object):
             return Reaction(
                 client=client,
                 type=ReactionTypeCustomEmoji(
-                    custom_emoji_id=reaction.document_id
+                    custom_emoji_id=str(reaction.document_id)
                 )
             )
 
@@ -133,7 +126,7 @@ class ReactionType(Object):
             )
         elif isinstance(update, raw.types.ReactionCustomEmoji):
             return ReactionTypeCustomEmoji(
-                custom_emoji_id=update.document_id
+                custom_emoji_id=str(update.document_id)
             )
         elif isinstance(update, raw.types.ReactionPaid):
             return ReactionTypePaid()
@@ -148,6 +141,7 @@ class ReactionTypeEmoji(ReactionType):
     Parameters:
         emoji (``str``, *optional*):
             Reaction emoji.
+
     """
 
     def __init__(
@@ -172,6 +166,7 @@ class ReactionTypeCustomEmoji(ReactionType):
     Parameters:
         custom_emoji_id (``str``, *optional*):
             Custom emoji id.
+
     """
 
     def __init__(
@@ -185,9 +180,11 @@ class ReactionTypeCustomEmoji(ReactionType):
         )
     
     def write(self, client: "pyrogram.Client") -> "raw.base.Reaction":
-        return raw.types.ReactionCustomEmoji(
-            document_id=self.custom_emoji_id
-        )
+        if self.custom_emoji_id is not None:
+            return raw.types.ReactionCustomEmoji(
+                document_id=int(self.custom_emoji_id)
+            )
+        return raw.types.ReactionEmpty()
 
 
 class ReactionTypePaid(ReactionType):

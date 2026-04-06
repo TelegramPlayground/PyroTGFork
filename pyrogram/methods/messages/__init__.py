@@ -77,6 +77,8 @@ from .send_screenshot_notification import SendScreenshotNotification
 from .send_checklist import SendChecklist
 from .edit_message_checklist import EditMessageChecklist
 from .mark_checklist_tasks_as_done import MarkChecklistTasksAsDone
+from .add_poll_option import AddPollOption
+from .delete_poll_option import DeletePollOption
 
 class Messages(
     CopyMediaGroup,
@@ -140,5 +142,7 @@ class Messages(
     SendChecklist,
     EditMessageChecklist,
     MarkChecklistTasksAsDone,
+    AddPollOption,
+    DeletePollOption
 ):
     pass

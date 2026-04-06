@@ -16,6 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import inspect
 import os
 import subprocess
 import sys
@@ -32,8 +33,11 @@ commit_id = subprocess.check_output([
     "HEAD",
 ]).decode("UTF-8").strip()
 
+project_url = "https://github.com/TelegramPlayGround/Pyrogram"
+# --- SETUP: Define your repository root ---
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 project = "pyrotgfork"
-copyright = "2017-present, Dan"
+copyright = "2017-2024, Dan"
 author = "Dan"
 version = f"{__version__} Layer {layer}"
 
@@ -45,6 +49,7 @@ extensions = [
     # "sphinx.ext.viewcode",
     "sphinx_copybutton",
     # "sphinx.ext.coverage",
+    "sphinx.ext.linkcode",
     "sphinx_llms_txt",
 ]
 
@@ -158,3 +163,57 @@ llms_txt_exclude = [
     "genindex",
     "modindex",
 ]
+
+def linkcode_resolve(domain, info):
+    """
+    Determine the URL corresponding to Python object
+    """
+    if domain != "py":
+        return None
+    if not info["module"]:
+        return None
+
+    # Attempt to find the exact line numbers using the inspect module
+    module = sys.modules.get(info["module"])
+    if module is None:
+        return None
+
+    # Traverse the object tree to find the specific class/function
+    obj = module
+    for part in info["fullname"].split("."):
+        try:
+            obj = getattr(obj, part)
+        except AttributeError:
+            return None
+
+    # --- Unwrap decorators to bypass sync.py wrappers ---
+    try:
+        obj = inspect.unwrap(obj)
+    except:
+        pass # If it can't be unwrapped, just proceed with the original object
+
+    try:
+        # 1. Get the absolute path to the file locally
+        filepath = inspect.getsourcefile(obj)
+        if filepath is None:
+            return None
+        
+        # 2. Calculate the path relative to the root of your git repository
+        rel_filepath = os.path.relpath(filepath, start=REPO_ROOT)
+        
+        # Ensure forward slashes for the GitHub URL (important for Windows users)
+        rel_filepath = rel_filepath.replace(os.sep, "/")
+        
+        # 3. Get the line numbers
+        source, lineno = inspect.getsourcelines(obj)
+        
+        # Return the perfectly mapped GitHub URL
+        # Returns a link like: https://github.com/user/repo/blob/main/module.py#L10-L25
+        return f"{project_url}/blob/{commit_id}/{rel_filepath}#L{lineno}-L{lineno + len(source) - 1}"
+        
+    except (TypeError, OSError, ValueError):
+        # Fails safely if source cannot be inspected or path calculation fails
+        return None
+
+    # Fallback to just linking to the file if line numbers can't be resolved
+    return f"{project_url}/blob/{commit_id}/{filename}.py"

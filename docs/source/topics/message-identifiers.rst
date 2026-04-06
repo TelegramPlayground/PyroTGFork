@@ -40,11 +40,9 @@ Let's look at a concrete example.
 Every account and channel has just been created.
 This means everyone has a message counter of one.
 
-First, User-A will sent a welcome message to both User-B and User-C::
+.. First, User-A will sent a welcome message to both User-B and User-C::
 
-..
     User-A → User-B: Hey, welcome!
-
     User-A → User-C: ¡Bienvenido!
 
 * For User-A, "Hey, welcome!" will have the message identifier 1. The message with "¡Bienvenido!" will have an ID of 2.
@@ -57,11 +55,10 @@ First, User-A will sent a welcome message to both User-B and User-C::
    "Hey, welcome!", 1, 1, "", "", ""
    "¡Bienvenido!", 2, "", 1, "", ""
 
-Next, User-B and User-C will respond to User-A::
 
-..
+.. Next, User-B and User-C will respond to User-A::
+
     User-B → User-A: Thanks!
-
     User-C → User-A: Gracias :)
 
 .. csv-table:: Message identifiers
@@ -74,9 +71,8 @@ Next, User-B and User-C will respond to User-A::
 
 Notice how for each message, the counter goes up by one, and they are independent.
 
-Let's see what happens when User-B sends a message to Group-S::
+.. Let's see what happens when User-B sends a message to Group-S::
 
-..
     User-B → Group-S: Nice group
 
 .. csv-table:: Message identifiers
@@ -92,9 +88,7 @@ While the message was sent to a different chat, the group itself doesn't have a 
 The message identifiers are still unique for each account.
 The chat where the message was sent can be completely ignored.
 
-Megagroups behave differently::
-
-..
+.. Megagroups behave differently::
     User-C → Group-M: Buen grupo
 
 .. csv-table:: Message identifiers

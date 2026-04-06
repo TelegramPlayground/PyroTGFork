@@ -41,6 +41,10 @@ class SetChatMenuButton:
             menu_button (:obj:`~pyrogram.types.MenuButton`, *optional*):
                 The new bot's menu button.
                 Defaults to :obj:`~pyrogram.types.MenuButtonDefault`.
+
+        Raises:
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         await self.invoke(

@@ -38,6 +38,9 @@ class GetSimilarBots:
         Returns:
             List of :obj:`~pyrogram.types.User`: On success.
 
+        Raises:
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 

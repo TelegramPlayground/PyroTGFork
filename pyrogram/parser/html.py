@@ -210,11 +210,13 @@ class HTML:
             elif entity_type in (
                 MessageEntityType.CODE,
                 MessageEntityType.BLOCKQUOTE,
-                MessageEntityType.SPOILER,
             ):
                 name = entity_type.name.lower()
                 start_tag = f"<{name}>"
                 end_tag = f"</{name}>"
+            elif entity_type == MessageEntityType.SPOILER:
+                start_tag = "<tg-spoiler>"
+                end_tag = "</tg-spoiler>"
             elif entity_type == MessageEntityType.TEXT_LINK:
                 url = entity.url
                 start_tag = f'<a href="{url}">'

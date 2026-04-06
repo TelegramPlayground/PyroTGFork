@@ -307,25 +307,25 @@ class FileIdCached:
     _encoded: typing.Optional[str] = None
 
     def __init__(
-            self, *,
-            major: int = MAJOR,
-            minor: int = MINOR,
-            file_type: FileType,
-            dc_id: int,
-            file_reference: bytes = b"",
-            url: str = None,
-            media_id: int = None,
-            access_hash: int = None,
-            volume_id: int = None,
-            thumbnail_source: ThumbnailSource = None,
-            thumbnail_file_type: FileType = None,
-            thumbnail_size: str = "",
-            secret: int = None,
-            local_id: int = None,
-            chat_id: int = None,
-            chat_access_hash: int = None,
-            sticker_set_id: int = None,
-            sticker_set_access_hash: int = None
+        self, *,
+        major: int = MAJOR,
+        minor: int = MINOR,
+        file_type: FileType,
+        dc_id: int,
+        file_reference: bytes = b"",
+        url: str = None,
+        media_id: int = None,
+        access_hash: int = None,
+        volume_id: int = None,
+        thumbnail_source: ThumbnailSource = None,
+        thumbnail_file_type: FileType = None,
+        thumbnail_size: str = "",
+        secret: int = None,
+        local_id: int = None,
+        chat_id: int = None,
+        chat_access_hash: int = None,
+        sticker_set_id: int = None,
+        sticker_set_access_hash: int = None
     ):
         self.major = major
         self.minor = minor
@@ -416,7 +416,7 @@ class FileIdCached:
         return self._encoded
 
     def __str__(self):
-        return str({k: v for k, v in self.__dict__.items() if v is not None})
+        return str({k: v for k, v in self.__dict__.items() if k != "_encoded" and v is not None})
 
 
 class FileUniqueType(IntEnum):
@@ -477,12 +477,12 @@ class FileUniqueIdCached:
     _encoded: typing.Optional[str] = None
 
     def __init__(
-            self, *,
-            file_unique_type: FileUniqueType,
-            url: str = None,
-            media_id: int = None,
-            volume_id: int = None,
-            local_id: int = None
+        self, *,
+        file_unique_type: FileUniqueType,
+        url: str = None,
+        media_id: int = None,
+        volume_id: int = None,
+        local_id: int = None
     ):
         self.file_unique_type = file_unique_type
         self.url = url
@@ -513,4 +513,4 @@ class FileUniqueIdCached:
         return self._encoded
 
     def __str__(self):
-        return str({k: v for k, v in self.__dict__.items() if v is not None})
+        return str({k: v for k, v in self.__dict__.items() if k != "_encoded" and v is not None})
