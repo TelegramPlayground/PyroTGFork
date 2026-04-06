@@ -168,5 +168,14 @@ class MessageServiceType(AutoName):
     CHAT_HAS_PROTECTED_CONTENT_DISABLE_REQUESTED = auto()
     "Chat has_protected_content setting was requested to be disabled"
 
+    MANAGED_BOT_CREATED = auto()
+    "A bot managed by another bot was created by the user"
+
+    POLL_OPTION_ADDED = auto()
+    "An option was added to a poll"
+
+    POLL_OPTION_DELETED = auto()
+    "A message with information about a deleted poll option"
+
     UNKNOWN = auto()
     "This service message is unsupported by the current version of Pyrogram"

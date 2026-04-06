@@ -9,10 +9,15 @@ ADMIN_RANK_EMOJI_NOT_ALLOWED	An admin rank cannot contain emojis.
 ADMIN_RANK_INVALID	The specified admin rank is invalid.
 ADMIN_RIGHTS_EMPTY	The chatAdminRights constructor passed in keyboardButtonRequestPeer.peer_type.user_admin_rights has no rights set (i.e. flags is 0).
 AD_EXPIRED	The ad has expired (too old or not found).
+AI_COMPOSE_TASK_MISSING	The text composition style is missing.
 ALBUM_PHOTOS_TOO_MANY	You have uploaded too many profile photos, delete some before retrying.
+ANSWER_X_MEDIA_TYPE_INVALID	The option media type at index {value} is invalid.
+ANONYMOUS_OPEN_INVALID	allow_adding_options is not supported for anonymous polls and quizzes.
 API_ID_INVALID	API ID invalid.
 API_ID_PUBLISHED_FLOOD	This API id was published somewhere, you can't use it now.
 ARTICLE_TITLE_EMPTY	The title of the article is empty.
+ATTACH_MEDIA_EMPTY	The attached media is empty.
+ATTACH_MEDIA_TYPE_INVALID	The attached_media is invalid.
 AUDIO_CONTENT_URL_EMPTY	The remote URL specified in the content field is empty.
 AUDIO_TITLE_EMPTY	An empty audio title was provided.
 AUTH_BYTES_INVALID	The provided authorization is invalid.
@@ -26,6 +31,7 @@ BALANCE_TOO_LOW	The transaction cannot be completed because the current [Telegra
 BANK_CARD_NUMBER_INVALID	The specified card number is invalid.
 BANNED_RIGHTS_INVALID	You provided some invalid flags in the banned rights.
 BASE_PORT_LOC_INVALID	The base port location is invalid
+BIRTHDAY_ALREADY	The user has already entered a birthday.
 BIRTHDAY_INVALID	An invalid age was specified, must be between 0 and 150 years.
 BOOSTS_EMPTY	No boost slots were specified.
 BOOSTS_REQUIRED	The specified channel must first be [boosted by its users](https://core.telegram.org/api/boost) in order to perform this action.
@@ -154,6 +160,7 @@ DATA_JSON_INVALID	The provided JSON data is invalid.
 DATA_TOO_LONG	Data too long.
 DATE_EMPTY	Date empty.
 DC_ID_INVALID	The provided DC ID is invalid.
+DELETE_ANSWER_FORBIDDEN	You cannot delete the specified option in this poll.
 DH_G_A_INVALID	g_a invalid.
 DOCUMENT_INVALID	The specified document is invalid.
 EFFECT_ID_INVALID	The specified effect ID is invalid.
@@ -262,6 +269,7 @@ INLINE_RESULT_EXPIRED	The inline query expired.
 INPUT_CHATLIST_INVALID	The specified folder is invalid.
 INPUT_CONSTRUCTOR_INVALID	The specified TL constructor is invalid.
 INPUT_FETCH_ERROR	An error occurred while parsing the provided TL constructor.
+INPUT_FETCH_ERROR_X	An error occurred while parsing the provided TL {value} constructor.
 INPUT_FETCH_FAIL	An error occurred while parsing the provided TL constructor.
 INPUT_FILE_INVALID	The specified [InputFile](https://core.telegram.org/type/InputFile) is invalid.
 INPUT_FILTER_INVALID	The specified filter is invalid.
@@ -294,6 +302,8 @@ LASTNAME_INVALID	The last name is invalid.
 LIMIT_INVALID	The provided limit is invalid.
 LINK_NOT_MODIFIED	Discussion link not modified.
 LOCATION_INVALID	The provided location is invalid.
+MANAGER_INVALID	The provided bot manager is invalid. Bot Management Mode should be enabled for the bot in the @BotFather Mini App.
+MANAGER_PERMISSION_MISSING	The bot manager permission is missing. Bot Management Mode should be enabled for the bot in the @BotFather Mini App.
 MAX_DATE_INVALID	The specified maximum date is invalid.
 MAX_ID_INVALID	The provided max ID is invalid.
 MAX_QTS_INVALID	The specified max_qts is invalid.
@@ -487,6 +497,8 @@ SLOWMODE_MULTI_MSGS_DISABLED	Slowmode is enabled, you cannot forward multiple me
 SLUG_INVALID	The specified invoice slug is invalid.
 SMSJOB_ID_INVALID	The specified job ID is invalid.
 SMS_CODE_CREATE_FAILED	An error occurred while creating the SMS code.
+SOLUTION_MEDIA_EMPTY	The solution_media is empty.
+SOLUTION_MEDIA_TYPE_INVALID	The solution_media is invalid.
 SRP_A_INVALID	The specified inputCheckPasswordSRP.A value is invalid.
 SRP_ID_INVALID	Invalid SRP ID provided.
 SRP_PASSWORD_CHANGED	Password has changed.
@@ -618,6 +630,7 @@ USERNAME_NOT_MODIFIED	The username was not modified.
 USERNAME_NOT_OCCUPIED	The provided username is not occupied.
 USERNAME_OCCUPIED	The provided username is already occupied.
 USERNAME_PURCHASE_AVAILABLE	The specified username can be purchased on https://fragment.com.
+USERNAME_SUFFIX_MISSING	Bot username must end in `bot`.
 USERPIC_UPLOAD_REQUIRED	You must have a profile picture to publish your geolocation.
 USERS_TOO_FEW	Not enough users (to create a chat, for example).
 USERS_TOO_MUCH	The maximum number of users has been exceeded (to create a chat, for example).

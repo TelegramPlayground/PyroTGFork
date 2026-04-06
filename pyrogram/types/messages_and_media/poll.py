@@ -33,11 +33,8 @@ class Poll(Object, Update):
         id (``str``):
             Unique poll identifier.
 
-        question (``str``):
+        question (:obj:`~pyrogram.types.FormattedText`):
             Poll question, 1-255 characters.
-
-        question_entities (List of :obj:`~pyrogram.types.MessageEntity`):
-            Special entities that appear in the question. Currently, only custom emoji entities are allowed in poll questions.
 
         options (List of :obj:`~pyrogram.types.PollOption`):
             List of poll options.
@@ -48,35 +45,43 @@ class Poll(Object, Update):
         is_closed (``bool``):
             True, if the poll is closed.
 
-        is_anonymous (``bool``, *optional*):
+        is_anonymous (``bool``):
             True, if the poll is anonymous
 
-        type (:obj:`~pyrogram.enums.PollType`, *optional*):
+        type (:obj:`~pyrogram.enums.PollType`):
             Poll type.
 
-        allows_multiple_answers (``bool``, *optional*):
+        allows_multiple_answers (``bool``):
             True, if the poll allows multiple answers.
+
+        allows_revoting (``bool``):
+            True, if the poll allows to change the chosen answer options.
 
         chosen_option_id (``int``, *optional*):
             0-based index of the chosen option), None in case of no vote yet.
 
-        correct_option_id (``int``, *optional*):
-            0-based identifier of the correct answer option.
-            Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to
-            the private chat with the bot.
+        correct_option_ids (List of ``int``, *optional*):
+            Array of 0-based identifiers of the correct answer options.
+            Available only for polls in quiz mode which are closed or were sent (not forwarded) by the bot or to the private chat with the bot.
 
-        explanation (``str``, *optional*):
+        explanation (:obj:`~pyrogram.types.FormattedText`, *optional*):
             Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll,
             0-200 characters.
-
-        explanation_entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-            Special entities like usernames, URLs, bot commands, etc. that appear in the explanation.
 
         open_period (``int``, *optional*):
             Amount of time in seconds the poll will be active after creation.
 
         close_date (:py:obj:`~datetime.datetime`, *optional*):
             Point in time when the poll will be automatically closed.
+
+        has_open_answers (``bool``, *optional*):
+            Participants can suggest new options.
+
+        description (:obj:`~pyrogram.types.FormattedText`, *optional*):
+            Description of the poll; for polls inside the Message object only.
+
+        can_add_option (``bool``, *property*):
+            True, if an option can be added to the poll using :meth:`~pyrogram.Client.add_poll_option`.
 
     """
 
@@ -85,47 +90,63 @@ class Poll(Object, Update):
         *,
         client: "pyrogram.Client" = None,
         id: str,
-        question: Str,
+        question: "types.FormattedText",
         options: list["types.PollOption"],
-        question_entities: list["types.MessageEntity"] = None,
         total_voter_count: int,
         is_closed: bool,
-        is_anonymous: bool = None,
-        type: "enums.PollType" = None,
-        allows_multiple_answers: bool = None,
+        is_anonymous: bool,
+        type: "enums.PollType",
+        allows_multiple_answers: bool,
+        allows_revoting: bool,
         chosen_option_id: Optional[int] = None,
-        correct_option_id: Optional[int] = None,
-        explanation: Optional[str] = None,
-        explanation_entities: Optional[list["types.MessageEntity"]] = None,
+        correct_option_ids: Optional[list[int]] = None,
+        explanation: Optional["types.FormattedText"] = None,
         open_period: Optional[int] = None,
         close_date: Optional[datetime] = None,
+        has_open_answers: Optional[bool] = None,
+        description: Optional["types.FormattedText"] = None,
     ):
         super().__init__(client)
 
         self.id = id
         self.question = question
         self.options = options
-        self.question_entities = question_entities
         self.total_voter_count = total_voter_count
         self.is_closed = is_closed
         self.is_anonymous = is_anonymous
         self.type = type
         self.allows_multiple_answers = allows_multiple_answers
+        self.allows_revoting = allows_revoting
         self.chosen_option_id = chosen_option_id
-        self.correct_option_id = correct_option_id
+        self.correct_option_ids = correct_option_ids
         self.explanation = explanation
-        self.explanation_entities = explanation_entities
         self.open_period = open_period
         self.close_date = close_date
+        self.has_open_answers = has_open_answers
+        self.description = description
 
     @staticmethod
-    def _parse(client, media_poll: Union["raw.types.MessageMediaPoll", "raw.types.UpdateMessagePoll"]) -> "Poll":
+    async def _parse(
+        client,
+        media_poll: Union[
+            "raw.types.MessageMediaPoll",
+            "raw.types.UpdateMessagePoll"
+        ],
+        users: dict,
+        chats: dict,
+    ) -> "Poll":
         poll: raw.types.Poll = media_poll.poll
         poll_results: raw.types.PollResults = media_poll.results
         results: list[raw.types.PollAnswerVoters] = poll_results.results
 
-        chosen_option_id = None
-        correct_option_id = None
+        persistent_id = ""
+        if isinstance(media_poll, raw.types.UpdateMessagePoll):
+            persistent_id = str(media_poll.poll_id)
+        if isinstance(media_poll, raw.types.MessageMediaPoll):
+            persistent_id = str(poll.id)
+
+        chosen_option_id = []
+        correct_option_ids = []
         options = []
 
         for i, answer in enumerate(poll.answers):
@@ -136,65 +157,68 @@ class Poll(Object, Update):
                 voter_count = result.voters
 
                 if result.chosen:
-                    chosen_option_id = i
+                    chosen_option_id.append(i)
 
                 if result.correct:
-                    correct_option_id = i
+                    correct_option_ids.append(i)
 
-            entities = [
-                types.MessageEntity._parse(
-                    client,
-                    entity,
-                    {}  # there isn't a TEXT_MENTION entity available yet
-                )
-                for entity in (answer.text.entities or [])
-            ]
-            entities = types.List(filter(lambda x: x is not None, entities))
+            added_by_peer = answer.added_by
+            user = None
+            voter_chat = None
+
+            if added_by_peer:
+                if isinstance(added_by_peer, raw.types.PeerUser):
+                    user = types.Chat._parse_user_chat(client, users[added_by_peer.user_id])
+
+                elif isinstance(added_by_peer, raw.types.PeerChat):
+                    voter_chat = types.Chat._parse_chat_chat(client, chats[added_by_peer.chat_id])
+
+                else:
+                    voter_chat = types.Chat._parse_channel_chat(client, chats[added_by_peer.channel_id])
 
             options.append(
                 types.PollOption(
-                    text=Str(answer.text.text).init(entities),
-                    text_entities=entities,
+                    persistent_id=answer.option.decode("UTF-8"),
+                    text=types.FormattedText._parse(client, answer.text),
+                    # media:flags.0?MessageMedia
                     voter_count=voter_count,
                     data=answer.option,
+                    added_by_user=user,
+                    added_by_chat=voter_chat,
+                    addition_date=utils.timestamp_to_datetime(answer.date),
                     client=client
                 )
             )
 
-        entities = [
-            types.MessageEntity._parse(
-                client,
-                entity,
-                {}  # there isn't a TEXT_MENTION entity available yet
-            )
-            for entity in (poll.question.entities or [])
-        ]
-        entities = types.List(filter(lambda x: x is not None, entities))
+        if getattr(media_poll, "attached_media", None):
+            attached_media = media_poll.attached_media
+            # TODO
 
         return Poll(
-            id=str(poll.id),
-            question=Str(poll.question.text).init(entities),
+            id=persistent_id,
+            question=types.FormattedText._parse(
+                client,
+                poll.question
+            ),
             options=options,
-            question_entities=entities,
-            total_voter_count=media_poll.results.total_voters,
+            total_voter_count=poll_results.total_voters,
             is_closed=poll.closed,
             is_anonymous=not poll.public_voters,
             type=enums.PollType.QUIZ if poll.quiz else enums.PollType.REGULAR,
             allows_multiple_answers=poll.multiple_choice,
+            allows_revoting=not poll.revoting_disabled,
             chosen_option_id=chosen_option_id,
-            correct_option_id=correct_option_id,
-            explanation=poll_results.solution,
-            explanation_entities=[
-                types.MessageEntity._parse(client, i, {})
-                for i in poll_results.solution_entities
-            ] if poll_results.solution_entities else None,
+            correct_option_ids=correct_option_ids,
+            explanation=types.FormattedText._parse(client, raw.types.TextWithEntities(text=poll_results.solution, entities=poll_results.solution_entities)),
             open_period=poll.close_period,
             close_date=utils.timestamp_to_datetime(poll.close_date),
+            has_open_answers=poll.open_answers,
+            description=None, #types.FormattedText._parse(client, ),
             client=client
         )
 
     @staticmethod
-    def _parse_update(
+    async def _parse_update(
         client,
         update: Union["raw.types.UpdateMessagePoll", "raw.types.UpdateMessagePollVote"],
         users: dict,
@@ -202,26 +226,29 @@ class Poll(Object, Update):
     ):
         if isinstance(update, raw.types.UpdateMessagePoll):
             if update.poll is not None:
-                return Poll._parse(client, update)
+                return await Poll._parse(client, update, users, chats)
 
             # TODO: FIXME!
             results = update.results.results
-            chosen_option_id = None
-            correct_option_id = None
+            chosen_option_id = []
+            correct_option_ids = []
             options = []
-            question = ""
+            question = types.FormattedText(
+                text=""
+            )
 
             for i, result in enumerate(results):
                 if result.chosen:
-                    chosen_option_id = i
+                    chosen_option_id.append(i)
 
                 if result.correct:
-                    correct_option_id = i
+                    correct_option_ids.append(i)
 
                 options.append(
                     types.PollOption(
-                        text="",
-                        text_entities=[],
+                        persistent_id=result.option.decode("UTF-8"),
+                        text=None,
+                        # media:flags.0?MessageMedia
                         voter_count=result.voters,
                         data=result.option,
                         client=client
@@ -234,8 +261,13 @@ class Poll(Object, Update):
                 options=options,
                 total_voter_count=update.results.total_voters,
                 is_closed=False,
+                is_anonymous=None,
+                type=None, # TODO
+                allows_multiple_answers=None,
+                allows_revoting=None,
+                has_open_answers=None,
                 chosen_option_id=chosen_option_id,
-                correct_option_id=correct_option_id,
+                correct_option_ids=correct_option_ids,
                 client=client
             )
 
@@ -281,3 +313,7 @@ class Poll(Object, Update):
             reply_markup=reply_markup,
             business_connection_id=business_connection_id
         )
+
+    @property
+    def can_add_option(self):
+        return self.has_open_answers and not self.is_closed and len(self.options) < 12

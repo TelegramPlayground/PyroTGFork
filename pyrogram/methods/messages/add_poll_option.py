@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -19,18 +19,17 @@
 from typing import Union
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 
 
-class VotePoll:
-    async def vote_poll(
+class AddPollOption:
+    async def add_poll_option(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         message_id: int,
-        options: Union[int, list[int]]
-    ) -> "types.Poll":
-        """Vote a poll.
+        option: "types.InputPollOption",
+    ) -> Union["types.Message", bool]:
+        """Adds an option to a poll.
 
         .. include:: /_includes/usable-by/users.rst
 
@@ -41,43 +40,45 @@ class VotePoll:
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
             message_id (``int``):
-                Identifier of the original message with the poll.
+                Identifier of the message containing the poll.
 
-            options (``Int`` | List of ``int``):
-                Index or list of indexes (for multiple answers) of the poll option(s) you want to vote for (0 to 9).
+            option (:obj:`~pyrogram.types.InputPollOption`):
+                The new option.
 
         Returns:
-            :obj:`~pyrogram.types.Poll` - On success, the poll with the chosen option is returned.
+            :obj:`~pyrogram.types.Message` | ``bool``: On success, an edited message or a service message will be returned (when applicable),
+            otherwise, in case a message object couldn't be returned, True is returned.
 
         Example:
             .. code-block:: python
 
-                await app.vote_poll(chat_id, message_id, 6)
-        """
+                await app.add_poll_option(
+                    chat_id,
+                    message_id,
+                    option="Seoul"
+                )
 
-        poll = (await self.get_messages(
-            chat_id=chat_id,
-            message_ids=message_id
-        )).poll
-        options = [options] if not isinstance(options, list) else options
+        """
+        if isinstance(option, str):
+            option = types.InputPollOption(
+                text=types.FormattedText(
+                    text=option
+                )
+            )
         r = await self.invoke(
-            raw.functions.messages.SendVote(
+            raw.functions.messages.AddPollAnswer(
                 peer=await self.resolve_peer(chat_id),
                 msg_id=message_id,
-                options=[poll.options[option].data for option in options]
+                answer=await option.write(self)
             )
         )
         for i in r.updates:
-            if isinstance(
-                i,
-                (
-                    raw.types.MessageMediaPoll,
-                    raw.types.UpdateMessagePoll
-                )
-            ):
-                return await types.Poll._parse(
+            if isinstance(i, (raw.types.UpdateNewMessage, raw.types.UpdateEditChannelMessage, raw.types.UpdateNewChannelMessage)):
+                return await types.Message._parse(
                     self,
-                    i,
+                    i.message,
                     {i.id: i for i in r.users},
                     {i.id: i for i in r.chats},
+                    replies=self.fetch_replies
                 )
+        return True
