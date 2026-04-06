@@ -255,6 +255,9 @@ class Chat(Object):
         note (:obj:`~pyrogram.types.FormattedText`, *optional*):
             Note added to the user's contact.
 
+        uses_unofficial_app (``bool``, *optional*):
+            True, if the user uses an unofficial application that poses a security risk.
+
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
             OR, Title of the chat, for groups and channels.
@@ -334,6 +337,7 @@ class Chat(Object):
         is_direct_messages: bool = None,
         first_profile_audio: "types.Audio" = None,
         note: "types.FormattedText" = None,
+        uses_unofficial_app: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -414,6 +418,7 @@ class Chat(Object):
         self.is_direct_messages = is_direct_messages
         self.first_profile_audio = first_profile_audio
         self.note = note
+        self.uses_unofficial_app = uses_unofficial_app
         self._raw = _raw
 
     @staticmethod
@@ -695,6 +700,7 @@ class Chat(Object):
                 )
             if full_user.note:
                 parsed_chat.note = types.FormattedText._parse(client, full_user.note)
+            parsed_chat.uses_unofficial_app = bool(full_user.unofficial_security_risk) or None
 
         else:
             full_chat = chat_full.full_chat
