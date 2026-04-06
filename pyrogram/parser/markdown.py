@@ -273,10 +273,24 @@ class Markdown:
 
                 # Special handling for PRE language definition
                 if delim == PRE_DELIM and delim in delims:
-                    delim_and_language = text[text.find(PRE_DELIM) :].split("\n")[0]
-                    language = delim_and_language[len(PRE_DELIM) :]
+                    # Because `text` mutates during the loop, we find the true current index
+                    dynamic_start = text.find(PRE_DELIM)
+                    remainder = text[dynamic_start + len(PRE_DELIM):]
+
+                    nl_idx = remainder.find("\n")
+                    close_idx = remainder.find(PRE_DELIM)
+
+                    # Only extract language if a newline exists BEFORE the closing backticks
+                    if nl_idx != -1 and (close_idx == -1 or nl_idx < close_idx):
+                        language = remainder[:nl_idx].strip()
+                        delim_and_language = text[dynamic_start : dynamic_start + len(PRE_DELIM) + nl_idx]
+                    else:
+                        # Single-line pre block; the text inside is code, not a language definition
+                        language = ""
+                        delim_and_language = PRE_DELIM
+
                     text = utils.replace_once(
-                        text, delim_and_language, f'<pre language="{language}">', start
+                        text, delim_and_language, f'<pre language="{language}">', dynamic_start
                     )
                     continue
 
@@ -336,7 +350,7 @@ class Markdown:
                         if entity.language:
                             open_delimiter = f"{delimiter}{entity.language}\n"
                         else:
-                            open_delimiter = f"{delimiter}\n"
+                            open_delimiter = f"{delimiter}"
                         close_delimiter = delimiter
                     insert_at.append((s, i, open_delimiter))
                     insert_at.append((e, -i, close_delimiter))
