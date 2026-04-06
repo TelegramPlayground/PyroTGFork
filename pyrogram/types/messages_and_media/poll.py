@@ -74,8 +74,14 @@ class Poll(Object, Update):
         close_date (:py:obj:`~datetime.datetime`, *optional*):
             Point in time when the poll will be automatically closed.
 
+        has_open_answers (``bool``, *optional*):
+            Participants can suggest new options.
+
         description (:obj:`~pyrogram.types.FormattedText`, *optional*):
             Description of the poll; for polls inside the Message object only.
+
+        can_add_option (``bool``, *property*):
+            True, if an option can be added to the poll using :meth:`~pyrogram.Client.add_poll_option`.
 
     """
 
@@ -97,6 +103,7 @@ class Poll(Object, Update):
         explanation: Optional["types.FormattedText"] = None,
         open_period: Optional[int] = None,
         close_date: Optional[datetime] = None,
+        has_open_answers: Optional[bool] = None,
         description: Optional["types.FormattedText"] = None,
     ):
         super().__init__(client)
@@ -115,6 +122,7 @@ class Poll(Object, Update):
         self.explanation = explanation
         self.open_period = open_period
         self.close_date = close_date
+        self.has_open_answers = has_open_answers
         self.description = description
 
     @staticmethod
@@ -200,6 +208,7 @@ class Poll(Object, Update):
             explanation=types.FormattedText._parse(client, raw.types.TextWithEntities(text=poll_results.solution, entities=poll_results.solution_entities)),
             open_period=poll.close_period,
             close_date=utils.timestamp_to_datetime(poll.close_date),
+            has_open_answers=poll.open_answers,
             description=None, #types.FormattedText._parse(client, ),
             client=client
         )
@@ -252,6 +261,7 @@ class Poll(Object, Update):
                 type=None, # TODO
                 allows_multiple_answers=None,
                 allows_revoting=None,
+                has_open_answers=None,
                 chosen_option_id=chosen_option_id,
                 correct_option_ids=correct_option_ids,
                 client=client
@@ -298,3 +308,7 @@ class Poll(Object, Update):
             reply_markup=reply_markup,
             business_connection_id=business_connection_id
         )
+
+    @property
+    def can_add_option(self):
+        return self.has_open_answers and not self.is_closed and len(self.options) < 12

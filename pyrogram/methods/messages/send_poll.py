@@ -213,9 +213,11 @@ class SendPoll:
         for i, answer_ in enumerate(options):
             if isinstance(answer_, str):
                 answer_ = types.InputPollOption(
-                    text=answer_
+                    text=types.FormattedText(
+                        text=answer_
+                    )
                 )
-            answers.append(await answer_.write(self, i))
+            answers.append(await answer_.write(self))
 
         raw_description = await description.write(self, None) if description else None
         solution = await explanation.write(self) if explanation else None

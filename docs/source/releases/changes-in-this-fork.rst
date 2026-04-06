@@ -35,6 +35,7 @@ Changes in this Fork
 | Scheme layer used: 224 |
 +------------------------+
 
+- Added the methods :meth:`~pyrogram.Client.add_poll_option` and :meth:`~pyrogram.Client.delete_poll_option`.
 - Added the field ``can_manage_bots`` to the class :obj:`~pyrogram.types.User`.
 - Added the class :obj:`~pyrogram.types.KeyboardButtonRequestManagedBot` and the field ``request_managed_bot`` to the class :obj:`~pyrogram.types.KeyboardButton`.
 - Added the class :obj:`~pyrogram.types.ManagedBotCreated` and the field ``managed_bot_created`` to the class :obj:`~pyrogram.types.Message`.

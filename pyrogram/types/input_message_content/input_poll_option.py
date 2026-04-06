@@ -69,8 +69,7 @@ class InputPollOption(Object):
 
     async def write(
         self,
-        client: "pyrogram.Client",
-        idx: int,
+        client: "pyrogram.Client"
     ) -> "raw.types.PollAnswer":
         if isinstance(self.text, str):
             self.text = types.FormattedText(text=self.text)
