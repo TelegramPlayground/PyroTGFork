@@ -25,7 +25,7 @@ class ManagedBotCreated(Object):
 
     Parameters:
         bot (:obj:`~pyrogram.types.User`, *optional*):
-            Information about the bot. The bot's token can be fetched using the method :meth:`~pyrogram.Client.get_managed_bot_token`.
+            Information about the bot. The bot's token can be fetched using the method :obj:`~pyrogram.raw.functions.bots.CreateBot`.
 
     """
 
