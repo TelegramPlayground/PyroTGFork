@@ -55,7 +55,7 @@ class AddPollOption:
                 await app.add_poll_option(
                     chat_id,
                     message_id,
-                    option="new option"
+                    option="Seoul"
                 )
 
         """

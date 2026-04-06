@@ -55,7 +55,7 @@ class DeletePollOption:
                 await app.delete_poll_option(
                     chat_id,
                     message_id,
-                    option_id="01"
+                    option_id="0"
                 )
 
         """
