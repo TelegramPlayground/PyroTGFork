@@ -49,6 +49,11 @@ class KeyboardButton(Object):
             If specified, pressing the button will open a list of suitable chats. Tapping on a chat will send its identifier to the bot in a “chat_shared” service message.
             Available in private chats only.
 
+        request_managed_bot (:obj:`~pyrogram.types.KeyboardButtonRequestManagedBot`, *optional*):
+            If specified, pressing the button will ask the user to create and share a bot that will be managed by the current bot.
+            Available for bots that enabled management of other bots in the @BotFather Mini App.
+            Available in private chats only.
+
         request_contact (``bool``, *optional*):
             If True, the user's phone number will be sent as a contact when the button is pressed.
             Available in private chats only.
@@ -80,6 +85,7 @@ class KeyboardButton(Object):
         web_app: "types.WebAppInfo" = None,
         request_users: "types.KeyboardButtonRequestUsers" = None,
         request_chat: "types.KeyboardButtonRequestChat" = None,
+        request_managed_bot: "types.KeyboardButtonRequestManagedBot" = None,
     ):
         super().__init__()
 
@@ -90,6 +96,7 @@ class KeyboardButton(Object):
         self.web_app = web_app
         self.request_users = request_users
         self.request_chat = request_chat
+        self.request_managed_bot = request_managed_bot
         self.icon_custom_emoji_id = icon_custom_emoji_id
         self.style = style
 
@@ -213,6 +220,18 @@ class KeyboardButton(Object):
                     icon_custom_emoji_id=icon_custom_emoji_id
                 )
 
+            if isinstance(b.peer_type, raw.types.RequestPeerTypeCreateBot):
+                return KeyboardButton(
+                    text=b.text,
+                    style=button_style,
+                    icon_custom_emoji_id=icon_custom_emoji_id,
+                    request_managed_bot=types.KeyboardButtonRequestManagedBot(
+                        request_id=b.button_id,
+                        suggested_name=b.peer_type.suggested_name,
+                        suggested_username=b.peer_type.suggested_username,
+                    )
+                )
+
     def write(self):
         if isinstance(self, str):
             return raw.types.KeyboardButton(
@@ -300,6 +319,18 @@ class KeyboardButton(Object):
                     max_quantity=1,
                     style=raw_style
                 )
+        elif self.request_managed_bot:
+            return raw.types.InputKeyboardButtonRequestPeer(
+                max_quantity=1, 
+                style=raw_style,
+                text=self.text,
+                button_id=self.request_managed_bot.request_id,
+                peer_type=raw.types.RequestPeerTypeCreateBot(
+                    bot_managed=True,
+                    suggested_name=self.request_managed_bot.suggested_name,
+                    suggested_username=self.request_managed_bot.suggested_username,
+                ),
+            )
         else:
             return raw.types.KeyboardButton(
                 text=self.text,

@@ -64,14 +64,15 @@ class StopPoll:
         poll = (await self.get_messages(
             chat_id=chat_id,
             message_ids=message_id
-        )).poll
+        ))._raw.media.poll
         # TODO
         rpc = raw.functions.messages.EditMessage(
             peer=await self.resolve_peer(chat_id),
             id=message_id,
             media=raw.types.InputMediaPoll(
                 poll=raw.types.Poll(
-                    id=int(poll.id),
+                    id=poll.id,
+                    hash=poll.hash,
                     closed=True,
                     question=raw.types.TextWithEntities(text="", entities=[]),
                     answers=[]
@@ -99,5 +100,18 @@ class StopPoll:
             # await session.stop()
         else:
             r = await self.invoke(rpc)
+        for i in r.updates:
+            if isinstance(
+                i,
+                (
+                    raw.types.MessageMediaPoll,
+                    raw.types.UpdateMessagePoll
+                )
+            ):
+                return await types.Poll._parse(
+                    self,
+                    i,
+                    {i.id: i for i in r.users},
+                    {i.id: i for i in r.chats},
+                )
 
-        return types.Poll._parse(self, r.updates[0])

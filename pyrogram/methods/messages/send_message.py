@@ -347,8 +347,8 @@ class SendMessage:
                     for entity in r.entities
                 ] if r.entities else None,
                 message_auto_delete_timer_changed=types.MessageAutoDeleteTimerChanged(
-                    message_auto_delete_time=getattr(r, "ttl_period", None)
-                ),
+                    message_auto_delete_time=r.ttl_period
+                ) if r.ttl_period else None,
                 chat=types.Chat(
                     id=peer_id,
                     type=enums.ChatType.PRIVATE,

@@ -66,7 +66,7 @@ from .gifted_premium import GiftedPremium
 from .gifted_stars import GiftedStars
 from .message_effect import MessageEffect
 from .screenshot_taken import ScreenshotTaken
-from .translated_text import TranslatedText
+from .formatted_text import FormattedText
 from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
 from .write_access_allowed import WriteAccessAllowed
 from .paid_message_price_changed import PaidMessagePriceChanged
@@ -80,6 +80,8 @@ from .chat_owner_left import ChatOwnerLeft
 from .chat_owner_changed import ChatOwnerChanged
 from .chat_has_protected_content_toggled import ChatHasProtectedContentToggled
 from .chat_has_protected_content_disable_requested import ChatHasProtectedContentDisableRequested
+from .poll_option_added import PollOptionAdded
+from .poll_option_deleted import PollOptionDeleted
 
 __all__ = [
     "Animation",
@@ -132,7 +134,7 @@ __all__ = [
     "WebPage",
     "WriteAccessAllowed",
     "ScreenshotTaken",
-    "TranslatedText",
+    "FormattedText",
     "PaidMessagePriceChanged",
     "PaidMessagesRefunded",
     "Checklist",
@@ -145,4 +147,6 @@ __all__ = [
     "ChatOwnerChanged",
     "ChatHasProtectedContentToggled",
     "ChatHasProtectedContentDisableRequested",
+    "PollOptionAdded",
+    "PollOptionDeleted",
 ]

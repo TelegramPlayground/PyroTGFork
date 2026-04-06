@@ -16,44 +16,41 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import pyrogram
 from pyrogram import raw, types
-
 from ..object import Object
-from .message import Str
+from ..update import Update
 
 
-class TranslatedText(Object):
-    """A translated text with entities.
+class ManagedBotUpdated(Object, Update):
+    """This object contains information about the creation or token update of a bot that is managed by the current bot.
 
     Parameters:
-        text (``str``):
-            Translated text.
+        user (:obj:`~pyrogram.types.User`, *optional*):
+            User that created the bot.
+        
+        bot (:obj:`~pyrogram.types.User`, *optional*):
+            Information about the bot. The bot's token can be fetched using the method :obj:`~pyrogram.raw.functions.bots.CreateBot`.
 
-        entities (List of :obj:`~pyrogram.types.MessageEntity`, *optional*):
-            Entities of the text.
     """
 
     def __init__(
         self,
         *,
-        text: Str,
-        entities: list["types.MessageEntity"] = None
+        user: "types.User",
+        bot: "types.User",
     ):
-        self.text = text
-        self.entities = entities
+        super().__init__()
+
+        self.user = user
+        self.bot = bot
 
     @staticmethod
     def _parse(
         client,
-        translate_result: "raw.types.TextWithEntities"
-    ) -> "TranslatedText":
-        entities = [
-            types.MessageEntity._parse(client, entity, {})
-            for entity in translate_result.entities
-        ]
-        entities = types.List(filter(lambda x: x is not None, entities))
-
-        return TranslatedText(
-            text=Str(translate_result.text).init(entities) or None, entities=entities or None
+        update: "raw.types.UpdateManagedBot",
+        users: dict,
+    ) -> "ManagedBotUpdated":
+        return ManagedBotUpdated(
+            user=types.User._parse(client, users[update.user_id]),
+            bot=types.User._parse(client, users[update.bot_id]),
         )
