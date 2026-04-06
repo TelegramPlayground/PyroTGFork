@@ -39,6 +39,7 @@ Changes in this Fork
 - Added the class :obj:`~pyrogram.types.KeyboardButtonRequestManagedBot` and the field ``request_managed_bot`` to the class :obj:`~pyrogram.types.KeyboardButton`.
 - Added the class :obj:`~pyrogram.types.ManagedBotCreated` and the field ``managed_bot_created`` to the class :obj:`~pyrogram.types.Message`.
 - Added updates about the creation of managed bots and the change of their token, represented by the class :obj:`~pyrogram.handlers.ManagedBotUpdateHandler`.
+- Added support for quizzes with multiple correct answers.
 - Added the fields ``correct_option_ids``, ``allows_revoting``, ``description`` to the class :obj:`~pyrogram.types.Poll`.
 - Added the parameters ``correct_option_ids``, ``allows_multiple_answers``, ``allows_revoting``, ``shuffle_options``, ``allow_adding_options``, ``hide_results_until_closes``, ``description`` to the method :meth:`~pyrogram.Client.send_poll`.
 - Added the field ``option_persistent_ids`` to the class :obj:`~pyrogram.types.PollAnswer`.
