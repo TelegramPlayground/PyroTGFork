@@ -1649,6 +1649,7 @@ class Message(Object, Update):
         if self.chat.is_forum:
             # If it's a forum but not a specific topic message, it defaults to topic 1 (General)
             thread_id = self.message_thread_id if self.is_topic_message else 1
+            # https://t.me/c/1279877202/31475
             return f"https://t.me/{chat_path}/{thread_id}/{self.id}"
 
         # 4. Standard message link
@@ -1784,7 +1785,8 @@ class Message(Object, Update):
             On success, the sent Message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -1981,7 +1983,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2168,7 +2171,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2299,7 +2303,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2381,8 +2386,9 @@ class Message(Object, Update):
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             ValueError: In case the provided string is not a valid chat action.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.send_chat_action(
             chat_id=self.chat.id,
@@ -2486,7 +2492,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2662,7 +2669,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2775,7 +2783,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2860,7 +2869,8 @@ class Message(Object, Update):
             On success, the sent Message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -2970,7 +2980,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3069,7 +3080,8 @@ class Message(Object, Update):
             List of :obj:`~pyrogram.types.Message`: On success, a list of the sent messages is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3238,7 +3250,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3461,7 +3474,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         if reply_to_message_id and reply_parameters:
             raise ValueError(
@@ -3656,7 +3670,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -3794,7 +3809,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4006,7 +4022,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4197,7 +4214,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4373,7 +4391,8 @@ class Message(Object, Update):
             instead.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4567,7 +4586,8 @@ class Message(Object, Update):
             On success, the sent :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         
         reply_to_message_id, reply_parameters = utils._get_reply_to_message_quote_ids(
@@ -4665,7 +4685,8 @@ class Message(Object, Update):
             On success, the edited :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.edit_message_text(
             chat_id=self.chat.id,
@@ -4724,7 +4745,8 @@ class Message(Object, Update):
             On success, the edited :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.edit_message_caption(
             chat_id=self.chat.id,
@@ -4774,7 +4796,8 @@ class Message(Object, Update):
             On success, the edited :obj:`~pyrogram.types.Message` is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.edit_message_media(
             chat_id=self.chat.id,
@@ -4813,7 +4836,8 @@ class Message(Object, Update):
             :obj:`~pyrogram.types.Message` is returned, otherwise True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.edit_message_reply_markup(
             chat_id=self.chat.id,
@@ -4964,7 +4988,8 @@ class Message(Object, Update):
             On success, the forwarded Message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.forward_messages(
             from_chat_id=self.chat.id,
@@ -5095,8 +5120,8 @@ class Message(Object, Update):
             :obj:`~pyrogram.types.Message`: On success, the copied message is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             ValueError: In case if an invalid message was provided.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         if self.service:
@@ -5338,7 +5363,8 @@ class Message(Object, Update):
             ``int``: Amount of affected messages
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.delete_messages(
             chat_id=self.chat.id,
@@ -5426,9 +5452,10 @@ class Message(Object, Update):
             -   A :obj:`~pyrogram.types.User` object in case of a ``KeyboardButtonUserProfile`` button.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             ValueError: In case the provided index or position is out of range or the button label was not found.
             TimeoutError: In case, after clicking an inline button, the bot fails to answer within the timeout.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         if isinstance(self.reply_markup, types.ReplyKeyboardMarkup):
@@ -5610,7 +5637,8 @@ class Message(Object, Update):
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         sr = None
 
@@ -5673,7 +5701,8 @@ class Message(Object, Update):
             :obj:`~pyrogram.types.Poll`: On success, the poll with the retracted vote is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.retract_vote(
@@ -5752,9 +5781,9 @@ class Message(Object, Update):
             If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` containing ``minithumbnail`` and ``idx`` is not specified, then a list of paths or binary file-like objects is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         return await self._client.download_media(
@@ -5796,7 +5825,7 @@ class Message(Object, Update):
             :obj:`~pyrogram.types.Poll`: On success, the poll with the chosen option is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
 
@@ -5837,7 +5866,8 @@ class Message(Object, Update):
             otherwise, in case a message object couldn't be returned, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.pin_chat_message(
             chat_id=self.chat.id,
@@ -5867,7 +5897,8 @@ class Message(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.unpin_chat_message(
             chat_id=self.chat.id,
@@ -5956,7 +5987,7 @@ class Message(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         return await self._client.read_chat_history(
@@ -5989,7 +6020,7 @@ class Message(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         return await self._client.view_messages(
@@ -6028,7 +6059,7 @@ class Message(Object, Update):
             :obj:`~pyrogram.types.FormattedText`: The translated result is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         return await self._client.translate_message_text(
@@ -6105,7 +6136,8 @@ class Message(Object, Update):
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.add_paid_message_reaction(
             chat_id=self.chat.id,

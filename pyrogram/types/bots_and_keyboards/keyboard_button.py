@@ -34,7 +34,7 @@ class KeyboardButton(Object):
             Text of the button. If none of the optional fields are used, it will be sent as a message when
             the button is pressed.
 
-        icon_custom_emoji_id (``int``, *optional*):
+        icon_custom_emoji_id (``str``, *optional*):
             Unique identifier of the custom emoji shown before the text of the button. Can only be used by bots that purchased additional usernames on Fragment or in the messages directly sent by the bot to private, group and supergroup chats if the owner of the bot has a Telegram Premium subscription..
 
         style (:obj:`~pyrogram.enums.ButtonStyle`, *optional*):
@@ -75,7 +75,10 @@ class KeyboardButton(Object):
 
     def __init__(
         self,
-        text: str, *,
+        text: str,
+        icon_custom_emoji_id: Optional[str] = None,
+        style: "enums.ButtonStyle" = enums.ButtonStyle.DEFAULT,
+        *,
         request_contact: bool = None,
         request_location: bool = None,
         request_poll: "types.KeyboardButtonPollType" = None,
@@ -83,8 +86,6 @@ class KeyboardButton(Object):
         request_users: "types.KeyboardButtonRequestUsers" = None,
         request_chat: "types.KeyboardButtonRequestChat" = None,
         request_managed_bot: "types.KeyboardButtonRequestManagedBot" = None,
-        icon_custom_emoji_id: Optional[int] = None,
-        style: "enums.ButtonStyle" = enums.ButtonStyle.DEFAULT
     ):
         super().__init__()
 
@@ -113,7 +114,7 @@ class KeyboardButton(Object):
             elif raw_style.bg_success:
                 button_style = enums.ButtonStyle.SUCCESS
             if raw_style.icon:
-                icon_custom_emoji_id = raw_style.icon
+                icon_custom_emoji_id = str(raw_style.icon)
 
         if isinstance(b, raw.types.KeyboardButton):
             return KeyboardButton(
@@ -241,7 +242,7 @@ class KeyboardButton(Object):
             bg_primary=self.style == enums.ButtonStyle.PRIMARY,
             bg_danger=self.style == enums.ButtonStyle.DANGER,
             bg_success=self.style == enums.ButtonStyle.SUCCESS,
-            icon=self.icon_custom_emoji_id
+            icon=int(self.icon_custom_emoji_id) if self.icon_custom_emoji_id else None
         )
 
         if self.request_contact:

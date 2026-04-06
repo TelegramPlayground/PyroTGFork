@@ -303,7 +303,8 @@ class Poll(Object, Update):
             :obj:`~pyrogram.types.Poll`: On success, the stopped poll with the final results is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.stop_poll(

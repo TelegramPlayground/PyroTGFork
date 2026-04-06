@@ -16,25 +16,17 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import pyrogram
-from pyrogram import raw
+import pickle
+from datetime import datetime, timezone
+from pyrogram import types
 
 
-class TerminateAllOtherSessions:
-    async def terminate_all_other_sessions(
-        self: "pyrogram.Client"
-    ) -> bool:
-        """Terminates all other sessions of the current user.
+def test_restore_message_type():
+    expected = types.Message(
+        id=7736885,
+        date=datetime.fromtimestamp(1647531900, tz=timezone.utc)
+    )
+    te = pickle.dumps(expected)
+    actual = pickle.loads(te)
 
-        .. include:: /_includes/usable-by/users.rst
-
-        Returns:
-            ``bool``: On success, in case the session is destroyed, True is returned. Otherwise, False is returned.
-
-        Raises:
-            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
-
-        """
-        return await self.invoke(
-            raw.functions.auth.ResetAuthorizations()
-        )
+    assert expected == actual

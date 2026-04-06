@@ -239,7 +239,8 @@ class CallbackQuery(Object, Update):
             message is returned, otherwise True is returned (message sent via the bot, as inline query result).
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         if self.inline_message_id is None:
             return await self._client.edit_message_text(
@@ -294,7 +295,8 @@ class CallbackQuery(Object, Update):
             message is returned, otherwise True is returned (message sent via the bot, as inline query result).
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self.edit_message_text(
             text=caption,
@@ -329,7 +331,8 @@ class CallbackQuery(Object, Update):
             message is returned, otherwise True is returned (message sent via the bot, as inline query result).
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         if self.inline_message_id is None:
             return await self._client.edit_message_media(
@@ -364,7 +367,8 @@ class CallbackQuery(Object, Update):
             message is returned, otherwise True is returned (message sent via the bot, as inline query result).
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         if self.inline_message_id is None:
             return await self._client.edit_message_reply_markup(

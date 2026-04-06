@@ -128,7 +128,8 @@ class ChosenInlineResult(Object, Update):
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         if self.inline_message_id is None:
             raise ValueError("Identifier of the inline message is required to edit the message")
@@ -171,7 +172,8 @@ class ChosenInlineResult(Object, Update):
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self.edit_message_text(
             text=caption,
@@ -205,7 +207,8 @@ class ChosenInlineResult(Object, Update):
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         if self.inline_message_id is None:
             raise ValueError("Identifier of the inline message is required to edit the message")
@@ -232,7 +235,8 @@ class ChosenInlineResult(Object, Update):
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         if self.inline_message_id is None:
             raise ValueError("Identifier of the inline message is required to edit the message")

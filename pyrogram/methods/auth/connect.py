@@ -33,6 +33,7 @@ class Connect:
 
         Raises:
             ConnectionError: In case you try to connect an already connected client.
+
         """
         if self.is_connected:
             raise ConnectionError("Client is already connected")
