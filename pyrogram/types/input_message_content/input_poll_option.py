@@ -84,10 +84,7 @@ class InputPollOption(Object):
             media = utils.get_input_media_from_file_id(self.sticker, FileType.STICKER)
         elif self.video:
             media = utils.get_input_media_from_file_id(self.video, FileType.VIDEO)
-        return raw.types.PollAnswer(
+        return raw.types.InputPollAnswer(
             text=await self.text.write(client),
-            media=media,
-            option=bytes(idx),
-            # added_by:flags.1?Peer
-            # date:flags.1?int
+            media=media
         )

@@ -209,13 +209,16 @@ class SendPoll:
         if isinstance(description, str):
             description = types.FormattedText(text=description)
 
-        answers = [
-            await answer_.write(self, i)
-            for i, answer_ in enumerate(options)
-        ]
+        answers = []
+        for i, answer_ in enumerate(options):
+            if isinstance(answer_, str):
+                answer_ = types.InputPollOption(
+                    text=answer_
+                )
+            answers.append(await answer_.write(self, i))
 
-        raw_description = await description.write(self, None)
-        solution = await explanation.write(self)
+        raw_description = await description.write(self, None) if description else None
+        solution = await explanation.write(self) if explanation else None
 
         reply_to = await utils._get_reply_message_parameters(
             self,
@@ -225,6 +228,9 @@ class SendPoll:
 
         if type == enums.PollType.QUIZ and allow_adding_options:
             allow_adding_options = False
+
+        if type == enums.PollType.QUIZ and len(correct_option_ids) > 1 and not allows_multiple_answers:
+            allows_multiple_answers = True
 
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
@@ -247,13 +253,13 @@ class SendPoll:
                     # creator:flags.10?true 
                 ),
                 correct_answers=correct_option_ids or None,
-                solution=solution.text,
-                solution_entities=solution.entities,
+                solution=solution.text if solution else None,
+                solution_entities=solution.entities if solution else None,
                 # attached_media:flags.3?InputMedia
                 # solution_media:flags.2?InputMedia = InputMedia;
             ),
-            message=raw_description.text,
-            entities=raw_description.entities,
+            message=raw_description.text if raw_description else "",
+            entities=raw_description.entities if raw_description else None,
             silent=disable_notification,
             reply_to=reply_to,
             random_id=self.rnd_id(),
