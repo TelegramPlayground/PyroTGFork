@@ -82,6 +82,9 @@ class ForumTopic(Object):
         unread_reaction_count (``int``, *optional*):
             Number of messages with unread reactions in the topic
 
+        unread_poll_vote_count (``int``, *optional*):
+            Number of messages with unread poll votes in the topic.
+
         is_reduced_version (``bool``, *optional*):
             True, if this is a reduced version of the full topic information.
             If needed, full information can be fetched using :meth:`~pyrogram.Client.get_forum_topic`.
@@ -109,6 +112,7 @@ class ForumTopic(Object):
         last_read_outbox_message_id: int = None,
         unread_mention_count: int = None,
         unread_reaction_count: int = None,
+        unread_poll_vote_count: int = None,
 
         is_reduced_version: bool = None
     ):
@@ -133,6 +137,7 @@ class ForumTopic(Object):
         self.last_read_outbox_message_id = last_read_outbox_message_id
         self.unread_mention_count = unread_mention_count
         self.unread_reaction_count = unread_reaction_count
+        self.unread_poll_vote_count = unread_poll_vote_count
 
         self.is_reduced_version = is_reduced_version
 
@@ -178,20 +183,21 @@ class ForumTopic(Object):
             message_thread_id=forum_topic.id,
             name=forum_topic.title,
             icon_color=forum_topic.icon_color,  # TODO
-            icon_custom_emoji_id=getattr(forum_topic, "icon_emoji_id", None),
-            is_name_implicit=getattr(forum_topic, "title_missing", False),
+            icon_custom_emoji_id=forum_topic.icon_emoji_id,
+            is_name_implicit=forum_topic.title_missing,
             creation_date=utils.timestamp_to_datetime(forum_topic.date),
             creator=creator,
-            outgoing=getattr(forum_topic, "my", None),
-            is_closed=getattr(forum_topic, "closed", None),
-            is_hidden=getattr(forum_topic, "hidden", None),
+            outgoing=forum_topic.my,
+            is_closed=forum_topic.closed,
+            is_hidden=forum_topic.hidden,
             last_message=last_message,
-            is_pinned=getattr(forum_topic, "pinned", None),
-            unread_count=getattr(forum_topic, "unread_count", None),
-            last_read_inbox_message_id=getattr(forum_topic, "read_inbox_max_id", None),
-            last_read_outbox_message_id=getattr(forum_topic, "read_outbox_max_id", None),
-            unread_mention_count=getattr(forum_topic, "unread_mentions_count", None),
-            unread_reaction_count=getattr(forum_topic, "unread_reactions_count", None),
+            is_pinned=forum_topic.pinned,
+            unread_count=forum_topic.unread_count,
+            last_read_inbox_message_id=forum_topic.read_inbox_max_id,
+            last_read_outbox_message_id=forum_topic.read_outbox_max_id,
+            unread_mention_count=forum_topic.unread_mentions_count,
+            unread_reaction_count=forum_topic.unread_reactions_count,
+            unread_poll_vote_count=forum_topic.unread_poll_votes_count,
             # TODO: notify_settings: PeerNotifySettings, draft: DraftMessage
-            is_reduced_version=getattr(forum_topic, "short", None)
+            is_reduced_version=forum_topic.short,
         )

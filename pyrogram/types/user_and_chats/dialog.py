@@ -41,6 +41,9 @@ class Dialog(Object):
         
         unread_reactions_count (``int``):
             Amount of unread messages containing a reaction in this dialog.
+        
+        unread_poll_vote_count (``int``):
+            Number of messages with unread poll votes in the topic.
 
         unread_mark (``bool``):
             True, if the dialog has the unread mark set.
@@ -73,6 +76,7 @@ class Dialog(Object):
         unread_messages_count: int,
         unread_mentions_count: int,
         unread_reactions_count: int,
+        unread_poll_vote_count: int,
         unread_mark: bool,
         is_pinned: bool,
         chat_list: int,
@@ -88,6 +92,7 @@ class Dialog(Object):
         self.unread_messages_count = unread_messages_count
         self.unread_mentions_count = unread_mentions_count
         self.unread_reactions_count = unread_reactions_count
+        self.unread_poll_vote_count = unread_poll_vote_count
         self.unread_mark = unread_mark
         self.is_pinned = is_pinned
         self.chat_list = chat_list
@@ -104,6 +109,7 @@ class Dialog(Object):
             unread_messages_count=dialog.unread_count,
             unread_mentions_count=dialog.unread_mentions_count,
             unread_reactions_count=dialog.unread_reactions_count,
+            unread_poll_vote_count=dialog.unread_poll_vote_count,
             unread_mark=dialog.unread_mark,
             is_pinned=dialog.pinned,
             chat_list=getattr(dialog, "folder_id", None),
