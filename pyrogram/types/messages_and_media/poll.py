@@ -190,6 +190,10 @@ class Poll(Object, Update):
                 )
             )
 
+        if getattr(media_poll, "attached_media", None):
+            attached_media = media_poll.attached_media
+            # TODO
+
         return Poll(
             id=persistent_id,
             question=types.FormattedText._parse(
