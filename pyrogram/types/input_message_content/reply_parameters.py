@@ -62,6 +62,9 @@ class ReplyParameters(Object):
         direct_messages_topic_id (``int``, *optional*):
             Identifier of the direct messages topic to which the message will be sent; **required** if the message is sent to a direct messages chat; pass None if the chat is not a channel direct messages chat administered by the current user.
 
+        poll_option_id (``int``, *optional*):
+            Persistent identifier of the specific poll option to be replied to.
+
     """
 
     def __init__(
@@ -77,6 +80,7 @@ class ReplyParameters(Object):
         quote_position: int = None,
         checklist_task_id: int = None,
         direct_messages_topic_id: int = None,
+        poll_option_id: int = None,
     ):
         super().__init__()
 
@@ -89,3 +93,4 @@ class ReplyParameters(Object):
         self.quote_position = quote_position
         self.checklist_task_id = checklist_task_id
         self.direct_messages_topic_id = direct_messages_topic_id
+        self.poll_option_id = poll_option_id
