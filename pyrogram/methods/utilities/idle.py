@@ -71,7 +71,7 @@ async def idle():
             asyncio.run(main())
     """
 
-    if sys.version_info <= (3, 10):
+    if sys.platform.startswith("win") or sys.version_info <= (3, 10):
         task = None
 
         def signal_handler(signum, __):
