@@ -135,6 +135,7 @@ CODE_HASH_INVALID	Code hash invalid.
 CODE_INVALID	Code invalid.
 COLLECTIBLE_INVALID	The specified collectible is invalid.
 COLLECTIBLE_NOT_FOUND	The specified collectible could not be found.
+COLLECTION_ID_INVALID	The specified collection id is invalid.
 COLOR_INVALID	The specified color palette ID was invalid.
 CONNECTION_API_ID_INVALID	The provided API id is invalid.
 CONNECTION_APP_VERSION_EMPTY	App version is empty.
@@ -163,8 +164,10 @@ DC_ID_INVALID	The provided DC ID is invalid.
 DELETE_ANSWER_FORBIDDEN	You cannot delete the specified option in this poll.
 DH_G_A_INVALID	g_a invalid.
 DOCUMENT_INVALID	The specified document is invalid.
+EFFECT_CHAT_INVALID	The effect_id can only be used in private chats
 EFFECT_ID_INVALID	The specified effect ID is invalid.
 EMAIL_HASH_EXPIRED	Email hash expired.
+EMAIL_INSTALL_MISSING	In order to use account.SendVerifyEmailCode, auth.SendCode must return auth.SentCodeTypeSetUpEmailRequired.
 EMAIL_INVALID	The specified email is invalid.
 EMAIL_NOT_ALLOWED	The specified email cannot be used to complete the operation.
 EMAIL_NOT_SETUP	In order to change the login email with emailVerifyPurposeLoginChange, an existing login email must already be set using emailVerifyPurposeLoginSetup.
@@ -191,6 +194,7 @@ EXPIRES_AT_INVALID	The specified `expires_at` timestamp is invalid.
 EXPIRE_DATE_INVALID	The specified expiration date is invalid.
 EXPORT_CARD_INVALID	Provided card is invalid.
 EXTENDED_MEDIA_AMOUNT_INVALID	The specified `stars_amount` of the passed [inputMediaPaidMedia](https://core.telegram.org/constructor/inputMediaPaidMedia) is invalid.
+EXTENDED_MEDIA_EMPTY	The specified paid media is empty.
 EXTENDED_MEDIA_INVALID	The specified paid media is invalid.
 EXTERNAL_URL_INVALID	External URL invalid.
 FIELD_NAME_EMPTY	The field with the name FIELD_NAME is missing
@@ -211,6 +215,7 @@ FILE_PART_X_MISSING	Part {value} of the file is missing from storage. Try repeat
 FILE_REFERENCE_EMPTY	An empty [file reference](https://core.telegram.org/api/file-references) was specified.
 FILE_REFERENCE_EXPIRED	File reference expired, it must be refetched as described in [the documentation](https://core.telegram.org/api/file-references).
 FILE_REFERENCE_INVALID	The specified [file reference](https://core.telegram.org/api/file-references) is invalid.
+FILE_REFERENCE_X_EMPTY	The file reference of the media file at index {value} in the passed media array is empty.
 FILE_REFERENCE_X_EXPIRED	The file reference of the media file at index {value} in the passed media array expired, it [must be refreshed as specified in the documentation](https://core.telegram.org/api/file-references). .
 FILE_REFERENCE_X_INVALID	The [file reference](https://core.telegram.org/api/file-references) of the media file at index {value} in the passed media array is invalid.
 FILE_TITLE_EMPTY	An empty file title was specified.
@@ -278,6 +283,8 @@ INPUT_METHOD_INVALID	The specified method is invalid.
 INPUT_PEERS_EMPTY	The specified peer array is empty.
 INPUT_PURPOSE_INVALID	The specified payment purpose is invalid.
 INPUT_REQUEST_TOO_LONG	The request payload is too long.
+INPUT_STARS_AMOUNT_INVALID	The specified star_count is invalid.
+INPUT_STARS_NANOS_INVALID	The specified nanostar_count is invalid.
 INPUT_TEXT_EMPTY	The specified text is empty.
 INPUT_TEXT_TOO_LONG	The specified text is too long.
 INPUT_USER_DEACTIVATED	The specified user was deleted.
@@ -330,6 +337,7 @@ MESSAGE_ID_INVALID	The provided message id is invalid.
 MESSAGE_NOT_MODIFIED	The provided message data is identical to the previous message data, the message wasn't modified.
 MESSAGE_NOT_READ_YET	The specified message wasn't read yet.
 MESSAGE_POLL_CLOSED	Poll closed.
+MESSAGE_REQUIRED	Message is required.
 MESSAGE_TOO_LONG	The provided message is too long.
 MESSAGE_TOO_OLD	The message is too old, the requested information is not available.
 METHOD_INVALID	The specified method is invalid.
@@ -342,6 +350,7 @@ MSG_VOICE_MISSING	The specified message is not a voice message.
 MSG_WAIT_FAILED	A waiting call returned an error.
 MTPROTO_CLUSTER_INVALID	The mtproto 1049295266_343213 cluster is invalid.
 MULTI_MEDIA_TOO_LONG	Too many media files for album.
+NEED_ACTION_MISSING	Action is missing.
 NEW_SALT_INVALID	The new salt is invalid.
 NEW_SETTINGS_EMPTY	No password is set on the current account, and no new password was specified in `new_settings`.
 NEW_SETTINGS_INVALID	The new password settings are invalid.
@@ -409,6 +418,7 @@ PHOTO_THUMB_URL_EMPTY	Photo thumbnail URL is empty.
 PHOTO_THUMB_URL_INVALID	The photo thumb URL is invalid
 PINNED_DIALOGS_TOO_MUCH	Too many pinned dialogs.
 PINNED_TOO_MUCH	There are too many pinned topics, unpin some first.
+PINNED_TOPIC_NOT_MODIFIED	The specified pinned topic was not modified.
 PIN_RESTRICTED	You can't pin messages.
 POLL_ANSWERS_INVALID	Invalid poll answers were provided.
 POLL_ANSWER_INVALID	One of the poll answers is not acceptable.
@@ -419,6 +429,7 @@ POLL_UNSUPPORTED	This layer does not support polls in the invoked method
 POLL_VOTE_REQUIRED	Cast a vote in the poll before calling this method
 PRECHECKOUT_FAILED	precheckout failed
 PREMIUM_ACCOUNT_REQUIRED	A premium account is required to execute this action.
+PREMIUM_PURPOSE_INVALID	The specified InputStorePaymentPurpose is invalid.
 PRICING_CHAT_INVALID	The pricing for the [subscription](https://core.telegram.org/api/subscriptions) is invalid, the maximum price is specified in the [`stars_subscription_amount_max` config key](https://core.telegram.org/api/config#stars-subscription-amount-max).
 PRIVACY_KEY_INVALID	The privacy key is invalid.
 PRIVACY_TOO_LONG	Too many privacy rules were specified, the current limit is 1000.
@@ -458,6 +469,8 @@ REPLY_TO_INVALID	The specified `reply_to` field is invalid.
 REPLY_TO_MONOFORUM_PEER_INVALID	The specified inputReplyToMonoForum.monoforum_peer_id is invalid.
 REPLY_TO_USER_INVALID	The replied-to user is invalid.
 REQUEST_TOKEN_INVALID	The master DC did not accept the `request_token` from the CDN DC. Continue downloading the file from the master DC using upload.getFile.
+RESELL_STARS_TOO_FEW	The resell_stars is less than the minimum amount required.
+RESELL_STARS_TOO_MUCH	The resell_stars is more than the maximum amount allowed.
 RESET_REQUEST_MISSING	No password reset is in progress.
 RESULTS_TOO_MUCH	Too many results were provided.
 RESULT_ID_DUPLICATE	You provided a duplicate result ID.
@@ -470,6 +483,7 @@ RINGTONE_INVALID	The specified ringtone is invalid.
 RINGTONE_MIME_INVALID	The MIME type for the ringtone is invalid.
 RSA_DECRYPT_FAILED	Internal RSA decryption failed.
 SAVED_ID_EMPTY	The passed inputSavedStarGiftChat.saved_id is empty.
+SAVED_PEER_INVALID	The saved peer is invalid.
 SCHEDULE_BOT_NOT_ALLOWED	Bots cannot schedule messages.
 SCHEDULE_DATE_INVALID	Invalid schedule date provided.
 SCHEDULE_DATE_TOO_LATE	You can't schedule a message this far in the future.
@@ -507,13 +521,16 @@ STARGIFT_ALREADY_CONVERTED	The specified star gift was already converted to Star
 STARGIFT_ALREADY_REFUNDED	The specified star gift was already refunded.
 STARGIFT_ALREADY_TRANSFERRED	The provided star gift was already transferred.
 STARGIFT_ALREADY_UPGRADED	The specified gift was already upgraded to a collectible gift.
-STARGIFT_ATTRIBUTE_INVALID	The provided gift attribute is invalid.
+STARGIFT_ATTRIBUTE_INVALID	The provided star gift attribute is invalid.
 STARGIFT_CONVERT_TOO_OLD	This gift can no longer be converted into stars.
 STARGIFT_EXPORT_UNAVAILABLE	This gift is not available for export yet.
 STARGIFT_INVALID	The passed gift is invalid.
-STARGIFT_MESSAGE_INVALID	The provided message for this gift is invalid.
+STARGIFT_MESSAGE_INVALID	The provided star gift message is invalid. You cannot specify it in a message if the recepient has specified send_paid_messages_stars.
 STARGIFT_NOT_FOUND	The specified gift was not found.
 STARGIFT_NOT_OWNER	You cannot control this gift because it does not belong to you.
+STARGIFT_NOT_UNIQUE	The star gift is not unique.
+STARGIFT_OFFER_INVALID	The star gift offer is invalid.
+STARGIFT_OFFER_NOT_ALLOWED	The star gift offer is not allowed.
 STARGIFT_OWNER_INVALID	You cannot transfer or sell a gift owned by another user.
 STARGIFT_PEER_INVALID	The specified inputSavedStarGiftChat.peer is invalid.
 STARGIFT_RESELL_CURRENCY_NOT_ALLOWED	You can't buy the gift using the specified currency (i.e. trying to pay in Stars for TON gifts).
