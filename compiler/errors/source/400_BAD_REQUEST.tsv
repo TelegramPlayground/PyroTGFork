@@ -11,8 +11,8 @@ ADMIN_RIGHTS_EMPTY	The chatAdminRights constructor passed in keyboardButtonReque
 AD_EXPIRED	The ad has expired (too old or not found).
 AI_COMPOSE_TASK_MISSING	The text composition style is missing.
 ALBUM_PHOTOS_TOO_MANY	You have uploaded too many profile photos, delete some before retrying.
-ANSWER_X_MEDIA_TYPE_INVALID	The option media type at index {value} is invalid.
 ANONYMOUS_OPEN_INVALID	allow_adding_options is not supported for anonymous polls and quizzes.
+ANSWER_X_MEDIA_TYPE_INVALID	The option media type at index {value} is invalid.
 API_ID_INVALID	API ID invalid.
 API_ID_PUBLISHED_FLOOD	This API id was published somewhere, you can't use it now.
 ARTICLE_TITLE_EMPTY	The title of the article is empty.
