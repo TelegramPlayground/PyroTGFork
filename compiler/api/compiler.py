@@ -444,7 +444,10 @@ def start(format: bool = False):
             function_docs = docs["method"].get(c.qualname, None)
 
             if function_docs:
-                docstring += function_docs["desc"] + "\n"
+                docstring += function_docs.get("desc", "").strip() + "\n"
+
+                if function_docs.get("usable-by", "") != "":
+                    docstring += "\n    .. include:: /_includes/usable-by/" + function_docs["usable-by"] + ".rst\n        "
             else:
                 docstring += f"Telegram API function."
 
