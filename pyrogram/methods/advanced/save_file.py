@@ -50,7 +50,7 @@ class SaveFile:
         .. note::
 
             This is a utility method intended to be used **only** when working with raw
-            :obj:`functions <pyrogram.api.functions>` (i.e: a Telegram API method you wish to use which is not
+            :obj:`functions <pyrogram.raw.functions>` (i.e: a Telegram API method you wish to use which is not
             available yet in the Client class as an easy-to-use method).
 
         Parameters:
@@ -87,7 +87,7 @@ class SaveFile:
                 You can either keep ``*args`` or add every single extra argument in your function signature.
 
         Returns:
-            ``InputFile``: On success, the uploaded file is returned in form of an InputFile object.
+            :obj:`~pyrogram.raw.base.InputFile`: On success, the uploaded file is returned in form of an InputFile object.
 
         Raises:
             :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.

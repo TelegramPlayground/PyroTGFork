@@ -29,6 +29,11 @@ from .message import Str
 class Poll(Object, Update):
     """A Poll.
 
+    .. note::
+
+        Polls can't be sent to secret chats and channel direct messages chats.
+        Polls can be sent to a private chat only if the chat is a chat with a bot or the Saved Messages chat.
+
     Parameters:
         id (``str``):
             Unique poll identifier.

@@ -38,14 +38,14 @@ api:
 docs-live:
 	make clean-docs
 	make api
-	cd compiler/docs && ../../$(PYTHON) compiler.py
+	cd docs/compiler && ../../$(PYTHON) compiler.py
 	$(VENV)/bin/sphinx-autobuild \
 		--watch pyrogram --watch docs/resources \
 		-b html "docs/source" "docs/build/html" -j auto
 
 docs:
 	make clean-docs
-	cd compiler/docs && ../../$(PYTHON) compiler.py
+	cd docs/compiler && ../../$(PYTHON) compiler.py
 	$(VENV)/bin/sphinx-build \
 		-b html "docs/source" "docs/build/html" -j auto
 
