@@ -3380,7 +3380,7 @@ class Message(Object, Update):
                 **Bots**: 1-300 characters.
 
             options (List of :obj:`~pyrogram.types.InputPollOption`):
-                List of 2-12 poll answer options.
+                List of 1-12 poll answer options.
 
             quote (``bool``, *optional*):
                 If ``True``, the message will be sent as a reply to this message.
@@ -5276,36 +5276,47 @@ class Message(Object, Update):
                     reply_markup=self.reply_markup if reply_markup is object else reply_markup
                 )
             elif self.poll:
+                if self.poll.type == enums.PollType.QUIZ and not self.poll.correct_option_ids:
+                    log.warning(
+                        "You can copy quiz polls "
+                        "which are closed or were sent (not forwarded) by the bot or "
+                        "to the private chat with the bot. "
+                        "In next major version, ValueError would be raised instead of this warning message."
+                    )
+                    self.poll.type = enums.PollType.REGULAR
+                if reply_to_message_id and reply_parameters:
+                    raise ValueError(
+                        "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
+                        "exclusive."
+                    )
+                if reply_to_message_id is not None:
+                    log.warning(
+                        "This property is deprecated. "
+                        "Please use reply_parameters instead"
+                    )
+                    reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
                 return await self._client.send_poll(
                     chat_id,
                     question=self.poll.question,
-                    question_entities=self.poll.question_entities,
-                    options=[
-                        types.InputPollOption(
-                            text=opt.text,
-                            text_entities=opt.text_entities
-                        ) for opt in self.poll.options
-                    ],
+                    options=[types.InputPollOption(text=opt.text) for opt in self.poll.options],
+                    message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
+                    business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
                     is_anonymous=self.poll.is_anonymous,
                     type=self.poll.type,
                     allows_multiple_answers=self.poll.allows_multiple_answers,
-                    correct_option_id=self.poll.correct_option_id,
+                    allows_revoting=self.poll.allows_revoting,
+                    correct_option_ids=self.poll.correct_option_ids,
                     explanation=self.poll.explanation,
-                    explanation_entities=self.poll.explanation_entities,
                     open_period=self.poll.open_period,
-                    close_date=self.poll.close_date,
+                    description=self.poll.description,
                     disable_notification=disable_notification,
-                    protect_content=self.has_protected_content if protect_content is None else protect_content,
+                    reply_parameters=reply_parameters,
+                    schedule_date=schedule_date,
                     allow_paid_broadcast=allow_paid_broadcast,
                     paid_message_star_count=paid_message_star_count,
-                    message_effect_id=self.effect_id,
-                    reply_parameters=reply_parameters,
-                    message_thread_id=self.message_thread_id if message_thread_id is None else message_thread_id,
-                    business_connection_id=self.business_connection_id if business_connection_id is None else business_connection_id,
-                    schedule_date=schedule_date,
-                    reply_to_message_id=reply_to_message_id,
+                    protect_content=self.has_protected_content if protect_content is None else protect_content,
                     send_as=send_as,
-                    reply_markup=self.reply_markup if reply_markup is object else reply_markup
+                    message_effect_id=self.effect_id,
                 )
             elif self.game:
                 return await self._client.send_game(
