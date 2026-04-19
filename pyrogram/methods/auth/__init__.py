@@ -21,6 +21,7 @@ from .check_password import CheckPassword
 from .connect import Connect
 from .disconnect import Disconnect
 from .get_active_sessions import GetActiveSessions
+from .get_option import GetOption
 from .get_password_hint import GetPasswordHint
 from .initialize import Initialize
 from .log_out import LogOut
@@ -42,6 +43,7 @@ class Auth(
     Connect,
     Disconnect,
     GetActiveSessions,
+    GetOption,
     GetPasswordHint,
     Initialize,
     LogOut,
