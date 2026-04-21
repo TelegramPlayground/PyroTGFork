@@ -46,6 +46,11 @@ class Object:
 
     @staticmethod
     def default(obj: "Object"):
+        if hasattr(obj, "__custom__"):
+            _custom_ = obj.__custom__()
+            if _custom_ is not None:
+                return _custom_
+
         if isinstance(obj, bytes):
             return repr(obj)
 
