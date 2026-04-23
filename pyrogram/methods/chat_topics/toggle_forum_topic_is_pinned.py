@@ -46,7 +46,7 @@ class ToggleForumTopicIsPinned:
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of invalid arguments.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python

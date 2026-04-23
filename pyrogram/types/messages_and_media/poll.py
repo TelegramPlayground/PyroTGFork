@@ -29,6 +29,11 @@ from .message import Str
 class Poll(Object, Update):
     """A Poll.
 
+    .. note::
+
+        Polls can't be sent to secret chats and channel direct messages chats.
+        Polls can be sent to a private chat only if the chat is a chat with a bot or the Saved Messages chat.
+
     Parameters:
         id (``str``):
             Unique poll identifier.
@@ -303,7 +308,8 @@ class Poll(Object, Update):
             :obj:`~pyrogram.types.Poll`: On success, the stopped poll with the final results is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.stop_poll(

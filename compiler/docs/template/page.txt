@@ -1,5 +1,0 @@
-{title}
-{title_markup}
-
-.. autoclass:: {full_class_path}()
-    :members:

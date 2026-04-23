@@ -15,3 +15,18 @@
 #
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
+
+import pickle
+from datetime import datetime, timezone
+from pyrogram import types
+
+
+def test_restore_message_type():
+    expected = types.Message(
+        id=7736885,
+        date=datetime.fromtimestamp(1647531900, tz=timezone.utc)
+    )
+    te = pickle.dumps(expected)
+    actual = pickle.loads(te)
+
+    assert expected == actual

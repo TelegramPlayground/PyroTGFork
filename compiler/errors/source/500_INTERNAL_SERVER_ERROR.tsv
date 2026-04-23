@@ -11,6 +11,7 @@ CHAT_OCCUPY_LOC_FAILED	An internal error occurred while creating the chat
 CHAT_OCCUPY_USERNAME_FAILED	Failure to occupy chat username due to Telegram having internal problems. Please try again later
 CHP_BAD_EVENT	Telegram is having internal problems. Please try again later.
 CHP_CALL_FAIL	Telegram is having internal problems. Please try again later
+ENCRYPTION_DECLINE_ADMIN_FAILED	Failed declining memory for admin info due to Telegram having internal problems. Please try again later
 ENCRYPTION_OCCUPY_ADMIN_FAILED	Failed occupying memory for admin info due to Telegram having internal problems. Please try again later
 ENCRYPTION_OCCUPY_FAILED	Internal server error while accepting secret chat
 FOLDER_DEAC_AUTOFIX_ALL	Telegram is having internal problems. Please try again later
@@ -29,9 +30,11 @@ MSG_RANGE_UNSYNC	Message range unsynchronized due to Telegram having internal pr
 MSG_WAIT_FAILED	A waiting call returned an error.
 MT_SEND_QUEUE_TOO_LONG	The MTProto send queue has grown too much due to Telegram having internal problems. Please try again later
 NEED_CHAT_INVALID	The provided chat is invalid
+NEED_DOC_INVALID	The provided document is invalid
 NEED_MEMBER_INVALID	The provided member is invalid or does not exist
 No workers running	The Telegram server is restarting its workers. Try again later.
 PARTICIPANT_CALL_FAILED	Failure while making call due to Telegram having internal problems. Please try again later
+PASSKEY_AUTH_RESTART	Restart the passkey authorization process.
 PERSISTENT_TIMESTAMP_OUTDATED	Channel internal replication issues, try again later (treat this like an RPC_CALL_FAIL).
 PHOTO_CREATE_FAILED	The creation of the photo failed due to Telegram having internal problems. Please try again later
 POSTPONED_TIMEOUT	Telegram is having internal problems. Please try again later
@@ -52,5 +55,6 @@ TRANSLATION_TIMEOUT	A timeout occurred while translating the specified text.
 UNKNOWN_METHOD	The method you tried to call cannot be called on non-CDN DCs
 UPLOAD_NO_VOLUME	Telegram is having internal problems. Please try again later
 VOLUME_LOC_NOT_FOUND	Telegram is having internal problems. Please try again later
+VOLUME_MOVE_INVALID	Telegram is having internal problems. Please try again later
 WORKER_BUSY_TOO_LONG_RETRY	Server workers are too busy right now due to Telegram having internal problems. Please try again later
 WP_ID_GENERATE_FAILED	Telegram is having internal problems. Please try again later

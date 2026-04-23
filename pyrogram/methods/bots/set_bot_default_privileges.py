@@ -45,6 +45,9 @@ class SetBotDefaultPrivileges:
         Returns:
             ``bool``: On success, True is returned.
 
+        Raises:
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         Example:
             .. code-block:: python
 
@@ -77,5 +80,6 @@ class SetBotDefaultPrivileges:
             manage_call=privileges.can_manage_video_chats,
             other=privileges.can_manage_chat
         ) if privileges else raw.types.ChatAdminRights()
+        # TODO
 
         return await self.invoke(function(admin_rights=admin_rights))

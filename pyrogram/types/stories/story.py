@@ -474,7 +474,8 @@ class Story(Object, Update):
             On success, :obj:`~pyrogram.types.MessageReactions`: is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         sr = None
 
@@ -579,8 +580,9 @@ class Story(Object, Update):
             Otherwise, in case ``in_memory=True``, a binary file-like object with its attribute ".name" set is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
-            ``ValueError``: If the message doesn't contain any downloadable media
+            ValueError: If the message doesn't contain any downloadable media.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.download_media(
             message=self,

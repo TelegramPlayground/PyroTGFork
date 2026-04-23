@@ -100,7 +100,7 @@ class SendPoll:
                 **Bots**: 1-300 characters.
 
             options (List of :obj:`~pyrogram.types.InputPollOption`):
-                List of 2-12 poll answer options.
+                List of 1-12 poll answer options.
 
             is_anonymous (``bool``, *optional*):
                 True, if the poll needs to be anonymous.

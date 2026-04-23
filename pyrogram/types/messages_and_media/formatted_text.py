@@ -16,6 +16,8 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
+
 import pyrogram
 from pyrogram import enums, raw, types, utils
 
@@ -29,6 +31,9 @@ class FormattedText(Object):
     Parameters:
         text (``str``):
             The text.
+            If the message contains entities (bold, italic, ...) you can access *text.markdown* or
+            *text.html* to get the marked up message text. In case there are no entities, the fields
+            will contain the same text as *text*.
 
         parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
             Parse mode of the text.
@@ -55,6 +60,17 @@ class FormattedText(Object):
         self.text = text
         self.parse_mode = parse_mode
         self.entities = entities
+
+    def __custom__(self):
+        if bool(os.environ.get("PYROGRAM_PRE_BOT_API_7_3", None)):
+            return self.text
+        return None
+
+    def __str__(self) -> str:
+        _custom_p_check = self.__custom__()
+        if _custom_p_check is not None:
+            return self.text
+        return super().__str__()
 
     @staticmethod
     def _parse(

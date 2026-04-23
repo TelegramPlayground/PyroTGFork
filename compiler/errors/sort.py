@@ -22,7 +22,7 @@ import re
 import requests  # requests==2.28.1
 import sys
 
-if len(sys.argv) != 2:
+if len(sys.argv) > 3:
     sys.exit(1)
 
 if sys.argv[1] == "sort": 
@@ -42,7 +42,7 @@ if sys.argv[1] == "sort":
                     f.write("\n")
 
 elif sys.argv[1] == "scrape":
-    b = "https://core.telegram.org"
+    b = f"https://{sys.argv[2]}.telegram.org"
     c = "/api/errors"
     a = requests.get(b + c)
     d = a.text
@@ -70,6 +70,8 @@ elif sys.argv[1] == "scrape":
                     continue
                 g = d.get("descriptions")
                 l = g.get(k)
+                if not l:
+                    continue
                 m = k.replace("_%d", "_X")
                 if "_X" in m:
                     l = l.replace("for the specified number of", "{value}")

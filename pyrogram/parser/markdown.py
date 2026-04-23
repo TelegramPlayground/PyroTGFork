@@ -39,7 +39,7 @@ PRE_DELIM = "```"
 BLOCKQUOTE_DELIM = ">"
 BLOCKQUOTE_ESCAPE_DELIM = "|>"
 BLOCKQUOTE_EXPANDABLE_DELIM = "**>"
-BLOCKQUOTE_EXPANDABLE_OPTIONAL_END_DELIM = "<**"
+BLOCKQUOTE_EXPANDABLE_OPTIONAL_END_DELIM = "<**"  # Kept for backwards compatibility if imported elsewhere
 
 MARKDOWN_RE = re.compile(
     r"({d})|(!?)\[(.+?)\]\((.+?)\)".format(
@@ -81,134 +81,156 @@ class Markdown:
     @staticmethod
     def escape_and_create_quotes(text: str, strict: bool):
         text_lines: list[Union[str, None]] = text.splitlines()
-
-        # Indexes of Already escaped lines
         html_escaped_list: list[int] = []
 
-        # Temporary Queue to hold lines to be quoted
-        # Index and Line
-        to_quote_list: list[tuple[int, str]] = []
+        i = 0
+        while i < len(text_lines):
+            line = text_lines[i]
 
-        def create_blockquote(quote_type: str = "") -> None:
-            """
-            Merges all lines in quote_queue into first line of queue
-            Encloses that line in html quote
-            Replaces rest of the lines with None placeholders to preserve indexes
-            """
-            if len(to_quote_list) == 0:
-                return
+            if line is None:
+                i += 1
+                continue
 
-            # Create quoted text block
-            joined_lines = "\n".join([text for _, text in to_quote_list])
+            # Ignore Escaped >
+            if line.startswith(BLOCKQUOTE_ESCAPE_DELIM):
+                text_lines[i] = html.escape(line[1:]) if strict else line[1:]
+                html_escaped_list.append(i)
+                i += 1
+                continue
 
-            first_line_index, _ = to_quote_list[0]
+            # Check if line starts a blockquote
+            is_bq = False
+            started_as_expandable = False
 
-            # Enclose the block in html quote
-            # and add to starting index of quoted line
-            text_lines[first_line_index] = f"<blockquote{quote_type}>{joined_lines}</blockquote>"
+            if line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+                is_bq = True
+                started_as_expandable = True
+            elif line.startswith(BLOCKQUOTE_DELIM):
+                is_bq = True
 
-            # Set None Placeholders for preserving indexes
-            for idx, line_to_remove in to_quote_list[1:]:
-                text_lines[idx] = None
+            if is_bq:
+                start_index = i
+                bq_lines = []
 
-            # clear queue
-            to_quote_list.clear()
+                # Collect all consecutive blockquote lines
+                while i < len(text_lines):
+                    curr_line = text_lines[i]
 
-        def process_text(start_delimiter, end_delimiter: str = "", quote_type: str = ""):
-            for index, line in enumerate(text_lines):
-                # Ignore None placeholders from previous runs
-                if line is None:
-                    continue
+                    # Detect boundaries between consecutive blockquotes
+                    if i > start_index:
+                        # Boundary 1: `**>` explicitly starts a NEW expandable blockquote
+                        if curr_line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+                            break
 
-                # Ignore Escaped >
-                if line.startswith(BLOCKQUOTE_ESCAPE_DELIM):
-                    text_lines[index] = line[1:]
-                    create_blockquote(quote_type=quote_type)
-                    continue
+                    curr_prefix_len = 0
+                    if curr_line.startswith(BLOCKQUOTE_EXPANDABLE_DELIM):
+                        curr_prefix_len = len(BLOCKQUOTE_EXPANDABLE_DELIM)
+                    elif curr_line.startswith(BLOCKQUOTE_DELIM):
+                        curr_prefix_len = len(BLOCKQUOTE_DELIM)
+                    else:
+                        break  # No longer in a blockquote
 
-                # Parse lines starting with delimiter
-                if line.startswith(start_delimiter):
-                    endswith_delimiter = end_delimiter and line.endswith(end_delimiter)
+                    # Strip the delimiter
+                    bq_lines.append(curr_line[curr_prefix_len:])
+                    i += 1
 
-                    # Indexes to skip in line
-                    start_index = len(start_delimiter)
-                    end_index = end_index = len(line) - len(end_delimiter) if endswith_delimiter else len(line)
+                # Check if it properly closes as an expandable blockquote
+                is_expandable = False
+                # Strict Bot API requirement: Must have started with **> AND end with ||
+                if started_as_expandable and bq_lines and bq_lines[-1].endswith(SPOILER_DELIM):
+                    is_expandable = True
+                    # Strip the || from the final line
+                    bq_lines[-1] = bq_lines[-1][:-len(SPOILER_DELIM)]
 
-                    # Strip delimiters
-                    delimiter_stripped_line = line[start_index:end_index]
+                # Escape if strict
+                if strict:
+                    bq_lines = [html.escape(l) for l in bq_lines]
 
-                    # Escape if strict
-                    parsed_line = html.escape(delimiter_stripped_line) if strict else delimiter_stripped_line
-                    
-                    # add to queue
-                    to_quote_list.append((index, parsed_line))
+                # Create the merged blockquote entity
+                joined_lines = "\n".join(bq_lines)
+                quote_type = " expandable" if is_expandable else ""
 
-                    # save line index
-                    html_escaped_list.append(index)
+                text_lines[start_index] = f"<blockquote{quote_type}>{joined_lines}</blockquote>"
+                html_escaped_list.append(start_index)
 
-                    # if line doesn't end with delimiter continue loop
-                    if not endswith_delimiter:
-                        continue
-
-                # If line doesn't start with a delimiter
-                # or has ended with delimiter
-                # it means the block quote has ended
-                # create pending quotes if any
-                create_blockquote(quote_type=quote_type)
-
+                # Clear out the consumed lines
+                for j in range(start_index + 1, i):
+                    text_lines[j] = None
             else:
-                # is triggered when there's only one line of text
-                # the line above won't be triggered
-                # because loop will exit after first iteration
-                # so try to create quote if any in queue
-                create_blockquote(quote_type=quote_type)
+                i += 1
 
-        process_text(
-            start_delimiter=BLOCKQUOTE_EXPANDABLE_DELIM,
-            end_delimiter=BLOCKQUOTE_EXPANDABLE_OPTIONAL_END_DELIM,
-            quote_type=" expandable",
-        )
-        process_text(start_delimiter=BLOCKQUOTE_DELIM)
-
+        # Escape remaining text lines if strict
         if strict:
             for idx, line in enumerate(text_lines):
-                if idx not in html_escaped_list:
+                if line is not None and idx not in html_escaped_list:
                     text_lines[idx] = html.escape(line)
 
         return "\n".join(filter(lambda x: x is not None, text_lines))
 
     async def parse(self, text: str, strict: bool = False):
         text = self.escape_and_create_quotes(text, strict=strict)
+        
+        matches = list(re.finditer(MARKDOWN_RE, text))
+        valid_delims = set()
+        opened = {}
+        active_fixed_width = None
+        
+        # --- Pass 1: Identify paired delimiters ---
+        for i, match in enumerate(matches):
+            delim, is_emoji_or_date, text_url, url = match.groups()
+            
+            if not delim:
+                continue
+                
+            # If we are inside a code block, ignore all other formatting
+            if active_fixed_width:
+                if delim == active_fixed_width:
+                    # Closing the code block
+                    valid_delims.add(opened[delim])
+                    valid_delims.add(i)
+                    del opened[delim]
+                    active_fixed_width = None
+                continue
+                
+            # Opening a new code block
+            if delim in FIXED_WIDTH_DELIMS:
+                active_fixed_width = delim
+                opened[delim] = i
+                continue
+                
+            # Standard formatting delimiters
+            if delim in [BOLD_DELIM, ITALIC_DELIM, UNDERLINE_DELIM, STRIKE_DELIM, SPOILER_DELIM]:
+                if delim not in opened:
+                    opened[delim] = i
+                else:
+                    # Valid pair found!
+                    valid_delims.add(opened[delim])
+                    valid_delims.add(i)
+                    del opened[delim]
+                    
+        # --- Pass 2: Apply replacements ---
         delims = set()
-        is_fixed_width = False
-
-        for i, match in enumerate(re.finditer(MARKDOWN_RE, text)):
+        
+        for i, match in enumerate(matches):
             start, _ = match.span()
             delim, is_emoji_or_date, text_url, url = match.groups()
             full = match.group(0)
 
-            if delim in FIXED_WIDTH_DELIMS:
-                is_fixed_width = not is_fixed_width
-
-            if is_fixed_width and delim not in FIXED_WIDTH_DELIMS:
-                continue
-
+            # 1. Handle Links
             if not is_emoji_or_date and text_url:
                 text = utils.replace_once(text, full, URL_MARKUP.format(url, text_url), start)
                 continue
 
+            # 2. Handle Emojis and Dates
             if is_emoji_or_date:
                 emoji = text_url
-
                 parsed_url = urllib.parse.urlparse(url)
                 # Parse the query parameters into a dictionary-like object
                 query_params = urllib.parse.parse_qs(parsed_url.query)
-
                 # Branch 1: Custom Emoji
                 if parsed_url.netloc == "emoji":
                     emoji_id = query_params.get("id", ["0"])[0]
                     text = utils.replace_once(text, full, EMOJI_MARKUP.format(emoji_id, emoji), start)
-                
                 # Branch 2: Custom Time
                 elif parsed_url.netloc == "time":
                     unix_time = query_params.get("unix", ["0"])[0]
@@ -219,39 +241,60 @@ class Markdown:
                         text = utils.replace_once(text, full, DATE_TIME_MARKUP.format(unix_time, emoji), start)
                 continue
 
-            if delim == BOLD_DELIM:
-                tag = "b"
-            elif delim == ITALIC_DELIM:
-                tag = "i"
-            elif delim == UNDERLINE_DELIM:
-                tag = "u"
-            elif delim == STRIKE_DELIM:
-                tag = "s"
-            elif delim == CODE_DELIM:
-                tag = "code"
-            elif delim == PRE_DELIM:
-                tag = "pre"
-            elif delim == SPOILER_DELIM:
-                tag = "spoiler"
-            else:
-                continue
+            # 3. Handle Formatting Delimiters
+            if delim:
+                # If this delimiter is unclosed (or suppressed by a code block), leave it as literal text!
+                if i not in valid_delims:
+                    continue
+                    
+                if delim == BOLD_DELIM:
+                    tag = "b"
+                elif delim == ITALIC_DELIM:
+                    tag = "i"
+                elif delim == UNDERLINE_DELIM:
+                    tag = "u"
+                elif delim == STRIKE_DELIM:
+                    tag = "s"
+                elif delim == CODE_DELIM:
+                    tag = "code"
+                elif delim == PRE_DELIM:
+                    tag = "pre"
+                elif delim == SPOILER_DELIM:
+                    tag = "spoiler"
+                else:
+                    continue
 
-            if delim not in delims:
-                delims.add(delim)
-                tag = OPENING_TAG.format(tag)
-            else:
-                delims.remove(delim)
-                tag = CLOSING_TAG.format(tag)
+                if delim not in delims:
+                    delims.add(delim)
+                    tag = OPENING_TAG.format(tag)
+                else:
+                    delims.remove(delim)
+                    tag = CLOSING_TAG.format(tag)
 
-            if delim == PRE_DELIM and delim in delims:
-                delim_and_language = text[text.find(PRE_DELIM) :].split("\n")[0]
-                language = delim_and_language[len(PRE_DELIM) :]
-                text = utils.replace_once(
-                    text, delim_and_language, f'<pre language="{language}">', start
-                )
-                continue
+                # Special handling for PRE language definition
+                if delim == PRE_DELIM and delim in delims:
+                    # Because `text` mutates during the loop, we find the true current index
+                    dynamic_start = text.find(PRE_DELIM)
+                    remainder = text[dynamic_start + len(PRE_DELIM):]
 
-            text = utils.replace_once(text, delim, tag, start)
+                    nl_idx = remainder.find("\n")
+                    close_idx = remainder.find(PRE_DELIM)
+
+                    # Only extract language if a newline exists BEFORE the closing backticks
+                    if nl_idx != -1 and (close_idx == -1 or nl_idx < close_idx):
+                        language = remainder[:nl_idx].strip()
+                        delim_and_language = text[dynamic_start : dynamic_start + len(PRE_DELIM) + nl_idx]
+                    else:
+                        # Single-line pre block; the text inside is code, not a language definition
+                        language = ""
+                        delim_and_language = PRE_DELIM
+
+                    text = utils.replace_once(
+                        text, delim_and_language, f'<pre language="{language}">', dynamic_start
+                    )
+                    continue
+
+                text = utils.replace_once(text, delim, tag, start)
 
         return await self.html.parse(text)
 
@@ -293,32 +336,21 @@ class Markdown:
                         and blk_entity.offset < e <= blk_entity.offset + blk_entity.length
                         for blk_entity in entities
                         if blk_entity.type == MessageEntityType.BLOCKQUOTE
+                        or blk_entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE
                     )
-                    is_expandable = any(
-                        blk_entity.offset <= s < blk_entity.offset + blk_entity.length
-                        and blk_entity.offset < e <= blk_entity.offset + blk_entity.length
-                        # and blk_entity.collapsed
-                        for blk_entity in entities
-                        if blk_entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE
-                    )
+                    
                     if inside_blockquote:
-                        if is_expandable:
-                            if entity.language:
-                                open_delimiter = f"{delimiter}{entity.language}\n**>"
-                            else:
-                                open_delimiter = f"{delimiter}\n**>"
-                            close_delimiter = f"\n**>{delimiter}"
+                        # Inside any blockquote, inner lines use ">"
+                        if entity.language:
+                            open_delimiter = f"{delimiter}{entity.language}\n>"
                         else:
-                            if entity.language:
-                                open_delimiter = f"{delimiter}{entity.language}\n>"
-                            else:
-                                open_delimiter = f"{delimiter}\n>"
-                            close_delimiter = f"\n>{delimiter}"
+                            open_delimiter = f"{delimiter}\n>"
+                        close_delimiter = f"\n>{delimiter}"
                     else:
                         if entity.language:
                             open_delimiter = f"{delimiter}{entity.language}\n"
                         else:
-                            open_delimiter = f"{delimiter}\n"
+                            open_delimiter = f"{delimiter}"
                         close_delimiter = delimiter
                     insert_at.append((s, i, open_delimiter))
                     insert_at.append((e, -i, close_delimiter))
@@ -336,11 +368,27 @@ class Markdown:
                     lines = text_subset.splitlines()
                     for line_num, line in enumerate(lines):
                         line_start = s + sum(len(l) + 1 for l in lines[:line_num])
+                        
+                        # Blockquote prefixes MUST be placed at the absolute start of the line.
+                        # We use `-10000 + i` to ensure they are popped last and end up on the far left,
+                        # wrapping perfectly around any inline entities sharing the same offset.
+                        prefix_priority = -10000 + i
+                        
                         if entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
-                            insert_at.append((line_start, i, BLOCKQUOTE_EXPANDABLE_DELIM))
+                            if line_num == 0:
+                                insert_at.append((line_start, prefix_priority, BLOCKQUOTE_EXPANDABLE_DELIM))
+                            else:
+                                insert_at.append((line_start, prefix_priority, BLOCKQUOTE_DELIM))
                         else:
-                            insert_at.append((line_start, i, BLOCKQUOTE_DELIM))
-            # No closing delimiter for blockquotes
+                            insert_at.append((line_start, prefix_priority, BLOCKQUOTE_DELIM))
+
+                    # Append expandability mark for expandable blockquotes
+                    if entity.type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
+                        # Expandability marks MUST be at the absolute end of the blockquote.
+                        # We use `10000 - i` to ensure it is popped first and ends up on the far right.
+                        insert_at.append((e, 10000 - i, SPOILER_DELIM))
+
+            # No closing delimiter for blockquotes (handled by lines above)
             else:
                 url = None
                 is_emoji_or_date = False

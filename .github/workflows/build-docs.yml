@@ -11,13 +11,21 @@ jobs:
     name: build-doc
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 1
-    - name: Set up Python
-      uses: actions/setup-python@v5
+
+    - uses: actions/checkout@v6
       with:
-        python-version: '3.10'
+        repository: TelegramPlayground/pyrogram
+        ref: master
+        path: docs
+        fetch-depth: 1
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.10"
 
     - name: Install dependencies AND Build Documentation
       env:
@@ -28,9 +36,18 @@ jobs:
           make
           cd ./docs/build/html && rm -rf .doctrees && cd ./../../..
 
+    - name: Generate GitHub App Token
+      id: generate-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ secrets.ORG_APP_ID }}
+        private-key: ${{ secrets.ORG_APP_PRIVATE_KEY }}
+        owner: TelegramPlayground
+
     - uses: peaceiris/actions-gh-pages@v4
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        personal_token: ${{ steps.generate-token.outputs.token }}
+        external_repository: TelegramPlayground/pyrogram
         publish_dir: ./docs/build/html
         publish_branch: gh-pages
         user_name: 'github-actions[bot]'
