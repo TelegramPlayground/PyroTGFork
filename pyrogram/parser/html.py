@@ -1,5 +1,6 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-2024 Dan <https://github.com/delivrance>
+#  Copyright (C) 2026-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -51,19 +52,34 @@ class Parser(HTMLParser):
             entity = raw.types.MessageEntityBold
         elif tag in ["i", "em"]:
             entity = raw.types.MessageEntityItalic
-        elif tag == "u":
+        elif tag in ["u", "ins"]:
             entity = raw.types.MessageEntityUnderline
         elif tag in ["s", "del", "strike"]:
             entity = raw.types.MessageEntityStrike
         elif tag == "blockquote":
             entity = raw.types.MessageEntityBlockquote
             extra["collapsed"] = bool("expandable" in attrs.keys())
-        elif tag == "code":
-            entity = raw.types.MessageEntityCode
         elif tag == "pre":
             entity = raw.types.MessageEntityPre
             extra["language"] = attrs.get("language", "")
-        elif tag == "spoiler":
+        elif tag == "code":
+            entity = raw.types.MessageEntityCode
+            _class = attrs.get("class", "")
+            active_pres = self.tag_entities.get("pre", [])
+            # Check if this <code> block is nested inside an active <pre>
+            if active_pres:
+                if _class.startswith("language-"):
+                    # Update the language of the currently open <pre> entity
+                    active_pres[-1].language = _class[9:] # 9 is the length of "language-"
+                    
+                # Return early to intentionally skip creating a nested CODE entity.
+                # (When handle_endtag hits </code>, it will safely ignore it).
+                return
+            # If not inside a <pre>, treat it as a standard inline code block
+            entity = raw.types.MessageEntityCode
+        elif tag in ["spoiler", "tg-spoiler"]:
+            entity = raw.types.MessageEntitySpoiler
+        elif tag == "span" and attrs.get("class", "") == "tg-spoiler":
             entity = raw.types.MessageEntitySpoiler
         elif tag == "a":
             url = attrs.get("href", "")
@@ -80,6 +96,15 @@ class Parser(HTMLParser):
             entity = raw.types.MessageEntityCustomEmoji
             custom_emoji_id = int(attrs.get("id"))
             extra["document_id"] = custom_emoji_id
+        elif tag == "tg-emoji":
+            entity = raw.types.MessageEntityCustomEmoji
+            custom_emoji_id = int(attrs.get("emoji-id"))
+            extra["document_id"] = custom_emoji_id
+        elif tag == "tg-time":
+            entity = raw.types.MessageEntityFormattedDate
+            extra["date"] = int(attrs.get("unix"))
+            date_time_format = attrs.get("format", "")
+            extra = utils.parse_date_time_format_tl(extra, date_time_format)
         else:
             return
 
@@ -176,23 +201,22 @@ class HTML:
             elif entity_type == MessageEntityType.PRE:
                 name = entity_type.name.lower()
                 language = getattr(entity, "language", "") or ""
-                start_tag = f'<{name} language="{language}">' if language else f"<{name}>"
-                end_tag = f"</{name}>"
-            elif entity_type == MessageEntityType.BLOCKQUOTE:
-                name = entity_type.name.lower()
-                start_tag = f"<{name}>"
-                end_tag = f"</{name}>"
+                start_tag = f'<pre><code class="language-{language}">' if language else f"<{name}>"
+                end_tag = f"</code></pre>" if language else f"</{name}>"
             elif entity_type == MessageEntityType.EXPANDABLE_BLOCKQUOTE:
                 name = "blockquote"
                 start_tag = f"<{name} expandable>"
                 end_tag = f"</{name}>"
             elif entity_type in (
                 MessageEntityType.CODE,
-                MessageEntityType.SPOILER,
+                MessageEntityType.BLOCKQUOTE,
             ):
                 name = entity_type.name.lower()
                 start_tag = f"<{name}>"
                 end_tag = f"</{name}>"
+            elif entity_type == MessageEntityType.SPOILER:
+                start_tag = "<tg-spoiler>"
+                end_tag = "</tg-spoiler>"
             elif entity_type == MessageEntityType.TEXT_LINK:
                 url = entity.url
                 start_tag = f'<a href="{url}">'
@@ -203,8 +227,13 @@ class HTML:
                 end_tag = "</a>"
             elif entity_type == MessageEntityType.CUSTOM_EMOJI:
                 custom_emoji_id = entity.custom_emoji_id
-                start_tag = f'<emoji id="{custom_emoji_id}">'
+                start_tag = f'<tg-emoji emoji-id="{custom_emoji_id}">'
                 end_tag = "</emoji>"
+            elif entity_type == MessageEntityType.DATE_TIME:
+                date = entity.unix_time
+                dtf = entity.date_time_format
+                start_tag = f'<tg-time unix="{date}" format="{dtf}">'
+                end_tag = "</tg-time>"
             else:
                 return
 

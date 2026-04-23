@@ -28,8 +28,10 @@ class DeleteForumTopic:
         chat_id: Union[int, str],
         message_thread_id: int
     ) -> int:
-        """Use this method to delete a forum topic along with all its messages in a forum supergroup chat.
-        The bot must be an administrator in the chat for this to work and must have the can_delete_messages administrator rights
+        """Use this method to delete a forum topic along with all its messages in a forum supergroup chat or a private chat with a user.
+        
+        In the case of a supergroup chat the bot must be an administrator in the chat for this to work and must have the ``can_delete_messages`` administrator rights
+
         unless the user is creator of the topic, the topic has no messages from other users and has at most 11 messages.
 
         .. include:: /_includes/usable-by/users-bots.rst
@@ -56,8 +58,8 @@ class DeleteForumTopic:
         """
 
         r = await self.invoke(
-            raw.functions.channels.DeleteTopicHistory(
-                channel=await self.resolve_peer(chat_id),
+            raw.functions.messages.DeleteTopicHistory(
+                peer=await self.resolve_peer(chat_id),
                 top_msg_id=message_thread_id
             )
         )

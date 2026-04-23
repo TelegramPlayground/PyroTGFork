@@ -28,6 +28,7 @@ class SetChatPermissions:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         permissions: "types.ChatPermissions",
+        use_independent_chat_permissions: bool = False,
     ) -> "types.Chat":
         """Set default chat permissions for all members.
 
@@ -42,6 +43,12 @@ class SetChatPermissions:
 
             permissions (:obj:`~pyrogram.types.ChatPermissions`):
                 New default chat permissions.
+
+            use_independent_chat_permissions (``bool``, *optional*):
+                Pass True if chat permissions are set independently.
+                Otherwise, the can_send_other_messages and can_add_web_page_previews permissions will
+                imply the can_send_messages, can_send_audios, can_send_documents, can_send_photos, can_send_videos, can_send_video_notes, and can_send_voice_notes permissions;
+                the can_send_polls permission will imply the can_send_messages permission.
 
         Returns:
             :obj:`~pyrogram.types.Chat`: On success, a chat object is returned.
@@ -67,20 +74,7 @@ class SetChatPermissions:
         r = await self.invoke(
             raw.functions.messages.EditChatDefaultBannedRights(
                 peer=await self.resolve_peer(chat_id),
-                banned_rights=raw.types.ChatBannedRights(
-                    until_date=0,
-                    send_messages=not permissions.can_send_messages,
-                    send_media=not permissions.can_send_media_messages,
-                    send_stickers=not permissions.can_send_other_messages,
-                    send_gifs=not permissions.can_send_other_messages,
-                    send_games=not permissions.can_send_other_messages,
-                    send_inline=not permissions.can_send_other_messages,
-                    embed_links=not permissions.can_add_web_page_previews,
-                    send_polls=not permissions.can_send_polls,
-                    change_info=not permissions.can_change_info,
-                    invite_users=not permissions.can_invite_users,
-                    pin_messages=not permissions.can_pin_messages,
-                )
+                banned_rights=permissions.write(use_independent_chat_permissions)
             )
         )
 

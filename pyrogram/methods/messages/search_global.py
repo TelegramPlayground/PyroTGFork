@@ -17,6 +17,7 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from asyncio import sleep
+from datetime import datetime
 from typing import AsyncGenerator, Optional
 
 import pyrogram
@@ -31,6 +32,8 @@ class SearchGlobal:
         limit: int = 0,
         chat_list: int = 0,
         chat_type_filter: "enums.ChatType" = None,
+        offset_date: datetime = utils.zero_datetime(),
+        offset_message_id: int = 0,
     ) -> Optional[AsyncGenerator["types.Message", None]]:
         """Search messages globally from all of your chats.
 
@@ -62,6 +65,12 @@ class SearchGlobal:
             chat_type_filter (:obj:`~pyrogram.enums.ChatType`, *optional*):
                 Additional filter for type of the chat (:obj:`~pyrogram.enums.ChatType.PRIVATE`, :obj:`~pyrogram.enums.ChatType.GROUP`, :obj:`~pyrogram.enums.ChatType.CHANNEL`) of the searched messages; pass None to search for messages in all chats.
 
+            offset_date (:py:obj:`~datetime.datetime`, *optional*):
+                The date starting from which the dialogs need to be fetched. Use 0 or any date in the future to get results from the last dialog.
+
+            offset_message_id (``int``, *optional*):
+                The message identifier of the last message in the last found dialog, or 0 for the first request.
+
         Returns:
             ``Generator``: A generator yielding :obj:`~pyrogram.types.Message` objects.
 
@@ -83,9 +92,8 @@ class SearchGlobal:
         total = abs(limit) or (1 << 31)
         limit = min(100, total)
 
-        offset_date = 0
+        offset_date = utils.datetime_to_timestamp(offset_date)
         offset_peer = raw.types.InputPeerEmpty()
-        offset_id = 0
 
         while True:
             messages = await utils.parse_messages(
@@ -99,7 +107,7 @@ class SearchGlobal:
                         max_date=0,
                         offset_rate=offset_date,
                         offset_peer=offset_peer,
-                        offset_id=offset_id,
+                        offset_id=offset_message_id,
                         limit=limit,
                         folder_id=chat_list,
                         broadcasts_only=(chat_type_filter == enums.ChatType.CHANNEL) if chat_type_filter else None,
@@ -118,7 +126,7 @@ class SearchGlobal:
 
             offset_date = utils.datetime_to_timestamp(last.date)
             offset_peer = await self.resolve_peer(last.chat.id)
-            offset_id = last.id
+            offset_message_id = last.id
 
             for message in messages:
                 await sleep(0)

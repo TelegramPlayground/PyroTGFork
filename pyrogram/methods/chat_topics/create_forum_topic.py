@@ -31,8 +31,9 @@ class CreateForumTopic:
         icon_custom_emoji_id: str = None,
         send_as: Union[int, str] = None,
     ) -> "types.Message":
-        """Use this method to create a topic in a forum supergroup chat.
-        The bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator rights.
+        """Use this method to create a topic in a forum supergroup chat or a private chat with a user.
+        
+        In the case of a supergroup chat the bot must be an administrator in the chat for this to work and must have the can_manage_topics administrator right.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
@@ -66,10 +67,14 @@ class CreateForumTopic:
                 # Create a new Topic
                 await app.create_forum_topic(chat, "Topic Title")
         """
-
+        wxp = await self.resolve_peer(chat_id)
+        tm = False
+        if not isinstance(wxp, raw.types.InputChannel):
+            tm = True
         r = await self.invoke(
-            raw.functions.channels.CreateForumTopic(
-                channel=await self.resolve_peer(chat_id),
+            raw.functions.messages.CreateForumTopic(
+                title_missing=tm,
+                peer=wxp,
                 title=name,
                 icon_color=icon_color,
                 icon_emoji_id=icon_custom_emoji_id,

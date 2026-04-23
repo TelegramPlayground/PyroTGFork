@@ -41,7 +41,8 @@ class InputTextMessageContent(InputMessageContent):
             List of special entities that appear in message text, which can be specified instead of *parse_mode*.
 
         link_preview_options (:obj:`~pyrogram.types.LinkPreviewOptions`, *optional*):
-            Link preview generation options for the message
+            Link preview generation options for the message.
+
     """
 
     def __init__(
@@ -83,6 +84,18 @@ class InputTextMessageContent(InputMessageContent):
 
         if self.link_preview_options is None:
             self.link_preview_options = client.link_preview_options
+
+        if self.link_preview_options and self.link_preview_options.url:
+            return raw.types.InputBotInlineMessageMediaWebPage(
+                invert_media=self.link_preview_options.show_above_text,
+                force_large_media=self.link_preview_options.prefer_large_media,
+                force_small_media=self.link_preview_options.prefer_small_media,
+                optional=self.link_preview_options.manual,
+                url=self.link_preview_options.url,
+                reply_markup=await reply_markup.write(client) if reply_markup else None,
+                message=message,
+                entities=entities
+            )
 
         return raw.types.InputBotInlineMessageText(
             no_webpage=self.link_preview_options.is_disabled if self.link_preview_options else None,

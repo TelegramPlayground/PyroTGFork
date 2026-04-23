@@ -35,6 +35,7 @@ from .user_status import UserStatus
 from .client_platform import ClientPlatform
 from .accent_color import AccentColor
 from .profile_color import ProfileColor
+from .button_style import ButtonStyle
 
 __all__ = [
     'ChatAction', 
@@ -56,4 +57,5 @@ __all__ = [
     'ClientPlatform',
     'AccentColor',
     'ProfileColor',
+    'ButtonStyle',
 ]

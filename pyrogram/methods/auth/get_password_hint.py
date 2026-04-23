@@ -34,5 +34,9 @@ class GetPasswordHint:
 
         Returns:
             ``str``: On success, the password hint as string is returned.
+
+        Raises:
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return (await self.invoke(raw.functions.account.GetPassword())).hint

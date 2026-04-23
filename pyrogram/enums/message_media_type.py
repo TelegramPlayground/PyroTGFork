@@ -83,3 +83,9 @@ class MessageMediaType(AutoName):
 
     PAID_MEDIA = auto()
     "Paid Media"
+
+    CHECKLIST = auto()
+    "Checklist"
+
+    UNKNOWN = auto()
+    "This message media is unsupported by the current version of Pyrogram"

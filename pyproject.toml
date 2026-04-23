@@ -20,6 +20,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
@@ -40,9 +41,9 @@ path = "pyrogram/__init__.py"
 
 [project.urls]
 Homepage = "https://telegramplayground.github.io/pyrogram/"
-Tracker = "https://github.com/TelegramPlayGround/Pyrogram/issues"
+Tracker = "https://github.com/issues?q=is%3Aissue%20is%3Aopen%20(repo%3ATelegramPlayground%2FPyroTGFork%20OR%20repo%3ATelegramPlayground%2Fpyrogram%20OR%20repo%3ATelegramPlayground%2Fpyrogram-tgcrypto)%20sort%3Acreated-desc"
 community = "https://PyroTGFork.t.me/2"
-Source = "https://github.com/TelegramPlayGround/Pyrogram"
+Source = "https://github.com/TelegramPlayGround/PyroTGFork"
 Documentation = "https://telegramplayground.github.io/pyrogram/releases/changes-in-this-fork.html"
 
 [build-system]
@@ -94,7 +95,8 @@ docs = [
     "furo<=2023.9.10",
     "sphinx-autobuild<=2021.3.14",
     "sphinx-copybutton<=0.5.2",
-    "pygments<=2.17.2"
+    "pygments<=2.17.2",
+    "sphinx-llms-txt==0.7.1"
 ]
 
 fast = [

@@ -117,9 +117,9 @@ class DownloadMedia:
             If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` containing ``minithumbnail`` and ``idx`` is not specified, then a list of paths or binary file-like objects is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             Download media to file
@@ -187,7 +187,7 @@ class DownloadMedia:
             if (self.me and self.me.is_bot):
                 raise ValueError("This method cannot be used by bots")
             else:
-                if medium.media:
+                if message.media:
                     medium = [getattr(message, message.media.value, None)]
                 else:
                     medium = []
@@ -248,7 +248,8 @@ class DownloadMedia:
                     directory = self.PARENT_DIR / (directory or DEFAULT_DOWNLOAD_DIR)
 
                 os.makedirs(directory, exist_ok=True) if not in_memory else None
-                temp_file_path = os.path.abspath(re.sub("\\\\", "/", os.path.join(directory, file_name)))
+                mcfn = re.sub("\\\\", "/", os.path.join(directory, file_name))
+                temp_file_path = os.path.abspath(mcfn)
 
                 with open(temp_file_path, "wb") as file:
                     file.write(thumb.getbuffer())
@@ -269,12 +270,22 @@ class DownloadMedia:
             mime_type = getattr(media, "mime_type", "")
             date = getattr(media, "date", None)
 
+            # CWE-22: Path Traversal: sanitize file name
+            if media_file_name:
+                # Remove any path components, keeping only the basename
+                media_file_name = os.path.basename(media_file_name)
+                # Remove null bytes which could cause issues
+                media_file_name = media_file_name.replace("\x00", "")
+                # Handle edge cases
+                if not media_file_name or media_file_name in (".", ".."):
+                    media_file_name = ""
+
             directory, file_name = os.path.split(file_name)
             # TODO
             file_name = file_name or media_file_name or ""
 
             if not os.path.isabs(file_name):
-                directory = self.WORKDIR / (directory or DEFAULT_DOWNLOAD_DIR)
+                directory = self.workdir / (directory or DEFAULT_DOWNLOAD_DIR)
 
             if not file_name:
                 guessed_extension = self.guess_extension(mime_type)
@@ -282,15 +293,15 @@ class DownloadMedia:
                 if file_type in PHOTO_TYPES:
                     extension = ".jpg"
                 elif file_type == FileType.VOICE:
-                    extension = guessed_extension or ".ogg"
+                    extension = ".ogg"
                 elif file_type in (FileType.VIDEO, FileType.ANIMATION, FileType.VIDEO_NOTE):
-                    extension = guessed_extension or ".mp4"
+                    extension = ".mp4"
                 elif file_type == FileType.DOCUMENT:
-                    extension = guessed_extension or ".zip"
+                    extension = ".zip"
                 elif file_type == FileType.STICKER:
-                    extension = guessed_extension or ".webp"
+                    extension = ".webp"
                 elif file_type == FileType.AUDIO:
-                    extension = guessed_extension or ".mp3"
+                    extension = ".mp3"
                 else:
                     extension = ".unknown"
 
@@ -298,7 +309,7 @@ class DownloadMedia:
                     FileType(file_id_obj.file_type).name.lower(),
                     (date or datetime.now()).strftime("%Y-%m-%d_%H-%M-%S"),
                     self.rnd_id(),
-                    extension
+                    guessed_extension or extension
                 )
 
             downloader = self.handle_download(
@@ -308,6 +319,6 @@ class DownloadMedia:
             if block:
                 dledmedia.append(await downloader)
             else:
-                asyncio.get_event_loop().create_task(downloader)
+                utils.get_event_loop().create_task(downloader)
 
         return types.List(dledmedia) if block and len(dledmedia) > 1  else dledmedia[0] if block and len(dledmedia) == 1 else None

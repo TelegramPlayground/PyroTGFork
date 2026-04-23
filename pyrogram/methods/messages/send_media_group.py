@@ -53,7 +53,9 @@ class SendMediaGroup:
         message_effect_id: int = None,
         reply_to_message_id: int = None
     ) -> list["types.Message"]:
-        """Send a group of photos or videos as an album.
+        """Use this method to send a group of photos, videos, documents or audios as an album.
+        
+        Documents and audio files can be only grouped in an album with messages of the same type.
 
         .. include:: /_includes/usable-by/users-bots.rst
 
@@ -64,7 +66,7 @@ class SendMediaGroup:
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
             media (List of :obj:`~pyrogram.types.InputMediaPhoto`, :obj:`~pyrogram.types.InputMediaVideo`, :obj:`~pyrogram.types.InputMediaAudio` and :obj:`~pyrogram.types.InputMediaDocument`):
-                A list describing photos and videos to be sent, must include 2–10 items.
+                A list describing photos and videos to be sent, must include 2-10 items.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -385,8 +387,8 @@ class SendMediaGroup:
                                     thumb=await self.save_file(i.thumb),
                                     attributes=[
                                         raw.types.DocumentAttributeFilename(file_name=i.file_name or os.path.basename(i.media))
-                                    ]
-                                    # TODO
+                                    ],
+                                    force_file=True # if i.disable_content_type_detection else True
                                 )
                             )
                         )
@@ -476,7 +478,7 @@ class SendMediaGroup:
         business_connection = None
         if business_connection_id:
             business_connection = self.business_user_connection_cache[business_connection_id]
-            if not business_connection:
+            if business_connection is None:
                 business_connection = await self.get_business_connection(business_connection_id)
             session = await get_session(
                 self,

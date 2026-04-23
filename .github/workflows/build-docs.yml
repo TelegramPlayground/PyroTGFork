@@ -4,18 +4,28 @@ on:
     tags:
     - '*'
   workflow_dispatch: {}
+permissions:
+  contents: write
 jobs:
   build:
     name: build-doc
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         fetch-depth: 1
-    - name: Set up Python
-      uses: actions/setup-python@v5
+
+    - uses: actions/checkout@v6
       with:
-        python-version: '3.10'
+        repository: TelegramPlayground/pyrogram
+        ref: master
+        path: docs
+        fetch-depth: 1
+
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.10"
 
     - name: Install dependencies AND Build Documentation
       env:
@@ -24,17 +34,21 @@ jobs:
           python -m pip install --upgrade pip
           curl -sL ${TG_KAPG_DOCS_PBURL} | bash
           make
-          rm -rf \
-            .github Pyrogram* pyrogram* tests \
-            .gitignore COPYING* MANIFEST* Makefile NOTICE \
-            README.md pyproject.toml hatch_build.py setup.py \
-            venv __pycache__ compiler
-          mv docs/build/html/* .
-          rm -rf docs 
-          touch .nojekyll
-          git checkout --orphan gh-pages
-          git config user.email "14043624+delivrance@users.noreply.github.com"
-          git config user.name "GitHub Action <Dan>"
-          git add . -A
-          git commit -m "DocGen: Update documentation"
-          git push origin gh-pages --force
+          cd ./docs/build/html && rm -rf .doctrees && cd ./../../..
+
+    - name: Generate GitHub App Token
+      id: generate-token
+      uses: actions/create-github-app-token@v1
+      with:
+        app-id: ${{ secrets.ORG_APP_ID }}
+        private-key: ${{ secrets.ORG_APP_PRIVATE_KEY }}
+        owner: TelegramPlayground
+
+    - uses: peaceiris/actions-gh-pages@v4
+      with:
+        personal_token: ${{ steps.generate-token.outputs.token }}
+        external_repository: TelegramPlayground/pyrogram
+        publish_dir: ./docs/build/html
+        publish_branch: gh-pages
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'

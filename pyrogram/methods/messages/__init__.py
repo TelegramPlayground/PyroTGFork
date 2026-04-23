@@ -74,6 +74,11 @@ from .search_public_messages_by_tag import SearchPublicMessagesByTag
 from .count_public_messages_by_tag import CountPublicMessagesByTag
 from .translate_text import TranslateText
 from .send_screenshot_notification import SendScreenshotNotification
+from .send_checklist import SendChecklist
+from .edit_message_checklist import EditMessageChecklist
+from .mark_checklist_tasks_as_done import MarkChecklistTasksAsDone
+from .add_poll_option import AddPollOption
+from .delete_poll_option import DeletePollOption
 
 class Messages(
     CopyMediaGroup,
@@ -134,5 +139,10 @@ class Messages(
     VotePoll,
     GetChatSponsoredMessages,
     TranslateText,
+    SendChecklist,
+    EditMessageChecklist,
+    MarkChecklistTasksAsDone,
+    AddPollOption,
+    DeletePollOption
 ):
     pass

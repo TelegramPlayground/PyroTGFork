@@ -19,6 +19,7 @@
 import asyncio
 import logging
 import signal
+import sys
 from signal import signal as signal_fn, SIGINT, SIGTERM, SIGABRT
 
 log = logging.getLogger(__name__)
@@ -69,19 +70,37 @@ async def idle():
 
             asyncio.run(main())
     """
-    task = None
 
-    def signal_handler(signum, __):
-        log.info(f"Stop signal received ({signals[signum]}). Exiting...")
-        asyncio.get_event_loop().run_in_executor(None, task.cancel)
+    if sys.platform.startswith("win") or sys.version_info <= (3, 10):
+        task = None
 
-    for s in (SIGINT, SIGTERM, SIGABRT):
-        signal_fn(s, signal_handler)
+        def signal_handler(signum, __):
+            log.info(f"Stop signal received ({signals[signum]}). Exiting...")
+            asyncio.get_event_loop().run_in_executor(None, task.cancel)
 
-    while True:
-        task = asyncio.create_task(asyncio.sleep(600))
+        for s in (SIGINT, SIGTERM, SIGABRT):
+            signal_fn(s, signal_handler)
+
+        while True:
+            task = asyncio.create_task(asyncio.sleep(600))
+
+            try:
+                await task
+            except asyncio.CancelledError:
+                break
+    else:
+        loop = asyncio.get_event_loop()
+        sig_event = asyncio.Event()
+
+        def signal_handler(signum):
+            log.info(f"Stop signal received ({signals[signum]}). Exiting...")
+            if not sig_event.is_set():
+                loop.call_soon_threadsafe(sig_event.set)
+
+        for s in (SIGINT, SIGTERM, SIGABRT):
+            loop.add_signal_handler(s, signal_handler, s)
 
         try:
-            await task
+            await sig_event.wait()
         except asyncio.CancelledError:
-            break
+            pass

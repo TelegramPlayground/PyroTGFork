@@ -28,7 +28,7 @@ class ExternalReplyInfo(Object):
     """This object contains information about a message that is being replied to, which may come from another chat or forum topic.
 
     Parameters:
-        origin (:obj:`~pyrogram.types.User`, *optional*):
+        origin (:obj:`~pyrogram.types.MessageOrigin`, *optional*):
             Origin of the message replied to by the given message
 
         chat (:obj:`~pyrogram.types.Chat`, *optional*):
@@ -72,6 +72,9 @@ class ExternalReplyInfo(Object):
 
         has_media_spoiler (``bool``, *optional*):
             True, if the message media is covered by a spoiler animation.
+        
+        checklist (:obj:`~pyrogram.types.Checklist`, *optional*):
+            Message is a checklist.
 
         contact (:obj:`~pyrogram.types.Contact`, *optional*):
             Message is a shared contact, information about the contact.
@@ -126,6 +129,7 @@ class ExternalReplyInfo(Object):
         video_note: "types.VideoNote" = None,
         voice: "types.Voice" = None,
         has_media_spoiler: bool = None,
+        checklist: Optional["types.Checklist"] = None,
         contact: "types.Contact" = None,
         dice: "types.Dice" = None,
         game: "types.Game" = None,
@@ -154,6 +158,7 @@ class ExternalReplyInfo(Object):
         self.video_note = video_note
         self.voice = voice
         self.has_media_spoiler = has_media_spoiler
+        self.checklist = checklist
         self.contact = contact
         self.dice = dice
         self.game = game
@@ -206,6 +211,7 @@ class ExternalReplyInfo(Object):
 
             has_media_spoiler = None
 
+            checklist = None
             contact = None
             dice = None
             game = None
@@ -299,7 +305,7 @@ class ExternalReplyInfo(Object):
                     else:
                         media = None
                 elif isinstance(media, raw.types.MessageMediaPoll):
-                    poll = types.Poll._parse(client, media)
+                    poll = await types.Poll._parse(client, media, users, chats)
                     media_type = enums.MessageMediaType.POLL
                 elif isinstance(media, raw.types.MessageMediaDice):
                     dice = types.Dice._parse(client, media)
@@ -319,8 +325,14 @@ class ExternalReplyInfo(Object):
                 elif isinstance(media, raw.types.MessageMediaPaidMedia):
                     paid_media = types.PaidMediaInfo._parse(client, media)
                     media_type = enums.MessageMediaType.PAID_MEDIA
+                elif isinstance(media, raw.types.MessageMediaToDo):
+                    media_type = enums.MessageMediaType.CHECKLIST
+                    checklist = types.Checklist._parse(client, media, users, chats)
+                else:
+                    media_type = enums.MessageMediaType.UNKNOWN
 
             return ExternalReplyInfo(
+                client=client,
                 origin=origin,
                 chat=chat,
                 message_id=reply_to.reply_to_msg_id,
@@ -336,6 +348,7 @@ class ExternalReplyInfo(Object):
                 video_note=video_note,
                 voice=voice,
                 has_media_spoiler=has_media_spoiler,
+                checklist=checklist,
                 contact=contact,
                 dice=dice,
                 game=game,
@@ -420,9 +433,9 @@ class ExternalReplyInfo(Object):
             If the message is a :obj:`~pyrogram.types.PaidMediaInfo` with more than one ``paid_media`` containing ``minithumbnail`` and ``idx`` is not specified, then a list of paths or binary file-like objects is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             IndexError: In case of wrong value of ``idx``.
             ValueError: If the message doesn't contain any downloadable media.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         """
         message = getattr(self, self.media.value, None)

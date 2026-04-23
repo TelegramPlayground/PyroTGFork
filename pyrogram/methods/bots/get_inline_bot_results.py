@@ -30,7 +30,9 @@ class GetInlineBotResults:
         query: str = "",
         offset: str = "",
         latitude: float = None,
-        longitude: float = None
+        longitude: float = None,
+        # TODO: fix inconsistency
+        chat_id: Union[int, str] = None,
     ):
         """Get bot results via inline queries.
         You can then send a result using :meth:`~pyrogram.Client.send_inline_bot_result`
@@ -57,11 +59,17 @@ class GetInlineBotResults:
                 Longitude of the location.
                 Useful for location-based results only.
 
+            chat_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
+                For your personal cloud (Saved Messages) you can simply use "me" or "self".
+                For a contact that exists in your Telegram address book you can use his phone number (str).
+
         Returns:
             :obj:`BotResults <pyrogram.api.types.messages.BotResults>`: On Success.
 
         Raises:
             TimeoutError: In case the bot fails to answer within 10 seconds.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python
@@ -75,7 +83,7 @@ class GetInlineBotResults:
             return await self.invoke(
                 raw.functions.messages.GetInlineBotResults(
                     bot=await self.resolve_peer(bot),
-                    peer=raw.types.InputPeerSelf(),
+                    peer=await self.resolve_peer(chat_id) if chat_id else raw.types.InputPeerSelf(),
                     query=query,
                     offset=offset,
                     geo_point=raw.types.InputGeoPoint(

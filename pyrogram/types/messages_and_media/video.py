@@ -20,8 +20,7 @@ from datetime import datetime
 from typing import Optional
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
 from pyrogram.file_id import FileId, FileType, FileUniqueId, FileUniqueType, ThumbnailSource
 from ..object import Object
 
@@ -46,6 +45,18 @@ class Video(Object):
         duration (``int``):
             Duration of the video in seconds as defined by sender.
 
+        thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
+            Video thumbnails.
+
+        cover (:obj:`~pyrogram.types.Photo`, *optional*):
+            Cover of the video available in the message.
+
+        start_timestamp (``int``. *optional*):
+            Timestamp from which the video playing must start, in seconds.
+
+        qualities (List of :obj:`~pyrogram.types.VideoQuality`, *optional*):
+            List of available qualities of the video.
+
         file_name (``str``, *optional*):
             Video file name.
 
@@ -63,15 +74,6 @@ class Video(Object):
 
         date (:py:obj:`~datetime.datetime`, *optional*):
             Date the video was sent.
-
-        thumbs (List of :obj:`~pyrogram.types.Thumbnail`, *optional*):
-            Video thumbnails.
-
-        cover (:obj:`~pyrogram.types.Photo`, *optional*):
-            Cover of the video available in the message.
-
-        start_timestamp (``int``. *optional*):
-            Timestamp from which the video playing must start, in seconds.
 
     """
 
@@ -92,7 +94,8 @@ class Video(Object):
         date: datetime = None,
         thumbs: list["types.Thumbnail"] = None,
         cover: Optional["types.Photo"] = None,
-        start_timestamp: Optional[int] = None
+        start_timestamp: Optional[int] = None,
+        qualities: list["types.VideoQuality"] = None
     ):
         super().__init__(client)
 
@@ -110,6 +113,7 @@ class Video(Object):
         self.thumbs = thumbs
         self.cover = cover
         self.start_timestamp = start_timestamp
+        self.qualities = qualities
 
     @staticmethod
     def _parse(
@@ -122,6 +126,23 @@ class Video(Object):
     ) -> "Video":
         if not video:
             video = media.document  # "raw.types.Document"
+        qualities = []
+        if media:
+            altdocs = media.alt_documents or []
+            for altdoc in altdocs:
+                if isinstance(altdoc, raw.types.Document):
+                    altdoc_attributes = {type(i): i for i in altdoc.attributes}
+
+                    altdoc_file_name = getattr(
+                        altdoc_attributes.get(
+                            raw.types.DocumentAttributeFilename, None
+                        ), "file_name", None
+                    )
+                    altdoc_video_attribute = altdoc_attributes.get(raw.types.DocumentAttributeVideo, None)
+                    if altdoc_video_attribute:
+                        qualities.append(
+                            types.VideoQuality._parse(client, altdoc, altdoc_video_attribute, altdoc_file_name)
+                        )
         return Video(
             file_id=FileId(
                 file_type=FileType.VIDEO,
@@ -137,17 +158,18 @@ class Video(Object):
             width=video_attributes.w if video_attributes else None,
             height=video_attributes.h if video_attributes else None,
             duration=video_attributes.duration if video_attributes else None,
-            file_name=file_name,
-            mime_type=video.mime_type if video else None,
-            supports_streaming=video_attributes.supports_streaming if video_attributes else None,
-            file_size=video.size if video else None,
-            date=utils.timestamp_to_datetime(video.date) if video else None,
-            ttl_seconds=ttl_seconds,
             thumbs=types.Thumbnail._parse(client, video) if video else None,
             cover=types.Photo._parse(
                 client,
                 media.video_cover
             ) if media and media.video_cover else None,
             start_timestamp=media.video_timestamp if media else None,
+            qualities=types.List(qualities) if qualities else None,
+            file_name=file_name,
+            mime_type=video.mime_type if video else None,
+            file_size=video.size if video else None,
+            supports_streaming=video_attributes.supports_streaming if video_attributes else None,
+            date=utils.timestamp_to_datetime(video.date) if video else None,
+            ttl_seconds=ttl_seconds,
             client=client
         )

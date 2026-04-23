@@ -38,7 +38,7 @@ class ResolvePeer:
         .. note::
 
             This is a utility method intended to be used **only** when working with raw
-            :obj:`functions <pyrogram.api.functions>` (i.e: a Telegram API method you wish to use which is not
+            :obj:`functions <pyrogram.raw.functions>` (i.e: a Telegram API method you wish to use which is not
             available yet in the Client class as an easy-to-use method).
 
         .. include:: /_includes/usable-by/users-bots.rst
@@ -49,10 +49,11 @@ class ResolvePeer:
                 Can be a direct id (int), a username (str) or a phone number (str).
 
         Returns:
-            ``InputPeer``: On success, the resolved peer id is returned in form of an InputPeer object.
+            :obj:`~pyrogram.raw.base.InputPeer`: On success, the resolved peer id is returned in form of an InputPeer object.
 
         Raises:
-            KeyError: In case the peer doesn't exist in the internal database.
+            ``KeyError``: In case the peer doesn't exist in the internal database.
+
         """
         if not self.is_connected:
             raise ConnectionError("Client has not been started yet")

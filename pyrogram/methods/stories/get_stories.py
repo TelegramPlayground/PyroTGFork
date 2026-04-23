@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/TelegramPlayGround>
 #
 #  This file is part of Pyrogram.
 #
@@ -25,7 +25,7 @@ from pyrogram import raw, types, utils
 class GetStories:
     async def get_stories(
         self: "pyrogram.Client",
-        story_sender_chat_id: Union[int, str],
+        story_poster_chat_id: Union[int, str],
         story_ids: Union[int, Iterable[int]],
     ) -> Union["types.Story", list["types.Story"]] :
         """Get one or more stories from a chat by using stories identifiers.
@@ -33,7 +33,7 @@ class GetStories:
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
-            story_sender_chat_id (``int`` | ``str``):
+            story_poster_chat_id (``int`` | ``str``):
                 Identifier of the chat that posted the story.
 
             story_ids (``int`` | Iterable of ``int``, *optional*):
@@ -49,7 +49,7 @@ class GetStories:
 
                 # Get stories by id
                 stories = await app.get_stories(
-                    story_sender_chat_id,
+                    story_poster_chat_id,
                     [1, 2, 3]
                 )
 
@@ -60,7 +60,7 @@ class GetStories:
         is_iterable = utils.is_list_like(story_ids)
         ids = list(story_ids) if is_iterable else [story_ids]
 
-        peer = await self.resolve_peer(story_sender_chat_id)
+        peer = await self.resolve_peer(story_poster_chat_id)
         r = await self.invoke(
             raw.functions.stories.GetStoriesByID(
                 peer=peer,
