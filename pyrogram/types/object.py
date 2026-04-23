@@ -46,6 +46,11 @@ class Object:
 
     @staticmethod
     def default(obj: "Object"):
+        if hasattr(obj, "__custom__"):
+            _custom_ = obj.__custom__()
+            if _custom_ is not None:
+                return _custom_
+
         if isinstance(obj, bytes):
             return repr(obj)
 
@@ -106,7 +111,7 @@ class Object:
 
             # Maybe a better alternative would be https://docs.python.org/3/library/inspect.html#inspect.signature
             if isinstance(obj, tuple) and len(obj) == 2 and obj[0] == "dt":
-                state[attr] = datetime.fromtimestamp(obj[1])
+                state[attr] = pyrogram.utils.timestamp_to_datetime(obj[1])
 
         self.__dict__ = state
 

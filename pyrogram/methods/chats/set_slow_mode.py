@@ -37,8 +37,7 @@ class SetSlowMode:
                 Unique identifier (int) or username (str) of the target chat.
 
             seconds (``int`` | ``None``):
-                Seconds in which members will be able to send only one message per this interval.
-                Valid values are: 0 or None (off), 10, 30, 60 (1m), 300 (5m), 900 (15m) or 3600 (1h).
+                New slow mode delay for the chat, in seconds; must be one of: 0 or None (off), 5, 10, 30, 60 (1 minute), 300 (5 minutes), 900 (15 minutes), 3600 (1 hour).
 
         Returns:
             ``bool``: True on success.

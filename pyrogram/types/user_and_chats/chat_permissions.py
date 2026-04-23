@@ -73,6 +73,10 @@ class ChatPermissions(Object):
         can_send_media_messages (``bool``, *optional*):
             True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes.
             Implies *can_send_messages*.
+
+        can_edit_tag (``bool``, *optional*):
+            True, if the user may change the tag of self.
+
     """
 
     def __init__(
@@ -93,6 +97,7 @@ class ChatPermissions(Object):
         can_pin_messages: bool = None,
         can_manage_topics: bool = None,
         can_send_media_messages: bool = None,  # Audio files, documents, photos, videos, video notes and voice notes
+        can_edit_tag: bool = None,
     ):
         super().__init__(None)
 
@@ -111,6 +116,7 @@ class ChatPermissions(Object):
         self.can_pin_messages = can_pin_messages
         self.can_manage_topics = can_manage_topics
         self.can_send_media_messages = can_send_media_messages
+        self.can_edit_tag = can_edit_tag
 
     @staticmethod
     def _parse(denied_permissions: "raw.base.ChatBannedRights") -> "ChatPermissions":
@@ -129,6 +135,7 @@ class ChatPermissions(Object):
         can_pin_messages = False
         can_manage_topics = False
         can_send_media_messages = False
+        can_edit_tag = False
 
         if isinstance(denied_permissions, raw.types.ChatBannedRights):
             can_send_messages = not denied_permissions.send_messages
@@ -169,6 +176,7 @@ class ChatPermissions(Object):
                 can_send_videos = can_send_media_messages
                 can_send_video_notes = can_send_media_messages
                 can_send_voice_notes = can_send_media_messages
+            can_edit_tag = not denied_permissions.edit_rank
 
             return ChatPermissions(
                 can_send_messages=can_send_messages,
@@ -185,7 +193,8 @@ class ChatPermissions(Object):
                 can_invite_users=can_invite_users,
                 can_pin_messages=can_pin_messages,
                 can_manage_topics=can_manage_topics,
-                can_send_media_messages=can_send_media_messages
+                can_send_media_messages=can_send_media_messages,
+                can_edit_tag=can_edit_tag,
             )
 
     def write(
@@ -210,12 +219,13 @@ class ChatPermissions(Object):
                 permissions.can_manage_topics and
                 not permissions.can_manage_topics
             ) or not permissions.can_pin_messages,
-            # view_messages=# TODO
+            # view_messages:flags.0?true
             send_audios=not permissions.can_send_audios,# TODO
             send_docs=not permissions.can_send_documents,# TODO
             send_photos=not permissions.can_send_photos,# TODO
             send_videos=not permissions.can_send_videos,# TODO
             send_roundvideos=not permissions.can_send_video_notes,# TODO
             send_voices=not permissions.can_send_voice_notes,# TODO
-            # send_plain=# TODO
+            # send_plain:flags.25?true
+            edit_rank=permissions.can_edit_tag,
         )

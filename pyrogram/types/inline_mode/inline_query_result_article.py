@@ -19,8 +19,7 @@
 import logging
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
+from pyrogram import raw, types
 
 from .inline_query_result import InlineQueryResult
 

@@ -257,7 +257,7 @@ class SendVoice:
             business_connection = None
             if business_connection_id:
                 business_connection = self.business_user_connection_cache[business_connection_id]
-                if not business_connection:
+                if business_connection is None:
                     business_connection = await self.get_business_connection(business_connection_id)
                 session = await get_session(
                     self,

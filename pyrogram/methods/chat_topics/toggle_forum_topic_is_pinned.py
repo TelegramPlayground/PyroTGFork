@@ -46,7 +46,7 @@ class ToggleForumTopicIsPinned:
             ``bool``: On success, True is returned.
 
         Raises:
-            RPCError: In case of invalid arguments.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python
@@ -54,11 +54,11 @@ class ToggleForumTopicIsPinned:
                 await app.toggle_forum_topic_is_pinned(chat_id, topic_id, True)
         """
         await self.invoke(
-            raw.functions.channels.UpdatePinnedForumTopic(
-                channel=await self.resolve_peer(chat_id),
+            raw.functions.messages.UpdatePinnedForumTopic(
+                peer=await self.resolve_peer(chat_id),
                 topic_id=message_thread_id,
                 pinned=is_pinned
             )
         )
-
+        # TODO
         return True

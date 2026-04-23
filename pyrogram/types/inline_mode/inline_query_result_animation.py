@@ -65,6 +65,9 @@ class InlineQueryResultAnimation(InlineQueryResult):
         title (``str``, *optional*):
             Title for the result.
 
+        description (``str``, *optional*):
+            Short description of the result.
+
         caption (``str``, *optional*):
             Caption of the animation to be sent, 0-1024 characters.
 
@@ -157,6 +160,7 @@ class InlineQueryResultAnimation(InlineQueryResult):
             title=self.title,
             thumb=thumb,
             content=animation,
+            description=self.description,
             send_message=(
                 await self.input_message_content.write(client, self.reply_markup)
                 if self.input_message_content

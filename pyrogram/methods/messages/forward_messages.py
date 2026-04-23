@@ -34,10 +34,12 @@ class ForwardMessages:
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
         paid_message_star_count: int = None,
+        reply_parameters: "types.ReplyParameters" = None,
         send_copy: bool = None,
         remove_caption: bool = None,
         video_start_timestamp: int = None,
         send_as: Union[int, str] = None,
+        message_effect_id: int = None,
         schedule_date: datetime = None
     ) -> Union["types.Message", list["types.Message"]]:
         """Forward messages of any kind.
@@ -73,6 +75,9 @@ class ForwardMessages:
 
             paid_message_star_count (``int``, *optional*):
                 The number of Telegram Stars the user agreed to pay to send the messages.
+            
+            reply_parameters (:obj:`~pyrogram.types.ReplyParameters`, *optional*):
+                Description of the message to reply to
 
             send_copy (``bool``, *optional*):
                 Pass True to copy content of the messages without reference to the original sender.
@@ -90,12 +95,18 @@ class ForwardMessages:
                 This setting applies to the current message and will remain effective for future messages unless explicitly changed.
                 To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
+            message_effect_id (``int`` ``64-bit``, *optional*):
+                Unique identifier of the message effect to be added to the message; for private chats only.
+
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
                 Date when the message will be automatically sent.
 
         Returns:
             :obj:`~pyrogram.types.Message` | List of :obj:`~pyrogram.types.Message`: In case *message_ids* was not
             a list, a single message is returned, otherwise a list of messages is returned.
+
+        Raises:
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
 
         Example:
             .. code-block:: python
@@ -109,6 +120,12 @@ class ForwardMessages:
 
         is_iterable = utils.is_list_like(message_ids)
         message_ids = list(message_ids) if is_iterable else [message_ids]
+
+        reply_to = await utils._get_reply_message_parameters(
+            self,
+            message_thread_id,
+            reply_parameters
+        )
 
         r = await self.invoke(
             raw.functions.messages.ForwardMessages(
@@ -125,8 +142,10 @@ class ForwardMessages:
                 allow_paid_stars=paid_message_star_count,
                 random_id=[self.rnd_id() for _ in message_ids],
                 send_as=await self.resolve_peer(send_as) if send_as else None,
+                effect=message_effect_id,
                 schedule_date=utils.datetime_to_timestamp(schedule_date),
-                top_msg_id=message_thread_id
+                top_msg_id=message_thread_id,
+                reply_to=reply_to
             )
         )
 

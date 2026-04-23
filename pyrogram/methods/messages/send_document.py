@@ -60,7 +60,10 @@ class SendDocument:
             "types.ForceReply"
         ] = None,
         progress: Callable = None,
-        progress_args: tuple = ()
+        progress_args: tuple = (),
+        mime_type: str = None,
+        reply_to_message_id: int = None,
+        force_document: bool = None,
     ) -> Optional["types.Message"]:
         """Send generic files.
 
@@ -143,6 +146,9 @@ class SendDocument:
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardMarkup` | :obj:`~pyrogram.types.ReplyKeyboardRemove` | :obj:`~pyrogram.types.ForceReply`, *optional*):
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
+            
+            mime_type (``str``, *optional*):
+                MIME type of the file; as defined by the sender.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
@@ -194,7 +200,7 @@ class SendDocument:
                     file = await self.save_file(document, progress=progress, progress_args=progress_args)
                     thumb = await self.save_file(thumb)
                     media = raw.types.InputMediaUploadedDocument(
-                        mime_type=self.guess_mime_type(document) or "application/zip",
+                        mime_type=mime_type or self.guess_mime_type(document) or "application/zip",
                         file=file,
                         force_file=disable_content_type_detection or None,
                         thumb=thumb,
@@ -212,7 +218,7 @@ class SendDocument:
                 file = await self.save_file(document, progress=progress, progress_args=progress_args)
                 thumb = await self.save_file(thumb)
                 media = raw.types.InputMediaUploadedDocument(
-                    mime_type=self.guess_mime_type(file_name or document.name) or "application/zip",
+                    mime_type=mime_type or self.guess_mime_type(file_name or document.name) or "application/zip",
                     file=file,
                     force_file=disable_content_type_detection or None,
                     thumb=thumb,
@@ -245,7 +251,7 @@ class SendDocument:
             business_connection = None
             if business_connection_id:
                 business_connection = self.business_user_connection_cache[business_connection_id]
-                if not business_connection:
+                if business_connection is None:
                     business_connection = await self.get_business_connection(business_connection_id)
                 session = await get_session(
                     self,

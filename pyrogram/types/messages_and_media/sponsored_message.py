@@ -71,7 +71,7 @@ class SponsoredMessage(Object):
         random_id: bytes,
         url: str,
         title: str,
-        content: str,
+        content: Str,
         button_text: str,
         entities: list["types.MessageEntity"] = None,
         photo: "types.Photo" = None,

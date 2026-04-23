@@ -34,7 +34,7 @@ class BusinessBotRights(Object):
         can_read_messages (``bool``, *optional*):
             True, if the bot can mark incoming private messages as read.
 
-        can_delete_outgoing_messages (``bool``, *optional*):
+        can_delete_sent_messages (``bool``, *optional*):
             True, if the bot can delete messages sent by the bot.
 
         can_delete_all_messages (``bool``, *optional*):
@@ -77,7 +77,7 @@ class BusinessBotRights(Object):
         *,
         can_reply: Optional[bool] = None,
         can_read_messages: Optional[bool] = None,
-        can_delete_outgoing_messages: Optional[bool] = None,
+        can_delete_sent_messages: Optional[bool] = None,
         can_delete_all_messages: Optional[bool] = None,
         can_edit_name: Optional[bool] = None,
         can_edit_bio: Optional[bool] = None,
@@ -94,7 +94,7 @@ class BusinessBotRights(Object):
 
         self.can_reply = can_reply
         self.can_read_messages = can_read_messages
-        self.can_delete_outgoing_messages = can_delete_outgoing_messages
+        self.can_delete_sent_messages = can_delete_sent_messages
         self.can_delete_all_messages = can_delete_all_messages
         self.can_edit_name = can_edit_name
         self.can_edit_bio = can_edit_bio
@@ -118,7 +118,7 @@ class BusinessBotRights(Object):
         return BusinessBotRights(
             can_reply=business_bot_rights.reply,
             can_read_messages=business_bot_rights.read_messages,
-            can_delete_outgoing_messages=business_bot_rights.delete_sent_messages,
+            can_delete_sent_messages=business_bot_rights.delete_sent_messages,
             can_delete_all_messages=business_bot_rights.delete_received_messages,
             can_edit_name=business_bot_rights.edit_name,
             can_edit_bio=business_bot_rights.edit_bio,

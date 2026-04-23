@@ -83,14 +83,14 @@ class MessageOrigin(Object):
                         sender_chat=forward_from_chat,
                         author_signature=forward_signature
                     )
+        elif forward_header.imported:
+            return types.MessageImportInfo(
+                date=forward_date,
+                sender_user_name=forward_header.from_name or forward_signature
+            )
         elif forward_header.from_name:
             forward_sender_name = forward_header.from_name
             return types.MessageOriginHiddenUser(
                 date=forward_date,
                 sender_user_name=forward_sender_name
-            )
-        elif forward_header.imported:
-            return types.MessageImportInfo(
-                date=forward_date,
-                sender_user_name=forward_signature
             )

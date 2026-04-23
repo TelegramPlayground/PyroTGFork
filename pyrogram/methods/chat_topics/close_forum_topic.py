@@ -55,8 +55,8 @@ class CloseForumTopic:
         """
 
         r = await self.invoke(
-            raw.functions.channels.EditForumTopic(
-                channel=await self.resolve_peer(chat_id),
+            raw.functions.messages.EditForumTopic(
+                peer=await self.resolve_peer(chat_id),
                 topic_id=message_thread_id,
                 closed=True
             )

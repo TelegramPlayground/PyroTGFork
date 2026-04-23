@@ -21,9 +21,7 @@ from datetime import datetime
 from typing import Union, Optional, AsyncGenerator
 
 import pyrogram
-from pyrogram import raw, enums
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import enums, raw, types, utils
 from pyrogram.errors import MessageIdsEmpty
 from ..object import Object
 
@@ -43,7 +41,7 @@ class Chat(Object):
 
         username (``str``, *optional*):
             Username, for private chats, bots, supergroups and channels if available.
-        
+
         first_name (``str``, *optional*):
             First name of the other party in a private chat, for private chats and bots.
 
@@ -52,6 +50,9 @@ class Chat(Object):
 
         is_forum (``bool``, *optional*):
             True, if the supergroup chat is a forum
+
+        is_direct_messages (``bool``, *optional*):
+            True, if the chat is the direct messages chat of a channel.
 
         max_reaction_count (``int``):
             The maximum number of reactions that can be set on a message in the chat
@@ -80,6 +81,13 @@ class Chat(Object):
         personal_chat_message (:obj:`~pyrogram.types.Message`, *optional*):
             **TEMPORARY**: For private chats, the personal message_id in the ``personal_chat``.
 
+        parent_chat (:obj:`~pyrogram.types.Chat`, *optional*):
+            Information about the corresponding channel chat; for direct messages chats only.
+            Returned only in :meth:`~pyrogram.Client.get_chat`.
+
+        direct_messages_chat_id (``int``, *optional*):
+            Information about the corresponding Direct Messages chat; for channel chats only.
+
         available_reactions (:obj:`~pyrogram.types.ChatReactions`, *optional*):
             Available reactions in the chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
@@ -99,9 +107,9 @@ class Chat(Object):
         bio (``str``, *optional*):
             Bio of the other party in a private chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
-        
+
         join_by_request (``bool``, *optional*):
-            True, if all users directly joining the supergroup need to be approved by supergroup administrators.
+            True, if all users directly joining the supergroup need to be approved by supergroup administrators. Can be True only for non-broadcast supergroups with username, location, or a linked chat.
 
         description (``str``, *optional*):
             Description, for groups, supergroups and channel chats.
@@ -117,6 +125,9 @@ class Chat(Object):
 
         permissions (:obj:`~pyrogram.types.ChatPermissions` *optional*):
             Default chat member permissions, for groups and supergroups.
+
+        admin_privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
+            Administrator Privileges of the current logged in user in the current chat. Only for supergroups and channels. None if the current user is not an Administrator.
 
         can_send_paid_media (``bool``, *optional*):
             True, if paid media messages can be sent or forwarded to the channel chat. The field is available only for channel chats.
@@ -206,10 +217,13 @@ class Chat(Object):
             Distance in meters of this group chat from your location.
             Returned only in :meth:`~pyrogram.Client.get_nearby_chats`.
 
+        location (:obj:`~pyrogram.types.ChatLocation`, *optional*):
+            For supergroups, the location to which the supergroup is connected.
+
         send_as_chat (:obj:`~pyrogram.types.Chat`, *optional*):
             The default "send_as" chat.
             Returned only in :meth:`~pyrogram.Client.get_chat`.
-        
+
         is_peak_preview (``bool``, *optional*):
             True, if this is a peak preview.
 
@@ -218,7 +232,7 @@ class Chat(Object):
 
         pending_join_request_count (``int``, *optional*):
             Number of pending join requests in the current chat.
-        
+
         can_enable_paid_reaction (``bool``, *optional*):
             True, if paid reaction can be enabled in the channel chat; for channels only.
 
@@ -230,10 +244,23 @@ class Chat(Object):
             True, if gifts can be sent to the chat.
 
         paid_message_star_count (``int``, *optional*):
-            Number of Telegram Stars that must be paid by non-administrator users of the supergroup chat for each sent message.
+            The number of Telegram Stars a general user have to pay to send a message to the chat.
+
+        has_automatic_translation (``bool``, *optional*):
+            True, if automatic translation of messages is enabled in the channel.
+
+        first_profile_audio (:obj:`~pyrogram.types.Audio`, *optional*):
+            For private chats, the first audio added to the profile of the user.
+
+        note (:obj:`~pyrogram.types.FormattedText`, *optional*):
+            Note added to the user's contact.
+
+        uses_unofficial_app (``bool``, *optional*):
+            True, if the user uses an unofficial application that poses a security risk.
 
         full_name (``str``, *property*):
             Full name of the other party in a private chat, for private chats and bots.
+            OR, Title of the chat, for groups and channels.
 
     """
 
@@ -276,11 +303,15 @@ class Chat(Object):
         members_count: int = None,
         restrictions: list["types.Restriction"] = None,
         permissions: "types.ChatPermissions" = None,
+        admin_privileges: "types.ChatPrivileges" = None,
         distance: int = None,
+        location: "types.ChatLocation" = None,
         linked_chat: "types.Chat" = None,
         send_as_chat: "types.Chat" = None,
         personal_chat: "types.Chat" = None,
         personal_chat_message: "types.Message" = None,
+        parent_chat: "types.Chat" = None,
+        direct_messages_chat_id: int = None,
         available_reactions: Optional["types.ChatReactions"] = None,
         accent_color: "types.ChatColor" = None,
         profile_color: "types.ChatColor" = None,
@@ -302,6 +333,11 @@ class Chat(Object):
         gift_count: int = None,
         can_send_gift: bool = None,
         paid_message_star_count: int = None,
+        has_automatic_translation: bool = None,
+        is_direct_messages: bool = None,
+        first_profile_audio: "types.Audio" = None,
+        note: "types.FormattedText" = None,
+        uses_unofficial_app: bool = None,
         _raw: Union[
             "raw.types.ChatInvite",
             "raw.types.Channel",
@@ -339,7 +375,9 @@ class Chat(Object):
         self.members_count = members_count
         self.restrictions = restrictions
         self.permissions = permissions
+        self.admin_privileges = admin_privileges
         self.distance = distance
+        self.location = location
         self.linked_chat = linked_chat
         self.send_as_chat = send_as_chat
         self.available_reactions = available_reactions
@@ -362,6 +400,8 @@ class Chat(Object):
         self.is_peak_preview = is_peak_preview
         self.personal_chat = personal_chat
         self.personal_chat_message = personal_chat_message
+        self.parent_chat = parent_chat
+        self.direct_messages_chat_id = direct_messages_chat_id
         self.birthdate = birthdate
         self.business_intro = business_intro
         self.business_location = business_location
@@ -374,6 +414,11 @@ class Chat(Object):
         self.gift_count = gift_count
         self.can_send_gift = can_send_gift
         self.paid_message_star_count = paid_message_star_count
+        self.has_automatic_translation = has_automatic_translation
+        self.is_direct_messages = is_direct_messages
+        self.first_profile_audio = first_profile_audio
+        self.note = note
+        self.uses_unofficial_app = uses_unofficial_app
         self._raw = _raw
 
     @staticmethod
@@ -491,6 +536,7 @@ class Chat(Object):
                 client=client,
                 is_banned=True,
                 banned_until_date=utils.timestamp_to_datetime(getattr(channel, "until_date", None)),
+                is_direct_messages=channel.monoforum,
                 _raw=channel
             )
 
@@ -530,6 +576,7 @@ class Chat(Object):
                 ]
             ) or None,
             permissions=types.ChatPermissions._parse(getattr(channel, "default_banned_rights", None)),
+            admin_privileges=types.ChatPrivileges._parse(getattr(channel, "admin_rights", None)),
             members_count=getattr(channel, "participants_count", 0),
             dc_id=getattr(getattr(channel, "photo", None), "dc_id", None),
             has_protected_content=getattr(channel, "noforwards", None),
@@ -540,6 +587,9 @@ class Chat(Object):
             profile_color=types.ChatColor._parse_profile_color(getattr(channel, "profile_color", None)),
             emoji_status=types.EmojiStatus._parse(client, channel.emoji_status),
             paid_message_star_count=channel.send_paid_messages_stars,
+            has_automatic_translation=channel.autotranslation,
+            is_direct_messages=channel.monoforum,
+            direct_messages_chat_id=utils.get_channel_id(channel.linked_monoforum_id) if channel.linked_monoforum_id else None,
             _raw=channel
         )
 
@@ -615,7 +665,7 @@ class Chat(Object):
                 parsed_chat.birthdate = types.Birthdate._parse(
                     full_user.birthday
                 )
-            
+
             if getattr(full_user, "business_intro", None):
                 parsed_chat.business_intro = await types.BusinessIntro._parse(
                     client,
@@ -635,6 +685,22 @@ class Chat(Object):
             if getattr(full_user, "wallpaper", None):
                 parsed_chat.background = types.ChatBackground._parse(client, full_user.wallpaper)
             parsed_chat.gift_count = full_user.stargifts_count
+            
+            if full_user.saved_music:
+                doc = full_user.saved_music
+                attributes = {type(i): i for i in doc.attributes}
+                file_name = getattr(
+                    attributes.get(
+                        raw.types.DocumentAttributeFilename, None
+                    ), "file_name", None
+                )
+                audio_attributes = attributes[raw.types.DocumentAttributeAudio]
+                parsed_chat.first_profile_audio = types.Audio._parse(
+                    client, doc, audio_attributes, file_name
+                )
+            if full_user.note:
+                parsed_chat.note = types.FormattedText._parse(client, full_user.note)
+            parsed_chat.uses_unofficial_app = bool(full_user.unofficial_security_risk) or None
 
         else:
             full_chat = chat_full.full_chat
@@ -688,6 +754,19 @@ class Chat(Object):
                 parsed_chat.gift_count = full_chat.stargifts_count
 
                 parsed_chat.can_send_gift = full_chat.stargifts_available
+
+                parent_chat_raw = chats.get(chat_raw.linked_monoforum_id, None)
+                if parent_chat_raw:
+                    parsed_chat.parent_chat = Chat._parse_channel_chat(client, parent_chat_raw)
+
+                if full_chat.location:
+                    parsed_chat.location = types.ChatLocation(
+                        location=types.Location(
+                            latitude=full_chat.location.geo_point.lat,
+                            longitude=full_chat.location.geo_point.long
+                        ),
+                        address=full_chat.location.address
+                    )
 
             parsed_chat.message_auto_delete_time = getattr(full_chat, "ttl_period")
 
@@ -776,7 +855,7 @@ class Chat(Object):
                     self.last_name
                 ]
             )
-        ) or None
+        ) or self.title or None
 
     async def archive(self):
         """Bound method *archive* of :obj:`~pyrogram.types.Chat`.
@@ -796,7 +875,8 @@ class Chat(Object):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.archive_chats(self.id)
@@ -819,7 +899,8 @@ class Chat(Object):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.unarchive_chats(self.id)
@@ -854,8 +935,9 @@ class Chat(Object):
             ``bool``: True on success.
 
         Raises:
-            RPCError: In case of Telegram RPC error.
             ValueError: In case a chat_id belongs to user.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.set_chat_title(
@@ -888,8 +970,9 @@ class Chat(Object):
             ``bool``: True on success.
 
         Raises:
-            RPCError: In case of Telegram RPC error.
             ValueError: If a chat_id doesn't belong to a supergroup or a channel.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.set_chat_description(
@@ -943,15 +1026,16 @@ class Chat(Object):
                 ".name" set for in-memory uploads.
 
             photo_frame_start_timestamp (``float``, *optional*):
-                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` or ``video_emoji_markup`` is set.
+                Floating point UNIX timestamp in seconds, indicating the frame of the video/sticker that should be used as static preview; can only be used if ``video`` is set.
 
         Returns:
             :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
             otherwise, in case a message object couldn't be returned, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
             ValueError: if a chat_id belongs to user.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.set_chat_photo(
@@ -1037,7 +1121,8 @@ class Chat(Object):
             case a message object couldn't be returned, True is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.ban_chat_member(
@@ -1076,7 +1161,8 @@ class Chat(Object):
             ``bool``: True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.unban_chat_member(
@@ -1128,7 +1214,8 @@ class Chat(Object):
             :obj:`~pyrogram.types.Chat`: On success, a chat object is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.restrict_chat_member(
@@ -1175,7 +1262,8 @@ class Chat(Object):
             ``bool``: True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.promote_chat_member(
@@ -1205,7 +1293,8 @@ class Chat(Object):
             :obj:`~pyrogram.types.Chat`: On success, a chat object is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.join_chat(self.username or self.id)
@@ -1225,7 +1314,8 @@ class Chat(Object):
                 await chat.leave()
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.leave_chat(self.id)

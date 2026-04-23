@@ -21,7 +21,9 @@ jobs:
           cd compiler/errors/
           pip install --upgrade pip setuptools wheel
           pip install requests==2.28.1
-          python sort.py scrape
+          python sort.py scrape corefork
+          python sort.py scrape blogfork
+          python sort.py scrape core
           python sort.py sort
 
     - name: Open Pull Request

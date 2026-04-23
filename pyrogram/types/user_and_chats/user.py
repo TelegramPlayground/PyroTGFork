@@ -96,7 +96,7 @@ class User(Object, Update):
 
         is_restricted (``bool``, *optional*):
             True, if this user has been restricted. Bots only.
-            See *restriction_reason* for details.
+            See *restrictions* for details.
 
         is_scam (``bool``, *optional*):
             True, if this user has been flagged for scam.
@@ -192,6 +192,15 @@ class User(Object, Update):
         paid_message_star_count (``int``, *optional*):
             Number of Telegram Stars that must be paid by general user for each sent message to the user. If positive and userFullInfo is unknown, use ``canSendMessageToUser`` to check whether the current user must pay.
 
+        has_topics_enabled (``bool``, *optional*):
+            True, if the bot has forum topic mode enabled in private chats. Returned only in get_me.
+
+        allows_users_to_create_topics (``bool``, *optional*):
+            True, if users can create and delete topics in the chat with the bot. Returned only in get_me.
+
+        can_manage_bots (``bool``, *optional*):
+            True, if other bots can be created to be controlled by the bot. Returned only in get_me.
+
         mention (``str``, *property*):
             Generate a text mention for this user.
             You can use ``user.mention()`` to mention the user using their first name (styled using html), or
@@ -249,6 +258,9 @@ class User(Object, Update):
         has_main_web_app: bool = None,
         active_user_count: int = None,
         paid_message_star_count: int = None,
+        has_topics_enabled: bool = None,
+        allows_users_to_create_topics: bool = None,
+        can_manage_bots: bool = None,
         _raw: "raw.base.User" = None
     ):
         super().__init__(client)
@@ -295,6 +307,9 @@ class User(Object, Update):
         self.has_main_web_app = has_main_web_app
         self.active_user_count = active_user_count
         self.paid_message_star_count = paid_message_star_count
+        self.has_topics_enabled = has_topics_enabled
+        self.allows_users_to_create_topics = allows_users_to_create_topics
+        self.can_manage_bots = can_manage_bots
         self._raw = _raw
 
     @property
@@ -332,7 +347,7 @@ class User(Object, Update):
         active_usernames = types.List(
             [
                 types.Username._parse(u)
-                for u in getattr(user, "usernames", [])
+                for u in user.usernames or []
             ]
         ) or None
         _tmp_username = None
@@ -366,36 +381,37 @@ class User(Object, Update):
             photo=types.ChatPhoto._parse(client, user.photo, user.id, user.access_hash),
             restrictions=types.List([types.Restriction._parse(r) for r in user.restriction_reason]) or None,
             client=client,
-            restricts_new_chats=getattr(user, "contact_require_premium", None),
+            restricts_new_chats=user.contact_require_premium or None,
             active_usernames=active_usernames,
-            is_close_friend=getattr(user, "close_friend", None),
-            accent_color=types.ChatColor._parse(getattr(user, "color", None)),
-            profile_color=types.ChatColor._parse_profile_color(getattr(user, "profile_color", None)),
-            have_access=not bool(getattr(user, "min", False)),  # apply_min_photo
+            is_close_friend=user.close_friend or None,
+            accent_color=types.ChatColor._parse(user.color),
+            profile_color=types.ChatColor._parse_profile_color(user.profile_color),
+            have_access=not bool(user.min or None),  # apply_min_photo
             paid_message_star_count=user.send_paid_messages_stars,
             _raw=user
         )
         if parsed_user.is_bot:
-            parsed_user.added_to_attachment_menu = getattr(user, "attach_menu_enabled", None)
-            parsed_user.can_be_added_to_attachment_menu = getattr(user, "bot_attach_menu", None)
-            parsed_user.can_join_groups = not bool(getattr(user, "bot_nochats", None))
-            parsed_user.can_read_all_group_messages = getattr(user, "bot_chat_history", None)
-            parsed_user.inline_query_placeholder = getattr(
-                user, "bot_inline_placeholder", None
-            )
+            parsed_user.added_to_attachment_menu = user.attach_menu_enabled or None
+            parsed_user.can_be_added_to_attachment_menu = user.bot_attach_menu or None
+            parsed_user.can_join_groups = not bool(user.bot_nochats or None)
+            parsed_user.can_read_all_group_messages = user.bot_chat_history or None
+            parsed_user.inline_query_placeholder = user.bot_inline_placeholder or None
             parsed_user.supports_inline_queries = bool(parsed_user.inline_query_placeholder)
-            parsed_user.inline_need_location = bool(
-                getattr(user, "bot_inline_geo", None)
-            )
-            parsed_user.can_connect_to_business = bool(
-                getattr(user, "bot_business", None)
-            )
-            parsed_user.has_main_web_app = bool(getattr(user, "bot_has_main_app", None))
-            parsed_user.active_user_count = getattr(user, "bot_active_users", None)
-        if parsed_user.is_bot:
-            parsed_user.can_be_edited = bool(
-                getattr(user, "bot_can_edit", None)
-            )
+            parsed_user.inline_need_location = user.bot_inline_geo or None
+            parsed_user.can_connect_to_business = user.bot_business or None
+            parsed_user.has_main_web_app = user.bot_has_main_app or None
+            parsed_user.active_user_count = user. bot_active_users or None
+            parsed_user.has_topics_enabled = user.bot_forum_view or None
+            parsed_user.allows_users_to_create_topics = user.bot_forum_can_manage_topics or None
+            parsed_user.can_manage_bots = user.bot_can_manage_bots or None
+        # stories_hidden:flags2.3?true
+        # stories_unavailable:flags2.4?true 
+        # stories_max_id:flags2.5?RecentStory  
+        # access_hash:flags.0?long  
+        # bot_info_version:flags.14?int 
+        # bot_verification_icon:flags2.14?long 
+        if parsed_user.is_bot:  # TODO
+            parsed_user.can_be_edited = user.bot_can_edit or None
         return parsed_user
 
     @staticmethod
@@ -458,7 +474,8 @@ class User(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.archive_chats(self.id)
@@ -481,7 +498,8 @@ class User(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.unarchive_chats(self.id)
@@ -504,7 +522,8 @@ class User(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.block_user(self.id)
@@ -527,7 +546,8 @@ class User(Object, Update):
             True on success.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.unblock_user(self.id)
@@ -550,7 +570,8 @@ class User(Object, Update):
             List of :obj:`~pyrogram.types.Chat`: On success, a list of the common chats is returned.
 
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
 
         return await self._client.get_common_chats(self.id)

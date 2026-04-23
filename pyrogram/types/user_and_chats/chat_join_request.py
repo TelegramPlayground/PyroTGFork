@@ -107,7 +107,8 @@ class ChatJoinRequest(Object, Update):
             ``bool``: True on success.
         
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.approve_chat_join_request(
             chat_id=self.chat.id,
@@ -135,7 +136,8 @@ class ChatJoinRequest(Object, Update):
             ``bool``: True on success.
         
         Raises:
-            RPCError: In case of a Telegram RPC error.
+            :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.
+
         """
         return await self._client.decline_chat_join_request(
             chat_id=self.chat.id,

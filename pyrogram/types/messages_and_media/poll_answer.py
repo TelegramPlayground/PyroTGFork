@@ -41,6 +41,9 @@ class PollAnswer(Object, Update):
         option_ids (List of ``int``):
             0-based identifiers of chosen answer options. May be empty if the vote was retracted.
 
+        option_persistent_ids (List of ``str``):
+            Persistent identifiers of the chosen answer options. May be empty if the vote was retracted.
+
     """
 
     def __init__(
@@ -49,6 +52,7 @@ class PollAnswer(Object, Update):
         client: "pyrogram.Client" = None,
         poll_id: str,
         option_ids: list[int],
+        option_persistent_ids: list[str],
         user: Optional["types.User"] = None,
         voter_chat: Optional["types.Chat"] = None,
     ):
@@ -56,6 +60,7 @@ class PollAnswer(Object, Update):
 
         self.poll_id = poll_id
         self.option_ids = option_ids
+        self.option_persistent_ids = option_persistent_ids
         self.user = user
         self.voter_chat = voter_chat
 
@@ -69,6 +74,7 @@ class PollAnswer(Object, Update):
         if isinstance(update, raw.types.UpdateMessagePollVote):
             user = None
             voter_chat = None
+
             if isinstance(update.peer, raw.types.PeerUser):
                 user = types.Chat._parse_user_chat(client, users[update.peer.user_id])
 
@@ -83,6 +89,10 @@ class PollAnswer(Object, Update):
                 option_ids=[
                     "{:0>2x}".format(option[0])
                     for option in update.options
+                ],
+                option_persistent_ids=[
+                    str(position)
+                    for position in update.positions
                 ],
                 user=user,
                 voter_chat=voter_chat,

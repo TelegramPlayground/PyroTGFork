@@ -1,9 +1,0 @@
-{title}
-{title_markup}
-
-.. module:: {module}
-
-.. toctree::
-    :titlesonly:
-
-    {entities}

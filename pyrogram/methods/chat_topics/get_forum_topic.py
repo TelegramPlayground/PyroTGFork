@@ -63,8 +63,8 @@ class GetForumTopic:
         ids = list(message_thread_ids) if is_iterable else [message_thread_ids]
 
         r = await self.invoke(
-            raw.functions.channels.GetForumTopicsByID(
-                channel=await self.resolve_peer(chat_id),
+            raw.functions.messages.GetForumTopicsByID(
+                peer=await self.resolve_peer(chat_id),
                 topics=ids
             )
         )
