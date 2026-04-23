@@ -109,7 +109,7 @@ class Dialog(Object):
             unread_messages_count=dialog.unread_count,
             unread_mentions_count=dialog.unread_mentions_count,
             unread_reactions_count=dialog.unread_reactions_count,
-            unread_poll_vote_count=dialog.unread_poll_vote_count,
+            unread_poll_vote_count=dialog.unread_poll_votes_count,
             unread_mark=dialog.unread_mark,
             is_pinned=dialog.pinned,
             chat_list=getattr(dialog, "folder_id", None),
