@@ -60,6 +60,7 @@ class SendPhoto:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
+        video: Union[str, "io.BytesIO"] = None,
         reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
@@ -146,6 +147,14 @@ class SendPhoto:
                 Additional interface options. An object for an inline keyboard, custom reply keyboard,
                 instructions to remove reply keyboard or to force a reply from the user.
 
+            video (``str`` | :obj:`io.BytesIO`):
+                Video of the live photo.
+                Pass a file_id as string to send a video that exists on the Telegram servers,
+                pass an HTTP URL as a string for Telegram to get a video from the Internet,
+                pass a file path as string to upload a new video that exists on your local machine, or
+                pass a binary file-like object with its attribute ".name" set for in-memory uploads.
+                Pass None if the photo isn't a live photo.
+
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.
                 The function must take *(current, total)* as positional arguments (look at Other Parameters below for a
@@ -204,7 +213,52 @@ class SendPhoto:
         file = None
         ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
 
+        live_photo = False
+        live_video_photo_si = None
+
         try:
+            if video:
+                live_photo = True
+
+                is_bytes_io = isinstance(video, io.BytesIO)
+                is_uploaded_file = is_bytes_io or os.path.isfile(video)
+                is_external_url = not is_uploaded_file and re.match("^https?://", video)
+
+                if is_bytes_io and not hasattr(video, "name"):
+                    video.name = "video.mp4"
+                if is_uploaded_file:
+                    live_photo_video_file = await self.invoke(
+                        raw.functions.messages.UploadMedia(
+                            business_connection_id=business_connection_id,
+                            peer=await self.resolve_peer(chat_id),
+                            media=raw.types.InputMediaUploadedDocument(
+                                file=await self.save_file(video)
+                            )
+                        )
+                    )
+                    live_video_photo_si = raw.types.InputDocument(
+                        id=live_photo_video_file.document.id,
+                        access_hash=live_photo_video_file.document.access_hash,
+                        file_reference=live_photo_video_file.document.file_reference
+                    )
+                elif is_external_url:
+                    live_photo_video_file = await self.invoke(
+                        raw.functions.messages.UploadMedia(
+                            business_connection_id=business_connection_id,
+                            peer=await self.resolve_peer(chat_id),
+                            media=raw.types.InputMediaDocumentExternal(
+                                url=video
+                            )
+                        )
+                    )
+                    live_video_photo_si = raw.types.InputDocument(
+                        id=live_photo_video_file.document.id,
+                        access_hash=live_photo_video_file.document.access_hash,
+                        file_reference=live_photo_video_file.document.file_reference
+                    )
+                else:
+                    live_video_photo_si = (utils.get_input_media_from_file_id(video, FileType.VIDEO)).id
+
             if isinstance(photo, str):
                 if os.path.isfile(photo):
                     file = await self.save_file(photo, progress=progress, progress_args=progress_args)
@@ -212,6 +266,8 @@ class SendPhoto:
                         file=file,
                         ttl_seconds=ttl_seconds,
                         spoiler=has_spoiler,
+                        live_photo=live_photo,
+                        video=live_video_photo_si,
                     )
                 elif re.match("^https?://", photo):
                     media = raw.types.InputMediaPhotoExternal(
@@ -226,6 +282,8 @@ class SendPhoto:
                         ttl_seconds=ttl_seconds,
                         has_spoiler=has_spoiler
                     )
+                    media.live_photo = live_photo
+                    media.video = live_video_photo_si
             else:
                 file = await self.save_file(photo, progress=progress, progress_args=progress_args)
                 media = raw.types.InputMediaUploadedPhoto(
