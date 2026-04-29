@@ -105,257 +105,166 @@ class EditMessageMedia:
         if caption is not None:
             message, entities = (await utils.parse_text_entities(self, caption, parse_mode, caption_entities)).values()
 
-        is_bytes_io = isinstance(media.media, io.BytesIO)
-        is_uploaded_file = is_bytes_io or os.path.isfile(media.media)
+        if not isinstance(
+            media,
+            (
+                types.InputMediaPhoto,
+                types.InputMediaVideo,
+                types.InputMediaAudio,
+                types.InputMediaAnimation,
+                types.InputMediaDocument,
+            ),
+        ):
+            raise ValueError(f"Unsupported media type {type(media)}")
 
-        is_external_url = not is_uploaded_file and re.match("^https?://", media.media)
+        raw_media, _show_caption_above_media = await media.write(
+            client=self,
+            business_connection_id=business_connection_id,
+        )
 
-        if is_bytes_io and not hasattr(media.media, "name"):
-            media.media.name = "media"
+        # if isinstance(media, types.InputMediaPhoto):
+        #     show_caption_above_media.append(media.show_caption_above_media)
+        #     if is_uploaded_file:
+        #         uploaded_media = await self.invoke(
+        #             raw.functions.messages.UploadMedia(
+        #                 business_connection_id=None,  # TODO
+        #                 peer=await self.resolve_peer(chat_id),
+        #                 media=raw.types.InputMediaUploadedPhoto(
+        #                     file=await self.save_file(media.media),
+        #                     spoiler=media.has_spoiler
+        #                 )
+        #             )
+        #         )
 
-        if is_uploaded_file:
-            filename_attribute = [
-                raw.types.DocumentAttributeFilename(
-                    file_name=file_name or (media.media.name if is_bytes_io else os.path.basename(media.media))
-                )
-            ]
-        else:
-            filename_attribute = []
+        #         media = raw.types.InputMediaPhoto(
+        #             id=raw.types.InputPhoto(
+        #                 id=uploaded_media.photo.id,
+        #                 access_hash=uploaded_media.photo.access_hash,
+        #                 file_reference=uploaded_media.photo.file_reference
+        #             ),
+        #             spoiler=media.has_spoiler
+        #         )
+        #     elif is_external_url:
+        #         media = raw.types.InputMediaPhotoExternal(
+        #             url=media.media,
+        #             spoiler=media.has_spoiler
+        #         )
+        #     else:
+        #         media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
+        # elif isinstance(media, types.InputMediaVideo):
 
-        if isinstance(media, types.InputMediaPhoto):
-            show_caption_above_media.append(media.show_caption_above_media)
-            if is_uploaded_file:
-                uploaded_media = await self.invoke(
-                    raw.functions.messages.UploadMedia(
-                        business_connection_id=None,  # TODO
-                        peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedPhoto(
-                            file=await self.save_file(media.media),
-                            spoiler=media.has_spoiler
-                        )
-                    )
-                )
+        # elif isinstance(media, types.InputMediaAudio):
+        #     if is_uploaded_file:
+        #         media = await self.invoke(
+        #             raw.functions.messages.UploadMedia(
+        #                 business_connection_id=None,  # TODO
+        #                 peer=await self.resolve_peer(chat_id),
+        #                 media=raw.types.InputMediaUploadedDocument(
+        #                     mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "audio/mpeg",
+        #                     thumb=await self.save_file(media.thumb),
+        #                     file=await self.save_file(media.media),
+        #                     attributes=[
+        #                         raw.types.DocumentAttributeAudio(
+        #                             duration=media.duration,
+        #                             performer=media.performer,
+        #                             title=media.title
+        #                         ),
+        #                     ] + filename_attribute,
+        #                 )
+        #             )
+        #         )
 
-                media = raw.types.InputMediaPhoto(
-                    id=raw.types.InputPhoto(
-                        id=uploaded_media.photo.id,
-                        access_hash=uploaded_media.photo.access_hash,
-                        file_reference=uploaded_media.photo.file_reference
-                    ),
-                    spoiler=media.has_spoiler
-                )
-            elif is_external_url:
-                media = raw.types.InputMediaPhotoExternal(
-                    url=media.media,
-                    spoiler=media.has_spoiler
-                )
-            else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
-        elif isinstance(media, types.InputMediaVideo):
-            show_caption_above_media.append(media.show_caption_above_media)
-            coverfile = None
-            start_timestamp = None
-            # TODO: remove this duplicate code
-            if media.start_timestamp:
-                start_timestamp = media.start_timestamp
-            if media.cover:
-                cover = media.cover
+        #         media = raw.types.InputMediaDocument(
+        #             id=raw.types.InputDocument(
+        #                 id=media.document.id,
+        #                 access_hash=media.document.access_hash,
+        #                 file_reference=media.document.file_reference
+        #             )
+        #         )
+        #     elif is_external_url:
+        #         media = raw.types.InputMediaDocumentExternal(
+        #             url=media.media
+        #         )
+        #     else:
+        #         media = utils.get_input_media_from_file_id(media.media, FileType.AUDIO)
+        # elif isinstance(media, types.InputMediaAnimation):
+        #     show_caption_above_media.append(media.show_caption_above_media)
+        #     if is_uploaded_file:
+        #         uploaded_media = await self.invoke(
+        #             raw.functions.messages.UploadMedia(
+        #                 business_connection_id=None,  # TODO
+        #                 peer=await self.resolve_peer(chat_id),
+        #                 media=raw.types.InputMediaUploadedDocument(
+        #                     mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "video/mp4",
+        #                     thumb=await self.save_file(media.thumb),
+        #                     spoiler=media.has_spoiler,
+        #                     file=await self.save_file(media.media),
+        #                     attributes=[
+        #                         raw.types.DocumentAttributeVideo(
+        #                             supports_streaming=True,
+        #                             duration=media.duration,
+        #                             w=media.width,
+        #                             h=media.height
+        #                         ),
+        #                         raw.types.DocumentAttributeAnimated(),
+        #                     ] + filename_attribute,
+        #                 )
+        #             )
+        #         )
 
-                cover_is_bytes_io = isinstance(cover, io.BytesIO)
-                cover_is_uploaded_file = cover_is_bytes_io or os.path.isfile(cover)
-                cover_is_external_url = not cover_is_uploaded_file and re.match("^https?://", cover)
+        #         media = raw.types.InputMediaDocument(
+        #             id=raw.types.InputDocument(
+        #                 id=uploaded_media.document.id,
+        #                 access_hash=uploaded_media.document.access_hash,
+        #                 file_reference=uploaded_media.document.file_reference
+        #             ),
+        #             spoiler=media.has_spoiler
+        #         )
+        #     elif is_external_url:
+        #         media = raw.types.InputMediaDocumentExternal(
+        #             url=media.media,
+        #             spoiler=media.has_spoiler
+        #         )
+        #     else:
+        #         media = utils.get_input_media_from_file_id(media.media, FileType.ANIMATION, has_spoiler=media.has_spoiler)
+        # elif isinstance(media, types.InputMediaDocument):
+        #     if is_uploaded_file:
+        #         media = await self.invoke(
+        #             raw.functions.messages.UploadMedia(
+        #                 business_connection_id=None,  # TODO
+        #                 peer=await self.resolve_peer(chat_id),
+        #                 media=raw.types.InputMediaUploadedDocument(
+        #                     mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "application/zip",
+        #                     thumb=await self.save_file(media.thumb),
+        #                     file=await self.save_file(media.media),
+        #                     attributes=filename_attribute,
+        #                     force_file=media.disable_content_type_detection
+        #                 )
+        #             )
+        #         )
 
-                if cover_is_bytes_io and not hasattr(cover, "name"):
-                    cover.name = "cover.jpg"
-                if cover_is_uploaded_file:
-                    coverfile = await self.invoke(
-                        raw.functions.messages.UploadMedia(
-                            business_connection_id=business_connection_id,
-                            peer=await self.resolve_peer(chat_id),
-                            media=raw.types.InputMediaUploadedPhoto(
-                                file=await self.save_file(cover)
-                            )
-                        )
-                    )
-                    coverfile = raw.types.InputPhoto(
-                        id=coverfile.photo.id,
-                        access_hash=coverfile.photo.access_hash,
-                        file_reference=coverfile.photo.file_reference
-                    )
-                elif cover_is_external_url:
-                    coverfile = await self.invoke(
-                        raw.functions.messages.UploadMedia(
-                            business_connection_id=business_connection_id,
-                            peer=await self.resolve_peer(chat_id),
-                            media=raw.types.InputMediaPhotoExternal(
-                                url=cover
-                            )
-                        )
-                    )
-                    coverfile = raw.types.InputPhoto(
-                        id=coverfile.photo.id,
-                        access_hash=coverfile.photo.access_hash,
-                        file_reference=coverfile.photo.file_reference
-                    )
-                else:
-                    coverfile = (utils.get_input_media_from_file_id(cover, FileType.PHOTO)).id
-            if is_uploaded_file:
-                uploaded_media = await self.invoke(
-                    raw.functions.messages.UploadMedia(
-                        business_connection_id=None,  # TODO
-                        peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedDocument(
-                            mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "video/mp4",
-                            thumb=await self.save_file(media.thumb),
-                            spoiler=media.has_spoiler,
-                            file=await self.save_file(media.media),
-                            attributes=[
-                                raw.types.DocumentAttributeVideo(
-                                    supports_streaming=media.supports_streaming or None,
-                                    duration=media.duration,
-                                    w=media.width,
-                                    h=media.height
-                                ),
-                            ] + filename_attribute,
-                            nosound_video=not media.disable_content_type_detection,
-                            force_file=media.disable_content_type_detection or None,
-                        )
-                    )
-                )
-
-                media = raw.types.InputMediaDocument(
-                    id=raw.types.InputDocument(
-                        id=uploaded_media.document.id,
-                        access_hash=uploaded_media.document.access_hash,
-                        file_reference=uploaded_media.document.file_reference
-                    ),
-                    spoiler=media.has_spoiler,
-                    video_cover=coverfile,
-                    video_timestamp=start_timestamp
-                )
-            elif is_external_url:
-                media = raw.types.InputMediaDocumentExternal(
-                    url=media.media,
-                    spoiler=media.has_spoiler,
-                    video_cover=coverfile,
-                    video_timestamp=start_timestamp
-                )
-            else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.VIDEO, has_spoiler=media.has_spoiler)
-                media.video_cover = coverfile
-                media.video_timestamp = start_timestamp
-        elif isinstance(media, types.InputMediaAudio):
-            if is_uploaded_file:
-                media = await self.invoke(
-                    raw.functions.messages.UploadMedia(
-                        business_connection_id=None,  # TODO
-                        peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedDocument(
-                            mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "audio/mpeg",
-                            thumb=await self.save_file(media.thumb),
-                            file=await self.save_file(media.media),
-                            attributes=[
-                                raw.types.DocumentAttributeAudio(
-                                    duration=media.duration,
-                                    performer=media.performer,
-                                    title=media.title
-                                ),
-                            ] + filename_attribute,
-                        )
-                    )
-                )
-
-                media = raw.types.InputMediaDocument(
-                    id=raw.types.InputDocument(
-                        id=media.document.id,
-                        access_hash=media.document.access_hash,
-                        file_reference=media.document.file_reference
-                    )
-                )
-            elif is_external_url:
-                media = raw.types.InputMediaDocumentExternal(
-                    url=media.media
-                )
-            else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.AUDIO)
-        elif isinstance(media, types.InputMediaAnimation):
-            show_caption_above_media.append(media.show_caption_above_media)
-            if is_uploaded_file:
-                uploaded_media = await self.invoke(
-                    raw.functions.messages.UploadMedia(
-                        business_connection_id=None,  # TODO
-                        peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedDocument(
-                            mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "video/mp4",
-                            thumb=await self.save_file(media.thumb),
-                            spoiler=media.has_spoiler,
-                            file=await self.save_file(media.media),
-                            attributes=[
-                                raw.types.DocumentAttributeVideo(
-                                    supports_streaming=True,
-                                    duration=media.duration,
-                                    w=media.width,
-                                    h=media.height
-                                ),
-                                raw.types.DocumentAttributeAnimated(),
-                            ] + filename_attribute,
-                        )
-                    )
-                )
-
-                media = raw.types.InputMediaDocument(
-                    id=raw.types.InputDocument(
-                        id=uploaded_media.document.id,
-                        access_hash=uploaded_media.document.access_hash,
-                        file_reference=uploaded_media.document.file_reference
-                    ),
-                    spoiler=media.has_spoiler
-                )
-            elif is_external_url:
-                media = raw.types.InputMediaDocumentExternal(
-                    url=media.media,
-                    spoiler=media.has_spoiler
-                )
-            else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.ANIMATION, has_spoiler=media.has_spoiler)
-        elif isinstance(media, types.InputMediaDocument):
-            if is_uploaded_file:
-                media = await self.invoke(
-                    raw.functions.messages.UploadMedia(
-                        business_connection_id=None,  # TODO
-                        peer=await self.resolve_peer(chat_id),
-                        media=raw.types.InputMediaUploadedDocument(
-                            mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "application/zip",
-                            thumb=await self.save_file(media.thumb),
-                            file=await self.save_file(media.media),
-                            attributes=filename_attribute,
-                            force_file=media.disable_content_type_detection
-                        )
-                    )
-                )
-
-                media = raw.types.InputMediaDocument(
-                    id=raw.types.InputDocument(
-                        id=media.document.id,
-                        access_hash=media.document.access_hash,
-                        file_reference=media.document.file_reference
-                    )
-                )
-            elif is_external_url:
-                media = raw.types.InputMediaDocumentExternal(
-                    url=media.media
-                )
-            else:
-                media = utils.get_input_media_from_file_id(media.media, FileType.DOCUMENT)
+        #         media = raw.types.InputMediaDocument(
+        #             id=raw.types.InputDocument(
+        #                 id=media.document.id,
+        #                 access_hash=media.document.access_hash,
+        #                 file_reference=media.document.file_reference
+        #             )
+        #         )
+        #     elif is_external_url:
+        #         media = raw.types.InputMediaDocumentExternal(
+        #             url=media.media
+        #         )
+        #     else:
+        #         media = utils.get_input_media_from_file_id(media.media, FileType.DOCUMENT)
 
         rpc = raw.functions.messages.EditMessage(
             peer=await self.resolve_peer(chat_id),
             id=message_id,
-            media=media,
+            media=raw_media,
             reply_markup=await reply_markup.write(self) if reply_markup else None,
             message=message,
             entities=entities,
-            invert_media=any(show_caption_above_media),
+            invert_media=_show_caption_above_media,
             schedule_date=utils.datetime_to_timestamp(schedule_date)
         )
         session = None
