@@ -119,40 +119,12 @@ class EditMessageMedia:
 
         raw_media, _show_caption_above_media = await media.write(
             client=self,
+            chat_id=chat_id,
             business_connection_id=business_connection_id,
         )
 
         # if isinstance(media, types.InputMediaPhoto):
-        #     show_caption_above_media.append(media.show_caption_above_media)
-        #     if is_uploaded_file:
-        #         uploaded_media = await self.invoke(
-        #             raw.functions.messages.UploadMedia(
-        #                 business_connection_id=None,  # TODO
-        #                 peer=await self.resolve_peer(chat_id),
-        #                 media=raw.types.InputMediaUploadedPhoto(
-        #                     file=await self.save_file(media.media),
-        #                     spoiler=media.has_spoiler
-        #                 )
-        #             )
-        #         )
-
-        #         media = raw.types.InputMediaPhoto(
-        #             id=raw.types.InputPhoto(
-        #                 id=uploaded_media.photo.id,
-        #                 access_hash=uploaded_media.photo.access_hash,
-        #                 file_reference=uploaded_media.photo.file_reference
-        #             ),
-        #             spoiler=media.has_spoiler
-        #         )
-        #     elif is_external_url:
-        #         media = raw.types.InputMediaPhotoExternal(
-        #             url=media.media,
-        #             spoiler=media.has_spoiler
-        #         )
-        #     else:
-        #         media = utils.get_input_media_from_file_id(media.media, FileType.PHOTO, has_spoiler=media.has_spoiler)
         # elif isinstance(media, types.InputMediaVideo):
-
         # elif isinstance(media, types.InputMediaAudio):
         #     if is_uploaded_file:
         #         media = await self.invoke(

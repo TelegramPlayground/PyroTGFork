@@ -126,6 +126,7 @@ class InputMediaVideo(InputMedia):
     async def write(
         self,
         client: "pyrogram.Client",
+        chat_id: Optional[Union[int, str]] = None,
         business_connection_id: Optional[str] = None,
         progress: Optional[Callable] = None,
         progress_args: tuple = (),
