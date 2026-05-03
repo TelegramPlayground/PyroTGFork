@@ -74,8 +74,7 @@ class InputMediaPhoto(InputMedia):
             .. note::
 
                 This local compression feature requires the ``Pillow`` library to be installed and 
-                only applies when uploading local file paths or in-memory objects. If ``Pillow`` 
-                is not installed, the file will be uploaded unaltered regardless of this parameter.
+                only applies when uploading local file paths or in-memory objects.
 
     """
 
