@@ -341,6 +341,8 @@ class SendPhoto:
         returning an in-memory BytesIO stream ready for Pyrogram.
         Returns None if Pillow is not installed or if processing fails.
         """
+        if high_quality is None:
+            return None
         if not HAS_PILLOW:
             log.warning(
                 "Pillow is not installed. High Quality photo scaling will be skipped. "
