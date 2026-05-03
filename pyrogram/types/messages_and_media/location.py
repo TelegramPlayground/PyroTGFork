@@ -16,9 +16,12 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import pyrogram
 
+from typing import Optional, Union
+
+import pyrogram
 from pyrogram import raw
+
 from ..object import Object
 
 
@@ -31,6 +34,10 @@ class Location(Object):
 
         latitude (``float``):
             Latitude as defined by sender.
+
+        accuracy_radius (``int``, *optional*):
+            The estimated horizontal accuracy of the location, in meters as defined by the sender.
+
     """
 
     def __init__(
@@ -38,21 +45,33 @@ class Location(Object):
         *,
         client: "pyrogram.Client" = None,
         longitude: float,
-        latitude: float
+        latitude: float,
+        accuracy_radius: Optional[int] = None,
     ):
         super().__init__(client)
 
         self.longitude = longitude
         self.latitude = latitude
+        self.accuracy_radius = accuracy_radius
 
     @staticmethod
-    def _parse(client, geo_point: "raw.types.GeoPoint") -> "Location":
+    def _parse(client, geo_point: "raw.base.GeoPoint") -> "Location":
         if isinstance(geo_point, raw.types.GeoPoint):
             return Location(
                 longitude=geo_point.long,
                 latitude=geo_point.lat,
+                accuracy_radius=geo_point.accuracy_radius,
                 client=client
             )
+
+    async def write(self) -> "raw.types.InputMediaGeoPoint":
+        return raw.types.InputMediaGeoPoint(
+            geo_point=raw.types.InputGeoPoint(
+                lat=self.latitude,
+                long=self.longitude,
+                accuracy_radius=self.accuracy_radius,
+            ),
+        )
 
 
 class ChatLocation(Object):

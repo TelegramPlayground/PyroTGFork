@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, utils, types
@@ -33,17 +33,9 @@ class InputPollOption(Object):
             Option text, 1-100 characters after entity parsing.
             Only custom emoji entities are allowed to be added and only by Premium users.
 
-        animation (``str``, *optional*):
-            Pass a file_id as string to send a photo that exists on the Telegram servers.
-
-        photo (``str``, *optional*):
-            Pass a file_id as string to send a photo that exists on the Telegram servers.
-
-        sticker (``str``, *optional*):
-            Pass a file_id as string to send a photo that exists on the Telegram servers.
-
-        video (``str``, *optional*):
-            Pass a file_id as string to send a photo that exists on the Telegram servers.
+        media (:obj:`~pyrogram.types.InputMediaPhoto` | :obj:`~pyrogram.types.InputMediaVideo` | :obj:`~pyrogram.types.InputMediaSticker` | :obj:`~pyrogram.types.Location`, *optional*):
+            Media associated with the option.
+            Currently supports only photo, video, sticker or location.
 
     """
 
@@ -51,39 +43,44 @@ class InputPollOption(Object):
         self,
         *,
         text: "types.FormattedText",
-        animation: str = None,
-        # messageLocation
-        photo: str = None,
-        sticker: str = None,
-        # messageVenue
-        video: str = None,
+        media: Optional[
+            Union[
+                "types.InputMediaPhoto",
+                "types.InputMediaVideo",
+                "types.InputMediaSticker",
+                "types.Location",
+            ]
+        ] = None,
     ):
         super().__init__()
 
         self.text = text
-        self.animation = animation
-        # TODO
-        self.photo = photo
-        self.sticker = sticker
-        self.video = video
+        self.media = media
 
     async def write(
         self,
-        client: "pyrogram.Client"
+        client: "pyrogram.Client",
     ) -> "raw.types.PollAnswer":
         if isinstance(self.text, str):
             self.text = types.FormattedText(text=self.text)
 
+        if self.media is not None and not isinstance(
+            self.media,
+            (
+                types.InputMediaPhoto,
+                types.InputMediaVideo,
+                types.InputMediaSticker,
+                types.Location,
+            ),
+        ):
+            raise ValueError(f"Unsupported media type: {type(self.media)}")
         media = None
-        if self.animation:
-            media = utils.get_input_media_from_file_id(self.animation, FileType.ANIMATION)
-        elif self.photo:
-            media = utils.get_input_media_from_file_id(self.photo, FileType.PHOTO)
-        elif self.sticker:
-            media = utils.get_input_media_from_file_id(self.sticker, FileType.STICKER)
-        elif self.video:
-            media = utils.get_input_media_from_file_id(self.video, FileType.VIDEO)
+        if self.media:
+            if isinstance(self.media, types.Location):
+                media = await self.media.write()
+            else:
+                media, _ = await self.media.write(client=client)
         return raw.types.InputPollAnswer(
             text=await self.text.write(client),
-            media=media
+            media=media,
         )

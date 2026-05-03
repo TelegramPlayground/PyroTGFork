@@ -186,7 +186,6 @@ class ChosenInlineResult(Object, Update):
         self,
         media: "types.InputMedia",
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        file_name: str = None
     ) -> bool:
         """Edit animation, audio, document, photo or video messages attached to sent :obj:`~pyrogram.types.InlineQueryResult` messages.
 
@@ -198,10 +197,6 @@ class ChosenInlineResult(Object, Update):
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
-
-            file_name (``str``, *optional*):
-                File name of the media to be sent. Not applicable to photos.
-                Defaults to file's path basename.
 
         Returns:
             ``bool``: On success, True is returned.
