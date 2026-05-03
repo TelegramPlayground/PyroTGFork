@@ -139,7 +139,7 @@ class InputMediaAnimation(InputMedia):
                     media=raw.types.InputMediaUploadedDocument(
                         mime_type=(None if is_bytes_io else self.guess_mime_type(self.media)) or "video/mp4",
                         thumb=await client.save_file(self.thumb),
-                        spoiler=media.has_spoiler,
+                        spoiler=self.has_spoiler,
                         file=await client.save_file(self.media),
                         attributes=[
                             raw.types.DocumentAttributeVideo(
