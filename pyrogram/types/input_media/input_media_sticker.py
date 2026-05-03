@@ -78,7 +78,6 @@ class InputMediaSticker(InputMedia):
             self.media.name = "media"
 
         peer = await client.resolve_peer(chat_id or "me")
-
         if is_uploaded_file:
             uploaded_media = await client.invoke(
                 raw.functions.messages.UploadMedia(
@@ -99,18 +98,18 @@ class InputMediaSticker(InputMedia):
                     ),
                 ),
             )
-
-            return raw.types.InputMediaDocument(
+            media = raw.types.InputMediaDocument(
                 id=raw.types.InputDocument(
                     id=uploaded_media.document.id,
                     access_hash=uploaded_media.document.access_hash,
                     file_reference=uploaded_media.document.file_reference,
                 ),
             )
-
-        if is_external_url:
-            return raw.types.InputMediaDocumentExternal(
+        elif is_external_url:
+            media = raw.types.InputMediaDocumentExternal(
                 url=self.media,
             )
+        else:
+            media = utils.get_input_media_from_file_id(self.media, FileType.STICKER)
 
-        return utils.get_input_media_from_file_id(self.media, FileType.STICKER)
+        return media, False
