@@ -29,6 +29,12 @@ from pyrogram.errors import FilePartMissing
 from pyrogram.file_id import FileType
 from .inline_session import get_session
 
+try:
+    from PIL import Image
+    HAS_PILLOW = True
+except ImportError:
+    HAS_PILLOW = False
+
 log = logging.getLogger(__name__)
 
 
@@ -54,6 +60,7 @@ class SendPhoto:
         paid_message_star_count: int = None,
         view_once: bool = None,
         message_effect_id: int = None,
+        is_high_quality: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -207,6 +214,10 @@ class SendPhoto:
         try:
             if isinstance(photo, str):
                 if os.path.isfile(photo):
+                    # Attempt to process the image locally
+                    optimized_stream = self.scale_tandroid_photo(photo, is_high_quality)
+                    if optimized_stream:
+                        photo = optimized_stream
                     file = await self.save_file(photo, progress=progress, progress_args=progress_args)
                     media = raw.types.InputMediaUploadedPhoto(
                         file=file,
@@ -227,6 +238,10 @@ class SendPhoto:
                         has_spoiler=has_spoiler
                     )
             else:
+                # Attempt to process the image locally
+                optimized_stream = self.scale_tandroid_photo(photo, is_high_quality)
+                if optimized_stream:
+                    photo = optimized_stream
                 file = await self.save_file(photo, progress=progress, progress_args=progress_args)
                 media = raw.types.InputMediaUploadedPhoto(
                     file=file,
@@ -314,3 +329,76 @@ class SendPhoto:
                             )
         except pyrogram.StopTransmission:
             return None
+
+
+    def scale_tandroid_photo(
+        self: "pyrogram.Client",
+        input_path: Union[str, "io.BytesIO"],
+        high_quality: bool = False,
+    ) -> Optional["io.BytesIO"]:
+        """
+        Scales and compresses an image matching Telegram Android's internal logic,
+        returning an in-memory BytesIO stream ready for Pyrogram.
+        Returns None if Pillow is not installed or if processing fails.
+        """
+        if not HAS_PILLOW:
+            log.warning(
+                "Pillow is not installed. High Quality photo scaling will be skipped. "
+                "Run 'pip install Pillow' for faster, optimized uploads."
+            )
+            return None
+
+        max_size = 2560.0 if high_quality else 1280.0
+        quality = 99 if high_quality else 87
+        min_width = 101
+        min_height = 101
+
+        # Image.open accepts both file paths and BytesIO streams
+        with Image.open(input_path) as img:
+            # Ensure image is in RGB mode for JPEG saving (handles PNG transparency)
+            if img.mode in ("RGBA", "P"):
+                img = img.convert("RGB")
+                
+            photo_w, photo_h = float(img.width), float(img.height)
+
+            if photo_w == 0 or photo_h == 0:
+                return None
+
+            scale_anyway = False
+            
+            # Calculate initial scale factor to fit within max_size
+            scale_factor = max(photo_w / max_size, photo_h / max_size)
+
+            # Handle minimum dimension constraints
+            if min_width != 0 and min_height != 0 and (photo_w < min_width or photo_h < min_height):
+                if photo_w < min_width and photo_h > min_height:
+                    scale_factor = photo_w / min_width
+                elif photo_w > min_width and photo_h < min_height:
+                    scale_factor = photo_h / min_height
+                else:
+                    scale_factor = max(photo_w / min_width, photo_h / min_height)
+                scale_anyway = True
+
+            # Calculate final dimensions
+            w = int(photo_w / scale_factor)
+            h = int(photo_h / scale_factor)
+
+            if w == 0 or h == 0:
+                return None
+
+            # Resize the image if it exceeds max size OR if it's smaller than min size
+            if scale_factor > 1.0 or scale_anyway:
+                img = img.resize((w, h), Image.Resampling.LANCZOS)
+
+            # Create the in-memory byte buffer
+            photo_stream = io.BytesIO()
+            
+            # Pyrogram requires a name to guess the mime-type
+            photo_stream.name = "photo.jpg"
+            
+            # Save the image data into the buffer using Telegram's compression rules
+            img.save(photo_stream, format="JPEG", quality=quality, optimize=True)
+
+            photo_stream.seek(0)            
+            return photo_stream
+        return None
