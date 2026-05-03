@@ -70,6 +70,11 @@ class InputMediaAnimation(InputMedia):
 
         has_spoiler (``bool``, *optional*):
             Pass True if the photo needs to be covered with a spoiler animation.
+        
+        file_name (``str``, *optional*):
+            File name of the animation sent.
+            Defaults to file's path basename.
+
     """
 
     def __init__(
@@ -83,7 +88,8 @@ class InputMediaAnimation(InputMedia):
         width: int = 0,
         height: int = 0,
         duration: int = 0,
-        has_spoiler: bool = None
+        has_spoiler: bool = None,
+        file_name: bool = None,
     ):
         super().__init__(media, caption, parse_mode, caption_entities)
 
@@ -93,6 +99,7 @@ class InputMediaAnimation(InputMedia):
         self.height = height
         self.duration = duration
         self.has_spoiler = has_spoiler
+        self.file_name = file_name
 
     async def write(
         self,
@@ -118,7 +125,7 @@ class InputMediaAnimation(InputMedia):
         if is_uploaded_file:
             filename_attribute = [
                 raw.types.DocumentAttributeFilename(
-                    file_name=None or (self.media.name if is_bytes_io else os.path.basename(self.media))
+                    file_name=self.file_name or (self.media.name if is_bytes_io else os.path.basename(self.media))
                 )
             ]
         else:
