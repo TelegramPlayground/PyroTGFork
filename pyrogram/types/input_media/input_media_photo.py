@@ -19,7 +19,7 @@
 import io
 import os
 import re
-from typing import Optional, Union, Callable
+from typing import Callable, Optional, Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils

@@ -19,7 +19,7 @@
 import io
 import os
 import re
-from typing import Optional, Union, Callable
+from typing import Callable, Optional, Union
 
 import pyrogram
 from pyrogram import enums, raw, types, utils
@@ -142,7 +142,7 @@ class InputMediaVideo(InputMedia):
         is_external_url = not is_uploaded_file and re.match("^https?://", self.media)
 
         if is_bytes_io and not hasattr(self.media, "name"):
-            self.media.name = "media"
+            self.media.name = self.file_name or "media"
 
         if is_uploaded_file:
             filename_attribute = [

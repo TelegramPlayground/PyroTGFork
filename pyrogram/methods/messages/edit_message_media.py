@@ -200,34 +200,6 @@ class EditMessageMedia:
         #     else:
         #         media = utils.get_input_media_from_file_id(media.media, FileType.ANIMATION, has_spoiler=media.has_spoiler)
         # elif isinstance(media, types.InputMediaDocument):
-        #     if is_uploaded_file:
-        #         media = await self.invoke(
-        #             raw.functions.messages.UploadMedia(
-        #                 business_connection_id=None,  # TODO
-        #                 peer=await self.resolve_peer(chat_id),
-        #                 media=raw.types.InputMediaUploadedDocument(
-        #                     mime_type=(None if is_bytes_io else self.guess_mime_type(media.media)) or "application/zip",
-        #                     thumb=await self.save_file(media.thumb),
-        #                     file=await self.save_file(media.media),
-        #                     attributes=filename_attribute,
-        #                     force_file=media.disable_content_type_detection
-        #                 )
-        #             )
-        #         )
-
-        #         media = raw.types.InputMediaDocument(
-        #             id=raw.types.InputDocument(
-        #                 id=media.document.id,
-        #                 access_hash=media.document.access_hash,
-        #                 file_reference=media.document.file_reference
-        #             )
-        #         )
-        #     elif is_external_url:
-        #         media = raw.types.InputMediaDocumentExternal(
-        #             url=media.media
-        #         )
-        #     else:
-        #         media = utils.get_input_media_from_file_id(media.media, FileType.DOCUMENT)
 
         rpc = raw.functions.messages.EditMessage(
             peer=await self.resolve_peer(chat_id),
