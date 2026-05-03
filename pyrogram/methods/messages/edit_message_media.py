@@ -98,7 +98,7 @@ class EditMessageMedia:
         if caption is not None:
             message, entities = (await utils.parse_text_entities(self, caption, parse_mode, caption_entities)).values()
 
-        if not isinstance(
+        if media is not None and not isinstance(
             media,
             (
                 types.InputMediaPhoto,
@@ -108,7 +108,7 @@ class EditMessageMedia:
                 types.InputMediaDocument,
             ),
         ):
-            raise ValueError(f"Unsupported media type {type(media)}")
+            raise ValueError(f"Unsupported media type: {type(media)}")
 
         raw_media, _show_caption_above_media = await media.write(
             client=self,
