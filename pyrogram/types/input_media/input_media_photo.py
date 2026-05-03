@@ -38,8 +38,7 @@ log = logging.getLogger(__name__)
 
 
 class InputMediaPhoto(InputMedia):
-    """A photo to be sent inside an album.
-    It is intended to be used with :obj:`~pyrogram.Client.send_media_group`.
+    """A photo to be sent.
 
     Parameters:
         media (``str`` | :obj:`io.BytesIO`):
@@ -48,6 +47,12 @@ class InputMediaPhoto(InputMedia):
             pass a file path as string to upload a new photo that exists on your local machine or
             pass a binary file-like object with its attribute “.name” set for in-memory uploads or
             pass an HTTP URL as a string for Telegram to get a photo from the Internet.
+
+            .. note::
+
+                The photo must be at most 10 MB in size.
+                The photo's width and height must not exceed 10000 in total.
+                The photo's width and height ratio must be at most 20.
 
         caption (``str``, *optional*):
             Caption of the photo to be sent, 0-1024 characters.

@@ -76,15 +76,8 @@ class SendPhoto:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            photo (``str`` | :obj:`io.BytesIO`):
+            photo (:obj:`~pyrogram.types.InputMediaPhoto`):
                 Photo to send.
-                Pass a file_id as string to send a photo that exists on the Telegram servers,
-                pass an HTTP URL as a string for Telegram to get a photo from the Internet,
-                pass a file path as string to upload a new photo that exists on your local machine, or
-                pass a binary file-like object with its attribute ".name" set for in-memory uploads.
-                The photo must be at most 10 MB in size.
-                The photo's width and height must not exceed 10000 in total.
-                The photo's width and height ratio must be at most 20.
 
             caption (``str``, *optional*):
                 Photo caption, 0-1024 characters.
