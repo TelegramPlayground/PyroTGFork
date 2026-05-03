@@ -36,12 +36,14 @@ class SendPhoto:
     async def send_photo(
         self: "pyrogram.Client",
         chat_id: Union[int, str],
-        photo: Union[str, "io.BytesIO"],
+        photo: "types.InputMediaPhoto",
+
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         has_spoiler: bool = None,
+
         ttl_seconds: int = None,
         disable_notification: bool = None,
         reply_parameters: "types.ReplyParameters" = None,
@@ -74,15 +76,8 @@ class SendPhoto:
                 For your personal cloud (Saved Messages) you can simply use "me" or "self".
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
-            photo (``str`` | :obj:`io.BytesIO`):
+            photo (:obj:`~pyrogram.types.InputMediaPhoto`):
                 Photo to send.
-                Pass a file_id as string to send a photo that exists on the Telegram servers,
-                pass an HTTP URL as a string for Telegram to get a photo from the Internet,
-                pass a file path as string to upload a new photo that exists on your local machine, or
-                pass a binary file-like object with its attribute ".name" set for in-memory uploads.
-                The photo must be at most 10 MB in size.
-                The photo's width and height must not exceed 10000 in total.
-                The photo's width and height ratio must be at most 20.
 
             caption (``str``, *optional*):
                 Photo caption, 0-1024 characters.
@@ -205,34 +200,24 @@ class SendPhoto:
         ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
 
         try:
-            if isinstance(photo, str):
-                if os.path.isfile(photo):
-                    file = await self.save_file(photo, progress=progress, progress_args=progress_args)
-                    media = raw.types.InputMediaUploadedPhoto(
-                        file=file,
-                        ttl_seconds=ttl_seconds,
-                        spoiler=has_spoiler,
-                    )
-                elif re.match("^https?://", photo):
-                    media = raw.types.InputMediaPhotoExternal(
-                        url=photo,
-                        ttl_seconds=ttl_seconds,
-                        spoiler=has_spoiler
-                    )
-                else:
-                    media = utils.get_input_media_from_file_id(
-                        photo,
-                        FileType.PHOTO,
-                        ttl_seconds=ttl_seconds,
-                        has_spoiler=has_spoiler
-                    )
-            else:
-                file = await self.save_file(photo, progress=progress, progress_args=progress_args)
-                media = raw.types.InputMediaUploadedPhoto(
-                    file=file,
-                    ttl_seconds=ttl_seconds,
-                    spoiler=has_spoiler
+            if (
+                isinstance(photo, str) or
+                isinstance(photo, io.BytesIO)
+            ):
+                photo = types.InputMediaPhoto(
+                    media=photo,
+                    caption=caption,
+                    parse_mode=parse_mode,
+                    caption_entities=caption_entities,
+                    show_caption_above_media=show_caption_above_media,
+                    has_spoiler=has_spoiler,
                 )
+            media, show_caption_above_media = await photo.write(
+                client=self,
+                chat_id=chat_id,
+                business_connection_id=business_connection_id,
+            )
+            media.ttl_seconds = ttl_seconds
 
             reply_to = await utils._get_reply_message_parameters(
                 self,
