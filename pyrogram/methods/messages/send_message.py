@@ -51,8 +51,6 @@ class SendMessage:
             "types.ForceReply"
         ] = None,
         schedule_date: datetime = None,
-        disable_web_page_preview: bool = None,
-        reply_to_message_id: int = None
     ) -> "types.Message":
         """Send text messages.
 
@@ -161,33 +159,8 @@ class SendMessage:
                             ]
                         ]))
         """
-        if disable_web_page_preview and link_preview_options:
-            raise ValueError(
-                "Parameters `disable_web_page_preview` and `link_preview_options` are mutually "
-                "exclusive."
-            )
-
-        if disable_web_page_preview is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use link_preview_options instead"
-            )
-            link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
         link_preview_options = link_preview_options or self.link_preview_options
-
-        if reply_to_message_id and reply_parameters:
-            raise ValueError(
-                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
-                "exclusive."
-            )
-        
-        if reply_to_message_id is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use reply_parameters instead"
-            )
-            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
 
         reply_to = await utils._get_reply_message_parameters(
             self,

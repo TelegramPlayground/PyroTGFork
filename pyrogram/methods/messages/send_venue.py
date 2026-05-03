@@ -54,7 +54,6 @@ class SendVenue:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        reply_to_message_id: int = None
     ) -> "types.Message":
         """Send information about a venue.
 
@@ -134,19 +133,6 @@ class SendVenue:
                     "me", latitude, longitude,
                     "Venue title", "Venue address")
         """
-
-        if reply_to_message_id and reply_parameters:
-            raise ValueError(
-                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
-                "exclusive."
-            )
-        
-        if reply_to_message_id is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use reply_parameters instead"
-            )
-            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
 
         reply_to = await utils._get_reply_message_parameters(
             self,

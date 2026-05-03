@@ -107,21 +107,7 @@ class InlineQueryResultVideo(InlineQueryResult):
         show_caption_above_media: bool = None,
         reply_markup: "types.InlineKeyboardMarkup" = None,
         input_message_content: "types.InputMessageContent" = None,
-        thumb_url: str = None,
     ):
-        if thumb_url and thumbnail_url:
-            raise ValueError(
-                "Parameters `thumb_url` and `thumbnail_url` are mutually "
-                "exclusive."
-            )
-        
-        if thumb_url is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use thumbnail_url instead"
-            )
-            thumbnail_url = thumb_url
-
         super().__init__("video", id, input_message_content, reply_markup)
 
         self.video_url = video_url
