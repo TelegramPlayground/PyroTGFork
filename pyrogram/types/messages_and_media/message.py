@@ -4761,8 +4761,7 @@ class Message(Object, Update):
     async def edit_media(
         self,
         media: "types.InputMedia",
-        reply_markup: "types.InlineKeyboardMarkup" = None,
-        file_name: str = None
+        reply_markup: "types.InlineKeyboardMarkup" = None
     ) -> "Message":
         """Bound method *edit_media* of :obj:`~pyrogram.types.Message`.
 
@@ -4788,10 +4787,6 @@ class Message(Object, Update):
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
 
-            file_name (``str``, *optional*):
-                File name of the media to be sent. Not applicable to photos.
-                Defaults to file's path basename.
-
         Returns:
             On success, the edited :obj:`~pyrogram.types.Message` is returned.
 
@@ -4804,7 +4799,6 @@ class Message(Object, Update):
             message_id=self.id,
             media=media,
             reply_markup=reply_markup,
-            file_name=file_name,
             schedule_date=self.date if self.scheduled else None,
             business_connection_id=self.business_connection_id
         )

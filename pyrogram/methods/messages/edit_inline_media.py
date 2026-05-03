@@ -22,11 +22,10 @@ import os
 import re
 
 import pyrogram
-from pyrogram import raw
-from pyrogram import types
-from pyrogram import utils
+from pyrogram import raw, types, utils
 from pyrogram.errors import RPCError, MediaEmpty
 from pyrogram.file_id import FileType
+
 from .inline_session import get_session
 
 
