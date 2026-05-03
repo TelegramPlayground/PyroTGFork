@@ -3127,7 +3127,6 @@ class Message(Object, Update):
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
         view_once: bool = None,
-        is_high_quality: bool = None,
         reply_markup: Union[
             "types.InlineKeyboardMarkup",
             "types.ReplyKeyboardMarkup",
@@ -3284,7 +3283,6 @@ class Message(Object, Update):
             allow_paid_broadcast=allow_paid_broadcast,
             paid_message_star_count=(self and self.chat and self.chat.paid_message_star_count) or None,
             view_once=view_once,
-            is_high_quality=is_high_quality,
             reply_markup=reply_markup,
             reply_to_message_id=reply_to_message_id,
             progress=progress,
