@@ -3111,7 +3111,7 @@ class Message(Object, Update):
 
     async def reply_photo(
         self,
-        photo: Union[str, "io.BytesIO"],
+        photo: "types.InputMediaPhoto",
         quote: bool = None,
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
