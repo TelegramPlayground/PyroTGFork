@@ -98,8 +98,6 @@ class EditMessageMedia:
         parse_mode = media.parse_mode
         caption_entities = media.caption_entities
 
-        show_caption_above_media = []
-
         message, entities = None, None
 
         if caption is not None:

@@ -97,7 +97,7 @@ class InputMediaPhoto(InputMedia):
             uploaded_media = await client.invoke(
                 raw.functions.messages.UploadMedia(
                     business_connection_id=None,  # TODO
-                    peer=await client.resolve_peer(chat_id),
+                    peer=await client.resolve_peer(chat_id or "me"),
                     media=raw.types.InputMediaUploadedPhoto(
                         file=await client.save_file(self.media),
                         spoiler=self.has_spoiler
