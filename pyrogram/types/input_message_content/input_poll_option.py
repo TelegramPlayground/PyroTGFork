@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, utils, types
@@ -59,12 +59,12 @@ class InputPollOption(Object):
 
     async def write(
         self,
-        client: "pyrogram.Client"
+        client: "pyrogram.Client",
     ) -> "raw.types.PollAnswer":
         if isinstance(self.text, str):
             self.text = types.FormattedText(text=self.text)
 
-        if not isinstance(
+        if self.media is not None and not isinstance(
             self.media,
             (
                 types.InputMediaPhoto,
@@ -74,10 +74,13 @@ class InputPollOption(Object):
             ),
         ):
             raise ValueError(f"Unsupported media type: {type(self.media)}")
-
+        media = None
+        if self.media:
+            if isinstance(self.media, types.Location):
+                media = await self.media.write()
+            else:
+                media, _ = await self.media.write(client=client)
         return raw.types.InputPollAnswer(
             text=await self.text.write(client),
-            media=await self.media.write(
-                client=client,
-            )
+            media=media,
         )
