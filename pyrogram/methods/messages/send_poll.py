@@ -18,7 +18,7 @@
 
 import logging
 from datetime import datetime
-from typing import Union
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, utils, types, enums
@@ -278,18 +278,24 @@ class SendPoll:
 
         attached_media = None
         if description_media:
-            attached_media = await description_media.write(
-                client=self,
-                chat_id=chat_id,
-                business_connection_id=business_connection_id,
-            )
+            if isinstance(description_media, types.Location):
+                attached_media = await description_media.write()
+            else:
+                attached_media, _ = await description_media.write(
+                    client=self,
+                    chat_id=chat_id,
+                    business_connection_id=business_connection_id,
+                )
         solution_media = None
         if explanation_media:
-            solution_media = await explanation_media.write(
-                client=self,
-                chat_id=chat_id,
-                business_connection_id=business_connection_id,
-            )
+            if isinstance(explanation_media, types.Location):
+                solution_media = await explanation_media.write()
+            else:
+                solution_media, _ = await explanation_media.write(
+                    client=self,
+                    chat_id=chat_id,
+                    business_connection_id=business_connection_id,
+                )
 
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
