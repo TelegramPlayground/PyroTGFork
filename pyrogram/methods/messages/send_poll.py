@@ -42,10 +42,28 @@ class SendPoll:
         hide_results_until_closes: bool = None,
         correct_option_ids: list[int] = None,
         explanation: "types.FormattedText" = None,
+        explanation_media: Optional[Union[
+            "types.InputMediaAnimation",
+            "types.InputMediaDocument",
+            "types.InputMediaAudio",
+            "types.InputMediaPhoto",
+            "types.InputMediaSticker",
+            "types.InputMediaVideo",
+            "types.Location",
+        ]] = None,
         open_period: int = None,
         close_date: datetime = None,
         is_closed: bool = None,
         description: "types.FormattedText" = None,
+        description_media: Optional[Union[
+            "types.InputMediaAnimation",
+            "types.InputMediaDocument",
+            "types.InputMediaAudio",
+            "types.InputMediaPhoto",
+            "types.InputMediaSticker",
+            "types.InputMediaVideo",
+            "types.Location",
+        ]] = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
@@ -62,26 +80,6 @@ class SendPoll:
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        attached_media_animation: str = None,
-        attached_media_audio: str = None,
-        attached_media_document: str = None,
-        # messageLocation
-        attached_media_photo: str = None,
-        attached_media_sticker: str = None,
-        # messageVenue
-        attached_media_video: str = None,
-        attached_media_video_note: str = None,
-        attached_media_voice: str = None,
-        solution_media_animation: str = None,
-        solution_media_audio: str = None,
-        solution_media_document: str = None,
-        # messageLocation
-        solution_media_photo: str = None,
-        solution_media_sticker: str = None,
-        # messageVenue
-        solution_media_video: str = None,
-        solution_media_video_note: str = None,
-        solution_media_voice: str = None,
     ) -> "types.Message":
         """Send a native poll.
 
@@ -133,6 +131,9 @@ class SendPoll:
                 Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style
                 poll, 0-200 characters with at most 2 line feeds after entities parsing.
 
+            explanation_media (:obj:`~pyrogram.types.InputMediaAnimation` | :obj:`~pyrogram.types.InputMediaDocument` | :obj:`~pyrogram.types.InputMediaAudio` | :obj:`~pyrogram.types.InputMediaPhoto` | :obj:`~pyrogram.types.InputMediaSticker` | :obj:`~pyrogram.types.InputMediaVideo` | :obj:`~pyrogram.types.Location`, *optional*):
+                Media attached to the poll explanation that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll.
+
             open_period (``int``, *optional*):
                 Amount of time in seconds the poll will be active after creation, 5-2628000.
                 Can't be used together with *close_date*.
@@ -148,6 +149,9 @@ class SendPoll:
 
             description (:obj:`~pyrogram.types.FormattedText`, *optional*):
                 Description of the poll to be sent, 0-1024 characters after entities parsing.
+
+            description_media (:obj:`~pyrogram.types.InputMediaAnimation` | :obj:`~pyrogram.types.InputMediaDocument` | :obj:`~pyrogram.types.InputMediaAudio` | :obj:`~pyrogram.types.InputMediaPhoto` | :obj:`~pyrogram.types.InputMediaSticker` | :obj:`~pyrogram.types.InputMediaVideo` | :obj:`~pyrogram.types.Location`, *optional*):
+                Media attached to the poll.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -194,6 +198,7 @@ class SendPoll:
         Example:
             .. code-block:: python
 
+                # Regular poll
                 from pyrogram import types
                 await app.send_poll(
                     chat_id=chat_id,
@@ -209,18 +214,34 @@ class SendPoll:
                         types.InputPollOption(
                             text=types.FormattedText(
                                 text="No"
-                            ),
-                            sticker="CAACAgIAAxkBAAENQDJp0TeBK91YmUIY_eGLV_OpyDwI2gACRRkAAt1kkUkycGu4PBSkQTsE"
-                        ),
-                        types.InputPollOption(
-                            text=types.FormattedText(
-                                text="Maybe"
                             )
                         ),
                     ]
                 )
 
+
+                # Poll with media
+                await app.send_poll(
+                    chat_id=chat_id,
+                    question="Where we are?",
+                    media=types.InputMediaPhoto("photo.jpg"),
+                    options=[
+                        types.InputPollOption(
+                            text="Maybe here?",
+                            media=types.InputMediaPhoto("photo1.jpg")
+                        ),
+                        types.InputPollOption(
+                            text="Or here?",
+                            media=types.Location(
+                                longitude=49.807760,
+                                latitude=73.088504
+                            ),
+                        ),
+                    ]
+                )
+
         """
+
         if isinstance(question, str):
             question = types.FormattedText(text=question)
 
@@ -256,41 +277,19 @@ class SendPoll:
             allows_multiple_answers = True
 
         attached_media = None
+        if description_media:
+            attached_media = await description_media.write(
+                client=self,
+                chat_id=chat_id,
+                business_connection_id=business_connection_id,
+            )
         solution_media = None
-
-        if attached_media_animation:
-            attached_media = utils.get_input_media_from_file_id(attached_media_animation, FileType.ANIMATION)
-        elif attached_media_audio:
-            attached_media = utils.get_input_media_from_file_id(attached_media_audio, FileType.AUDIO)
-        elif attached_media_document:
-            attached_media = utils.get_input_media_from_file_id(attached_media_document, FileType.DOCUMENT)
-        elif attached_media_photo:
-            attached_media = utils.get_input_media_from_file_id(attached_media_photo, FileType.PHOTO)
-        elif attached_media_sticker:
-            attached_media = utils.get_input_media_from_file_id(attached_media_sticker, FileType.STICKER)
-        elif attached_media_video:
-            attached_media = utils.get_input_media_from_file_id(attached_media_video, FileType.VIDEO)
-        elif attached_media_video_note:
-            attached_media = utils.get_input_media_from_file_id(attached_media_video_note, FileType.VIDEO_NOTE)
-        elif attached_media_voice:
-            attached_media = utils.get_input_media_from_file_id(attached_media_voice, FileType.VOICE)
-
-        if solution_media_animation:
-            solution_media = utils.get_input_media_from_file_id(solution_media_animation, FileType.ANIMATION)
-        elif solution_media_audio:
-            solution_media = utils.get_input_media_from_file_id(solution_media_audio, FileType.AUDIO)
-        elif solution_media_document:
-            solution_media = utils.get_input_media_from_file_id(solution_media_document, FileType.DOCUMENT)
-        elif solution_media_photo:
-            solution_media = utils.get_input_media_from_file_id(solution_media_photo, FileType.PHOTO)
-        elif solution_media_sticker:
-            solution_media = utils.get_input_media_from_file_id(solution_media_sticker, FileType.STICKER)
-        elif solution_media_video:
-            solution_media = utils.get_input_media_from_file_id(solution_media_video, FileType.VIDEO)
-        elif solution_media_video_note:
-            solution_media = utils.get_input_media_from_file_id(solution_media_video_note, FileType.VIDEO_NOTE)
-        elif solution_media_voice:
-            solution_media = utils.get_input_media_from_file_id(solution_media_voice, FileType.VOICE)
+        if explanation_media:
+            solution_media = await explanation_media.write(
+                client=self,
+                chat_id=chat_id,
+                business_connection_id=business_connection_id,
+            )
 
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
