@@ -81,8 +81,8 @@ class InputMediaPhoto(InputMedia):
         progress_args: tuple = (),
     ) -> tuple[
         Union[
-            "InputMediaDocument",
-            "InputMediaDocumentExternal",
+            "InputMediaPhoto",
+            "InputMediaPhotoExternal",
         ],
         bool
     ]:
