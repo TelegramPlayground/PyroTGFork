@@ -17,11 +17,15 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import io
-from typing import Optional, Union
+import os
+import re
+from typing import Callable, Optional, Union
+
+import pyrogram
+from pyrogram import enums, raw, types, utils
+from pyrogram.file_id import FileType
 
 from .input_media import InputMedia
-from ..messages_and_media import MessageEntity
-from ... import enums
 
 
 class InputMediaPhoto(InputMedia):
@@ -59,7 +63,7 @@ class InputMediaPhoto(InputMedia):
         media: Union[str, "io.BytesIO"],
         caption: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: list[MessageEntity] = None,
+        caption_entities: list["types.MessageEntity"] = None,
         show_caption_above_media: bool = None,
         has_spoiler: bool = None
     ):
@@ -67,3 +71,56 @@ class InputMediaPhoto(InputMedia):
 
         self.show_caption_above_media = show_caption_above_media
         self.has_spoiler = has_spoiler
+
+    async def write(
+        self,
+        client: "pyrogram.Client",
+        chat_id: Optional[Union[int, str]] = None,
+        business_connection_id: Optional[str] = None,
+        progress: Optional[Callable] = None,
+        progress_args: tuple = (),
+    ) -> tuple[
+        Union[
+            "InputMediaPhoto",
+            "InputMediaPhotoExternal",
+        ],
+        bool
+    ]:
+        is_bytes_io = isinstance(self.media, io.BytesIO)
+        is_uploaded_file = is_bytes_io or os.path.isfile(self.media)
+        is_external_url = not is_uploaded_file and re.match("^https?://", self.media)
+
+        if is_bytes_io and not hasattr(self.media, "name"):
+            self.media.name = "media"
+
+        if is_uploaded_file:
+            uploaded_media = await client.invoke(
+                raw.functions.messages.UploadMedia(
+                    business_connection_id=None,  # TODO
+                    peer=await client.resolve_peer(chat_id or "me"),
+                    media=raw.types.InputMediaUploadedPhoto(
+                        file=await client.save_file(self.media),
+                        spoiler=self.has_spoiler
+                    )
+                )
+            )
+            media = raw.types.InputMediaPhoto(
+                id=raw.types.InputPhoto(
+                    id=uploaded_media.photo.id,
+                    access_hash=uploaded_media.photo.access_hash,
+                    file_reference=uploaded_media.photo.file_reference
+                ),
+                spoiler=self.has_spoiler
+            )
+        elif is_external_url:
+            media = raw.types.InputMediaPhotoExternal(
+                url=self.media,
+                spoiler=self.has_spoiler
+            )
+        else:
+            media = utils.get_input_media_from_file_id(
+                self.media,
+                FileType.PHOTO,
+                has_spoiler=self.has_spoiler
+            )
+        return media, self.show_caption_above_media

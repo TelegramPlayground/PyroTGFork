@@ -309,7 +309,6 @@ class CallbackQuery(Object, Update):
         self,
         media: "types.InputMedia",
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        file_name: str = None
     ) -> Union["types.Message", bool]:
         """Edit animation, audio, document, photo or video messages attached to callback queries.
 
@@ -321,10 +320,6 @@ class CallbackQuery(Object, Update):
 
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
-
-            file_name (``str``, *optional*):
-                File name of the media to be sent. Not applicable to photos.
-                Defaults to file's path basename.
 
         Returns:
             :obj:`~pyrogram.types.Message` | ``bool``: On success, if the edited message was sent by the bot, the edited
@@ -340,7 +335,6 @@ class CallbackQuery(Object, Update):
                 message_id=self.message.id,
                 media=media,
                 reply_markup=reply_markup,
-                file_name=file_name,
                 business_connection_id=self.message.business_connection_id
             )
         else:

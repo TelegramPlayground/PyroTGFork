@@ -3305,10 +3305,28 @@ class Message(Object, Update):
         hide_results_until_closes: bool = None,
         correct_option_ids: list[int] = None,
         explanation: "types.FormattedText" = None,
+        explanation_media: Optional[Union[
+            "types.InputMediaAnimation",
+            "types.InputMediaDocument",
+            "types.InputMediaAudio",
+            "types.InputMediaPhoto",
+            "types.InputMediaSticker",
+            "types.InputMediaVideo",
+            "types.Location",
+        ]] = None,
         open_period: int = None,
         close_date: datetime = None,
         is_closed: bool = None,
         description: "types.FormattedText" = None,
+        description_media: Optional[Union[
+            "types.InputMediaAnimation",
+            "types.InputMediaDocument",
+            "types.InputMediaAudio",
+            "types.InputMediaPhoto",
+            "types.InputMediaSticker",
+            "types.InputMediaVideo",
+            "types.Location",
+        ]] = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
@@ -3324,26 +3342,6 @@ class Message(Object, Update):
             "types.ReplyKeyboardRemove",
             "types.ForceReply"
         ] = None,
-        attached_media_animation: str = None,
-        attached_media_audio: str = None,
-        attached_media_document: str = None,
-        # messageLocation
-        attached_media_photo: str = None,
-        attached_media_sticker: str = None,
-        # messageVenue
-        attached_media_video: str = None,
-        attached_media_video_note: str = None,
-        attached_media_voice: str = None,
-        solution_media_animation: str = None,
-        solution_media_audio: str = None,
-        solution_media_document: str = None,
-        # messageLocation
-        solution_media_photo: str = None,
-        solution_media_sticker: str = None,
-        # messageVenue
-        solution_media_video: str = None,
-        solution_media_video_note: str = None,
-        solution_media_voice: str = None,
         reply_to_message_id: int = None
     ) -> "Message":
         """Bound method *reply_poll* of :obj:`~pyrogram.types.Message`.
@@ -3420,6 +3418,9 @@ class Message(Object, Update):
                 Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style
                 poll, 0-200 characters with at most 2 line feeds after entities parsing.
 
+            explanation_media (:obj:`~pyrogram.types.InputMediaAnimation` | :obj:`~pyrogram.types.InputMediaDocument` | :obj:`~pyrogram.types.InputMediaAudio` | :obj:`~pyrogram.types.InputMediaPhoto` | :obj:`~pyrogram.types.InputMediaSticker` | :obj:`~pyrogram.types.InputMediaVideo` | :obj:`~pyrogram.types.Location`, *optional*):
+                Media attached to the poll explanation that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll.
+
             open_period (``int``, *optional*):
                 Amount of time in seconds the poll will be active after creation, 5-2628000.
                 Can't be used together with *close_date*.
@@ -3435,6 +3436,9 @@ class Message(Object, Update):
 
             description (:obj:`~pyrogram.types.FormattedText`, *optional*):
                 Description of the poll to be sent, 0-1024 characters after entities parsing.
+
+            description_media (:obj:`~pyrogram.types.InputMediaAnimation` | :obj:`~pyrogram.types.InputMediaDocument` | :obj:`~pyrogram.types.InputMediaAudio` | :obj:`~pyrogram.types.InputMediaPhoto` | :obj:`~pyrogram.types.InputMediaSticker` | :obj:`~pyrogram.types.InputMediaVideo` | :obj:`~pyrogram.types.Location`, *optional*):
+                Media attached to the poll.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -3529,23 +3533,8 @@ class Message(Object, Update):
             schedule_date=schedule_date,
             message_effect_id=message_effect_id,
             reply_markup=reply_markup,
-            attached_media_animation=attached_media_animation,
-            attached_media_audio=attached_media_audio,
-            attached_media_document=attached_media_document,
-            attached_media_photo=attached_media_photo,
-            attached_media_sticker=attached_media_sticker,
-            attached_media_video=attached_media_video,
-            attached_media_video_note=attached_media_video_note,
-            # TODO: https://t.me/c/1279877202/191075
-            attached_media_voice=attached_media_voice,
-            solution_media_animation=solution_media_animation,
-            solution_media_audio=solution_media_audio,
-            solution_media_document=solution_media_document,
-            solution_media_photo=solution_media_photo,
-            solution_media_sticker=solution_media_sticker,
-            solution_media_video=solution_media_video,
-            solution_media_video_note=solution_media_video_note,
-            solution_media_voice=solution_media_voice,
+            description_media=description_media,
+            explanation_media=explanation_media,
         )
 
     async def reply_sticker(
@@ -4764,7 +4753,6 @@ class Message(Object, Update):
         self,
         media: "types.InputMedia",
         reply_markup: "types.InlineKeyboardMarkup" = None,
-        file_name: str = None
     ) -> "Message":
         """Bound method *edit_media* of :obj:`~pyrogram.types.Message`.
 
@@ -4790,10 +4778,6 @@ class Message(Object, Update):
             reply_markup (:obj:`~pyrogram.types.InlineKeyboardMarkup`, *optional*):
                 An InlineKeyboardMarkup object.
 
-            file_name (``str``, *optional*):
-                File name of the media to be sent. Not applicable to photos.
-                Defaults to file's path basename.
-
         Returns:
             On success, the edited :obj:`~pyrogram.types.Message` is returned.
 
@@ -4806,7 +4790,6 @@ class Message(Object, Update):
             message_id=self.id,
             media=media,
             reply_markup=reply_markup,
-            file_name=file_name,
             schedule_date=self.date if self.scheduled else None,
             business_connection_id=self.business_connection_id
         )
