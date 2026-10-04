@@ -32,6 +32,7 @@ class Restriction(Object):
 
         text (``str``):
             The restriction text.
+
     """
 
     def __init__(self, *, platform: str, reason: str, text: str):

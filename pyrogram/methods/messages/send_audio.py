@@ -137,7 +137,7 @@ class SendAudio:
                 Unique identifier of the message effect to be added to the message; for private chats only.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+                Date when the message will be automatically sent. The date must be within 367 days in the future.
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.

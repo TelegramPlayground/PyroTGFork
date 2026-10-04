@@ -191,7 +191,7 @@ class SendPaidMedia:
                     is_uploaded_file = is_bytes_io or os.path.isfile(i.cover)
                     is_external_url = not is_uploaded_file and re.match("^https?://", i.cover)
                     if is_bytes_io and not hasattr(i.cover, "name"):
-                        cover.name = "cover.jpg"
+                        i.cover.name = "cover.jpg"
 
                     if is_uploaded_file:
                         video_cover_file = await self.invoke(

@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/KurimuzonAkuma>
 #
 #  This file is part of Pyrogram.
 #
@@ -16,18 +16,15 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-from typing import Optional
+from typing import Callable, Optional, Union
 
-import pyrogram
 from pyrogram import raw
-from .input_message_content import InputMessageContent
 
-log = logging.getLogger(__name__)
+from .input_media import InputMedia
 
 
-class InputVenueMessageContent(InputMessageContent):
-    """Content of a venue message to be sent as the result of an inline query.
+class InputMediaVenue(InputMedia):
+    """Represents a venue to be sent.
 
     Parameters:
         latitude (``float``):
@@ -43,15 +40,17 @@ class InputVenueMessageContent(InputMessageContent):
             Address of the venue.
 
         foursquare_id (``str``, *optional*):
-            Foursquare identifier of the venue, if known.
+            Foursquare identifier of the venue.
 
         foursquare_type (``str``, *optional*):
-            Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+            Foursquare type of the venue, if known.
+            (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
 
         google_place_id (``str``, *optional*):
             Google Places identifier of the venue.
 
         google_place_type (``str``, *optional*):
+            Google Places type of the venue.
             Google Places type of the venue. (See `supported types <https://developers.google.com/places/web-service/supported_types>`__.)
 
     """
@@ -62,10 +61,11 @@ class InputVenueMessageContent(InputMessageContent):
         longitude: float,
         title: str,
         address: str,
+        *,
         foursquare_id: Optional[str] = None,
         foursquare_type: Optional[str] = None,
         google_place_id: Optional[str] = None,
-        google_place_type: Optional[str] = None
+        google_place_type: Optional[str] = None,
     ):
         super().__init__()
 
@@ -78,10 +78,22 @@ class InputVenueMessageContent(InputMessageContent):
         self.google_place_id = google_place_id
         self.google_place_type = google_place_type
 
-    async def write(self, client: "pyrogram.Client", reply_markup):
-        provider = ""
+
+    async def write(
+        self,
+        client: "pyrogram.Client",
+        chat_id: Optional[Union[int, str]] = None,
+        business_connection_id: Optional[str] = None,
+        progress: Optional[Callable] = None,
+        progress_args: tuple = (),
+    ) -> tuple[
+        "raw.types.InputMediaVenue",
+        bool
+    ]:
         venue_id = ""
         venue_type = ""
+        provider = ""
+
         if any([
             self.google_place_id,
             self.google_place_type,
@@ -89,7 +101,7 @@ class InputVenueMessageContent(InputMessageContent):
             provider = "gplaces"
             venue_id = self.google_place_id
             venue_type = self.google_place_type
-        if any([
+        elif any([
             self.foursquare_id,
             self.foursquare_type,
         ]):
@@ -97,15 +109,16 @@ class InputVenueMessageContent(InputMessageContent):
             venue_id = self.foursquare_id
             venue_type = self.foursquare_type
 
-        return raw.types.InputBotInlineMessageMediaVenue(
+        media = raw.types.InputMediaVenue(
             geo_point=raw.types.InputGeoPoint(
                 lat=self.latitude,
-                long=self.longitude
+                long=self.longitude,
             ),
             title=self.title,
             address=self.address,
             provider=provider,
             venue_id=venue_id,
             venue_type=venue_type,
-            reply_markup=await reply_markup.write(client) if reply_markup else None
         )
+
+        return media, False

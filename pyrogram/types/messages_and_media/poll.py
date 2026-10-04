@@ -62,8 +62,15 @@ class Poll(Object, Update):
         allows_revoting (``bool``):
             True, if the poll allows to change the chosen answer options.
 
-        chosen_option_id (``int``, *optional*):
-            0-based index of the chosen option), None in case of no vote yet.
+        members_only (``bool``, *optional*):
+            True, if only the users that are members of the chat for more than a day will be able to vote.
+
+        country_codes (List of ``str``, *optional*):
+            The list of two-letter ISO 3166-1 alpha-2 codes of countries, users from which will be able to vote.
+            If None, then all users can participate in the poll.
+
+        chosen_option_ids (List of ``int``, *optional*):
+            Array of 0-based index of the chosen option, None in case of no vote yet.
 
         correct_option_ids (List of ``int``, *optional*):
             Array of 0-based identifiers of the correct answer options.
@@ -103,7 +110,9 @@ class Poll(Object, Update):
         type: "enums.PollType",
         allows_multiple_answers: bool,
         allows_revoting: bool,
-        chosen_option_id: Optional[int] = None,
+        members_only: Optional[bool] = None,
+        country_codes: Optional[list[str]] = None,
+        chosen_option_ids: Optional[list[int]] = None,
         correct_option_ids: Optional[list[int]] = None,
         explanation: Optional["types.FormattedText"] = None,
         open_period: Optional[int] = None,
@@ -122,7 +131,9 @@ class Poll(Object, Update):
         self.type = type
         self.allows_multiple_answers = allows_multiple_answers
         self.allows_revoting = allows_revoting
-        self.chosen_option_id = chosen_option_id
+        self.members_only = members_only
+        self.country_codes = country_codes
+        self.chosen_option_ids = chosen_option_ids
         self.correct_option_ids = correct_option_ids
         self.explanation = explanation
         self.open_period = open_period
@@ -150,7 +161,7 @@ class Poll(Object, Update):
         if isinstance(media_poll, raw.types.MessageMediaPoll):
             persistent_id = str(poll.id)
 
-        chosen_option_id = []
+        chosen_option_ids = []
         correct_option_ids = []
         options = []
 
@@ -162,7 +173,7 @@ class Poll(Object, Update):
                 voter_count = result.voters
 
                 if result.chosen:
-                    chosen_option_id.append(i)
+                    chosen_option_ids.append(i)
 
                 if result.correct:
                     correct_option_ids.append(i)
@@ -212,7 +223,9 @@ class Poll(Object, Update):
             type=enums.PollType.QUIZ if poll.quiz else enums.PollType.REGULAR,
             allows_multiple_answers=poll.multiple_choice,
             allows_revoting=not poll.revoting_disabled,
-            chosen_option_id=chosen_option_id,
+            members_only=poll.subscribers_only,
+            country_codes=poll.countries_iso2 or None,
+            chosen_option_ids=chosen_option_ids,
             correct_option_ids=correct_option_ids,
             explanation=types.FormattedText._parse(client, raw.types.TextWithEntities(text=poll_results.solution, entities=poll_results.solution_entities)),
             open_period=poll.close_period,
@@ -235,7 +248,7 @@ class Poll(Object, Update):
 
             # TODO: FIXME!
             results = update.results.results
-            chosen_option_id = []
+            chosen_option_ids = []
             correct_option_ids = []
             options = []
             question = types.FormattedText(
@@ -244,7 +257,7 @@ class Poll(Object, Update):
 
             for i, result in enumerate(results):
                 if result.chosen:
-                    chosen_option_id.append(i)
+                    chosen_option_ids.append(i)
 
                 if result.correct:
                     correct_option_ids.append(i)
@@ -271,7 +284,7 @@ class Poll(Object, Update):
                 allows_multiple_answers=None,
                 allows_revoting=None,
                 has_open_answers=None,
-                chosen_option_id=chosen_option_id,
+                chosen_option_ids=chosen_option_ids,
                 correct_option_ids=correct_option_ids,
                 client=client
             )

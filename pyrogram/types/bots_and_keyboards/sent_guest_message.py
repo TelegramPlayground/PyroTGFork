@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/KurimuzonAkuma>
 #
 #  This file is part of Pyrogram.
 #
@@ -16,28 +16,33 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-__fork_name__ = "pyrotgfork"
-__version__ = "2.2.24.1"
-__license__ = "GNU Lesser General Public License v3.0 (LGPL-3.0)"
-__copyright__ = "Copyright (C) 2017-present Dan <https://github.com/delivrance>"
+from pyrogram import raw, utils
 
-from concurrent.futures.thread import ThreadPoolExecutor
+from ..object import Object
 
 
-class StopTransmission(Exception):
-    pass
+class SentGuestMessage(Object):
+    """Describes an inline message sent by a guest bot.
 
+    Parameters:
+        inline_message_id (``str``):
+            Identifier of the sent inline message.
 
-class StopPropagation(StopAsyncIteration):
-    pass
+    """
 
+    def __init__(
+        self,
+        *,
+        inline_message_id: str,
+    ):
+        super().__init__()
 
-class ContinuePropagation(StopAsyncIteration):
-    pass
+        self.inline_message_id = inline_message_id
 
-
-from . import raw, types, filters, handlers, emoji, enums
-from .client import Client
-from .sync import idle, compose
-
-crypto_executor = ThreadPoolExecutor(1, thread_name_prefix="CryptoWorker")
+    @staticmethod
+    async def _parse(
+        inline_message_id: "raw.base.InputBotInlineMessageID",
+    ) -> "SentGuestMessage":
+        return SentGuestMessage(
+            inline_message_id=utils.pack_inline_message_id(inline_message_id)
+        )

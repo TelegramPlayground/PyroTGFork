@@ -1,5 +1,5 @@
 #  Pyrogram - Telegram MTProto API Client Library for Python
-#  Copyright (C) 2017-present Dan <https://github.com/delivrance>
+#  Copyright (C) 2017-present <https://github.com/KurimuzonAkuma>
 #
 #  This file is part of Pyrogram.
 #
@@ -17,32 +17,35 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 import io
+
 from typing import TYPE_CHECKING, Callable, Optional, Union
 
-from ..messages_and_media import MessageEntity
 from ..object import Object
-from ... import enums
+
+if TYPE_CHECKING:
+    from pyrogram import raw, types
 
 
-class InputMedia(Object):
+class InputPollOptionMedia(Object):
     """Content of a media message to be sent.
 
     It should be one of:
 
     - :obj:`~pyrogram.types.InputMediaAnimation`
-    - :obj:`~pyrogram.types.InputMediaDocument`
-    - :obj:`~pyrogram.types.InputMediaAudio`
     - :obj:`~pyrogram.types.InputMediaLivePhoto`
+    - :obj:`~pyrogram.types.InputMediaLocation`
     - :obj:`~pyrogram.types.InputMediaPhoto`
+    - :obj:`~pyrogram.types.InputMediaVenue`
     - :obj:`~pyrogram.types.InputMediaVideo`
+
     """
 
     def __init__(
         self,
-        media: Union[str, "io.BytesIO"],
-        caption: Optional[str] = "",
-        parse_mode: Optional["enums.ParseMode"] = None,
-        caption_entities: Optional[list["MessageEntity"]] = None,
+        media: Optional[Union[str, "io.BytesIO"]] = None,
+        caption: str = "",
+        parse_mode: Optional[str] = None,
+        caption_entities: Optional[list["types.MessageEntity"]] = None,
     ):
         super().__init__()
 

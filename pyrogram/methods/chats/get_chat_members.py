@@ -16,14 +16,12 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
+
 from asyncio import sleep
 from typing import Union, Optional, AsyncGenerator
 
 import pyrogram
 from pyrogram import raw, types, enums
-
-log = logging.getLogger(__name__)
 
 
 async def get_chunk(
@@ -34,9 +32,11 @@ async def get_chunk(
     limit: int,
     query: str,
 ):
-    is_queryable = filter in [enums.ChatMembersFilter.SEARCH,
-                              enums.ChatMembersFilter.BANNED,
-                              enums.ChatMembersFilter.RESTRICTED]
+    is_queryable = filter in [
+        enums.ChatMembersFilter.SEARCH,
+        enums.ChatMembersFilter.BANNED,
+        enums.ChatMembersFilter.RESTRICTED
+    ]
 
     filter = filter.value(q=query) if is_queryable else filter.value()
 
@@ -159,3 +159,37 @@ class GetChatMembers:
 
                 if current >= total:
                     return
+
+
+    async def get_chat_administrators(
+        self: "pyrogram.Client",
+        chat_id: Union[int, str],
+        return_bots: bool = False,
+    ) -> Optional[list["types.ChatMember"]]:
+        """Use this method to get a list of administrators in a chat.
+
+        A chat can be either a basic group, a supergroup or a channel.
+        Requires administrator rights in channels.
+
+        .. include:: /_includes/usable-by/users-bots.rst
+
+        Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
+            
+            return_bots (``bool``, *optional*):
+                Pass True to additionally receive all bots that are administrators of the chat. By default, bots other than the current bot are omitted.
+
+        Returns:
+            List of :obj:`~pyrogram.types.ChatMember`: On success, a list of ChatMember objects are returned.
+
+        """
+        administrators = []
+        async for member in self.get_chat_members(
+            chat_id, 
+            filter=enums.ChatMembersFilter.ADMINISTRATORS
+        ):
+            if not return_bots and member.user and member.user.is_bot and not member.user.is_self:
+                continue
+            administrators.append(member)            
+        return types.List(administrators)

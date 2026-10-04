@@ -33,6 +33,7 @@ from .set_birthdate import SetBirthdate
 from .set_personal_chat import SetPersonalChat
 from .update_status import UpdateStatus
 from .delete_account import DeleteAccount
+from .get_user_personal_chat_messages import GetUserPersonalChatMessages
 
 
 class Users(
@@ -53,5 +54,6 @@ class Users(
     UpdateProfile,
     UpdateStatus,
     DeleteAccount,
+    GetUserPersonalChatMessages,
 ):
     pass

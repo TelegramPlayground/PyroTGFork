@@ -78,7 +78,7 @@ class SendInlineBotResult:
                 If the message is in a thread, ID of the original message.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+                Date when the message will be automatically sent. The date must be within 367 days in the future.
 
         Returns:
             :obj:`~pyrogram.types.Message`: On success, the sent message is returned or False if no message was sent.

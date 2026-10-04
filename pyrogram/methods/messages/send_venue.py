@@ -85,6 +85,12 @@ class SendVenue:
                 Foursquare type of the venue, if known.
                 (For example, "arts_entertainment/default", "arts_entertainment/aquarium" or "food/icecream".)
 
+            google_place_id (``str``, *optional*):
+                Google Places identifier of the venue.
+
+            google_place_type (``str``, *optional*):
+                Google Places type of the venue. (See `supported types <https://developers.google.com/places/web-service/supported_types>`__.)
+
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
                 Users will receive a notification with no sound.
@@ -106,7 +112,7 @@ class SendVenue:
                 To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+                Date when the message will be automatically sent. The date must be within 367 days in the future.
 
             protect_content (``bool``, *optional*):
                 Pass True if the content of the message must be protected from forwarding and saving; for bots only.
@@ -154,6 +160,24 @@ class SendVenue:
             reply_parameters
         )
 
+        provider = ""
+        venue_id = ""
+        venue_type = ""
+        if any([
+            google_place_id,
+            google_place_type,
+        ]):
+            provider = "gplaces"
+            venue_id = google_place_id
+            venue_type = google_place_type
+        if any([
+            foursquare_id,
+            foursquare_type,
+        ]):
+            provider = "foursquare"
+            venue_id = foursquare_id
+            venue_type = foursquare_type
+
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
             media=raw.types.InputMediaVenue(
@@ -163,9 +187,9 @@ class SendVenue:
                 ),
                 title=title,
                 address=address,
-                provider="", # TODO
-                venue_id=foursquare_id,
-                venue_type=foursquare_type
+                provider=provider,
+                venue_id=venue_id,
+                venue_type=venue_type
             ),
             message="",
             silent=disable_notification or None,

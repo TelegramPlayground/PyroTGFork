@@ -140,7 +140,7 @@ class SendVideoNote:
                 List of special entities that appear in the caption, which can be specified instead of *parse_mode*.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+                Date when the message will be automatically sent. The date must be within 367 days in the future.
 
             ttl_seconds (``int``, *optional*):
                 The message will be self-destructed in the specified time after its content was opened.

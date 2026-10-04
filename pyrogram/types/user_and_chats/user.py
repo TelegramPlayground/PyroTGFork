@@ -151,13 +151,16 @@ class User(Object, Update):
             True, if this user added the bot to the attachment menu.
 
         can_join_groups (``bool``, *optional*):
-            True, if the bot can be invited to groups. Returned only in get_me.
+            True, if the bot can be invited to groups. Returned only in :meth:`~pyrogram.Client.get_me`.
 
         can_read_all_group_messages (``bool``, *optional*):
-            True, if privacy mode is disabled for the bot. Returned only in get_me.
+            True, if privacy mode is disabled for the bot. Returned only in :meth:`~pyrogram.Client.get_me`.
+
+        supports_guest_queries (``bool``, *optional*):
+            True, if the bot supports guest queries from chats it is not a member of. Returned only in :meth:`~pyrogram.Client.get_me`.
 
         supports_inline_queries (``bool``, *optional*):
-            True, if the bot supports inline queries. Returned only in get_me.
+            True, if the bot supports inline queries. Returned only in :meth:`~pyrogram.Client.get_me`.
 
         can_connect_to_business (``bool``, *optional*):
             True, if the bot can be connected to a Telegram Business account to receive its messages.
@@ -166,7 +169,7 @@ class User(Object, Update):
             Placeholder for inline queries (displayed on the application input field)
 
         inline_need_location (``bool``, *optional*):
-            True, if the bot supports inline `user location <https://core.telegram.org/bots/inline#location-based-results>`_ requests. Returned only in get_me.
+            True, if the bot supports inline `user location <https://core.telegram.org/bots/inline#location-based-results>`_ requests. Returned only in :meth:`~pyrogram.Client.get_me`.
         
         can_be_edited (``bool``, *optional*):
             True, if the current user can edit this bot's profile picture.
@@ -184,7 +187,7 @@ class User(Object, Update):
             If False, the user is inaccessible, and the only information known about the user is inside this class. Identifier of the user can't be passed to any method.
 
         has_main_web_app (``bool``, *optional*):
-            True, if the bot has a main Web App. Returned only in get_me.
+            True, if the bot has a main Web App. Returned only in :meth:`~pyrogram.Client.get_me`.
 
         active_user_count (``int``, *optional*):
             The number of recently active users of the bot.
@@ -193,13 +196,13 @@ class User(Object, Update):
             Number of Telegram Stars that must be paid by general user for each sent message to the user. If positive and userFullInfo is unknown, use ``canSendMessageToUser`` to check whether the current user must pay.
 
         has_topics_enabled (``bool``, *optional*):
-            True, if the bot has forum topic mode enabled in private chats. Returned only in get_me.
+            True, if the bot has forum topic mode enabled in private chats. Returned only in :meth:`~pyrogram.Client.get_me`.
 
         allows_users_to_create_topics (``bool``, *optional*):
-            True, if users can create and delete topics in the chat with the bot. Returned only in get_me.
+            True, if users can create and delete topics in the chat with the bot. Returned only in :meth:`~pyrogram.Client.get_me`.
 
         can_manage_bots (``bool``, *optional*):
-            True, if other bots can be created to be controlled by the bot. Returned only in get_me.
+            True, if other bots can be created to be controlled by the bot. Returned only in :meth:`~pyrogram.Client.get_me`.
 
         mention (``str``, *property*):
             Generate a text mention for this user.
@@ -245,6 +248,7 @@ class User(Object, Update):
         can_be_added_to_attachment_menu: bool = None,
         can_join_groups: bool = None,
         can_read_all_group_messages: bool = None,
+        supports_guest_queries: bool = None,
         supports_inline_queries: bool = None,
         restricts_new_chats: bool = None,
         inline_need_location: bool = None,
@@ -293,6 +297,7 @@ class User(Object, Update):
         self.can_be_added_to_attachment_menu = can_be_added_to_attachment_menu
         self.can_join_groups = can_join_groups
         self.can_read_all_group_messages = can_read_all_group_messages
+        self.supports_guest_queries = supports_guest_queries
         self.supports_inline_queries = supports_inline_queries
         self.restricts_new_chats = restricts_new_chats
         self.inline_need_location = inline_need_location
@@ -396,6 +401,7 @@ class User(Object, Update):
             parsed_user.can_join_groups = not bool(user.bot_nochats or None)
             parsed_user.can_read_all_group_messages = user.bot_chat_history or None
             parsed_user.inline_query_placeholder = user.bot_inline_placeholder or None
+            parsed_user.supports_guest_queries = user.bot_guestchat or None
             parsed_user.supports_inline_queries = bool(parsed_user.inline_query_placeholder)
             parsed_user.inline_need_location = user.bot_inline_geo or None
             parsed_user.can_connect_to_business = user.bot_business or None

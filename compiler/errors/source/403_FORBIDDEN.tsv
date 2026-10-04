@@ -7,6 +7,7 @@ BOT_FORUM_CREATE_FORBIDDEN	This bot prevents users from creating or deleting top
 BOT_OWNER_REQUIRED	You must be the owner of the bot to perform this action
 BOT_VERIFIER_FORBIDDEN	This bot cannot assign [verification icons](https://core.telegram.org/api/bots/verification).
 BROADCAST_FORBIDDEN	Channel poll voters and reactions cannot be fetched to prevent deanonymization.
+CHANNEL_PRIVATE	You haven't joined this channel/supergroup.
 CHANNEL_PUBLIC_GROUP_NA	channel/supergroup not available.
 CHAT_ACTION_FORBIDDEN	You cannot execute this action.
 CHAT_ADMIN_INVITE_REQUIRED	You do not have the rights to do this.
@@ -47,6 +48,7 @@ RIGHT_FORBIDDEN	Your admin rights do not allow you to do this.
 SENSITIVE_CHANGE_FORBIDDEN	You can't change your sensitive content settings.
 STARGIFT_CONVERT_BOT_NOT_ALLOWED	This request cannot be performed by bots.
 TAKEOUT_REQUIRED	A [takeout](https://core.telegram.org/api/takeout) session needs to be initialized first, [see here for more info](https://core.telegram.org/api/takeout).
+USER_BANNED_IN_CHANNEL	You're banned from sending messages in supergroups/channels.
 USER_BOT_INVALID	User accounts must provide the `bot` method parameter when calling this method. If there is no such method parameter, this method can only be invoked by bot accounts.
 USER_CHANNELS_TOO_MUCH	One of the users you tried to add is already in too many channels/supergroups.
 USER_DELETED	You can't send this secret message because the other participant deleted their account.

@@ -27,15 +27,16 @@ class SendMessageDraft:
         self: "pyrogram.Client",
         chat_id: Union[int, str],
         draft_id: int,
-        text: str,
+        text: str = "",
         parse_mode: Optional["enums.ParseMode"] = None,
         entities: list["types.MessageEntity"] = None,
         message_thread_id: int = None,
     ) -> bool:
         """Sends a draft for a being generated text message.
 
-        Use this method to stream a partial message to a user while the message is being generated. This method shows a live text preview as it is being composed. To achieve a smooth
-        AI-streaming effect, call this method repeatedly with progressively longer text, passing a consistent *draft_id* for all frames of the same stream.
+        Use this method to stream a partial message to a user while the message is being generated.
+        Note that the streamed draft is ephemeral and acts as a temporary 30-second preview - once the output is finalized, you must call :meth:`~pyrogram.Client.send_message` with the complete message to persist it in the user's chat.
+        This method shows a live text preview as it is being composed. To achieve a smooth AI-streaming effect, call this method repeatedly with progressively longer text, passing a consistent *draft_id* for all frames of the same stream.
 
         .. include:: /_includes/usable-by/bots.rst
 
@@ -46,8 +47,9 @@ class SendMessageDraft:
             draft_id (``int``):
                 Unique identifier of the message draft; must be non-zero. Changes of drafts with the same identifier are animated.
 
-            text (``str``):
-                Text of the message to be sent, 1-4096 characters after entities parsing.
+            text (``str``, *optional*):
+                Text of the message to be sent, 0-4096 characters after entities parsing.
+                Pass an empty text to show a “Thinking…” placeholder.
 
             parse_mode (:obj:`~pyrogram.enums.ParseMode`, *optional*):
                 Mode for parsing entities in the message text. By default, texts are parsed using Markdown and HTML styles.
@@ -84,9 +86,6 @@ class SendMessageDraft:
         if not chat_id:
             raise ValueError("chat_id is required")
 
-        if not text:
-            raise ValueError("text cannot be empty")
-
         peer = await self.resolve_peer(chat_id)
 
         if not isinstance(peer, (raw.types.InputPeerUser, raw.types.InputPeerSelf)):
@@ -95,9 +94,6 @@ class SendMessageDraft:
         message, entities = (
             await utils.parse_text_entities(self, text, parse_mode, entities)
         ).values()
-
-        if not message:
-            raise ValueError("text cannot be empty after parsing")
 
         return await self.invoke(
             raw.functions.messages.SetTyping(

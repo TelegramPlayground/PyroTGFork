@@ -131,7 +131,7 @@ class SendVoice:
                 instructions to remove reply keyboard or to force a reply from the user.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+                Date when the message will be automatically sent. The date must be within 367 days in the future.
 
             ttl_seconds (``int``, *optional*):
                 Self-Destruct Timer.

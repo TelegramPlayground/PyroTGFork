@@ -4,6 +4,7 @@ ALLOW_PAYMENT_REQUIRED	This peer only accepts [paid messages](https://core.teleg
 API_GIFT_RESTRICTED_UPDATE_APP	Please update the app to access the gift API.
 AUTH_KEY_DUPLICATED	Concurrent usage of the current session from multiple connections was detected, the current session was invalidated by the server for security reasons!
 BANNED_RIGHTS_INVALID	You provided some invalid flags in the banned rights.
+BOT_ACCESS_RESTRICTED	The bot's owner has restricted access to the bot in [@BotFather](https://BotFather.t.me) so that only selected users can access it.
 BOT_PRECHECKOUT_FAILED	Bot precheckout failed.
 BUSINESS_ADDRESS_ACTIVE	The user is currently advertising a [Business Location](https://core.telegram.org/api/business#location), the location may only be changed (or removed) using [account.updateBusinessLocation](https://core.telegram.org/method/account.updateBusinessLocation).  .
 CALL_PROTOCOL_COMPAT_LAYER_INVALID	The other side of the call does not support any of the VoIP protocols supported by the local client, as specified by the `protocol.layer` and `protocol.library_versions` fields.

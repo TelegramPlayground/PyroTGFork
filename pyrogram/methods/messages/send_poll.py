@@ -40,30 +40,16 @@ class SendPoll:
         shuffle_options: bool = None,
         allow_adding_options: bool = None,
         hide_results_until_closes: bool = None,
+        members_only: bool = None,
+        country_codes: list[str] = None,
         correct_option_ids: list[int] = None,
         explanation: "types.FormattedText" = None,
-        explanation_media: Optional[Union[
-            "types.InputMediaAnimation",
-            "types.InputMediaDocument",
-            "types.InputMediaAudio",
-            "types.InputMediaPhoto",
-            "types.InputMediaSticker",
-            "types.InputMediaVideo",
-            "types.Location",
-        ]] = None,
+        explanation_media: Optional["types.InputPollMedia"] = None,
         open_period: int = None,
         close_date: datetime = None,
         is_closed: bool = None,
         description: "types.FormattedText" = None,
-        description_media: Optional[Union[
-            "types.InputMediaAnimation",
-            "types.InputMediaDocument",
-            "types.InputMediaAudio",
-            "types.InputMediaPhoto",
-            "types.InputMediaSticker",
-            "types.InputMediaVideo",
-            "types.Location",
-        ]] = None,
+        media: Optional["types.InputPollMedia"] = None,
         disable_notification: bool = None,
         protect_content: bool = None,
         allow_paid_broadcast: bool = None,
@@ -124,6 +110,12 @@ class SendPoll:
             hide_results_until_closes (``bool``, *optional*):
                 Pass True, if poll results must be shown only after the poll closes.
 
+            members_only (``bool``, *optional*):
+                Pass True, if voting is limited to users who have been members of the chat where the poll is being sent for more than 24 hours; for channel chats only.
+
+            country_codes (List of ``str``, *optional*):
+                List of 0-12 two-letter ISO 3166-1 alpha-2 country codes indicating the countries from which users can vote in the poll; for channel chats only. Use "FT" as a country code to allow users with anonymous numbers to vote. If omitted or empty, then users from any country can participate in the poll.
+
             correct_option_ids (List of ``int``, *optional*):
                 List of monotonically increasing 0-based identifiers of the correct answer options, required for polls in quiz mode.
 
@@ -131,7 +123,7 @@ class SendPoll:
                 Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style
                 poll, 0-200 characters with at most 2 line feeds after entities parsing.
 
-            explanation_media (:obj:`~pyrogram.types.InputMediaAnimation` | :obj:`~pyrogram.types.InputMediaDocument` | :obj:`~pyrogram.types.InputMediaAudio` | :obj:`~pyrogram.types.InputMediaPhoto` | :obj:`~pyrogram.types.InputMediaSticker` | :obj:`~pyrogram.types.InputMediaVideo` | :obj:`~pyrogram.types.Location`, *optional*):
+            explanation_media (:obj:`~pyrogram.types.InputPollMedia`, *optional*):
                 Media attached to the poll explanation that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll.
 
             open_period (``int``, *optional*):
@@ -150,8 +142,8 @@ class SendPoll:
             description (:obj:`~pyrogram.types.FormattedText`, *optional*):
                 Description of the poll to be sent, 0-1024 characters after entities parsing.
 
-            description_media (:obj:`~pyrogram.types.InputMediaAnimation` | :obj:`~pyrogram.types.InputMediaDocument` | :obj:`~pyrogram.types.InputMediaAudio` | :obj:`~pyrogram.types.InputMediaPhoto` | :obj:`~pyrogram.types.InputMediaSticker` | :obj:`~pyrogram.types.InputMediaVideo` | :obj:`~pyrogram.types.Location`, *optional*):
-                Media attached to the poll.
+            media (:obj:`~pyrogram.types.InputPollMedia`, *optional*):
+                Media added to the poll description.
 
             disable_notification (``bool``, *optional*):
                 Sends the message silently.
@@ -183,7 +175,7 @@ class SendPoll:
                 To set this behavior permanently for all messages, use :meth:`~pyrogram.Client.set_send_as_chat`.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+                Date when the message will be automatically sent. The date must be within 367 days in the future.
 
             message_effect_id (``int`` ``64-bit``, *optional*):
                 Unique identifier of the message effect to be added to the message; for private chats only.
@@ -277,25 +269,19 @@ class SendPoll:
             allows_multiple_answers = True
 
         attached_media = None
-        if description_media:
-            if isinstance(description_media, types.Location):
-                attached_media = await description_media.write()
-            else:
-                attached_media, _ = await description_media.write(
-                    client=self,
-                    chat_id=chat_id,
-                    business_connection_id=business_connection_id,
-                )
+        if media:
+            attached_media, _ = await media.write(
+                client=self,
+                chat_id=chat_id,
+                business_connection_id=business_connection_id,
+            )
         solution_media = None
         if explanation_media:
-            if isinstance(explanation_media, types.Location):
-                solution_media = await explanation_media.write()
-            else:
-                solution_media, _ = await explanation_media.write(
-                    client=self,
-                    chat_id=chat_id,
-                    business_connection_id=business_connection_id,
-                )
+            solution_media, _ = await explanation_media.write(
+                client=self,
+                chat_id=chat_id,
+                business_connection_id=business_connection_id,
+            )
 
         rpc = raw.functions.messages.SendMedia(
             peer=await self.resolve_peer(chat_id),
@@ -315,6 +301,8 @@ class SendPoll:
                     revoting_disabled=not allows_revoting,
                     shuffle_answers=shuffle_options,
                     hide_results_until_close=hide_results_until_closes,
+                    subscribers_only=members_only,
+                    countries_iso2=country_codes or None,
                     # creator:flags.10?true 
                 ),
                 correct_answers=correct_option_ids or None,

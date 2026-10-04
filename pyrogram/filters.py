@@ -811,6 +811,47 @@ tg_business = create(tg_business_filter)
 
 # endregion
 
+
+# region guest message
+def guest_message_query_id(
+    case_sensitive: bool = False,
+) -> Filter:
+    """Filter messages received within chats they are not a member of.
+
+    Parameters:
+        case_sensitive (``bool``, *optional*):
+            Pass True if you want the bot username to be case sensitive. Defaults to False.
+
+    """
+    async def func(flt, client: pyrogram.Client, message: Message) -> bool:
+        username: str = (client.me and client.me.username) or ""
+        text: Str = message.text or message.caption
+        message.guest_message = None
+
+        if not text or not username:
+            return False
+
+        # Pattern: Matches the username (with optional @) anywhere, using word boundaries
+        pattern = rf"(?<!\w)@?{re.escape(username)}(?!\w)"
+        flags = re.IGNORECASE if not flt.case_sensitive else 0
+
+        # re.search looks through the entire text
+        if re.search(pattern, text, flags=flags):
+            # Remove the username from the text entirely
+            clean_text = re.sub(pattern, "", text, flags=flags)
+            message.guest_message = " ".join(clean_text.split())
+            return True
+
+        return False
+
+    return create(
+        func=func,
+        name="GuestMessageQueryFilter",
+        case_sensitive=case_sensitive,
+    )
+# endregion
+
+
 # region video_chat_participants_invited_filter
 async def video_chat_participants_invited_filter(_, __, m: Message) -> bool:
     return bool(m.video_chat_participants_invited)

@@ -53,6 +53,8 @@ from .switch_inline_query_chosen_chat import SwitchInlineQueryChosenChat
 from .web_app_info import WebAppInfo
 from .managed_bot_created import ManagedBotCreated
 from .managed_bot_updated import ManagedBotUpdated
+from .bot_access_settings import BotAccessSettings
+from .sent_guest_message import SentGuestMessage
 
 __all__ = [
     "CallbackGame",
@@ -90,4 +92,6 @@ __all__ = [
     "SwitchInlineQueryChosenChat",
     "ManagedBotCreated",
     "ManagedBotUpdated",
+    "BotAccessSettings",
+    "SentGuestMessage",
 ]

@@ -78,7 +78,7 @@ class EditCachedMedia:
                 Pass True, if the caption must be shown above the message media. Supported only for animation, photo and video messages.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+                Date when the message will be automatically sent. The date must be within 367 days in the future.
 
             has_spoiler (``bool``, *optional*):
                 True, if the message media is covered by a spoiler animation.

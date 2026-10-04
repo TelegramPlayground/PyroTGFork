@@ -33,6 +33,7 @@ NEED_CHAT_INVALID	The provided chat is invalid
 NEED_DOC_INVALID	The provided document is invalid
 NEED_MEMBER_INVALID	The provided member is invalid or does not exist
 No workers running	The Telegram server is restarting its workers. Try again later.
+OAUTH_REQUEST_INVALID	The specified OAuth request is invalid.
 PARTICIPANT_CALL_FAILED	Failure while making call due to Telegram having internal problems. Please try again later
 PASSKEY_AUTH_RESTART	Restart the passkey authorization process.
 PERSISTENT_TIMESTAMP_OUTDATED	Channel internal replication issues, try again later (treat this like an RPC_CALL_FAIL).

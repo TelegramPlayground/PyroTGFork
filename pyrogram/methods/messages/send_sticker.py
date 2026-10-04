@@ -128,7 +128,7 @@ class SendSticker:
                 instructions to remove reply keyboard or to force a reply from the user.
 
             schedule_date (:py:obj:`~datetime.datetime`, *optional*):
-                Date when the message will be automatically sent.
+                Date when the message will be automatically sent. The date must be within 367 days in the future.
 
             progress (``Callable``, *optional*):
                 Pass a callback function to view the file transmission progress.

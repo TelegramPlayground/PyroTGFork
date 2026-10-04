@@ -55,7 +55,13 @@ class GetChatSponsoredMessages:
         if isinstance(r, raw.types.messages.SponsoredMessagesEmpty):
             return None
 
+        # posts_between:flags.0?int
+        # start_delay:flags.1?int
+        # between_delay:flags.2?int
+        users = {u.id: u for u in r.users}
+        chats = {c.id: c for c in r.chats}
+
         return types.List([
-            types.SponsoredMessage._parse(self, sm)
+            types.SponsoredMessage._parse(self, sm, users, chats)
             for sm in r.messages
         ])

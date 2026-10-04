@@ -16,7 +16,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional
+from typing import Optional, Union
 
 import pyrogram
 from pyrogram import raw, types
@@ -25,13 +25,22 @@ from pyrogram import raw, types
 class SetEmojiStatus:
     async def set_emoji_status(
         self: "pyrogram.Client",
+        chat_id: Optional[Union[int, str]] = None,
         emoji_status: Optional["types.EmojiStatus"] = None
     ) -> bool:
         """Set the emoji status.
 
+        .. note::
+
+            For Telegram Premium users only.
+
         .. include:: /_includes/usable-by/users.rst
 
         Parameters:
+            chat_id (``int`` | ``str``):
+                Unique identifier (int) or username (str) of the target chat.
+                Defaults to the current user.
+
             emoji_status (:obj:`~pyrogram.types.EmojiStatus`, *optional*):
                 The emoji status to set. None to remove.
 
@@ -43,17 +52,29 @@ class SetEmojiStatus:
 
                 from pyrogram import types
 
-                await app.set_emoji_status(types.EmojiStatus(custom_emoji_id="1234567890987654321"))
+                await app.set_emoji_status(emoji_status=types.EmojiStatus(custom_emoji_id="1234567890987654321"))
 
         """
-        await self.invoke(
-            raw.functions.account.UpdateEmojiStatus(
-                emoji_status=(
-                    emoji_status.write()
-                    if emoji_status
-                    else raw.types.EmojiStatusEmpty()
+        peer = await self.resolve_peer(chat_id or "me")
+        if isinstance(peer, raw.types.InputPeerChannel):
+            await self.invoke(
+                raw.functions.channels.UpdateEmojiStatus(
+                    channel=peer,
+                    emoji_status=(
+                        emoji_status.write()
+                        if emoji_status
+                        else raw.types.EmojiStatusEmpty()
+                    )
                 )
             )
-        )
-
+        else:
+            await self.invoke(
+                raw.functions.account.UpdateEmojiStatus(
+                    emoji_status=(
+                        emoji_status.write()
+                        if emoji_status
+                        else raw.types.EmojiStatusEmpty()
+                    )
+                )
+            )
         return True

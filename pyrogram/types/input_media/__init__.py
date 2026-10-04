@@ -17,6 +17,8 @@
 #  along with Pyrogram.  If not, see <http://www.gnu.org/licenses/>.
 
 from .input_media import InputMedia
+from .input_poll_media import InputPollMedia
+from .input_poll_option_media import InputPollOptionMedia
 from .input_media_animation import InputMediaAnimation
 from .input_media_audio import InputMediaAudio
 from .input_media_document import InputMediaDocument
@@ -25,10 +27,15 @@ from .input_media_video import InputMediaVideo
 from .input_media_sticker import InputMediaSticker
 from .input_phone_contact import InputPhoneContact
 from .link_preview_options import LinkPreviewOptions
+from .input_media_live_photo import InputMediaLivePhoto
+from .input_media_location import InputMediaLocation
+from .input_media_venue import InputMediaVenue
 
 __all__ = [
     "LinkPreviewOptions",
     "InputMedia",
+    "InputPollMedia",
+    "InputPollOptionMedia",
     "InputMediaAnimation",
     "InputMediaAudio",
     "InputMediaDocument",
@@ -36,4 +43,7 @@ __all__ = [
     "InputMediaVideo",
     "InputMediaSticker",
     "InputPhoneContact",
+    "InputMediaLivePhoto",
+    "InputMediaLocation",
+    "InputMediaVenue",
 ]
