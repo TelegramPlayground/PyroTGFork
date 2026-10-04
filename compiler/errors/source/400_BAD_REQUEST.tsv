@@ -141,6 +141,7 @@ COLLECTIBLE_INVALID	The specified collectible is invalid.
 COLLECTIBLE_NOT_FOUND	The specified collectible could not be found.
 COLLECTION_ID_INVALID	The specified collection ID is invalid.
 COLOR_INVALID	The specified color palette ID was invalid.
+COMMUNITY_PEER_TOO_LARGE	The specified peer has too many members to be part of a community.
 CONNECTION_API_ID_INVALID	The provided API id is invalid.
 CONNECTION_APP_VERSION_EMPTY	App version is empty.
 CONNECTION_DEVICE_MODEL_EMPTY	The specified device model is empty.
@@ -340,6 +341,7 @@ MESSAGE_EDIT_TIME_EXPIRED	You can't edit this message anymore, too much time has
 MESSAGE_EMPTY	The provided message is empty.
 MESSAGE_IDS_EMPTY	No message ids were provided.
 MESSAGE_ID_INVALID	The provided message id is invalid.
+MESSAGE_NOT_COMMAND	The provided message is not a ephemeral message with a valid callback_query_id.
 MESSAGE_NOT_MODIFIED	The provided message data is identical to the previous message data, the message wasn't modified.
 MESSAGE_NOT_READ_YET	The specified message wasn't read yet.
 MESSAGE_POLL_CLOSED	Poll closed.
