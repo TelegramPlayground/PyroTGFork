@@ -1,9 +1,10 @@
 id	message
-ACCESS_DENIED	You cannot perform this request.
+ACCESS_DENIED	The account was deactivated, or is a bot/service account.
 ALLOW_PAYMENT_REQUIRED_X	This peer charges {value} [Telegram Stars](https://core.telegram.org/api/stars) per message, but the `allow_paid_stars` was not set or its value is smaller than {value}.
 ANONYMOUS_REACTIONS_DISABLED	Sorry, anonymous administrators cannot leave reactions or participate in polls.
 BOT_ACCESS_FORBIDDEN	The specified method *can* be used over a [business connection](https://core.telegram.org/api/bots/connected-business-bots) for some operations, but the specified query attempted an operation that is not allowed over a business connection.
-BOT_FORUM_CREATE_FORBIDDEN	This bot prevents users from creating or deleting topics.
+BOT_FORUM_CREATE_FORBIDDEN	Since the bot's user.bot_forum_can_manage_topics flag is **not** set, the user cannot create or modify bot forum topics.
+BOT_GUARD_NOT_SUPPORTED	This bot is not designated as a 'join guard' bot. This method is only available to bots that mediate user joins to chats. .
 BOT_OWNER_REQUIRED	You must be the owner of the bot to perform this action
 BOT_VERIFIER_FORBIDDEN	This bot cannot assign [verification icons](https://core.telegram.org/api/bots/verification).
 BROADCAST_FORBIDDEN	Channel poll voters and reactions cannot be fetched to prevent deanonymization.
@@ -32,7 +33,8 @@ CHAT_TYPE_INVALID	The specified user type is invalid.
 CHAT_WRITE_FORBIDDEN	You can't write in this chat.
 EDIT_BOT_INVITE_FORBIDDEN	Normal users can't edit invites that were created by bots.
 GROUPCALL_ALREADY_STARTED	The groupcall has already started, you can join directly using [phone.joinGroupCall](https://core.telegram.org/method/phone.joinGroupCall).
-GROUPCALL_FORBIDDEN	The group call has already ended.
+GROUPCALL_CHANGE_FORBIDDEN	You cannot change this group call setting.
+GROUPCALL_FORBIDDEN	The specified group call cannot be used in this context.
 INLINE_BOT_REQUIRED	Only the inline bot can edit message.
 MESSAGE_AUTHOR_REQUIRED	Message author required.
 MESSAGE_DELETE_FORBIDDEN	You can't delete one of the messages you tried to delete, most likely because it is a service message.
@@ -52,6 +54,7 @@ USER_BANNED_IN_CHANNEL	You're banned from sending messages in supergroups/channe
 USER_BOT_INVALID	User accounts must provide the `bot` method parameter when calling this method. If there is no such method parameter, this method can only be invoked by bot accounts.
 USER_CHANNELS_TOO_MUCH	One of the users you tried to add is already in too many channels/supergroups.
 USER_DELETED	You can't send this secret message because the other participant deleted their account.
+USER_DISALLOWED_STARGIFTS	The recipient user has configured restrictions on which categories of star gifts they're willing to accept (unique, limited, or unlimited): the sender attempted to get a payment form for a gift that falls into a category the recipient has blocked.
 USER_INVALID	Invalid user provided.
 USER_IS_BLOCKED	You were blocked by this user.
 USER_NOT_MUTUAL_CONTACT	The provided user is not a mutual contact.

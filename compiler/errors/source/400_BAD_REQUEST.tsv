@@ -9,9 +9,10 @@ ADMIN_RANK_EMOJI_NOT_ALLOWED	An admin rank cannot contain emojis.
 ADMIN_RANK_INVALID	The specified admin rank is invalid.
 ADMIN_RIGHTS_EMPTY	The chatAdminRights constructor passed in keyboardButtonRequestPeer.peer_type.user_admin_rights has no rights set (i.e. flags is 0).
 AD_EXPIRED	The ad has expired (too old or not found).
+AICOMPOSE_FLOOD_PREMIUM	You've reached the daily limit of AI text transformations, upgrade to [Telegram Premium](https://core.telegram.org/api/premium) to get **50x** times more AI text transformations per day!
 AICOMPOSE_TONE_INVALID	The specified tone is invalid.
 AICOMPOSE_TONE_TITLE_INVALID	The specified tone title is invalid.
-AI_COMPOSE_TASK_MISSING	The text composition style is missing.
+AI_COMPOSE_TASK_MISSING	No AI task was specified. The caller must provide at least one of: proofread, translate (with a target language), tone, or emojify.
 ALBUM_PHOTOS_TOO_MANY	You have uploaded too many profile photos, delete some before retrying.
 ANONYMOUS_OPEN_INVALID	allow_adding_options is not supported for anonymous polls and quizzes.
 ANSWER_X_MEDIA_TYPE_INVALID	The option media type at index {value} is invalid.
@@ -48,10 +49,12 @@ BOT_BUSINESS_MISSING	The specified bot is not a business bot (the [user](https:/
 BOT_CHANNELS_NA	Bots can't edit admin privileges.
 BOT_COMMAND_DESCRIPTION_INVALID	The specified command description is invalid.
 BOT_COMMAND_INVALID	The specified command is invalid.
+BOT_CREATE_LIMIT_EXCEEDED	The current user already owns the maximum allowed number of owned bots, as specified by [`bots_create_limit_default`](https://core.telegram.org/api/config#bots-create-limit-default) and [`bots_create_limit_premium`](https://core.telegram.org/api/config#bots-create-limit-premium); if the current user doesn't have Telegram Premium, upgrading to Premium will allow them to create more bots.
 BOT_DOMAIN_INVALID	Bot domain invalid.
 BOT_FALLBACK_UNSUPPORTED	The fallback flag can't be set for bots.
 BOT_GAMES_DISABLED	Games can't be sent to channels.
 BOT_GROUPS_BLOCKED	This bot can't be added to groups.
+BOT_ID_INVALID	The specified bot ID is invalid.
 BOT_INLINE_DISABLED	This bot can't be used in inline mode.
 BOT_INVALID	This is not a valid bot.
 BOT_INVOICE_INVALID	The specified invoice is invalid.
@@ -157,7 +160,7 @@ CONTACT_MISSING	The specified user is not a contact.
 CONTACT_NAME_EMPTY	Contact name empty.
 CONTACT_REQ_MISSING	Missing contact request.
 CREATE_CALL_FAILED	An error occurred while creating the call.
-CREDENTIAL_INVALID	The credential is invalid.
+CREDENTIAL_INVALID	The specified credential is invalid.
 CURRENCY_TOTAL_AMOUNT_INVALID	The total amount of all prices is invalid.
 CUSTOM_REACTIONS_TOO_MANY	Too many custom reactions were specified.
 DATA_HASH_SIZE_INVALID	The size of the specified secureValueErrorData.data_hash is invalid.
@@ -169,10 +172,10 @@ DC_ID_INVALID	The provided DC ID is invalid.
 DELETE_ANSWER_FORBIDDEN	You cannot delete the specified option in this poll.
 DH_G_A_INVALID	g_a invalid.
 DOCUMENT_INVALID	The specified document is invalid.
-EFFECT_CHAT_INVALID	The effect_id can only be used in private chats
+EFFECT_CHAT_INVALID	Message [effects](https://core.telegram.org/api/effects) can only be used in private 1-on-1 chats, but the caller tried to send a message with an effect to a group or channel.
 EFFECT_ID_INVALID	The specified effect ID is invalid.
 EMAIL_HASH_EXPIRED	Email hash expired.
-EMAIL_INSTALL_MISSING	In order to use account.SendVerifyEmailCode, auth.SendCode must return auth.SentCodeTypeSetUpEmailRequired.
+EMAIL_INSTALL_MISSING	Attempting to send a code to the recovery email, but no email is configured.
 EMAIL_INVALID	The specified email is invalid.
 EMAIL_NOT_ALLOWED	The specified email cannot be used to complete the operation.
 EMAIL_NOT_SETUP	In order to change the login email with emailVerifyPurposeLoginChange, an existing login email must already be set using emailVerifyPurposeLoginSetup.
@@ -194,14 +197,16 @@ ENTITIES_TOO_LONG	You provided too many styled message entities.
 ENTITY_BOUNDS_INVALID	A specified [entity offset or length](https://core.telegram.org/api/entities#entity-length) is invalid, see [here](https://core.telegram.org/api/entities#entity-length) for info on how to properly compute the entity offset/length.
 ENTITY_DATE_FORMAT_INVALID	One of the passed messageEntityFormattedDate objects has an invalid format (i.e. an invalid combination of the format flags).
 ENTITY_DATE_INVALID	One of the passed messageEntityFormattedDate objects has an invalid date: the allowed value ranges from `0` to the current date plus 1098 days (`time()+1098*86400`).
+ENTITY_DATE_TOO_LONG	The maximum text span that can be covered by a date entity is 31 UTF-16 code units if any of the date formatting flags is set, or 127 UTF-16 code units without.  .
 ENTITY_MENTION_USER_INVALID	You mentioned an invalid user.
 ERROR_TEXT_EMPTY	The provided error message is empty.
 EXPIRES_AT_INVALID	The specified `expires_at` timestamp is invalid.
 EXPIRE_DATE_INVALID	The specified expiration date is invalid.
 EXPORT_CARD_INVALID	Provided card is invalid.
 EXTENDED_MEDIA_AMOUNT_INVALID	The specified `stars_amount` of the passed [inputMediaPaidMedia](https://core.telegram.org/constructor/inputMediaPaidMedia) is invalid.
-EXTENDED_MEDIA_EMPTY	The specified paid media is empty.
+EXTENDED_MEDIA_EMPTY	The specified extended media is empty.
 EXTENDED_MEDIA_INVALID	The specified paid media is invalid.
+EXTENDED_MEDIA_PEER_INVALID	Paid media is not allowed for the target peer.
 EXTERNAL_URL_INVALID	External URL invalid.
 FIELD_NAME_EMPTY	The field with the name FIELD_NAME is missing
 FIELD_NAME_INVALID	The field with the name FIELD_NAME is invalid
@@ -256,7 +261,7 @@ GRAPH_EXPIRED_RELOAD	This graph has expired, please obtain a new graph token.
 GRAPH_INVALID_RELOAD	Invalid graph token provided, please reload the stats and provide the updated token.
 GRAPH_OUTDATED_RELOAD	The graph is outdated, please get a new async token using stats.getBroadcastStats.
 GROUPCALL_ALREADY_DISCARDED	The group call was already discarded.
-GROUPCALL_FORBIDDEN	The group call has already ended.
+GROUPCALL_FORBIDDEN	The specified group call cannot be used in this context.
 GROUPCALL_INVALID	The specified group call is invalid.
 GROUPCALL_JOIN_MISSING	You haven't joined this group call.
 GROUPCALL_NOT_MODIFIED	Group call settings weren't modified.
@@ -314,10 +319,11 @@ LANG_CODE_NOT_SUPPORTED	The specified language code is not supported.
 LANG_PACK_INVALID	The provided language pack is invalid.
 LASTNAME_INVALID	The last name is invalid.
 LIMIT_INVALID	The provided limit is invalid.
+LIMIT_PER_POST_INVALID	The specified reactions_limit value is invalid.
 LINK_NOT_MODIFIED	Discussion link not modified.
 LOCATION_INVALID	The provided location is invalid.
-MANAGER_INVALID	The provided bot manager is invalid. Bot Management Mode should be enabled for the bot in the @BotFather Mini App.
-MANAGER_PERMISSION_MISSING	The bot manager permission is missing. Bot Management Mode should be enabled for the bot in the @BotFather Mini App.
+MANAGER_INVALID	The specified manager bot is invalid.
+MANAGER_PERMISSION_MISSING	The specified manager bot does not have the [user](https://core.telegram.org/constructor/user).`bot_can_manage_bots` flag set.
 MAX_DATE_INVALID	The specified maximum date is invalid.
 MAX_ID_INVALID	The provided max ID is invalid.
 MAX_QTS_INVALID	The specified max_qts is invalid.
@@ -360,7 +366,7 @@ MSG_WAIT_FAILED	A waiting call returned an error.
 MTPROTO_CLUSTER_INVALID	The mtproto 1049295266_343213 cluster is invalid.
 MULTI_MEDIA_TOO_LONG	Too many media files for album.
 NAME_INVALID	The specified bot name is invalid.
-NEED_ACTION_MISSING	Action is missing.
+NEED_ACTION_MISSING	The caller didn't specify a valid action (either save or suggest) for the contact profile photo upload.
 NEW_SALT_INVALID	The new salt is invalid.
 NEW_SETTINGS_EMPTY	No password is set on the current account, and no new password was specified in `new_settings`.
 NEW_SETTINGS_INVALID	The new password settings are invalid.
@@ -383,6 +389,7 @@ PARTICIPANTS_TOO_FEW	Not enough participants.
 PARTICIPANT_ID_INVALID	The specified participant ID is invalid.
 PARTICIPANT_JOIN_MISSING	Trying to enable a presentation, when the user hasn't joined the Video Chat with [phone.joinGroupCall](https://core.telegram.org/method/phone.joinGroupCall).
 PARTICIPANT_VERSION_OUTDATED	The other participant does not use an up to date telegram client with support for calls.
+PASSKEY_ORIGIN_MISMATCH	Third-party clients currently don't support passkeys even when changing the origin.
 PASSWORD_EMPTY	The provided password is empty.
 PASSWORD_HASH_INVALID	The provided password hash is invalid.
 PASSWORD_MISSING	You must [enable 2FA](https://core.telegram.org/api/srp) before executing this operation.
@@ -460,6 +467,7 @@ QUIZ_CORRECT_ANSWER_INVALID	An invalid value was provided to the correct_answers
 QUIZ_MULTIPLE_INVALID	Quizzes can't have the multiple_choice flag set!
 QUOTE_TEXT_INVALID	The specified `reply_to`.`quote_text` field is invalid.
 RAISE_HAND_FORBIDDEN	You cannot raise your hand.
+RANDOM_ID_DUPLICATE	You provided a random ID that was already used.
 RANDOM_ID_EMPTY	Random ID empty.
 RANDOM_ID_EXPIRED	The specified `random_id` was expired (most likely it didn't follow the required `uint64_t random_id = (time() << 32) | ((uint64_t)random_uint32_t())` format, or the specified time is too far in the past).
 RANDOM_ID_INVALID	A provided random ID is invalid.
@@ -482,8 +490,8 @@ REPLY_TO_MONOFORUM_PEER_INVALID	The specified inputReplyToMonoForum.monoforum_pe
 REPLY_TO_USER_INVALID	The replied-to user is invalid.
 REQUEST_MSG_EXPIRED	The request specified in request_msg_id has already expired.
 REQUEST_TOKEN_INVALID	The master DC did not accept the `request_token` from the CDN DC. Continue downloading the file from the master DC using upload.getFile.
-RESELL_STARS_TOO_FEW	The resell_stars is less than the minimum amount required.
-RESELL_STARS_TOO_MUCH	The resell_stars is more than the maximum amount allowed.
+RESELL_STARS_TOO_FEW	The offered price is too low.
+RESELL_STARS_TOO_MUCH	The offered price is too high.
 RESET_REQUEST_MISSING	No password reset is in progress.
 RESULTS_TOO_MUCH	Too many results were provided.
 RESULT_ID_DUPLICATE	You provided a duplicate result ID.
@@ -543,13 +551,14 @@ STARGIFT_MESSAGE_INVALID	The specified inputInvoiceStarGift.message is invalid.
 STARGIFT_NOT_FOUND	The specified gift was not found.
 STARGIFT_NOT_OWNER	You're not the owner of the gift you trying to transfer.
 STARGIFT_NOT_UNIQUE	You can't transfer a non-collectible gift.
+STARGIFT_OBJECT_INVALID	The specified star gift object is invalid.
 STARGIFT_OFFER_INVALID	The specified offer amount is invalid.
-STARGIFT_OFFER_NOT_ALLOWED	The star gift offer is not allowed.
+STARGIFT_OFFER_NOT_ALLOWED	You can't send a purchase offer for this gift.
 STARGIFT_OWNER_INVALID	You cannot transfer or sell a gift owned by another user.
 STARGIFT_PEER_INVALID	The specified inputSavedStarGiftChat.peer is invalid.
 STARGIFT_RESELL_CURRENCY_NOT_ALLOWED	You can't buy the gift using the specified currency (i.e. trying to pay in Stars for TON gifts).
 STARGIFT_RESELL_NOT_ALLOWED	You cannot buy this gift. Someone else may have already bought it.
-STARGIFT_RESELL_TOO_EARLY_X	A wait of {value} seconds is required to resell this gift.
+STARGIFT_RESELL_TOO_EARLY_X	You will be able to resell this gift in {value} seconds.
 STARGIFT_SLUG_INVALID	The specified gift slug is invalid.
 STARGIFT_TRANSFER_TOO_EARLY_X	You cannot transfer this gift yet, wait {value} seconds.
 STARGIFT_UPGRADE_UNAVAILABLE	A received gift can only be upgraded to a collectible gift if the [messageActionStarGift](https://core.telegram.org/constructor/messageActionStarGift)/[savedStarGift](https://core.telegram.org/constructor/savedStarGift).`can_upgrade` flag is set.
@@ -612,7 +621,7 @@ TASK_ALREADY_EXISTS	An email reset was already requested.
 TEMP_AUTH_KEY_ALREADY_BOUND	The passed temporary key is already bound to another **perm_auth_key_id**.
 TEMP_AUTH_KEY_EMPTY	No temporary auth key provided.
 TERMS_URL_INVALID	The specified [invoice](https://core.telegram.org/constructor/invoice).`terms_url` is invalid.
-TEXTDRAFT_PEER_INVALID	The specified peer is invalid.
+TEXTDRAFT_PEER_INVALID	sendMessageTextDraftAction can only be used in private 1-on-1 chats.
 THEME_FILE_INVALID	Invalid theme file provided.
 THEME_FORMAT_INVALID	Invalid theme format provided.
 THEME_INVALID	Invalid theme provided.
@@ -663,7 +672,7 @@ USERNAME_NOT_MODIFIED	The username was not modified.
 USERNAME_NOT_OCCUPIED	The provided username is not occupied.
 USERNAME_OCCUPIED	The provided username is already occupied.
 USERNAME_PURCHASE_AVAILABLE	The specified username can be purchased on https://fragment.com.
-USERNAME_SUFFIX_MISSING	Bot username must end in `bot`.
+USERNAME_SUFFIX_MISSING	The required `bot` suffix is missing from the passed username.
 USERPIC_UPLOAD_REQUIRED	You must have a profile picture to publish your geolocation.
 USERS_TOO_FEW	Not enough users (to create a chat, for example).
 USERS_TOO_MUCH	The maximum number of users has been exceeded (to create a chat, for example).
@@ -675,6 +684,7 @@ USER_BLOCKED	User blocked.
 USER_BOT	Bots can only be admins in channels.
 USER_BOT_INVALID	User accounts must provide the `bot` method parameter when calling this method. If there is no such method parameter, this method can only be invoked by bot accounts.
 USER_BOT_REQUIRED	This method can only be called by a bot.
+USER_BOT_TO_BOT_DISABLED	Bot-to-bot messaging is disabled because one of the two bots hasn't enabled the Bot to Bot setting in @BotFather.
 USER_CHANNELS_TOO_MUCH	One of the users you tried to add is already in too many channels/supergroups.
 USER_CREATOR	For channels.editAdmin: you've tried to edit the admin rights of the owner, but you're not the owner; for channels.leaveChannel: you can't leave this channel, because you're its creator.
 USER_GIFT_UNAVAILABLE	Gifts are not available in the current region ([stars_gifts_enabled](https://core.telegram.org/api/config#stars-gifts-enabled) is equal to false).
@@ -702,6 +712,7 @@ WALLPAPER_INVALID	The specified wallpaper is invalid.
 WALLPAPER_MIME_INVALID	The specified wallpaper MIME type is invalid.
 WALLPAPER_NOT_FOUND	The specified wallpaper could not be found.
 WC_CONVERT_URL_INVALID	WC convert URL invalid.
+WEBAPP_REQ_ID_INVALID	The specified webapp_req_id is invalid.
 WEBAUTH_TOKEN_EXPIRED	The specified auth token has expired.
 WEBDOCUMENT_INVALID	Invalid webdocument URL provided.
 WEBDOCUMENT_MIME_INVALID	Invalid webdocument mime type provided.

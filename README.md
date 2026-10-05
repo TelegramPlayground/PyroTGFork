@@ -9,7 +9,7 @@
         Documentation
     </a>
     •
-    <a href="https://telegramplayground.github.io/pyrogram/releases/changes-in-this-fork.html">
+    <a href="https://telegramplayground.github.io/pyrogram/releases/">
         Releases
     </a>
     •

@@ -1,4 +1,5 @@
 id	message
+AICOMPOSE_TIMEOUT	A timeout occurred while composing the message.
 API_CALL_ERROR	API call error due to Telegram having internal problems. Please try again later
 AUTH_KEY_UNSYNCHRONIZED	Internal error, please repeat the method call.
 AUTH_RESTART	Restart the authorization process.

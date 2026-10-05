@@ -43,50 +43,43 @@ if sys.argv[1] == "sort":
 
 elif sys.argv[1] == "scrape":
     b = f"https://{sys.argv[2]}.telegram.org"
-    c = "/api/errors"
+    c = "/api/errors.json"
     a = requests.get(b + c)
-    d = a.text
-    e = r"\<a\ href\=\"(.*)\"\>here.*\<\/a\>"
-    f = re.search(e, d)
-    if f:
-        a = requests.get(
-            b + f.group(1)
-        )
-        d = a.json()
-        e = d.get("errors", [])
-        for h in e:
-            dct = {}
+    d = a.json()
+    e = d.get("errors", [])
+    for h in e:
+        dct = {}
 
-            for p in Path("source/").glob(f"{h}*.tsv"):
-                with open(p) as f:
-                    reader = csv.reader(f, delimiter="\t")
-                    for k, v in reader:
-                        if k != "id":
-                            dct[k] = v
+        for p in Path("source/").glob(f"{h}*.tsv"):
+            with open(p) as f:
+                reader = csv.reader(f, delimiter="\t")
+                for k, v in reader:
+                    if k != "id":
+                        dct[k] = v
 
-            j = d.get("errors").get(h)
-            for k in j:
-                if k.endswith("_*"):
-                    continue
-                g = d.get("descriptions")
-                l = g.get(k)
-                if not l:
-                    continue
-                m = k.replace("_%d", "_X")
-                if "_X" in m:
-                    l = l.replace("for the specified number of", "{value}")
-                l = l.replace("%d", "{value}")
-                l = l.replace("\"", "'")
-                l = l.replace("&raquo;", "»")
-                l = l.replace("&laquo;", "«")
-                l = l.replace(" »", "")
-                l = l.replace("](/api/", f"]({b}/api/")
-                dct[m] = l
+        j = d.get("errors").get(h)
+        for k in j:
+            if k.endswith("_*"):
+                continue
+            g = d.get("descriptions")
+            l = g.get(k)
+            if not l:
+                continue
+            m = k.replace("_%d", "_X")
+            if "_X" in m:
+                l = l.replace("for the specified number of", "{value}")
+            l = l.replace("%d", "{value}")
+            l = l.replace("\"", "'")
+            l = l.replace("&raquo;", "»")
+            l = l.replace("&laquo;", "«")
+            l = l.replace(" »", "")
+            l = l.replace("](/api/", f"]({b}/api/")
+            dct[m] = l
 
-            keys = sorted(dct)
-            
-            for p in Path("source/").glob(f"{h}*.tsv"):
-                with open(p, "w") as f:
-                    f.write("id\tmessage\n")
-                    for i, item in enumerate(keys, start=1):
-                        f.write(f"{item}\t{dct[item]}\n")
+        keys = sorted(dct)
+        
+        for p in Path("source/").glob(f"{h}*.tsv"):
+            with open(p, "w") as f:
+                f.write("id\tmessage\n")
+                for i, item in enumerate(keys, start=1):
+                    f.write(f"{item}\t{dct[item]}\n")

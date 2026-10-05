@@ -11,6 +11,7 @@ CALL_PROTOCOL_COMPAT_LAYER_INVALID	The other side of the call does not support a
 CHANNEL_PRIVATE	You haven't joined this channel/supergroup.
 CHANNEL_TOO_LARGE	Channel is too large to be deleted; this error is issued when trying to delete channels with more than 1000 members (subject to change).
 CHAT_FORWARDS_RESTRICTED	You can't forward messages from a protected chat.
+EDIT_MESSAGE_TEMP_RESTRICTED	Message editing is temporarily forbidden for this user due to regulatory restrictions.
 FILEREF_UPGRADE_NEEDED	The client has to be updated in order to support [file references](https://core.telegram.org/api/file-references).
 FRESH_CHANGE_ADMINS_FORBIDDEN	You were just elected admin, you can't add or modify other admins yet.
 FRESH_CHANGE_PHONE_FORBIDDEN	You can't change phone number right after logging in, please wait at least 24 hours.
@@ -20,6 +21,8 @@ PAYMENT_UNSUPPORTED	A detailed description of the error will be received separat
 PEER_ID_INVALID	The provided peer id is invalid.
 PHONE_NUMBER_INVALID	The phone number is invalid.
 PHONE_PASSWORD_FLOOD	You have tried logging in too many times.
+POLL_COUNTRY_RESTRICTED	Users from the current user's country cannot vote in this [country-restricted poll](https://core.telegram.org/api/poll#country-restricted-polls).
+POLL_MEMBER_RESTRICTED	Only channel subscribers can vote in this poll.
 PRECHECKOUT_FAILED	Precheckout failed, a detailed and localized description for the error will be emitted via an [updateServiceNotification as specified here](https://core.telegram.org/api/errors#406-not-acceptable).
 PREMIUM_CURRENTLY_UNAVAILABLE	You cannot currently purchase a Premium subscription.
 PREVIOUS_CHAT_IMPORT_ACTIVE_WAIT_XMIN	Import for this chat is already in progress, wait {value} minutes before starting a new one.
