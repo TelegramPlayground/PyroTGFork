@@ -34,7 +34,13 @@ class PromoteChatMember:
         You must be an administrator in the chat for this to work and must have the appropriate admin rights.
         Pass False for all boolean parameters to demote a user.
 
-        .. include:: /_includes/usable-by/users-bots.rst
+        If the chat_id is a supergroup or channel,
+
+            .. include:: /_includes/usable-by/users-bots.rst
+
+        If the chat_id is a basicgroup,
+
+            .. include:: /_includes/usable-by/users.rst
 
         Parameters:
             chat_id (``int`` | ``str``):
@@ -45,7 +51,9 @@ class PromoteChatMember:
                 For a contact that exists in your Telegram address book you can use his phone number (str).
 
             privileges (:obj:`~pyrogram.types.ChatPrivileges`, *optional*):
-                New user privileges.
+                New Rights of the administrator.
+                In supergroups and channels, there are more detailed options for administrator privileges.
+                In basic groups, administrators can edit and delete messages sent by others, add new members, ban unprivileged members, and manage video chats.
 
         Returns:
             :obj:`~pyrogram.types.Message` | ``bool``: On success, a service message will be returned (when applicable),
@@ -63,6 +71,22 @@ class PromoteChatMember:
         # See Chat.promote_member for the reason of this (instead of setting types.ChatPrivileges() as default arg).
         if privileges is None:
             privileges = types.ChatPrivileges()
+
+        if isinstance(chat_id, raw.types.InputPeerChat):
+            r = await self.invoke(
+                raw.functions.messages.EditChatAdmin(
+                    chat_id=chat_id.chat_id,
+                    user_id=user_id,
+                    is_admin=privileges.can_manage_chat or any([
+                        privileges.can_edit_messages,
+                        privileges.can_delete_messages,
+                        privileges.can_invite_users,
+                        privileges.can_restrict_members,
+                        privileges.can_manage_video_chats,
+                    ])
+                )
+            )
+            return r
 
         try:
             raw_chat_member = (await self.invoke(
