@@ -69,7 +69,6 @@ class SendVideo:
         file_name: str = None,
         mime_type: str = None,
         schedule_date: datetime = None,
-        reply_to_message_id: int = None,
         progress: Callable = None,
         progress_args: tuple = ()
     ) -> Optional["types.Message"]:
@@ -235,19 +234,6 @@ class SendVideo:
 
                 await app.send_video("me", "video.mp4", progress=progress)
         """
-
-        if reply_to_message_id and reply_parameters:
-            raise ValueError(
-                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
-                "exclusive."
-            )
-        
-        if reply_to_message_id is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use reply_parameters instead"
-            )
-            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
 
         file = None
         ttl_seconds = 0x7FFFFFFF if view_once else ttl_seconds
