@@ -172,6 +172,7 @@ DC_ID_INVALID	The provided DC ID is invalid.
 DELETE_ANSWER_FORBIDDEN	You cannot delete the specified option in this poll.
 DH_G_A_INVALID	g_a invalid.
 DOCUMENT_INVALID	The specified document is invalid.
+DOCUMENT_TYPE_INVALID	The specified document type is invalid.
 EFFECT_CHAT_INVALID	Message [effects](https://core.telegram.org/api/effects) can only be used in private 1-on-1 chats, but the caller tried to send a message with an effect to a group or channel.
 EFFECT_ID_INVALID	The specified effect ID is invalid.
 EMAIL_HASH_EXPIRED	Email hash expired.
@@ -290,6 +291,7 @@ INPUT_FETCH_FAIL	An error occurred while parsing the provided TL constructor.
 INPUT_FILE_INVALID	The specified [InputFile](https://core.telegram.org/type/InputFile) is invalid.
 INPUT_FILTER_INVALID	The specified filter is invalid.
 INPUT_LAYER_INVALID	The specified layer is invalid.
+INPUT_MEDIA_WIDGET_NOT_ALLOWED	The specified html widget is not allowed.
 INPUT_METHOD_INVALID	The specified method is invalid.
 INPUT_PEERS_EMPTY	The specified peer array is empty.
 INPUT_PURPOSE_INVALID	The specified payment purpose is invalid.
