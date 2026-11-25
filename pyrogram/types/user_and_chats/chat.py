@@ -1290,7 +1290,7 @@ class Chat(Object):
             This only works for public groups, channels that have set a username or linked chats.
 
         Returns:
-            :obj:`~pyrogram.types.Chat`: On success, a chat object is returned.
+            :obj:`~pyrogram.types.ChatJoinResult`: On success, a chat join result object is returned.
 
         Raises:
             :obj:`~pyrogram.errors.RPCError`: In case of a Telegram RPC error.

@@ -19,8 +19,7 @@
 from datetime import datetime
 
 import pyrogram
-from pyrogram import raw, utils
-from pyrogram import types
+from pyrogram import raw, types, utils
 from ..object import Object
 from ..update import Update
 
@@ -46,6 +45,7 @@ class ChatJoinRequest(Object, Update):
 
         invite_link (:obj:`~pyrogram.types.ChatInviteLink`, *optional*):
             Chat invite link that was used by the user to send the join request.
+
     """
 
     def __init__(

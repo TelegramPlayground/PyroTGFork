@@ -58,6 +58,7 @@ class LeaveChat:
                     channel=await self.resolve_peer(chat_id)
                 )
             )
+
         elif isinstance(peer, raw.types.InputPeerChat):
             r = await self.invoke(
                 raw.functions.messages.DeleteChatUser(
