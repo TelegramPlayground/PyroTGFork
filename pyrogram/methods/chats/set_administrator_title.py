@@ -47,6 +47,7 @@ class SetAdministratorTitle:
             title (``str``, *optional*):
                 A custom title that will be shown to all members instead of "Owner" or "Admin".
                 Pass None or "" (empty string) to remove the custom title.
+                0-16 characters without emoji; applicable to supergroups only.
 
         Returns:
             ``bool``: True on success.
