@@ -38,7 +38,6 @@ class SendInlineBotResult:
         paid_message_star_count: int = None,
         message_thread_id: int = None,
         schedule_date: datetime = None,
-        reply_to_message_id: int = None
     ) -> Union["types.Message", bool]:
         """Send an inline bot result.
         Bot results can be retrieved using :meth:`~pyrogram.Client.get_inline_bot_results`
@@ -91,19 +90,6 @@ class SendInlineBotResult:
 
                 await app.send_inline_bot_result(chat_id, query_id, result_id)
         """
-
-        if reply_to_message_id and reply_parameters:
-            raise ValueError(
-                "Parameters `reply_to_message_id` and `reply_parameters` are mutually "
-                "exclusive."
-            )
-        
-        if reply_to_message_id is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use reply_parameters instead"
-            )
-            reply_parameters = types.ReplyParameters(message_id=reply_to_message_id)
 
         reply_to = await utils._get_reply_message_parameters(
             self,

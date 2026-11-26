@@ -40,7 +40,6 @@ class EditMessageText:
         reply_markup: "types.InlineKeyboardMarkup" = None,
         schedule_date: datetime = None,
         business_connection_id: str = None,
-        disable_web_page_preview: bool = None
     ) -> "types.Message":
         """Edit the text of messages.
 
@@ -94,18 +93,6 @@ class EditMessageText:
                     )
                 )
         """
-        if disable_web_page_preview and link_preview_options:
-            raise ValueError(
-                "Parameters `disable_web_page_preview` and `link_preview_options` are mutually "
-                "exclusive."
-            )
-
-        if disable_web_page_preview is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use link_preview_options instead"
-            )
-            link_preview_options = types.LinkPreviewOptions(is_disabled=disable_web_page_preview)
 
         link_preview_options = link_preview_options or self.link_preview_options
 

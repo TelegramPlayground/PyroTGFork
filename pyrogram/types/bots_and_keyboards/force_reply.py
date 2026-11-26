@@ -49,20 +49,7 @@ class ForceReply(Object):
         self,
         selective: bool = None,
         input_field_placeholder: str = None,
-        placeholder: str = None
     ):
-        if placeholder and input_field_placeholder:
-            raise ValueError(
-                "Parameters `placeholder` and `input_field_placeholder` are mutually exclusive."
-            )
-
-        if placeholder is not None:
-            log.warning(
-                "This property is deprecated. "
-                "Please use input_field_placeholder instead"
-            )
-            input_field_placeholder = placeholder
-
         super().__init__()
 
         self.selective = selective
